@@ -1,4 +1,4 @@
-from . import QuestionnaireTestCase
+from tests.integration.questionnaire import QuestionnaireTestCase
 
 
 class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
@@ -211,4 +211,67 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         )
         self.assertInBody(
             "We calculate the total monthly spending on public transport to be £300.00. Is this correct?"
+        )
+
+    def test_new_calculated_summary_repeating_blocks(self):
+        """
+        Tests a calculated summary with a repeating block answer id source resolving to a list of answers
+        """
+        self.launchSurvey("test_new_calculated_summary_repeating_blocks")
+        self.post({"answer-car": "100"})
+        self.post({"list-collector-answer": "Yes"})
+        self.post({"transport-name": "Bus"})
+        self.post(
+            {
+                "transport-company": "First",
+                "transport-cost": "30",
+                "transport-additional-cost": "5",
+            }
+        )
+        self.post({"transport-count": "10"})
+        self.post({"list-collector-answer": "Yes"})
+        self.post({"transport-name": "Plane"})
+        self.post(
+            {
+                "transport-company": "EasyJet",
+                "transport-cost": "0",
+                "transport-additional-cost": "265",
+            }
+        )
+        self.post({"transport-count": "2"})
+        list_item_ids = self.get_list_item_ids()
+        self.post({"list-collector-answer": "No"})
+        self.assertInBody(
+            "We calculate the total monthly expenditure on transport to be £400.00. Is this correct?"
+        )
+        self.post()
+        self.assertInBody(
+            "We calculate the total journeys made per month to be 12. Is this correct?"
+        )
+
+        # check that using a change link and editing an answer takes you straight back to the relevant calculated summary
+        change_link = self.get_list_item_change_link(
+            "transport-count", list_item_ids[1]
+        )
+        self.get(change_link)
+        self.post({"transport-count": "4"})
+        self.assertInUrl("/calculated-summary-count/")
+        self.assertInBody(
+            "We calculate the total journeys made per month to be 14. Is this correct?"
+        )
+        self.previous()
+
+        # likewise for the other calculated summary
+        change_link = self.get_list_item_change_link("transport-cost", list_item_ids[0])
+        self.get(change_link)
+        self.post(
+            {
+                "transport-company": "First",
+                "transport-cost": "300",
+                "transport-additional-cost": "50",
+            }
+        )
+        self.assertInUrl("/calculated-summary-spending/")
+        self.assertInBody(
+            "We calculate the total monthly expenditure on transport to be £715.00. Is this correct?"
         )

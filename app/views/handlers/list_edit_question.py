@@ -13,6 +13,15 @@ class ListEditQuestion(ListAction):
             return False
         return True
 
+    def get_next_location_url(self):
+        if self._is_returning_to_section_summary():
+            return self.get_section_summary_url()
+
+        if url := self._get_first_incomplete_repeating_block_url():
+            return url
+
+        return super().get_next_location_url()
+
     def handle_post(self):
         # pylint: disable=no-member
         # wtforms Form parents are not discoverable in the 2.3.3 implementation

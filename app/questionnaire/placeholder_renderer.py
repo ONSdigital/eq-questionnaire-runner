@@ -1,5 +1,5 @@
 from copy import deepcopy
-from typing import Any, Mapping, MutableMapping
+from typing import Mapping, MutableMapping
 
 from jsonpointer import resolve_pointer, set_pointer
 
@@ -124,11 +124,14 @@ class PlaceholderRenderer:
         """
         Transform the current schema json to a fully rendered dictionary
         """
-        data_to_render_mutable: dict[
-            str, Any
-        ] = QuestionnaireSchema.get_mutable_deepcopy(data_to_render)
+        data_to_render_mutable: dict = QuestionnaireSchema.get_mutable_deepcopy(
+            data_to_render
+        )
 
         self._handle_and_resolve_dynamic_answers(data_to_render_mutable)
+        self._handle_repeating_block_id_suffix(
+            data_to_render_mutable=data_to_render_mutable, list_item_id=list_item_id
+        )
 
         pointers = find_pointers_containing(data_to_render_mutable, "placeholders")
 
@@ -156,9 +159,7 @@ class PlaceholderRenderer:
             set_pointer(data_to_render_mutable, pointer, rendered_text)
         return data_to_render_mutable
 
-    def _handle_and_resolve_dynamic_answers(
-        self, data_to_render_mutable: dict[str, Any]
-    ) -> None:
+    def _handle_and_resolve_dynamic_answers(self, data_to_render_mutable: dict) -> None:
         pointers = find_pointers_containing(data_to_render_mutable, "dynamic_answers")
 
         for pointer in pointers:
@@ -180,6 +181,29 @@ class PlaceholderRenderer:
                     set_pointer(data_to_render_mutable, pointer, updated_value)
                 else:
                     data_to_render_mutable |= updated_value
+
+    def _handle_repeating_block_id_suffix(
+        self, *, data_to_render_mutable: dict, list_item_id: str | None
+    ) -> None:
+        """
+        If the data to render is a repeating question, the block-ids/question-ids/answer-ids need suffixing with list_item_id
+        This is so the page renders with valid HTML and avoids duplicate ids for divs when the same block is shown for each list item
+        """
+        if (
+            not list_item_id
+            or data_to_render_mutable.get("id") not in self._schema.repeating_block_ids
+        ):
+            return
+
+        data_to_render_mutable["id"] = f"{data_to_render_mutable['id']}-{list_item_id}"
+        pointers = find_pointers_containing(data_to_render_mutable, "answers")
+
+        for pointer in pointers:
+            question = resolve_pointer(data_to_render_mutable, pointer)
+            question["id"] = f"{question['id']}-{list_item_id}"
+            answers = question["answers"]
+            for answer in answers:
+                answer["id"] = f"{answer['id']}-{list_item_id}"
 
     def resolve_dynamic_answers_ids(
         self,

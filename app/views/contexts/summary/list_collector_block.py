@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import Any, Iterable, Mapping, MutableMapping, Sequence
+from typing import Iterable, Mapping, MutableMapping, Sequence
 
 from flask import url_for
 from werkzeug.datastructures import ImmutableDict
@@ -25,6 +25,8 @@ class ListCollectorBlock:
         schema: QuestionnaireSchema,
         location: Location,
         language: str,
+        return_to: str | None,
+        return_to_block_id: str | None = None,
     ) -> None:
         self._location = location
         self._placeholder_renderer = PlaceholderRenderer(
@@ -48,9 +50,11 @@ class ListCollectorBlock:
         self._response_metadata = response_metadata
         self._routing_path_block_ids = routing_path_block_ids
         self._progress_store = progress_store
+        self._return_to = return_to
+        self._return_to_block_id = return_to_block_id
 
     # pylint: disable=too-many-locals
-    def list_summary_element(self, summary: Mapping[str, Any]) -> dict[str, Any]:
+    def list_summary_element(self, summary: Mapping) -> dict:
         list_collector_block = None
         (
             edit_block_id,
@@ -92,7 +96,9 @@ class ListCollectorBlock:
             remove_block_id = list_collector_block["remove_block"]["id"]
             add_link = self._add_link(summary, list_collector_block)
             repeating_blocks = list_collector_block.get("repeating_blocks", [])
-            related_answers = self._get_related_answers(current_list, repeating_blocks)
+            related_answers = self._get_related_answers(
+                list_model=current_list, repeating_blocks=repeating_blocks
+            )
             item_anchor = self._schema.get_item_anchor(section_id, current_list.name)
             item_label = self._schema.get_item_label(section_id, current_list.name)
 
@@ -128,6 +134,21 @@ class ListCollectorBlock:
             **list_summary_context,
         }
 
+    def repeating_block_question_element(self, block: ImmutableDict) -> list[dict]:
+        """
+        Given a repeating block question to render,
+        return the list of rendered question blocks for each list item id
+        """
+        list_name = self._schema.repeating_block_to_list_map[block["id"]]
+        list_model = self._list_store[list_name]
+        blocks: list[dict] = []
+        if answer_blocks_by_id := self._get_related_answers(
+            list_model=list_model, repeating_blocks=[block]
+        ):
+            for answer_blocks in answer_blocks_by_id.values():
+                blocks.extend(answer_blocks)
+        return blocks
+
     @property
     def list_context(self) -> ListContext:
         return ListContext(
@@ -142,8 +163,8 @@ class ListCollectorBlock:
 
     def _add_link(
         self,
-        summary: Mapping[str, Any],
-        list_collector_block: Mapping[str, Any] | None,
+        summary: Mapping,
+        list_collector_block: Mapping | None,
     ) -> str | None:
         if list_collector_block:
             return url_for(
@@ -163,7 +184,7 @@ class ListCollectorBlock:
             )
 
     def _get_related_answers(
-        self, list_model: ListModel, repeating_blocks: Sequence[ImmutableDict]
+        self, *, list_model: ListModel, repeating_blocks: Sequence[ImmutableDict]
     ) -> dict[str, list[dict]] | None:
         section_id = self._section["id"]
 
@@ -186,23 +207,27 @@ class ListCollectorBlock:
 
         for list_id in list_model:
             serialized_blocks = [
-                Block(
-                    block,
-                    answer_store=self._answer_store,
-                    list_store=self._list_store,
-                    metadata=self._metadata,
-                    response_metadata=self._response_metadata,
-                    schema=self._schema,
-                    location=Location(
-                        list_name=list_model.name,
-                        list_item_id=list_id,
-                        section_id=section_id,
-                    ),
-                    return_to="section-summary",
-                    return_to_block_id=None,
-                    progress_store=self._progress_store,
-                    language=self._language,
-                ).serialize()
+                # related answers for repeating blocks may use placeholders, so each block needs rendering here
+                self._placeholder_renderer.render(
+                    data_to_render=Block(
+                        block,
+                        answer_store=self._answer_store,
+                        list_store=self._list_store,
+                        metadata=self._metadata,
+                        response_metadata=self._response_metadata,
+                        schema=self._schema,
+                        location=Location(
+                            list_name=list_model.name,
+                            list_item_id=list_id,
+                            section_id=section_id,
+                        ),
+                        return_to=self._return_to,
+                        return_to_block_id=self._return_to_block_id,
+                        progress_store=self._progress_store,
+                        language=self._language,
+                    ).serialize(),
+                    list_item_id=list_id,
+                )
                 for block in blocks
             ]
 

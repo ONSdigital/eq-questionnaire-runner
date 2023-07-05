@@ -100,36 +100,58 @@ class ValueSourceResolver:
             else None
         )
 
+    def _resolve_repeating_answers_for_list(
+        self, *, answer_id: str, list_name: str
+    ) -> list[AnswerValueTypes]:
+        """Return the list of answers in answer store that correspond to the given list name and dynamic/repeating answer_id"""
+        answer_values: list[AnswerValueTypes] = []
+        for list_item_id in self.list_store[list_name]:
+            if answer_value := self._get_answer_value(
+                answer_id=answer_id,
+                list_item_id=list_item_id,
+                assess_routing_path=False,
+            ):
+                answer_values.append(answer_value)
+        return answer_values
+
     def _resolve_dynamic_answers(
         self,
         answer_id: str,
-    ) -> list[AnswerValueTypes]:
-        # Type ignore: the answer block will exist at this stage
+    ) -> list[AnswerValueTypes] | None:
+        # Type ignore: block must exist for this function to be called
         question = self.schema.get_block_for_answer_id(answer_id).get("question", {})  # type: ignore
-        answer_values: list[AnswerValueTypes] = []
+        dynamic_answers = question["dynamic_answers"]
+        values = dynamic_answers["values"]
+        if values["source"] == "list":
+            return self._resolve_repeating_answers_for_list(
+                answer_id=answer_id, list_name=values["identifier"]
+            )
 
-        if dynamic_answers := question.get("dynamic_answers"):
-            values = dynamic_answers["values"]
-            if values["source"] == "list":
-                for list_item_id in self.list_store[values["identifier"]]:
-                    if answer_value := self._get_answer_value(
-                        answer_id=answer_id, list_item_id=list_item_id
-                    ):
-                        answer_values.append(answer_value)
-        return answer_values
+    def _resolve_repeating_block_answers(
+        self, answer_id: str
+    ) -> list[AnswerValueTypes]:
+        # Type ignore: block must exist for this function to be called
+        repeating_block: ImmutableDict = self.schema.get_block_for_answer_id(answer_id)  # type: ignore
+        list_name = self.schema.repeating_block_to_list_map[repeating_block["id"]]
+        return self._resolve_repeating_answers_for_list(
+            answer_id=answer_id, list_name=list_name
+        )
 
     def _resolve_answer_value_source(
         self, value_source: Mapping
     ) -> ValueSourceEscapedTypes | ValueSourceTypes:
         """resolves answer value by first checking if the answer is dynamic whilst not in a repeating section,
-        which indicates that it is a dynamic answer resolving to a list. Otherwise, retrieve answer value as normal.
+        which indicates that it is a repeating answer resolving to a list. Otherwise, retrieve answer value as normal.
         """
         list_item_id = self._resolve_list_item_id_for_value_source(value_source)
         answer_id = value_source["identifier"]
 
-        # if not in a repeating section and the id is for a list of dynamic answers, then return the list of values
-        if not list_item_id and self.schema.is_answer_dynamic(answer_id):
-            return self._resolve_dynamic_answers(answer_id)
+        # if not in a repeating section and the id is for a list of dynamic/repeating block answers, then return the list of values
+        if not list_item_id:
+            if self.schema.is_answer_dynamic(answer_id):
+                return self._resolve_dynamic_answers(answer_id)
+            if self.schema.is_answer_for_repeating_block(answer_id):
+                return self._resolve_repeating_block_answers(answer_id)
 
         answer_value = self._get_answer_value(
             answer_id=answer_id, list_item_id=list_item_id

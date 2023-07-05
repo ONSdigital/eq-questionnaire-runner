@@ -18,7 +18,10 @@ class ListAction(Question):
         )
 
     def _get_routing_path(self):
-        return self.router.routing_path(section_id=self.parent_location.section_id)
+        return self.router.routing_path(
+            section_id=self.parent_location.section_id,
+            list_item_id=self.parent_location.list_item_id,
+        )
 
     def is_location_valid(self):
         can_access_parent_location = self.router.can_access_location(
@@ -80,9 +83,7 @@ class ListAction(Question):
         )
 
         if self.questionnaire_store_updater.is_dirty():
-            self._routing_path = self.router.routing_path(
-                self.current_location.section_id, self.current_location.list_item_id
-            )
+            self._routing_path = self._get_routing_path()
             self.questionnaire_store_updater.remove_dependent_blocks_and_capture_dependent_sections()
             self.questionnaire_store_updater.update_progress_for_dependent_sections()
             self.questionnaire_store_updater.save()
@@ -94,6 +95,7 @@ class ListAction(Question):
         return_to=None,
         return_to_answer_id=None,
         return_to_block_id=None,
+        anchor=None,
     ):
         if block_id and self._schema.is_block_valid(block_id):
             section_id = self._schema.get_section_id_for_block_id(block_id)
@@ -101,12 +103,14 @@ class ListAction(Question):
                 return_to=return_to,
                 return_to_answer_id=return_to_answer_id,
                 return_to_block_id=return_to_block_id,
+                _anchor=anchor,
             )
 
         return self.parent_location.url(
             return_to=return_to,
             return_to_answer_id=return_to_answer_id,
             return_to_block_id=return_to_block_id,
+            _anchor=anchor,
         )
 
     def _is_returning_to_section_summary(self) -> bool:
@@ -116,3 +120,24 @@ class ListAction(Question):
                 self.parent_location.section_id, self.parent_location.list_item_id
             )
         )
+
+    def _get_first_incomplete_repeating_block_url(self) -> str | None:
+        """
+        If there are repeating blocks and not all are complete, get url for the next one
+        """
+        if first_incomplete_block := self.get_first_incomplete_repeating_block_location_for_list_item(
+            repeating_block_ids=self._schema.repeating_block_ids,
+            section_id=self.current_location.section_id,
+            list_item_id=self.current_location.list_item_id,
+            list_name=self.current_location.list_name,
+        ):
+            repeating_block_url = url_for(
+                "questionnaire.block",
+                list_name=first_incomplete_block.list_name,
+                list_item_id=first_incomplete_block.list_item_id,
+                block_id=first_incomplete_block.block_id,
+                return_to=self._return_to,
+                return_to_answer_id=self._return_to_answer_id,
+                return_to_block_id=self._return_to_block_id,
+            )
+            return repeating_block_url

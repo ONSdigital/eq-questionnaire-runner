@@ -181,6 +181,7 @@ class SectionSummaryContext(Context):
                     schema=self._schema,
                     location=self.current_location,
                     language=self._language,
+                    return_to="section-summary",
                 )
                 yield list_collector_block.list_summary_element(summary_element)
 

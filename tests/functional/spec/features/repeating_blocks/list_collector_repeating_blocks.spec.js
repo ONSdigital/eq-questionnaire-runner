@@ -141,6 +141,7 @@ describe("List Collector Repeating Blocks", () => {
       await $(AddCompanyPage.companyOrBranchName()).setValue("GOV");
       await $(AddCompanyPage.submit()).click();
       await $(CompaniesRepeatingBlock1Page.cancelAndReturn()).click();
+      await $(EditCompanyPage.cancelAndReturn()).click();
 
       await $(AnyOtherCompaniesOrBranchesPage.yes()).click();
       await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
@@ -152,6 +153,8 @@ describe("List Collector Repeating Blocks", () => {
       await $(CompaniesRepeatingBlock1Page.registrationDateyear()).setValue(2023);
       await $(CompaniesRepeatingBlock1Page.submit()).click();
       await $(CompaniesRepeatingBlock2Page.cancelAndReturn()).click();
+      await $(CompaniesRepeatingBlock1Page.cancelAndReturn()).click();
+      await $(EditCompanyPage.cancelAndReturn()).click();
 
       await $(AnyOtherCompaniesOrBranchesPage.yes()).click();
       await $(AnyOtherCompaniesOrBranchesPage.submit()).click();

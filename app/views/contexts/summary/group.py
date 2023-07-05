@@ -88,6 +88,26 @@ class Group:
         blocks = []
 
         for block in group_schema["blocks"]:
+            if block["type"] == "ListRepeatingQuestion":
+                # list repeating questions aren't themselves on the path, the parent list collector is checked in ListCollectorBlock
+                list_collector_block = ListCollectorBlock(
+                    routing_path_block_ids=routing_path_block_ids,
+                    answer_store=answer_store,
+                    list_store=list_store,
+                    progress_store=progress_store,
+                    metadata=metadata,
+                    response_metadata=response_metadata,
+                    schema=schema,
+                    location=location,
+                    language=language,
+                    return_to=return_to,
+                    return_to_block_id=return_to_block_id,
+                )
+                repeating_question_blocks = (
+                    list_collector_block.repeating_block_question_element(block)
+                )
+                blocks.extend(repeating_question_blocks)
+
             if block["id"] not in routing_path_block_ids:
                 continue
             if block["type"] in [
@@ -151,6 +171,7 @@ class Group:
                         schema=schema,
                         location=location,
                         language=language,
+                        return_to="section-summary",
                     )
 
                     list_summary_element = list_collector_block.list_summary_element(

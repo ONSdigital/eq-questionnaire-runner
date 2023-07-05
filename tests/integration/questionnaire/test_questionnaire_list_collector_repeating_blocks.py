@@ -28,7 +28,6 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
     def post_repeating_block_1(self, registration_number: int, registration_date: date):
         self.assertInUrl("/companies/")
         self.assertInUrl("/companies-repeating-block-1/")
-
         self.post(
             {
                 "registration-number": registration_number,
@@ -84,15 +83,29 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         return selected[0].get("href")
 
     def get_link(self, selector: str):
-        return self.get_links(selector)[0]
+        return self.getHtmlSoup().select(selector)[0]["href"]
 
-    def get_links(self, selector: str):
+    def get_list_item_ids(self):
+        result = self.getHtmlSoup().select("[data-list-item-id]")
+        return [list_item["data-list-item-id"] for list_item in result]
+
+    def click_edit_link(self, answer_id: str, position: int):
+        list_item_ids = self.get_list_item_ids()
+        selector = f"[data-qa='{answer_id}-{list_item_ids[position]}-edit']"
         selected = self.getHtmlSoup().select(selector)
-        return [element["href"] for element in selected]
+        edit_link = selected[0]["href"]
+        self.get(edit_link)
+
+    def click_add_link(self):
+        add_link = self.get_link("[data-qa='add-item-link']")
+        self.get(add_link)
+
+    def click_cancel_link(self):
+        cancel_link = self.get_link("[id='cancel-and-return']")
+        self.get(cancel_link)
 
     def add_three_companies(self):
         # Add first company
-
         self.add_company_and_repeating_blocks(
             company_name="Company1",
             registration_number=123,
@@ -103,7 +116,6 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         )
 
         # Add second company
-
         self.add_company_and_repeating_blocks(
             company_name="Company2",
             registration_number=456,
@@ -126,11 +138,9 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
 
     def test_invalid_invalid_list_item_id(self):
         self.launch_repeating_blocks_test_survey()
-
         self.get(
             "/questionnaire/companies/non-existing-list-item-id/companies-repeating-block-1/"
         )
-
         self.assertStatusNotFound()
 
     def test_happy_path(self):
@@ -140,27 +150,22 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         self.add_three_companies()
 
         # Remove item 2
-
         remove_link = self.get_list_item_link("remove", 2)
         self.get(remove_link)
         self.assertInBody("Are you sure you want to remove this company or UK branch?")
 
         # Cancel
-
         self.post({"remove-confirmation": "No"})
         self.assertEqualUrl("/questionnaire/any-other-companies-or-branches/")
 
         # Remove again
-
         self.get(remove_link)
         self.post({"remove-confirmation": "Yes"})
 
         # Check list item 3 has moved to second position
-
         self.assert_company_completed(3, 2)
 
         # Test the previous link
-
         edit_link_1 = self.get_list_item_link("change", 1)
         remove_link_1 = self.get_list_item_link("remove", 1)
 
@@ -175,7 +180,6 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         self.assertEqualUrl("/questionnaire/any-other-companies-or-branches/")
 
         # Submit survey
-
         self.post({"any-other-companies-or-branches-answer": "No"})
         self.post({"any-other-trading-details-answer": "No other details"})
         self.post()
@@ -188,15 +192,15 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         self.launch_repeating_blocks_test_survey()
 
         # Add first company - only add block and first repeating block
-
         self.add_company_from_list_collector(company_name="Company1", is_driving=True)
         self.post_repeating_block_1(
             registration_number=123, registration_date=date(2023, 1, 1)
         )
-        self.previous()  # Return to the list collector via previous button
+        self.previous()  # return to previous repeating block
+        self.previous()  # return to edit block
+        self.previous()  # return to list collector
 
         # Add second company - complete
-
         self.add_company_and_repeating_blocks(
             company_name="Company2",
             registration_number=456,
@@ -206,11 +210,10 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
 
         # Add third company - only the add block
         self.add_company_from_list_collector(company_name="Company3")
-        cancel_link = self.get_link("[id='cancel-and-return']")
-        self.get(cancel_link)  # Return to the list collector via cancel button
+        self.click_cancel_link()  # Return to edit block
+        self.click_cancel_link()  # Return to the list collector
 
         # Add fourth company - complete
-
         self.add_company_and_repeating_blocks(
             company_name="Company4",
             registration_number=101,
@@ -219,14 +222,12 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         )
 
         # Assert completeness
-
         self.assert_company_incomplete(1, 1)
         self.assert_company_completed(2, 2)
         self.assert_company_incomplete(3, 3)
         self.assert_company_completed(4, 4)
 
         # Attempt to move along path after list collector - will route to first incomplete block of first incomplete item
-
         self.post({"any-other-companies-or-branches-answer": "No"})
 
         # Should be routed to incomplete block 2 of item 1
@@ -256,7 +257,6 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         self.launch_repeating_blocks_test_survey()
 
         # Add first company
-
         self.add_company_and_repeating_blocks(
             company_name="Company1",
             registration_number=123,
@@ -267,7 +267,6 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         )
 
         # Assert list items complete
-
         self.assert_company_completed(1, 1)
 
         # Navigate to section summary
@@ -276,9 +275,7 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         self.assertInUrl("/sections/section-companies/")
 
         # Add second company - from section summary
-
-        add_link = self.get_link("[data-qa='add-item-link']")
-        self.get(add_link)
+        self.click_add_link()
         self.assertInUrl("?return_to=section-summary")
         self.add_company(company_name="Company2")
         self.post_repeating_block_1(
@@ -291,12 +288,10 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         self.post({"any-other-companies-or-branches-answer": "No"})
         self.post()
         self.assertInUrl("/submit/")
-        add_link = self.get_link("[data-qa='add-item-link']")
-        self.get(add_link)
+        self.click_add_link()
         self.assertInUrl("?return_to=section-summary")
 
         # Add third company - from submit summary
-
         self.add_company(company_name="Company3")
         self.post_repeating_block_1(
             registration_number=789, registration_date=date(2023, 3, 3)
@@ -326,7 +321,6 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         self.post({"any-other-trading-details-answer": "No other details"})
 
         # Remove item 3
-
         remove_link = self.get_list_item_link("remove", 3)
         self.get(remove_link)
         self.assertInUrl("?return_to=section-summary")
@@ -338,7 +332,6 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         self.post()
 
         # Remove item 2
-
         remove_link = self.get_list_item_link("remove", 2)
         self.get(remove_link)
         self.assertInUrl("?return_to=section-summary")
@@ -365,10 +358,8 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         self.post({"any-other-trading-details-answer": "No other details"})
         self.assertInUrl("/sections/section-companies/")
 
-        # Edit  item 3
-
-        edit_links = self.get_links("[data-qa='registration-number-edit']")
-        self.get(edit_links[2])
+        # Edit item 3
+        self.click_edit_link("registration-number", 2)
         self.assertInUrl("?return_to=section-summary")
         self.post_repeating_block_1(
             registration_number=000, registration_date=date(2023, 5, 5)
@@ -376,9 +367,7 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         self.assertInUrl("/sections/section-companies/")
 
         # Remove item 2
-
-        edit_links = self.get_links("[data-qa='authorised-trader-uk-radio-edit']")
-        self.get(edit_links[2])
+        self.click_edit_link("authorised-trader-uk-radio", 2)
         self.assertInUrl("?return_to=section-summary")
         self.post_repeating_block_2(trader_uk="No", trader_eu="No")
         self.assertInUrl("/sections/section-companies/")
@@ -389,6 +378,26 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         self.assertInBody(
             "Thank you for completing the Test a List Collector with Repeating Blocks and Section Summary Items"
         )
+
+    def test_edit_incomplete_repeating_block_from_summary_page_routes_to_next_repeating_block(
+        self,
+    ):
+        self.launch_repeating_blocks_test_survey()
+
+        # add incomplete item with answers for first repeating block
+        self.add_company_from_list_collector(company_name="Company4", is_driving=True)
+        self.post_repeating_block_1(
+            registration_number=123, registration_date=date(2023, 1, 1)
+        )
+
+        # go back to edit block and change the name
+        self.click_cancel_link()
+        self.click_cancel_link()
+        self.assertInUrl("/edit-company/")
+        self.post({"company-or-branch-name": "Company5"})
+
+        # should jump straight to repeating block 2 as this is the first incomplete one
+        self.assertInUrl("/companies-repeating-block-2/")
 
     def test_adding_incomplete_list_item_from_summary_returns_to_list_collector_not_summary(
         self,
@@ -404,11 +413,10 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         self.assertInUrl("/sections/section-companies/")
 
         # Add incomplete item from section summary add link
-        add_link = self.get_link("[data-qa='add-item-link']")
-        self.get(add_link)
+        self.click_add_link()
         self.add_company(company_name="Company4")
-        cancel_link = self.get_link("[id='cancel-and-return']")
-        self.get(cancel_link)
+        self.click_cancel_link()  # cancel and go back to edit block
+        self.click_cancel_link()  # cancel and go back to list collector
         self.assertInUrl("/any-other-companies-or-branches/")
         self.assert_company_incomplete(4, 4)
 
@@ -425,11 +433,10 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         self.post()
 
         # Add incomplete item from submit summary add link
-        add_link = self.get_link("[data-qa='add-item-link']")
-        self.get(add_link)
+        self.click_add_link()
         self.add_company(company_name="Company5")
-        cancel_link = self.get_link("[id='cancel-and-return']")
-        self.get(cancel_link)
+        self.click_cancel_link()
+        self.click_cancel_link()
         self.assertInUrl("/any-other-companies-or-branches/")
         self.assert_company_incomplete(5, 5)
 
@@ -443,7 +450,6 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
 
         # Submit
         self.post({"any-other-companies-or-branches-answer": "No"})
-        self.post({"any-other-trading-details-answer": "No other details"})
         self.post()
         self.post()
         self.assertInBody(

@@ -12,21 +12,10 @@ import ListCollectorRemovePage from "../../../generated_pages/new_calculated_sum
 import SupermarketTransportPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/supermarket-transport.page";
 import SupermarketTransportCostPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/supermarket-transport-cost.page";
 import CalculatedSummaryPipingPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/calculated-summary-piping.page";
+import { assertSummaryValues } from "../../../helpers";
 
 describe("Calculated summary with repeating answers", () => {
-  const group = 'div[id="group"]';
-  const summaryValues = 'dd[class="ons-summary__values"]';
   const summaryActions = 'dd[class="ons-summary__actions"]';
-
-  const assertSummaryValues = async (values) => {
-    // check each summary value provided is present and that the number of them matches what is on the page
-    // needs to include both dynamic and static answers on any summary with both
-    await values.map(async (value, index) => {
-      await expect(await $(group).$$(summaryValues)[index].getText()).to.equal(value);
-    });
-    await expect(await $(group).$$(summaryValues).length).to.equal(values.length);
-  };
-
   const dynamicAnswerChangeLink = (answerIndex) => $$(summaryActions)[answerIndex].$("a");
 
   before("Completing the list collector and dynamic answer", async () => {
@@ -65,7 +54,6 @@ describe("Calculated summary with repeating answers", () => {
       "We calculate the total visits to the shop to be 6. Is this correct?"
     );
     await assertSummaryValues(["4", "2"]);
-    await expect(await $(group).$$(summaryValues).length).to.equal(2);
   });
 
   it("Given I click on a change link, when I use the previous button, I return to the calculated summary", async () => {
