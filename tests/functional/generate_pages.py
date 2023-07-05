@@ -840,6 +840,17 @@ def process_block(
                 page_filename=f'{repeating_block["id"]}-repeating-block.page.js',
             )
 
+    if block["type"] == "ListCollectorContent":
+        for repeating_block in block.get("repeating_blocks", []):
+            process_block(
+                repeating_block,
+                dir_out,
+                schema_data,
+                spec_file,
+                relative_require,
+                page_filename=f'{repeating_block["id"]}-repeating-block.page.js',
+            )
+
     if block["type"] == "PrimaryPersonListCollector":
         process_block(
             block["add_or_edit_block"],
