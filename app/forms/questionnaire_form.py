@@ -18,7 +18,9 @@ from app.forms import error_messages
 from app.forms.field_handlers import DateHandler, FieldHandler, get_field_handler
 from app.forms.validators import DateRangeCheck, MutuallyExclusiveCheck, SumCheck
 from app.questionnaire import Location, QuestionnaireSchema, QuestionSchemaType
-from app.questionnaire.dependencies import get_block_ids_for_dependencies
+from app.questionnaire.dependencies import (
+    get_calculated_summary_block_ids_of_dependent_section,
+)
 from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
@@ -462,10 +464,7 @@ def get_answer_fields(
     routing_path_block_ids: dict[tuple, tuple[str, ...]] = {}
 
     if location and progress_store:
-        dependent_sections = schema.calculated_summary_section_dependencies_by_block[
-            location.section_id
-        ]
-        routing_path_block_ids = get_block_ids_for_dependencies(
+        routing_path_block_ids = get_calculated_summary_block_ids_of_dependent_section(
             location=location,
             progress_store=progress_store,
             path_finder=PathFinder(
@@ -477,10 +476,9 @@ def get_answer_fields(
                 response_metadata=response_metadata,
             ),
             data=question,
-            source_type="calculated_summary",
-            dependent_sections=dependent_sections,
+            ignore_keys=["when"],
+            schema=schema,
         )
-
     block_ids = None
     if routing_path_block_ids:
         block_ids = get_flattened_mapping_values(routing_path_block_ids)

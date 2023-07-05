@@ -12,7 +12,10 @@ from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire import path_finder as pf
-from app.questionnaire.dependencies import get_block_ids_for_dependencies
+from app.questionnaire.dependencies import (
+    get_block_ids_for_dependencies,
+    get_calculated_summary_block_ids_of_dependent_section,
+)
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.value_source_resolver import (
@@ -194,40 +197,15 @@ class PlaceholderParser:
         if not self._location:
             return {}
 
-        return self._get_block_ids_of_dependent_section(
+        return get_calculated_summary_block_ids_of_dependent_section(
             location=self._location,
             progress_store=self._progress_store,
             sections_to_ignore=sections_to_ignore,
             data=data,
             path_finder=self._path_finder,
-            source_type="calculated_summary",
             ignore_keys=["when"],
+            schema=self._schema,
         )
-
-    def _get_block_ids_of_dependent_section(
-        self,
-        *,
-        location: Location | RelationshipLocation,
-        progress_store: ProgressStore,
-        path_finder: PathFinder,
-        source_type: str,
-        data: MultiDict | Mapping | Sequence,
-        sections_to_ignore: list | None = None,
-        ignore_keys: list[str] | None = None,
-    ):
-        if dependent_sections := self._schema.calculated_summary_section_dependencies_by_block[
-            self._location.section_id
-        ]:
-            return get_block_ids_for_dependencies(
-                location=location,
-                progress_store=progress_store,
-                sections_to_ignore=sections_to_ignore,
-                data=data,
-                path_finder=path_finder,
-                source_type=source_type,
-                ignore_keys=ignore_keys,
-                dependent_sections=dependent_sections,
-            )
 
     def _all_value_sources_metadata(self, placeholder: Mapping) -> bool:
         sources = self._schema.get_values_for_key(placeholder, key="source")
