@@ -105,12 +105,10 @@ class ValueSourceResolver:
     ) -> ValueSourceEscapedTypes | ValueSourceTypes:
         list_item_id = self._resolve_list_item_id_for_value_source(value_source)
         answer_id = value_source["identifier"]
-        assess_routing_path = self.assess_routing_path
 
         answer_value = self._get_answer_value(
             answer_id=answer_id,
             list_item_id=list_item_id,
-            assess_routing_path=assess_routing_path,
         )
 
         if isinstance(answer_value, Mapping):
