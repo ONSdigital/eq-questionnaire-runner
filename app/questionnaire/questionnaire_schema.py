@@ -123,7 +123,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             if isinstance(value, dict) and value:
                 if value.get("source") == "answers":
                     if value["identifier"] in self.min_and_max_map:
-                        return self.min_and_max_map[value["identifier"]]
+                        return int(self.min_and_max_map[value["identifier"]])
                     if min_max == "minimum":
                         return 0
                     if min_max == "maximum":
