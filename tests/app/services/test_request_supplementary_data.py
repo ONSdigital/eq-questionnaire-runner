@@ -16,7 +16,7 @@ from app.services.supplementary_data import (
 from tests.app.utilities.test_schema import get_mocked_make_request
 
 TEST_SDS_URL = "http://test.domain/v1/unit_data"
-EXPECTED_SDS_DECRYPTION_VALIDATION_ERROR = "Supplementary data response cannot be decrypted without the keys 'encryption_key_id' and 'data'"
+EXPECTED_SDS_DECRYPTION_VALIDATION_ERROR = "Supplementary data response cannot be decrypted without the key 'data'"
 
 decrypted_mock_supplementary_data_payload = {
     "dataset_id": "44f1b432-9421-49e5-bd26-e63e18a30b69",
