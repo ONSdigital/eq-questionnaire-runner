@@ -14,11 +14,11 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
 
         self.post({"any-companies-or-branches-answer": "Yes"})
 
-        self.add_company("Tesco", "123", "No")
+        self.add_company("Company A", "123", "No")
 
         self.post({"any-other-companies-or-branches-answer": "Yes"})
 
-        self.add_company("Asda", "456", "No")
+        self.add_company("Company B", "456", "No")
 
         self.post({"any-other-companies-or-branches-answer": "No"})
 
@@ -36,7 +36,7 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
 
         self.assertInUrl("/companies-repeating-block-1/")
 
-        self.assertInBody("Give details about Tesco")
+        self.assertInBody("Give details about Company A")
 
         self.post(
             {
@@ -49,7 +49,7 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
 
         self.assertInUrl("/companies-repeating-block-2/")
 
-        self.assertInBody("Give details about how Tesco")
+        self.assertInBody("Give details about how Company A")
 
         self.post(
             {
@@ -60,7 +60,7 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
 
         self.post()
 
-        self.assertInBody("Give details about Asda")
+        self.assertInBody("Give details about Company B")
 
         self.assertInUrl("/companies-repeating-block-1/")
 
@@ -73,7 +73,7 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
             }
         )
 
-        self.assertInBody("Give details about how Asda")
+        self.assertInBody("Give details about how Company B")
 
         self.post(
             {
@@ -101,11 +101,11 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
 
         self.post({"any-companies-or-branches-answer": "Yes"})
 
-        self.add_company("Tesco", "123", "No")
+        self.add_company("Company A", "123", "No")
 
         self.post({"any-other-companies-or-branches-answer": "Yes"})
 
-        self.add_company("Asda", "456", "No")
+        self.add_company("Company B", "456", "No")
 
         self.post({"any-other-companies-or-branches-answer": "No"})
 
@@ -123,7 +123,7 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
 
         self.assertInUrl("/companies-repeating-block-1/")
 
-        self.assertInBody("Give details about Tesco")
+        self.assertInBody("Give details about Company A")
 
         self.post(
             {
@@ -145,11 +145,11 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
 
         self.post({"any-companies-or-branches-answer": "Yes"})
 
-        self.add_company("Tesco", "123", "No")
+        self.add_company("Company A", "123", "No")
 
         self.post({"any-other-companies-or-branches-answer": "Yes"})
 
-        self.add_company("Asda", "456", "No")
+        self.add_company("Company B", "456", "No")
 
         self.post({"any-other-companies-or-branches-answer": "No"})
 
@@ -167,7 +167,7 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
 
         self.assertInUrl("/companies-repeating-block-1/")
 
-        self.assertInBody("Give details about Tesco")
+        self.assertInBody("Give details about Company A")
 
         self.post(
             {
@@ -180,7 +180,7 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
 
         self.assertInUrl("/companies-repeating-block-2/")
 
-        self.assertInBody("Give details about how Tesco")
+        self.assertInBody("Give details about how Company A")
 
         self.post(
             {
