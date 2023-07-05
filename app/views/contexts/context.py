@@ -20,6 +20,7 @@ class Context(ABC):
         progress_store: ProgressStore,
         metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
+        placeholder_preview_mode: bool = False,
     ) -> None:
         self._language = language
         self._schema = schema
@@ -28,7 +29,7 @@ class Context(ABC):
         self._progress_store = progress_store
         self._metadata = metadata
         self._response_metadata = response_metadata
-        self._placeholder_preview_mode = self._schema.preview_enabled
+        self._placeholder_preview_mode = placeholder_preview_mode
 
         self._router = Router(
             schema=self._schema,

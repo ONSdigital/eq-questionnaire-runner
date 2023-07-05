@@ -394,7 +394,7 @@
                                                 ]
                                             },
                                             {
-                                                "text": "Total unit values: <em>{unit_total}</em>",
+                                                "text": "Total unformatted unit values: <em>{unit_total}</em>",
                                                 "placeholders": [
                                                     {
                                                         "placeholder": "unit_total",
@@ -413,7 +413,28 @@
                                                 ]
                                             },
                                             {
-                                                "text": "Total percentage values: <em>{percentage_total}</em>",
+                                                "text": "Total formatted unit values: <em>{unit_total}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "unit_total",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_unit",
+                                                                "arguments": {
+                                                                    "value": {
+                                                                        "source": "calculated_summary",
+                                                                        "identifier": "unit-total-playback"
+                                                                    },
+                                                                    "unit": "length-centimeter",
+                                                                    "unit_length": "short"
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "Total unformatted percentage values: <em>{percentage_total}</em>",
                                                 "placeholders": [
                                                     {
                                                         "placeholder": "percentage_total",
@@ -422,6 +443,25 @@
                                                                 "transform": "format_number",
                                                                 "arguments": {
                                                                     "number": {
+                                                                        "source": "calculated_summary",
+                                                                        "identifier": "percentage-total-playback"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "Total formatted percentage values: <em>{percentage_total}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "percentage_total",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_percentage",
+                                                                "arguments": {
+                                                                    "value": {
                                                                         "source": "calculated_summary",
                                                                         "identifier": "percentage-total-playback"
                                                                     }
