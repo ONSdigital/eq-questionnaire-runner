@@ -131,7 +131,7 @@ class ListAction(Question):
             list_item_id=self.current_location.list_item_id,
             list_name=self.current_location.list_name,
         ):
-            repeating_block_url = url_for(
+            return url_for(
                 "questionnaire.block",
                 list_name=first_incomplete_block.list_name,
                 list_item_id=first_incomplete_block.list_item_id,
@@ -140,4 +140,3 @@ class ListAction(Question):
                 return_to_answer_id=self._return_to_answer_id,
                 return_to_block_id=self._return_to_block_id,
             )
-            return repeating_block_url

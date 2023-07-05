@@ -1041,12 +1041,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     @staticmethod
     def is_question_block_type(block_type: str) -> bool:
-        return block_type in [
+        return block_type in {
             "Question",
             "ListCollectorDrivingQuestion",
             "ConfirmationQuestion",
             "ListRepeatingQuestion",
-        ]
+        }
 
     @staticmethod
     def has_address_lookup_answer(question: Mapping) -> bool:
