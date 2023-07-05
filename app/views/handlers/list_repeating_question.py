@@ -70,12 +70,5 @@ class ListRepeatingQuestion(ListAction):
                 list_item_id=self.current_location.list_item_id,
             )
 
-        # Cannot invoke parent handle_post as that would invoke self.update_section_completeness which overwrites the progress update done here
         self.questionnaire_store_updater.update_answers(self.form.data)
-        if self.questionnaire_store_updater.is_dirty():
-            self._routing_path = self.router.routing_path(
-                self.current_location.section_id, self.current_location.list_item_id
-            )
-            self.questionnaire_store_updater.remove_dependent_blocks_and_capture_dependent_sections()
-            self.questionnaire_store_updater.update_progress_for_dependent_sections()
-            self.questionnaire_store_updater.save()
+        super().handle_post()

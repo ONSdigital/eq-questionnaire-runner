@@ -90,10 +90,55 @@ class TestSession(IntegrationTestCase):
             self.assertIn("expires_at", parsed_json)
             self.assertEqual(parsed_json["expires_at"], expected_expires_at)
 
-    def test_supplementary_data_is_loaded_when_sds_dataset_id_in_metadata(self):
-        with patch("app.routes.session.get_supplementary_data", return_value={}):
-            self.launchSupplementaryDataSurvey()
-            self.assertStatusOK()
+    @patch("app.routes.session.get_supplementary_data")
+    @patch(
+        "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data"
+    )
+    def test_supplementary_data_is_loaded_when_new_sds_dataset_id_in_metadata(
+        self,
+        mock_set,
+        mock_get,
+    ):
+        self.launchSupplementaryDataSurvey()
+        self.assertStatusOK()
+        mock_get.assert_called_once()
+        mock_set.assert_called_once()
+
+    @patch("app.routes.session.get_supplementary_data")
+    @patch(
+        "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data"
+    )
+    def test_supplementary_data_is_reloaded_when_changed_sds_dataset_id_in_metadata(
+        self,
+        mock_set,
+        mock_get,
+    ):
+        self.launchSupplementaryDataSurvey(response_id="1", sds_dataset_id="first")
+        self.assertStatusOK()
+        mock_set.assert_called_once()
+        mock_get.assert_called_once()
+        self.launchSupplementaryDataSurvey(response_id="1", sds_dataset_id="second")
+        self.assertStatusOK()
+        self.assertEqual(mock_get.call_count, 2)
+        self.assertEqual(mock_set.call_count, 2)
+
+    @patch("app.routes.session.get_supplementary_data")
+    @patch(
+        "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data"
+    )
+    def test_supplementary_data_is_not_reloaded_when_same_sds_dataset_id_in_metadata(
+        self,
+        mock_set,
+        mock_get,
+    ):
+        self.launchSupplementaryDataSurvey(response_id="1", sds_dataset_id="same")
+        self.assertStatusOK()
+        mock_set.assert_called_once()
+        mock_get.assert_called_once()
+        self.launchSupplementaryDataSurvey(response_id="1", sds_dataset_id="same")
+        self.assertStatusOK()
+        mock_get.assert_called_once()
+        mock_set.assert_called_once()
 
     def test_supplementary_data_raises_500_error_on_exception(self):
         with patch(

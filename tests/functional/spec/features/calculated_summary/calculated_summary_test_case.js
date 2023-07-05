@@ -346,7 +346,14 @@ class TestCase {
       await browser.url(CalculatedSummaryTotalConfirmation.url());
       await expect(await browser.getUrl()).to.contain(CalculatedSummaryTotalConfirmation.pageName);
       const content = await $("h1 + ul").getText();
-      const textsToAssert = ["Total currency values: £25.92", "Total unit values: 1,467", "Total percentage values: 79", "Total number values: 124.58"];
+      const textsToAssert = [
+        "Total currency values: £25.92",
+        "Total unformatted unit values: 1,467",
+        "Total formatted unit values: 1,467 cm",
+        "Total unformatted percentage values: 79",
+        "Total formatted percentage values: 79%",
+        "Total number values: 124.58",
+      ];
 
       textsToAssert.forEach((text) => expect(content).to.contain(text));
       await browser.url(SubmitPage.url());

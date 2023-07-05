@@ -154,9 +154,7 @@ class QuestionnaireStoreUpdater:
         """
         self._list_store.delete_list_item(list_name, list_item_id)
 
-        self._answer_store.remove_all_answers_for_list_item_id(
-            list_item_id=list_item_id
-        )
+        self._answer_store.remove_all_answers_for_list_item_ids(list_item_id)
 
         if answers := self._get_relationship_answers_for_list_name(list_name):
             self._remove_relationship_answers_for_list_item_id(list_item_id, answers)

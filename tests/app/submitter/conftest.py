@@ -12,6 +12,7 @@ from app.data_models import ListStore, QuestionnaireStore
 from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore
 from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.supplementary_data_store import SupplementaryDataStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.settings import ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.submitter import RabbitMQSubmitter
@@ -86,6 +87,7 @@ def get_questionnaire_store(version):
     store = QuestionnaireStore(storage)
 
     store.answer_store = AnswerStore()
+    store.supplementary_data_store = SupplementaryDataStore()
     store.answer_store.add_or_update(user_answer)
     store.metadata = METADATA_V2 if version is AuthPayloadVersion.V2 else METADATA_V1
     store.response_metadata = {"started_at": "2018-07-04T14:49:33.448608+00:00"}

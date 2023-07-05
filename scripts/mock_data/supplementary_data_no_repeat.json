@@ -1,8 +1,8 @@
 {
-    "dataset_id": "c067f6de-6d64-42b1-8b02-431a3486c178",
-    "survey_id": "123",
-    "data": {
-        "schema_version": "v1",
-        "identifier": "12346789012A"
-    }
+  "dataset_id": "c067f6de-6d64-42b1-8b02-431a3486c178",
+  "survey_id": "123",
+  "data": {
+    "schema_version": "v1",
+    "identifier": "12346789012A"
+  }
 }
