@@ -23,6 +23,7 @@ from app.globals import get_metadata
 from app.helpers.language_helper import handle_language
 from app.helpers.template_helpers import get_survey_config, render_template
 from app.services.supplementary_data import (
+    InvalidSupplementaryData,
     MissingSupplementaryDataKey,
     SupplementaryDataRequestFailed,
 )
@@ -195,6 +196,7 @@ def too_many_feedback_requests(
 
 @errors_blueprint.app_errorhandler(SupplementaryDataRequestFailed)
 @errors_blueprint.app_errorhandler(MissingSupplementaryDataKey)
+@errors_blueprint.app_errorhandler(InvalidSupplementaryData)
 def supplementary_data_request_failed(
     exception: SupplementaryDataRequestFailed | MissingSupplementaryDataKey,
 ) -> tuple[str, int]:

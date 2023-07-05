@@ -5,7 +5,7 @@ from urllib.parse import urlencode
 from flask import current_app
 from marshmallow import ValidationError
 from requests import RequestException
-from sdc.crypto.jwe_helper import JWEHelper
+from sdc.crypto.jwe_helper import InvalidTokenException, JWEHelper
 from sdc.crypto.key_store import KeyStore
 from structlog import get_logger
 
@@ -36,6 +36,11 @@ class SupplementaryDataRequestFailed(Exception):
 class MissingSupplementaryDataKey(Exception):
     def __str__(self) -> str:
         return "Missing supplementary data key"
+
+
+class InvalidSupplementaryData(Exception):
+    def __str__(self) -> str:
+        return "Supplementary data invalid"
 
 
 def get_supplementary_data(*, dataset_id: str, unit_id: str, survey_id: str) -> dict:
@@ -92,20 +97,18 @@ def get_supplementary_data(*, dataset_id: str, unit_id: str, survey_id: str) -> 
 
 
 def decrypt_supplementary_data(supplementary_data: MutableMapping) -> Mapping:
-    if (encryption_key_id := supplementary_data.get("encryption_key_id")) and (
-        encrypted_data := supplementary_data.get("data")
-    ):
-        key = (
-            get_key_store()
-            .get_private_key_by_kid(KEY_PURPOSE_SDS, encryption_key_id)
-            .as_jwk()
-        )
-        decrypted_data = JWEHelper.decrypt_with_key(encrypted_data, key)
-        supplementary_data["data"] = json.loads(decrypted_data)
-        return supplementary_data
+    if encrypted_data := supplementary_data.get("data"):
+        try:
+            decrypted_data = JWEHelper.decrypt(
+                encrypted_data, key_store=get_key_store(), purpose=KEY_PURPOSE_SDS
+            )
+            supplementary_data["data"] = json.loads(decrypted_data)
+            return supplementary_data
+        except InvalidTokenException as e:
+            raise InvalidSupplementaryData from e
 
     raise ValidationError(
-        "Supplementary data response cannot be decrypted without the keys 'encryption_key_id' and 'data'"
+        "Supplementary data response cannot be decrypted without the key 'data'"
     )
 
 
