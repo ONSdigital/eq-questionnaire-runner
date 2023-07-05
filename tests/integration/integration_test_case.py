@@ -10,7 +10,7 @@ from itsdangerous import base64_decode
 from mock import patch
 from sdc.crypto.key_store import KeyStore
 
-from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SUBMISSION
+from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SDS, KEY_PURPOSE_SUBMISSION
 from app.setup import create_app
 from app.utilities.json import json_loads
 from application import configure_logging
@@ -22,6 +22,8 @@ SR_USER_AUTHENTICATION_PUBLIC_KEY_KID = "e19091072f920cbf3ca9f436ceba309e7d814a6
 
 EQ_SUBMISSION_SDX_PRIVATE_KEY = "2225f01580a949801274a5f3e6861947018aff5b"
 EQ_SUBMISSION_SR_PRIVATE_SIGNING_KEY = "fe425f951a0917d7acdd49230b23a5c405c28510"
+
+EQ_SUPPLEMENTARY_DATA_PRIVATE_KEY = "df88fdad2612ae1e80571120e6c6371f55896696"
 
 KEYS_FOLDER = "./tests/jwt-test-keys"
 
@@ -97,6 +99,13 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
                         "type": "public",
                         "value": get_file_contents(
                             "sdc-sr-submission-signing-private-v1.pem"
+                        ),
+                    },
+                    EQ_SUPPLEMENTARY_DATA_PRIVATE_KEY: {
+                        "purpose": KEY_PURPOSE_SDS,
+                        "type": "private",
+                        "value": get_file_contents(
+                            "sdc-sds-supplementary_data-encryption-private-v1.pem"
                         ),
                     },
                 }

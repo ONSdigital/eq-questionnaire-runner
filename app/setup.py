@@ -26,7 +26,7 @@ from app.authentication.user_id_generator import UserIDGenerator
 from app.cloud_tasks import CloudTaskPublisher, LogCloudTaskPublisher
 from app.helpers import get_span_and_trace
 from app.jinja_filters import blueprint as filter_blueprint
-from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SDS, KEY_PURPOSE_SUBMISSION
+from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SUBMISSION
 from app.publisher import LogPublisher, PubSubPublisher
 from app.routes.dump import dump_blueprint
 from app.routes.errors import errors_blueprint
@@ -122,7 +122,6 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
         keys = yaml.safe_load(keys_file)
     validate_required_keys(keys, KEY_PURPOSE_SUBMISSION)
     validate_required_keys(keys, KEY_PURPOSE_AUTHENTICATION)
-    validate_sds_key(keys)
     application.eq["key_store"] = KeyStore(keys)
 
     if application.config["EQ_APPLICATION_VERSION"]:
@@ -487,14 +486,3 @@ def get_locale():
 def get_timezone():
     # For now regardless of locale we will show times in GMT/BST
     return "Europe/London"
-
-
-def validate_sds_key(keys):
-    if not [
-        key
-        for key in keys["keys"].values()
-        if key["purpose"] == KEY_PURPOSE_SDS and key["type"] == "private"
-    ]:
-        logger.warning(f"No private key loaded for {KEY_PURPOSE_SDS}")
-        # The proceeding line will be commented in, in a future PR
-        # raise CryptoError(f"No private key loaded for {KEY_PURPOSE_SDS}")

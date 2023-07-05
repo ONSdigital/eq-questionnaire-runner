@@ -1,9 +1,35 @@
 {
-  "dataset_id": "c067f6de-6d64-42b1-8b02-431a3486c178",
+  "dataset_id": "44f1b432-9421-49e5-bd26-e63e18a30b69",
   "survey_id": "123",
-  "encryption_key_id": "3d68957fd448cea79807124aaa675c24908a90cb",
+  "encryption_key_id": "df88fdad2612ae1e80571120e6c6371f55896696",
   "data": {
     "schema_version": "v1",
-    "identifier": "12346789012A"
+    "identifier": "12346789012A",
+    "items": {
+      "local_units": [
+        {
+          "identifier": "0001",
+          "lu_name": "TEST NAME. 1",
+          "lu_address": [
+            "FIRST ADDRESS 1",
+            "FIRST ADDRESS 2",
+            "TOWN",
+            "COUNTY",
+            "POST CODE"
+          ]
+        },
+        {
+          "identifier": "0002",
+          "lu_name": "TEST NAME 2",
+          "lu_address": [
+            "SECOND ADDRESS 1",
+            "SECOND ADDRESS 1",
+            "TOWN",
+            "COUNTY",
+            "POSTCODE"
+          ]
+        }
+      ]
+    }
   }
 }

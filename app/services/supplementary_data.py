@@ -92,16 +92,21 @@ def get_supplementary_data(*, dataset_id: str, unit_id: str, survey_id: str) -> 
 
 
 def decrypt_supplementary_data(supplementary_data: MutableMapping) -> Mapping:
-    key = (
-        get_key_store()
-        .get_private_key_by_kid(
-            KEY_PURPOSE_SDS, supplementary_data.get("encryption_key_id")
+    if (encryption_key_id := supplementary_data.get("encryption_key_id")) and (
+        encrypted_data := supplementary_data.get("data")
+    ):
+        key = (
+            get_key_store()
+            .get_private_key_by_kid(KEY_PURPOSE_SDS, encryption_key_id)
+            .as_jwk()
         )
-        .as_jwk()
+        decrypted_data = JWEHelper.decrypt_with_key(encrypted_data, key)
+        supplementary_data["data"] = json.loads(decrypted_data)
+        return supplementary_data
+
+    raise ValidationError(
+        "Supplementary data response cannot be decrypted without the keys 'encryption_key_id' and 'data'"
     )
-    decrypted_data = JWEHelper.decrypt_with_key(supplementary_data.get("data"), key)
-    supplementary_data["data"] = json.loads(decrypted_data)
-    return supplementary_data
 
 
 def validate_supplementary_data(
@@ -119,9 +124,5 @@ def validate_supplementary_data(
 
 
 def get_key_store() -> KeyStore:
-    try:
-        # Type ignore: current_app is a singleton in this application and has the key_store key in its eq attribute.
-        return current_app.eq["key_store"]  # type: ignore
-    except KeyError as e:
-        logger.error("key_store does not exist in the current application context")
-        raise e
+    # Type ignore: current_app is a singleton in this application and has the key_store key in its eq attribute.
+    return current_app.eq["key_store"]  # type: ignore

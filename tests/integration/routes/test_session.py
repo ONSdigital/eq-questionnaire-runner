@@ -1,19 +1,28 @@
 import time
 from datetime import datetime, timedelta, timezone
 
+import responses
 from freezegun import freeze_time
 from mock.mock import patch
+from sdc.crypto.key_store import KeyStore
 
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.services.supplementary_data import SupplementaryDataRequestFailed
 from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.utilities.json import json_loads
+from tests.app.services.test_request_supplementary_data import TEST_SDS_URL
 from tests.integration.integration_test_case import IntegrationTestCase
 
 TIME_TO_FREEZE = datetime(2020, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
 EQ_SESSION_TIMEOUT_SECONDS = 45 * 60
 BUSINESS_URL = ACCOUNT_SERVICE_BASE_URL
 SOCIAL_URL = ACCOUNT_SERVICE_BASE_URL_SOCIAL
+TEST_SDS_URL = "http://localhost:5003/v1/unit_data"
+
+mock_supplementary_data_payload_missing_encryption_key_id_and_data = {
+    "dataset_id": "44f1b432-9421-49e5-bd26-e63e18a30b69",
+    "survey_id": "123",
+}
 
 
 class TestSession(IntegrationTestCase):
@@ -31,6 +40,11 @@ class TestSession(IntegrationTestCase):
                 "EQ_SESSION_TIMEOUT_SECONDS": EQ_SESSION_TIMEOUT_SECONDS,
             }
         )
+
+    def assert_supplementary_data_500_page(self):
+        self.launchSupplementaryDataSurvey()
+        self.assertStatusCode(500)
+        self.assertInBody("Sorry, there is a problem with this service")
 
     def test_session_expired(self):
         self.get("/session-expired")
@@ -145,9 +159,26 @@ class TestSession(IntegrationTestCase):
             "app.routes.session.get_supplementary_data",
             side_effect=SupplementaryDataRequestFailed,
         ):
-            self.launchSupplementaryDataSurvey()
-            self.assertStatusCode(500)
-            self.assertInBody("Sorry, there is a problem with this service")
+            self.assert_supplementary_data_500_page()
+
+    @responses.activate
+    def test_supplementary_data_raises_500_error_when_supplementary_data_invalid(self):
+        responses.add(
+            responses.GET,
+            TEST_SDS_URL,
+            json=mock_supplementary_data_payload_missing_encryption_key_id_and_data,
+            status=200,
+        )
+        self.assert_supplementary_data_500_page()
+
+    def test_supplementary_data_raises_500_error_when_missing_supplementary_data_key(
+        self,
+    ):
+        with patch(
+            "app.services.supplementary_data.get_key_store",
+            return_value=KeyStore({"keys": {}}),
+        ):
+            self.assert_supplementary_data_500_page()
 
 
 class TestCensusSession(IntegrationTestCase):
