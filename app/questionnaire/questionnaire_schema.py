@@ -3,7 +3,7 @@ from collections import defaultdict
 from copy import deepcopy
 from dataclasses import dataclass
 from functools import cached_property
-from typing import Any, Generator, Iterable, Literal, Mapping, Sequence, TypeAlias
+from typing import Any, Generator, Iterable, Literal, Mapping, Optional, Sequence, TypeAlias, Union
 
 from flask_babel import force_locale
 from ordered_set import OrderedSet
@@ -103,8 +103,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return ImmutableDict(self._answer_dependencies_map)
 
     def _get_min_max_values(
-        self, answer: dict[str, str], min_max: Literal["minimum", "maximum"]
-    ) -> int or None:
+        self, answer: dict[str, Union[str, dict[str, str]]], min_max: Literal["minimum", "maximum"]
+    ) -> Optional(int):
         if value := answer.get(min_max).get("value"):
             if isinstance(value, int):
                 return value
@@ -120,9 +120,27 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _append_to_min_max_map(
         self, min_max: Literal["minimum", "maximum"], answer_id: str, answers: list
     ) -> None:
-        self.min_and_max_map[answer_id] = str(self._get_min_max_values(
-            answers[0], min_max
-        ))
+        if len(answers) > 1:
+            # answer_values = []
+            # for answer in answers:
+            #     if isinstance(self._get_min_max_values(answer, min_max), int):
+            #         answer_values.append(int(self._get_min_max_values(answer, min_max)))
+            # if min_max == "maximum":
+            #     if len(answer_values) != 0:
+            #         self.min_and_max_map[answer_id] = str(max(answer_values))
+            #     else:
+            #         self.min_and_max_map[answer_id] == str(MAX_NUMBER)
+            # elif min_max == "minimum":
+            #     if len(answer_values) != 0:
+            #         self.min_and_max_map[answer_id] = str(min(answer_values))
+            #     else:
+            #         self.min_and_max_map[answer_id] == "0"
+            print(0)
+            pass
+        else:
+            self.min_and_max_map[answer_id] = str(self._get_min_max_values(
+                answers[0], min_max
+            ))
 
     def _populate_mix_max_for_numeric_answers(self) -> None:
         for answer_id, answers in self._answers_by_id.items():
