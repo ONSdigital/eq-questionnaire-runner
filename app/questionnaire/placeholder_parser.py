@@ -4,7 +4,6 @@ from decimal import Decimal
 from typing import TYPE_CHECKING, Any, Mapping, MutableMapping, Sequence, TypeAlias
 
 from ordered_set import OrderedSet
-from werkzeug.datastructures import MultiDict
 
 from app.data_models import ProgressStore
 from app.data_models.answer_store import AnswerStore
@@ -26,7 +25,6 @@ from app.questionnaire.value_source_resolver import (
 from app.utilities.mappings import get_flattened_mapping_values
 
 if TYPE_CHECKING:
-    from app.questionnaire.path_finder import PathFinder
     from app.questionnaire.placeholder_renderer import (
         PlaceholderRenderer,  # pragma: no cover
     )
@@ -232,7 +230,9 @@ class PlaceholderParser:
             routing_path_block_ids: list = get_flattened_mapping_values(block_ids)
 
             if self._value_source_resolver.routing_path_block_ids:
-                routing_path_block_ids += self._value_source_resolver.routing_path_block_ids
+                routing_path_block_ids += (
+                    self._value_source_resolver.routing_path_block_ids
+                )
 
             return self._get_value_source_resolver(
                 routing_path_block_ids=routing_path_block_ids,

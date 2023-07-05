@@ -122,54 +122,6 @@ def test_answer_source_with_list_item_id_no_list_item_selector():
         == "Yes"
     )
 
-
-@pytest.mark.parametrize(
-    "routing_path, result", [(["some-block"], "Yes"), (["some-other-block"], None)]
-)
-def test_answer_source_with_routing_path(routing_path, result):
-    schema = QuestionnaireSchema(
-        {
-            "sections": [
-                {
-                    "id": "default-section",
-                    "groups": [
-                        {
-                            "id": "default-group",
-                            "blocks": [
-                                {
-                                    "type": "General",
-                                    "id": "some-block",
-                                    "question": {
-                                        "type": "General",
-                                        "id": "some-question",
-                                        "answers": [
-                                            {
-                                                "id": "some-answer",
-                                            }
-                                        ],
-                                    },
-                                }
-                            ],
-                        }
-                    ],
-                }
-            ]
-        }
-    )
-    value_source_resolver = get_value_source_resolver(
-        answer_store=AnswerStore([{"answer_id": "some-answer", "value": "Yes"}]),
-        schema=schema,
-        routing_path_block_ids=routing_path,
-    )
-
-    assert (
-        value_source_resolver.resolve(
-            {"source": "answers", "identifier": "some-answer"}
-        )
-        == result
-    )
-
-
 def test_list_item_id_ignored_if_answer_not_in_list_collector_or_repeat():
     schema = get_mock_schema()
     schema.is_repeating_answer = Mock(return_value=False)

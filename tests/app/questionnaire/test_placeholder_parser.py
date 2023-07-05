@@ -1198,25 +1198,25 @@ def test_placeholder_dependencies_cache(mocker, mock_renderer):
         section_id="default-section",
         block_id="total-turnover-block",
     )
-    
-    progress_store = ProgressStore(	
-        [	
-            {	
-                "section_id": "default-section",	
-                "block_ids": ["date-question-block", "date-entry-block"],	
-                "status": "IN_PROGRESS",	
-            }	
-        ]	
+
+    progress_store = ProgressStore(
+        [
+            {
+                "section_id": "default-section",
+                "block_ids": ["date-question-block", "date-entry-block"],
+                "status": "IN_PROGRESS",
+            }
+        ]
     )
-    answer_store = AnswerStore(	
-        [	
-            {	
-                "answer_id": "date-answer",	
-                "value": "No, I need to report for a different period",	
-            },	
-            {"answer_id": "date-entry-answer-from", "value": "2016-04-16"},	
-            {"answer_id": "date-entry-answer-to", "value": "2016-04-28"},	
-        ]	
+    answer_store = AnswerStore(
+        [
+            {
+                "answer_id": "date-answer",
+                "value": "No, I need to report for a different period",
+            },
+            {"answer_id": "date-entry-answer-from", "value": "2016-04-16"},
+            {"answer_id": "date-entry-answer-to", "value": "2016-04-28"},
+        ]
     )
     placeholder_parser = PlaceholderParser(
         language="en",
