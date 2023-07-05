@@ -87,7 +87,7 @@ class TestSession(IntegrationTestCase):
             # ... check that the session expiry time is not affected by
             # the request, and is still 45mins from the start time
             expected_expires_at = (
-                    TIME_TO_FREEZE + timedelta(seconds=EQ_SESSION_TIMEOUT_SECONDS)
+                TIME_TO_FREEZE + timedelta(seconds=EQ_SESSION_TIMEOUT_SECONDS)
             ).isoformat()
 
             self.assertIn("expires_at", parsed_json)
@@ -105,7 +105,7 @@ class TestSession(IntegrationTestCase):
             # ... check that the session expiry time is reset by the request
             # and is now 45 mins from the request time
             expected_expires_at = (
-                    request_time + timedelta(seconds=EQ_SESSION_TIMEOUT_SECONDS)
+                request_time + timedelta(seconds=EQ_SESSION_TIMEOUT_SECONDS)
             ).isoformat()
 
             self.assertIn("expires_at", parsed_json)
@@ -116,9 +116,9 @@ class TestSession(IntegrationTestCase):
         "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data"
     )
     def test_supplementary_data_is_loaded_when_new_sds_dataset_id_in_metadata(
-            self,
-            mock_set,
-            mock_get,
+        self,
+        mock_set,
+        mock_get,
     ):
         self.launchSupplementaryDataSurvey()
         self.assertStatusOK()
@@ -130,9 +130,9 @@ class TestSession(IntegrationTestCase):
         "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data"
     )
     def test_supplementary_data_is_reloaded_when_changed_sds_dataset_id_in_metadata(
-            self,
-            mock_set,
-            mock_get,
+        self,
+        mock_set,
+        mock_get,
     ):
         self.launchSupplementaryDataSurvey(response_id="1", sds_dataset_id="first")
         self.assertStatusOK()
@@ -148,9 +148,9 @@ class TestSession(IntegrationTestCase):
         "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data"
     )
     def test_supplementary_data_is_not_reloaded_when_same_sds_dataset_id_in_metadata(
-            self,
-            mock_set,
-            mock_get,
+        self,
+        mock_set,
+        mock_get,
     ):
         self.launchSupplementaryDataSurvey(response_id="1", sds_dataset_id="same")
         self.assertStatusOK()
@@ -163,8 +163,8 @@ class TestSession(IntegrationTestCase):
 
     def test_supplementary_data_raises_500_error_when_sds_api_request_fails(self):
         with patch(
-                "app.routes.session.get_supplementary_data",
-                side_effect=SupplementaryDataRequestFailed,
+            "app.routes.session.get_supplementary_data",
+            side_effect=SupplementaryDataRequestFailed,
         ):
             self.assert_supplementary_data_500_page()
 
@@ -180,7 +180,7 @@ class TestSession(IntegrationTestCase):
 
     @responses.activate
     def test_supplementary_data_raises_500_error_when_supplementary_data_missing_data(
-            self,
+        self,
     ):
         responses.add(
             responses.GET,
@@ -191,11 +191,11 @@ class TestSession(IntegrationTestCase):
         self.assert_supplementary_data_500_page()
 
     def test_supplementary_data_raises_500_error_when_missing_supplementary_data_key(
-            self,
+        self,
     ):
         with patch(
-                "app.services.supplementary_data.get_key_store",
-                return_value=KeyStore({"keys": {}}),
+            "app.services.supplementary_data.get_key_store",
+            return_value=KeyStore({"keys": {}}),
         ):
             self.assert_supplementary_data_500_page()
 

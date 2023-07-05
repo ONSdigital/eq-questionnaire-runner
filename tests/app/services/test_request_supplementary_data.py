@@ -16,7 +16,9 @@ from app.services.supplementary_data import (
 from tests.app.utilities.test_schema import get_mocked_make_request
 
 TEST_SDS_URL = "http://test.domain/v1/unit_data"
-EXPECTED_SDS_DECRYPTION_VALIDATION_ERROR = "Supplementary data response cannot be decrypted without the key 'data'"
+EXPECTED_SDS_DECRYPTION_VALIDATION_ERROR = (
+    "Supplementary data response cannot be decrypted without the key 'data'"
+)
 
 decrypted_mock_supplementary_data_payload = {
     "dataset_id": "44f1b432-9421-49e5-bd26-e63e18a30b69",
@@ -139,7 +141,7 @@ def test_get_supplementary_data_request_failed(app: Flask):
 
 
 def test_get_supplementary_data_retries_timeout_error(
-        app: Flask, mocker, mocked_make_request_with_timeout
+    app: Flask, mocker, mocked_make_request_with_timeout
 ):
     with app.app_context():
         current_app.config["SDS_API_BASE_URL"] = TEST_SDS_URL
@@ -164,7 +166,7 @@ def test_get_supplementary_data_retries_timeout_error(
     assert supplementary_data == decrypted_mock_supplementary_data_payload
 
     expected_call = (
-            SUPPLEMENTARY_DATA_REQUEST_MAX_RETRIES + 1
+        SUPPLEMENTARY_DATA_REQUEST_MAX_RETRIES + 1
     )  # Max retries + the initial request
     assert mocked_make_request_with_timeout.call_count == expected_call
 
@@ -198,7 +200,7 @@ def test_get_supplementary_data_retries_transient_error(app: Flask, mocker):
         assert supplementary_data == decrypted_mock_supplementary_data_payload
 
         expected_call = (
-                SUPPLEMENTARY_DATA_REQUEST_MAX_RETRIES + 1
+            SUPPLEMENTARY_DATA_REQUEST_MAX_RETRIES + 1
         )  # Max retries + the initial request
 
     assert mocked_make_request.call_count == expected_call
@@ -224,7 +226,7 @@ def test_get_supplementary_data_max_retries(app: Flask, mocker):
 
 
 def test_decrypt_supplementary_data_decrypts_when_encrypted_payload_is_valid(
-        app: Flask,
+    app: Flask,
 ):
     with app.app_context():
         result = decrypt_supplementary_data(encrypted_mock_supplementary_data_payload)
@@ -232,7 +234,7 @@ def test_decrypt_supplementary_data_decrypts_when_encrypted_payload_is_valid(
 
 
 def test_decrypt_supplementary_data_raises_validation_error_when_encrypted_payload_missing_data(
-        app: Flask,
+    app: Flask,
 ):
     with app.app_context():
         with pytest.raises(ValidationError) as e:
@@ -241,15 +243,17 @@ def test_decrypt_supplementary_data_raises_validation_error_when_encrypted_paylo
 
 
 def test_decrypt_supplementary_data_raises_invalid_token_error_when_encrypted_data_kid_invalid(
-        app: Flask,
+    app: Flask,
 ):
     with app.app_context():
         with pytest.raises(InvalidSupplementaryData):
-            decrypt_supplementary_data(mock_supplementary_data_payload_invalid_kid_in_data)
+            decrypt_supplementary_data(
+                mock_supplementary_data_payload_invalid_kid_in_data
+            )
 
 
 def test_get_supplementary_data_raises_missing_supplementary_data_key_error_when_key_is_missing(
-        app: Flask, mocker
+    app: Flask, mocker
 ):
     with app.app_context():
         mocker.patch(
