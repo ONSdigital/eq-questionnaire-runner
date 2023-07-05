@@ -205,7 +205,7 @@ class PlaceholderParser:
             data=data,
             path_finder=self._path_finder,
             source_type="calculated_summary",
-            ignore_keys=None,
+            ignore_keys=["when"],
             dependent_sections=dependent_sections,
         )
 
@@ -216,24 +216,25 @@ class PlaceholderParser:
     def _get_value_source_resolver_for_transform(
         self, transform: Mapping
     ) -> ValueSourceResolver:
-        if self._location:
-            dependent_sections = self._schema.placeholder_section_dependencies_by_block[
+        if self._location and (
+            dependent_sections := self._schema._placeholder_section_dependencies_by_block[
                 self._location.section_id
             ]
+        ):
             block_ids = get_block_ids_for_dependencies(
                 location=self._location,
                 progress_store=self._progress_store,
+                sections_to_ignore=["when"],
                 path_finder=self._path_finder,
                 data=transform,
                 source_type="answers",
                 dependent_sections=dependent_sections,
             )
             self._routing_path_block_ids_by_section_key.update(block_ids)
-            routing_path_block_ids: list = [
-                value for values in block_ids.values() for value in values
-            ]
+            routing_path_block_ids: list = get_flattened_mapping_values(block_ids)
+
             return self._get_value_source_resolver(
-                routing_path_block_ids=OrderedSet(routing_path_block_ids),
+                routing_path_block_ids=routing_path_block_ids,
                 assess_routing_path=True,
             )
 

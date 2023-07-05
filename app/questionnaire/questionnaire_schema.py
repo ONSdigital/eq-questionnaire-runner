@@ -31,7 +31,7 @@ QuestionSchemaType = Mapping
 
 DependencyDictType: TypeAlias = dict[str, OrderedSet[str]]
 
-TRANSFORMS_REQUIRING_ROUTING_PATH = ["first_non_empty_item"]
+TRANSFORMS_REQUIRING_ROUTING_PATH = {"first_non_empty_item"}
 
 
 class InvalidSchemaConfigurationException(Exception):
@@ -81,7 +81,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._when_rules_section_dependencies_by_answer: dict[
             str, set[str]
         ] = defaultdict(set)
-        self.placeholder_section_dependencies_by_block: dict[
+        self._placeholder_section_dependencies_by_block: dict[
             str, dict[str, set[str]]
         ] = defaultdict(lambda: defaultdict(set))
         self._language_code = language_code
@@ -1225,7 +1225,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         return section_dependencies
 
-    def _get_placeholder_section_dependencies(self, answer_ids: list) -> set[str]:
+    def _get_section_ids_for_answer_ids(self, answer_ids: list) -> set[str]:
         section_dependencies: set[str] = set()
         for answer_id in answer_ids:
             block = self.get_block_for_answer_id(answer_id)
@@ -1272,12 +1272,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 for item in transform["arguments"]["items"]
                 if item.get("source") == "answers"
             ]
-            placeholder_dependencies = self._get_placeholder_section_dependencies(
-                placeholder_answer_ids
+            placeholder_dependencies = self._get_section_ids_for_answer_ids(
+                answer_ids=placeholder_answer_ids
             )
-
-            if section := self.get_section_for_block_id(block["id"]):
-                self.placeholder_section_dependencies_by_block[section["id"]][
+            if placeholder_dependencies:
+                section_id = self.get_section_id_for_block_id(block["id"])
+                self._placeholder_section_dependencies_by_block[section_id][
                     block["id"]
                 ].update(placeholder_dependencies)
 
