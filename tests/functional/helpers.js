@@ -22,3 +22,7 @@ export const assertSummaryValues = async (values) => {
   });
   await expect(await $$(summaryValues).length).to.equal(values.length);
 };
+
+export const repeatingAnswerChangeLink = (answerIndex) => {
+  return $$('dd[class="ons-summary__actions"]')[answerIndex].$("a");
+};

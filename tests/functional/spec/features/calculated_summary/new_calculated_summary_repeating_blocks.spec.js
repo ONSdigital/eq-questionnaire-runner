@@ -7,12 +7,9 @@ import TransportRepeatingBlock2Page from "../../../generated_pages/new_calculate
 import ListCollectorPage from "../../../generated_pages/new_calculated_summary_repeating_blocks/list-collector.page.js";
 import CalculatedSummarySpendingPage from "../../../generated_pages/new_calculated_summary_repeating_blocks/calculated-summary-spending.page.js";
 import CalculatedSummaryCountPage from "../../../generated_pages/new_calculated_summary_repeating_blocks/calculated-summary-count.page.js";
-import { assertSummaryValues } from "../../../helpers";
+import { assertSummaryValues, repeatingAnswerChangeLink } from "../../../helpers";
 
 describe("Feature: Calculated Summary using Repeating Blocks", () => {
-  const summaryActions = 'dd[class="ons-summary__actions"]';
-  const repeatingAnswerChangeLink = (answerIndex) => $$(summaryActions)[answerIndex].$("a");
-
   before("Reaching the first calculated summary", async () => {
     await browser.openQuestionnaire("test_new_calculated_summary_repeating_blocks.json");
     await $(BlockCarPage.car()).setValue(100);
