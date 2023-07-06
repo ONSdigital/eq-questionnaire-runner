@@ -213,7 +213,7 @@ class PlaceholderParser:
         self, transform: Mapping
     ) -> ValueSourceResolver:
         if self._location and (
-            dependent_sections := self._schema._placeholder_section_dependencies_by_block[
+            dependent_sections := self._schema.placeholder_section_dependencies_by_block[
                 self._location.section_id
             ]
         ):
@@ -227,12 +227,13 @@ class PlaceholderParser:
                 dependent_sections=dependent_sections,
             )
             self._routing_path_block_ids_by_section_key.update(block_ids)
-            routing_path_block_ids: list = get_flattened_mapping_values(block_ids)
+            routing_path_block_ids = get_flattened_mapping_values(block_ids)
 
-            if self._value_source_resolver.routing_path_block_ids:
-                routing_path_block_ids += (
-                    self._value_source_resolver.routing_path_block_ids
-                )
+            if (
+                value_source_routing_block_ids := self._value_source_resolver.routing_path_block_ids
+            ):
+                for block_id in value_source_routing_block_ids:
+                    routing_path_block_ids.append(block_id)
 
             return self._get_value_source_resolver(
                 routing_path_block_ids=routing_path_block_ids,

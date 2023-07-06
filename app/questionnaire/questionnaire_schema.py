@@ -100,6 +100,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._populate_calculated_summary_section_dependencies()
         self._populate_placeholder_section_dependencies()
 
+    @property
+    def placeholder_section_dependencies_by_block(
+        self,
+    ) -> dict[str, dict[str, set[str]]]:
+        return self._placeholder_section_dependencies_by_block
+
     @cached_property
     def answer_dependencies(self) -> ImmutableDict[str, set[AnswerDependent]]:
         return ImmutableDict(self._answer_dependencies_map)
@@ -1276,10 +1282,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 answer_ids=placeholder_answer_ids
             )
             if placeholder_dependencies:
+                # Type Ignore: At this point we section id cannot be None
                 section_id = self.get_section_id_for_block_id(block["id"])
-                self._placeholder_section_dependencies_by_block[section_id][
+                self._placeholder_section_dependencies_by_block[section_id][  # type: ignore
                     block["id"]
-                ].update(placeholder_dependencies)
+                ].update(
+                    placeholder_dependencies
+                )
 
 
 def is_summary_with_calculation(summary_type: str) -> bool:

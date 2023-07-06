@@ -122,6 +122,7 @@ def test_answer_source_with_list_item_id_no_list_item_selector():
         == "Yes"
     )
 
+
 def test_list_item_id_ignored_if_answer_not_in_list_collector_or_repeat():
     schema = get_mock_schema()
     schema.is_repeating_answer = Mock(return_value=False)

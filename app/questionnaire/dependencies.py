@@ -6,7 +6,7 @@ from ordered_set import OrderedSet
 from werkzeug.datastructures import MultiDict
 
 from app.data_models import ProgressStore
-from app.questionnaire import Location
+from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.questionnaire_schema import get_sources_for_type_from_data
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.utilities.mappings import get_flattened_mapping_values
@@ -62,8 +62,8 @@ def get_calculated_summary_block_ids_of_dependent_section(
     data: MultiDict | Mapping | Sequence,
     sections_to_ignore: list | None = None,
     ignore_keys: list[str] | None = None,
-    schema,
-):
+    schema: QuestionnaireSchema,
+) -> dict[tuple, tuple[str, ...]]:
     if dependent_sections := schema.calculated_summary_section_dependencies_by_block[
         location.section_id
     ]:
@@ -77,3 +77,4 @@ def get_calculated_summary_block_ids_of_dependent_section(
             ignore_keys=ignore_keys,
             dependent_sections=dependent_sections,
         )
+    return {}
