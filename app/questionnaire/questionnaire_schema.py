@@ -3,17 +3,7 @@ from collections import defaultdict
 from copy import deepcopy
 from dataclasses import dataclass
 from functools import cached_property
-from typing import (
-    Any,
-    Generator,
-    Iterable,
-    Literal,
-    Mapping,
-    Optional,
-    Sequence,
-    TypeAlias,
-    Union,
-)
+from typing import Any, Generator, Iterable, Literal, Mapping, Sequence, TypeAlias
 
 from flask_babel import force_locale
 from ordered_set import OrderedSet
@@ -121,7 +111,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             elif isinstance(value, dict) and value:
                 if value.get("source") == "answers":
                     if value["identifier"] in self.min_and_max_map:
-                        self.min_and_max_map[answer_id] = str(self.min_and_max_map[value["identifier"]])
+                        self.min_and_max_map[answer_id] = str(
+                            self.min_and_max_map[value["identifier"]]
+                        )
                     elif min_max == "minimum":
                         self.min_and_max_map[answer_id] = "0"
                     elif min_max == "maximum":
