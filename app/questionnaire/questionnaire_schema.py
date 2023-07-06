@@ -105,19 +105,31 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _append_to_min_max_map(
         self, min_max: Literal["minimum", "maximum"], answer_id: str, answers: list
     ) -> None:
-        if value := answers[0].get(min_max, {}).get("value"):
+        longest_string = None
+        for answer in answers:
+            value = answer.get(min_max, {}).get("value")
+
             if isinstance(value, int):
-                self.min_and_max_map[answer_id] = str(value)
+                if longest_string:
+                    if len(str(value)) > len(longest_string):
+                        longest_string = str(value)
+                else:
+                    longest_string = str(answer.get(min_max, {}).get("value"))
+
             elif isinstance(value, dict) and value:
-                if value.get("source") == "answers":
-                    if value["identifier"] in self.min_and_max_map:
-                        self.min_and_max_map[answer_id] = str(
-                            self.min_and_max_map[value["identifier"]]
-                        )
-                    elif min_max == "minimum":
-                        self.min_and_max_map[answer_id] = "0"
-                    elif min_max == "maximum":
-                        self.min_and_max_map[answer_id] = str(MAX_NUMBER)
+                if value.get("source") == "answers" and value["identifier"] in self.min_and_max_map:
+                    if longest_string:
+                        if len(self.min_and_max_map[value["identifier"]]) > len(longest_string):
+                            longest_string = str(self.min_and_max_map[value["identifier"]])
+                    else:
+                        longest_string = str(self.min_and_max_map[value["identifier"]])
+
+        if longest_string:
+            self.min_and_max_map[answer_id] = longest_string
+        elif min_max == "minimum":
+            self.min_and_max_map[answer_id] = "0"
+        elif min_max == "maximum":
+            self.min_and_max_map[answer_id] = str(MAX_NUMBER)
 
     def _populate_min_max_for_numeric_answers(self) -> None:
         for answer_id, answers in self._answers_by_id.items():
