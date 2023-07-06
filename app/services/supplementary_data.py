@@ -44,8 +44,10 @@ class InvalidSupplementaryData(Exception):
 
 
 def get_supplementary_data(*, dataset_id: str, unit_id: str, survey_id: str) -> dict:
-    if not get_key_store().get_key(purpose=KEY_PURPOSE_SDS, key_type="private"):
-        raise MissingSupplementaryDataKey()
+    # Type ignore: current_app is a singleton in this application and has the key_store key in its eq attribute.
+    key_store = current_app.eq["key_store"]  # type: ignore
+    if not key_store.get_key(purpose=KEY_PURPOSE_SDS, key_type="private"):
+        raise MissingSupplementaryDataKey
 
     supplementary_data_url = current_app.config["SDS_API_BASE_URL"]
 
@@ -77,7 +79,8 @@ def get_supplementary_data(*, dataset_id: str, unit_id: str, survey_id: str) -> 
     if response.status_code == 200:
         supplementary_data_response_content = response.content.decode()
         supplementary_data = decrypt_supplementary_data(
-            json.loads(supplementary_data_response_content)
+            key_store=key_store,
+            supplementary_data=json.loads(supplementary_data_response_content),
         )
 
         return validate_supplementary_data(
@@ -96,20 +99,20 @@ def get_supplementary_data(*, dataset_id: str, unit_id: str, survey_id: str) -> 
     raise SupplementaryDataRequestFailed
 
 
-def decrypt_supplementary_data(supplementary_data: MutableMapping) -> Mapping:
+def decrypt_supplementary_data(
+    *, key_store: KeyStore, supplementary_data: MutableMapping
+) -> Mapping:
     if encrypted_data := supplementary_data.get("data"):
         try:
             decrypted_data = JWEHelper.decrypt(
-                encrypted_data, key_store=get_key_store(), purpose=KEY_PURPOSE_SDS
+                encrypted_data, key_store=key_store, purpose=KEY_PURPOSE_SDS
             )
             supplementary_data["data"] = json.loads(decrypted_data)
             return supplementary_data
         except InvalidTokenException as e:
             raise InvalidSupplementaryData from e
 
-    raise ValidationError(
-        "Supplementary data response cannot be decrypted without the key 'data'"
-    )
+    raise ValidationError("Supplementary data has no data to decrypt")
 
 
 def validate_supplementary_data(
@@ -124,8 +127,3 @@ def validate_supplementary_data(
         )
     except ValidationError as e:
         raise ValidationError("Invalid supplementary data") from e
-
-
-def get_key_store() -> KeyStore:
-    # Type ignore: current_app is a singleton in this application and has the key_store key in its eq attribute.
-    return current_app.eq["key_store"]  # type: ignore

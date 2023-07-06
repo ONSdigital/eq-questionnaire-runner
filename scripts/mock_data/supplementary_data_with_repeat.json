@@ -1,7 +1,6 @@
 {
   "dataset_id": "34a80231-c49a-44d0-91a6-8fe1fb190e64",
   "survey_id": "123",
-  "encryption_key_id": "df88fdad2612ae1e80571120e6c6371f55896696",
   "data": {
     "schema_version": "v1",
     "identifier": "12346789012A",

@@ -11,7 +11,14 @@ from app.services.supplementary_data import SupplementaryDataRequestFailed
 from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.utilities.json import json_loads
 from tests.app.services.test_request_supplementary_data import TEST_SDS_URL
-from tests.integration.integration_test_case import IntegrationTestCase
+from tests.integration.integration_test_case import (
+    EQ_SUBMISSION_SDX_PRIVATE_KEY,
+    EQ_SUBMISSION_SR_PRIVATE_SIGNING_KEY,
+    EQ_USER_AUTHENTICATION_RRM_PRIVATE_KEY_KID,
+    KEYS_DICT,
+    SR_USER_AUTHENTICATION_PUBLIC_KEY_KID,
+    IntegrationTestCase,
+)
 
 TIME_TO_FREEZE = datetime(2020, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
 EQ_SESSION_TIMEOUT_SECONDS = 45 * 60
@@ -193,11 +200,21 @@ class TestSession(IntegrationTestCase):
     def test_supplementary_data_raises_500_error_when_missing_supplementary_data_key(
         self,
     ):
-        with patch(
-            "app.services.supplementary_data.get_key_store",
-            return_value=KeyStore({"keys": {}}),
-        ):
-            self.assert_supplementary_data_500_page()
+        self.key_store = KeyStore(
+            {
+                "keys": {
+                    k: KEYS_DICT["keys"][k]
+                    for k in (
+                        EQ_USER_AUTHENTICATION_RRM_PRIVATE_KEY_KID,
+                        SR_USER_AUTHENTICATION_PUBLIC_KEY_KID,
+                        EQ_SUBMISSION_SDX_PRIVATE_KEY,
+                        EQ_SUBMISSION_SR_PRIVATE_SIGNING_KEY,
+                    )
+                }
+            }
+        )
+
+        self.assert_supplementary_data_500_page()
 
 
 class TestCensusSession(IntegrationTestCase):

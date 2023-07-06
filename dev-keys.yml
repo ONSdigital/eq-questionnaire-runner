@@ -1,7 +1,10 @@
 keys:
   2225f01580a949801274a5f3e6861947018aff5b:
+    platform: sdc
     purpose: submission
+    service: sdx
     type: public
+    use: encryption
     value: |
       -----BEGIN PUBLIC KEY-----
       MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu4UO1frTr8LPyyKXkQNi
@@ -13,8 +16,11 @@ keys:
       9wIDAQAB
       -----END PUBLIC KEY-----
   709eb42cfee5570058ce0711f730bfbb7d4c8ade:
+    platform: sdc
     purpose: authentication
+    service: ras
     type: public
+    use: signing
     value: |
       -----BEGIN PUBLIC KEY-----
       MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvZzMraB96Wd1zfHS3vW3
@@ -26,8 +32,11 @@ keys:
       kwIDAQAB
       -----END PUBLIC KEY-----
   e19091072f920cbf3ca9f436ceba309e7d814a62:
+    platform: sdc
     purpose: authentication
+    service: eq
     type: private
+    use: encryption
     value: |
       -----BEGIN RSA PRIVATE KEY-----
       MIIEogIBAAKCAQEAt8LZnIhuOdL/BC029GOaJkVUAqgp2PcmbFr2Qwhf/514DUUQ
@@ -57,8 +66,11 @@ keys:
       i7/6TB95Ej2i5KgaSlcJjOyOx7g20TwDD1THtLXgY54d0Yr9T/U=
       -----END RSA PRIVATE KEY-----
   fe425f951a0917d7acdd49230b23a5c405c28510:
+    platform: sdc
     purpose: submission
+    service: eq
     type: private
+    use: signing
     value: |
       -----BEGIN RSA PRIVATE KEY-----
       MIIEowIBAAKCAQEAq0rFub/fC2S4kcP4l9ivxgljh8l3hYOKG5z8mJ1cggoRqTaI

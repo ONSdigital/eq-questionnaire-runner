@@ -198,7 +198,9 @@ def too_many_feedback_requests(
 @errors_blueprint.app_errorhandler(MissingSupplementaryDataKey)
 @errors_blueprint.app_errorhandler(InvalidSupplementaryData)
 def supplementary_data_request_failed(
-    exception: SupplementaryDataRequestFailed | MissingSupplementaryDataKey,
+    exception: SupplementaryDataRequestFailed
+    | MissingSupplementaryDataKey
+    | InvalidSupplementaryData,
 ) -> tuple[str, int]:
     log_exception(exception, 500)
     return _render_error_page(500, template=500)
