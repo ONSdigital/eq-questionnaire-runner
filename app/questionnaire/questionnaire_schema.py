@@ -106,7 +106,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._populate_answer_dependencies()
         self._populate_when_rules_section_dependencies()
         self._populate_calculated_summary_section_dependencies()
-        self._populate_mix_max_for_numeric_answers()
+        self._populate_min_max_for_numeric_answers()
 
     @cached_property
     def answer_dependencies(self) -> ImmutableDict[str, set[AnswerDependent]]:
@@ -127,17 +127,18 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     elif min_max == "maximum":
                         self.min_and_max_map[answer_id] = str(MAX_NUMBER)
 
-    def _populate_mix_max_for_numeric_answers(self) -> None:
+    def _populate_min_max_for_numeric_answers(self) -> None:
         for answer_id, answers in self._answers_by_id.items():
-            if (answer_type := answers[0]["type"]) and answer_type in [
-                "Currency",
-                "Duration",
-                "Number",
-                "Percentage",
-                "Unit",
-            ]:
-                self._append_to_min_max_map("minimum", answer_id, answers)
-                self._append_to_min_max_map("maximum", answer_id, answers)
+            for answer_id, answers in self._answers_by_id.items():
+                if (answer_type := answers[0]["type"]) and answer_type in [
+                    "Currency",
+                    "Duration",
+                    "Number",
+                    "Percentage",
+                    "Unit",
+                ]:
+                    self._append_to_min_max_map("minimum", answer_id, answers)
+                    self._append_to_min_max_map("maximum", answer_id, answers)
 
     @cached_property
     def when_rules_section_dependencies_by_section(
