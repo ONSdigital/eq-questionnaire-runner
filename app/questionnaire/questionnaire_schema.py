@@ -123,7 +123,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 ):
                     if longest_string:
                         if len(
-                            str(self.min_and_max_map[value["identifier"][min_max]])
+                            str(self.min_and_max_map[value["identifier"]][min_max])
                         ) > len(longest_string):
                             longest_string = str(
                                 self.min_and_max_map[value["identifier"]][min_max]

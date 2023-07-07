@@ -42,6 +42,8 @@ def test_schema_min_max_populate():
         "test-percent": {"maximum": "100", "minimum": "0"},
         "test-decimal": {"maximum": "10000", "minimum": "-1000"},
         "other-answer": {"maximum": "10000", "minimum": "0"},
+        "first-number-answer": {"maximum": "1000", "minimum": "10"},
+        "second-number-answer": {"maximum": "10000", "minimum": "100"},
     }
 
 
@@ -661,6 +663,12 @@ def test_answer_dependencies_for_min_max(numbers_schema):
         },
         "set-maximum": {
             AnswerDependent(
+                section_id="currency-section",
+                block_id="second-number-block",
+                for_list=None,
+                answer_id=None,
+            ),
+            AnswerDependent(
                 section_id="default-section",
                 block_id="detail-answer-block",
                 for_list=None,
@@ -672,6 +680,14 @@ def test_answer_dependencies_for_min_max(numbers_schema):
                 for_list=None,
                 answer_id=None,
             ),
+        },
+        "first-number-answer": {
+            AnswerDependent(
+                section_id="currency-section",
+                block_id="second-number-block",
+                for_list=None,
+                answer_id=None,
+            )
         },
     }
 
