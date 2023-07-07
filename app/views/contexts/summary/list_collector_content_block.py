@@ -7,7 +7,7 @@ from app.data_models.list_store import ListModel, ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
-from app.views.contexts.list_content_context import ListContentContext
+from app.views.contexts import list_context
 from app.views.contexts.summary.block import Block
 
 
@@ -98,8 +98,8 @@ class ListCollectorContentBlock:
         }
 
     @property
-    def list_context(self) -> ListContentContext:
-        return ListContentContext(
+    def list_context(self) -> list_context.ListContext:
+        return list_context.ListContext(
             self._language,
             self._schema,
             self._answer_store,

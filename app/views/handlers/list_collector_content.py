@@ -2,7 +2,7 @@ from functools import cached_property
 
 from flask import url_for
 
-from app.views.contexts.list_content_context import ListContentContext
+from app.views.contexts import ListContext
 from app.views.handlers.question import Question
 
 
@@ -22,7 +22,7 @@ class ListCollectorContent(Question):
         return self.rendered_block["for_list"]
 
     def get_context(self):
-        list_context = ListContentContext(
+        list_context = ListContext(
             self._language,
             self._schema,
             self._questionnaire_store.answer_store,

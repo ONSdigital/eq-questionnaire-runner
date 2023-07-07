@@ -13,12 +13,19 @@ describe("List Collector Section Summary and Summary Items", () => {
     beforeEach(async () => {
       await browser.openQuestionnaire("test_list_collector_content_page.json");
     });
-    it("When I get to the Hub, Then from there the next block in list collector content section should be list collector content block.", async () => {
+    it("When I get to the Hub, Then from there the next block in list collector content section should be list collector content page.", async () => {
       await fillInListCollectorSection();
       await expect(await browser.getUrl()).to.contain(HubPage.url());
       await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).to.contain("Not started");
       await $(HubPage.submit()).click();
       await expect(await browser.getUrl()).to.contain(ListCollectorContentPage.url());
+    });
+    it("When I get to the list collector content page, Then the relevant content is displayed.", async () => {
+      await fillInListCollectorSection();
+      await $(HubPage.submit()).click();
+      await expect(await $(await $("body")).getHTML()).to.contain(
+        "You have previously reported the following companies. Press continue to updated registration and trading information."
+      );
     });
     it("When I get to list collector content block section, Then I should be able to complete repeating blocks and get to the summary.", async () => {
       await fillInListCollectorSection();
