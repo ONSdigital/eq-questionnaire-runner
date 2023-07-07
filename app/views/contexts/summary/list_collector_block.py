@@ -64,7 +64,7 @@ class ListCollectorBlock:
             item_label,
             item_anchor,
         ) = (None, None, None, None, None, None)
-        current_list = self._list_store[summary["for_list"]]
+        list_model = self._list_store[summary["for_list"]]
 
         list_collector_blocks = list(
             self._schema.get_list_collectors_for_list(
@@ -97,12 +97,12 @@ class ListCollectorBlock:
             add_link = self._add_link(summary, list_collector_block)
             repeating_blocks = list_collector_block.get("repeating_blocks", [])
             related_answers = self._get_related_answers(
-                list_model=current_list, repeating_blocks=repeating_blocks
+                list_model=list_model, repeating_blocks=repeating_blocks
             )
-            item_anchor = self._schema.get_item_anchor(section_id, current_list.name)
-            item_label = self._schema.get_item_label(section_id, current_list.name)
+            item_anchor = self._schema.get_item_anchor(section_id, list_model.name)
+            item_label = self._schema.get_item_label(section_id, list_model.name)
 
-        if len(current_list) == 1 and current_list.primary_person:
+        if len(list_model) == 1 and list_model.primary_person:
             if primary_person_block := self._schema.get_list_collector_for_list(
                 self._section, for_list=summary["for_list"], primary=True
             ):

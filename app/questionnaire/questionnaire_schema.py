@@ -812,7 +812,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def is_answer_dynamic(self, answer_id: str) -> bool:
         return answer_id in self._dynamic_answer_ids
 
-    def is_answer_for_repeating_block(self, answer_id: str) -> bool | None:
+    def is_answer_for_repeating_block(self, answer_id: str) -> bool:
         return answer_id in self._repeating_block_answer_ids
 
     def get_list_name_for_dynamic_answer(self, block_id: str) -> str:
@@ -861,9 +861,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_edit_block_for_list_collector(
         self, list_collector_id: str
     ) -> ImmutableDict | None:
-        if list_collector := self.get_block(list_collector_id):
-            edit_block: ImmutableDict = list_collector["edit_block"]
-            return edit_block
+        # Type ignore: for any valid list collector id, list collector block will always exist
+        return self.get_block(list_collector_id).get("edit_block")  # type: ignore
 
     def get_repeating_blocks_for_list_collector(
         self, list_collector_id: str
