@@ -271,8 +271,8 @@ def test_get_width_for_number(answer, width, app):
     with app.app_context():
         schema = QuestionnaireSchema({})
         schema.min_and_max_map = {
-            "set-maximum": 10000,
-            "set-minimum": -1000,
+            "set-maximum": {"maximum": 10000, "minimum": 0},
+            "set-minimum": {"maximum": 999999999999999, "minimum": -1000},
         }
         g.schema = schema
         assert get_width_for_number(answer) == width
