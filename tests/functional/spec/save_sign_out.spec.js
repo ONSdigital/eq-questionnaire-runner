@@ -6,6 +6,10 @@ import IntroductionPage from "../generated_pages/introduction/introduction.page"
 import IntroInterstitialPage from "../generated_pages/introduction/general-business-information-completed.page";
 import IntroThankYouPagePage from "../base_pages/thank-you.page";
 import HouseHolderConfirmationPage from "../generated_pages/thank_you_census_household/household-confirmation.page";
+import currencyBlock from "../generated_pages/variants_question/currency-block.page.js";
+import firstNumberBlock from "../generated_pages/variants_question/first-number-block.page.js";
+import secondNumberBlock from "../generated_pages/variants_question/second-number-block.page.js";
+import currencySectionSummary from "../generated_pages/variants_question/currency-section-summary.page.js";
 import { getRandomString } from "../jwt_helper";
 
 describe("Save sign out / Exit", () => {
@@ -44,6 +48,13 @@ describe("Save sign out / Exit", () => {
     await $(TestMinMax.submit()).click();
     await $(DetailAnswer.answer1()).click();
     await $(DetailAnswer.submit()).click();
+    await $(currencyBlock.usDollars()).click();
+    await $(currencyBlock.submit()).click();
+    await $(firstNumberBlock.firstNumber()).setValue(123);
+    await $(firstNumberBlock.submit()).click();
+    await $(secondNumberBlock.secondNumber()).setValue(321);
+    await $(secondNumberBlock.submit()).click();
+    await $(currencySectionSummary.submit()).click();
 
     await $(SubmitPage.submit()).click();
     await expect(await browser.getUrl()).to.contain("thank-you");
