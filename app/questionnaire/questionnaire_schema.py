@@ -276,12 +276,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 self._parent_id_map[block_id] = group["id"]
 
                 blocks[block_id] = block
-                if block["type"] in (
+                if block["type"] in {
                     "ListCollector",
                     "ListCollectorContent",
                     "PrimaryPersonListCollector",
                     "RelationshipCollector",
-                ):
+                }:
                     for nested_block_name in [
                         "add_block",
                         "edit_block",
@@ -699,14 +699,14 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             return repeat.get("for_list")
 
     def get_repeating_blocks_list_for_section(self, section_id: str) -> str | None:
-        # type ignore block always exists at this point
+        # type ignore section always exists at this point
         if blocks := self.get_blocks_for_section(self.get_section(section_id)):  # type: ignore
             for block in blocks:
                 if block.get("repeating_blocks", []):
                     return block.get("for_list")
 
-    def get_repeating_blocks_block_type(self, section_id: str) -> str | None:
-        # type ignore block always exists at this point
+    def get_list_collector_type_for_section(self, section_id: str) -> str | None:
+        # type ignore section always exists at this point
         if blocks := self.get_blocks_for_section(self.get_section(section_id)):  # type: ignore
             for block in blocks:
                 if block.get("repeating_blocks", []):
@@ -867,9 +867,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         section: Mapping, for_list: str, primary: bool = False
     ) -> Generator[ImmutableDict, None, None]:
         collector_type = (
-            ["PrimaryPersonListCollector"]
+            {"PrimaryPersonListCollector"}
             if primary
-            else ["ListCollectorContent", "ListCollector"]
+            else {"ListCollectorContent", "ListCollector"}
         )
 
         return (

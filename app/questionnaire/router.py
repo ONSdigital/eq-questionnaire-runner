@@ -529,16 +529,16 @@ class Router:
                     section_id
                 )
             ) and (
-                self._schema.get_repeating_blocks_block_type(section_id)
+                self._schema.get_list_collector_type_for_section(section_id)
                 == "ListCollectorContent"
             ):
                 for list_item_id in self._list_store[repeating_blocks_list]:
                     yield (section_id, list_item_id)
 
-                yield (section_id, None)
+                yield section_id, None
 
             else:
-                yield (section_id, None)
+                yield section_id, None
 
     def _get_first_incomplete_section_key(self) -> tuple[str, str | None] | None:
         for section_id, list_item_id in self.get_enabled_section_keys():

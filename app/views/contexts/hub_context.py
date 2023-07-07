@@ -162,7 +162,7 @@ class HubContext(Context):
                 section_id
             )
         ) and (
-            self._schema.get_repeating_blocks_block_type(section_id)
+            self._schema.get_list_collector_type_for_section(section_id)
             == "ListCollectorContent"
         ):
             status_list = []
