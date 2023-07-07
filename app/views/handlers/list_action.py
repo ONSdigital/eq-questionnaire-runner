@@ -120,23 +120,3 @@ class ListAction(Question):
                 self.parent_location.section_id, self.parent_location.list_item_id
             )
         )
-
-    def _get_first_incomplete_repeating_block_url(self) -> str | None:
-        """
-        If there are repeating blocks and not all are complete, get url for the next one
-        """
-        if first_incomplete_block := self.get_first_incomplete_repeating_block_location_for_list_item(
-            repeating_block_ids=self._schema.repeating_block_ids,
-            section_id=self.current_location.section_id,
-            list_item_id=self.current_location.list_item_id,
-            list_name=self.current_location.list_name,
-        ):
-            return url_for(
-                "questionnaire.block",
-                list_name=first_incomplete_block.list_name,
-                list_item_id=first_incomplete_block.list_item_id,
-                block_id=first_incomplete_block.block_id,
-                return_to=self._return_to,
-                return_to_answer_id=self._return_to_answer_id,
-                return_to_block_id=self._return_to_block_id,
-            )

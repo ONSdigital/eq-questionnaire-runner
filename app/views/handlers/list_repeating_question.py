@@ -3,22 +3,13 @@ from functools import cached_property
 from flask import url_for
 
 from app.questionnaire import Location
-from app.views.handlers.list_action import ListAction
+from app.views.handlers.list_edit_question import ListEditQuestion
 
 
-class ListRepeatingQuestion(ListAction):
+class ListRepeatingQuestion(ListEditQuestion):
     @cached_property
     def repeating_block_ids(self) -> list[str]:
         return self._schema.repeating_block_ids
-
-    def get_next_location_url(self):
-        if self._is_returning_to_section_summary():
-            return self.get_section_summary_url()
-
-        if url := self._get_first_incomplete_repeating_block_url():
-            return url
-
-        return super().get_next_location_url()
 
     def get_previous_location_url(self):
         """
@@ -84,5 +75,4 @@ class ListRepeatingQuestion(ListAction):
                 list_item_id=self.current_location.list_item_id,
             )
 
-        self.questionnaire_store_updater.update_answers(self.form.data)
         super().handle_post()
