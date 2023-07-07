@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 
 import pytest
 import simplejson as json
+from _decimal import Decimal
 from jinja2 import Undefined
 from mock import Mock
 
@@ -63,13 +64,14 @@ def test_get_formatted_currency_with_no_value():
     (
         (123, "123"),
         ("123.4", "123.4"),
-        ("123.40", "123.4"),
+        ("123.40", "123.40"),
         ("123.45678", "123.45678"),
+        ("2344.6533", "2,344.6533"),
         ("1000", "1,000"),
         ("10000", "10,000"),
         ("100000000", "100,000,000"),
         (0, "0"),
-        (0.00, "0"),
+        (Decimal("0.00"), "0.00"),
         ("", ""),
         (None, ""),
         (Undefined(), ""),

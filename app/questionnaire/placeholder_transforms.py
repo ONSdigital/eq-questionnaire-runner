@@ -3,18 +3,19 @@ from decimal import Decimal
 from typing import TYPE_CHECKING, Literal, Sequence, Sized
 from urllib.parse import quote
 
+import babel.numbers
 from babel import units
 from babel.dates import format_datetime
 from babel.numbers import format_currency, format_decimal
 from dateutil.relativedelta import relativedelta
 from flask_babel import ngettext
 
-from app.jinja_filters import format_number
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.rules.operations import DateOffset
 from app.questionnaire.rules.operations_helper import OperationHelper
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import DEFAULT_LOCALE
+from app.utilities.decimal_places import eq_format_decimal
 
 if TYPE_CHECKING:
     from app.questionnaire.placeholder_renderer import (
@@ -122,11 +123,15 @@ class PlaceholderTransforms:
 
         return string_to_format
 
-    def format_number(self, number: int | Decimal | str) -> str:
+    def format_number(self, number: int | Decimal | float) -> str:
+        locale_decimal_point = babel.numbers.get_decimal_symbol(self.locale)
+
+        if locale_decimal_point in str(number):
+            x: str = eq_format_decimal(number, self.locale, locale_decimal_point)
+            return x
+
         if number or number == 0:
-            formatted_decimal: str = format_decimal(
-                number, locale=self.locale, decimal_quantization=False
-            )
+            formatted_decimal: str = format_decimal(number, locale=self.locale)
             return formatted_decimal
 
         return ""
@@ -142,13 +147,21 @@ class PlaceholderTransforms:
         unit_length: Literal["short", "long", "narrow"] | None = None,
     ) -> str:
         length = unit_length or "short"
-        formatted_value = value if value in [1, 2, ""] else 0
+
         formatted_unit: str = units.format_unit(
-            value=formatted_value,
+            value=value,
             measurement_unit=unit,
             length=length,
             locale=self.locale,
-        ).replace(str(formatted_value), str(format_number(value)))
+        )
+
+        locale_decimal_point = babel.numbers.get_decimal_symbol(self.locale)
+
+        if locale_decimal_point in str(value):
+            x = eq_format_decimal(value, self.locale, locale_decimal_point)
+            y = formatted_unit.split(" ")[1]
+            return f"{x} {y}"
+
         return formatted_unit
 
     @staticmethod

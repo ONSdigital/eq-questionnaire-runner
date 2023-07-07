@@ -25,19 +25,22 @@ def test_format_currency(number, currency, expected, transformer):
     (
         (123, "123"),
         ("123.4", "123.4"),
-        ("123.40", "123.4"),
+        ("123.40", "123.40"),
+        (123434.7678, "123,434.7678"),
         ("123.45678", "123.45678"),
+        ("2344.6533", "2,344.6533"),
         ("1000", "1,000"),
         ("10000", "10,000"),
         ("100000000", "100,000,000"),
         (0, "0"),
-        (0.00, "0"),
+        (Decimal("0.00"), "0.00"),
         ("", ""),
         (None, ""),
     ),
 )
-def test_format_number(number, expected, transformer):
-    assert transformer().format_number(number) == expected
+def test_format_number(number, expected, transformer, app):
+    with app.app_context():
+        assert transformer().format_number(number) == expected
 
 
 @pytest.mark.parametrize(
@@ -61,12 +64,12 @@ def test_format_percentage(value, expected, transformer):
     (
         (
             "millimeter",
-            Decimal(0.123),
+            Decimal("0.123"),
             "short",
-            "0.1229999999999999982236431606 mm",
+            "0.123 mm",
         ),
-        ("centimeter", "123", "short", "123 cm"),
-        ("kilometer", "123", "long", "123 kilometres"),
+        ("centimeter", 123, "short", "123 cm"),
+        ("kilometer", 123, "long", "123 kilometres"),
         ("mile", "123", "short", "123 mi"),
         ("mile", "123", "narrow", "123mi"),
         ("mile", "123", None, "123 mi"),

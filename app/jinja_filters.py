@@ -1,9 +1,11 @@
 # coding: utf-8
+
 import re
 from datetime import datetime
 from decimal import Decimal
 from typing import Any, Callable, Literal, Mapping, Optional, TypeAlias, Union
 
+import babel
 import flask
 import flask_babel
 from babel import numbers, units
@@ -15,6 +17,7 @@ from wtforms import SelectFieldBase
 from app.questionnaire.questionnaire_schema import is_summary_with_calculation
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import MAX_NUMBER
+from app.utilities.decimal_places import eq_format_decimal
 
 blueprint = flask.Blueprint("filters", __name__)
 FormType = Mapping[str, Mapping[str, Any]]
@@ -32,13 +35,16 @@ def strip_tags(value: str) -> Markup:
 
 @blueprint.app_template_filter()
 def format_number(value: Union[int, Decimal, float]) -> str:
-    formatted_number: str
-    if value or value == 0:
-        formatted_number = numbers.format_decimal(
-            value, locale=flask_babel.get_locale(), decimal_quantization=False
-        )
-        return formatted_number
+    locale_ = flask_babel.get_locale()
+    locale_decimal_point = babel.numbers.get_decimal_symbol(flask_babel.get_locale())
 
+    if locale_decimal_point in str(value):
+        x: str = eq_format_decimal(value, locale_, locale_decimal_point)
+        return x
+
+    if value or value == 0:
+        formatted_number: str = numbers.format_decimal(value, locale=locale_)
+        return formatted_number
     return ""
 
 
@@ -78,13 +84,22 @@ def format_unit(
     # mass-metric-ton no longer supported for en_GB and related locales, but still present in business schema and allowed in validator,
     # until removed from schema we substitute mass-tonne for mass-metric-ton before format unit
     measurement_unit = "mass-tonne" if unit == "mass-metric-ton" else unit
-    formatted_value = value if value in [1, 2, ""] else 0
+
+    locale_ = flask_babel.get_locale()
+
     formatted_unit: str = units.format_unit(
-        value=formatted_value,
+        value=value,
         measurement_unit=measurement_unit,
         length=length,
-        locale=flask_babel.get_locale(),
-    ).replace(str(formatted_value), str(format_number(value)))
+        locale=locale_,
+    )
+
+    locale_decimal_point = babel.numbers.get_decimal_symbol(locale_)
+
+    if locale_decimal_point in str(value):
+        x = eq_format_decimal(value, locale_, locale_decimal_point)
+        y = formatted_unit.split(" ")[1]
+        return f"{x} {y}"
 
     return formatted_unit
 
