@@ -90,6 +90,8 @@ describe("List Collector Section Summary and Summary Items", () => {
       await $(ListCollectorSecondRepeatingBlockPage.authorisedTraderUkRadioRepeatingBlockYes()).click();
       await $(ListCollectorSecondRepeatingBlockPage.authorisedTraderEuRadioRepeatingBlockYes()).click();
       await $(ListCollectorSecondRepeatingBlockPage.submit()).click();
+      await $(ListCollectorContentPage.submit()).click();
+      await $(ListCollectorContentSectionSummaryPage.previous()).click();
       await $(ListCollectorContentPage.previous()).click();
       await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).to.contain("Completed");
     });

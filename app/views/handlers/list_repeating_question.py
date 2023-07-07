@@ -19,22 +19,6 @@ class ListRepeatingQuestion(ListAction):
         ):
             return first_incomplete_location
 
-        if (
-            not first_incomplete_location
-            and self.parent_block["type"] == "ListCollectorContent"
-            and self._questionnaire_store.progress_store.is_section_or_repeating_blocks_progress_complete(
-                section_id=self.current_location.section_id,
-                list_item_id=self._current_location.list_item_id,
-            )
-        ):
-            return url_for(
-                "questionnaire.block",
-                block_id=self.parent_block["id"],
-                return_to=self._return_to,
-                return_to_answer_id=self._return_to_answer_id,
-                return_to_block_id=self._return_to_block_id,
-            )
-
         return super().get_next_location_url()
 
     def get_first_incomplete_repeating_block_url(self, list_item_id):
