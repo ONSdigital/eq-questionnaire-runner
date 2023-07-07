@@ -1,54 +1,16 @@
 from collections import defaultdict
-from typing import Any, Iterable, Mapping, MutableMapping, Sequence
+from typing import Any, Mapping, Sequence
 
 from flask import url_for
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import AnswerStore, ProgressStore
-from app.data_models.list_store import ListModel, ListStore
-from app.data_models.metadata_proxy import MetadataProxy
-from app.questionnaire import Location, QuestionnaireSchema
-from app.questionnaire.placeholder_renderer import PlaceholderRenderer
-from app.views.contexts.list_context import ListContext
+from app.data_models.list_store import ListModel
+from app.questionnaire import Location
 from app.views.contexts.summary.block import Block
+from app.views.contexts.summary.list_collector_base_block import ListCollectorBaseBlock
 
 
-class ListCollectorBlock:
-    def __init__(
-        self,
-        routing_path_block_ids: Iterable[str],
-        answer_store: AnswerStore,
-        list_store: ListStore,
-        progress_store: ProgressStore,
-        metadata: MetadataProxy | None,
-        response_metadata: MutableMapping,
-        schema: QuestionnaireSchema,
-        location: Location,
-        language: str,
-    ) -> None:
-        self._location = location
-        self._placeholder_renderer = PlaceholderRenderer(
-            language=language,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=metadata,
-            response_metadata=response_metadata,
-            schema=schema,
-            progress_store=progress_store,
-            location=location,
-        )
-        self._list_store = list_store
-        self._schema = schema
-        self._location = location
-        # type ignore added as section should exist
-        self._section: ImmutableDict = self._schema.get_section(self._location.section_id)  # type: ignore
-        self._language = language
-        self._answer_store = answer_store
-        self._metadata = metadata
-        self._response_metadata = response_metadata
-        self._routing_path_block_ids = routing_path_block_ids
-        self._progress_store = progress_store
-
+class ListCollectorBlock(ListCollectorBaseBlock):
     # pylint: disable=too-many-locals
     def list_summary_element(self, summary: Mapping[str, Any]) -> dict[str, Any]:
         list_collector_block = None
@@ -127,18 +89,6 @@ class ListCollectorBlock:
             "item_anchor": item_anchor,
             **list_summary_context,
         }
-
-    @property
-    def list_context(self) -> ListContext:
-        return ListContext(
-            self._language,
-            self._schema,
-            self._answer_store,
-            self._list_store,
-            self._progress_store,
-            self._metadata,
-            self._response_metadata,
-        )
 
     def _add_link(
         self,

@@ -9,6 +9,15 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
         selected = self.getHtmlSoup().select(selector)
         return selected[0].get("href")
 
+    def add_company(self, name: str, number: str, authorised_insurer: str):
+        self.post(
+            {
+                "company-or-branch-name": name,
+                "registration-number": number,
+                "authorised-insurer-radio": authorised_insurer,
+            }
+        )
+
     def test_happy_path(self):
         self.launchSurvey("test_list_collector_content_page")
 

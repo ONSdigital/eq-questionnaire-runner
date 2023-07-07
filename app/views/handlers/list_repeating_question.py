@@ -54,8 +54,6 @@ class ListRepeatingQuestion(ListAction):
                 return_to_block_id=self._return_to_block_id,
             )
 
-        return None
-
     def handle_post(self):
         self.questionnaire_store_updater.add_completed_location(self.current_location)
         if not self.get_first_incomplete_repeating_block_location_for_list_item(

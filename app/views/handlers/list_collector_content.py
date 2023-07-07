@@ -7,10 +7,6 @@ from app.views.handlers.question import Question
 
 
 class ListCollectorContent(Question):
-    def __init__(self, *args):
-        self._is_adding = False
-        super().__init__(*args)
-
     @cached_property
     def repeating_block_ids(self) -> list[str]:
         return [
