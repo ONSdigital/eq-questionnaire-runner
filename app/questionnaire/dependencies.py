@@ -64,17 +64,16 @@ def get_calculated_summary_block_ids_of_dependent_section(
     ignore_keys: list[str] | None = None,
     schema: QuestionnaireSchema,
 ) -> dict[tuple, tuple[str, ...]]:
-    if dependent_sections := schema.calculated_summary_section_dependencies_by_block[
+    dependent_sections = schema.calculated_summary_section_dependencies_by_block[
         location.section_id
-    ]:
-        return get_block_ids_for_dependencies(
-            location=location,
-            progress_store=progress_store,
-            sections_to_ignore=sections_to_ignore,
-            data=data,
-            path_finder=path_finder,
-            source_type="calculated_summary",
-            ignore_keys=ignore_keys,
-            dependent_sections=dependent_sections,
-        )
-    return {}
+    ]
+    return get_block_ids_for_dependencies(
+        location=location,
+        progress_store=progress_store,
+        sections_to_ignore=sections_to_ignore,
+        data=data,
+        path_finder=path_finder,
+        source_type="calculated_summary",
+        ignore_keys=ignore_keys,
+        dependent_sections=dependent_sections,
+    )
