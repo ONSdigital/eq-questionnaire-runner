@@ -1,7 +1,7 @@
-import DateEntryBlockPage from "../generated_pages/first_non_empty_item/date-entry-block.page";
-import DateQuestionBlockPage from "../generated_pages/first_non_empty_item/date-question-block.page";
-import TotalTurnoverBlockPage from "../generated_pages/first_non_empty_item/total-turnover-block.page";
-import FoodQuestionBlockPage from "../generated_pages/first_non_empty_item_cross_section_dependencies/food-question-block.page";
+import DateEntryBlockPage from "../generated_pages/placeholders_first_non_empty_item/date-entry-block.page";
+import DateQuestionBlockPage from "../generated_pages/placeholders_first_non_empty_item/date-question-block.page";
+import TotalTurnoverBlockPage from "../generated_pages/placeholders_first_non_empty_item/total-turnover-block.page";
+import FoodQuestionBlockPage from "../generated_pages/placeholders_first_non_empty_item_cross_section_dependencies/food-question-block.page";
 
 import AddPersonPage from "../generated_pages/first_non_empty_item_repeating_sections/list-collector-add.page";
 import ListCollectorPage from "../generated_pages/first_non_empty_item_repeating_sections/list-collector.page";
@@ -10,7 +10,7 @@ import HubPage from "../base_pages/hub.page.js";
 
 describe("First Non Empty Item Transform", () => {
   before("Launch survey", async () => {
-    await browser.openQuestionnaire("test_first_non_empty_item.json");
+    await browser.openQuestionnaire("test_placeholders_first_non_empty_item.json");
   });
 
   it("When the custom date range is entered and the answer is changed back to metadata date range, Then metadata date should be displayed", async () => {
@@ -36,7 +36,7 @@ describe("First Non Empty Item Transform", () => {
 
 describe("First Non Empty Item Transform Cross Section", () => {
   before("Launch survey", async () => {
-    await browser.openQuestionnaire("test_first_non_empty_item_cross_section_dependencies.json");
+    await browser.openQuestionnaire("test_placeholders_first_non_empty_item_cross_section_dependencies.json");
     await $(HubPage.submit()).click();
   });
 
@@ -68,7 +68,7 @@ describe("First Non Empty Item Transform Cross Section", () => {
 
 describe("First Non Empty Item Transform Repeating Sections", () => {
   before("Launch survey", async () => {
-    await browser.openQuestionnaire("test_first_non_empty_item_repeating_sections.json");
+    await browser.openQuestionnaire("test_placeholders_first_non_empty_item_repeating_sections.json");
     await $(HubPage.submit()).click();
   });
   it("When the custom date range is entered and the answer is changed back to metadata range, then metadata should be displayed for the repeating section title", async () => {
