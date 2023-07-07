@@ -135,7 +135,7 @@ class Group:
                     ]
                 )
 
-            elif block["type"] == "ListCollector":
+            elif block["type"] in {"ListCollector", "ListCollectorContent"}:
                 section: ImmutableDict | None = schema.get_section(location.section_id)
 
                 summary_item: ImmutableDict | None
@@ -144,62 +144,43 @@ class Group:
                     section_id=section["id"],  # type: ignore
                     list_name=block["for_list"],
                 ):
-                    list_collector_block = ListCollectorBlock(
-                        routing_path_block_ids=routing_path_block_ids,
-                        answer_store=answer_store,
-                        list_store=list_store,
-                        progress_store=progress_store,
-                        metadata=metadata,
-                        response_metadata=response_metadata,
-                        schema=schema,
-                        location=location,
-                        language=language,
-                    )
+                    if block["type"] == "ListCollector":
+                        list_collector_block: ListCollectorBlock | ListCollectorContentBlock = ListCollectorBlock(
+                            routing_path_block_ids=routing_path_block_ids,
+                            answer_store=answer_store,
+                            list_store=list_store,
+                            progress_store=progress_store,
+                            metadata=metadata,
+                            response_metadata=response_metadata,
+                            schema=schema,
+                            location=location,
+                            language=language,
+                        )
+                    else:
+                        list_collector_block = ListCollectorContentBlock(
+                            routing_path_block_ids=routing_path_block_ids,
+                            answer_store=answer_store,
+                            list_store=list_store,
+                            progress_store=progress_store,
+                            metadata=metadata,
+                            response_metadata=response_metadata,
+                            schema=schema,
+                            location=location,
+                            language=language,
+                        )
 
                     list_summary_element = list_collector_block.list_summary_element(
                         summary_item
                     )
                     blocks.extend([list_summary_element])
 
-                    if not view_submitted_response:
+                    if not view_submitted_response and block["type"] == "ListCollector":
                         self.links["add_link"] = Link(
                             target="_self",
                             text=list_summary_element["add_link_text"],
                             url=list_summary_element["add_link"],
                             attributes={"data-qa": "add-item-link"},
                         )
-
-                    self.placeholder_text = list_summary_element["empty_list_text"]
-
-            elif block["type"] == "ListCollectorContent":
-                list_collector_content_section: ImmutableDict | None = (
-                    schema.get_section(location.section_id)
-                )
-
-                list_collector_summary_item: ImmutableDict | None
-                if list_collector_summary_item := schema.get_summary_item_for_list_for_section(
-                    # Type ignore: section id will not be optional at this point
-                    section_id=list_collector_content_section["id"],  # type: ignore
-                    list_name=block["for_list"],
-                ):
-                    list_collector_content_block = ListCollectorContentBlock(
-                        routing_path_block_ids=routing_path_block_ids,
-                        answer_store=answer_store,
-                        list_store=list_store,
-                        progress_store=progress_store,
-                        metadata=metadata,
-                        response_metadata=response_metadata,
-                        schema=schema,
-                        location=location,
-                        language=language,
-                    )
-
-                    list_summary_element = (
-                        list_collector_content_block.list_summary_element(
-                            list_collector_summary_item
-                        )
-                    )
-                    blocks.extend([list_summary_element])
 
                     self.placeholder_text = list_summary_element["empty_list_text"]
 
