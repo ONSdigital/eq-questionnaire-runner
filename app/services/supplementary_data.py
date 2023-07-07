@@ -34,13 +34,11 @@ class SupplementaryDataRequestFailed(Exception):
 
 
 class MissingSupplementaryDataKey(Exception):
-    def __str__(self) -> str:
-        return "Missing supplementary data key"
+    pass
 
 
 class InvalidSupplementaryData(Exception):
-    def __str__(self) -> str:
-        return "Supplementary data invalid"
+    pass
 
 
 def get_supplementary_data(*, dataset_id: str, unit_id: str, survey_id: str) -> dict:
