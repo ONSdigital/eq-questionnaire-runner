@@ -15,6 +15,7 @@ keys:
       ddIEdYRuxd9A7yWjP1I8jWC/DSq8UEAooVfe6XNsoWWF2zn9XDjhWw0hwEXSX/QT
       9wIDAQAB
       -----END PUBLIC KEY-----
+    version: v1
   709eb42cfee5570058ce0711f730bfbb7d4c8ade:
     platform: sdc
     purpose: authentication
@@ -31,6 +32,7 @@ keys:
       JEfyLEM0zKrkQQ796gfYpkzDYwJvkiW7fb2Yh1teNHpFR5tozzMwUxkREl/TQ4U1
       kwIDAQAB
       -----END PUBLIC KEY-----
+    version: v1
   e19091072f920cbf3ca9f436ceba309e7d814a62:
     platform: sdc
     purpose: authentication
@@ -65,6 +67,7 @@ keys:
       OZrki4MBTK/6GFkHLFkF6w2Le+Y5Nos9O2UUZs45lwLEYbQ4yKcx2KlWGLZOypB8
       i7/6TB95Ej2i5KgaSlcJjOyOx7g20TwDD1THtLXgY54d0Yr9T/U=
       -----END RSA PRIVATE KEY-----
+    version: v1
   fe425f951a0917d7acdd49230b23a5c405c28510:
     platform: sdc
     purpose: submission
@@ -99,6 +102,7 @@ keys:
       V7ZuRp//4vIzEONqqyLUFt1JZKuCwWQB2sRjKWpqRB07C0o243XefD5f7844nmXq
       H0xKMFRYjDqhFdTXFWVPnk/tu/MxoSTdK0FfsgUnjs+TGvN5TnBW
       -----END RSA PRIVATE KEY-----
+    version: v1
   df88fdad2612ae1e80571120e6c6371f55896696:
     platform: sdc
     purpose: supplementary_data
