@@ -4,7 +4,7 @@ from tests.integration.integration_test_case import IntegrationTestCase
 class TestSession(IntegrationTestCase):
     def test_none_language_code_defaults_to_en(self):
         # Given a questionnaire with an answer of type mass-metric-tonnes launches with no language code in the runner claims
-        token = self.token_generator.create_token_v2_with_none_language_code(
+        token = self.token_generator.create_token_with_none_language_code(
             "test_unit_patterns"
         )
         self.get(url=f"/session?token={token}")

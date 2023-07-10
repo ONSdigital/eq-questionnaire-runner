@@ -163,14 +163,9 @@ class TokenGenerator:
 
         return self.generate_token(payload_vars)
 
-    def create_token_v2_with_none_language_code(
-        self, schema_name, theme="default", **extra_payload
-    ):
-        payload_for_theme = (
-            PAYLOAD_V2_SOCIAL if theme == "social" else PAYLOAD_V2_BUSINESS
-        )
+    def create_token_with_none_language_code(self, schema_name, **extra_payload):
         payload_vars = self._get_payload_with_params(
-            schema_name=schema_name, payload=payload_for_theme, **extra_payload
+            schema_name=schema_name, **extra_payload
         )
         del payload_vars["language_code"]
 
