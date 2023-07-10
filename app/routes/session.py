@@ -23,6 +23,7 @@ from app.helpers.template_helpers import (
 )
 from app.questionnaire import QuestionnaireSchema
 from app.routes.errors import _render_error_page
+from app.settings import DEFAULT_LOCALE
 from app.utilities.metadata_parser import validate_runner_claims
 from app.utilities.metadata_parser_v2 import (
     validate_questionnaire_claims,
@@ -126,7 +127,7 @@ def login() -> Response:
             "account_service_log_out_url"
         )
 
-    cookie_session["language_code"] = metadata.language_code
+    cookie_session["language_code"] = metadata.language_code or DEFAULT_LOCALE
 
     return redirect(url_for("questionnaire.get_questionnaire"))
 
