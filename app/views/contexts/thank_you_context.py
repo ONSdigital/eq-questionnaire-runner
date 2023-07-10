@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Optional, Union
+from typing import Any, Optional
 
 from flask import url_for
 from flask_babel import lazy_gettext
@@ -39,7 +39,9 @@ def build_thank_you_context(
     else:
         submission_text = lazy_gettext("Your answers have been submitted.")
     context_metadata = build_submission_metadata_context(
-        survey_type, submitted_at, metadata.tx_id
+        survey_type,
+        submitted_at,
+        metadata.tx_id,
     )
     return {
         "hide_sign_out_button": True,
@@ -54,8 +56,8 @@ def build_thank_you_context(
 
 def build_view_submitted_response_context(
     schema: QuestionnaireSchema, submitted_at: datetime
-) -> dict[str, Union[bool, str]]:
-    view_submitted_response: dict[str, Union[bool, str]] = {
+) -> dict[str, bool | str]:
+    view_submitted_response: dict[str, bool | str] = {
         "enabled": schema.is_view_submitted_response_enabled
     }
 
@@ -78,7 +80,7 @@ def build_census_thank_you_context(
     metadata: MetadataProxy,
     confirmation_email_form: Optional[EmailForm],
     form_type: str,
-) -> dict[str, Union[bool, str, None]]:
+) -> dict[str, bool | str | None]:
     context = {
         "display_address": metadata["display_address"],
         "form_type": form_type,
