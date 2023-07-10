@@ -18,7 +18,7 @@ keys:
   709eb42cfee5570058ce0711f730bfbb7d4c8ade:
     platform: sdc
     purpose: authentication
-    service: ras
+    service: launcher
     type: public
     use: signing
     value: |
