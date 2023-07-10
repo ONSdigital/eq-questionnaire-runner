@@ -163,5 +163,13 @@ class TokenGenerator:
 
         return self.generate_token(payload_vars)
 
+    def create_token_with_none_language_code(self, schema_name, **extra_payload):
+        payload_vars = self._get_payload_with_params(
+            schema_name=schema_name, **extra_payload
+        )
+        del payload_vars["language_code"]
+
+        return self.generate_token(payload_vars)
+
     def generate_token(self, payload):
         return encrypt(payload, self._key_store, KEY_PURPOSE_AUTHENTICATION)
