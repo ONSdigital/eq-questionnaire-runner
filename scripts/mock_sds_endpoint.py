@@ -56,9 +56,7 @@ def load_mock_sds_dataset_metadata(survey_id: str, period_id: str):
 
 
 def encrypt_mock_data(mock_data):
-    key = keys.get_private_key_by_kid(
-        purpose=KEY_PURPOSE_SDS, kid=mock_data.get("encryption_key_id")
-    )
+    key = keys.get_key(purpose=KEY_PURPOSE_SDS, key_type="private")
     mock_data["data"] = JWEHelper.encrypt_with_key(
         json.dumps(mock_data["data"]), key.kid, key.as_jwk()
     )
