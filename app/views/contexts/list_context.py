@@ -17,7 +17,7 @@ class ListContext(Context):
         remove_block_id: Optional[str] = None,
         primary_person_edit_block_id: Optional[str] = None,
         for_list_item_ids: Optional[Sequence[str]] = None,
-    ) -> dict[str, Any]:
+    ) -> dict[str, dict]:
         list_items = (
             list(
                 self._build_list_items_context(
