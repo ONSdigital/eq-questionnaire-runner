@@ -10,6 +10,7 @@ from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator, RuleEvaluatorTypes
+from app.utilities.types import LocationType
 
 
 class PathFinder:
@@ -77,7 +78,7 @@ class PathFinder:
 
     def _get_not_skipped_blocks_in_section(
         self,
-        location: Location,
+        current_location: LocationType,
         routing_path_block_ids: list[str],
         section: ImmutableDict,
         when_rules_block_dependencies: list[str],
@@ -89,7 +90,7 @@ class PathFinder:
                 if "skip_conditions" in group:
                     skip_conditions = group.get("skip_conditions")
                     if self.evaluate_skip_conditions(
-                        location,
+                        current_location,
                         routing_path_block_ids,
                         skip_conditions,
                         when_rules_block_dependencies,
@@ -111,7 +112,7 @@ class PathFinder:
     def _build_routing_path_block_ids(
         self,
         blocks: Sequence[Mapping],
-        current_location: Location,
+        current_location: LocationType,
         when_rules_block_dependencies: list[str],
     ) -> list[str]:
         # Keep going unless we've hit the last block
@@ -230,7 +231,7 @@ class PathFinder:
 
     def evaluate_skip_conditions(
         self,
-        this_location: Location,
+        current_location: LocationType,
         routing_path_block_ids: list[str],
         skip_conditions: ImmutableDict[str, dict] | None,
         when_rules_block_dependencies: list[str],
@@ -250,7 +251,7 @@ class PathFinder:
             metadata=self.metadata,
             response_metadata=self.response_metadata,
             progress_store=self.progress_store,
-            location=this_location,
+            location=current_location,
             routing_path_block_ids=routing_path_block_ids,
         )
 
