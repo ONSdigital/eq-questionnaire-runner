@@ -1271,13 +1271,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _populate_placeholder_section_dependencies(self) -> None:
         for block in self.get_blocks():
             transforms = get_mappings_with_key("transform", block)
-            placeholder_answer_ids = [
+            placeholder_answer_ids = {
                 item.get("identifier")
                 for transform in transforms
                 if transform["transform"] in TRANSFORMS_REQUIRING_ROUTING_PATH
                 for item in transform["arguments"]["items"]
                 if item.get("source") == "answers"
-            ]
+            }
             placeholder_dependencies = self._get_section_ids_for_answer_ids(
                 answer_ids=placeholder_answer_ids
             )
