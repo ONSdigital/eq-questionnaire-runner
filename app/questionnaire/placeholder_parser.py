@@ -12,8 +12,8 @@ from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire import path_finder as pf
 from app.questionnaire.dependencies import (
-    get_block_ids_for_dependencies,
-    get_calculated_summary_block_ids_of_dependent_section,
+    map_calculated_summary_block_ids_to_routing_path,
+    map_section_ids_to_routing_path,
 )
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
 from app.questionnaire.relationship_location import RelationshipLocation
@@ -195,7 +195,7 @@ class PlaceholderParser:
         if not self._location:
             return {}
 
-        return get_calculated_summary_block_ids_of_dependent_section(
+        return map_calculated_summary_block_ids_to_routing_path(
             location=self._location,
             progress_store=self._progress_store,
             sections_to_ignore=sections_to_ignore,
@@ -217,7 +217,7 @@ class PlaceholderParser:
                 self._location.section_id
             ]
         ):
-            block_ids = get_block_ids_for_dependencies(
+            block_ids = map_section_ids_to_routing_path(
                 location=self._location,
                 progress_store=self._progress_store,
                 sections_to_ignore=["when"],

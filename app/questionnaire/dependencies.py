@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     from app.questionnaire.path_finder import PathFinder  # pragma: no cover
 
 
-def get_block_ids_for_dependencies(
+def map_section_ids_to_routing_path(
     *,
     location: Location | RelationshipLocation,
     progress_store: ProgressStore,
@@ -54,7 +54,7 @@ def get_block_ids_for_dependencies(
     return block_ids_by_section
 
 
-def get_calculated_summary_block_ids_of_dependent_section(
+def map_calculated_summary_block_ids_to_routing_path(
     *,
     location: Location | RelationshipLocation,
     progress_store: ProgressStore,
@@ -67,7 +67,7 @@ def get_calculated_summary_block_ids_of_dependent_section(
     dependent_sections = schema.calculated_summary_section_dependencies_by_block[
         location.section_id
     ]
-    return get_block_ids_for_dependencies(
+    return map_section_ids_to_routing_path(
         location=location,
         progress_store=progress_store,
         sections_to_ignore=sections_to_ignore,
