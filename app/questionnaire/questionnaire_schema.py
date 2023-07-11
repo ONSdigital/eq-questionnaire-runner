@@ -3,7 +3,7 @@ from collections import defaultdict
 from copy import deepcopy
 from dataclasses import dataclass
 from functools import cached_property
-from typing import Any, Generator, Iterable, Literal, Mapping, Sequence, TypeAlias
+from typing import Any, Generator, Iterable, Literal, Mapping, Sequence, SupportsIndex, TypeAlias, Union
 
 from flask_babel import force_locale
 from ordered_set import OrderedSet
@@ -82,7 +82,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         ] = defaultdict(set)
         self._language_code = language_code
         self._questionnaire_json = questionnaire_json
-        self.min_and_max_map: dict[str, str | dict[str, str]] = {}
+        self.min_and_max_map: dict[str, Union[SupportsIndex, slice]] = {}
 
         # The ordering here is required as they depend on each other.
         self._sections_by_id = self._get_sections_by_id()
