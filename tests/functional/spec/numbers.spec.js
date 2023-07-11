@@ -2,6 +2,10 @@ import SetMinMax from "../generated_pages/numbers/set-min-max-block.page.js";
 import TestMinMax from "../generated_pages/numbers/test-min-max-block.page.js";
 import DetailAnswer from "../generated_pages/numbers/detail-answer-block.page";
 import SubmitPage from "../generated_pages/numbers/submit.page";
+import currencyBlock from "../generated_pages/variants_question/currency-block.page.js";
+import firstNumberBlock from "../generated_pages/variants_question/first-number-block.page.js";
+import secondNumberBlock from "../generated_pages/variants_question/second-number-block.page.js";
+import currencySectionSummary from "../generated_pages/variants_question/currency-section-summary.page.js";
 
 describe("Number validation", () => {
   before(async () => {
@@ -57,11 +61,17 @@ describe("Number validation", () => {
     it("When I enter values inside the set range, Then I should be able to submit the survey", async () => {
       await $(TestMinMax.testRange()).setValue("12");
       await $(TestMinMax.testDecimal()).setValue("11.23");
-      await $(TestMinMax.testPercent()).setValue("99");
       await $(TestMinMax.submit()).click();
       await $(DetailAnswer.other()).click();
       await $(DetailAnswer.otherDetail()).setValue("1020");
       await $(DetailAnswer.submit()).click();
+      await $(currencyBlock.usDollars()).click();
+      await $(currencyBlock.submit()).click();
+      await $(firstNumberBlock.firstNumber()).setValue(123);
+      await $(firstNumberBlock.submit()).click();
+      await $(secondNumberBlock.secondNumber()).setValue(321);
+      await $(secondNumberBlock.submit()).click();
+      await $(currencySectionSummary.submit()).click();
 
       await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
@@ -77,6 +87,8 @@ describe("Number validation", () => {
 
       await $(DetailAnswer.otherDetail()).setValue("1019");
       await $(DetailAnswer.submit()).click();
+      await $(secondNumberBlock.submit()).click();
+      await $(currencySectionSummary.submit()).click();
 
       await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
