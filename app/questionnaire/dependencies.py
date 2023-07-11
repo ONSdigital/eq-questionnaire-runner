@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
 def map_section_ids_to_routing_path(
     *,
-    location: Location | RelationshipLocation,
+    location: LocationType,
     progress_store: ProgressStore,
     path_finder: PathFinder,
     source_type: str,
@@ -56,7 +56,7 @@ def map_section_ids_to_routing_path(
 
 def map_calculated_summary_block_ids_to_routing_path(
     *,
-    location: Location | RelationshipLocation,
+    location: LocationType,
     progress_store: ProgressStore,
     path_finder: PathFinder,
     data: MultiDict | Mapping | Sequence,
