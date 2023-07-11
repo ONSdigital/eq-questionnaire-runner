@@ -88,6 +88,8 @@ class Group:
         blocks = []
 
         for block in group_schema["blocks"]:
+            # the block type will only be ListRepeatingQuestion when in the context of a calculated summary or grand calculated summary
+            # any other summary like section-summary will use the parent list collector instead and render items as part of the ListCollector check further down
             if block["type"] == "ListRepeatingQuestion":
                 # list repeating questions aren't themselves on the path, the parent list collector is checked in ListCollectorBlock
                 list_collector_block = ListCollectorBlock(

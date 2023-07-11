@@ -18,10 +18,8 @@ class ListAction(Question):
         )
 
     def _get_routing_path(self):
-        return self.router.routing_path(
-            section_id=self.parent_location.section_id,
-            list_item_id=self.parent_location.list_item_id,
-        )
+        """Only the section id is required, as list collectors won't be in a repeating section"""
+        return self.router.routing_path(section_id=self.parent_location.section_id)
 
     def is_location_valid(self):
         can_access_parent_location = self.router.can_access_location(
