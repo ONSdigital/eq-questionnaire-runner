@@ -23,11 +23,11 @@
     ],
     "questionnaire_flow": {
         "type": "Hub",
-        "options": { "required_completed_sections": ["section"] }
+        "options": { "required_completed_sections": ["section-1"] }
     },
     "sections": [
         {
-            "id": "section",
+            "id": "section-1",
             "title": "Transport",
             "summary": {
                 "show_on_completion": true,
@@ -46,7 +46,7 @@
             },
             "groups": [
                 {
-                    "id": "group",
+                    "id": "group-1",
                     "blocks": [
                         {
                             "id": "block-car",
@@ -383,6 +383,64 @@
                                         0
                                     ]
                                 }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "enabled": {
+                "when": {
+                    ">": [
+                        {
+                            "source": "calculated_summary",
+                            "identifier": "calculated-summary-count"
+                        },
+                        0
+                    ]
+                }
+            },
+            "id": "section-2",
+            "summary": { "show_on_completion": true },
+            "title": "Travel Details",
+            "groups": [
+                {
+                    "id": "group-2",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "family-journeys",
+                            "question": {
+                                "id": "family-journeys-question",
+                                "title": {
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "total_journeys",
+                                            "value": {
+                                                "identifier": "calculated-summary-count",
+                                                "source": "calculated_summary"
+                                            }
+                                        }
+                                    ],
+                                    "text": "How many of your {total_journeys} journeys are to visit family?"
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "family-journeys-answer",
+                                        "label": "Number of trips to visit family",
+                                        "mandatory": true,
+                                        "description": "Cannot exceed the total journeys from section 1",
+                                        "type": "Number",
+                                        "maximum": {
+                                            "value": {
+                                                "source": "calculated_summary",
+                                                "identifier": "calculated-summary-count"
+                                            }
+                                        }
+                                    }
+                                ]
                             }
                         }
                     ]

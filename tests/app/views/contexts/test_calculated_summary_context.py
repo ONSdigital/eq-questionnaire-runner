@@ -382,8 +382,8 @@ def test_build_view_context_for_calculated_summary_with_answers_from_repeating_b
         progress_store=progress_store,
         metadata=None,
         response_metadata={},
-        routing_path=RoutingPath(section_id="section", block_ids=block_ids),
-        current_location=Location(section_id="section", block_id=block_id),
+        routing_path=RoutingPath(section_id="section-1", block_ids=block_ids),
+        current_location=Location(section_id="section-1", block_id=block_id),
     )
 
     context = calculated_summary_context.build_view_context()

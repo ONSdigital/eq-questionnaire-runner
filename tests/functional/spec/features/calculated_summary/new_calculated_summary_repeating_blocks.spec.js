@@ -1,4 +1,5 @@
-import SectionPage from "../../../generated_pages/new_calculated_summary_repeating_blocks/section-summary.page.js";
+import SectionOnePage from "../../../generated_pages/new_calculated_summary_repeating_blocks/section-1-summary.page.js";
+import SectionTwoPage from "../../../generated_pages/new_calculated_summary_repeating_blocks/section-2-summary.page.js";
 import BlockCarPage from "../../../generated_pages/new_calculated_summary_repeating_blocks/block-car.page.js";
 import AddTransportPage from "../../../generated_pages/new_calculated_summary_repeating_blocks/list-collector-add.page.js";
 import RemoveTransportPage from "../../../generated_pages/new_calculated_summary_repeating_blocks/list-collector-remove.page.js";
@@ -8,6 +9,8 @@ import ListCollectorPage from "../../../generated_pages/new_calculated_summary_r
 import CalculatedSummarySpendingPage from "../../../generated_pages/new_calculated_summary_repeating_blocks/calculated-summary-spending.page.js";
 import CalculatedSummaryCountPage from "../../../generated_pages/new_calculated_summary_repeating_blocks/calculated-summary-count.page.js";
 import { assertSummaryValues, repeatingAnswerChangeLink } from "../../../helpers";
+import HubPage from "../../../base_pages/hub.page";
+import FamilyJourneysPage from "../../../generated_pages/new_calculated_summary_repeating_blocks/family-journeys.page";
 
 describe("Feature: Calculated Summary using Repeating Blocks", () => {
   before("Reaching the first calculated summary", async () => {
@@ -62,7 +65,7 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
   });
 
   it("Given I add a new item to the list and complete the repeating blocks, I am taken to each calculated summary in turn to confirm the new total", async () => {
-    await $(SectionPage.transportListAddLink()).click();
+    await $(SectionOnePage.transportListAddLink()).click();
     await $(AddTransportPage.transportName()).selectByAttribute("value", "Train");
     await $(AddTransportPage.submit()).click();
     await $(TransportRepeatingBlock1Page.transportCompany()).setValue("Great Western Railway");
@@ -125,7 +128,7 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
   });
 
   it("Given I remove one of the list items, I am taken back to each calculated summary in turn to confirm the new totals", async () => {
-    await $(SectionPage.transportListRemoveLink(1)).click();
+    await $(SectionOnePage.transportListRemoveLink(1)).click();
     await $(RemoveTransportPage.yes()).click();
     await $(RemoveTransportPage.submit()).click();
     await expect(await browser.getUrl()).to.contain(CalculatedSummarySpendingPage.pageName);
@@ -139,5 +142,19 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
       "We calculate the total journeys made per month to be 14. Is this correct?"
     );
     await assertSummaryValues(["2", "12"]);
+  });
+
+  it("Given I enter section 2, the calculated summary from section 1 is correctly used to validate my answer", async () => {
+    await $(CalculatedSummaryCountPage.submit()).click();
+    await $(SectionOnePage.submit()).click();
+    await $(HubPage.submit()).click();
+    await expect(await $(FamilyJourneysPage.questionTitle()).getText()).to.contain("How many of your 14 journeys are to visit family?");
+    await $(FamilyJourneysPage.answer()).setValue(15);
+    await $(FamilyJourneysPage.submit()).click();
+    await expect(await $(FamilyJourneysPage.singleErrorLink()).getText()).to.contain("Enter an answer less than or equal to 14");
+    await $(FamilyJourneysPage.answer()).setValue(10);
+    await $(FamilyJourneysPage.submit()).click();
+    await expect(await $(SectionTwoPage.familyJourneysQuestion()).getText()).to.contain("How many of your 14 journeys are to visit family?");
+    await expect(await $(SectionTwoPage.familyJourneysAnswer()).getText()).to.contain("10");
   });
 });
