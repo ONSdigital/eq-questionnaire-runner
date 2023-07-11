@@ -83,7 +83,7 @@ class PlaceholderParser:
     ) -> MutableMapping[str, ValueSourceEscapedTypes | ValueSourceTypes]:
         sections_to_ignore = list(self._routing_path_block_ids_by_section_key)
 
-        if routing_path_block_ids_map := self._get_routing_path_block_ids(
+        if routing_path_block_ids_map := self._get_routing_path_block_ids_and_section_key_map(
             data=placeholder_list,
             sections_to_ignore=sections_to_ignore,
         ):
@@ -187,7 +187,7 @@ class PlaceholderParser:
                 values.append(value)
         return values
 
-    def _get_routing_path_block_ids(
+    def _get_routing_path_block_ids_and_section_key_map(
         self,
         data: Sequence[Mapping],
         sections_to_ignore: list | None = None,
