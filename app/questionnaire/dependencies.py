@@ -6,10 +6,10 @@ from ordered_set import OrderedSet
 from werkzeug.datastructures import MultiDict
 
 from app.data_models import ProgressStore
-from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.questionnaire_schema import get_sources_for_type_from_data
-from app.questionnaire.relationship_location import RelationshipLocation
 from app.utilities.mappings import get_flattened_mapping_values
+from app.utilities.types import LocationType
 
 if TYPE_CHECKING:
     from app.questionnaire.path_finder import PathFinder  # pragma: no cover

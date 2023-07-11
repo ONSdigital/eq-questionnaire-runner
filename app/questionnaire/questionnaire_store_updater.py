@@ -13,6 +13,7 @@ from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import AnswerDependent
 from app.questionnaire.router import Router
+from app.utilities.types import LocationType
 
 DependentSection = namedtuple("DependentSection", "section_id list_item_id is_complete")
 
@@ -24,7 +25,7 @@ class QuestionnaireStoreUpdater:
 
     def __init__(
         self,
-        current_location: Location,
+        current_location: LocationType,
         schema: QuestionnaireSchema,
         questionnaire_store: QuestionnaireStore,
         router: Router,
@@ -228,12 +229,12 @@ class QuestionnaireStoreUpdater:
             answer.value = answers_to_keep
             self._answer_store.add_or_update(answer)
 
-    def add_completed_location(self, location: Location | None = None) -> None:
+    def add_completed_location(self, location: LocationType | None = None) -> None:
         if not self._progress_store.is_routing_backwards:
             location = location or self._current_location
             self._progress_store.add_completed_location(location)
 
-    def remove_completed_location(self, location: Location | None = None) -> bool:
+    def remove_completed_location(self, location: LocationType | None = None) -> bool:
         location = location or self._current_location
         return self._progress_store.remove_completed_location(location)
 
