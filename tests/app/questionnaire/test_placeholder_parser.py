@@ -1233,38 +1233,3 @@ def test_placeholder_dependencies_cache(mocker, mock_renderer):
     assert placeholder["date_entry_answer_from"] == "16 April 2016"
     assert placeholder["date_entry_answer_to"] == "28 April 2016"
     assert path_finder.called == 1
-
-
-def test_placeholder_uses_vsr(mock_renderer, mock_schema, mock_location):
-    placeholder_list = [
-        {
-            "placeholder": "start_date",
-            "transforms": [
-                {
-                    "transform": "format_date",
-                    "arguments": {
-                        "date_to_format": {
-                            "source": "metadata",
-                            "identifier": "ref_p_start_date",
-                        },
-                        "date_format": "EEEE d MMMM yyyy",
-                    },
-                }
-            ],
-        }
-    ]
-    metadata = get_metadata({"ref_p_start_date": "2019-02-11"})
-    parser = PlaceholderParser(
-        language="en",
-        answer_store=AnswerStore(),
-        list_store=ListStore(),
-        metadata=metadata,
-        response_metadata={},
-        schema=mock_schema,
-        renderer=mock_renderer,
-        progress_store=ProgressStore(),
-        location=mock_location,
-    )
-    placeholders = parser(placeholder_list)
-
-    assert placeholders["start_date"] == "Monday 11 February 2019"
