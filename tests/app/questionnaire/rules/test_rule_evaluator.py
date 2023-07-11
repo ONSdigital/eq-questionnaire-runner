@@ -3,7 +3,7 @@ from typing import Mapping, Optional, Union
 
 import pytest
 from freezegun import freeze_time
-from mock import Mock
+from mock import MagicMock, Mock
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.answer import Answer
@@ -21,7 +21,7 @@ current_date_as_yyyy_mm_dd = current_date.strftime("%Y-%m-%d")
 
 
 def get_mock_schema():
-    schema = Mock(
+    schema = MagicMock(
         QuestionnaireSchema(
             {
                 "questionnaire_flow": {

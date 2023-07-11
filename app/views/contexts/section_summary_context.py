@@ -42,7 +42,7 @@ class SectionSummaryContext(Context):
 
     def __call__(
         self,
-        return_to: Optional[str] = "section-summary",
+        return_to: str | None = "section-summary",
         view_submitted_response: bool = False,
     ) -> Mapping[str, Any]:
         summary = self.build_summary(return_to, view_submitted_response)

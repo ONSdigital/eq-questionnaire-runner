@@ -115,7 +115,7 @@ class ListCollectorBlock:
             for_list=list_collector_block["for_list"],
             section_id=self._location.section_id,
             has_repeating_blocks=bool(list_collector_block.get("repeating_blocks")),
-            return_to="section-summary",
+            return_to=self._return_to,
             edit_block_id=edit_block_id,
             remove_block_id=remove_block_id,
             primary_person_edit_block_id=primary_person_edit_block_id,
@@ -139,7 +139,7 @@ class ListCollectorBlock:
         Given a repeating block question to render,
         return the list of rendered question blocks for each list item id
         """
-        list_name = self._schema.repeating_block_to_list_map[block["id"]]
+        list_name = self._schema.list_names_by_list_repeating_block[block["id"]]
         list_model = self._list_store[list_name]
         blocks: list[dict] = []
         if answer_blocks_by_id := self._get_related_answers(
@@ -171,7 +171,7 @@ class ListCollectorBlock:
                 "questionnaire.block",
                 list_name=summary["for_list"],
                 block_id=list_collector_block["add_block"]["id"],
-                return_to="section-summary",
+                return_to=self._return_to,
             )
 
         if driving_question_block := self._schema.get_driving_question_for_list(
@@ -180,7 +180,7 @@ class ListCollectorBlock:
             return url_for(
                 "questionnaire.block",
                 block_id=driving_question_block["id"],
-                return_to="section-summary",
+                return_to=self._return_to,
             )
 
     def _get_related_answers(

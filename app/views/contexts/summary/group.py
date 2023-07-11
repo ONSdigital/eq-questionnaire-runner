@@ -171,7 +171,7 @@ class Group:
                         schema=schema,
                         location=location,
                         language=language,
-                        return_to="section-summary",
+                        return_to=return_to,
                     )
 
                     list_summary_element = list_collector_block.list_summary_element(

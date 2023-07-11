@@ -1,7 +1,7 @@
 from typing import Mapping, Optional, Union
 
 import pytest
-from mock import Mock
+from mock import MagicMock, Mock
 
 from app.authentication.auth_payload_versions import AuthPayloadVersion
 from app.data_models import AnswerStore, ListStore, ProgressStore
@@ -20,7 +20,7 @@ def get_list_items(num: int):
 
 
 def get_mock_schema():
-    schema = Mock(
+    schema = MagicMock(
         QuestionnaireSchema(
             {
                 "questionnaire_flow": {
@@ -346,9 +346,15 @@ def test_answer_source_default_answer(use_default_answer):
     )
 
 
-@pytest.mark.parametrize("answer_values", ([], [10, 5], [100, 200, 300]))
+@pytest.mark.parametrize(
+    "answer_values,escape_answer_values",
+    (([], False), ([10, 5], False), ([100, 200, 300], False), ([HTML_CONTENT], True)),
+)
 def test_answer_source_dynamic_answer(
-    mocker, placeholder_transform_question_dynamic_answers_json, answer_values
+    mocker,
+    placeholder_transform_question_dynamic_answers_json,
+    answer_values,
+    escape_answer_values,
 ):
     """
     Tests that a dynamic answer id as a value source resolves to the list of answers for that list and question
@@ -372,12 +378,14 @@ def test_answer_source_dynamic_answer(
         ),
         list_store=ListStore([{"name": "supermarkets", "items": list_item_ids}]),
         schema=schema,
+        escape_answer_values=escape_answer_values,
     )
+    expected_result = [ESCAPED_CONTENT] if escape_answer_values else answer_values
     assert (
         value_source_resolver.resolve(
             {"source": "answers", "identifier": "percentage-of-shopping"}
         )
-        == answer_values
+        == expected_result
     )
 
 
@@ -389,7 +397,7 @@ def test_answer_source_repeating_block_answers(
     Tests that an answer id from a repeating block resolves to the list of answers for that list and repeating block question
     """
     schema = mocker.MagicMock()
-    schema.repeating_block_to_list_map = {"repeating-block-1": "transport"}
+    schema.list_names_by_list_repeating_block = {"repeating-block-1": "transport"}
     schema.is_answer_dynamic = Mock(return_value=False)
     schema.is_answer_for_repeating_block = Mock(return_value=True)
     schema.get_block_for_answer_id = Mock(

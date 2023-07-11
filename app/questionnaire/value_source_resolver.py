@@ -1,12 +1,16 @@
 from dataclasses import dataclass
 from decimal import Decimal
-from typing import Callable, Iterable, Mapping, MutableMapping
+from typing import Callable, Iterable, Mapping, MutableMapping, TypeAlias
 
 from markupsafe import Markup
 from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import ProgressStore
-from app.data_models.answer import AnswerValueTypes, escape_answer_value
+from app.data_models.answer import (
+    AnswerValueEscapedTypes,
+    AnswerValueTypes,
+    escape_answer_value,
+)
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListModel, ListStore
 from app.data_models.metadata_proxy import MetadataProxy, NoMetadataException
@@ -15,9 +19,10 @@ from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules import rule_evaluator
 
-ValueSourceTypes = None | str | int | Decimal | list
-ValueSourceEscapedTypes = Markup | list[Markup]
-IntOrDecimal = int | Decimal
+ValueSourceTypes: TypeAlias = None | str | int | Decimal | list
+ValueSourceEscapedTypes: TypeAlias = Markup | list[Markup]
+IntOrDecimal: TypeAlias = int | Decimal
+ResolvedAnswerList: TypeAlias = list[AnswerValueTypes | AnswerValueEscapedTypes | None]
 
 
 @dataclass
@@ -42,10 +47,14 @@ class ValueSourceResolver:
         return True
 
     def _is_block_on_path(self, block_id: str) -> bool:
-        return (
-            self.routing_path_block_ids is not None
-            and block_id in self.routing_path_block_ids
-        )
+        if block_id in self.schema.repeating_block_ids:
+            # repeating blocks aren't on the path, so check the parent list collector
+            list_name = self.schema.list_names_by_list_repeating_block[block_id]
+            # Type ignore: section and list collector will both exist if the block is repeating
+            section: ImmutableDict = self.schema.get_section_for_block_id(block_id)  # type: ignore
+            list_collector_block: ImmutableDict = self.schema.get_list_collector_for_list(section, list_name)  # type: ignore
+            return list_collector_block["id"] in (self.routing_path_block_ids or [])
+        return block_id in (self.routing_path_block_ids or [])
 
     def _get_answer_value(
         self,
@@ -102,22 +111,23 @@ class ValueSourceResolver:
 
     def _resolve_repeating_answers_for_list(
         self, *, answer_id: str, list_name: str
-    ) -> list[AnswerValueTypes]:
+    ) -> ResolvedAnswerList:
         """Return the list of answers in answer store that correspond to the given list name and dynamic/repeating answer_id"""
-        answer_values: list[AnswerValueTypes] = []
+        answer_values: ResolvedAnswerList = []
         for list_item_id in self.list_store[list_name]:
-            if answer_value := self._get_answer_value(
-                answer_id=answer_id,
-                list_item_id=list_item_id,
-                assess_routing_path=False,
-            ):
+            answer_value = self._get_answer_value(
+                answer_id=answer_id, list_item_id=list_item_id
+            )
+            if answer_value is not None and self.escape_answer_values:
+                answer_values.append(escape_answer_value(answer_value))
+            else:
                 answer_values.append(answer_value)
         return answer_values
 
     def _resolve_dynamic_answers(
         self,
         answer_id: str,
-    ) -> list[AnswerValueTypes] | None:
+    ) -> ResolvedAnswerList | None:
         # Type ignore: block must exist for this function to be called
         question = self.schema.get_block_for_answer_id(answer_id).get("question", {})  # type: ignore
         dynamic_answers = question["dynamic_answers"]
@@ -127,12 +137,12 @@ class ValueSourceResolver:
                 answer_id=answer_id, list_name=values["identifier"]
             )
 
-    def _resolve_repeating_block_answers(
-        self, answer_id: str
-    ) -> list[AnswerValueTypes]:
+    def _resolve_repeating_block_answers(self, answer_id: str) -> ResolvedAnswerList:
         # Type ignore: block must exist for this function to be called
         repeating_block: ImmutableDict = self.schema.get_block_for_answer_id(answer_id)  # type: ignore
-        list_name = self.schema.repeating_block_to_list_map[repeating_block["id"]]
+        list_name = self.schema.list_names_by_list_repeating_block[
+            repeating_block["id"]
+        ]
         return self._resolve_repeating_answers_for_list(
             answer_id=answer_id, list_name=list_name
         )
@@ -185,7 +195,7 @@ class ValueSourceResolver:
             if not self.location:
                 raise ValueError("location is required to resolve block progress")
 
-            if not self._is_block_on_path(identifier):
+            if self.routing_path_block_ids and not self._is_block_on_path(identifier):
                 return None
 
             # Type ignore: Section id will exist at this point

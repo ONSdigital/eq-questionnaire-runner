@@ -289,7 +289,7 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         self.post()
         self.assertInUrl("/submit/")
         self.click_add_link()
-        self.assertInUrl("?return_to=section-summary")
+        self.assertInUrl("?return_to=final-summary")
 
         # Add third company - from submit summary
         self.add_company(company_name="Company3")
@@ -334,7 +334,7 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         # Remove item 2
         remove_link = self.get_list_item_link("remove", 2)
         self.get(remove_link)
-        self.assertInUrl("?return_to=section-summary")
+        self.assertInUrl("?return_to=final-summary")
         self.assertInBody("Are you sure you want to remove this company or UK branch?")
         self.post({"remove-confirmation": "Yes"})
 
