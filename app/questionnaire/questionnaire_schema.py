@@ -3,7 +3,17 @@ from collections import defaultdict
 from copy import deepcopy
 from dataclasses import dataclass
 from functools import cached_property
-from typing import Any, Generator, Iterable, Literal, Mapping, Sequence, SupportsIndex, TypeAlias, Union
+from typing import (
+    Any,
+    Generator,
+    Iterable,
+    Literal,
+    Mapping,
+    Sequence,
+    SupportsIndex,
+    TypeAlias,
+    Union,
+)
 
 from flask_babel import force_locale
 from ordered_set import OrderedSet
@@ -103,7 +113,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return ImmutableDict(self._answer_dependencies_map)
 
     def _append_to_min_max_map(
-        self, min_max: Literal["minimum", "maximum"], answer_id: str, answers: list, default_min_max: str
+        self,
+        min_max: Literal["minimum", "maximum"],
+        answer_id: str,
+        answers: list,
+        default_min_max: str,
     ) -> None:
         longest_string = None
         for answer in answers:
@@ -149,7 +163,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 "Unit",
             ]:
                 self._append_to_min_max_map("minimum", answer_id, answers, "0")
-                self._append_to_min_max_map("maximum", answer_id, answers, str(MAX_NUMBER))
+                self._append_to_min_max_map(
+                    "maximum", answer_id, answers, str(MAX_NUMBER)
+                )
 
     @cached_property
     def when_rules_section_dependencies_by_section(
