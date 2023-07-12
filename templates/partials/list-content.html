@@ -14,8 +14,6 @@
     </div>
   {%- endif -%}
 
-  {% for description in contents %}
-    <p>{{ description["description"] }}</p>
-  {% endfor %}
+  {% include 'partials/contents.html' %}
 
 {% endcall %}

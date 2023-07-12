@@ -1,4 +1,4 @@
-from typing import Iterable, Mapping, MutableMapping
+from typing import Iterable, Mapping, MutableMapping, Type
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -144,30 +144,24 @@ class Group:
                     section_id=section["id"],  # type: ignore
                     list_name=block["for_list"],
                 ):
-                    if block["type"] == "ListCollector":
-                        list_collector_block: ListCollectorBlock | ListCollectorContentBlock = ListCollectorBlock(
-                            routing_path_block_ids=routing_path_block_ids,
-                            answer_store=answer_store,
-                            list_store=list_store,
-                            progress_store=progress_store,
-                            metadata=metadata,
-                            response_metadata=response_metadata,
-                            schema=schema,
-                            location=location,
-                            language=language,
-                        )
-                    else:
-                        list_collector_block = ListCollectorContentBlock(
-                            routing_path_block_ids=routing_path_block_ids,
-                            answer_store=answer_store,
-                            list_store=list_store,
-                            progress_store=progress_store,
-                            metadata=metadata,
-                            response_metadata=response_metadata,
-                            schema=schema,
-                            location=location,
-                            language=language,
-                        )
+                    list_collector_block_class: Type[
+                        ListCollectorBlock | ListCollectorContentBlock
+                    ] = (
+                        ListCollectorBlock
+                        if block["type"] == "ListCollector"
+                        else ListCollectorContentBlock
+                    )
+                    list_collector_block = list_collector_block_class(
+                        routing_path_block_ids=routing_path_block_ids,
+                        answer_store=answer_store,
+                        list_store=list_store,
+                        progress_store=progress_store,
+                        metadata=metadata,
+                        response_metadata=response_metadata,
+                        schema=schema,
+                        location=location,
+                        language=language,
+                    )
 
                     list_summary_element = list_collector_block.list_summary_element(
                         summary_item
