@@ -1,22 +1,10 @@
-from functools import cached_property
-
 from flask import url_for
 
 from app.views.contexts import ListContext
-from app.views.handlers.question import Question
+from app.views.handlers.list_collector import ListCollector
 
 
-class ListCollectorContent(Question):
-    @cached_property
-    def repeating_block_ids(self) -> list[str]:
-        return [
-            block["id"] for block in self.rendered_block.get("repeating_blocks", [])
-        ]
-
-    @cached_property
-    def list_name(self) -> str:
-        return self.rendered_block["for_list"]
-
+class ListCollectorContent(ListCollector):
     def get_context(self):
         list_context = ListContext(
             self._language,
