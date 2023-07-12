@@ -209,7 +209,9 @@ class PlaceholderRenderer:
                 )
                 set_pointer(answer, pointer, rendered_text)
 
-    def _handle_data_mutations(self, data_to_render_mutable: dict, list_item_id: str):
+    def _handle_data_mutations(
+        self, data_to_render_mutable: dict, list_item_id: str | None
+    ) -> None:
         """
         Methods to handle suffixing blocks/questions/answers with list item ids, are not strictly related to placeholders, but a prerequisite in some instances
         to rendering the answers. These methods are called here prior to rendering
