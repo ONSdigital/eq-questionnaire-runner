@@ -5,7 +5,7 @@
 {%-  if block['question'] -%}
   {% set question = block['question'] %}
   {% include 'partials/question.html' %}
-{%- elif content["list"] and content["list"] -%}
+{%- elif content["list"] -%}
   {% include 'partials/list-content.html' %}
 {%-  endif -%}
 
