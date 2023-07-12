@@ -1,9 +1,12 @@
-from typing import Any, Mapping, MutableMapping, Optional
+from typing import Mapping, MutableMapping
+
+from jsonpointer import resolve_pointer
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
+from app.questionnaire.schema_utils import find_pointers_containing
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.questionnaire.variants import choose_variant
 from app.views.contexts.summary.question import Question
@@ -12,22 +15,24 @@ from app.views.contexts.summary.question import Question
 class Block:
     def __init__(
         self,
-        block_schema: Mapping[str, Any],
+        block_schema: Mapping,
         *,
         answer_store: AnswerStore,
         list_store: ListStore,
-        metadata: Optional[MetadataProxy],
+        metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
         location: Location,
-        return_to: Optional[str],
-        return_to_block_id: Optional[str] = None,
+        return_to: str | None,
+        return_to_block_id: str | None = None,
         progress_store: ProgressStore,
         language: str,
     ) -> None:
         self.id = block_schema["id"]
         self.title = block_schema.get("title")
         self.number = block_schema.get("number")
+        self.location = location
+        self.schema = schema
 
         self._rule_evaluator = RuleEvaluator(
             schema=schema,
@@ -68,15 +73,15 @@ class Block:
     def get_question(
         self,
         *,
-        block_schema: Mapping[str, Any],
+        block_schema: Mapping,
         answer_store: AnswerStore,
         list_store: ListStore,
-        metadata: Optional[MetadataProxy],
+        metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
         location: Location,
-        return_to: Optional[str],
-        return_to_block_id: Optional[str],
+        return_to: str | None,
+        return_to_block_id: str | None,
         progress_store: ProgressStore,
         language: str,
     ) -> dict[str, Question]:
@@ -111,10 +116,23 @@ class Block:
             language=language,
         ).serialize()
 
-    def serialize(self) -> dict[str, Any]:
-        return {
-            "id": self.id,
-            "title": self.title,
-            "number": self.number,
-            "question": self.question,
-        }
+    def _handle_id_suffixing(self, block: dict) -> dict:
+        """
+        If the block is repeating, the block id, as well as any other ids (e.g. question, answer) need updating to be suffixed with list_item_id
+        This is so the HTML rendered is valid and doesn't have duplicate div ids when repeating blocks are rendered multiple times per list item
+        """
+        if self.id in self.schema.repeating_block_ids:
+            for pointer in find_pointers_containing(block, "id"):
+                data = resolve_pointer(block, pointer)
+                data["id"] = f"{data['id']}-{self.location.list_item_id}"
+        return block
+
+    def serialize(self) -> dict:
+        return self._handle_id_suffixing(
+            {
+                "id": self.id,
+                "title": self.title,
+                "number": self.number,
+                "question": self.question,
+            }
+        )

@@ -128,7 +128,6 @@ class PlaceholderRenderer:
             data_to_render
         )
 
-        self._handle_data_mutations(data_to_render_mutable, list_item_id)
         self._handle_and_resolve_dynamic_answers(data_to_render_mutable)
 
         pointers = find_pointers_containing(data_to_render_mutable, "placeholders")
@@ -165,6 +164,7 @@ class PlaceholderRenderer:
             dynamic_answers = data["dynamic_answers"]
 
             if dynamic_answers["values"]["source"] == "list":
+                self.resolve_dynamic_answers_ids(dynamic_answers)
                 self.resolve_dynamic_answers(dynamic_answers)
 
                 updated_value = {
@@ -178,6 +178,26 @@ class PlaceholderRenderer:
                     set_pointer(data_to_render_mutable, pointer, updated_value)
                 else:
                     data_to_render_mutable |= updated_value
+
+    def resolve_dynamic_answers_ids(
+        self,
+        dynamic_answers: dict,
+    ) -> None:
+        list_name = dynamic_answers["values"]["identifier"]
+        list_items = self._list_store[list_name].items
+
+        resolved_dynamic_answers = []
+
+        for dynamic_answer in dynamic_answers["answers"]:
+            for item in list_items:
+                resolved_dynamic_answer = deepcopy(dynamic_answer)
+                resolved_dynamic_answer["original_answer_id"] = dynamic_answer["id"]
+                resolved_dynamic_answer["id"] = f"{dynamic_answer['id']}-{item}"
+                resolved_dynamic_answer["list_item_id"] = item
+
+                resolved_dynamic_answers.append(resolved_dynamic_answer)
+
+        dynamic_answers["answers"] = resolved_dynamic_answers
 
     def resolve_dynamic_answers(
         self,
@@ -208,58 +228,3 @@ class PlaceholderRenderer:
                     placeholder_parser=placeholder_parser,
                 )
                 set_pointer(answer, pointer, rendered_text)
-
-    def _handle_data_mutations(
-        self, data_to_render_mutable: dict, list_item_id: str | None
-    ) -> None:
-        """
-        Methods to handle suffixing blocks/questions/answers with list item ids, are not strictly related to placeholders, but a prerequisite in some instances
-        to rendering the answers. These methods are called here prior to rendering
-        """
-        self._handle_dynamic_answer_id_suffix(data_to_render_mutable)
-        self._handle_repeating_block_id_suffix(
-            data_to_render_mutable=data_to_render_mutable, list_item_id=list_item_id
-        )
-
-    def _handle_repeating_block_id_suffix(
-        self, *, data_to_render_mutable: dict, list_item_id: str | None
-    ) -> None:
-        """
-        If the data to render is a repeating question, the block-ids/question-ids/answer-ids need suffixing with list_item_id
-        This is so the page renders with valid HTML and avoids duplicate ids for divs when the same block is shown for each list item
-        """
-        if (
-            list_item_id
-            and data_to_render_mutable.get("id") in self._schema.repeating_block_ids
-        ):
-            block = data_to_render_mutable
-            block["id"] = f"{block['id']}-{list_item_id}"
-            if question := block.get("question"):
-                question["id"] = f"{question['id']}-{list_item_id}"
-                for answer in question["answers"]:
-                    answer["id"] = f"{answer['id']}-{list_item_id}"
-
-    def _handle_dynamic_answer_id_suffix(self, data_to_render_mutable: dict) -> None:
-        """
-        For any dynamic answers, suffix the answer id with the list item id
-        """
-        pointers = find_pointers_containing(data_to_render_mutable, "dynamic_answers")
-
-        for pointer in pointers:
-            data = resolve_pointer(data_to_render_mutable, pointer)
-            dynamic_answers = data["dynamic_answers"]
-            list_name = dynamic_answers["values"]["identifier"]
-            list_items = self._list_store[list_name].items
-
-            resolved_dynamic_answers = []
-
-            for dynamic_answer in dynamic_answers["answers"]:
-                for item in list_items:
-                    resolved_dynamic_answer = deepcopy(dynamic_answer)
-                    resolved_dynamic_answer["original_answer_id"] = dynamic_answer["id"]
-                    resolved_dynamic_answer["id"] = f"{dynamic_answer['id']}-{item}"
-                    resolved_dynamic_answer["list_item_id"] = item
-
-                    resolved_dynamic_answers.append(resolved_dynamic_answer)
-
-            dynamic_answers["answers"] = resolved_dynamic_answers
