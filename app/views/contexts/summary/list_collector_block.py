@@ -139,7 +139,7 @@ class ListCollectorBlock:
         Given a repeating block question to render,
         return the list of rendered question blocks for each list item id
         """
-        list_name = self._schema.list_names_by_list_repeating_block[block["id"]]
+        list_name = self._schema.list_names_by_list_repeating_block_id[block["id"]]
         list_model = self._list_store[list_name]
         blocks: list[dict] = []
         if answer_blocks_by_id := self._get_related_answers(

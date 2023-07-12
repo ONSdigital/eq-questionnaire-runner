@@ -82,7 +82,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         ] = defaultdict(set)
         self._language_code = language_code
         self._questionnaire_json = questionnaire_json
-        self._list_names_by_list_repeating_block: dict[str, str] = {}
+        self._list_names_by_list_repeating_block_id: dict[str, str] = {}
         self._repeating_block_answer_ids: set[str] = set()
         self.dynamic_answers_parent_block_ids: set[str] = set()
 
@@ -238,12 +238,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return is_enabled
 
     @cached_property
-    def list_names_by_list_repeating_block(self) -> ImmutableDict[str, str]:
-        return ImmutableDict(self._list_names_by_list_repeating_block)
+    def list_names_by_list_repeating_block_id(self) -> ImmutableDict[str, str]:
+        return ImmutableDict(self._list_names_by_list_repeating_block_id)
 
     @cached_property
     def repeating_block_ids(self) -> list[str]:
-        return list(self._list_names_by_list_repeating_block.keys())
+        return list(self._list_names_by_list_repeating_block_id.keys())
 
     def get_all_when_rules_section_dependencies_for_section(
         self, section_id: str
@@ -307,7 +307,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                             repeating_block_id = repeating_block["id"]
                             blocks[repeating_block_id] = repeating_block
                             self._parent_id_map[repeating_block_id] = block_id
-                            self._list_names_by_list_repeating_block[
+                            self._list_names_by_list_repeating_block_id[
                                 repeating_block_id
                             ] = block["for_list"]
 

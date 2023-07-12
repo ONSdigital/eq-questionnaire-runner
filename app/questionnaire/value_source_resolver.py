@@ -49,7 +49,7 @@ class ValueSourceResolver:
     def _is_block_on_path(self, block_id: str) -> bool:
         if block_id in self.schema.repeating_block_ids:
             # repeating blocks aren't on the path, so check the parent list collector
-            list_name = self.schema.list_names_by_list_repeating_block[block_id]
+            list_name = self.schema.list_names_by_list_repeating_block_id[block_id]
             # Type ignore: section and list collector will both exist if the block is repeating
             section: ImmutableDict = self.schema.get_section_for_block_id(block_id)  # type: ignore
             list_collector_block: ImmutableDict = self.schema.get_list_collector_for_list(section, list_name)  # type: ignore
@@ -140,7 +140,7 @@ class ValueSourceResolver:
     def _resolve_repeating_block_answers(self, answer_id: str) -> ResolvedAnswerList:
         # Type ignore: block must exist for this function to be called
         repeating_block: ImmutableDict = self.schema.get_block_for_answer_id(answer_id)  # type: ignore
-        list_name = self.schema.list_names_by_list_repeating_block[
+        list_name = self.schema.list_names_by_list_repeating_block_id[
             repeating_block["id"]
         ]
         return self._resolve_repeating_answers_for_list(

@@ -397,7 +397,7 @@ def test_answer_source_repeating_block_answers(
     Tests that an answer id from a repeating block resolves to the list of answers for that list and repeating block question
     """
     schema = mocker.MagicMock()
-    schema.list_names_by_list_repeating_block = {"repeating-block-1": "transport"}
+    schema.list_names_by_list_repeating_block_id = {"repeating-block-1": "transport"}
     schema.is_answer_dynamic = Mock(return_value=False)
     schema.is_answer_for_repeating_block = Mock(return_value=True)
     schema.get_block_for_answer_id = Mock(
