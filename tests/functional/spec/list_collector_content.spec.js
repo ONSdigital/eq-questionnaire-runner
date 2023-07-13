@@ -26,6 +26,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await expect(await $(await $("body")).getHTML()).to.contain(
         "You have previously reported the following companies. Press continue to updated registration and trading information."
       );
+      await expect(await $(ListCollectorContentPage.questionText()).getHTML()).to.contain("Companies");
     });
     it("When I get to list collector content block section, Then I should be able to complete repeating blocks and get to the summary.", async () => {
       await fillInListCollectorSection();
