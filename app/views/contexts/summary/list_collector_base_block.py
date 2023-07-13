@@ -14,6 +14,7 @@ from app.views.contexts.summary.block import Block
 class ListCollectorBaseBlock:
     def __init__(
         self,
+        *,
         routing_path_block_ids: Iterable[str],
         answer_store: AnswerStore,
         list_store: ListStore,

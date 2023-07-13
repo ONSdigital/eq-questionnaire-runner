@@ -60,7 +60,7 @@ class ListCollectorContent(ListCollector):
         self.questionnaire_store_updater.save()
 
     def _is_list_collector_content_complete(self):
-        list_name = self._schema.get_repeating_blocks_list_for_section(
+        list_name = self._schema.get_repeating_blocks_list_name_for_section(
             self.current_location.section_id
         )
         return not self.get_first_incomplete_repeating_block_location(

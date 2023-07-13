@@ -525,7 +525,7 @@ class Router:
                     yield (section_id, list_item_id)
 
             elif (
-                repeating_blocks_list := self._schema.get_repeating_blocks_list_for_section(
+                repeating_blocks_list := self._schema.get_repeating_blocks_list_name_for_section(
                     section_id
                 )
             ) and (
