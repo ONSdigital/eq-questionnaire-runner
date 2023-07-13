@@ -60,10 +60,37 @@ def test_get_formatted_currency_with_no_value():
 
 @pytest.mark.usefixtures("gb_locale")
 @pytest.mark.parametrize(
+    "value, currency, schema_limits, formatted_currency",
+    (
+        (2, "GBP", 6, "£2.00"),
+        (Decimal("2.14564"), "GBP", 6, "£2.14564"),
+        (Decimal("2.1"), "GBP", 1, "£2.1"),
+        (Decimal("2.1"), "GBP", None, "£2.10"),
+        (Decimal("3000"), "JPY", 0, "JP¥3,000"),
+        (Decimal("1.1"), "GBP", 6, "£1.10"),
+        (Decimal("3000.445"), "GBP", 6, "£3,000.445"),
+        (Decimal("3000.44545"), "GBP", None, "£3,000.44545"),
+        ("", "", "", ""),
+    ),
+)
+def test_get_custom_currency(value, currency, schema_limits, formatted_currency, app):
+    with app.app_context():
+        assert (
+            get_formatted_currency(
+                value=value, currency=currency, schema_limits=schema_limits
+            )
+            == formatted_currency
+        )
+
+
+@pytest.mark.usefixtures("gb_locale")
+@pytest.mark.parametrize(
     "number, formatted_number",
     (
         (123, "123"),
         ("123.4", "123.4"),
+        (1, "1"),
+        (1.4, "1.4"),
         ("123.40", "123.40"),
         ("123.45678", "123.45678"),
         ("2344.6533", "2,344.6533"),
@@ -751,6 +778,7 @@ def test_calculated_summary_config():
                                     "/questionnaire/first-number-block/?return_to=final-summary"
                                     "&return_to_answer_id=first-number-answer#first-number-answer"
                                 ),
+                                "decimal_places": 2,
                             }
                         ],
                     },
@@ -773,6 +801,7 @@ def test_calculated_summary_config():
                                     "/questionnaire/second-number-block/?return_to=final-summary"
                                     "&return_to_answer_id=second-number-answer#second-number-answer"
                                 ),
+                                "decimal_places": 2,
                             }
                         ],
                     },

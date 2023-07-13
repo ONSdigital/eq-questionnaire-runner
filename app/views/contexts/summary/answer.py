@@ -31,6 +31,7 @@ class Answer:
         self.unit = answer_schema.get("unit")
         self.unit_length = answer_schema.get("unit_length")
         self.currency = answer_schema.get("currency")
+        self.decimal_places = answer_schema.get("decimal_places")
         self.link = self._build_link(
             block_id=block_id,
             list_name=list_name,
@@ -49,6 +50,7 @@ class Answer:
             "unit_length": self.unit_length,
             "currency": self.currency,
             "link": self.link,
+            "decimal_places": self.decimal_places,
         }
 
     def _build_link(

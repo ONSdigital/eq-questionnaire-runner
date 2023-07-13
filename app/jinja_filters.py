@@ -17,7 +17,7 @@ from wtforms import SelectFieldBase
 from app.questionnaire.questionnaire_schema import is_summary_with_calculation
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import MAX_NUMBER
-from app.utilities.decimal_places import eq_format_decimal
+from app.utilities.decimal_places import eq_custom_currency, eq_format_decimal
 
 blueprint = flask.Blueprint("filters", __name__)
 FormType = Mapping[str, Mapping[str, Any]]
@@ -53,10 +53,17 @@ def get_formatted_address(address_fields: dict[str, str]) -> str:
     return "<br>".join(address_field for address_field in address_fields.values())
 
 
-def get_formatted_currency(value: Union[float, Decimal], currency: str = "GBP") -> str:
+def get_formatted_currency(
+    value: Union[float, Decimal],
+    currency: str = "GBP",
+    schema_limits: int | None = None,
+) -> str:
     if value or value == 0:
-        formatted_currency: str = numbers.format_currency(
-            number=value, currency=currency, locale=flask_babel.get_locale()
+        formatted_currency: str = eq_custom_currency(
+            value=value,
+            currency=currency,
+            locale_p=flask_babel.get_locale(),
+            schema_limit=schema_limits,
         )
         return formatted_currency
 
@@ -513,8 +520,13 @@ class SummaryRowItem:
                 for option in value
             ]
         elif answer_type == "currency":
+            decimal_places = (
+                answer["decimal_places"] if answer["decimal_places"] else None
+            )
             self.valueList = [
-                SummaryRowItemValue(get_formatted_currency(value, answer["currency"]))
+                SummaryRowItemValue(
+                    get_formatted_currency(value, answer["currency"], decimal_places)
+                )
             ]
         elif answer_type in ["date", "monthyeardate", "yeardate"]:
             if question["type"] == "DateRange":
