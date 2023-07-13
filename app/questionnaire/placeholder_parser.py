@@ -110,7 +110,7 @@ class PlaceholderParser:
         self,
         *,
         routing_path_block_ids: OrderedSet[str] | None = None,
-        assess_routing_path: bool = False,
+        assess_routing_path: bool | None = None,
     ) -> ValueSourceResolver:
         return ValueSourceResolver(
             answer_store=self._answer_store,

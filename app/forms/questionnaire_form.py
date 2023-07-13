@@ -497,7 +497,7 @@ def get_answer_fields(
             escape_answer_values=False,
             response_metadata=response_metadata,
             routing_path_block_ids=block_ids,
-            assess_routing_path=False,
+            assess_routing_path=None,
             progress_store=progress_store,
         )
 
