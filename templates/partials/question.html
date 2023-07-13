@@ -14,9 +14,6 @@
 {% set question_instruction = format_paragraphs(question.instruction) %}
 {% set question_error = form.question_errors[question.id] %}
 
-{%- if content.content -%}
-  <h1>{{ content.content.title }}</h1>
-{%- endif -%}
 {%- if question.definition -%}
   {% set definition_id = "question-definition" %}
   {% set definition_content %}
