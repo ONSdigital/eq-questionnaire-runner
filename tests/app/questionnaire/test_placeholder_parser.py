@@ -1068,7 +1068,7 @@ def test_placeholder_parser_calculated_summary_dependencies_cache(
     We initialise a Placeholder Parser with a schema, progress store and answer store
     Then we pass a placeholder lists and check:
         - If the routing path is only called once and is using the routing path cache
-        - The correct map value 
+        - The correct map value
     """
     schema = load_schema_from_name("test_calculated_summary")
 
@@ -1152,7 +1152,7 @@ def test_placeholder_dependencies_cache(mocker, mock_renderer):
     We initialise a Placeholder Parser with a schema, progress store and answer store
     Then we pass a placeholder lists and check:
         - If the routing path is only called once and is using the routing path cache
-        - The correct map value 
+        - The correct map value
     """
     schema = load_schema_from_name("test_placeholder_first_non_empty_item")
     path_finder = mocker.patch("app.questionnaire.path_finder.PathFinder.routing_path")
