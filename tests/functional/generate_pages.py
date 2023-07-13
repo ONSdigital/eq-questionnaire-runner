@@ -8,6 +8,7 @@ import re
 from string import Template
 from typing import Mapping, Sequence
 
+from app.questionnaire.questionnaire_schema import is_list_collector_block_editable
 from app.utilities.json import json_loads
 
 logger = logging.getLogger(__name__)
@@ -819,7 +820,7 @@ def process_block(
     if not page_filename:
         page_filename = block["id"] + ".page.js"
 
-    if block["type"] == "ListCollector":
+    if is_list_collector_block_editable(block):
         list_operations = ["add", "edit", "remove"]
         for list_operation in list_operations:
             process_block(
@@ -966,7 +967,7 @@ def process_block(
             for question in all_questions:
                 process_question(question, page_spec, num_questions, page_name)
 
-        if block["type"] == "ListCollector":
+        if is_list_collector_block_editable(block):
             page_spec.write(LIST_SUMMARY_LABEL_GETTER)
             page_spec.write(LIST_SUMMARY_EDIT_LINK_GETTER)
             page_spec.write(LIST_SUMMARY_REMOVE_LINK_GETTER)

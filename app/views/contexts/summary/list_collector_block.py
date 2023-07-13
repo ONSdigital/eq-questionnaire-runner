@@ -6,6 +6,7 @@ from werkzeug.datastructures import ImmutableDict
 
 from app.data_models.list_store import ListModel
 from app.questionnaire import Location
+from app.questionnaire.questionnaire_schema import is_list_collector_block_editable
 from app.views.contexts.summary.block import Block
 from app.views.contexts.summary.list_collector_base_block import ListCollectorBaseBlock
 
@@ -170,7 +171,9 @@ class ListCollectorBlock(ListCollectorBaseBlock):
             block: Mapping = self._schema.get_block_for_answer_id(answer_id)  # type: ignore
 
             block_to_keep = (
-                block["edit_block"] if block["type"] == "ListCollector" else block
+                block["edit_block"]
+                if is_list_collector_block_editable(block)
+                else block
             )
             answers_by_block[block_to_keep].append(answer_id)
 

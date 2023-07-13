@@ -522,19 +522,24 @@ class Router:
                 section_id
             ):
                 for list_item_id in self._list_store[repeating_list]:
-                    yield (section_id, list_item_id)
+                    yield section_id, list_item_id
 
             elif (
                 repeating_blocks_list := self._schema.get_repeating_blocks_list_name_for_section(
                     section_id
                 )
             ) and (
-                self._schema.get_list_collector_type_for_section(section_id)
+                # First list collector must be present at this point
+                self._schema.get_first_list_collector_for_section(section_id).get(  # type: ignore
+                    "type"
+                )
                 == "ListCollectorContent"
             ):
                 for list_item_id in self._list_store[repeating_blocks_list]:
-                    yield (section_id, list_item_id)
+                    # Repeating blocks for ListCollectorContent, which would not otherwise be tracked
+                    yield section_id, list_item_id
 
+                # Parent of repeating blocks when parent is ListCollectorContent
                 yield section_id, None
 
             else:

@@ -650,7 +650,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def get_remove_block_id_for_list(self, list_name: str) -> str | None:
         for block in self.get_blocks():
-            if block["type"] == "ListCollector" and block["for_list"] == list_name:
+            if (
+                is_list_collector_block_editable(block)
+                and block["for_list"] == list_name
+            ):
                 remove_block_id: str = block["remove_block"]["id"]
                 return remove_block_id
 
@@ -705,12 +708,14 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 if block.get("repeating_blocks", []):
                     return block.get("for_list")
 
-    def get_list_collector_type_for_section(self, section_id: str) -> str | None:
+    def get_first_list_collector_for_section(
+        self, section_id: str
+    ) -> ImmutableDict | None:
         # type ignore section always exists at this point
         if blocks := self.get_blocks_for_section(self.get_section(section_id)):  # type: ignore
             for block in blocks:
-                if block.get("repeating_blocks", []):
-                    return block.get("type")
+                if block["type"] in ["ListCollector", "ListCollectorContent"]:
+                    return block
 
     def get_repeating_title_for_section(self, section_id: str) -> ImmutableDict | None:
         if repeat := self.get_repeat_for_section(section_id):
@@ -1067,7 +1072,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         if (
             parent_block
-            and parent_block["type"] == "ListCollector"
+            and is_list_collector_block_editable(parent_block)
             and block_id not in self._repeating_block_ids
         ):
             return parent_block
@@ -1395,3 +1400,8 @@ def get_calculation_block_ids_for_grand_calculated_summary(
         calculation_block=grand_calculated_summary_block,
         source_type="calculated_summary",
     )
+
+
+def is_list_collector_block_editable(block: Mapping) -> bool | None:
+    # Type will always exist at this point
+    return block["type"] == "ListCollector"  # type: ignore
