@@ -1,12 +1,15 @@
 import json
-from typing import Mapping
+from typing import Mapping, MutableMapping
 from urllib.parse import urlencode
 
 from flask import current_app
 from marshmallow import ValidationError
 from requests import RequestException
+from sdc.crypto.jwe_helper import InvalidTokenException, JWEHelper
+from sdc.crypto.key_store import KeyStore
 from structlog import get_logger
 
+from app.keys import KEY_PURPOSE_SDS
 from app.utilities.request_session import get_retryable_session
 from app.utilities.supplementary_data_parser import validate_supplementary_data_v1
 
@@ -30,7 +33,20 @@ class SupplementaryDataRequestFailed(Exception):
         return "Supplementary Data request failed"
 
 
+class MissingSupplementaryDataKey(Exception):
+    pass
+
+
+class InvalidSupplementaryData(Exception):
+    pass
+
+
 def get_supplementary_data(*, dataset_id: str, unit_id: str, survey_id: str) -> dict:
+    # Type ignore: current_app is a singleton in this application and has the key_store key in its eq attribute.
+    key_store = current_app.eq["key_store"]  # type: ignore
+    if not key_store.get_key(purpose=KEY_PURPOSE_SDS, key_type="private"):
+        raise MissingSupplementaryDataKey
+
     supplementary_data_url = current_app.config["SDS_API_BASE_URL"]
 
     parameters = {"dataset_id": dataset_id, "unit_id": unit_id}
@@ -60,7 +76,10 @@ def get_supplementary_data(*, dataset_id: str, unit_id: str, survey_id: str) -> 
 
     if response.status_code == 200:
         supplementary_data_response_content = response.content.decode()
-        supplementary_data = json.loads(supplementary_data_response_content)
+        supplementary_data = decrypt_supplementary_data(
+            key_store=key_store,
+            supplementary_data=json.loads(supplementary_data_response_content),
+        )
 
         return validate_supplementary_data(
             supplementary_data=supplementary_data,
@@ -76,6 +95,22 @@ def get_supplementary_data(*, dataset_id: str, unit_id: str, survey_id: str) -> 
     )
 
     raise SupplementaryDataRequestFailed
+
+
+def decrypt_supplementary_data(
+    *, key_store: KeyStore, supplementary_data: MutableMapping
+) -> Mapping:
+    if encrypted_data := supplementary_data.get("data"):
+        try:
+            decrypted_data = JWEHelper.decrypt(
+                encrypted_data, key_store=key_store, purpose=KEY_PURPOSE_SDS
+            )
+            supplementary_data["data"] = json.loads(decrypted_data)
+            return supplementary_data
+        except InvalidTokenException as e:
+            raise InvalidSupplementaryData from e
+
+    raise ValidationError("Supplementary data has no data to decrypt")
 
 
 def validate_supplementary_data(
