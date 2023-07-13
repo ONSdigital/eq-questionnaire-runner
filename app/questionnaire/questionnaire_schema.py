@@ -386,7 +386,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     ) -> None:
         """Blocks depending on repeating questions may need to depend on adding/removing items from the parent list collector, so update the map"""
         list_block_dependencies: set[str] = set()
-        for child in {"add_block", "remove_block"}:
+        for child in ("add_block", "remove_block"):
             if child_block := list_collector_block.get(child):
                 list_block_dependencies.add(
                     self.get_first_answer_id_for_block(child_block["id"])
