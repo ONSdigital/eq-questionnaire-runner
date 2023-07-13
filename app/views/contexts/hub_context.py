@@ -157,60 +157,6 @@ class HubContext(Context):
     ) -> dict[str, Union[str, list]]:
         row_id = f"{section_id}-{list_item_index}" if list_item_index else section_id
 
-        if (
-            repeating_blocks_list := self._schema.get_repeating_blocks_list_for_section(
-                section_id
-            )
-        ) and (
-            self._schema.get_list_collector_type_for_section(section_id)
-            == "ListCollectorContent"
-        ):
-            status_list = []
-            for repeating_blocks_list_item_id in self._list_store[
-                repeating_blocks_list
-            ]:
-                section_status = self._progress_store.get_section_or_repeating_blocks_progress_status(
-                    section_id, repeating_blocks_list_item_id
-                )
-                status_list.append(section_status)
-
-                if CompletionStatus.IN_PROGRESS in status_list:
-                    return self.get_row_context_for_section(
-                        section_title,
-                        CompletionStatus.IN_PROGRESS,
-                        self.get_section_url(
-                            section_id,
-                            repeating_blocks_list_item_id,
-                            CompletionStatus.IN_PROGRESS,
-                        ),
-                        row_id,
-                    )
-                if (
-                    any(item != CompletionStatus.COMPLETED for item in status_list)
-                    and CompletionStatus.COMPLETED in status_list
-                ):
-                    return self.get_row_context_for_section(
-                        section_title,
-                        CompletionStatus.IN_PROGRESS,
-                        self.get_section_url(
-                            section_id,
-                            repeating_blocks_list_item_id,
-                            CompletionStatus.IN_PROGRESS,
-                        ),
-                        row_id,
-                    )
-                if all(item == CompletionStatus.NOT_STARTED for item in status_list):
-                    return self.get_row_context_for_section(
-                        section_title,
-                        CompletionStatus.NOT_STARTED,
-                        self.get_section_url(
-                            section_id,
-                            repeating_blocks_list_item_id,
-                            CompletionStatus.NOT_STARTED,
-                        ),
-                        row_id,
-                    )
-
         section_status = (
             self._progress_store.get_section_or_repeating_blocks_progress_status(
                 section_id, list_item_id
