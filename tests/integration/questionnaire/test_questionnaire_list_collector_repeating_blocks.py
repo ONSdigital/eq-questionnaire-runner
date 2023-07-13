@@ -455,3 +455,22 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         self.assertInBody(
             "Thank you for completing the Test a List Collector with Repeating Blocks and Section Summary Items"
         )
+
+    def test_edit_repeating_block_from_submit_page_returns_to_submit_page(
+        self,
+    ):
+        self.launch_repeating_blocks_test_survey()
+
+        # Add some items and progress to submit page
+        self.add_three_companies()
+        self.post({"any-other-companies-or-branches-answer": "No"})
+        self.post({"any-other-trading-details-answer": "No other details"})
+        self.post()
+        self.assertInUrl("/submit/")
+
+        # click an edit link
+        self.click_edit_link("registration-number", 2)
+
+        # previous link should return to submit page
+        self.previous()
+        self.assertInUrl("/submit/")

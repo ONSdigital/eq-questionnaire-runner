@@ -35,8 +35,8 @@ class ListAction(Question):
         return True
 
     def get_previous_location_url(self):
-        if self._is_returning_to_section_summary():
-            return self.get_section_summary_url()
+        if url := self.get_section_or_final_summary_url():
+            return url
 
         block_id = self._request_args.get("previous")
         return self._get_location_url(
@@ -46,14 +46,22 @@ class ListAction(Question):
             return_to_block_id=self._return_to_block_id,
         )
 
-    def get_section_summary_url(self):
-        return url_for(
-            "questionnaire.get_section", section_id=self.parent_location.section_id
-        )
+    def get_section_or_final_summary_url(self):
+        if (
+            self._return_to == "section-summary"
+            and self.router.can_display_section_summary(
+                self.parent_location.section_id, self.parent_location.list_item_id
+            )
+        ):
+            return url_for(
+                "questionnaire.get_section", section_id=self.parent_location.section_id
+            )
+        if self._return_to == "final-summary" and self.router.is_questionnaire_complete:
+            return url_for("questionnaire.submit_questionnaire")
 
     def get_next_location_url(self):
-        if self._is_returning_to_section_summary():
-            return self.get_section_summary_url()
+        if url := self.get_section_or_final_summary_url():
+            return url
 
         if self.router.is_block_complete(
             block_id=self.parent_location.block_id,
@@ -109,12 +117,4 @@ class ListAction(Question):
             return_to_answer_id=return_to_answer_id,
             return_to_block_id=return_to_block_id,
             _anchor=anchor,
-        )
-
-    def _is_returning_to_section_summary(self) -> bool:
-        return (
-            self._return_to == "section-summary"
-            and self.router.can_display_section_summary(
-                self.parent_location.section_id, self.parent_location.list_item_id
-            )
         )

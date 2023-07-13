@@ -19,8 +19,8 @@ class ListEditQuestion(ListAction):
         """
         Unless editing from the summary page, If there are repeating blocks and not all are complete, go to the next one
         """
-        if self._is_returning_to_section_summary():
-            return self.get_section_summary_url()
+        if url := self.get_section_or_final_summary_url():
+            return url
 
         if first_incomplete_block := self.get_first_incomplete_list_repeating_block_location_for_list_item(
             repeating_block_ids=self._schema.list_collector_repeating_block_ids,

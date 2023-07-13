@@ -16,8 +16,8 @@ class ListRepeatingQuestion(ListEditQuestion):
         return to previous location, or when return to is None, navigate to the previous repeating block
         unless this is the first repeating block, in which case, route back to the edit block
         """
-        if self._is_returning_to_section_summary():
-            return self.get_section_summary_url()
+        if url := self.get_section_or_final_summary_url():
+            return url
 
         if self.return_to and self.router.can_access_location(
             Location(
