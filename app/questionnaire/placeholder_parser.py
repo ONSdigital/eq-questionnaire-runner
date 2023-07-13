@@ -1,9 +1,15 @@
 from __future__ import annotations
 
 from decimal import Decimal
-from typing import TYPE_CHECKING, Any, Mapping, MutableMapping, Sequence, TypeAlias
-
-from ordered_set import OrderedSet
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Iterable,
+    Mapping,
+    MutableMapping,
+    Sequence,
+    TypeAlias,
+)
 
 from app.data_models import ProgressStore
 from app.data_models.answer_store import AnswerStore
@@ -109,7 +115,7 @@ class PlaceholderParser:
     def _get_value_source_resolver(
         self,
         *,
-        routing_path_block_ids: OrderedSet[str] | None = None,
+        routing_path_block_ids: Iterable[str] | None = None,
         assess_routing_path: bool | None = None,
     ) -> ValueSourceResolver:
         return ValueSourceResolver(
@@ -240,7 +246,7 @@ class PlaceholderParser:
             )
 
             return self._get_value_source_resolver(
-                routing_path_block_ids=OrderedSet(routing_path_block_ids),
+                routing_path_block_ids=routing_path_block_ids,
                 assess_routing_path=True,
             )
 

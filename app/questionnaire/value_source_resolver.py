@@ -33,7 +33,7 @@ class ValueSourceResolver:
     routing_path_block_ids: Iterable[str] | None = None
     use_default_answer: bool = False
     escape_answer_values: bool = False
-    assess_routing_path: bool = True
+    assess_routing_path: bool | None = True
 
     def _is_answer_on_path(self, answer_id: str) -> bool:
         if self.routing_path_block_ids:
