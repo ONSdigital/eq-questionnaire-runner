@@ -99,6 +99,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._populate_answer_dependencies()
         self._populate_when_rules_section_dependencies()
         self._populate_calculated_summary_section_dependencies()
+        print(self._answer_dependencies_map)
 
     @cached_property
     def answer_dependencies(self) -> ImmutableDict[str, set[AnswerDependent]]:
@@ -242,7 +243,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return ImmutableDict(self._list_names_by_list_repeating_block_id)
 
     @cached_property
-    def repeating_block_ids(self) -> list[str]:
+    def list_collector_repeating_block_ids(self) -> list[str]:
         return list(self._list_names_by_list_repeating_block_id.keys())
 
     def get_all_when_rules_section_dependencies_for_section(
@@ -331,7 +332,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         for question in self._get_flattened_questions():
             question_id = question["id"]
             is_for_repeating_block = (
-                self._parent_id_map[question_id] in self.repeating_block_ids
+                self._parent_id_map[question_id]
+                in self.list_collector_repeating_block_ids
             )
 
             for answer in get_answers_from_question(question):
@@ -357,7 +359,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 continue
 
             if block["type"] == "ListCollector" and block.get("repeating_blocks"):
-                self._update_dependencies_for_repeating_blocks(block)
+                self._update_dependencies_for_list_repeating_blocks(block)
 
             for question in self.get_all_questions_for_block(block):
                 self.update_dependencies_for_dynamic_answers(
@@ -380,7 +382,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                                 option["detail_answer"], block_id=block["id"]
                             )
 
-    def _update_dependencies_for_repeating_blocks(self, block: ImmutableDict) -> None:
+    def _update_dependencies_for_list_repeating_blocks(
+        self, block: ImmutableDict
+    ) -> None:
         """Blocks depending on repeating questions may need to depend on removing items from the parent list collector, so update the map"""
         if remove_block := block.get("remove_block"):
             remove_block_answer_id = self.get_first_answer_id_for_block(
@@ -406,8 +410,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         update all calculated summary answers to be dependencies of the dependent block
 
         in the case that one of the calculated summary answers is dynamic/repeating, so has multiple answers for a particular list
-        the calculated summary block needs to depend on the `remove_block` for the list
-        so that removing items forces user to reconfirm the calculated summary
+        the calculated summary block needs to depend on the `remove_block` for the list and the list
+        so that removing items or the list itself forces user to reconfirm the calculated summary
 
         but not the add/edit block, as those don't update the total unless the repeating answers change which it already depends on
         """
@@ -812,7 +816,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def is_answer_dynamic(self, answer_id: str) -> bool:
         return answer_id in self._dynamic_answer_ids
 
-    def is_answer_for_repeating_block(self, answer_id: str) -> bool:
+    def is_answer_for_list_collector_repeating_block(self, answer_id: str) -> bool:
         return answer_id in self._repeating_block_answer_ids
 
     def get_list_name_for_dynamic_answer(self, block_id: str) -> str:
@@ -1093,7 +1097,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         if (
             parent_block
             and parent_block["type"] == "ListCollector"
-            and block_id not in self.repeating_block_ids
+            and block_id not in self.list_collector_repeating_block_ids
         ):
             return parent_block
 

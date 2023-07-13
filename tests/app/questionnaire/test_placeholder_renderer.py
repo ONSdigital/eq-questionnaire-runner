@@ -358,7 +358,7 @@ def get_placeholder_render(
 ):
     schema = MagicMock()
     schema.is_answer_dynamic = MagicMock(return_value=False)
-    schema.is_answer_for_repeating_block = MagicMock(return_value=False)
+    schema.is_answer_for_list_collector_repeating_block = MagicMock(return_value=False)
     renderer = PlaceholderRenderer(
         language=language,
         answer_store=answer_store,

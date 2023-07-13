@@ -8,15 +8,18 @@ import TransportRepeatingBlock2Page from "../../../generated_pages/new_calculate
 import ListCollectorPage from "../../../generated_pages/new_calculated_summary_repeating_blocks/list-collector.page.js";
 import CalculatedSummarySpendingPage from "../../../generated_pages/new_calculated_summary_repeating_blocks/calculated-summary-spending.page.js";
 import CalculatedSummaryCountPage from "../../../generated_pages/new_calculated_summary_repeating_blocks/calculated-summary-count.page.js";
-import { assertSummaryValues, repeatingAnswerChangeLink } from "../../../helpers";
 import HubPage from "../../../base_pages/hub.page";
 import FamilyJourneysPage from "../../../generated_pages/new_calculated_summary_repeating_blocks/family-journeys.page";
+import BlockSkipPage from "../../../generated_pages/new_calculated_summary_repeating_blocks/block-skip.page";
+import { assertSummaryValues, repeatingAnswerChangeLink } from "../../../helpers";
 
 describe("Feature: Calculated Summary using Repeating Blocks", () => {
   before("Reaching the first calculated summary", async () => {
     await browser.openQuestionnaire("test_new_calculated_summary_repeating_blocks.json");
     await $(BlockCarPage.car()).setValue(100);
     await $(BlockCarPage.submit()).click();
+    await $(BlockSkipPage.no()).click();
+    await $(BlockSkipPage.submit()).click();
     await $(ListCollectorPage.yes()).click();
     await $(ListCollectorPage.submit()).click();
     await $(AddTransportPage.transportName()).selectByAttribute("value", "Bus");
@@ -156,5 +159,41 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
     await $(FamilyJourneysPage.submit()).click();
     await expect(await $(SectionTwoPage.familyJourneysQuestion()).getText()).to.contain("How many of your 14 journeys are to visit family?");
     await expect(await $(SectionTwoPage.familyJourneysAnswer()).getText()).to.contain("10");
+    await $(SectionTwoPage.submit()).click();
+  });
+
+  it("Given I remove a list item, changing my answer to the calculated summary, progress of section 2 is updated", async () => {
+    await expect(await $(HubPage.summaryRowState("section-1")).getText()).to.equal("Completed");
+    await expect(await $(HubPage.summaryRowState("section-2")).getText()).to.equal("Completed");
+    await $(HubPage.summaryRowLink("section-1")).click();
+    await $(SectionOnePage.transportListRemoveLink(2)).click();
+    await $(RemoveTransportPage.yes()).click();
+    await $(RemoveTransportPage.submit()).click();
+    await $(CalculatedSummarySpendingPage.submit()).click();
+    await $(CalculatedSummaryCountPage.submit()).click();
+    await browser.url(HubPage.url());
+    await expect(await $(HubPage.summaryRowState("section-1")).getText()).to.equal("Completed");
+    // TODO currently calculated summary progress is not reset by removing an answer from the path, only by changing one
+    // await expect(await $(HubPage.summaryRowState("section-2")).getText()).to.equal("Partially completed");
+  });
+
+  it("Given I remove the list collector from the path the first calculated summary updates, the second is removed from the path and section 2 becomes unavailable", async () => {
+    await $(HubPage.summaryRowLink("section-1")).click();
+    await $(SectionOnePage.answerSkipEdit()).click();
+    await $(BlockSkipPage.yes()).click();
+    await $(BlockSkipPage.submit()).click();
+    // TODO as above, currently calculated summary progress is not altered by removing the list collector from the path
+    // TODO at the moment it will go straight back to section summary
+    await $(SectionOnePage.previous()).click();
+    await expect(await browser.getUrl()).to.contain(CalculatedSummarySpendingPage.pageName);
+    await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).to.contain(
+      "We calculate the total monthly expenditure on transport to be £100.00. Is this correct?"
+    );
+    await assertSummaryValues(["£100.00"]);
+    await $(CalculatedSummarySpendingPage.submit()).click();
+    // other calculated summary should not be on the path
+    await expect(await browser.getUrl()).to.contain(SectionOnePage.pageName);
+    await $(SectionOnePage.submit()).click();
+    await expect(await $$(HubPage.summaryItems()).length).to.equal(1);
   });
 });

@@ -47,14 +47,19 @@ class ValueSourceResolver:
         return True
 
     def _is_block_on_path(self, block_id: str) -> bool:
-        if block_id in self.schema.repeating_block_ids:
+        # other usages of this function than _is_answer_on_path don't have this check so require it here
+        if not self.routing_path_block_ids:
+            return True
+
+        if block_id in self.schema.list_collector_repeating_block_ids:
             # repeating blocks aren't on the path, so check the parent list collector
             list_name = self.schema.list_names_by_list_repeating_block_id[block_id]
             # Type ignore: section and list collector will both exist if the block is repeating
             section: ImmutableDict = self.schema.get_section_for_block_id(block_id)  # type: ignore
             list_collector_block: ImmutableDict = self.schema.get_list_collector_for_list(section, list_name)  # type: ignore
-            return list_collector_block["id"] in (self.routing_path_block_ids or [])
-        return block_id in (self.routing_path_block_ids or [])
+            return list_collector_block["id"] in self.routing_path_block_ids
+
+        return block_id in self.routing_path_block_ids
 
     def _get_answer_value(
         self,
@@ -137,7 +142,9 @@ class ValueSourceResolver:
                 answer_id=answer_id, list_name=values["identifier"]
             )
 
-    def _resolve_repeating_block_answers(self, answer_id: str) -> ResolvedAnswerList:
+    def _resolve_list_repeating_block_answers(
+        self, answer_id: str
+    ) -> ResolvedAnswerList:
         # Type ignore: block must exist for this function to be called
         repeating_block: ImmutableDict = self.schema.get_block_for_answer_id(answer_id)  # type: ignore
         list_name = self.schema.list_names_by_list_repeating_block_id[
@@ -160,8 +167,8 @@ class ValueSourceResolver:
         if not list_item_id:
             if self.schema.is_answer_dynamic(answer_id):
                 return self._resolve_dynamic_answers(answer_id)
-            if self.schema.is_answer_for_repeating_block(answer_id):
-                return self._resolve_repeating_block_answers(answer_id)
+            if self.schema.is_answer_for_list_collector_repeating_block(answer_id):
+                return self._resolve_list_repeating_block_answers(answer_id)
 
         answer_value = self._get_answer_value(
             answer_id=answer_id, list_item_id=list_item_id
@@ -195,7 +202,7 @@ class ValueSourceResolver:
             if not self.location:
                 raise ValueError("location is required to resolve block progress")
 
-            if self.routing_path_block_ids and not self._is_block_on_path(identifier):
+            if not self._is_block_on_path(identifier):
                 return None
 
             # Type ignore: Section id will exist at this point
@@ -229,9 +236,7 @@ class ValueSourceResolver:
         """
         calculated_summary_block: ImmutableDict = self.schema.get_block(value_source["identifier"])  # type: ignore
 
-        if self.routing_path_block_ids and not self._is_block_on_path(
-            calculated_summary_block["id"]
-        ):
+        if not self._is_block_on_path(calculated_summary_block["id"]):
             return None
 
         calculation = calculated_summary_block["calculation"]

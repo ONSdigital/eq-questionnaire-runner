@@ -23,7 +23,9 @@
     ],
     "questionnaire_flow": {
         "type": "Hub",
-        "options": { "required_completed_sections": ["section-1"] }
+        "options": {
+            "required_completed_sections": ["section-1"]
+        }
     },
     "sections": [
         {
@@ -67,6 +69,50 @@
                             }
                         },
                         {
+                            "id": "block-skip",
+                            "type": "Question",
+                            "question": {
+                                "id": "question-skip",
+                                "type": "General",
+                                "title": "Would you like to skip the list collector that asks about other methods of transport?",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "Use this to check the calculated summary shows the correct values when the list collector is not on the path."
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "answer-skip",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "answer-skip"
+                                        },
+                                        "Yes"
+                                    ]
+                                }
+                            },
                             "id": "list-collector",
                             "type": "ListCollector",
                             "for_list": "transport",
@@ -371,16 +417,29 @@
                             },
                             "skip_conditions": {
                                 "when": {
-                                    "==": [
+                                    "or": [
                                         {
-                                            "count": [
+                                            "==": [
                                                 {
-                                                    "source": "list",
-                                                    "identifier": "transport"
-                                                }
+                                                    "count": [
+                                                        {
+                                                            "source": "list",
+                                                            "identifier": "transport"
+                                                        }
+                                                    ]
+                                                },
+                                                0
                                             ]
                                         },
-                                        0
+                                        {
+                                            "==": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "answer-skip"
+                                                },
+                                                "Yes"
+                                            ]
+                                        }
                                     ]
                                 }
                             }
@@ -402,7 +461,9 @@
                 }
             },
             "id": "section-2",
-            "summary": { "show_on_completion": true },
+            "summary": {
+                "show_on_completion": true
+            },
             "title": "Travel Details",
             "groups": [
                 {

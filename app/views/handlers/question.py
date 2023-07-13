@@ -263,7 +263,7 @@ class Question(BlockHandler):
             )
             self.questionnaire_store_updater.save()
 
-    def get_first_incomplete_repeating_block_location(
+    def get_first_incomplete_list_repeating_block_location(
         self, *, repeating_block_ids: Sequence[str], section_id: str, list_name: str
     ) -> Location | None:
         if not repeating_block_ids:
@@ -271,7 +271,7 @@ class Question(BlockHandler):
 
         list_model = self._questionnaire_store.list_store.get(list_name)
         for list_item_id in list_model.items:
-            if incomplete_location := self.get_first_incomplete_repeating_block_location_for_list_item(
+            if incomplete_location := self.get_first_incomplete_list_repeating_block_location_for_list_item(
                 repeating_block_ids=repeating_block_ids,
                 section_id=section_id,
                 list_item_id=list_item_id,
@@ -279,7 +279,7 @@ class Question(BlockHandler):
             ):
                 return incomplete_location
 
-    def get_first_incomplete_repeating_block_location_for_list_item(
+    def get_first_incomplete_list_repeating_block_location_for_list_item(
         self,
         *,
         repeating_block_ids: Sequence[str],

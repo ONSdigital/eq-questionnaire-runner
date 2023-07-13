@@ -118,10 +118,10 @@ class Block:
 
     def _handle_id_suffixing(self, block: dict) -> dict:
         """
-        If the block is repeating, the block id, as well as any other ids (e.g. question, answer) need updating to be suffixed with list_item_id
+        If the block is a list collector repeating block, the block id, as well as any other ids (e.g. question, answer) need suffixing with list_item_id
         This is so the HTML rendered is valid and doesn't have duplicate div ids when repeating blocks are rendered multiple times per list item
         """
-        if self.id in self.schema.repeating_block_ids:
+        if self.id in self.schema.list_collector_repeating_block_ids:
             for pointer in find_pointers_containing(block, "id"):
                 data = resolve_pointer(block, pointer)
                 data["id"] = f"{data['id']}-{self.location.list_item_id}"

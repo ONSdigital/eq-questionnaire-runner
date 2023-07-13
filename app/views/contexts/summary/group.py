@@ -91,7 +91,11 @@ class Group:
             # the block type will only be ListRepeatingQuestion when in the context of a calculated summary or grand calculated summary
             # any other summary like section-summary will use the parent list collector instead and render items as part of the ListCollector check further down
             if block["type"] == "ListRepeatingQuestion":
-                # list repeating questions aren't themselves on the path, the parent list collector is checked in ListCollectorBlock
+                # list repeating questions aren't themselves on the path, it's determined by the parent list collector
+                parent_list_collector_block_id = schema.parent_id_map[block["id"]]
+                if parent_list_collector_block_id not in routing_path_block_ids:
+                    continue
+
                 list_collector_block = ListCollectorBlock(
                     routing_path_block_ids=routing_path_block_ids,
                     answer_store=answer_store,

@@ -31,7 +31,7 @@ def get_mock_schema():
         )
     )
     schema.is_answer_dynamic = Mock(return_value=False)
-    schema.is_answer_for_repeating_block = Mock(return_value=False)
+    schema.is_answer_for_list_collector_repeating_block = Mock(return_value=False)
     return schema
 
 
@@ -54,7 +54,7 @@ def get_value_source_resolver(
         schema = get_mock_schema()
         schema.is_repeating_answer = Mock(return_value=bool(list_item_id))
         schema.is_answer_dynamic = Mock(return_value=False)
-        schema.is_answer_for_repeating_block = Mock(return_value=False)
+        schema.is_answer_for_list_collector_repeating_block = Mock(return_value=False)
 
     if not use_default_answer:
         schema.get_default_answer = Mock(return_value=None)
@@ -399,7 +399,7 @@ def test_answer_source_repeating_block_answers(
     schema = mocker.MagicMock()
     schema.list_names_by_list_repeating_block_id = {"repeating-block-1": "transport"}
     schema.is_answer_dynamic = Mock(return_value=False)
-    schema.is_answer_for_repeating_block = Mock(return_value=True)
+    schema.is_answer_for_list_collector_repeating_block = Mock(return_value=True)
     schema.get_block_for_answer_id = Mock(
         return_value=placeholder_transform_question_repeating_block
     )
@@ -638,7 +638,7 @@ def test_new_calculated_summary_value_source(mocker, list_item_id):
         },
     )
     schema.is_answer_dynamic = Mock(return_value=False)
-    schema.is_answer_for_repeating_block = Mock(return_value=False)
+    schema.is_answer_for_list_collector_repeating_block = Mock(return_value=False)
 
     location = Location(
         section_id="test-section", block_id="test-block", list_item_id=list_item_id
@@ -695,7 +695,7 @@ def test_new_calculated_summary_nested_value_source(mocker, list_item_id):
         },
     )
     schema.is_answer_dynamic = Mock(return_value=False)
-    schema.is_answer_for_repeating_block = Mock(return_value=False)
+    schema.is_answer_for_list_collector_repeating_block = Mock(return_value=False)
 
     location = Location(
         section_id="test-section", block_id="test-block", list_item_id=list_item_id

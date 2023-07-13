@@ -984,7 +984,9 @@ def mock_schema(mocker):
         )
     )
     schema.is_answer_dynamic = mocker.MagicMock(return_value=False)
-    schema.is_answer_for_repeating_block = mocker.MagicMock(return_value=False)
+    schema.is_answer_for_list_collector_repeating_block = mocker.MagicMock(
+        return_value=False
+    )
     return schema
 
 

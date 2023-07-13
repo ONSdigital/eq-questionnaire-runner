@@ -219,6 +219,7 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         """
         self.launchSurvey("test_new_calculated_summary_repeating_blocks")
         self.post({"answer-car": "100"})
+        self.post({"answer-skip": "No"})
         self.post({"list-collector-answer": "Yes"})
         self.post({"transport-name": "Bus"})
         self.post(
@@ -275,3 +276,20 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         self.assertInBody(
             "We calculate the total monthly expenditure on transport to be £715.00. Is this correct?"
         )
+
+        # check that removing the list collector from the path updates the calculated summary correctly
+        self.previous()
+        self.previous()
+        self.post({"answer-skip": "Yes"})
+
+        # calculated summary count should now not be on the path
+        self.assertInUrl("/calculated-summary-spending/")
+        self.assertInBody(
+            "We calculate the total monthly expenditure on transport to be £100.00. Is this correct?"
+        )
+        # no list items should be there
+        self.assertNotInBody("Give details of your expenditure travelling by")
+        self.post()
+        # should be absent from section summary too
+        self.assertInUrl("/sections/section-1")
+        self.assertNotInBody("Name of transport")

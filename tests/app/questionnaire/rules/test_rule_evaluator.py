@@ -32,7 +32,7 @@ def get_mock_schema():
         )
     )
     schema.is_answer_dynamic = Mock(return_value=False)
-    schema.is_answer_for_repeating_block = Mock(return_value=False)
+    schema.is_answer_for_list_collector_repeating_block = Mock(return_value=False)
     return schema
 
 
@@ -55,7 +55,7 @@ def get_rule_evaluator(
         schema.is_repeating_answer = Mock(return_value=True)
         schema.get_default_answer = Mock(return_value=None)
         schema.is_answer_dynamic = Mock(return_value=False)
-        schema.is_answer_for_repeating_block = Mock(return_value=False)
+        schema.is_answer_for_list_collector_repeating_block = Mock(return_value=False)
 
     return RuleEvaluator(
         language=language,
