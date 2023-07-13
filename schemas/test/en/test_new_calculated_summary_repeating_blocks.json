@@ -99,20 +99,26 @@
                                         ]
                                     }
                                 ]
-                            }
+                            },
+                            "routing_rules": [
+                                {
+                                    "block": "list-collector",
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "identifier": "answer-skip",
+                                                "source": "answers"
+                                            },
+                                            "No"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "calculated-summary-spending"
+                                }
+                            ]
                         },
                         {
-                            "skip_conditions": {
-                                "when": {
-                                    "==": [
-                                        {
-                                            "source": "answers",
-                                            "identifier": "answer-skip"
-                                        },
-                                        "Yes"
-                                    ]
-                                }
-                            },
                             "id": "list-collector",
                             "type": "ListCollector",
                             "for_list": "transport",
@@ -278,7 +284,7 @@
                                                     ],
                                                     "text": "Which company do primarily use for travelling by {transport_name}?"
                                                 },
-                                                "mandatory": true,
+                                                "mandatory": false,
                                                 "type": "TextField"
                                             },
                                             {
@@ -295,7 +301,7 @@
                                                     ],
                                                     "text": "Monthly season ticket expenditure for travel by {transport_name}"
                                                 },
-                                                "mandatory": true,
+                                                "mandatory": false,
                                                 "type": "Currency",
                                                 "currency": "GBP"
                                             },
@@ -313,7 +319,7 @@
                                                     ],
                                                     "text": "Additional monthly expenditure for travel by {transport_name}"
                                                 },
-                                                "mandatory": true,
+                                                "mandatory": false,
                                                 "type": "Currency",
                                                 "currency": "GBP"
                                             }
@@ -353,7 +359,7 @@
                                                     ],
                                                     "text": "Monthly journeys by {transport_name}"
                                                 },
-                                                "mandatory": true,
+                                                "mandatory": false,
                                                 "type": "Number"
                                             }
                                         ]

@@ -93,7 +93,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._questions_by_id = self._get_questions_by_id()
         self._answers_by_id = self._get_answers_by_id()
         self._dynamic_answer_ids: set[str] = set()
-        self._list_dependent_block_remove_dependency: dict[str, str] = {}
+        self._list_dependent_block_additional_dependencies: dict[str, set[str]] = {}
 
         # Post schema parsing.
         self._populate_answer_dependencies()
@@ -382,17 +382,21 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                             )
 
     def _update_dependencies_for_list_repeating_blocks(
-        self, block: ImmutableDict
+        self, list_collector_block: ImmutableDict
     ) -> None:
-        """Blocks depending on repeating questions may need to depend on removing items from the parent list collector, so update the map"""
-        if remove_block := block.get("remove_block"):
-            remove_block_answer_id = self.get_first_answer_id_for_block(
-                remove_block["id"]
-            )
-            for repeating_block in block["repeating_blocks"]:
-                self._list_dependent_block_remove_dependency[
+        """Blocks depending on repeating questions may need to depend on adding/removing items from the parent list collector, so update the map"""
+        list_block_dependencies: set[str] = set()
+        for child in {"add_block", "remove_block"}:
+            if child_block := list_collector_block.get(child):
+                list_block_dependencies.add(
+                    self.get_first_answer_id_for_block(child_block["id"])
+                )
+
+        if list_block_dependencies:
+            for repeating_block in list_collector_block["repeating_blocks"]:
+                self._list_dependent_block_additional_dependencies[
                     repeating_block["id"]
-                ] = remove_block_answer_id
+                ] = list_block_dependencies
 
     def _update_answer_dependencies_for_summary(self, block: ImmutableDict) -> None:
         if block["type"] == "CalculatedSummary":
@@ -409,13 +413,14 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         update all calculated summary answers to be dependencies of the dependent block
 
         in the case that one of the calculated summary answers is dynamic/repeating, so has multiple answers for a particular list
-        the calculated summary block needs to depend on the `remove_block` for the list
-        so that removing items forces user to reconfirm the calculated summary
-
-        but not the add/edit block, as those don't update the total unless the repeating answers change which it already depends on
+        the calculated summary block needs to depend on the `remove_block` and `add_block` for the list
+        so that adding/removing items requires re-confirming the calculated summary
         """
         calculated_summary_answer_ids = get_calculated_summary_answer_ids(
             calculated_summary_block
+        )
+        answer_dependent = self._get_answer_dependent_for_block_id(
+            block_id=dependent_block["id"]
         )
         for answer_id in calculated_summary_answer_ids:
             if answer_id in [
@@ -424,19 +429,14 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             ]:
                 # Type ignore: answer_id is valid so block must exist
                 block_id: str = self.get_block_for_answer_id(answer_id)["id"]  # type: ignore
-                if block_id in self._list_dependent_block_remove_dependency:
-                    remove_block_id = self._list_dependent_block_remove_dependency[
-                        block_id
-                    ]
-                    self._answer_dependencies_map[remove_block_id] |= {
-                        # note the omission of for_list here is intentional, as the calculated summary is not repeating
-                        self._get_answer_dependent_for_block_id(
-                            block_id=dependent_block["id"]
+                if block_id in self._list_dependent_block_additional_dependencies:
+                    for (
+                        list_block_id
+                    ) in self._list_dependent_block_additional_dependencies[block_id]:
+                        self._answer_dependencies_map[list_block_id].add(
+                            answer_dependent
                         )
-                    }
-            self._answer_dependencies_map[answer_id] |= {
-                self._get_answer_dependent_for_block_id(block_id=dependent_block["id"])
-            }
+            self._answer_dependencies_map[answer_id].add(answer_dependent)
 
     def _update_answer_dependencies_for_grand_calculated_summary(
         self, grand_calculated_summary_block: ImmutableDict
@@ -538,8 +538,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     ) -> None:
         """Updates dependencies for a block depending on a list collector
 
-        This method also stores a map of { block_depending_on_list_source -> remove_block_for_that_list }, because:
-        blocks like dynamic_answers, don't directly need to depend on the remove_block,
+        This method also stores a map of { block_depending_on_list_source -> {add_block, remove_block} }, because:
+        blocks like dynamic_answers, don't directly need to depend on the add_block/remove_block,
         but a block depending on the dynamic answers might (such as a calculated summary)
         """
         # Type ignore: section will always exist at this point, same with optional returns below
@@ -564,14 +564,17 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 # non-repeating blocks such as dynamic-answers could depend on the list
                 else self._get_answer_dependent_for_block_id(block_id=block_id)
             }
+        self._list_dependent_block_additional_dependencies[block_id] = set(
+            answer_ids_for_block
+        )
         # removing an item from a list will require any dependent calculated summaries to be re-confirmed, so cache dependencies
         if remove_block_question := self.get_remove_block_id_for_list(list_name):
             remove_block_answer_id = self.get_first_answer_id_for_block(
                 remove_block_question
             )
-            self._list_dependent_block_remove_dependency[
-                block_id
-            ] = remove_block_answer_id
+            self._list_dependent_block_additional_dependencies[block_id].add(
+                remove_block_answer_id
+            )
 
     def _get_answer_dependent_for_block_id(
         self,
