@@ -158,9 +158,8 @@ class PlaceholderParser:
                 resolved_value: ValueSourceEscapedTypes | ValueSourceTypes | TransformedValueTypes
 
                 if isinstance(arg_value, list):
-                    resolved_value = self._resolve_value_source_list(
+                    resolved_value = value_source_resolver._resolve_value_source_list(
                         value_source_list=arg_value,
-                        value_source_resolver=value_source_resolver,
                     )
                 elif isinstance(arg_value, dict):
                     if "value" in arg_value:
@@ -179,19 +178,6 @@ class PlaceholderParser:
             )
 
         return transformed_value
-
-    @staticmethod
-    def _resolve_value_source_list(
-        value_source_list: list[dict], value_source_resolver: ValueSourceResolver
-    ) -> list[ValueSourceTypes]:
-        values: list[ValueSourceTypes] = []
-        for value_source in value_source_list:
-            value = value_source_resolver.resolve(value_source)
-            if isinstance(value, list):
-                values.extend(value)
-            else:
-                values.append(value)
-        return values
 
     def _get_routing_path_block_ids_and_section_key_map(
         self,
