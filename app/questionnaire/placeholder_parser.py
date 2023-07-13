@@ -12,8 +12,8 @@ from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire import path_finder as pf
 from app.questionnaire.dependencies import (
-    map_calculated_summary_block_ids_to_routing_path,
-    map_section_ids_to_routing_path,
+    get_routing_path_block_ids_by_section_for_calculated_summary_dependencies,
+    get_routing_path_block_ids_by_section_for_dependent_sections,
 )
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
 from app.questionnaire.value_source_resolver import (
@@ -195,14 +195,16 @@ class PlaceholderParser:
         if not self._location:
             return {}
 
-        return map_calculated_summary_block_ids_to_routing_path(
-            location=self._location,
-            progress_store=self._progress_store,
-            sections_to_ignore=sections_to_ignore,
-            data=data,
-            path_finder=self._path_finder,
-            ignore_keys=["when"],
-            schema=self._schema,
+        return (
+            get_routing_path_block_ids_by_section_for_calculated_summary_dependencies(
+                location=self._location,
+                progress_store=self._progress_store,
+                sections_to_ignore=sections_to_ignore,
+                data=data,
+                path_finder=self._path_finder,
+                ignore_keys=["when"],
+                schema=self._schema,
+            )
         )
 
     def _all_value_sources_metadata(self, placeholder: Mapping) -> bool:
@@ -217,7 +219,7 @@ class PlaceholderParser:
                 self._location.section_id
             ]
         ):
-            block_ids = map_section_ids_to_routing_path(
+            block_ids = get_routing_path_block_ids_by_section_for_dependent_sections(
                 location=self._location,
                 progress_store=self._progress_store,
                 sections_to_ignore=["when"],
