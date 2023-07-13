@@ -99,7 +99,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._populate_answer_dependencies()
         self._populate_when_rules_section_dependencies()
         self._populate_calculated_summary_section_dependencies()
-        print(self._answer_dependencies_map)
 
     @cached_property
     def answer_dependencies(self) -> ImmutableDict[str, set[AnswerDependent]]:
@@ -410,8 +409,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         update all calculated summary answers to be dependencies of the dependent block
 
         in the case that one of the calculated summary answers is dynamic/repeating, so has multiple answers for a particular list
-        the calculated summary block needs to depend on the `remove_block` for the list and the list
-        so that removing items or the list itself forces user to reconfirm the calculated summary
+        the calculated summary block needs to depend on the `remove_block` for the list
+        so that removing items forces user to reconfirm the calculated summary
 
         but not the add/edit block, as those don't update the total unless the repeating answers change which it already depends on
         """
