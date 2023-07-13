@@ -1063,6 +1063,13 @@ def test_placeholder_default_value(default_placeholder_value_schema, mock_render
 def test_placeholder_parser_calculated_summary_dependencies_cache(
     mocker, mock_renderer
 ):
+    """
+    Tests Placeholder Parser fetches the calculated summary dependencies using the routing path cache
+    We initialise a Placeholder Parser with a schema, progress store and answer store
+    Then we pass a placeholder lists and check:
+        - If the routing path is only called once and is using the routing path cache
+        - The correct map value 
+    """
     schema = load_schema_from_name("test_calculated_summary")
 
     path_finder = mocker.patch("app.questionnaire.path_finder.PathFinder.routing_path")
@@ -1140,9 +1147,16 @@ def test_placeholder_parser_calculated_summary_dependencies_cache(
 
 
 def test_placeholder_dependencies_cache(mocker, mock_renderer):
+    """
+    Tests Placeholder Parser fetches the placeholder dependencies using the routing path cache
+    We initialise a Placeholder Parser with a schema, progress store and answer store
+    Then we pass a placeholder lists and check:
+        - If the routing path is only called once and is using the routing path cache
+        - The correct map value 
+    """
     schema = load_schema_from_name("test_placeholder_first_non_empty_item")
     path_finder = mocker.patch("app.questionnaire.path_finder.PathFinder.routing_path")
-    placeholder_list = [
+    placeholder_list_1 = [
         {
             "placeholder": "date_entry_answer_from",
             "transforms": [
@@ -1166,7 +1180,10 @@ def test_placeholder_dependencies_cache(mocker, mock_renderer):
                     },
                 },
             ],
-        },
+        }
+    ]
+
+    placeholder_list_2 = [
         {
             "placeholder": "date_entry_answer_to",
             "transforms": [
@@ -1229,7 +1246,11 @@ def test_placeholder_dependencies_cache(mocker, mock_renderer):
         progress_store=progress_store,
         location=location,
     )
-    placeholder = placeholder_parser(placeholder_list)
-    assert placeholder["date_entry_answer_from"] == "16 April 2016"
-    assert placeholder["date_entry_answer_to"] == "28 April 2016"
+
+    placeholder_1 = placeholder_parser(placeholder_list_1)
+    assert placeholder_1["date_entry_answer_from"] == "16 April 2016"
+    assert path_finder.called == 1
+
+    placeholder_2 = placeholder_parser(placeholder_list_2)
+    assert placeholder_2["date_entry_answer_to"] == "28 April 2016"
     assert path_finder.called == 1
