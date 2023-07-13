@@ -218,9 +218,7 @@ class ValueSourceResolver:
     def _resolve_response_metadata_source(self, value_source: Mapping) -> str | None:
         return self.response_metadata.get(value_source.get("identifier"))
 
-    def _resolve_value_source_list(
-        self, value_source_list: list[dict]
-    ) -> list[ValueSourceTypes]:
+    def resolve_list(self, value_source_list: list[dict]) -> list[ValueSourceTypes]:
         values: list[ValueSourceTypes] = []
         for value_source in value_source_list:
             value = self.resolve(value_source)

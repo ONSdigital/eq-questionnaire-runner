@@ -158,7 +158,7 @@ class PlaceholderParser:
                 resolved_value: ValueSourceEscapedTypes | ValueSourceTypes | TransformedValueTypes
 
                 if isinstance(arg_value, list):
-                    resolved_value = value_source_resolver._resolve_value_source_list(
+                    resolved_value = value_source_resolver.resolve_list(
                         value_source_list=arg_value,
                     )
                 elif isinstance(arg_value, dict):
