@@ -44,9 +44,9 @@ class ListContext(Context):
             "list": {
                 "list_items": list_items,
                 "editable": any([edit_block_id, remove_block_id]),
-            }
+            },
+            "content": content_definition,
         }
-
         if content_definition:
             list_context["content"] = content_definition
 

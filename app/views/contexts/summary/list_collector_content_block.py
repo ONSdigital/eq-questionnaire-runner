@@ -1,7 +1,5 @@
 from typing import Any, Mapping
 
-from werkzeug.datastructures import ImmutableDict
-
 from app.views.contexts.summary.list_collector_base_block import ListCollectorBaseBlock
 
 
@@ -44,13 +42,12 @@ class ListCollectorContentBlock(ListCollectorBaseBlock):
             section_id=self._location.section_id,
             has_repeating_blocks=bool(list_collector_block.get("repeating_blocks")),
             return_to="section-summary",
-            content_definition=ImmutableDict({}),
         )
 
         return {
             "title": rendered_summary["title"],
             "type": rendered_summary["type"],
-            "empty_list_text": None,
+            "empty_list_text": rendered_summary.get("empty_list_text"),
             "list_name": rendered_summary["for_list"],
             "related_answers": related_answers,
             **list_summary_context,
