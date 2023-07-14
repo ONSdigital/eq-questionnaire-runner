@@ -182,7 +182,7 @@ class PlaceholderParser:
     def _get_routing_path_block_ids_by_section_for_calculated_summary_dependencies(
         self,
         data: Sequence[Mapping],
-        sections_to_ignore: list | None = None,
+        sections_to_ignore: list[str] | None = None,
     ) -> dict[tuple, tuple[str, ...]] | None:
         if not self._location:
             return {}
@@ -207,7 +207,7 @@ class PlaceholderParser:
         self, transform: Mapping
     ) -> ValueSourceResolver:
         if self._location and (
-            dependent_sections := self._schema.placeholder_section_dependencies_by_block[
+            dependent_sections := self._schema.placeholder_transform_section_dependencies_by_block[
                 self._location.section_id
             ]
         ):

@@ -81,7 +81,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._when_rules_section_dependencies_by_answer: dict[
             str, set[str]
         ] = defaultdict(set)
-        self._placeholder_section_dependencies_by_block: dict[
+        self._placeholder_transform_section_dependencies_by_block: dict[
             str, dict[str, set[str]]
         ] = defaultdict(lambda: defaultdict(set))
         self._language_code = language_code
@@ -101,10 +101,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._populate_placeholder_section_dependencies()
 
     @property
-    def placeholder_section_dependencies_by_block(
+    def placeholder_transform_section_dependencies_by_block(
         self,
     ) -> dict[str, dict[str, set[str]]]:
-        return self._placeholder_section_dependencies_by_block
+        return self._placeholder_transform_section_dependencies_by_block
 
     @cached_property
     def answer_dependencies(self) -> ImmutableDict[str, set[AnswerDependent]]:
@@ -1282,9 +1282,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 answer_ids=placeholder_answer_ids
             )
             if placeholder_dependencies:
-                # Type Ignore: At this point we section id cannot be None
+                # Type Ignore: At this point we section id  and block id cannot be None
                 section_id = self.get_section_id_for_block_id(block["id"])
-                self._placeholder_section_dependencies_by_block[section_id][  # type: ignore
+                self._placeholder_transform_section_dependencies_by_block[section_id][  # type: ignore
                     block["id"]
                 ].update(
                     placeholder_dependencies
