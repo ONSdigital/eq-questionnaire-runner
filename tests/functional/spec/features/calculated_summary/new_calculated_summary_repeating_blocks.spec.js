@@ -44,7 +44,7 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
     await $(ListCollectorPage.submit()).click();
   });
 
-  it("Given I have a calculated summary using both list repeating block and static answers, when I reach the calculated summary page, I see the correct items and total.", async () => {
+  it("Given I have a calculated summary using both list repeating block and static answers, When I reach the calculated summary page, Then I see the correct items and total.", async () => {
     await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).to.contain(
       "We calculate the total monthly expenditure on transport to be £400.00. Is this correct?"
     );
@@ -57,7 +57,7 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
     await $(CalculatedSummarySpendingPage.submit()).click();
   });
 
-  it("Given I have a calculated summary using a single answer from a repeating block, when I reach the calculated summary page, I see the correct items and total", async () => {
+  it("Given I have a calculated summary using a single answer from a repeating block, When I reach the calculated summary page, Then I see the correct items and total", async () => {
     await expect(await $(CalculatedSummaryCountPage.calculatedSummaryTitle()).getText()).to.contain(
       "We calculate the total journeys made per month to be 12. Is this correct?"
     );
@@ -67,7 +67,7 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
     await $(CalculatedSummaryCountPage.submit()).click();
   });
 
-  it("Given I add a new item to the list, when I complete the repeating blocks, then I am taken to each calculated summary in turn to confirm the new total", async () => {
+  it("Given I add a new item to the list, When I complete the repeating blocks and press continue, Then I see the first calculated summary page which the updated total", async () => {
     await $(SectionOnePage.transportListAddLink()).click();
     await $(AddTransportPage.transportName()).selectByAttribute("value", "Train");
     await $(AddTransportPage.submit()).click();
@@ -84,6 +84,9 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
       "We calculate the total monthly expenditure on transport to be £550.00. Is this correct?"
     );
     await assertSummaryValues(["£100.00", "£30.00", "£5.00", "£0.00", "£265.00", "£100.00", "£50.00"]);
+  });
+
+  it("Given I am on the first calculated summary, When I confirm the total, Then I see the second calculated summary with an updated total", async () => {
     await $(CalculatedSummarySpendingPage.submit()).click();
     await expect(await browser.getUrl()).to.contain(CalculatedSummaryCountPage.pageName);
     await expect(await $(CalculatedSummaryCountPage.calculatedSummaryTitle()).getText()).to.contain(
@@ -93,23 +96,23 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
     await $(CalculatedSummaryCountPage.previous()).click();
   });
 
-  it("Given I have a change link on the first calculated summary, when I click the link, then I am taken to the correct repeating block, and the continue button takes me back to the calculated summary", async () => {
+  it("Given I am on the first calculated summary, When I use one of the change links, Then I see the correct repeating block", async () => {
     await repeatingAnswerChangeLink(1).click();
     await expect(await browser.getUrl()).to.contain(TransportRepeatingBlock1Page.pageName);
   });
 
-  it("Given I have used a change link on a calculated summary to go back to the first repeating block, when I press continue, I am taken back to the calculated summary", async () => {
+  it("Given I have used a change link on a calculated summary to go back to the first repeating block, When I press continue, Then I see the calculated summary I came from", async () => {
     await $(TransportRepeatingBlock1Page.submit()).click();
     await expect(await browser.getUrl()).to.contain(CalculatedSummarySpendingPage.pageName);
   });
 
-  it("Given I use a change link on the first calculated summary, the previous button takes me back to the calculated summary", async () => {
+  it("Given I am on a calculated summary with change links for repeating blocks, When I use a change link and click previous, Then I see the calculated summary I came from", async () => {
     await repeatingAnswerChangeLink(1).click();
     await $(TransportRepeatingBlock1Page.previous()).click();
     await expect(await browser.getUrl()).to.contain(CalculatedSummarySpendingPage.pageName);
   });
 
-  it("Given I edit one of my repeating block answers, when I press continue, I am taken back to the calculated summary and the new total is correct", async () => {
+  it("Given I use a repeating block change link on the first calculated summary, When I edit my answer and press continue, Then I see the first calculated summary with a new correct total", async () => {
     await repeatingAnswerChangeLink(1).click();
     await $(TransportRepeatingBlock1Page.transportCost()).setValue(60);
     await $(TransportRepeatingBlock1Page.submit()).click();
@@ -121,7 +124,7 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
     await $(CalculatedSummarySpendingPage.submit()).click();
   });
 
-  it("Given I edit a repeating block answer for the second calculated summary, when I press continue, I am taken back to the second calculated summary and the new total is correct", async () => {
+  it("Given I use a repeating block change link on the second calculated summary, When I edit my answer and press continue, Then I see the second calculated summary with a new correct total", async () => {
     await repeatingAnswerChangeLink(2).click();
     await $(TransportRepeatingBlock2Page.transportCount()).setValue(12);
     await $(TransportRepeatingBlock2Page.submit()).click();
@@ -133,7 +136,7 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
     await $(CalculatedSummaryCountPage.submit()).click();
   });
 
-  it("Given I remove one of the list items, when I press yes to confirm deleting the item, I am taken back to each calculated summary in turn to confirm the new totals", async () => {
+  it("Given I use a remove link for on the summary page, When I press yes to confirm deleting the item, Then I see see the first calculated summary where I'm asked to reconfirm the total", async () => {
     await $(SectionOnePage.transportListRemoveLink(1)).click();
     await $(RemoveTransportPage.yes()).click();
     await $(RemoveTransportPage.submit()).click();
@@ -142,6 +145,9 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
       "We calculate the total monthly expenditure on transport to be £515.00. Is this correct?"
     );
     await assertSummaryValues(["£100.00", "£0.00", "£265.00", "£100.00", "£50.00"]);
+  });
+
+  it("Given I have confirmed the first updated total, When I press continue, Then I see the next calculated summary to confirm that total too", async () => {
     await $(CalculatedSummarySpendingPage.submit()).click();
     await expect(await browser.getUrl()).to.contain(CalculatedSummaryCountPage.pageName);
     await expect(await $(CalculatedSummaryCountPage.calculatedSummaryTitle()).getText()).to.contain(
@@ -150,7 +156,7 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
     await assertSummaryValues(["2", "12"]);
   });
 
-  it("Given I have a second section, when I begin and answer the first question, the calculated summary from section 1 is correctly used to validate my answer", async () => {
+  it("Given I have a second section, When I begin and answer the first question with a total higher than the calculated summary, Then I see an error message preventing me from continuing", async () => {
     await $(CalculatedSummaryCountPage.submit()).click();
     await $(SectionOnePage.submit()).click();
     await $(HubPage.submit()).click();
@@ -158,6 +164,9 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
     await $(FamilyJourneysPage.answer()).setValue(15);
     await $(FamilyJourneysPage.submit()).click();
     await expect(await $(FamilyJourneysPage.singleErrorLink()).getText()).to.contain("Enter an answer less than or equal to 14");
+  });
+
+  it("Given I enter a value below the calculated summary from section 1, When I press Continue, Then I see my answer displayed on the next page", async () => {
     await $(FamilyJourneysPage.answer()).setValue(10);
     await $(FamilyJourneysPage.submit()).click();
     await expect(await $(SectionTwoPage.familyJourneysQuestion()).getText()).to.contain("How many of your 14 journeys are to visit family?");
@@ -165,7 +174,7 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
     await $(SectionTwoPage.submit()).click();
   });
 
-  it("Given I use the add list item link, when I add a new item changing my answer to the calculated summary, then the progress of section 2 is updated", async () => {
+  it("Given I use the add list item link, When I add a new item and return to the Hub, Then I see the progress of section 2 has reverted to Partially Complete", async () => {
     await expect(await $(HubPage.summaryRowState("section-1")).getText()).to.equal("Completed");
     await expect(await $(HubPage.summaryRowState("section-2")).getText()).to.equal("Completed");
     await $(HubPage.summaryRowLink("section-1")).click();
@@ -184,7 +193,7 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
     await expect(await $(HubPage.summaryRowState("section-2")).getText()).to.equal("Partially completed");
   });
 
-  it("Given I have a question which removes the list collector from the path, when I change my answer to the question removing the list collector, then first calculated summary updates, the second is removed from the path and section 2 becomes unavailable", async () => {
+  it("Given I have a question which removes the list collector from the path, When I change my answer to the question removing the list collector and route backwards from the summary, Then I see the first calculated summary with an updated total", async () => {
     await $(HubPage.summaryRowLink("section-1")).click();
     await $(SectionOnePage.answerSkipEdit()).click();
     await $(BlockSkipPage.yes()).click();
@@ -198,6 +207,9 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
       "We calculate the total monthly expenditure on transport to be £100.00. Is this correct?"
     );
     await assertSummaryValues(["£100.00"]);
+  });
+
+  it("Given I confirm the calculated summary and finish the section, When I return to the Hub, Then I see that section 2 is no longer available", async () => {
     await $(CalculatedSummarySpendingPage.submit()).click();
     await $(SectionOnePage.submit()).click();
     // section 2 is now gone

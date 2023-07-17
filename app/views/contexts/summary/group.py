@@ -109,10 +109,12 @@ class Group:
                     return_to=return_to,
                     return_to_block_id=return_to_block_id,
                 )
-                repeating_question_blocks = (
-                    list_collector_block.repeating_block_question_element(block)
+                repeating_answer_blocks = (
+                    list_collector_block.get_repeating_block_related_answer_blocks(
+                        block
+                    )
                 )
-                blocks.extend(repeating_question_blocks)
+                blocks.extend(repeating_answer_blocks)
 
             if block["id"] not in routing_path_block_ids:
                 continue

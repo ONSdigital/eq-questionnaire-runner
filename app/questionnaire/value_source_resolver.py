@@ -123,10 +123,12 @@ class ValueSourceResolver:
             answer_value = self._get_answer_value(
                 answer_id=answer_id, list_item_id=list_item_id
             )
-            if answer_value is not None and self.escape_answer_values:
-                answer_values.append(escape_answer_value(answer_value))
-            else:
-                answer_values.append(answer_value)
+            if answer_value is not None:
+                answer_values.append(
+                    escape_answer_value(answer_value)
+                    if self.escape_answer_values
+                    else answer_value
+                )
         return answer_values
 
     def _resolve_dynamic_answers(

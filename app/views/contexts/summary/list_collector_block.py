@@ -96,7 +96,7 @@ class ListCollectorBlock:
             remove_block_id = list_collector_block["remove_block"]["id"]
             add_link = self._add_link(summary, list_collector_block)
             repeating_blocks = list_collector_block.get("repeating_blocks", [])
-            related_answers = self._get_related_answers(
+            related_answers = self._get_related_answer_blocks_by_list_item_id(
                 list_model=list_model, repeating_blocks=repeating_blocks
             )
             item_anchor = self._schema.get_item_anchor(section_id, list_model.name)
@@ -134,7 +134,9 @@ class ListCollectorBlock:
             **list_summary_context,
         }
 
-    def repeating_block_question_element(self, block: ImmutableDict) -> list[dict]:
+    def get_repeating_block_related_answer_blocks(
+        self, block: ImmutableDict
+    ) -> list[dict]:
         """
         Given a repeating block question to render,
         return the list of rendered question blocks for each list item id
@@ -142,10 +144,10 @@ class ListCollectorBlock:
         list_name = self._schema.list_names_by_list_repeating_block_id[block["id"]]
         list_model = self._list_store[list_name]
         blocks: list[dict] = []
-        if answer_blocks_by_id := self._get_related_answers(
+        if answer_blocks_by_list_item_id := self._get_related_answer_blocks_by_list_item_id(
             list_model=list_model, repeating_blocks=[block]
         ):
-            for answer_blocks in answer_blocks_by_id.values():
+            for answer_blocks in answer_blocks_by_list_item_id.values():
                 blocks.extend(answer_blocks)
         return blocks
 
@@ -183,7 +185,7 @@ class ListCollectorBlock:
                 return_to=self._return_to,
             )
 
-    def _get_related_answers(
+    def _get_related_answer_blocks_by_list_item_id(
         self, *, list_model: ListModel, repeating_blocks: Sequence[ImmutableDict]
     ) -> dict[str, list[dict]] | None:
         section_id = self._section["id"]

@@ -35,12 +35,12 @@ class Block:
         self.schema = schema
 
         self._rule_evaluator = RuleEvaluator(
-            schema=schema,
+            schema=self.schema,
             answer_store=answer_store,
             list_store=list_store,
             metadata=metadata,
             response_metadata=response_metadata,
-            location=location,
+            location=self.location,
             progress_store=progress_store,
         )
 
@@ -49,9 +49,9 @@ class Block:
             list_store=list_store,
             metadata=metadata,
             response_metadata=response_metadata,
-            schema=schema,
-            location=location,
-            list_item_id=location.list_item_id if location else None,
+            schema=self.schema,
+            location=self.location,
+            list_item_id=self.location.list_item_id if self.location else None,
             use_default_answer=True,
             progress_store=progress_store,
         )
