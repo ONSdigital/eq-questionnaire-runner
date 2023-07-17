@@ -26,3 +26,7 @@ export const assertSummaryValues = async (values) => {
 export const repeatingAnswerChangeLink = (answerIndex) => {
   return $$('dd[class="ons-summary__actions"]')[answerIndex].$("a");
 };
+
+export const listItemIds = () => {
+  return $$("[data-list-item-id]").map((listItem) => listItem.getAttribute("data-list-item-id"));
+};
