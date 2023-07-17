@@ -116,7 +116,7 @@ class PlaceholderParser:
         self,
         *,
         routing_path_block_ids: Iterable[str] | None = None,
-        assess_routing_path: bool | None = None,
+        assess_routing_path: bool | None = False,
     ) -> ValueSourceResolver:
         return ValueSourceResolver(
             answer_store=self._answer_store,
