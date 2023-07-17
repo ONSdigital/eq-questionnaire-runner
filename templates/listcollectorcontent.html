@@ -1,1 +1,10 @@
-{% include 'question.html' %}
+{% extends 'layouts/_questionnaire.html' %}
+{% from "components/question/_macro.njk" import onsQuestion %}
+{% import 'macros/helpers.html' as helpers %}
+
+{% set save_on_signout = true %}
+
+{% block form_content %}
+   {% include 'partials/list-content.html' %}
+{% endblock %}
+
