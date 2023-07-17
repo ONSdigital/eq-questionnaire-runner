@@ -40,17 +40,13 @@ class ListContext(Context):
             else []
         )
 
-        list_context = {
+        return {
             "list": {
                 "list_items": list_items,
                 "editable": any([edit_block_id, remove_block_id]),
             },
             "content": content_definition,
         }
-        if content_definition:
-            list_context["content"] = content_definition
-
-        return list_context
 
     # pylint: disable=too-many-locals
     def _build_list_items_context(

@@ -51,8 +51,7 @@ class ListCollector(Question):
 
         return super().get_next_location_url()
 
-    def get_context(self):
-        question_context = super().get_context()
+    def _get_list_context(self) -> dict:
         list_context = ListContext(
             self._language,
             self._schema,
@@ -63,18 +62,21 @@ class ListCollector(Question):
             self._questionnaire_store.response_metadata,
         )
 
-        return {
-            **question_context,
-            **list_context(
-                self.rendered_block["summary"],
-                for_list=self.list_name,
-                edit_block_id=self.rendered_block["edit_block"]["id"],
-                remove_block_id=self.rendered_block["remove_block"]["id"],
-                return_to=self._return_to,
-                section_id=self.current_location.section_id,
-                has_repeating_blocks=bool(self.repeating_block_ids),
-            ),
-        }
+        return list_context(
+            self.rendered_block["summary"],
+            for_list=self.list_name,
+            edit_block_id=self.rendered_block.get("edit_block", {}).get("id"),
+            remove_block_id=self.rendered_block.get("remove_block", {}).get("id"),
+            return_to=self._return_to,
+            section_id=self.current_location.section_id,
+            has_repeating_blocks=bool(self.repeating_block_ids),
+        )
+
+    def _get_additional_view_context(self) -> dict:
+        return super().get_context()
+
+    def get_context(self):
+        return {**self._get_additional_view_context(), **self._get_list_context()}
 
     def handle_post(self):
         answer_action = self._get_answer_action()

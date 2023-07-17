@@ -1,31 +1,11 @@
 from flask import url_for
 
-from app.views.contexts import ListContext
 from app.views.handlers.list_collector import ListCollector
 
 
 class ListCollectorContent(ListCollector):
-    def get_context(self):
-        list_context = ListContext(
-            self._language,
-            self._schema,
-            self._questionnaire_store.answer_store,
-            self._questionnaire_store.list_store,
-            self._questionnaire_store.progress_store,
-            self._questionnaire_store.metadata,
-            self._questionnaire_store.response_metadata,
-        )
-
-        return {
-            **list_context(
-                summary_definition=self.rendered_block["summary"],
-                content_definition=self.rendered_block["content"],
-                section_id=self.current_location.section_id,
-                for_list=self.rendered_block["for_list"],
-                return_to=self._return_to,
-                has_repeating_blocks=bool(self.repeating_block_ids),
-            ),
-        }
+    def _get_additional_view_context(self) -> dict:
+        return self.rendered_block["content"]
 
     def get_next_location_url(self):
         if incomplete_block := self.get_first_incomplete_repeating_block_location(
