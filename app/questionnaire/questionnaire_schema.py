@@ -98,7 +98,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._populate_answer_dependencies()
         self._populate_when_rules_section_dependencies()
         self._populate_calculated_summary_section_dependencies()
-        self._populate_placeholder_section_dependencies()
+        self._populate_placeholder_transform_section_dependencies()
 
     @property
     def placeholder_transform_section_dependencies_by_block(
@@ -1268,7 +1268,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 if item["for_list"] == list_name and item.get("item_anchor_answer_id"):
                     return f"#{str(item['item_anchor_answer_id'])}"
 
-    def _populate_placeholder_section_dependencies(self) -> None:
+    def _populate_placeholder_transform_section_dependencies(self) -> None:
         for block in self.get_blocks():
             transforms = get_mappings_with_key("transform", block)
             placeholder_answer_ids = {
