@@ -10,22 +10,12 @@ class ListCollectorContentBlock(ListCollectorBaseBlock):
 
         current_list = self._list_store[summary["for_list"]]
 
-        list_collector_blocks = list(
-            self._schema.get_list_collectors_for_list(
-                self._section, for_list=summary["for_list"]
-            )
+        list_collector_blocks_on_path = self._list_collector_block_on_path(
+            summary["for_list"]
         )
 
-        list_collector_blocks_on_path = [
-            list_collector_block
-            for list_collector_block in list_collector_blocks
-            if list_collector_block["id"] in self._routing_path_block_ids
-        ]
-
-        list_collector_block = (
-            list_collector_blocks_on_path[0]
-            if list_collector_blocks_on_path
-            else list_collector_blocks[0]
+        list_collector_block = self._list_collector_block(
+            summary["for_list"], list_collector_blocks_on_path
         )
 
         rendered_summary = self._placeholder_renderer.render(

@@ -97,3 +97,27 @@ class ListCollectorBaseBlock:
             related_answers_blocks[list_id] = serialized_blocks
 
         return related_answers_blocks
+
+    def _list_collector_block_on_path(self, for_list: str) -> list:
+        list_collector_blocks = list(
+            self._schema.get_list_collectors_for_list(self._section, for_list=for_list)
+        )
+
+        return [
+            list_collector_block
+            for list_collector_block in list_collector_blocks
+            if list_collector_block["id"] in self._routing_path_block_ids
+        ]
+
+    def _list_collector_block(
+        self, for_list: str, list_collector_blocks_on_path: list
+    ) -> ImmutableDict:
+        list_collector_blocks = list(
+            self._schema.get_list_collectors_for_list(self._section, for_list=for_list)
+        )
+        # Type ignore: self._schema.get_list_collectors_for_list can return None
+        return (  # type: ignore
+            list_collector_blocks_on_path[0]
+            if list_collector_blocks_on_path
+            else list_collector_blocks[0]
+        )
