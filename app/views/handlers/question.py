@@ -80,7 +80,7 @@ class Question(BlockHandler):
 
         self._set_page_title(page_title)
 
-        if transformed_block["type"] == "ListCollectorContent":
+        if not transformed_block.get("question"):
             return transformed_block
 
         rendered_question = self.placeholder_renderer.render(
