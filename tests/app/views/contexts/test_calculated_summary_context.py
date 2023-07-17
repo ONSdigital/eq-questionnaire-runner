@@ -310,10 +310,18 @@ def test_build_view_context_for_calculated_summary_with_dynamic_answers(
     answer_ids = [answer["id"] for answer in answers_to_keep]
     assert answer_ids == expected_answer_ids
 
+    # blocks with dynamic answers show each answer suffixed with the list item id, so the anchor needs to also include it
+    assert all(
+        answer["link"].endswith(
+            f"return_to=calculated-summary&return_to_answer_id={answer['id']}&return_to_block_id={block_id}#{answer['id']}"
+        )
+        for answer in answers_to_keep
+    )
+
 
 @pytest.mark.usefixtures("app")
 @pytest.mark.parametrize(
-    "block_id,expected_answer_ids,expected_answer_labels,expected_block_ids",
+    "block_id,expected_answer_ids,expected_answer_labels,expected_block_ids,anchors",
     (
         (
             "calculated-summary-spending",
@@ -336,6 +344,13 @@ def test_build_view_context_for_calculated_summary_with_dynamic_answers(
                 "transport-repeating-block-1-CHKtQS",
                 "transport-repeating-block-1-laFWcs",
             ],
+            [
+                "answer-car",
+                "transport-cost",
+                "transport-additional-cost",
+                "transport-cost",
+                "transport-additional-cost",
+            ],
         ),
         (
             "calculated-summary-count",
@@ -345,6 +360,7 @@ def test_build_view_context_for_calculated_summary_with_dynamic_answers(
                 "transport-repeating-block-2-CHKtQS",
                 "transport-repeating-block-2-laFWcs",
             ],
+            ["transport-count", "transport-count"],
         ),
     ),
 )
@@ -356,6 +372,7 @@ def test_build_view_context_for_calculated_summary_with_answers_from_repeating_b
     expected_answer_ids,
     expected_answer_labels,
     expected_block_ids,
+    anchors,
 ):
     """
     Tests that when different dynamic answers for the same list are used in different calculated summaries
@@ -403,6 +420,11 @@ def test_build_view_context_for_calculated_summary_with_answers_from_repeating_b
     answer_labels = [answer["label"] for answer in answers]
     assert answer_labels == expected_answer_labels
 
-    answer_links = [answer["link"] for answer in answers]
-    assert all("return_to=calculated-summary" in link for link in answer_links)
-    assert all(f"return_to_block_id={block_id}" in link for link in answer_links)
+    # on summary pages, repeating block answer ids are suffixed with list item ids,
+    # but the anchor on the change links needs to not have them, because the repeating block itself doesn't do that
+    assert all(
+        answer["link"].endswith(
+            f"return_to=calculated-summary&return_to_answer_id={answer['id']}&return_to_block_id={block_id}#{anchor}"
+        )
+        for anchor, answer in zip(anchors, answers)
+    )

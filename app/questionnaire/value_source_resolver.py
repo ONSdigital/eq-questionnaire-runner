@@ -167,7 +167,7 @@ class ValueSourceResolver:
         if not list_item_id:
             if self.schema.is_answer_dynamic(answer_id):
                 return self._resolve_dynamic_answers(answer_id)
-            if self.schema.is_answer_for_list_collector_repeating_block(answer_id):
+            if self.schema.is_answer_in_list_collector_repeating_block(answer_id):
                 return self._resolve_list_repeating_block_answers(answer_id)
 
         answer_value = self._get_answer_value(

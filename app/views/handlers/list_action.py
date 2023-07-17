@@ -54,10 +54,14 @@ class ListAction(Question):
             )
         ):
             return url_for(
-                "questionnaire.get_section", section_id=self.parent_location.section_id
+                "questionnaire.get_section",
+                section_id=self.parent_location.section_id,
+                _anchor=self._return_to_answer_id,
             )
         if self._return_to == "final-summary" and self.router.is_questionnaire_complete:
-            return url_for("questionnaire.submit_questionnaire")
+            return url_for(
+                "questionnaire.submit_questionnaire", _anchor=self._return_to_answer_id
+            )
 
     def get_next_location_url(self):
         if url := self.get_section_or_final_summary_url():

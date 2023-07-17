@@ -62,8 +62,6 @@ class Block:
             list_store=list_store,
             metadata=metadata,
             response_metadata=response_metadata,
-            schema=schema,
-            location=location,
             return_to=return_to,
             return_to_block_id=return_to_block_id,
             progress_store=progress_store,
@@ -78,8 +76,6 @@ class Block:
         list_store: ListStore,
         metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
-        schema: QuestionnaireSchema,
-        location: Location,
         return_to: str | None,
         return_to_block_id: str | None,
         progress_store: ProgressStore,
@@ -89,14 +85,14 @@ class Block:
 
         variant = choose_variant(
             block_schema,
-            schema,
+            self.schema,
             metadata,
             response_metadata,
             answer_store,
             list_store,
             variants_key="question_variants",
             single_key="question",
-            current_location=location,
+            current_location=self.location,
             progress_store=progress_store,
         )
         return Question(
@@ -104,10 +100,10 @@ class Block:
             answer_store=answer_store,
             list_store=list_store,
             progress_store=progress_store,
-            schema=schema,
+            schema=self.schema,
             rule_evaluator=self._rule_evaluator,
             value_source_resolver=self._value_source_resolver,
-            location=location,
+            location=self.location,
             block_id=self.id,
             return_to=return_to,
             return_to_block_id=return_to_block_id,
@@ -118,10 +114,14 @@ class Block:
 
     def _handle_id_suffixing(self, block: dict) -> dict:
         """
-        If the block is a list collector repeating block, the block id, as well as any other ids (e.g. question, answer) need suffixing with list_item_id
-        This is so the HTML rendered is valid and doesn't have duplicate div ids when repeating blocks are rendered multiple times per list item
+        If the block is repeating but not within a repeating section, summary pages will render it multiple times, once per list item
+        so the block id, as well as any other ids (e.g. question, answer) need suffixing with list_item_id to ensure the HTML rendered is valid and doesn't
+        have duplicate div ids
         """
-        if self.id in self.schema.list_collector_repeating_block_ids:
+        if (
+            self.location.list_item_id
+            and not self.schema.is_block_in_repeating_section(self.id)
+        ):
             for pointer in find_pointers_containing(block, "id"):
                 data = resolve_pointer(block, pointer)
                 data["id"] = f"{data['id']}-{self.location.list_item_id}"

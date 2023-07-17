@@ -388,8 +388,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         list_block_dependencies: set[str] = set()
         for child in ("add_block", "remove_block"):
             if child_block := list_collector_block.get(child):
-                list_block_dependencies.add(
-                    self.get_first_answer_id_for_block(child_block["id"])
+                list_block_dependencies.update(
+                    self.get_answer_ids_for_block(child_block["id"])
                 )
 
         if list_block_dependencies:
@@ -568,12 +568,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             answer_ids_for_block
         )
         # removing an item from a list will require any dependent calculated summaries to be re-confirmed, so cache dependencies
-        if remove_block_question := self.get_remove_block_id_for_list(list_name):
-            remove_block_answer_id = self.get_first_answer_id_for_block(
-                remove_block_question
-            )
-            self._list_dependent_block_additional_dependencies[block_id].add(
-                remove_block_answer_id
+        if remove_block_id := self.get_remove_block_id_for_list(list_name):
+            self._list_dependent_block_additional_dependencies[block_id].update(
+                self.get_answer_ids_for_block(remove_block_id)
             )
 
     def _get_answer_dependent_for_block_id(
@@ -818,7 +815,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def is_answer_dynamic(self, answer_id: str) -> bool:
         return answer_id in self._dynamic_answer_ids
 
-    def is_answer_for_list_collector_repeating_block(self, answer_id: str) -> bool:
+    def is_answer_in_list_collector_repeating_block(self, answer_id: str) -> bool:
         return answer_id in self._repeating_block_answer_ids
 
     def get_list_name_for_dynamic_answer(self, block_id: str) -> str:

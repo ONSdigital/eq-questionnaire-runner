@@ -55,6 +55,10 @@ class Question:
 
         self.rule_evaluator = rule_evaluator
         self.value_source_resolver = value_source_resolver
+        # no need to call the method if no list item id
+        self._is_in_repeating_section = (
+            self.list_item_id and self.schema.is_block_in_repeating_section(block_id)
+        )
 
         self.answers = self._build_answers(
             answer_store=answer_store,
@@ -137,6 +141,7 @@ class Question:
                 list_item_id=list_item_id or self.list_item_id,
                 return_to=return_to,
                 return_to_block_id=return_to_block_id,
+                is_in_repeating_section=self._is_in_repeating_section,
             ).serialize()
             summary_answers.append(summary_answer)
 
