@@ -56,7 +56,7 @@ class Question:
         self.rule_evaluator = rule_evaluator
         self.value_source_resolver = value_source_resolver
         # no need to call the method if no list item id
-        self._is_in_repeating_section = (
+        self._is_in_repeating_section = bool(
             self.list_item_id and self.schema.is_block_in_repeating_section(block_id)
         )
 

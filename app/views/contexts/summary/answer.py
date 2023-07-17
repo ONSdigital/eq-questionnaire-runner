@@ -80,7 +80,11 @@ class Answer:
         )
 
     def _return_to_answer_id(
-        self, *, return_to: str, list_item_id: str, is_in_repeating_section: bool
+        self,
+        *,
+        return_to: str | None,
+        list_item_id: str | None,
+        is_in_repeating_section: bool,
     ) -> str | None:
         """
         If the summary page using this answer has repeating answers, but it is not in a repeating section,
