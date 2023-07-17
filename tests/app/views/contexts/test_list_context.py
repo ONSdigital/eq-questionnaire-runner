@@ -56,7 +56,6 @@ def test_build_list_summary_context_no_summary_block(
         has_repeating_blocks=False,
     )
     assert list_context == {
-        "content": None,
         "list": {"editable": False, "list_items": []},
     }
 

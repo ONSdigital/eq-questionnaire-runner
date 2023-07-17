@@ -186,7 +186,6 @@ def test_context_for_section_list_summary(people_answer_store, progress_store):
                             },
                         ],
                     },
-                    "content": None,
                     "list_name": "people",
                     "related_answers": None,
                     "title": "Household members staying overnight on 13 October 2019 at 70 Abingdon Road, Goathill",
@@ -212,7 +211,6 @@ def test_context_for_section_list_summary(people_answer_store, progress_store):
                             }
                         ],
                     },
-                    "content": None,
                     "list_name": "visitors",
                     "related_answers": None,
                     "title": "Visitors staying overnight on 13 October 2019 at 70 Abingdon Road, Goathill",
@@ -301,7 +299,6 @@ def test_context_for_section_summary_with_list_summary(
                                             },
                                         ],
                                     },
-                                    "content": None,
                                     "list_name": "companies",
                                     "related_answers": {
                                         "PlwgoG": [
@@ -489,7 +486,6 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
                                             },
                                         ],
                                     },
-                                    "content": None,
                                     "list_name": "companies",
                                     "related_answers": {
                                         "PlwgoG": [
@@ -677,7 +673,6 @@ def test_context_for_section_summary_with_list_summary_and_second_variant(
                                             },
                                         ],
                                     },
-                                    "content": None,
                                     "list_name": "companies",
                                     "related_answers": {
                                         "PlwgoG": [
@@ -822,7 +817,6 @@ def test_context_for_driving_question_summary_empty_list():
                     "item_label": None,
                     "empty_list_text": "There are no householders",
                     "list": {"editable": False, "list_items": []},
-                    "content": None,
                     "list_name": "people",
                     "related_answers": None,
                     "title": "Household members",
@@ -892,7 +886,6 @@ def test_context_for_driving_question_summary(progress_store):
                             }
                         ],
                     },
-                    "content": None,
                     "list_name": "people",
                     "related_answers": None,
                     "title": "Household members",

@@ -3,7 +3,6 @@ from typing import Any, Generator, Mapping, Sequence
 
 from flask import url_for
 from flask_babel import lazy_gettext
-from werkzeug.datastructures import ImmutableDict
 
 from app.views.contexts.context import Context
 
@@ -20,7 +19,6 @@ class ListContext(Context):
         remove_block_id: str | None = None,
         primary_person_edit_block_id: str | None = None,
         for_list_item_ids: Sequence[str] | None = None,
-        content_definition: ImmutableDict | None = None,
     ) -> dict[str, Any]:
         list_items = (
             list(
@@ -45,7 +43,6 @@ class ListContext(Context):
                 "list_items": list_items,
                 "editable": any([edit_block_id, remove_block_id]),
             },
-            "content": content_definition,
         }
 
     # pylint: disable=too-many-locals
