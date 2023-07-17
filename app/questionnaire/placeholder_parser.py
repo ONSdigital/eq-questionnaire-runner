@@ -29,7 +29,7 @@ from app.questionnaire.value_source_resolver import (
     ValueSourceTypes,
 )
 from app.utilities.mappings import get_flattened_mapping_values
-from app.utilities.types import LocationType
+from app.utilities.types import LocationType, SectionKey
 
 if TYPE_CHECKING:
     from app.questionnaire.placeholder_renderer import (
@@ -184,7 +184,7 @@ class PlaceholderParser:
         self,
         data: Sequence[Mapping],
         sections_to_ignore: list[str] | None = None,
-    ) -> dict[tuple, tuple[str, ...]] | None:
+    ) -> dict[SectionKey, tuple[str, ...]] | None:
         if not self._location:
             return {}
 

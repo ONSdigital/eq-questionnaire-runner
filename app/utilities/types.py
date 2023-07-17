@@ -4,3 +4,4 @@ from app.questionnaire.location import Location
 from app.questionnaire.relationship_location import RelationshipLocation
 
 LocationType: TypeAlias = Location | RelationshipLocation
+SectionKey: TypeAlias = tuple[str, str | None]

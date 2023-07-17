@@ -9,7 +9,7 @@ from app.data_models import ProgressStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.questionnaire_schema import get_sources_for_type_from_data
 from app.utilities.mappings import get_flattened_mapping_values
-from app.utilities.types import LocationType
+from app.utilities.types import LocationType, SectionKey
 
 if TYPE_CHECKING:
     from app.questionnaire.path_finder import PathFinder  # pragma: no cover
@@ -25,8 +25,8 @@ def get_routing_path_block_ids_by_section_for_dependent_sections(
     sections_to_ignore: list | None = None,
     ignore_keys: list[str] | None = None,
     dependent_sections: dict[str, set[str]] | dict[str, OrderedSet[str]],
-) -> dict[tuple, tuple[str, ...]]:
-    block_ids_by_section: dict[tuple, tuple[str, ...]] = {}
+) -> dict[SectionKey, tuple[str, ...]]:
+    block_ids_by_section: dict[SectionKey, tuple[str, ...]] = {}
     sections_to_ignore = sections_to_ignore or []
 
     dependents = (
@@ -64,7 +64,7 @@ def get_routing_path_block_ids_by_section_for_calculated_summary_dependencies(
     sections_to_ignore: list | None = None,
     ignore_keys: list[str] | None = None,
     schema: QuestionnaireSchema,
-) -> dict[tuple, tuple[str, ...]]:
+) -> dict[SectionKey, tuple[str, ...]]:
     dependent_sections = schema.calculated_summary_section_dependencies_by_block[
         location.section_id
     ]

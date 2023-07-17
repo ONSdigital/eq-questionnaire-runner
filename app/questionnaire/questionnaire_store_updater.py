@@ -7,13 +7,13 @@ from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import AnswerValueTypes, QuestionnaireStore
 from app.data_models.answer_store import Answer
-from app.data_models.progress_store import CompletionStatus, SectionKeyType
+from app.data_models.progress_store import CompletionStatus
 from app.data_models.relationship_store import RelationshipDict, RelationshipStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import AnswerDependent
 from app.questionnaire.router import Router
-from app.utilities.types import LocationType
+from app.utilities.types import LocationType, SectionKey
 
 DependentSection = namedtuple("DependentSection", "section_id list_item_id is_complete")
 
@@ -41,7 +41,7 @@ class QuestionnaireStoreUpdater:
         self._router = router
 
         self.dependent_block_id_by_section_key: Mapping[
-            SectionKeyType, set[str]
+            SectionKey, set[str]
         ] = defaultdict(set)
         self.dependent_sections: set[DependentSection] = set()
 
@@ -527,7 +527,7 @@ class QuestionnaireStoreUpdater:
 
     def started_section_keys(
         self, section_ids: Iterable[str] | None = None
-    ) -> list[SectionKeyType]:
+    ) -> list[SectionKey]:
         return self._progress_store.started_section_keys(section_ids)
 
     def get_chronological_section_dependents(self) -> list:

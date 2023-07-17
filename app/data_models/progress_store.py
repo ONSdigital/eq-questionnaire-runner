@@ -3,9 +3,7 @@ from typing import Iterable, Iterator, MutableMapping, Optional
 
 from app.data_models.progress import Progress, ProgressDictType
 from app.questionnaire.location import Location
-from app.utilities.types import LocationType
-
-SectionKeyType = tuple[str, Optional[str]]
+from app.utilities.types import LocationType, SectionKey
 
 
 @dataclass
@@ -35,11 +33,11 @@ class ProgressStore:
         """
         self._is_dirty: bool = False
         self._is_routing_backwards: bool = False
-        self._progress: MutableMapping[SectionKeyType, Progress] = self._build_map(
+        self._progress: MutableMapping[SectionKey, Progress] = self._build_map(
             in_progress_sections or []
         )
 
-    def __contains__(self, section_key: SectionKeyType) -> bool:
+    def __contains__(self, section_key: SectionKey) -> bool:
         return section_key in self._progress
 
     @staticmethod
@@ -91,7 +89,7 @@ class ProgressStore:
         self,
         statuses: Optional[Iterable[str]] = None,
         section_ids: Optional[Iterable[str]] = None,
-    ) -> list[SectionKeyType]:
+    ) -> list[SectionKey]:
         if not statuses:
             statuses = {*CompletionStatus()}
 
@@ -233,7 +231,7 @@ class ProgressStore:
 
     def started_section_keys(
         self, section_ids: Optional[Iterable[str]] = None
-    ) -> list[SectionKeyType]:
+    ) -> list[SectionKey]:
         return self.section_keys(
             statuses={CompletionStatus.COMPLETED, CompletionStatus.IN_PROGRESS},
             section_ids=section_ids,
