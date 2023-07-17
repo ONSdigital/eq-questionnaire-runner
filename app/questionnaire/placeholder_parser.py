@@ -22,6 +22,7 @@ from app.questionnaire.dependencies import (
     get_routing_path_block_ids_by_section_for_dependent_sections,
 )
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
+from app.questionnaire.questionnaire_schema import TRANSFORMS_REQUIRING_ROUTING_PATH
 from app.questionnaire.value_source_resolver import (
     ValueSourceEscapedTypes,
     ValueSourceResolver,
@@ -206,11 +207,9 @@ class PlaceholderParser:
     def _get_value_source_resolver_for_transform(
         self, transform: Mapping
     ) -> ValueSourceResolver:
-        if self._location and (
-            dependent_sections := self._schema.placeholder_transform_section_dependencies_by_block[
-                self._location.section_id
-            ]
-        ):
+        if self._location and transform["transform"] in TRANSFORMS_REQUIRING_ROUTING_PATH:
+            dependent_sections = self._schema.placeholder_transform_section_dependencies_by_block[
+                self._location.section_id]
             block_ids = get_routing_path_block_ids_by_section_for_dependent_sections(
                 location=self._location,
                 progress_store=self._progress_store,
