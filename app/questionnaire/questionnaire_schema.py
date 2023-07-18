@@ -106,7 +106,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def min_and_max_map(self) -> ImmutableDict[str, str | dict[str, str]]:
         return ImmutableDict(self._min_and_max_map)
 
-    def _set_min_max_value_for_answer(self, value: str | dict[str, str], min_max: Any, longest_string: str | None) -> None:
+    def _set_min_max_value_for_answer(
+        self, value: str | dict[str, str], min_max: Any, longest_string: str | None
+    ) -> None:
         if isinstance(value, int):
             if longest_string and len(str(value)) > len(longest_string):
                 longest_string = str(value)
@@ -160,9 +162,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 "Unit",
             ]:
                 self._create_min_max_map("minimum", answer_id, answers, "0")
-                self._create_min_max_map(
-                    "maximum", answer_id, answers, str(MAX_NUMBER)
-                )
+                self._create_min_max_map("maximum", answer_id, answers, str(MAX_NUMBER))
 
     @cached_property
     def when_rules_section_dependencies_by_section(
