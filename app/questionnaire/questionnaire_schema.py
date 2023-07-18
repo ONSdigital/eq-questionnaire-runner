@@ -112,10 +112,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         if isinstance(value, int):
             if longest_string and len(str(value)) > len(longest_string):
                 return str(value)
-            elif not longest_string:
+            if not longest_string:
                 return str(value)
-            else:
-                return
 
         elif isinstance(value, dict) and value:
             if (
@@ -126,10 +124,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     str(self._min_and_max_map[value["identifier"]][min_max])
                 ) > len(longest_string):
                     return str(self._min_and_max_map[value["identifier"]][min_max])
-                elif not longest_string:
+                if not longest_string:
                     return str(self._min_and_max_map[value["identifier"]][min_max])
-                else:
-                    return
 
     def _create_min_max_map(
         self,
