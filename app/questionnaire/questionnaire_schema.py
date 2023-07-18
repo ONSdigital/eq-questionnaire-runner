@@ -82,7 +82,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         ] = defaultdict(set)
         self._language_code = language_code
         self._questionnaire_json = questionnaire_json
-        self._min_and_max_map: dict[str, str | dict[str, str]] = {}
+        self._min_and_max_map: defaultdict[str, str | dict[str, str]] = defaultdict(lambda: defaultdict(OrderedSet))
 
         # The ordering here is required as they depend on each other.
         self._sections_by_id = self._get_sections_by_id()
@@ -106,24 +106,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def min_and_max_map(self) -> ImmutableDict[str, str | dict[str, str]]:
         return ImmutableDict(self._min_and_max_map)
 
-    def _get_min_max_value_for_answer(
-        self, value: str | dict[str, str], min_max: Any, longest_string: str | None
-    ) -> str | None:
-        if isinstance(value, int):
-            if longest_string and len(str(value)) > len(longest_string):
-                return str(value)
-            if not longest_string:
-                return str(value)
-
-        elif isinstance(value, dict) and value:
-            if value.get("source") == "answers":
-                if longest_string and len(
-                    str(self._min_and_max_map[value["identifier"]][min_max])
-                ) > len(longest_string):
-                    return str(self._min_and_max_map[value["identifier"]][min_max])
-                if not longest_string:
-                    return str(self._min_and_max_map[value["identifier"]][min_max])
-
     def _create_min_max_map(
         self,
         min_max: Any,
@@ -134,14 +116,21 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         longest_string = None
         for answer in answers:
             value = answer.get(min_max, {}).get("value")
-            returned_longest_string = self._get_min_max_value_for_answer(
-                value, min_max, longest_string
-            )
-            if returned_longest_string:
-                longest_string = returned_longest_string
 
-        if not self._min_and_max_map.get(answer_id, {}):
-            self._min_and_max_map[answer_id] = {}
+            if isinstance(value, int):
+                if longest_string and len(str(value)) > len(longest_string):
+                    longest_string = str(value)
+                if not longest_string:
+                    longest_string = str(value)
+
+            elif isinstance(value, dict) and value:
+                if value.get("source") == "answers":
+                    if longest_string and len(
+                        str(self._min_and_max_map[value["identifier"]][min_max])
+                    ) > len(longest_string):
+                        longest_string = str(self._min_and_max_map[value["identifier"]][min_max])
+                    if not longest_string:
+                        longest_string = str(self._min_and_max_map[value["identifier"]][min_max])
 
         if longest_string:
             self._min_and_max_map[answer_id][min_max] = longest_string  # type: ignore
