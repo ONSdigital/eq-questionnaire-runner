@@ -51,7 +51,7 @@ class ValueSourceResolver:
         self,
         answer_id: str,
         list_item_id: str | None,
-        assess_routing_path: bool | None = True,
+        assess_routing_path: bool | None = None,
     ) -> AnswerValueTypes | None:
         assess_routing_path = (
             assess_routing_path
