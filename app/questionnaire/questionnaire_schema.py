@@ -701,13 +701,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         if repeat := self.get_repeat_for_section(section_id):
             return repeat.get("for_list")
 
-    def get_repeating_blocks_list_name_for_section(self, section_id: str) -> str | None:
-        # type ignore section always exists at this point
-        if blocks := self.get_blocks_for_section(self.get_section(section_id)):  # type: ignore
-            for block in blocks:
-                if block.get("repeating_blocks", []):
-                    return block.get("for_list")
-
     def get_repeating_title_for_section(self, section_id: str) -> ImmutableDict | None:
         if repeat := self.get_repeat_for_section(section_id):
             title: ImmutableDict = repeat["title"]

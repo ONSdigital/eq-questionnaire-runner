@@ -8,6 +8,8 @@ class ListCollectorContentBlock(ListCollectorBaseBlock):
     def list_summary_element(self, summary: Mapping[str, Any]) -> dict[str, Any]:
         related_answers = None
 
+        item_label = None
+
         current_list = self._list_store[summary["for_list"]]
 
         list_collector_blocks_on_path = self._list_collector_block_on_path(
@@ -25,6 +27,9 @@ class ListCollectorContentBlock(ListCollectorBaseBlock):
         if list_collector_blocks_on_path:
             repeating_blocks = list_collector_block.get("repeating_blocks", [])
             related_answers = self._get_related_answers(current_list, repeating_blocks)
+            item_label = self._schema.get_item_label(
+                self._section["id"], current_list.name
+            )
 
         list_summary_context = self.list_context(
             list_collector_block["summary"],
@@ -40,5 +45,6 @@ class ListCollectorContentBlock(ListCollectorBaseBlock):
             "empty_list_text": rendered_summary.get("empty_list_text"),
             "list_name": rendered_summary["for_list"],
             "related_answers": related_answers,
+            "item_label": item_label,
             **list_summary_context,
         }
