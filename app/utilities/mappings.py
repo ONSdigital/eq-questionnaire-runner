@@ -1,6 +1,8 @@
 from typing import Generator, Iterable, Mapping, Sequence
-from app.utilities.types import SectionKey
+
 from ordered_set import OrderedSet
+
+from app.utilities.types import SectionKey
 
 
 def get_flattened_mapping_values(
