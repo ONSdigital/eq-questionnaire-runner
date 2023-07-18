@@ -3,16 +3,7 @@ from collections import defaultdict
 from copy import deepcopy
 from dataclasses import dataclass
 from functools import cached_property
-from typing import (
-    Any,
-    Callable,
-    Generator,
-    Iterable,
-    Mapping,
-    Optional,
-    Sequence,
-    TypeAlias,
-)
+from typing import Any, Generator, Iterable, Mapping, Sequence, TypeAlias
 
 from flask_babel import force_locale
 from ordered_set import OrderedSet
