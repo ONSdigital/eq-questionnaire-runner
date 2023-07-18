@@ -1349,6 +1349,15 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
                 self._update_answer_dependencies_for_answer(answer, block_id=block_id)
 
+    def get_first_list_collector_for_section(
+        self, section_id: str
+    ) -> ImmutableDict | None:
+        # type ignore section always exists at this point
+        if blocks := self.get_blocks_for_section(self.get_section(section_id)):  # type: ignore
+            for block in blocks:
+                if block["type"] in ["ListCollector", "ListCollectorContent"]:
+                    return block
+
 
 def is_summary_with_calculation(summary_type: str) -> bool:
     return summary_type in {"GrandCalculatedSummary", "CalculatedSummary"}
