@@ -168,29 +168,22 @@ class QuestionnaireStoreUpdater:
         If an item is removed from a list, dependencies of any child blocks need to be captured and their progress updated.
         (E.g. dynamic-answers depending on a child block could have validation, so need revisiting if an item is removed)
         """
-        if remove_block_id := self._schema.get_remove_block_id_for_list(list_name):
-            self._capture_block_dependencies_for_all_answers_in_block(remove_block_id)
-
         for list_collector in self._schema.get_list_collectors_for_list(
             for_list=list_name,
             # Type ignore: section must exist at this point
             section=self._schema.get_section(self._current_location.section_id),  # type: ignore
         ):
-            if add_block := list_collector.get("add_block"):
-                self._capture_block_dependencies_for_all_answers_in_block(
-                    add_block["id"]
-                )
-            if repeating_blocks := list_collector.get("repeating_blocks"):
-                for repeating_block in repeating_blocks:
-                    self._capture_block_dependencies_for_all_answers_in_block(
-                        repeating_block["id"]
-                    )
-
-    def _capture_block_dependencies_for_all_answers_in_block(
-        self, block_id: str
-    ) -> None:
-        for answer_id in self._schema.get_answer_ids_for_block(block_id):
-            self._capture_block_dependencies_for_answer(answer_id)
+            child_blocks = (
+                list_collector.get("add_block"),
+                list_collector.get("remove_block"),
+                *list_collector.get("repeating_blocks", []),
+            )
+            for child_block in child_blocks:
+                if child_block:
+                    for answer_id in self._schema.get_answer_ids_for_block(
+                        child_block["id"]
+                    ):
+                        self._capture_block_dependencies_for_answer(answer_id)
 
     def _get_relationship_answers_for_list_name(
         self, list_name: str
