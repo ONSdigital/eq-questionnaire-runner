@@ -108,7 +108,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _get_min_max_value_for_answer(
         self, value: str | dict[str, str], min_max: Any, longest_string: str | None
-    ) -> str:
+    ) -> str | None:
         if isinstance(value, int):
             if longest_string and len(str(value)) > len(longest_string):
                 return str(value)
