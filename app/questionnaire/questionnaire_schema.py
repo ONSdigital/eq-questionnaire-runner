@@ -106,9 +106,32 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def min_and_max_map(self) -> ImmutableDict[str, str | dict[str, str]]:
         return ImmutableDict(self._min_and_max_map)
 
-    def _append_to_min_max_map(
+    def _set_min_max_value_for_answer(self, value, min_max):
+        if isinstance(value, int):
+            if longest_string and len(str(value)) > len(longest_string):
+                longest_string = str(value)
+            elif not longest_string:
+                longest_string = str(value)
+
+        elif isinstance(value, dict) and value:
+            if (
+                value.get("source") == "answers"
+                and value["identifier"] in self._min_and_max_map
+            ):
+                if longest_string and len(
+                    str(self._min_and_max_map[value["identifier"]][min_max])
+                ) > len(longest_string):
+                    longest_string = str(
+                        self._min_and_max_map[value["identifier"]][min_max]
+                    )
+                elif not longest_string:
+                    longest_string = str(
+                        self._min_and_max_map[value["identifier"]][min_max]
+                    )
+
+    def _create_min_max_map(
         self,
-        min_max: Any,
+        min_max: str,
         answer_id: str,
         answers: list,
         default_min_max: str,
@@ -117,27 +140,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         for answer in answers:
             value = answer.get(min_max, {}).get("value")
 
-            if isinstance(value, int):
-                if longest_string and len(str(value)) > len(longest_string):
-                    longest_string = str(value)
-                elif not longest_string:
-                    longest_string = str(value)
-
-            elif isinstance(value, dict) and value:
-                if (
-                    value.get("source") == "answers"
-                    and value["identifier"] in self._min_and_max_map
-                ):
-                    if longest_string and len(
-                        str(self._min_and_max_map[value["identifier"]][min_max])
-                    ) > len(longest_string):
-                        longest_string = str(
-                            self._min_and_max_map[value["identifier"]][min_max]
-                        )
-                    elif not longest_string:
-                        longest_string = str(
-                            self._min_and_max_map[value["identifier"]][min_max]
-                        )
+            self._set_min_max_value_for_answer(value, min_max)
 
         if not self._min_and_max_map.get(answer_id, {}):
             self._min_and_max_map[answer_id] = {}
@@ -156,8 +159,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 "Percentage",
                 "Unit",
             ]:
-                self._append_to_min_max_map("minimum", answer_id, answers, "0")
-                self._append_to_min_max_map(
+                self._create_min_max_map("minimum", answer_id, answers, "0")
+                self._create_min_max_map(
                     "maximum", answer_id, answers, str(MAX_NUMBER)
                 )
 
