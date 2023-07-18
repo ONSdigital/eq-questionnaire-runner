@@ -3,7 +3,7 @@ from typing import Mapping, MutableMapping
 
 from jsonpointer import resolve_pointer, set_pointer
 
-from app.data_models import ProgressStore
+from app.data_models import ProgressStore, SupplementaryDataStore
 from app.data_models.answer import AnswerValueTypes
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
@@ -30,6 +30,7 @@ class PlaceholderRenderer:
         response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
         progress_store: ProgressStore,
+        supplementary_data_store: SupplementaryDataStore,
         location: Location | RelationshipLocation | None = None,
         placeholder_preview_mode: bool | None = False,
     ):
@@ -42,6 +43,7 @@ class PlaceholderRenderer:
         self._schema = schema
         self._location = location
         self._progress_store = progress_store
+        self._supplementary_data_store = supplementary_data_store
 
     def render_pointer(
         self,
@@ -88,6 +90,7 @@ class PlaceholderRenderer:
                 renderer=self,
                 progress_store=self._progress_store,
                 placeholder_preview_mode=self._placeholder_preview_mode,
+                supplementary_data_store=self._supplementary_data_store,
             )
 
         placeholder_data = QuestionnaireSchema.get_mutable_deepcopy(placeholder_data)
@@ -144,6 +147,7 @@ class PlaceholderRenderer:
             renderer=self,
             placeholder_preview_mode=self._placeholder_preview_mode,
             progress_store=self._progress_store,
+            supplementary_data_store=self._supplementary_data_store,
         )
 
         for pointer in pointers:
@@ -216,6 +220,7 @@ class PlaceholderRenderer:
                 renderer=self,
                 placeholder_preview_mode=self._placeholder_preview_mode,
                 progress_store=self._progress_store,
+                supplementary_data_store=self._supplementary_data_store,
             )
 
             pointers = find_pointers_containing(answer, "placeholders")

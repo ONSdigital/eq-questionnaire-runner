@@ -131,6 +131,7 @@ def get_payload_data(
             schema=schema,
             full_routing_path=full_routing_path,
             progress_store=progress_store,
+            supplementary_data_store=supplementary_data_store,
         )
 
     if schema.json["data_version"] == "0.0.3":

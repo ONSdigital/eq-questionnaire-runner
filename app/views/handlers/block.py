@@ -82,6 +82,7 @@ class BlockHandler:
             schema=self._schema,
             location=self._current_location,
             progress_store=self._questionnaire_store.progress_store,
+            supplementary_data_store=self._questionnaire_store.supplementary_data_store,
         )
 
     @cached_property
@@ -93,6 +94,7 @@ class BlockHandler:
             progress_store=self._questionnaire_store.progress_store,
             metadata=self._questionnaire_store.metadata,
             response_metadata=self._questionnaire_store.response_metadata,
+            supplementary_data_store=self._questionnaire_store.supplementary_data_store,
         )
 
     def is_location_valid(self):

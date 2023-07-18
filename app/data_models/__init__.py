@@ -6,6 +6,7 @@ from .questionnaire_store import (
     ListStore,
     ProgressStore,
     QuestionnaireStore,
+    SupplementaryDataStore,
 )
 from .session_data import SessionData
 from .session_store import SessionStore
@@ -21,4 +22,5 @@ __all__ = [
     "QuestionnaireStore",
     "SessionData",
     "SessionStore",
+    "SupplementaryDataStore",
 ]

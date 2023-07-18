@@ -180,6 +180,7 @@ class IndividualResponseHandler:
             schema=self._schema,
             location=None,
             progress_store=self._questionnaire_store.progress_store,
+            supplementary_data_store=self._questionnaire_store.supplementary_data_store,
         )
 
     @cached_property
@@ -191,6 +192,7 @@ class IndividualResponseHandler:
             progress_store=self._questionnaire_store.progress_store,
             metadata=self._questionnaire_store.metadata,
             response_metadata=self._questionnaire_store.response_metadata,
+            supplementary_data_store=self._questionnaire_store.supplementary_data_store,
         )
 
     @cached_property
@@ -209,6 +211,7 @@ class IndividualResponseHandler:
             data=self._answers,
             form_data=self._form_data,
             progress_store=self._questionnaire_store.progress_store,
+            supplementary_data_store=self._questionnaire_store.supplementary_data_store,
         )
 
     def get_context(self):

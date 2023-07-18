@@ -3,7 +3,12 @@ from datetime import date
 from decimal import Decimal
 from typing import Generator, Iterable, MutableMapping, Sequence, TypeAlias
 
-from app.data_models import AnswerStore, ListStore, ProgressStore
+from app.data_models import (
+    AnswerStore,
+    ListStore,
+    ProgressStore,
+    SupplementaryDataStore,
+)
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
@@ -31,6 +36,7 @@ class RuleEvaluator:
     response_metadata: MutableMapping
     location: Location | RelationshipLocation | None
     progress_store: ProgressStore
+    supplementary_data_store: SupplementaryDataStore
     routing_path_block_ids: Iterable[str] | None = None
     language: str = DEFAULT_LANGUAGE_CODE
 
@@ -48,6 +54,7 @@ class RuleEvaluator:
             routing_path_block_ids=self.routing_path_block_ids,
             progress_store=self.progress_store,
             use_default_answer=True,
+            supplementary_data_store=self.supplementary_data_store,
         )
 
         renderer: PlaceholderRenderer = PlaceholderRenderer(
@@ -59,6 +66,7 @@ class RuleEvaluator:
             schema=self.schema,
             location=self.location,
             progress_store=self.progress_store,
+            supplementary_data_store=self.supplementary_data_store,
         )
         self.operations = Operations(
             language=self.language, schema=self.schema, renderer=renderer

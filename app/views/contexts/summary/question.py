@@ -4,7 +4,12 @@ from flask import url_for
 from markupsafe import Markup, escape
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import AnswerStore, ListStore, ProgressStore
+from app.data_models import (
+    AnswerStore,
+    ListStore,
+    ProgressStore,
+    SupplementaryDataStore,
+)
 from app.data_models.answer import AnswerValueEscapedTypes, escape_answer_value
 from app.data_models.metadata_proxy import MetadataProxy
 from app.forms.field_handlers.select_handlers import DynamicAnswerOptions
@@ -28,6 +33,7 @@ class Question:
         answer_store: AnswerStore,
         list_store: ListStore,
         progress_store: ProgressStore,
+        supplementary_data_store: SupplementaryDataStore,
         schema: QuestionnaireSchema,
         rule_evaluator: RuleEvaluator,
         value_source_resolver: ValueSourceResolver,
@@ -47,6 +53,7 @@ class Question:
         self.answer_store = answer_store
         self.list_store = list_store
         self.progress_store = progress_store
+        self.supplementary_data_store = supplementary_data_store
         self.summary = question_schema.get("summary")
         self.title = (
             question_schema.get("title") or question_schema["answers"][0]["label"]
@@ -302,6 +309,7 @@ class Question:
                 language=language,
                 metadata=metadata,
                 response_metadata=response_metadata,
+                supplementary_data_store=self.supplementary_data_store,
             )
 
             resolved_question = ImmutableDict(

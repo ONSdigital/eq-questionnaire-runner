@@ -2,7 +2,12 @@ from typing import Mapping, MutableMapping
 
 from jsonpointer import resolve_pointer
 
-from app.data_models import AnswerStore, ListStore, ProgressStore
+from app.data_models import (
+    AnswerStore,
+    ListStore,
+    ProgressStore,
+    SupplementaryDataStore,
+)
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
@@ -26,6 +31,7 @@ class Block:
         return_to: str | None,
         return_to_block_id: str | None = None,
         progress_store: ProgressStore,
+        supplementary_data_store: SupplementaryDataStore,
         language: str,
     ) -> None:
         self.id = block_schema["id"]
@@ -42,6 +48,7 @@ class Block:
             response_metadata=response_metadata,
             location=self.location,
             progress_store=progress_store,
+            supplementary_data_store=supplementary_data_store,
         )
 
         self._value_source_resolver = ValueSourceResolver(
@@ -54,6 +61,7 @@ class Block:
             list_item_id=self.location.list_item_id if self.location else None,
             use_default_answer=True,
             progress_store=progress_store,
+            supplementary_data_store=supplementary_data_store,
         )
 
         self.question = self.get_question(
@@ -65,6 +73,7 @@ class Block:
             return_to=return_to,
             return_to_block_id=return_to_block_id,
             progress_store=progress_store,
+            supplementary_data_store=supplementary_data_store,
             language=language,
         )
 
@@ -79,6 +88,7 @@ class Block:
         return_to: str | None,
         return_to_block_id: str | None,
         progress_store: ProgressStore,
+        supplementary_data_store: SupplementaryDataStore,
         language: str,
     ) -> dict[str, Question]:
         """Taking question variants into account, return the question which was displayed to the user"""
@@ -94,12 +104,14 @@ class Block:
             single_key="question",
             current_location=self.location,
             progress_store=progress_store,
+            supplementary_data_store=supplementary_data_store,
         )
         return Question(
             variant,
             answer_store=answer_store,
             list_store=list_store,
             progress_store=progress_store,
+            supplementary_data_store=supplementary_data_store,
             schema=self.schema,
             rule_evaluator=self._rule_evaluator,
             value_source_resolver=self._value_source_resolver,

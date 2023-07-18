@@ -5,7 +5,7 @@ from typing import Callable, Iterable, Mapping, MutableMapping, TypeAlias
 from markupsafe import Markup
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import ProgressStore
+from app.data_models import ProgressStore, SupplementaryDataStore
 from app.data_models.answer import (
     AnswerValueEscapedTypes,
     AnswerValueTypes,
@@ -35,6 +35,7 @@ class ValueSourceResolver:
     location: Location | RelationshipLocation | None
     list_item_id: str | None
     progress_store: ProgressStore
+    supplementary_data_store: SupplementaryDataStore
     routing_path_block_ids: Iterable[str] | None = None
     use_default_answer: bool = False
     escape_answer_values: bool = False
@@ -262,6 +263,7 @@ class ValueSourceResolver:
             self.metadata,
             self.response_metadata,
             progress_store=self.progress_store,
+            supplementary_data_store=self.supplementary_data_store,
             location=self.location,
             routing_path_block_ids=self.routing_path_block_ids,
         )
@@ -307,6 +309,7 @@ class ValueSourceResolver:
             "location": self._resolve_location_source,
             "response_metadata": self._resolve_response_metadata_source,
             "progress": self._resolve_progress_value_source,
+            "supplementary_data": self._resolve_supplementary_data_source,
         }
 
         return resolve_method_mapping[source](value_source)

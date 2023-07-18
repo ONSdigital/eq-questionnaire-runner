@@ -4,7 +4,7 @@ from typing import Iterable, Mapping, MutableMapping, Sequence
 from flask import url_for
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import AnswerStore, ProgressStore
+from app.data_models import AnswerStore, ProgressStore, SupplementaryDataStore
 from app.data_models.list_store import ListModel, ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
@@ -25,6 +25,7 @@ class ListCollectorBlock:
         schema: QuestionnaireSchema,
         location: Location,
         language: str,
+        supplementary_data_store: SupplementaryDataStore,
         return_to: str | None,
         return_to_block_id: str | None = None,
     ) -> None:
@@ -38,6 +39,7 @@ class ListCollectorBlock:
             schema=schema,
             progress_store=progress_store,
             location=location,
+            supplementary_data_store=supplementary_data_store,
         )
         self._list_store = list_store
         self._schema = schema
@@ -50,6 +52,7 @@ class ListCollectorBlock:
         self._response_metadata = response_metadata
         self._routing_path_block_ids = routing_path_block_ids
         self._progress_store = progress_store
+        self._supplementary_data_store = supplementary_data_store
         self._return_to = return_to
         self._return_to_block_id = return_to_block_id
 
@@ -161,6 +164,7 @@ class ListCollectorBlock:
             self._progress_store,
             self._metadata,
             self._response_metadata,
+            self._supplementary_data_store,
         )
 
     def _add_link(
@@ -226,6 +230,7 @@ class ListCollectorBlock:
                         return_to=self._return_to,
                         return_to_block_id=self._return_to_block_id,
                         progress_store=self._progress_store,
+                        supplementary_data_store=self._supplementary_data_store,
                         language=self._language,
                     ).serialize(),
                     list_item_id=list_id,

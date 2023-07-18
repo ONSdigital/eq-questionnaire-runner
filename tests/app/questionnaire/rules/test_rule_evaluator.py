@@ -5,7 +5,12 @@ import pytest
 from freezegun import freeze_time
 from mock import MagicMock, Mock
 
-from app.data_models import AnswerStore, ListStore, ProgressStore
+from app.data_models import (
+    AnswerStore,
+    ListStore,
+    ProgressStore,
+    SupplementaryDataStore,
+)
 from app.data_models.answer import Answer
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
@@ -49,6 +54,7 @@ def get_rule_evaluator(
     ),
     routing_path_block_ids: Optional[list] = None,
     progress: ProgressStore = ProgressStore(),
+    supplementary_data_store: SupplementaryDataStore = SupplementaryDataStore(),
 ):
     if not schema:
         schema = get_mock_schema()
@@ -67,6 +73,7 @@ def get_rule_evaluator(
         location=location,
         routing_path_block_ids=routing_path_block_ids,
         progress_store=progress,
+        supplementary_data_store=supplementary_data_store,
     )
 
 

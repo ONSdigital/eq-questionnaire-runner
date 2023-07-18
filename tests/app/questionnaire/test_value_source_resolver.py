@@ -4,7 +4,12 @@ import pytest
 from mock import MagicMock, Mock
 
 from app.authentication.auth_payload_versions import AuthPayloadVersion
-from app.data_models import AnswerStore, ListStore, ProgressStore
+from app.data_models import (
+    AnswerStore,
+    ListStore,
+    ProgressStore,
+    SupplementaryDataStore,
+)
 from app.data_models.answer import Answer, AnswerDict
 from app.data_models.metadata_proxy import MetadataProxy, NoMetadataException
 from app.questionnaire import Location, QuestionnaireSchema
@@ -49,6 +54,7 @@ def get_value_source_resolver(
     use_default_answer=False,
     escape_answer_values=False,
     progress_store: ProgressStore | None = None,
+    supplementary_data_store: SupplementaryDataStore | None = None,
 ):
     if not schema:
         schema = get_mock_schema()
@@ -71,6 +77,7 @@ def get_value_source_resolver(
         use_default_answer=use_default_answer,
         escape_answer_values=escape_answer_values,
         progress_store=progress_store,
+        supplementary_data_store=supplementary_data_store,
     )
 
 
