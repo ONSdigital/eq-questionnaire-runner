@@ -91,9 +91,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         ] = defaultdict(set)
         self._language_code = language_code
         self._questionnaire_json = questionnaire_json
-        self._min_and_max_map: defaultdict[str, str | dict[str, str]] = defaultdict(
-            lambda: defaultdict(Optional[Callable[[], str]])
-        )
+        self._min_and_max_map: defaultdict(lambda: defaultdict(str))
 
         # The ordering here is required as they depend on each other.
         self._sections_by_id = self._get_sections_by_id()
