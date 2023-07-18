@@ -36,7 +36,7 @@ def test_get_supplementary_data_200(
         )
         loaded_supplementary_data = get_supplementary_data(
             dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
-            unit_id="12346789012A",
+            identifier="12346789012A",
             survey_id="123",
         )
 
@@ -64,7 +64,7 @@ def test_get_supplementary_data_non_200(
         with pytest.raises(SupplementaryDataRequestFailed) as exc:
             get_supplementary_data(
                 dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
-                unit_id="12346789012A",
+                identifier="12346789012A",
                 survey_id="123",
             )
 
@@ -80,7 +80,7 @@ def test_get_supplementary_data_request_failed(app: Flask):
         with pytest.raises(SupplementaryDataRequestFailed) as exc:
             get_supplementary_data(
                 dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
-                unit_id="12346789012A",
+                identifier="12346789012A",
                 survey_id="123",
             )
 
@@ -103,7 +103,7 @@ def test_get_supplementary_data_retries_timeout_error(
         try:
             supplementary_data = get_supplementary_data(
                 dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
-                unit_id="12346789012A",
+                identifier="12346789012A",
                 survey_id="123",
             )
         except SupplementaryDataRequestFailed:
@@ -135,7 +135,7 @@ def test_get_supplementary_data_retries_transient_error(
         try:
             supplementary_data = get_supplementary_data(
                 dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
-                unit_id="12346789012A",
+                identifier="12346789012A",
                 survey_id="123",
             )
         except SupplementaryDataRequestFailed:
@@ -161,7 +161,7 @@ def test_get_supplementary_data_max_retries(app: Flask, mocker):
         with pytest.raises(SupplementaryDataRequestFailed) as exc:
             get_supplementary_data(
                 dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
-                unit_id="12346789012A",
+                identifier="12346789012A",
                 survey_id="123",
             )
 
@@ -217,6 +217,6 @@ def test_get_supplementary_data_raises_missing_supplementary_data_key_error_when
         with pytest.raises(MissingSupplementaryDataKey):
             get_supplementary_data(
                 dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
-                unit_id="12346789012A",
+                identifier="12346789012A",
                 survey_id="123",
             )
