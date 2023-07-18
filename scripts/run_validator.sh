@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-tag=looping-4-calculated-summary-repeating-blocks
+tag=latest
 TAG=${tag} docker-compose -f docker-compose-schema-validator.yml up -d
