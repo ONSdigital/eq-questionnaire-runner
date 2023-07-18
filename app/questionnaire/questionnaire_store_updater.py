@@ -303,7 +303,7 @@ class QuestionnaireStoreUpdater:
                     )
 
                 self.dependent_block_id_by_section_key[
-                    (dependency.section_id, list_item_id)
+                    SectionKey(dependency.section_id, list_item_id)
                 ].add(dependency.block_id)
 
     def _get_list_item_ids_for_dependency(

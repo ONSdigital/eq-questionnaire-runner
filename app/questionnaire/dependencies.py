@@ -43,7 +43,7 @@ def get_routing_path_block_ids_by_section_for_dependent_sections(
     for section in dependents:
         # Dependent sections other than the current section cannot be a repeating section
         list_item_id = location.list_item_id if section == location.section_id else None
-        key = (section, list_item_id)
+        key = SectionKey(section, list_item_id)
 
         if key in sections_to_ignore:
             continue

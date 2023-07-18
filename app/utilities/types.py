@@ -1,7 +1,9 @@
+from collections import namedtuple
 from typing import TypeAlias
 
 from app.questionnaire.location import Location
 from app.questionnaire.relationship_location import RelationshipLocation
 
 LocationType: TypeAlias = Location | RelationshipLocation
-SectionKey: TypeAlias = tuple[str, str | None]
+
+SectionKey = namedtuple("SectionKey", "section_id list_item_id")

@@ -414,7 +414,7 @@ class Router:
         return self.get_first_incomplete_location_in_questionnaire_url()
 
     def get_section_resume_url(self, routing_path: RoutingPath) -> str:
-        section_key = (routing_path.section_id, routing_path.list_item_id)
+        section_key: SectionKey = SectionKey(routing_path.section_id, routing_path.list_item_id)
 
         if section_key in self._progress_store:
             location = self._get_first_incomplete_location_in_section(routing_path)
@@ -512,10 +512,10 @@ class Router:
 
             if repeating_list:
                 for list_item_id in self._list_store[repeating_list]:
-                    section_key: SectionKey = (section_id, list_item_id)
+                    section_key: SectionKey = SectionKey(section_id, list_item_id)
                     yield section_key
             else:
-                section_key = (section_id, None)
+                section_key = SectionKey(section_id, None)
                 yield section_key
 
     def _get_first_incomplete_section_key(self) -> tuple[str, str | None] | None:
