@@ -50,7 +50,7 @@ describe("Save sign out / Exit", () => {
     await $(DetailAnswer.submit()).click();
     await $(currencyBlock.usDollars()).click();
     await $(currencyBlock.submit()).click();
-    await $(firstNumberBlock.firstNumber()).setValue(123);
+    await $(firstNumberBlock.firstNumber()).setValue(50);
     await $(firstNumberBlock.submit()).click();
     await $(secondNumberBlock.secondNumber()).setValue(321);
     await $(secondNumberBlock.submit()).click();
