@@ -33,7 +33,7 @@ class SupplementaryData(Schema, StripWhitespaceMixin):
         # pylint: disable=no-self-use, unused-argument
         if data and data["identifier"] != self.context["identifier"]:
             raise ValidationError(
-                "Supplementary data did not return the specified Unit ID"
+                "Supplementary data did not return the specified Identifier"
             )
 
 

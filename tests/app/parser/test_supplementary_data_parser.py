@@ -106,7 +106,7 @@ def test_validate_supplementary_data_payload_incorrect_identifier():
 
     assert (
         str(error.value)
-        == "{'data': {'_schema': ['Supplementary data did not return the specified Unit ID']}}"
+        == "{'data': {'_schema': ['Supplementary data did not return the specified Identifier']}}"
     )
 
 
