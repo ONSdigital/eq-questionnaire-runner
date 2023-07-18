@@ -3,7 +3,7 @@ from collections import defaultdict
 from copy import deepcopy
 from dataclasses import dataclass
 from functools import cached_property
-from typing import Any, Generator, Iterable, Mapping, Sequence, TypeAlias
+from typing import Any, Callable, Generator, Iterable, Mapping, Optional, Sequence, TypeAlias
 
 from flask_babel import force_locale
 from ordered_set import OrderedSet
@@ -83,7 +83,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._language_code = language_code
         self._questionnaire_json = questionnaire_json
         self._min_and_max_map: defaultdict[str, str | dict[str, str]] = defaultdict(
-            lambda: defaultdict(OrderedSet)
+            lambda: defaultdict(Optional[Callable[[], str]])
         )
 
         # The ordering here is required as they depend on each other.
