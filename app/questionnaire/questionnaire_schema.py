@@ -106,7 +106,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def min_and_max_map(self) -> ImmutableDict[str, str | dict[str, str]]:
         return ImmutableDict(self._min_and_max_map)
 
-    def _set_min_max_value_for_answer(self, value, min_max):
+    def _set_min_max_value_for_answer(self, value: str | dict[str, str], min_max: str, longest_string: str) -> None:
         if isinstance(value, int):
             if longest_string and len(str(value)) > len(longest_string):
                 longest_string = str(value)
@@ -140,7 +140,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         for answer in answers:
             value = answer.get(min_max, {}).get("value")
 
-            self._set_min_max_value_for_answer(value, min_max)
+            self._set_min_max_value_for_answer(value, min_max, longest_string)
 
         if not self._min_and_max_map.get(answer_id, {}):
             self._min_and_max_map[answer_id] = {}
