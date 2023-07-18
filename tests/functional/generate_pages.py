@@ -60,7 +60,7 @@ describe("Example Test", () => {
     browser.openQuestionnaire(schema);
   });
 
-  it("Given..., When..., Then I see...", () => {
+  it("Given..., When..., Then...", () => {
 
   });
 });
