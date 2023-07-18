@@ -193,6 +193,24 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
     await expect(await $(HubPage.summaryRowState("section-2")).getText()).to.equal("Partially completed");
   });
 
+  it("Given I complete section-2 again, When I remove a list item and return to the Hub, Then I see the progress of section 2 has reverted to Partially Complete", async () => {
+    await $(HubPage.submit()).click();
+    await $(FamilyJourneysPage.answer()).setValue(16);
+    await $(FamilyJourneysPage.submit()).click();
+    await $(SectionTwoPage.submit()).click();
+    await expect(await $(HubPage.summaryRowState("section-1")).getText()).to.equal("Completed");
+    await expect(await $(HubPage.summaryRowState("section-2")).getText()).to.equal("Completed");
+    await $(HubPage.summaryRowLink("section-1")).click();
+    await $(SectionOnePage.transportListRemoveLink(3)).click();
+    await $(RemoveTransportPage.yes()).click();
+    await $(RemoveTransportPage.submit()).click();
+    await $(CalculatedSummarySpendingPage.submit()).click();
+    await $(CalculatedSummaryCountPage.submit()).click();
+    await $(SectionOnePage.submit()).click();
+    await expect(await $(HubPage.summaryRowState("section-1")).getText()).to.equal("Completed");
+    await expect(await $(HubPage.summaryRowState("section-2")).getText()).to.equal("Partially completed");
+  });
+
   it("Given I have a question which removes the list collector from the path, When I change my answer to the question removing the list collector and route backwards from the summary, Then I see the first calculated summary with an updated total", async () => {
     await $(HubPage.summaryRowLink("section-1")).click();
     await $(SectionOnePage.answerSkipEdit()).click();
