@@ -142,7 +142,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         for answer in answers:
             value = answer.get(min_max, {}).get("value")
             returned_longest_string = self._set_min_max_value_for_answer(value, min_max, longest_string)
-            if returned_longest_string != None:
+            if returned_longest_string:
                 longest_string = returned_longest_string
 
         if not self._min_and_max_map.get(answer_id, {}):
