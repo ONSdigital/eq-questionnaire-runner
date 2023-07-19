@@ -112,7 +112,7 @@ class ProgressStore:
         self, section_status: str, section_id: str, list_item_id: Optional[str] = None
     ) -> bool:
         updated = False
-        section_key: SectionKey = SectionKey(section_id, list_item_id)
+        section_key = SectionKey(section_id, list_item_id)
         if section_key in self._progress:
             if self._progress[section_key].status != section_status:
                 updated = True
@@ -133,7 +133,7 @@ class ProgressStore:
     def get_section_status(
         self, section_id: str, list_item_id: Optional[str] = None
     ) -> str:
-        section_key: SectionKey = SectionKey(section_id, list_item_id)
+        section_key = SectionKey(section_id, list_item_id)
         if section_key in self._progress:
             return self._progress[section_key].status
 
@@ -153,7 +153,7 @@ class ProgressStore:
     def get_completed_block_ids(
         self, *, section_id: str, list_item_id: str | None = None
     ) -> list[str]:
-        section_key: SectionKey = SectionKey(section_id, list_item_id)
+        section_key = SectionKey(section_id, list_item_id)
         if section_key in self._progress:
             return self._progress[section_key].block_ids
 
@@ -170,7 +170,7 @@ class ProgressStore:
         if location.block_id not in completed_block_ids:
             completed_block_ids.append(location.block_id)  # type: ignore
 
-            section_key: SectionKey = SectionKey(section_id, list_item_id)
+            section_key = SectionKey(section_id, list_item_id)
 
             if section_key in self._progress:
                 self._progress[section_key].block_ids = completed_block_ids
@@ -185,7 +185,7 @@ class ProgressStore:
             self._is_dirty = True
 
     def remove_completed_location(self, location: LocationType) -> bool:
-        section_key: SectionKey = SectionKey(location.section_id, location.list_item_id)
+        section_key = SectionKey(location.section_id, location.list_item_id)
         if (
             section_key in self._progress
             and location.block_id in self._progress[section_key].block_ids
@@ -207,7 +207,7 @@ class ProgressStore:
         *Not efficient.*
         """
 
-        section_keys_to_delete: list[SectionKey] = [
+        section_keys_to_delete = [
             SectionKey(section_id, progress_list_item_id)
             for section_id, progress_list_item_id in self._progress
             if progress_list_item_id == list_item_id
