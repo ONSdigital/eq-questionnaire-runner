@@ -84,7 +84,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._questionnaire_json = questionnaire_json
         self._min_and_max_map: defaultdict[
             str, (str | int) | dict[str, str | int]
-        ] = defaultdict(lambda: defaultdict(str))
+        ] = defaultdict(lambda: defaultdict(int))
 
         # The ordering here is required as they depend on each other.
         self._sections_by_id = self._get_sections_by_id()
