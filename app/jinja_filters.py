@@ -254,14 +254,14 @@ def should_wrap_with_fieldset_processor() -> dict[str, Callable]:
 
 
 def get_min_max_values(
-    min_max: Literal["minimum", "maximum"], answer: AnswerType, default_value: int
+    min_max: Literal["minimum", "maximum"], answer: AnswerType, default_value: str
 ) -> int:
     if answer.get(min_max, {}) and isinstance(answer[min_max]["value"], dict):
         schema = g.get("schema")
         if (
             identifier := answer[min_max]["value"].get("identifier")
         ) in schema.min_and_max_map:
-            return str(schema.min_and_max_map[identifier][min_max])
+            return schema.min_and_max_map[identifier][min_max]
 
     return len(str(answer.get(min_max, {}).get("value", default_value)))
 
