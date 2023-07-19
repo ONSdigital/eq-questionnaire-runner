@@ -128,7 +128,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             elif isinstance(value, dict) and value:
                 if value.get("source") == "answers":
                     if (
-                        self._min_and_max_map[value["identifier"]][min_max]
+                        int(self._min_and_max_map[value["identifier"]][min_max])
                         > longest_string
                     ):
                         longest_string = self._min_and_max_map[value["identifier"]][
