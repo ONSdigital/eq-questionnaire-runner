@@ -1,5 +1,5 @@
 from copy import deepcopy
-from typing import Any, Mapping, MutableMapping
+from typing import Mapping, MutableMapping
 
 from jsonpointer import resolve_pointer, set_pointer
 
@@ -124,9 +124,9 @@ class PlaceholderRenderer:
         """
         Transform the current schema json to a fully rendered dictionary
         """
-        data_to_render_mutable: dict[
-            str, Any
-        ] = QuestionnaireSchema.get_mutable_deepcopy(data_to_render)
+        data_to_render_mutable: dict = QuestionnaireSchema.get_mutable_deepcopy(
+            data_to_render
+        )
 
         self._handle_and_resolve_dynamic_answers(data_to_render_mutable)
 
@@ -156,9 +156,7 @@ class PlaceholderRenderer:
             set_pointer(data_to_render_mutable, pointer, rendered_text)
         return data_to_render_mutable
 
-    def _handle_and_resolve_dynamic_answers(
-        self, data_to_render_mutable: dict[str, Any]
-    ) -> None:
+    def _handle_and_resolve_dynamic_answers(self, data_to_render_mutable: dict) -> None:
         pointers = find_pointers_containing(data_to_render_mutable, "dynamic_answers")
 
         for pointer in pointers:

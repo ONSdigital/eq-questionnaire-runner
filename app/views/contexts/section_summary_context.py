@@ -42,7 +42,7 @@ class SectionSummaryContext(Context):
 
     def __call__(
         self,
-        return_to: Optional[str] = "section-summary",
+        return_to: str | None = "section-summary",
         view_submitted_response: bool = False,
     ) -> Mapping[str, Any]:
         summary = self.build_summary(return_to, view_submitted_response)
@@ -181,6 +181,7 @@ class SectionSummaryContext(Context):
                     schema=self._schema,
                     location=self.current_location,
                     language=self._language,
+                    return_to="section-summary",
                 )
                 yield list_collector_block.list_summary_element(summary_element)
 

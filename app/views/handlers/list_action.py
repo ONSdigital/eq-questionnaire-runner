@@ -18,6 +18,7 @@ class ListAction(Question):
         )
 
     def _get_routing_path(self):
+        """Only the section id is required, as list collectors won't be in a repeating section"""
         return self.router.routing_path(section_id=self.parent_location.section_id)
 
     def is_location_valid(self):
@@ -34,8 +35,8 @@ class ListAction(Question):
         return True
 
     def get_previous_location_url(self):
-        if self._is_returning_to_section_summary():
-            return self.get_section_summary_url()
+        if url := self.get_section_or_final_summary_url():
+            return url
 
         block_id = self._request_args.get("previous")
         return self._get_location_url(
@@ -45,14 +46,26 @@ class ListAction(Question):
             return_to_block_id=self._return_to_block_id,
         )
 
-    def get_section_summary_url(self):
-        return url_for(
-            "questionnaire.get_section", section_id=self.parent_location.section_id
-        )
+    def get_section_or_final_summary_url(self):
+        if (
+            self._return_to == "section-summary"
+            and self.router.can_display_section_summary(
+                self.parent_location.section_id, self.parent_location.list_item_id
+            )
+        ):
+            return url_for(
+                "questionnaire.get_section",
+                section_id=self.parent_location.section_id,
+                _anchor=self._return_to_answer_id,
+            )
+        if self._return_to == "final-summary" and self.router.is_questionnaire_complete:
+            return url_for(
+                "questionnaire.submit_questionnaire", _anchor=self._return_to_answer_id
+            )
 
     def get_next_location_url(self):
-        if self._is_returning_to_section_summary():
-            return self.get_section_summary_url()
+        if url := self.get_section_or_final_summary_url():
+            return url
 
         if self.router.is_block_complete(
             block_id=self.parent_location.block_id,
@@ -80,9 +93,7 @@ class ListAction(Question):
         )
 
         if self.questionnaire_store_updater.is_dirty():
-            self._routing_path = self.router.routing_path(
-                self.current_location.section_id, self.current_location.list_item_id
-            )
+            self._routing_path = self._get_routing_path()
             self.questionnaire_store_updater.remove_dependent_blocks_and_capture_dependent_sections()
             self.questionnaire_store_updater.update_progress_for_dependent_sections()
             self.questionnaire_store_updater.save()
@@ -94,6 +105,7 @@ class ListAction(Question):
         return_to=None,
         return_to_answer_id=None,
         return_to_block_id=None,
+        anchor=None,
     ):
         if block_id and self._schema.is_block_valid(block_id):
             section_id = self._schema.get_section_id_for_block_id(block_id)
@@ -101,18 +113,12 @@ class ListAction(Question):
                 return_to=return_to,
                 return_to_answer_id=return_to_answer_id,
                 return_to_block_id=return_to_block_id,
+                _anchor=anchor,
             )
 
         return self.parent_location.url(
             return_to=return_to,
             return_to_answer_id=return_to_answer_id,
             return_to_block_id=return_to_block_id,
-        )
-
-    def _is_returning_to_section_summary(self) -> bool:
-        return (
-            self._return_to == "section-summary"
-            and self.router.can_display_section_summary(
-                self.parent_location.section_id, self.parent_location.list_item_id
-            )
+            _anchor=anchor,
         )

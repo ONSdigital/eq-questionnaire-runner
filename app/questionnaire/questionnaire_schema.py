@@ -82,7 +82,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         ] = defaultdict(set)
         self._language_code = language_code
         self._questionnaire_json = questionnaire_json
-        self._repeating_block_ids: list[str] = []
+        self._list_names_by_list_repeating_block_id: dict[str, str] = {}
+        self._repeating_block_answer_ids: set[str] = set()
         self.dynamic_answers_parent_block_ids: set[str] = set()
 
         # The ordering here is required as they depend on each other.
@@ -92,7 +93,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._questions_by_id = self._get_questions_by_id()
         self._answers_by_id = self._get_answers_by_id()
         self._dynamic_answer_ids: set[str] = set()
-        self._list_collector_dynamic_answer_dependencies: dict[str, str] = {}
+        self._list_dependent_block_additional_dependencies: dict[str, set[str]] = {}
 
         # Post schema parsing.
         self._populate_answer_dependencies()
@@ -236,6 +237,14 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         is_enabled: bool = schema.get("view_response", False)
         return is_enabled
 
+    @cached_property
+    def list_names_by_list_repeating_block_id(self) -> ImmutableDict[str, str]:
+        return ImmutableDict(self._list_names_by_list_repeating_block_id)
+
+    @cached_property
+    def list_collector_repeating_block_ids(self) -> list[str]:
+        return list(self._list_names_by_list_repeating_block_id.keys())
+
     def get_all_when_rules_section_dependencies_for_section(
         self, section_id: str
     ) -> set[str]:
@@ -298,7 +307,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                             repeating_block_id = repeating_block["id"]
                             blocks[repeating_block_id] = repeating_block
                             self._parent_id_map[repeating_block_id] = block_id
-                            self._repeating_block_ids.append(repeating_block_id)
+                            self._list_names_by_list_repeating_block_id[
+                                repeating_block_id
+                            ] = block["for_list"]
 
         return blocks
 
@@ -319,10 +330,16 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         for question in self._get_flattened_questions():
             question_id = question["id"]
+            is_for_repeating_block = (
+                self._parent_id_map[question_id]
+                in self.list_collector_repeating_block_ids
+            )
 
             for answer in get_answers_from_question(question):
                 answer_id = answer["id"]
                 self._parent_id_map[answer_id] = question_id
+                if is_for_repeating_block:
+                    self._repeating_block_answer_ids.add(answer_id)
 
                 answers_by_id[answer_id].append(answer)
                 for option in answer.get("options", []):
@@ -339,6 +356,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             if block["type"] in {"CalculatedSummary", "GrandCalculatedSummary"}:
                 self._update_answer_dependencies_for_summary(block)
                 continue
+
+            if block["type"] == "ListCollector" and block.get("repeating_blocks"):
+                self._update_dependencies_for_list_repeating_blocks(block)
 
             for question in self.get_all_questions_for_block(block):
                 self.update_dependencies_for_dynamic_answers(
@@ -361,6 +381,23 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                                 option["detail_answer"], block_id=block["id"]
                             )
 
+    def _update_dependencies_for_list_repeating_blocks(
+        self, list_collector_block: ImmutableDict
+    ) -> None:
+        """Blocks depending on repeating questions may need to depend on adding/removing items from the parent list collector, so update the map"""
+        list_block_dependencies: set[str] = set()
+        for child in ("add_block", "remove_block"):
+            if child_block := list_collector_block.get(child):
+                list_block_dependencies.update(
+                    self.get_answer_ids_for_block(child_block["id"])
+                )
+
+        if list_block_dependencies:
+            for repeating_block in list_collector_block["repeating_blocks"]:
+                self._list_dependent_block_additional_dependencies[
+                    repeating_block["id"]
+                ] = list_block_dependencies
+
     def _update_answer_dependencies_for_summary(self, block: ImmutableDict) -> None:
         if block["type"] == "CalculatedSummary":
             self._update_answer_dependencies_for_calculated_summary_dependency(
@@ -375,32 +412,31 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         """
         update all calculated summary answers to be dependencies of the dependent block
 
-        in the case that one of the calculated summary answers is dynamic, so has multiple answers for a particular list
-        the calculated summary block needs to depend on the `remove_block` for the list
-        so that removing items forces user to reconfirm the calculated summary
-
-        but not the add/edit block, as those don't update the total unless the dynamic answers change which it already depends on
+        in the case that one of the calculated summary answers is dynamic/repeating, so has multiple answers for a particular list
+        the calculated summary block needs to depend on the `remove_block` and `add_block` for the list
+        so that adding/removing items requires re-confirming the calculated summary
         """
         calculated_summary_answer_ids = get_calculated_summary_answer_ids(
             calculated_summary_block
         )
+        answer_dependent = self._get_answer_dependent_for_block_id(
+            block_id=dependent_block["id"]
+        )
         for answer_id in calculated_summary_answer_ids:
-            if answer_id in self._dynamic_answer_ids:
+            if answer_id in [
+                *self._dynamic_answer_ids,
+                *self._repeating_block_answer_ids,
+            ]:
                 # Type ignore: answer_id is valid so block must exist
                 block_id: str = self.get_block_for_answer_id(answer_id)["id"]  # type: ignore
-                if block_id in self._list_collector_dynamic_answer_dependencies:
-                    remove_block_id = self._list_collector_dynamic_answer_dependencies[
-                        block_id
-                    ]
-                    self._answer_dependencies_map[remove_block_id] |= {
-                        # note the omission of for_list here is intentional, as the calculated summary is not repeating
-                        self._get_answer_dependent_for_block_id(
-                            block_id=dependent_block["id"]
+                if block_id in self._list_dependent_block_additional_dependencies:
+                    for (
+                        list_block_id
+                    ) in self._list_dependent_block_additional_dependencies[block_id]:
+                        self._answer_dependencies_map[list_block_id].add(
+                            answer_dependent
                         )
-                    }
-            self._answer_dependencies_map[answer_id] |= {
-                self._get_answer_dependent_for_block_id(block_id=dependent_block["id"])
-            }
+            self._answer_dependencies_map[answer_id].add(answer_dependent)
 
     def _update_answer_dependencies_for_grand_calculated_summary(
         self, grand_calculated_summary_block: ImmutableDict
@@ -502,8 +538,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     ) -> None:
         """Updates dependencies for a block depending on a list collector
 
-        This method also stores a map of { block_depending_on_list_source -> remove_block_for_that_list }, because:
-        blocks like dynamic_answers, don't directly need to depend on the remove_block,
+        This method also stores a map of { block_depending_on_list_source -> {add_block, remove_block} }, because:
+        blocks like dynamic_answers, don't directly need to depend on the add_block/remove_block,
         but a block depending on the dynamic answers might (such as a calculated summary)
         """
         # Type ignore: section will always exist at this point, same with optional returns below
@@ -528,10 +564,14 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 # non-repeating blocks such as dynamic-answers could depend on the list
                 else self._get_answer_dependent_for_block_id(block_id=block_id)
             }
+        self._list_dependent_block_additional_dependencies[block_id] = set(
+            answer_ids_for_block
+        )
         # removing an item from a list will require any dependent calculated summaries to be re-confirmed, so cache dependencies
-        if remove_block_question := self.get_remove_block_id_for_list(list_name):
-            remove_block_id = self.get_first_answer_id_for_block(remove_block_question)
-            self._list_collector_dynamic_answer_dependencies[block_id] = remove_block_id
+        if remove_block_id := self.get_remove_block_id_for_list(list_name):
+            self._list_dependent_block_additional_dependencies[block_id].update(
+                self.get_answer_ids_for_block(remove_block_id)
+            )
 
     def _get_answer_dependent_for_block_id(
         self,
@@ -751,9 +791,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_blocks(self) -> Iterable[ImmutableDict]:
         return self._blocks_by_id.values()
 
-    def get_repeating_block_ids(self) -> list[str]:
-        return self._repeating_block_ids
-
     def get_block(self, block_id: str) -> ImmutableDict | None:
         return self._blocks_by_id.get(block_id)
 
@@ -777,6 +814,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def is_answer_dynamic(self, answer_id: str) -> bool:
         return answer_id in self._dynamic_answer_ids
+
+    def is_answer_in_list_collector_repeating_block(self, answer_id: str) -> bool:
+        return answer_id in self._repeating_block_answer_ids
 
     def get_list_name_for_dynamic_answer(self, block_id: str) -> str:
         # type ignore block always exists at this point
@@ -820,6 +860,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 add_block_map[list_collector["type"]]
             ]
             return add_block
+
+    def get_edit_block_for_list_collector(
+        self, list_collector_id: str
+    ) -> ImmutableDict | None:
+        # Type ignore: for any valid list collector id, list collector block will always exist
+        return self.get_block(list_collector_id).get("edit_block")  # type: ignore
 
     def get_repeating_blocks_for_list_collector(
         self, list_collector_id: str
@@ -997,11 +1043,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     @staticmethod
     def is_question_block_type(block_type: str) -> bool:
-        return block_type in [
+        return block_type in {
             "Question",
             "ListCollectorDrivingQuestion",
             "ConfirmationQuestion",
-        ]
+            "ListRepeatingQuestion",
+        }
 
     @staticmethod
     def has_address_lookup_answer(question: Mapping) -> bool:
@@ -1049,7 +1096,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         if (
             parent_block
             and parent_block["type"] == "ListCollector"
-            and block_id not in self._repeating_block_ids
+            and block_id not in self.list_collector_repeating_block_ids
         ):
             return parent_block
 

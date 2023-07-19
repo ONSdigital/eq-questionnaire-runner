@@ -405,6 +405,11 @@ def test_calculated_summary_repeating_and_static_answers_schema():
 
 
 @pytest.fixture
+def test_calculated_summary_repeating_blocks():
+    return load_schema_from_name("test_new_calculated_summary_repeating_blocks")
+
+
+@pytest.fixture
 def test_calculated_summary_answers():
     answers = [
         {"value": 1, "answer_id": "first-number-answer"},
