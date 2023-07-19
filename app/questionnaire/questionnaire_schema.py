@@ -82,9 +82,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         ] = defaultdict(set)
         self._language_code = language_code
         self._questionnaire_json = questionnaire_json
-        self._min_and_max_map: defaultdict[str, str | dict[str, str]] = defaultdict(
-            lambda: defaultdict(str)
-        )
+        self._min_and_max_map: defaultdict[
+            str, (str | int) | dict[str, str | int]
+        ] = defaultdict(lambda: defaultdict(str))
 
         # The ordering here is required as they depend on each other.
         self._sections_by_id = self._get_sections_by_id()
@@ -115,33 +115,34 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         answers: list,
         default_min_max: str,
     ) -> None:
-        longest_string = None
+        longest_string = 0
         for answer in answers:
             value = answer.get(min_max, {}).get("value")
 
             if isinstance(value, int):
-                if longest_string and len(str(value)) > len(longest_string):
-                    longest_string = str(value)
+                if longest_string and len(str(value)) > longest_string:
+                    longest_string = len(str(value))
                 if not longest_string:
-                    longest_string = str(value)
+                    longest_string = len(str(value))
 
             elif isinstance(value, dict) and value:
                 if value.get("source") == "answers":
-                    if longest_string and len(
-                        str(self._min_and_max_map[value["identifier"]][min_max])
-                    ) > len(longest_string):
-                        longest_string = str(
-                            self._min_and_max_map[value["identifier"]][min_max]
-                        )
+                    if (
+                        self._min_and_max_map[value["identifier"]][min_max]
+                        > longest_string
+                    ):
+                        longest_string = self._min_and_max_map[value["identifier"]][
+                            min_max
+                        ]
                     if not longest_string:
-                        longest_string = str(
-                            self._min_and_max_map[value["identifier"]][min_max]
-                        )
+                        longest_string = self._min_and_max_map[value["identifier"]][
+                            min_max
+                        ]
 
         if longest_string:
             self._min_and_max_map[answer_id][min_max] = longest_string  # type: ignore
         else:
-            self._min_and_max_map[answer_id][min_max] = default_min_max  # type: ignore
+            self._min_and_max_map[answer_id][min_max] = len(default_min_max)  # type: ignore
 
     def _populate_min_max_for_numeric_answers(self) -> None:
         for answer_id, answers in self._answers_by_id.items():

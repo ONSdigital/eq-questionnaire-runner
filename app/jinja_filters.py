@@ -261,7 +261,7 @@ def get_min_max_values(
         if (
             identifier := answer[min_max]["value"].get("identifier")
         ) in schema.min_and_max_map:
-            return len(str(schema.min_and_max_map[identifier][min_max]))
+            return str(schema.min_and_max_map[identifier][min_max])
 
     return len(str(answer.get(min_max, {}).get("value", default_value)))
 
@@ -270,7 +270,7 @@ def get_min_max_values(
 def get_width_for_number(answer: AnswerType) -> Optional[int]:
     allowable_widths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30, 40, 50]
 
-    min_value_width = get_min_max_values("minimum", answer, 0)
+    min_value_width = get_min_max_values("minimum", answer, "0")
     max_value_width = get_min_max_values("maximum", answer, MAX_NUMBER)
 
     width = max(min_value_width, max_value_width)
