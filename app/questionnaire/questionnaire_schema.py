@@ -115,7 +115,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         answers: list,
         default_min_max: str,
     ) -> None:
-        longest_string = 0
+        longest_string: int = 0
         for answer in answers:
             value = answer.get(min_max, {}).get("value")
 
@@ -131,13 +131,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                         int(self._min_and_max_map[value["identifier"]][min_max])
                         > longest_string
                     ):
-                        longest_string = self._min_and_max_map[value["identifier"]][
+                        longest_string = int(self._min_and_max_map[value["identifier"]][
                             min_max
-                        ]
+                        ])
                     if not longest_string:
-                        longest_string = self._min_and_max_map[value["identifier"]][
+                        longest_string = int(self._min_and_max_map[value["identifier"]][
                             min_max
-                        ]
+                        ])
 
         if longest_string:
             self._min_and_max_map[answer_id][min_max] = longest_string  # type: ignore
