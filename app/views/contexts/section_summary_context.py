@@ -42,7 +42,7 @@ class SectionSummaryContext(Context):
 
     def __call__(
         self,
-        return_to: Optional[str] = "section-summary",
+        return_to: str | None = "section-summary",
         view_submitted_response: bool = False,
     ) -> Mapping[str, Any]:
         summary = self.build_summary(return_to, view_submitted_response)
@@ -148,7 +148,6 @@ class SectionSummaryContext(Context):
                     language=self._language,
                     progress_store=self._progress_store,
                     return_to=return_to,
-                    return_to_block_id=None,
                     view_submitted_response=view_submitted_response,
                 ).serialize()
                 for group in refactored_groups
@@ -181,6 +180,8 @@ class SectionSummaryContext(Context):
                     schema=self._schema,
                     location=self.current_location,
                     language=self._language,
+                    return_to="section-summary",
+                    return_to_block_id=None,
                 )
                 yield list_collector_block.list_summary_element(summary_element)
 

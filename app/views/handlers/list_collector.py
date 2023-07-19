@@ -33,7 +33,7 @@ class ListCollector(Question):
             )
             return add_url
 
-        if incomplete_block := self.get_first_incomplete_repeating_block_location(
+        if incomplete_block := self.get_first_incomplete_list_repeating_block_location(
             repeating_block_ids=self.repeating_block_ids,
             section_id=self.current_location.section_id,
             list_name=self.list_name,
@@ -91,7 +91,7 @@ class ListCollector(Question):
             return super().handle_post()
 
     def _is_list_collector_complete(self):
-        return not self.get_first_incomplete_repeating_block_location(
+        return not self.get_first_incomplete_list_repeating_block_location(
             repeating_block_ids=self.repeating_block_ids,
             section_id=self.current_location.section_id,
             list_name=self.list_name,

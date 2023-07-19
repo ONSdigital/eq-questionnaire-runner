@@ -29,11 +29,11 @@ class SupplementaryData(Schema, StripWhitespaceMixin):
     items = fields.Nested(ItemsData, required=False, unknown=INCLUDE)
 
     @validates_schema()
-    def validate_unit_id(self, data, **kwargs):
+    def validate_identifier(self, data, **kwargs):
         # pylint: disable=no-self-use, unused-argument
-        if data and data["identifier"] != self.context["unit_id"]:
+        if data and data["identifier"] != self.context["identifier"]:
             raise ValidationError(
-                "Supplementary data did not return the specified Unit ID"
+                "Supplementary data did not return the specified Identifier"
             )
 
 
@@ -65,7 +65,7 @@ class SupplementaryDataMetadataSchema(Schema, StripWhitespaceMixin):
 def validate_supplementary_data_v1(
     supplementary_data: Mapping,
     dataset_id: str,
-    unit_id: str,
+    identifier: str,
     survey_id: str,
 ) -> dict:
     """Validate claims required for supplementary data"""
@@ -74,7 +74,7 @@ def validate_supplementary_data_v1(
     )
     supplementary_data_metadata_schema.context = {
         "dataset_id": dataset_id,
-        "unit_id": unit_id,
+        "identifier": identifier,
         "survey_id": survey_id,
     }
     validated_supplementary_data = supplementary_data_metadata_schema.load(

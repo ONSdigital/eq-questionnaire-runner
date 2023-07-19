@@ -1,15 +1,15 @@
-from typing import Any, Mapping, Optional, Union
+from typing import Mapping
 
 from flask import url_for
 
 from app.data_models.answer import AnswerValueEscapedTypes
 
-RadioCheckboxTypes = dict[str, Union[str, AnswerValueEscapedTypes, None]]
-DateRangeTypes = dict[str, Optional[AnswerValueEscapedTypes]]
+RadioCheckboxTypes = dict[str, str | AnswerValueEscapedTypes | None]
+DateRangeTypes = dict[str, AnswerValueEscapedTypes | None]
 
-InferredAnswerValueTypes = Union[
-    None, DateRangeTypes, str, AnswerValueEscapedTypes, RadioCheckboxTypes
-]
+InferredAnswerValueTypes = (
+    None | DateRangeTypes | str | AnswerValueEscapedTypes | RadioCheckboxTypes
+)
 
 
 class Answer:
@@ -19,10 +19,11 @@ class Answer:
         answer_schema: Mapping[str, str],
         answer_value: InferredAnswerValueTypes,
         block_id: str,
-        list_name: Optional[str],
-        list_item_id: Optional[str],
-        return_to: Optional[str],
-        return_to_block_id: Optional[str],
+        list_name: str | None,
+        list_item_id: str | None,
+        return_to: str | None,
+        return_to_block_id: str | None,
+        is_in_repeating_section: bool,
     ) -> None:
         self.id = answer_schema["id"]
         self.label = answer_schema.get("label")
@@ -31,15 +32,17 @@ class Answer:
         self.unit = answer_schema.get("unit")
         self.unit_length = answer_schema.get("unit_length")
         self.currency = answer_schema.get("currency")
+        self._original_answer_id = answer_schema.get("original_answer_id")
         self.link = self._build_link(
             block_id=block_id,
             list_name=list_name,
             list_item_id=list_item_id,
             return_to=return_to,
             return_to_block_id=return_to_block_id,
+            is_in_repeating_section=is_in_repeating_section,
         )
 
-    def serialize(self) -> dict[str, Any]:
+    def serialize(self) -> dict:
         return {
             "id": self.id,
             "label": self.label,
@@ -55,10 +58,11 @@ class Answer:
         self,
         *,
         block_id: str,
-        list_name: Optional[str],
-        list_item_id: Optional[str],
-        return_to: Optional[str],
-        return_to_block_id: Optional[str],
+        list_name: str | None,
+        list_item_id: str | None,
+        return_to: str | None,
+        return_to_block_id: str | None,
+        is_in_repeating_section: bool,
     ) -> str:
         return url_for(
             endpoint="questionnaire.block",
@@ -66,7 +70,31 @@ class Answer:
             block_id=block_id,
             list_item_id=list_item_id,
             return_to=return_to,
-            return_to_answer_id=self.id if return_to else None,
+            return_to_answer_id=self._return_to_answer_id(
+                return_to=return_to,
+                list_item_id=list_item_id,
+                is_in_repeating_section=is_in_repeating_section,
+            ),
             return_to_block_id=return_to_block_id,
             _anchor=self.id,
         )
+
+    def _return_to_answer_id(
+        self,
+        *,
+        return_to: str | None,
+        list_item_id: str | None,
+        is_in_repeating_section: bool,
+    ) -> str | None:
+        """
+        If the summary page using this answer has repeating answers, but it is not in a repeating section,
+        then the answer ids will be suffixed with list item id, so the return to answer id link also needs this to work correctly
+        """
+        if return_to:
+            if (
+                list_item_id
+                and not is_in_repeating_section
+                and not self._original_answer_id  # original answer would mean id has already been suffixed
+            ):
+                return f"{self.id}-{list_item_id}"
+            return self.id

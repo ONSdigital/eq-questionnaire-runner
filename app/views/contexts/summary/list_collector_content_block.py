@@ -26,7 +26,9 @@ class ListCollectorContentBlock(ListCollectorBaseBlock):
 
         if list_collector_blocks_on_path:
             repeating_blocks = list_collector_block.get("repeating_blocks", [])
-            related_answers = self._get_related_answers(current_list, repeating_blocks)
+            related_answers = self._get_related_answer_blocks_by_list_item_id(
+                list_model=current_list, repeating_blocks=repeating_blocks
+            )
             item_label = self._schema.get_item_label(
                 self._section["id"], current_list.name
             )

@@ -1,19 +1,14 @@
-from collections import defaultdict
-from typing import Any, Mapping, Sequence
+from typing import Mapping
 
 from flask import url_for
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models.list_store import ListModel
-from app.questionnaire import Location
-from app.questionnaire.questionnaire_schema import is_list_collector_block_editable
-from app.views.contexts.summary.block import Block
 from app.views.contexts.summary.list_collector_base_block import ListCollectorBaseBlock
 
 
 class ListCollectorBlock(ListCollectorBaseBlock):
     # pylint: disable=too-many-locals
-    def list_summary_element(self, summary: Mapping[str, Any]) -> dict[str, Any]:
+    def list_summary_element(self, summary: Mapping) -> dict:
         list_collector_block = None
         (
             edit_block_id,
@@ -23,7 +18,7 @@ class ListCollectorBlock(ListCollectorBaseBlock):
             item_label,
             item_anchor,
         ) = (None, None, None, None, None, None)
-        current_list = self._list_store[summary["for_list"]]
+        list_model = self._list_store[summary["for_list"]]
 
         add_link = self._add_link(summary, list_collector_block)
 
@@ -45,11 +40,13 @@ class ListCollectorBlock(ListCollectorBaseBlock):
             remove_block_id = list_collector_block["remove_block"]["id"]
             add_link = self._add_link(summary, list_collector_block)
             repeating_blocks = list_collector_block.get("repeating_blocks", [])
-            related_answers = self._get_related_answers(current_list, repeating_blocks)
-            item_anchor = self._schema.get_item_anchor(section_id, current_list.name)
-            item_label = self._schema.get_item_label(section_id, current_list.name)
+            related_answers = self._get_related_answer_blocks_by_list_item_id(
+                list_model=list_model, repeating_blocks=repeating_blocks
+            )
+            item_anchor = self._schema.get_item_anchor(section_id, list_model.name)
+            item_label = self._schema.get_item_label(section_id, list_model.name)
 
-        if len(current_list) == 1 and current_list.primary_person:
+        if len(list_model) == 1 and list_model.primary_person:
             if primary_person_block := self._schema.get_list_collector_for_list(
                 self._section, for_list=summary["for_list"], primary=True
             ):
@@ -62,7 +59,7 @@ class ListCollectorBlock(ListCollectorBaseBlock):
             for_list=list_collector_block["for_list"],
             section_id=self._location.section_id,
             has_repeating_blocks=bool(list_collector_block.get("repeating_blocks")),
-            return_to="section-summary",
+            return_to=self._return_to,
             edit_block_id=edit_block_id,
             remove_block_id=remove_block_id,
             primary_person_edit_block_id=primary_person_edit_block_id,
@@ -81,17 +78,34 @@ class ListCollectorBlock(ListCollectorBaseBlock):
             **list_summary_context,
         }
 
+    def get_repeating_block_related_answer_blocks(
+        self, block: ImmutableDict
+    ) -> list[dict]:
+        """
+        Given a repeating block question to render,
+        return the list of rendered question blocks for each list item id
+        """
+        list_name = self._schema.list_names_by_list_repeating_block_id[block["id"]]
+        list_model = self._list_store[list_name]
+        blocks: list[dict] = []
+        if answer_blocks_by_list_item_id := self._get_related_answer_blocks_by_list_item_id(
+            list_model=list_model, repeating_blocks=[block]
+        ):
+            for answer_blocks in answer_blocks_by_list_item_id.values():
+                blocks.extend(answer_blocks)
+        return blocks
+
     def _add_link(
         self,
-        summary: Mapping[str, Any],
-        list_collector_block: Mapping[str, Any] | None,
+        summary: Mapping,
+        list_collector_block: Mapping | None,
     ) -> str | None:
         if list_collector_block:
             return url_for(
                 "questionnaire.block",
                 list_name=summary["for_list"],
                 block_id=list_collector_block["add_block"]["id"],
-                return_to="section-summary",
+                return_to=self._return_to,
             )
 
         if driving_question_block := self._schema.get_driving_question_for_list(
@@ -100,88 +114,5 @@ class ListCollectorBlock(ListCollectorBaseBlock):
             return url_for(
                 "questionnaire.block",
                 block_id=driving_question_block["id"],
-                return_to="section-summary",
+                return_to=self._return_to,
             )
-
-    def _get_related_answers(
-        self, list_model: ListModel, repeating_blocks: Sequence[ImmutableDict]
-    ) -> dict[str, list[dict]] | None:
-        section_id = self._section["id"]
-
-        related_answers = self._schema.get_related_answers_for_list_for_section(
-            section_id=section_id, list_name=list_model.name
-        )
-
-        blocks: list[dict | ImmutableDict] = []
-
-        if related_answers:
-            blocks += self._get_blocks_for_related_answers(related_answers)
-
-        if len(list_model):
-            blocks += repeating_blocks
-
-        if not blocks:
-            return None
-
-        related_answers_blocks = {}
-
-        for list_id in list_model:
-            serialized_blocks = [
-                Block(
-                    block,
-                    answer_store=self._answer_store,
-                    list_store=self._list_store,
-                    metadata=self._metadata,
-                    response_metadata=self._response_metadata,
-                    schema=self._schema,
-                    location=Location(
-                        list_name=list_model.name,
-                        list_item_id=list_id,
-                        section_id=section_id,
-                    ),
-                    return_to="section-summary",
-                    return_to_block_id=None,
-                    progress_store=self._progress_store,
-                    language=self._language,
-                ).serialize()
-                for block in blocks
-            ]
-
-            related_answers_blocks[list_id] = serialized_blocks
-
-        return related_answers_blocks
-
-    def _get_blocks_for_related_answers(self, related_answers: tuple) -> list[dict]:
-        blocks = []
-        answers_by_block = defaultdict(list)
-
-        for answer in related_answers:
-            answer_id = answer["identifier"]
-            # block is not optional at this point
-            block: Mapping = self._schema.get_block_for_answer_id(answer_id)  # type: ignore
-
-            block_to_keep = (
-                block["edit_block"]
-                if is_list_collector_block_editable(block)
-                else block
-            )
-            answers_by_block[block_to_keep].append(answer_id)
-
-        for immutable_block, answer_ids in answers_by_block.items():
-            mutable_block = self._schema.get_mutable_deepcopy(immutable_block)
-
-            # We need to filter out answers for both variants and normal questions
-            for variant_or_block in mutable_block.get(
-                "question_variants", [mutable_block]
-            ):
-                answers = [
-                    answer
-                    for answer in variant_or_block["question"].get("answers", {})
-                    if answer["id"] in answer_ids
-                ]
-                # Mutate the answers to only keep the related answers
-                variant_or_block["question"]["answers"] = answers
-
-            blocks.append(mutable_block)
-
-        return blocks

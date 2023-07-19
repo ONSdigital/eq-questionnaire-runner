@@ -9,9 +9,10 @@ import AnyOtherCompaniesOrBranchesPage from "../../../generated_pages/list_colle
 import SectionCompaniesPage from "../../../generated_pages/list_collector_repeating_blocks_section_summary/section-companies-summary.page";
 import AnyOtherTradingDetailsPage from "../../../generated_pages/list_collector_repeating_blocks_section_summary/any-other-trading-details.page";
 import SubmitPage from "../../../generated_pages/list_collector_repeating_blocks_section_summary/submit.page";
-import { checkItemsInList, checkListItemComplete, checkListItemIncomplete } from "../../../helpers";
+import { repeatingAnswerChangeLink, checkItemsInList, checkListItemComplete, checkListItemIncomplete } from "../../../helpers";
 import HubPage from "../../../base_pages/hub.page";
 
+const summaryValues = 'dd[class="ons-summary__values"]';
 async function proceedToListCollector() {
   await $(ResponsiblePartyPage.yes()).click();
   await $(AnyCompaniesOrBranchesPage.submit()).click();
@@ -141,6 +142,7 @@ describe("List Collector Repeating Blocks", () => {
       await $(AddCompanyPage.companyOrBranchName()).setValue("GOV");
       await $(AddCompanyPage.submit()).click();
       await $(CompaniesRepeatingBlock1Page.cancelAndReturn()).click();
+      await $(EditCompanyPage.cancelAndReturn()).click();
 
       await $(AnyOtherCompaniesOrBranchesPage.yes()).click();
       await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
@@ -152,6 +154,8 @@ describe("List Collector Repeating Blocks", () => {
       await $(CompaniesRepeatingBlock1Page.registrationDateyear()).setValue(2023);
       await $(CompaniesRepeatingBlock1Page.submit()).click();
       await $(CompaniesRepeatingBlock2Page.cancelAndReturn()).click();
+      await $(CompaniesRepeatingBlock1Page.cancelAndReturn()).click();
+      await $(EditCompanyPage.cancelAndReturn()).click();
 
       await $(AnyOtherCompaniesOrBranchesPage.yes()).click();
       await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
@@ -220,30 +224,30 @@ describe("List Collector Repeating Blocks", () => {
     });
 
     it("Edit each type of answer on different items from the section summary.", async () => {
-      await expect(await $$(`dd[data-qa="registration-number"]`)[1].getText()).to.have.string(456);
-      await $$(`a[data-qa="registration-number-edit"]`)[1].click();
+      await expect(await $$(summaryValues)[8].getText()).to.have.string(456);
+      await repeatingAnswerChangeLink(8).click();
       await $(CompaniesRepeatingBlock1Page.registrationNumber()).setValue(789);
       await $(CompaniesRepeatingBlock1Page.submit()).click();
-      await expect(await $$(`dd[data-qa="registration-number"]`)[1].getText()).to.have.string(789);
+      await expect(await $$(summaryValues)[8].getText()).to.have.string(789);
 
-      await expect(await $$(`dd[data-qa="registration-date"]`)[0].getText()).to.have.string("1 January 2023");
-      await $$(`a[data-qa="registration-date-edit"]`)[0].click();
+      await expect(await $$(summaryValues)[4].getText()).to.have.string("1 January 2023");
+      await repeatingAnswerChangeLink(4).click();
       await $(CompaniesRepeatingBlock1Page.registrationDateday()).setValue(4);
       await $(CompaniesRepeatingBlock1Page.registrationDatemonth()).setValue(4);
       await $(CompaniesRepeatingBlock1Page.submit()).click();
-      await expect(await $$(`dd[data-qa="registration-date"]`)[0].getText()).to.have.string("4 April 2023");
+      await expect(await $$(summaryValues)[4].getText()).to.have.string("4 April 2023");
 
-      await expect(await $$(`dd[data-qa="authorised-trader-uk-radio"]`)[0].getText()).to.have.string("Yes");
-      await $$(`a[data-qa="authorised-trader-uk-radio-edit"]`)[0].click();
+      await expect(await $$(summaryValues)[5].getText()).to.have.string("Yes");
+      await repeatingAnswerChangeLink(5).click();
       await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioNo()).click();
       await $(CompaniesRepeatingBlock2Page.submit()).click();
-      await expect(await $$(`dd[data-qa="authorised-trader-uk-radio"]`)[0].getText()).to.have.string("No");
+      await expect(await $$(summaryValues)[5].getText()).to.have.string("No");
 
-      await expect(await $$(`dd[data-qa="authorised-trader-eu-radio"]`)[1].getText()).to.have.string("No answer provided");
-      await $$(`a[data-qa="authorised-trader-eu-radio-edit"]`)[1].click();
+      await expect(await $$(summaryValues)[11].getText()).to.have.string("No answer provided");
+      await repeatingAnswerChangeLink(11).click();
       await $(CompaniesRepeatingBlock2Page.authorisedTraderEuRadioYes()).click();
       await $(CompaniesRepeatingBlock2Page.submit()).click();
-      await expect(await $$(`dd[data-qa="authorised-trader-eu-radio"]`)[1].getText()).to.have.string("Yes");
+      await expect(await $$(summaryValues)[11].getText()).to.have.string("Yes");
     });
 
     it("The list collector can then be submitted", async () => {
