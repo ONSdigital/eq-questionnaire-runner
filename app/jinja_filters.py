@@ -254,7 +254,7 @@ def should_wrap_with_fieldset_processor() -> dict[str, Callable]:
 
 
 def get_min_max_values(
-    min_max: Literal["minimum", "maximum"], answer: AnswerType, default_value: str
+    min_max: Literal["minimum", "maximum"], answer: AnswerType, default_value: int
 ) -> int:
     if answer.get(min_max, {}) and isinstance(answer[min_max]["value"], dict):
         schema = g.get("schema")
@@ -263,14 +263,14 @@ def get_min_max_values(
         ) in schema.min_and_max_map:
             return schema.min_and_max_map[identifier][min_max]
 
-    return len(str(answer.get(min_max, {}).get("value", default_value)))
+    return answer.get(min_max, {}).get("value", default_value)
 
 
 @blueprint.app_template_filter()
 def get_width_for_number(answer: AnswerType) -> Optional[int]:
     allowable_widths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30, 40, 50]
 
-    min_value_width = get_min_max_values("minimum", answer, "0")
+    min_value_width = get_min_max_values("minimum", answer, 0)
     max_value_width = get_min_max_values("maximum", answer, MAX_NUMBER)
 
     width = max(min_value_width, max_value_width)
