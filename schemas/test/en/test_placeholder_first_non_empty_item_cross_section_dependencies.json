@@ -172,15 +172,7 @@
                                             }
                                         }
                                     }
-                                ],
-                                "period_limits": {
-                                    "minimum": {
-                                        "days": 10
-                                    },
-                                    "maximum": {
-                                        "days": 50
-                                    }
-                                }
+                                ]
                             }
                         }
                     ]
