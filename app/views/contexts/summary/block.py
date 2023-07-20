@@ -4,7 +4,7 @@ from jsonpointer import resolve_pointer
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
-from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.schema_utils import find_pointers_containing
 from app.questionnaire.value_source_resolver import ValueSourceResolver

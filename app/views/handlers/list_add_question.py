@@ -1,4 +1,4 @@
-from typing import Any, MutableMapping
+from typing import Any
 
 from flask import url_for
 

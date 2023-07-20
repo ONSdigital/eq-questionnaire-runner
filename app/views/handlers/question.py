@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Any, Mapping, Sequence
+from typing import Mapping, Sequence
 
 from flask import url_for
 from flask_babel import gettext

@@ -1,6 +1,7 @@
 from functools import cached_property
 
 from flask import url_for
+from werkzeug.datastructures import ImmutableDict
 
 from app.questionnaire import Location
 from app.views.handlers.list_edit_question import ListEditQuestion
@@ -49,6 +50,7 @@ class ListRepeatingQuestion(ListEditQuestion):
                 return_to_block_id=self._return_to_block_id,
             )
 
+        # Type ignore: edit_block will exist at this point
         edit_block: ImmutableDict = self._schema.get_edit_block_for_list_collector(  # type: ignore
             self.parent_block["id"]
         )
