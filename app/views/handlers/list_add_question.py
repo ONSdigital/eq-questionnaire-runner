@@ -6,16 +6,16 @@ from app.views.handlers.list_action import ListAction
 
 
 class ListAddQuestion(ListAction):
-    def __init__(self, *args: Any):
+    def __init__(self, *args: Any) -> None:
         self._list_item_id: str | None = None
         super().__init__(*args)
 
-    def is_location_valid(self):
+    def is_location_valid(self) -> bool:
         if not super().is_location_valid() or self._current_location.list_item_id:
             return False
         return True
 
-    def get_next_location_url(self):
+    def get_next_location_url(self) -> str:
         if self._list_item_id and (
             repeating_blocks := self.parent_block.get("repeating_blocks")
         ):
@@ -35,7 +35,7 @@ class ListAddQuestion(ListAction):
             return_to_block_id=self._return_to_block_id,
         )
 
-    def handle_post(self):
+    def handle_post(self) -> None:
         # Ensure the section is in progress when user adds an item
         self._list_item_id = self.questionnaire_store_updater.add_list_item(
             self.parent_block["for_list"]
@@ -43,7 +43,8 @@ class ListAddQuestion(ListAction):
 
         # Clear the answer from the confirmation question on the list collector question
         answer_ids_to_remove = self._schema.get_answer_ids_for_block(
-            self.parent_location.block_id
+            # Type ignore: for parent_location block_id is not none
+            self.parent_location.block_id  # type: ignore
         )
         self.questionnaire_store_updater.remove_answers(answer_ids_to_remove)
         self.questionnaire_store_updater.remove_completed_location(self.parent_location)
@@ -58,7 +59,7 @@ class ListAddQuestion(ListAction):
 
         return super().handle_post()
 
-    def _resolve_custom_page_title_vars(self) -> MutableMapping:
+    def _resolve_custom_page_title_vars(self) -> dict[str, int]:
         # For list add blocks, no list item id is yet available. Instead, we resolve
         # `list_item_position` to the position in the list it would be if added.
         list_length = len(

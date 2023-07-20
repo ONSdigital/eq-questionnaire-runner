@@ -9,6 +9,7 @@ from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.schema_utils import find_pointers_containing
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.questionnaire.variants import choose_variant
+from app.utilities.types import LocationType
 from app.views.contexts.summary.question import Question
 
 
@@ -22,7 +23,7 @@ class Block:
         metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
-        location: Location,
+        location: LocationType,
         return_to: str | None,
         return_to_block_id: str | None = None,
         progress_store: ProgressStore,

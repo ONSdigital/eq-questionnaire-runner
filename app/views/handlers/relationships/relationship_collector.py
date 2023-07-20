@@ -1,4 +1,4 @@
-from typing import MutableMapping
+from typing import Mapping, MutableMapping
 
 from app.data_models.relationship_store import Relationship
 from app.questionnaire.location import Location
@@ -6,7 +6,7 @@ from app.views.handlers.relationships.relationship_question import RelationshipQ
 
 
 class RelationshipCollector(RelationshipQuestion):
-    def is_location_valid(self):
+    def is_location_valid(self) -> bool:
         if isinstance(self._current_location, Location):
             return self.router.can_access_location(
                 self._current_location, self._routing_path
@@ -14,13 +14,14 @@ class RelationshipCollector(RelationshipQuestion):
 
         return super().is_location_valid()
 
-    def handle_post(self):
+    def handle_post(self) -> None:
         # pylint: disable=no-member
         # wtforms Form parents are not discoverable in the 2.3.3 implementation
         relationship_answer = self.form.data.get(self.relationships_answer_id)
         relationship = Relationship(
-            self._current_location.list_item_id,
-            self._current_location.to_list_item_id,
+            # Type ignore: handle_post is only called from relationships endpoint and location class is assigned to RelationshipLocation
+            self._current_location.list_item_id,  # type: ignore
+            self._current_location.to_list_item_id,  # type: ignore
             relationship_answer,
         )
         self.relationship_store.add_or_update(relationship)
@@ -39,28 +40,31 @@ class RelationshipCollector(RelationshipQuestion):
 
         self.questionnaire_store_updater.save()
 
-    def _get_answers_for_question(self, question_json):
+    def _get_answers_for_question(self, question_json: Mapping) -> dict:
         relationship = self.relationship_store.get_relationship(
-            self._current_location.list_item_id,
-            self._current_location.to_list_item_id,
+            # relationship only used if these exist. RelationshipLocation wil already be determined.
+            self._current_location.list_item_id,  # type: ignore
+            self._current_location.to_list_item_id,  # type: ignore
         )
         if relationship:
             return {self.relationships_answer_id: relationship.relationship}
         return {}
 
-    def _is_last_relationship(self):
-        if self.relationship_router.get_next_location(self._current_location):
+    def _is_last_relationship(self) -> bool:
+        if self.relationship_router.get_next_location(self._current_location):  # type: ignore
             return False
         return True
 
     def _resolve_custom_page_title_vars(self) -> MutableMapping:
         page_title_vars = super()._resolve_custom_page_title_vars()
 
-        if to_list_item_position := self.current_location.to_list_item_id:
+        if to_list_item_position := self.current_location.to_list_item_id:  # type: ignore
             page_title_vars[
                 "to_list_item_position"
             ] = self._questionnaire_store.list_store.list_item_position(
-                self.current_location.list_name, to_list_item_position
+                # Type ignore: list_name populated at this stage
+                self.current_location.list_name,  # type: ignore
+                to_list_item_position,
             )
 
         return page_title_vars
