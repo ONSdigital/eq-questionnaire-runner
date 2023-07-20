@@ -1232,13 +1232,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return section_dependencies
 
     def _get_section_ids_for_answer_ids(self, answer_ids: set[str]) -> OrderedSet[str]:
-        section_dependencies: set[str] = set()
+        section_dependencies: set[str] = OrderedSet()
         for answer_id in answer_ids:
             block = self.get_block_for_answer_id(answer_id)
             # Type ignore: block_id and section_id is never None
             section_id = self.get_section_id_for_block_id(block["id"])  # type: ignore
             section_dependencies.add(section_id)  # type: ignore
-        return OrderedSet(section_dependencies)
+        return section_dependencies
 
     def get_summary_item_for_list_for_section(
         self, *, section_id: str, list_name: str
