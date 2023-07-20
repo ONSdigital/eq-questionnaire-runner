@@ -160,7 +160,7 @@ def _set_questionnaire_supplementary_data(
     supplementary_data = get_supplementary_data_v1(
         # Type ignore: survey_id and either ru_ref or qid are required for schemas that use supplementary data
         dataset_id=new_sds_dataset_id,
-        unit_id=metadata["ru_ref"] or metadata["qid"],  # type: ignore
+        identifier=metadata["ru_ref"] or metadata["qid"],  # type: ignore
         survey_id=metadata["survey_id"],  # type: ignore
     )
     logger.info(

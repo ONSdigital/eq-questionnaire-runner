@@ -984,6 +984,9 @@ def mock_schema(mocker):
         )
     )
     schema.is_answer_dynamic = mocker.MagicMock(return_value=False)
+    schema.is_answer_in_list_collector_repeating_block = mocker.MagicMock(
+        return_value=False
+    )
     return schema
 
 
@@ -1362,6 +1365,40 @@ def placeholder_transform_question_dynamic_answers_json():
         "id": "dynamic-answer-question",
         "title": "What percent of your shopping do you do at each of the following supermarket?",
         "type": "General",
+    }
+
+
+@pytest.fixture
+@pytest.mark.usefixtures("app", "gb_locale")
+def placeholder_transform_question_repeating_block():
+    return {
+        "id": "repeating-block-1",
+        "type": "ListRepeatingQuestion",
+        "question": {
+            "id": "transport-repeating-block-1-question",
+            "type": "General",
+            "title": "title",
+        },
+        "answers": [
+            {
+                "id": "transport-cost",
+                "label": {
+                    "placeholders": [
+                        {
+                            "placeholder": "transport_name",
+                            "value": {
+                                "source": "answers",
+                                "identifier": "transport-name",
+                            },
+                        }
+                    ],
+                    "text": "What is your monthly expenditure travelling by {transport_name}?",
+                },
+                "mandatory": True,
+                "type": "Currency",
+                "currency": "GBP",
+            }
+        ],
     }
 
 

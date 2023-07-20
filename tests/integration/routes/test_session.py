@@ -1,19 +1,42 @@
 import time
 from datetime import datetime, timedelta, timezone
 
+import responses
 from freezegun import freeze_time
 from mock.mock import patch
+from sdc.crypto.key_store import KeyStore
 
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.services.supplementary_data import SupplementaryDataRequestFailed
 from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.utilities.json import json_loads
-from tests.integration.integration_test_case import IntegrationTestCase
+from tests.app.services.test_request_supplementary_data import TEST_SDS_URL
+from tests.integration.integration_test_case import (
+    EQ_SUBMISSION_SDX_PRIVATE_KEY,
+    EQ_SUBMISSION_SR_PRIVATE_SIGNING_KEY,
+    EQ_USER_AUTHENTICATION_RRM_PRIVATE_KEY_KID,
+    KEYS_DICT,
+    SR_USER_AUTHENTICATION_PUBLIC_KEY_KID,
+    IntegrationTestCase,
+)
 
 TIME_TO_FREEZE = datetime(2020, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
 EQ_SESSION_TIMEOUT_SECONDS = 45 * 60
 BUSINESS_URL = ACCOUNT_SERVICE_BASE_URL
 SOCIAL_URL = ACCOUNT_SERVICE_BASE_URL_SOCIAL
+TEST_SDS_URL = "http://localhost:5003/v1/unit_data"
+
+mock_supplementary_data_payload_missing_data = {
+    "dataset_id": "44f1b432-9421-49e5-bd26-e63e18a30b69",
+    "survey_id": "123",
+}
+
+mock_supplementary_data_payload_invalid_kid_in_data = {
+    "dataset_id": "44f1b432-9421-49e5-bd26-e63e18a30b69",
+    "survey_id": "123",
+    # pylint: disable-next=line-too-long
+    "data": "eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkEyNTZHQ00iLCJraWQiOiJkZjg4ZmRhZDI2MTJhZTFlODA1NzExMjBlNmM2MzcxZjU1ODk2Njk3In0.lssJXsMUE3dhWtQRUt7DTaZJvx4DpNdLW98cu8g4NijYX9TFpJiOFyzPxUlpFZb-fMa4zW9q6qZofQeQTbl_Ae3QAwGhuWF7v9NMdWM1aH377byyJJyJpdqlU4t-P03evRWZqAG2HtsNE2Zn1ORXn80Dc9IRkzutgrziLI8OBIZeO6-XEgbVCapsQApWkyux7QRdFH95wfda75nVvGqTbBOYvQiMTKd8KzpH2Vl200IOqEpmrcjUCE-yqdTupzcr88hwNI2ZYdv-pTNowJw1FPODZ7V_sE4Ac-JYv3yBTDcXdz3I5-rX8i2HXqz-g3VhveZiAl9q0AgklPkaO_oNWJzjrCb7DZGL4DjiGYuOcw8OSdOpKLXwkExMlado-wigxy1IWoCzFu2E5tWpmLc0WWcjKuBgD7-4tcn059F7GcwhX2uMRESCmc39pblvseM2UnmmQnwr8GvD7gqWdFwtBsECyXQ5UXAxWLJor_MtU8lAFZxiorRcrXZJwAivroPO9iEB-1Mvt2zZFWI_vMgpJCAIpETscotDKMVCG0UMfkKckJqLnmQpvF4oYTr77w1COBX5bi-AV8UrLJ7sVVktSXOBc_KCGRpoImA5cE67hW7mFUdJi1EHA39qt0tTqZD7izpu8sSLxsiuCkfsqrd4uAedcDdQm4QGxXOPD4pxois.wfWsetB3M0x9qfw5.43Wns86lGlbHj63b0ZxE2bxBQVus6FIqelb9LfSbvopLn5oR8FM4vDEnDp_rIyvjmV9YAZJ6HAHaYaWoNyIO0EorgamrB4R3-LqInANoe9c8xLZ9wl_QpE9aWnxsmFGZUWLO3q2fVTPnwBtA_LxK8FD0vjdLL9eHGYEmPVCGVX0BJX04TVW9aoemsx9Yn3ZtfvmQHuROiB-GcA5wOSb-GvhzfplY09GQr7g7221MiYCHYimmEJyxLV5clWPXu6izzVLDyG9l2ewCifiuBLD0O1U_fPlahHTmidwHKJEAEn39biNw5E_dr8WyZ3xBvJa9dP50m0xeyN4COR-xlYcEbuDcKoqN6BnY0bMNDxQYlBO--QcPLQ6h48uTJszwzsmNIwHoi0xy5dQah7c9Nt2lpMuNt1Wix-O8JWYCqaiCKxjwt9G8kabMbzhp1n3LetWweoyV7qJTbiB13Byv6SZwMO9M.8j8wtvwBAHzqRhv5Ii9jjQ",
+}
 
 
 class TestSession(IntegrationTestCase):
@@ -31,6 +54,11 @@ class TestSession(IntegrationTestCase):
                 "EQ_SESSION_TIMEOUT_SECONDS": EQ_SESSION_TIMEOUT_SECONDS,
             }
         )
+
+    def assert_supplementary_data_500_page(self):
+        self.launchSupplementaryDataSurvey()
+        self.assertStatusCode(500)
+        self.assertInBody("Sorry, there is a problem with this service")
 
     def test_session_expired(self):
         self.get("/session-expired")
@@ -140,14 +168,53 @@ class TestSession(IntegrationTestCase):
         mock_get.assert_called_once()
         mock_set.assert_called_once()
 
-    def test_supplementary_data_raises_500_error_on_exception(self):
+    def test_supplementary_data_raises_500_error_when_sds_api_request_fails(self):
         with patch(
             "app.routes.session.get_supplementary_data",
             side_effect=SupplementaryDataRequestFailed,
         ):
-            self.launchSupplementaryDataSurvey()
-            self.assertStatusCode(500)
-            self.assertInBody("Sorry, there is a problem with this service")
+            self.assert_supplementary_data_500_page()
+
+    @responses.activate
+    def test_supplementary_data_raises_500_error_when_supplementary_data_invalid(self):
+        responses.add(
+            responses.GET,
+            TEST_SDS_URL,
+            json=mock_supplementary_data_payload_invalid_kid_in_data,
+            status=200,
+        )
+        self.assert_supplementary_data_500_page()
+
+    @responses.activate
+    def test_supplementary_data_raises_500_error_when_supplementary_data_missing_data(
+        self,
+    ):
+        responses.add(
+            responses.GET,
+            TEST_SDS_URL,
+            json=mock_supplementary_data_payload_missing_data,
+            status=200,
+        )
+        self.assert_supplementary_data_500_page()
+
+    def test_supplementary_data_raises_500_error_when_missing_supplementary_data_key(
+        self,
+    ):
+        self.key_store = KeyStore(
+            {
+                "keys": {
+                    k: KEYS_DICT["keys"][k]
+                    for k in (
+                        EQ_USER_AUTHENTICATION_RRM_PRIVATE_KEY_KID,
+                        SR_USER_AUTHENTICATION_PUBLIC_KEY_KID,
+                        EQ_SUBMISSION_SDX_PRIVATE_KEY,
+                        EQ_SUBMISSION_SR_PRIVATE_SIGNING_KEY,
+                    )
+                }
+            }
+        )
+
+        self.assert_supplementary_data_500_page()
 
 
 class TestCensusSession(IntegrationTestCase):
