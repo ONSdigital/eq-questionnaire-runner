@@ -6,11 +6,11 @@ from requests import RequestException
 from app.services.supplementary_data import (
     SUPPLEMENTARY_DATA_REQUEST_MAX_RETRIES,
     SupplementaryDataRequestFailed,
-    get_supplementary_data,
+    get_supplementary_data_v1,
 )
 from tests.app.utilities.test_schema import get_mocked_make_request
 
-TEST_SDS_URL = "http://test.domain/v1/unit_data"
+TEST_SDS_URL = "http://test.domain"
 
 mock_supplementary_data_payload = {
     "dataset_id": "44f1b432-9421-49e5-bd26-e63e18a30b69",
@@ -49,17 +49,17 @@ mock_supplementary_data_payload = {
 
 
 @responses.activate
-def test_get_supplementary_data_200(app: Flask):
+def test_get_supplementary_data_v1_200(app: Flask):
     with app.app_context():
         current_app.config["SDS_API_BASE_URL"] = TEST_SDS_URL
 
         responses.add(
             responses.GET,
-            TEST_SDS_URL,
+            f"{TEST_SDS_URL}/v1/unit_data",
             json=mock_supplementary_data_payload,
             status=200,
         )
-        loaded_supplementary_data = get_supplementary_data(
+        loaded_supplementary_data = get_supplementary_data_v1(
             dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
             unit_id="12346789012A",
             survey_id="123",
@@ -73,19 +73,19 @@ def test_get_supplementary_data_200(app: Flask):
     [401, 403, 404, 501, 511],
 )
 @responses.activate
-def test_get_supplementary_data_non_200(app: Flask, status_code):
+def test_get_supplementary_data_v1_non_200(app: Flask, status_code):
     with app.app_context():
         current_app.config["SDS_API_BASE_URL"] = TEST_SDS_URL
 
         responses.add(
             responses.GET,
-            TEST_SDS_URL,
+            f"{TEST_SDS_URL}/v1/unit_data",
             json=mock_supplementary_data_payload,
             status=status_code,
         )
 
         with pytest.raises(SupplementaryDataRequestFailed) as exc:
-            get_supplementary_data(
+            get_supplementary_data_v1(
                 dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
                 unit_id="12346789012A",
                 survey_id="123",
@@ -95,13 +95,13 @@ def test_get_supplementary_data_non_200(app: Flask, status_code):
 
 
 @responses.activate
-def test_get_supplementary_data_request_failed(app: Flask):
+def test_get_supplementary_data_v1_request_failed(app: Flask):
     with app.app_context():
         current_app.config["SDS_API_BASE_URL"] = TEST_SDS_URL
 
         responses.add(responses.GET, TEST_SDS_URL, body=RequestException())
         with pytest.raises(SupplementaryDataRequestFailed) as exc:
-            get_supplementary_data(
+            get_supplementary_data_v1(
                 dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
                 unit_id="12346789012A",
                 survey_id="123",
@@ -110,8 +110,8 @@ def test_get_supplementary_data_request_failed(app: Flask):
     assert str(exc.value) == "Supplementary Data request failed"
 
 
-def test_get_supplementary_data_retries_timeout_error(
-    app: Flask, mocker, mocked_make_request_with_timeout
+def test_get_supplementary_data_v1_retries_timeout_error(
+        app: Flask, mocker, mocked_make_request_with_timeout
 ):
     with app.app_context():
         current_app.config["SDS_API_BASE_URL"] = TEST_SDS_URL
@@ -121,7 +121,7 @@ def test_get_supplementary_data_retries_timeout_error(
         )
 
         try:
-            supplementary_data = get_supplementary_data(
+            supplementary_data = get_supplementary_data_v1(
                 dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
                 unit_id="12346789012A",
                 survey_id="123",
@@ -132,13 +132,13 @@ def test_get_supplementary_data_retries_timeout_error(
     assert supplementary_data == mock_supplementary_data_payload
 
     expected_call = (
-        SUPPLEMENTARY_DATA_REQUEST_MAX_RETRIES + 1
+            SUPPLEMENTARY_DATA_REQUEST_MAX_RETRIES + 1
     )  # Max retries + the initial request
     assert mocked_make_request_with_timeout.call_count == expected_call
 
 
 @pytest.mark.usefixtures("mocked_response_content")
-def test_get_supplementary_data_retries_transient_error(app: Flask, mocker):
+def test_get_supplementary_data_v1_retries_transient_error(app: Flask, mocker):
     with app.app_context():
         current_app.config["SDS_API_BASE_URL"] = TEST_SDS_URL
         mocked_make_request = get_mocked_make_request(
@@ -151,7 +151,7 @@ def test_get_supplementary_data_retries_transient_error(app: Flask, mocker):
         )
 
         try:
-            supplementary_data = get_supplementary_data(
+            supplementary_data = get_supplementary_data_v1(
                 dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
                 unit_id="12346789012A",
                 survey_id="123",
@@ -162,13 +162,13 @@ def test_get_supplementary_data_retries_transient_error(app: Flask, mocker):
         assert supplementary_data == mock_supplementary_data_payload
 
         expected_call = (
-            SUPPLEMENTARY_DATA_REQUEST_MAX_RETRIES + 1
+                SUPPLEMENTARY_DATA_REQUEST_MAX_RETRIES + 1
         )  # Max retries + the initial request
 
     assert mocked_make_request.call_count == expected_call
 
 
-def test_get_supplementary_data_max_retries(app: Flask, mocker):
+def test_get_supplementary_data_v1_max_retries(app: Flask, mocker):
     with app.app_context():
         current_app.config["SDS_API_BASE_URL"] = TEST_SDS_URL
 
@@ -177,7 +177,7 @@ def test_get_supplementary_data_max_retries(app: Flask, mocker):
         )
 
         with pytest.raises(SupplementaryDataRequestFailed) as exc:
-            get_supplementary_data(
+            get_supplementary_data_v1(
                 dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
                 unit_id="12346789012A",
                 survey_id="123",

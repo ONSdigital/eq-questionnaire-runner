@@ -30,8 +30,8 @@ class SupplementaryDataRequestFailed(Exception):
         return "Supplementary Data request failed"
 
 
-def get_supplementary_data(*, dataset_id: str, unit_id: str, survey_id: str) -> dict:
-    supplementary_data_url = current_app.config["SDS_API_BASE_URL"]
+def get_supplementary_data_v1(*, dataset_id: str, unit_id: str, survey_id: str) -> dict:
+    supplementary_data_url = f"{current_app.config['SDS_API_BASE_URL']}/v1/unit_data"
 
     parameters = {"dataset_id": dataset_id, "unit_id": unit_id}
 
@@ -79,7 +79,7 @@ def get_supplementary_data(*, dataset_id: str, unit_id: str, survey_id: str) -> 
 
 
 def validate_supplementary_data(
-    supplementary_data: Mapping, dataset_id: str, unit_id: str, survey_id: str
+        supplementary_data: Mapping, dataset_id: str, unit_id: str, survey_id: str
 ) -> dict:
     try:
         return validate_supplementary_data_v1(
