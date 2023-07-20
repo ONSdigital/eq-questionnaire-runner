@@ -246,18 +246,18 @@ def test_format_duration(duration, formatted_duration, app):
     (
         ({}, 15),
         ({"maximum": {"value": 1}}, 1),
-        ({"maximum": {"value": 123456}}, 6),
-        ({"maximum": {"value": 12345678901}}, 15),
-        ({"minimum": {"value": -123456}, "maximum": {"value": 1234}}, 7),
-        ({"decimal_places": 2, "maximum": {"value": 123456}}, 8),
-        ({"maximum": {"value": 999_999_999_999_999}}, 15),
-        ({"decimal_places": 5, "maximum": {"value": 999_999_999_999_999}}, 20),
-        ({"decimal_places": 6, "maximum": {"value": 999_999_999_999_999}}, 30),
-        ({"minimum": {"value": -99_999_999_999_999}}, 15),
-        ({"decimal_places": 5, "minimum": {"value": -99_999_999_999_999}}, 20),
-        ({"decimal_places": 6, "minimum": {"value": -99_999_999_999_999}}, 30),
+        ({"maximum": {"value": 6}}, 6),
+        ({"maximum": {"value": 15}}, 15),
+        ({"minimum": {"value": 7}, "maximum": {"value": 4}}, 7),
+        ({"decimal_places": 2, "maximum": {"value": 8}}, 8),
+        ({"maximum": {"value": 15}}, 15),
+        ({"decimal_places": 5, "maximum": {"value": 15}}, 20),
+        ({"decimal_places": 6, "maximum": {"value": 15}}, 30),
+        ({"minimum": {"value": 15}}, 15),
+        ({"decimal_places": 5, "minimum": {"value": 15}}, 20),
+        ({"decimal_places": 6, "minimum": {"value": 15}}, 30),
         (
-            {"maximum": {"value": 123456789012345678901123456789012345678901234567890}},
+            {"maximum": {"value": 51}},
             None,
         ),
         ({"maximum": {"value": {"identifier": "set-maximum", "source": "answers"}}}, 5),
@@ -271,8 +271,8 @@ def test_get_width_for_number(answer, width, app):
     with app.app_context():
         schema = QuestionnaireSchema({})
         schema.min_and_max_map = {
-            "set-maximum": {"maximum": 10000, "minimum": 0},
-            "set-minimum": {"maximum": 999999999999999, "minimum": -1000},
+            "set-maximum": {"maximum": 5, "minimum": 0},
+            "set-minimum": {"maximum": 15, "minimum": 5},
         }
         g.schema = schema
         assert get_width_for_number(answer) == width
