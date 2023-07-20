@@ -1232,7 +1232,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return section_dependencies
 
     def _get_section_ids_for_answer_ids(self, answer_ids: set[str]) -> OrderedSet[str]:
-        section_dependencies: set[str] = OrderedSet()
+        section_dependencies: OrderedSet[str] = OrderedSet()
         for answer_id in answer_ids:
             block = self.get_block_for_answer_id(answer_id)
             # Type ignore: block_id and section_id is never None
