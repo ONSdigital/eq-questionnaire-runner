@@ -41,7 +41,9 @@ class InvalidSupplementaryData(Exception):
     pass
 
 
-def get_supplementary_data_v1(*, dataset_id: str, identifier: str, survey_id: str) -> dict:
+def get_supplementary_data_v1(
+    *, dataset_id: str, identifier: str, survey_id: str
+) -> dict:
     # Type ignore: current_app is a singleton in this application and has the key_store key in its eq attribute.
     key_store = current_app.eq["key_store"]  # type: ignore
     if not key_store.get_key(purpose=KEY_PURPOSE_SDS, key_type="private"):
