@@ -40,7 +40,7 @@ describe("First Non Empty Item Transform Cross Section", () => {
     await $(HubPage.submit()).click();
   });
 
-  it("When the custom date range is entered and the answer is changed back to metadata range, then metadata should be displayed for both sections", async () => {
+  it("Given a custom date range is entered, When the answer is changed back to metadata range, Then the metadata date should be displayed for both sections", async () => {
     // Set the date
     await $(DateQuestionBlockPage.noINeedToReportForADifferentPeriod()).click();
     await $(DateQuestionBlockPage.submit()).click();
