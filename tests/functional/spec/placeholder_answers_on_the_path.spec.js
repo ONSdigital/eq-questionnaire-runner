@@ -71,7 +71,7 @@ describe("First Non Empty Item Transform Repeating Sections", () => {
     await browser.openQuestionnaire("test_placeholder_first_non_empty_item_repeating_sections.json");
     await $(HubPage.submit()).click();
   });
-  it("When the custom date range is entered and the answer is changed back to metadata range, then metadata should be displayed for the repeating section title", async () => {
+  it("Given a custom date range is entered, When the answer is changed back to metadata range, Then the metadata date should be displayed for the repeating section title", async () => {
     // Set the date
     await $(DateQuestionBlockPage.noINeedToReportForADifferentPeriod()).click();
     await $(DateQuestionBlockPage.submit()).click();
