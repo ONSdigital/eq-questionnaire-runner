@@ -8,11 +8,11 @@ from app.data_models.answer import AnswerValueTypes
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
-from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_parser import PlaceholderParser
 from app.questionnaire.plural_forms import get_plural_form_key
-from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.schema_utils import find_pointers_containing
+from app.utilities.types import LocationType
 
 
 class PlaceholderRenderer:
@@ -31,7 +31,7 @@ class PlaceholderRenderer:
         schema: QuestionnaireSchema,
         progress_store: ProgressStore,
         supplementary_data_store: SupplementaryDataStore,
-        location: Location | RelationshipLocation | None = None,
+        location: LocationType | None = None,
         placeholder_preview_mode: bool | None = False,
     ):
         self._placeholder_preview_mode = placeholder_preview_mode

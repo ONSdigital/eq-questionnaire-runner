@@ -9,19 +9,19 @@ from app.data_models import ProgressStore, SupplementaryDataStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
-from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire import path_finder as pf
 from app.questionnaire.dependencies import (
     get_block_ids_for_calculated_summary_dependencies,
 )
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
-from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.value_source_resolver import (
     ValueSourceEscapedTypes,
     ValueSourceResolver,
     ValueSourceTypes,
 )
 from app.utilities.mappings import get_flattened_mapping_values
+from app.utilities.types import LocationType
 
 if TYPE_CHECKING:
     from app.questionnaire.placeholder_renderer import (
@@ -49,7 +49,7 @@ class PlaceholderParser:
         progress_store: ProgressStore,
         supplementary_data_store: SupplementaryDataStore,
         list_item_id: str | None = None,
-        location: Location | RelationshipLocation | None = None,
+        location: LocationType | None = None,
         placeholder_preview_mode: bool | None = False,
     ):
         self._transformer = PlaceholderTransforms(language, schema, renderer)

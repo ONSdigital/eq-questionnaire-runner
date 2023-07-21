@@ -15,6 +15,7 @@ from app.questionnaire.location import Location
 from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
+from app.utilities.types import LocationType
 
 
 class Router:
@@ -82,7 +83,7 @@ class Router:
         return list_item_id in self._list_store[list_name]
 
     def can_access_location(
-        self, location: Location, routing_path: RoutingPath
+        self, location: LocationType, routing_path: RoutingPath
     ) -> bool:
         """
         Checks whether the location is valid and accessible.
@@ -127,7 +128,7 @@ class Router:
 
     def get_next_location_url(
         self,
-        location: Location,
+        location: LocationType,
         routing_path: RoutingPath,
         return_to: str | None = None,
         return_to_answer_id: str | None = None,
@@ -172,7 +173,9 @@ class Router:
             return_to_block_id=return_to_block_id,
         )
 
-    def _get_next_location_url_for_complete_section(self, location: Location) -> str:
+    def _get_next_location_url_for_complete_section(
+        self, location: LocationType
+    ) -> str:
         if self._schema.show_summary_on_completion_for_section(location.section_id):
             return self._get_section_url(location)
 
@@ -180,7 +183,7 @@ class Router:
 
     def get_previous_location_url(
         self,
-        location: Location,
+        location: LocationType,
         routing_path: RoutingPath,
         return_to: str | None = None,
         return_to_answer_id: str | None = None,
@@ -230,7 +233,7 @@ class Router:
 
     def _get_return_to_location_url(
         self,
-        location: Location,
+        location: LocationType,
         return_to: str | None,
         routing_path: RoutingPath,
         is_for_previous: bool,
@@ -289,7 +292,7 @@ class Router:
         *,
         return_to: str | None,
         return_to_block_id: str | None,
-        location: Location,
+        location: LocationType,
         routing_path: RoutingPath,
         is_for_previous: bool,
         return_to_answer_id: str | None = None,
@@ -347,7 +350,7 @@ class Router:
         *,
         return_to: str,
         return_to_block_id: str | None,
-        location: Location,
+        location: LocationType,
         routing_path: RoutingPath,
         is_for_previous: bool,
         return_to_answer_id: str | None = None,
@@ -577,7 +580,9 @@ class Router:
 
     @staticmethod
     def get_next_block_url(
-        location: Location, routing_path: RoutingPath, **kwargs: str | None
+        location: LocationType,
+        routing_path: RoutingPath,
+        **kwargs: str | None,
     ) -> str:
         # Type ignore: the location will have a block
         next_block_id = routing_path[routing_path.index(location.block_id) + 1]  # type: ignore
@@ -592,7 +597,8 @@ class Router:
 
     @staticmethod
     def _get_section_url(
-        location: Location, return_to_answer_id: str | None = None
+        location: LocationType,
+        return_to_answer_id: str | None = None,
     ) -> str:
         return url_for(
             "questionnaire.get_section",

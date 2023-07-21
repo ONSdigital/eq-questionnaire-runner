@@ -13,10 +13,11 @@ from app.data_models import (
 from app.data_models.answer import AnswerValueEscapedTypes, escape_answer_value
 from app.data_models.metadata_proxy import MetadataProxy
 from app.forms.field_handlers.select_handlers import DynamicAnswerOptions
-from app.questionnaire import Location, QuestionnaireSchema, QuestionSchemaType
+from app.questionnaire import QuestionnaireSchema, QuestionSchemaType
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
+from app.utilities.types import LocationType
 from app.views.contexts.summary.answer import (
     Answer,
     InferredAnswerValueTypes,
@@ -37,7 +38,7 @@ class Question:
         schema: QuestionnaireSchema,
         rule_evaluator: RuleEvaluator,
         value_source_resolver: ValueSourceResolver,
-        location: Location,
+        location: LocationType,
         block_id: str,
         return_to: Optional[str],
         return_to_block_id: Optional[str] = None,

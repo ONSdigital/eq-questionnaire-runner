@@ -9,9 +9,10 @@ from app.data_models import (
     SupplementaryDataStore,
 )
 from app.data_models.metadata_proxy import MetadataProxy
-from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.survey_config.link import Link
+from app.utilities.types import LocationType
 from app.views.contexts.summary.block import Block
 from app.views.contexts.summary.calculated_summary_block import CalculatedSummaryBlock
 from app.views.contexts.summary.list_collector_block import ListCollectorBlock
@@ -29,7 +30,7 @@ class Group:
         metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
-        location: Location,
+        location: LocationType,
         language: str,
         progress_store: ProgressStore,
         supplementary_data_store: SupplementaryDataStore,
@@ -86,7 +87,7 @@ class Group:
         metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
-        location: Location,
+        location: LocationType,
         return_to: str | None,
         progress_store: ProgressStore,
         supplementary_data_store: SupplementaryDataStore,

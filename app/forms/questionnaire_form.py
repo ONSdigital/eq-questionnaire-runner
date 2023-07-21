@@ -32,6 +32,7 @@ from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.utilities.mappings import get_flattened_mapping_values
+from app.utilities.types import LocationType
 
 logger = logging.getLogger(__name__)
 
@@ -482,7 +483,7 @@ def get_answer_fields(
     list_store: ListStore,
     metadata: MetadataProxy | None,
     response_metadata: MutableMapping,
-    location: Location | RelationshipLocation | None,
+    location: LocationType | None,
     progress_store: ProgressStore,
     supplementary_data_store: SupplementaryDataStore,
 ) -> dict[str, FieldHandler]:
@@ -614,20 +615,23 @@ def _get_error_id(id_: str) -> str:
 
 
 def _clear_detail_answer_field(
-    form_data: MultiDict, question_schema: QuestionSchemaType
+    form_data: ImmutableMultiDict | MultiDict, question_schema: QuestionSchemaType
 ) -> MultiDict[str, Any]:
     """
     Clears the detail answer field if the parent option is not selected
     """
+    mutable_form_data = (
+        MultiDict(form_data) if isinstance(form_data, ImmutableMultiDict) else form_data
+    )
+
     for answer in question_schema.get("answers", []):
         for option in answer.get("options", []):
             if "detail_answer" in option and option["value"] not in form_data.getlist(
                 answer["id"]
             ):
-                if isinstance(form_data, ImmutableMultiDict):
-                    form_data = MultiDict(form_data)
-                form_data[option["detail_answer"]["id"]] = ""
-    return form_data
+                mutable_form_data[option["detail_answer"]["id"]] = ""
+
+    return mutable_form_data
 
 
 def generate_form(
@@ -640,9 +644,9 @@ def generate_form(
     response_metadata: MutableMapping,
     progress_store: ProgressStore,
     supplementary_data_store: SupplementaryDataStore,
-    location: Location | RelationshipLocation | None = None,
+    location: LocationType | None = None,
     data: dict[str, Any] | None = None,
-    form_data: MultiDict[str, Any] | None = None,
+    form_data: MultiDict | None = None,
 ) -> QuestionnaireForm:
     class DynamicForm(QuestionnaireForm):
         pass

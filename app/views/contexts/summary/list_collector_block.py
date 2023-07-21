@@ -9,6 +9,7 @@ from app.data_models.list_store import ListModel, ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
+from app.utilities.types import LocationType
 from app.views.contexts.list_context import ListContext
 from app.views.contexts.summary.block import Block
 
@@ -23,7 +24,7 @@ class ListCollectorBlock:
         metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
-        location: Location,
+        location: LocationType,
         language: str,
         supplementary_data_store: SupplementaryDataStore,
         return_to: str | None,

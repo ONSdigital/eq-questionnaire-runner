@@ -8,7 +8,7 @@ from app.views.handlers.content import Content
 class _SummaryWithCalculation(Content):
     summary_class: Type[CalculatedSummaryContext] | Type[GrandCalculatedSummaryContext]
 
-    def get_context(self):
+    def get_context(self) -> dict[str, dict]:
         summary_context = self.summary_class(
             language=self._language,
             schema=self._schema,
@@ -30,7 +30,7 @@ class _SummaryWithCalculation(Content):
 
         return context
 
-    def handle_post(self):
+    def handle_post(self) -> None:
         # We prematurely set the current as complete, so that dependent sections can be updated accordingly
         self.questionnaire_store_updater.add_completed_location()
         # Then we update dependent sections

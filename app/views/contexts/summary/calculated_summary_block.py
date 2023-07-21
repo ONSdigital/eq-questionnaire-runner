@@ -10,8 +10,9 @@ from app.data_models import (
     SupplementaryDataStore,
 )
 from app.data_models.metadata_proxy import MetadataProxy
-from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
+from app.utilities.types import LocationType
 
 NumericType: TypeAlias = int | float | Decimal
 
@@ -26,7 +27,7 @@ class CalculatedSummaryBlock:
         metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
-        location: Location,
+        location: LocationType,
         return_to: str | None,
         return_to_block_id: str | None = None,
         progress_store: ProgressStore,
