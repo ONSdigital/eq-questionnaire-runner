@@ -1,5 +1,3 @@
-from typing import Optional, Union
-
 from flask import url_for
 
 from app.data_models import QuestionnaireStore
@@ -19,11 +17,11 @@ __all__ = [
 
 
 def individual_response_url(
-    individual_response_for_list: str,
+    individual_response_for_list: str | None,
     list_item_id: str,
     questionnaire_store: QuestionnaireStore,
-    journey: Optional[str] = None,
-) -> Union[str, None]:
+    journey: str | None = None,
+) -> str | None:
     if individual_response_for_list:
         if (
             list_item_id

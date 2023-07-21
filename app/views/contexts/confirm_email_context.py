@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Mapping
 
 from flask import url_for
 
@@ -9,7 +9,7 @@ from app.views.contexts.question import build_question_context
 
 def build_confirm_email_context(
     question_schema: QuestionSchemaType, form: QuestionnaireForm
-) -> dict[str, Union[str, bool, dict]]:
+) -> dict[str, Mapping]:
     block = {"question": question_schema}
     context = build_question_context(block, form)
     context["hide_sign_out_button"] = False

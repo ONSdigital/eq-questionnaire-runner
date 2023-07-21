@@ -6,10 +6,9 @@ from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
-from app.questionnaire import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
+from app.utilities.types import LocationType
 
 
 # Type ignore: validation should ensure the variant exists when this is called
@@ -22,7 +21,7 @@ def choose_variant(  # type: ignore
     list_store: ListStore,
     variants_key: str,
     single_key: str,
-    current_location: Location | RelationshipLocation,
+    current_location: LocationType,
     progress_store: ProgressStore,
 ) -> dict:
     if block.get(single_key):
@@ -53,7 +52,7 @@ def choose_question_to_display(
     response_metadata: MutableMapping,
     answer_store: AnswerStore,
     list_store: ListStore,
-    current_location: Location | RelationshipLocation,
+    current_location: LocationType,
     progress_store: ProgressStore,
 ) -> dict:
     return choose_variant(
@@ -77,7 +76,7 @@ def choose_content_to_display(
     response_metadata: MutableMapping,
     answer_store: AnswerStore,
     list_store: ListStore,
-    current_location: Location | RelationshipLocation,
+    current_location: LocationType,
     progress_store: ProgressStore,
 ) -> dict:
     return choose_variant(
@@ -101,7 +100,7 @@ def transform_variants(
     response_metadata: MutableMapping,
     answer_store: AnswerStore,
     list_store: ListStore,
-    current_location: Location | RelationshipLocation,
+    current_location: LocationType,
     progress_store: ProgressStore,
 ) -> ImmutableDict:
     output_block = dict(block)

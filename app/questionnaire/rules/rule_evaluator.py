@@ -5,16 +5,16 @@ from typing import Generator, Iterable, MutableMapping, Optional, Sequence, Unio
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
-from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
-from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.operations import Operations
 from app.questionnaire.rules.operator import Operator
 from app.questionnaire.value_source_resolver import (
     ValueSourceResolver,
     ValueSourceTypes,
 )
+from app.utilities.types import LocationType
 
 RuleEvaluatorTypes = Union[
     bool, Optional[date], list[str], list[date], int, float, Decimal
@@ -28,7 +28,7 @@ class RuleEvaluator:
     list_store: ListStore
     metadata: MetadataProxy | None
     response_metadata: MutableMapping
-    location: Location | RelationshipLocation | None
+    location: LocationType | None
     progress_store: ProgressStore
     routing_path_block_ids: Iterable | None = None
     language: str = DEFAULT_LANGUAGE_CODE
