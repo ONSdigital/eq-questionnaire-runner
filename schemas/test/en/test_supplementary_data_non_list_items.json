@@ -1,0 +1,503 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "123",
+    "title": "Test Supplementary Data with non list items",
+    "theme": "default",
+    "description": "A questionnaire to demo loading Supplementary data and using non list items for value sources.",
+    "metadata": [
+        {
+            "name": "survey_id",
+            "type": "string"
+        },
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        },
+        {
+            "name": "sds_dataset_id",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Hub",
+        "options": {
+            "required_completed_sections": ["introduction-section"]
+        }
+    },
+    "sections": [
+        {
+            "id": "introduction-section",
+            "title": "Introduction",
+            "groups": [
+                {
+                    "id": "introduction-group",
+                    "title": "Introduction Group",
+                    "blocks": [
+                        {
+                            "id": "introduction-block",
+                            "type": "Introduction",
+                            "primary_content": [
+                                {
+                                    "id": "business-details",
+                                    "title": {
+                                        "text": "You are completing this survey for {company_name}",
+                                        "placeholders": [
+                                            {
+                                                "placeholder": "company_name",
+                                                "value": {
+                                                    "source": "supplementary_data",
+                                                    "identifier": "company_name"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "contents": [
+                                        {
+                                            "description": {
+                                                "text": "If the company details or structure have changed contact us on {telephone_number_link}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "telephone_number_link",
+                                                        "value": {
+                                                            "source": "supplementary_data",
+                                                            "identifier": "company_details",
+                                                            "selectors": ["telephone_number"]
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "guidance": {
+                                                "contents": [
+                                                    {
+                                                        "title": "Guidance for completing this survey",
+                                                        "list": [
+                                                            {
+                                                                "text": "{survey_guidance}",
+                                                                "placeholders": [
+                                                                    {
+                                                                        "placeholder": "survey_guidance",
+                                                                        "value": {
+                                                                            "source": "supplementary_data",
+                                                                            "identifier": "guidance"
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "description": "<p>The company name, telephone number and guidance on the line above, all come from supplementary data</p>"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-1",
+            "title": "Section 1",
+            "summary": {
+                "page_title": "Summary title",
+                "show_on_completion": true
+            },
+            "groups": [
+                {
+                    "id": "group-1",
+                    "title": "Group 1",
+                    "blocks": [
+                        {
+                            "id": "email-block",
+                            "type": "Question",
+                            "question": {
+                                "id": "email-question",
+                                "type": "General",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "If you answer no, an additional block will open up allowing entering of a different email"
+                                        }
+                                    ]
+                                },
+                                "title": {
+                                    "text": "Is {email} still the correct contact email for {company_name}?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "company_name",
+                                            "value": {
+                                                "source": "supplementary_data",
+                                                "identifier": "company_name"
+                                            }
+                                        },
+                                        {
+                                            "placeholder": "email",
+                                            "value": {
+                                                "source": "supplementary_data",
+                                                "identifier": "company_details",
+                                                "selectors": ["email"]
+                                            }
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "same-email-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "same-email-answer"
+                                        },
+                                        "Yes"
+                                    ]
+                                }
+                            },
+                            "type": "Question",
+                            "id": "new-email",
+                            "question": {
+                                "id": "new-email-question",
+                                "type": "General",
+                                "title": {
+                                    "text": "What is the new contact email for {company_name}?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "company_name",
+                                            "value": {
+                                                "source": "supplementary_data",
+                                                "identifier": "company_name"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "new-email-answer",
+                                        "label": "Contact email",
+                                        "mandatory": true,
+                                        "type": "TextField"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "sales-breakdown-block",
+                            "question": {
+                                "id": "sales-breakdown-question",
+                                "title": {
+                                    "text": "How much of the {sales} total UK sales was from Bristol and London?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "sales",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_currency",
+                                                    "arguments": {
+                                                        "number": {
+                                                            "source": "supplementary_data",
+                                                            "identifier": "total_uk_sales"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "Calculated",
+                                "warning": "These answers must not exceed the reported total from the supplementary data",
+                                "calculations": [
+                                    {
+                                        "calculation_type": "sum",
+                                        "value": {
+                                            "source": "supplementary_data",
+                                            "identifier": "total_uk_sales"
+                                        },
+                                        "answers_to_calculate": ["sales-bristol-answer", "sales-london-answer"],
+                                        "conditions": ["less than", "equals"]
+                                    }
+                                ],
+                                "answers": [
+                                    {
+                                        "id": "sales-bristol-answer",
+                                        "label": "Bristol Sales",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "sales-london-answer",
+                                        "label": "London Sales",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "calculated-summary-sales",
+                            "title": "Total value of sales from Bristol and London is calculated to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "title": "Total sales",
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "sales-london-answer"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "sales-bristol-answer"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "id": "section-1-interstitial",
+                            "type": "Interstitial",
+                            "content": {
+                                "title": {
+                                    "text": "Summary of information provided for {company_name}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "company_name",
+                                            "value": {
+                                                "source": "supplementary_data",
+                                                "identifier": "company_name"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "contents": [
+                                    {
+                                        "list": [
+                                            {
+                                                "text": "<strong>Telephone Number</strong>: {phone}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "phone",
+                                                        "value": {
+                                                            "source": "supplementary_data",
+                                                            "identifier": "company_details",
+                                                            "selectors": ["telephone_number"]
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "<strong>Email</strong>: {company_email}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "company_email",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "first_non_empty_item",
+                                                                "arguments": {
+                                                                    "items": [
+                                                                        {
+                                                                            "source": "answers",
+                                                                            "identifier": "new-email-answer"
+                                                                        },
+                                                                        {
+                                                                            "source": "supplementary_data",
+                                                                            "identifier": "company_details",
+                                                                            "selectors": ["email"]
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "<strong>Note Title</strong>: {note_title}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "note_title",
+                                                        "value": {
+                                                            "source": "supplementary_data",
+                                                            "identifier": "note",
+                                                            "selectors": ["title"]
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "<strong>Note Description</strong>: {note_description}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "note_description",
+                                                        "value": {
+                                                            "source": "supplementary_data",
+                                                            "identifier": "note",
+                                                            "selectors": ["description"]
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "<strong>Note Example Title</strong>: {note_title}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "note_title",
+                                                        "value": {
+                                                            "source": "supplementary_data",
+                                                            "identifier": "note",
+                                                            "selectors": ["example", "title"]
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "<strong>Note Example Description</strong>: {note_description}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "note_description",
+                                                        "value": {
+                                                            "source": "supplementary_data",
+                                                            "identifier": "note",
+                                                            "selectors": ["example", "description"]
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "<strong>Guidance</strong>: {guidance}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "guidance",
+                                                        "value": {
+                                                            "source": "supplementary_data",
+                                                            "identifier": "guidance"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "<strong>Total Uk Sales</strong>: {sales}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "sales",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_currency",
+                                                                "arguments": {
+                                                                    "number": {
+                                                                        "source": "supplementary_data",
+                                                                        "identifier": "total_uk_sales"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "<strong>Bristol sales</strong>: {bristol_sales}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "bristol_sales",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_currency",
+                                                                "arguments": {
+                                                                    "number": {
+                                                                        "source": "answers",
+                                                                        "identifier": "sales-bristol-answer"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "<strong>London sales</strong>: {london_sales}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "london_sales",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_currency",
+                                                                "arguments": {
+                                                                    "number": {
+                                                                        "source": "answers",
+                                                                        "identifier": "sales-london-answer"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "<strong>Sum of Bristol and London sales</strong>: {total_sales}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "total_sales",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_currency",
+                                                                "arguments": {
+                                                                    "number": {
+                                                                        "source": "calculated_summary",
+                                                                        "identifier": "calculated-summary-sales"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

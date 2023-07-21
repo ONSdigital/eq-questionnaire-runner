@@ -19,7 +19,7 @@ from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules import rule_evaluator
 
-ValueSourceTypes: TypeAlias = None | str | int | Decimal | list
+ValueSourceTypes: TypeAlias = None | str | int | Decimal | list | dict
 ValueSourceEscapedTypes: TypeAlias = Markup | list[Markup]
 IntOrDecimal: TypeAlias = int | Decimal
 ResolvedAnswerList: TypeAlias = list[AnswerValueTypes | AnswerValueEscapedTypes | None]
@@ -282,6 +282,15 @@ class ValueSourceResolver:
 
     def _resolve_response_metadata_source(self, value_source: Mapping) -> str | None:
         return self.response_metadata.get(value_source.get("identifier"))
+
+    def _resolve_supplementary_data_source(
+        self, value_source: Mapping
+    ) -> ValueSourceTypes:
+        return self.supplementary_data_store.get_data(
+            identifier=value_source["identifier"],
+            selectors=value_source.get("selectors"),
+            list_item_id=value_source.get("list_item_id"),
+        )
 
     @staticmethod
     def get_calculation_operator(
