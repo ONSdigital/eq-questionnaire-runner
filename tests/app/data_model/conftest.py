@@ -8,7 +8,6 @@ from app.data_models import ListStore, QuestionnaireStore
 from app.data_models.answer_store import Answer
 from app.data_models.progress_store import CompletionStatus
 from app.data_models.session_store import SessionStore
-from app.data_models.supplementary_data_store import SupplementaryDataStore
 from app.storage import storage_encryption
 from tests.app.parser.conftest import get_response_expires_at
 
@@ -159,59 +158,6 @@ def app_session_store_encoded(mocker, session_data):
         store.user_id, store.user_ik, store.pepper
     )
     return store
-
-
-@pytest.fixture
-def supplementary_data():
-    return {
-        "schema_version": "v1",
-        "identifier": "12346789012A",
-        "note": {
-            "title": "Volume of total production",
-        },
-        "items": {
-            "products": [
-                {
-                    "identifier": "89929001",
-                    "name": "Articles and equipment for sports or outdoor games",
-                    "cn_codes": "2504 + 250610 + 2512 + 2519 + 2524",
-                    "value_sales": {
-                        "answer_code": "89929001",
-                        "label": "Value of sales",
-                    },
-                },
-                {
-                    "identifier": "201630601",
-                    "name": "Other Minerals",
-                    "cn_codes": "5908 + 5910 + 591110 + 591120 + 591140",
-                    "value_sales": {
-                        "answer_code": "201630601",
-                        "label": "Value of sales",
-                    },
-                },
-            ]
-        },
-    }
-
-
-@pytest.fixture
-def supplementary_data_list_mappings():
-    return {
-        "products": {
-            "89929001": "item-1",
-            "201630601": "item-2",
-        },
-    }
-
-
-@pytest.fixture
-def supplementary_data_store_with_data(
-    supplementary_data, supplementary_data_list_mappings
-):
-    return SupplementaryDataStore(
-        supplementary_data=supplementary_data,
-        list_mappings=supplementary_data_list_mappings,
-    )
 
 
 @pytest.fixture

@@ -234,3 +234,61 @@ def mocked_make_request_with_timeout(
             response_not_timed_out,
         ],
     )
+
+
+@pytest.fixture
+def supplementary_data():
+    return {
+        "schema_version": "v1",
+        "identifier": "12346789012A",
+        "note": {
+            "title": "Volume of total production",
+            "example": {
+                "title": "Including",
+                "description": "Sales across all UK stores",
+            },
+        },
+        "guidance": "Some supplementary guidance about the survey",
+        "items": {
+            "products": [
+                {
+                    "identifier": "89929001",
+                    "name": "Articles and equipment for sports or outdoor games",
+                    "cn_codes": "2504 + 250610 + 2512 + 2519 + 2524",
+                    "value_sales": {
+                        "answer_code": "89929001",
+                        "label": "Value of sales",
+                    },
+                },
+                {
+                    "identifier": "201630601",
+                    "name": "Other Minerals",
+                    "cn_codes": "5908 + 5910 + 591110 + 591120 + 591140",
+                    "value_sales": {
+                        "answer_code": "201630601",
+                        "label": "Value of sales",
+                    },
+                },
+            ]
+        },
+    }
+
+
+@pytest.fixture
+def supplementary_data_list_mappings():
+    return {
+        "products": {
+            "89929001": "item-1",
+            "201630601": "item-2",
+        },
+    }
+
+
+@pytest.fixture
+def supplementary_data_store_with_data(
+    supplementary_data, supplementary_data_list_mappings
+):
+    return SupplementaryDataStore(
+        supplementary_data=supplementary_data,
+        list_mappings=supplementary_data_list_mappings,
+    )

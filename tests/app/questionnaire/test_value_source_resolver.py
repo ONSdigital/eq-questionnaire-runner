@@ -791,3 +791,45 @@ def test_progress_values_source_throws_if_no_location_given():
         value_source_resolver.resolve(
             {"source": "progress", "selector": "block", "identifier": "a-block"}
         )
+
+
+@pytest.mark.parametrize(
+    "value_source,expected_result",
+    [
+        (
+            {"identifier": "guidance"},
+            "Some supplementary guidance about the survey",
+        ),
+        (
+            {"identifier": "note", "selectors": ["title"]},
+            "Volume of total production",
+        ),
+        (
+            {"identifier": "note", "selectors": ["example", "title"]},
+            "Including",
+        ),
+        (
+            {"identifier": "note", "selectors": ["example", "description"]},
+            "Sales across all UK stores",
+        ),
+        (
+            {"identifier": "INVALID"},
+            None,
+        ),
+    ],
+)
+def test_supplementary_data_value_source_non_list_items(
+    supplementary_data_store_with_data, value_source, expected_result
+):
+    value_source_resolver = get_value_source_resolver(
+        supplementary_data_store=supplementary_data_store_with_data
+    )
+    assert (
+        value_source_resolver.resolve(
+            {
+                "source": "supplementary_data",
+                **value_source,
+            }
+        )
+        == expected_result
+    )

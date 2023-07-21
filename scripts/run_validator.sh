@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-tag=latest
+tag=supplementary-data-value-source
 TAG=${tag} docker-compose -f docker-compose-schema-validator.yml up -d
