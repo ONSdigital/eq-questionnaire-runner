@@ -11,7 +11,7 @@ import HubPage from "../../../../base_pages/hub.page";
 import TotalBlockOtherPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers/total-block-other.page";
 
 describe("Feature: Sum of dynamic answers based on list and optional static answers equal to validation against total ", function () {
-  // This test flaky therefore we add a retry. The cause is unknown.
+  // These tests are flaky therefore we add a retry. The cause is unknown.
   // :TODO: Revert this in future when we have a fix for this.
   this.retries(5);
 

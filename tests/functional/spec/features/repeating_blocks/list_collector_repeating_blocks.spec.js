@@ -50,7 +50,7 @@ async function addCompany(
 }
 
 describe("List Collector Repeating Blocks", function () {
-  // This test flaky therefore we add a retry. The cause is unknown.
+  // These tests are flaky therefore we add a retry. The cause is unknown.
   // :TODO: Revert this in future when we have a fix for this.
   this.retries(5);
 
@@ -261,7 +261,7 @@ describe("List Collector Repeating Blocks", function () {
 });
 
 describe("Given a journey through the list collector with repeating blocks, in a mandatory section of  hub questionnaire, the incomplete repeating blocks mark the list collector incomplete and thus navigate back there.", function () {
-  // This test flaky therefore we add a retry. The cause is unknown.
+  // These tests are flaky therefore we add a retry. The cause is unknown.
   // :TODO: Revert this in future when we have a fix for this.
   this.retries(5);
 
