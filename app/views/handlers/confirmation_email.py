@@ -1,8 +1,7 @@
 from functools import cached_property
-from typing import Optional
 
 from flask import current_app
-from flask_babel import gettext, lazy_gettext
+from flask_babel import LazyString, gettext, lazy_gettext
 from itsdangerous import BadSignature
 from werkzeug.exceptions import BadRequest
 
@@ -26,12 +25,13 @@ class ConfirmationEmail:
         self,
         session_store: SessionStore,
         schema: QuestionnaireSchema,
-        page_title: Optional[str] = None,
-        serialised_email: Optional[str] = None,
+        page_title: str | None = None,
+        serialised_email: str | None = None,
     ):
         if not self.is_enabled(schema):
             raise ConfirmationEmailNotEnabled
 
+        # Type ignore: session_data is populated at login therefore won't be None for confirmation email
         if self.is_limit_reached(session_store.session_data):  # type: ignore
             raise ConfirmationEmailLimitReached
 
@@ -41,11 +41,11 @@ class ConfirmationEmail:
         self._serialised_email = serialised_email
 
     @property
-    def page_title(self):
+    def page_title(self) -> str:
         return self._page_title or lazy_gettext("Confirmation email")
 
     @cached_property
-    def form(self):
+    def form(self) -> EmailForm:
         if self._serialised_email:
             try:
                 email = url_safe_serializer().loads(self._serialised_email)
@@ -54,13 +54,13 @@ class ConfirmationEmail:
             return EmailForm(email=email)
         return EmailForm()
 
-    def get_context(self):
+    def get_context(self) -> dict[str, bool | str]:
         return build_confirmation_email_form_context(self.form)
 
-    def get_url_safe_serialized_email(self):
+    def get_url_safe_serialized_email(self) -> str | bytes:
         return url_safe_serializer().dumps(self.form.email.data)
 
-    def get_page_title(self):
+    def get_page_title(self) -> str | LazyString | None:
         # pylint: disable=no-member
         # wtforms Form parents are not discoverable in the 2.3.3 implementation
         if self.form.errors:
@@ -69,10 +69,8 @@ class ConfirmationEmail:
 
     @staticmethod
     def is_limit_reached(session_data: SessionData) -> bool:
-        return (
-            session_data.confirmation_email_count
-            >= current_app.config["CONFIRMATION_EMAIL_LIMIT"]
-        )
+        # Type ignore: confirmation_email_count already declared an int
+        return session_data.confirmation_email_count >= current_app.config["CONFIRMATION_EMAIL_LIMIT"]  # type: ignore
 
     @staticmethod
     def is_enabled(schema: QuestionnaireSchema) -> bool:

@@ -6,10 +6,10 @@ from ordered_set import OrderedSet
 from werkzeug.datastructures import MultiDict
 
 from app.data_models import ProgressStore
-from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.questionnaire_schema import get_sources_for_type_from_data
-from app.questionnaire.relationship_location import RelationshipLocation
 from app.utilities.mappings import get_flattened_mapping_values
+from app.utilities.types import LocationType
 
 if TYPE_CHECKING:
     from app.questionnaire.path_finder import PathFinder  # pragma: no cover
@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
 def get_block_ids_for_calculated_summary_dependencies(
     schema: QuestionnaireSchema,
-    location: Location | RelationshipLocation,
+    location: LocationType,
     progress_store: ProgressStore,
     path_finder: PathFinder,
     data: MultiDict | Mapping | Sequence,

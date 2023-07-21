@@ -1,4 +1,5 @@
 from functools import cached_property
+from typing import Any
 
 from flask import url_for
 
@@ -7,7 +8,7 @@ from app.views.handlers.question import Question
 
 
 class ListCollector(Question):
-    def __init__(self, *args):
+    def __init__(self, *args: Any) -> None:
         self._is_adding = False
         super().__init__(*args)
 
@@ -19,9 +20,9 @@ class ListCollector(Question):
 
     @cached_property
     def list_name(self) -> str:
-        return self.rendered_block["for_list"]
+        return self.rendered_block["for_list"]  # type: ignore
 
-    def get_next_location_url(self):
+    def get_next_location_url(self) -> str:
         if self._is_adding:
             add_url = url_for(
                 "questionnaire.block",
@@ -51,7 +52,7 @@ class ListCollector(Question):
 
         return super().get_next_location_url()
 
-    def get_context(self):
+    def get_context(self) -> dict[str, dict]:
         question_context = super().get_context()
         list_context = ListContext(
             self._language,
@@ -76,7 +77,7 @@ class ListCollector(Question):
             ),
         }
 
-    def handle_post(self):
+    def handle_post(self) -> None:
         answer_action = self._get_answer_action()
 
         if answer_action and answer_action["type"] == "RedirectToListAddBlock":
@@ -86,9 +87,9 @@ class ListCollector(Question):
             self.questionnaire_store_updater.update_answers(self.form.data)
             self.questionnaire_store_updater.save()
         elif self._is_list_collector_complete():
-            return super().handle_post()
+            super().handle_post()
 
-    def _is_list_collector_complete(self):
+    def _is_list_collector_complete(self) -> bool:
         return not self.get_first_incomplete_list_repeating_block_location(
             repeating_block_ids=self.repeating_block_ids,
             section_id=self.current_location.section_id,

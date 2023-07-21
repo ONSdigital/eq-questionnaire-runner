@@ -26,6 +26,7 @@ from app.helpers.template_helpers import (
     render_template,
 )
 from app.questionnaire import QuestionnaireSchema
+from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.routes.errors import _render_error_page
 from app.services.supplementary_data import get_supplementary_data_v1
 from app.utilities.metadata_parser import validate_runner_claims
@@ -132,7 +133,7 @@ def login() -> Response:
             "account_service_log_out_url"
         )
 
-    cookie_session["language_code"] = metadata.language_code
+    cookie_session["language_code"] = metadata.language_code or DEFAULT_LANGUAGE_CODE
 
     return redirect(url_for("questionnaire.get_questionnaire"))
 
