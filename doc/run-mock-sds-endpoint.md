@@ -11,9 +11,8 @@ SDS_API_BASE_URL=http://localhost:5003
 
 From the home directory, run using
 
-```python
-python - m
-scripts.mock_sds_endpoint
+```bash
+python -m scripts.mock_sds_endpoint
 ```
 
 The following datasets are available using the mocked endpoint. On selecting a survey that supports supplementary data,
