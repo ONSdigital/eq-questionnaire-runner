@@ -27,7 +27,7 @@ from app.helpers.template_helpers import (
 )
 from app.questionnaire import QuestionnaireSchema
 from app.routes.errors import _render_error_page
-from app.services.supplementary_data import get_supplementary_data
+from app.services.supplementary_data import get_supplementary_data_v1
 from app.utilities.metadata_parser import validate_runner_claims
 from app.utilities.metadata_parser_v2 import (
     validate_questionnaire_claims,
@@ -157,7 +157,7 @@ def _set_questionnaire_supplementary_data(
         # no need to fetch again
         return
 
-    supplementary_data = get_supplementary_data(
+    supplementary_data = get_supplementary_data_v1(
         # Type ignore: survey_id and either ru_ref or qid are required for schemas that use supplementary data
         dataset_id=new_sds_dataset_id,
         identifier=metadata["ru_ref"] or metadata["qid"],  # type: ignore
