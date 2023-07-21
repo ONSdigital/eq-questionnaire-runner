@@ -83,7 +83,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._language_code = language_code
         self._questionnaire_json = questionnaire_json
         self._min_and_max_map: ImmutableDict[str, dict[str, int]] = defaultdict(
-            lambda: defaultdict(dict[str, dict[str,int]])
+            lambda: defaultdict(dict[str, dict[str, int]])
         )
 
         # The ordering here is required as they depend on each other.
