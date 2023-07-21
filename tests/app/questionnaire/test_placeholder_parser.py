@@ -1063,13 +1063,6 @@ def test_placeholder_default_value(default_placeholder_value_schema, mock_render
 def test_placeholder_parser_calculated_summary_dependencies_cache(
     mocker, mock_renderer
 ):
-    """
-    Tests Placeholder Parser fetches the calculated summary dependencies using the routing path cache
-    We initialise a Placeholder Parser with a schema, progress store and answer store
-    Then we pass a placeholder lists and check:
-        - If the routing path is only called once and is using the routing path cache
-        - The correct map value
-    """
     schema = load_schema_from_name("test_calculated_summary")
 
     path_finder = mocker.patch("app.questionnaire.path_finder.PathFinder.routing_path")
@@ -1149,10 +1142,11 @@ def test_placeholder_parser_calculated_summary_dependencies_cache(
 def test_placeholder_dependencies_cache(mocker, mock_renderer):
     """
     Tests Placeholder Parser fetches the placeholder dependencies using the routing path cache
-    We initialise a Placeholder Parser with a schema, progress store and answer store
-    Then we pass a placeholder lists and check:
-        - If the routing path is only called once and is using the routing path cache
-        - The correct map value
+    Mocker patch the routing_path function in the Path Finder class to check the number of calls
+    Both placeholders lists use the first_non_empty_item transform that requires the Path.
+    The first and second placeholder list is from the same section so when we call the second list, it should use the cache from the first call.
+    Set Location to the BlockId where the transform is required and the values have already been set
+    Set Answer Store with values to check if the transform is working as expected in the Schema.
     """
     schema = load_schema_from_name("test_placeholder_first_non_empty_item")
     path_finder = mocker.patch("app.questionnaire.path_finder.PathFinder.routing_path")
@@ -1221,16 +1215,12 @@ def test_placeholder_dependencies_cache(mocker, mock_renderer):
             {
                 "section_id": "default-section",
                 "block_ids": ["date-question-block", "date-entry-block"],
-                "status": "IN_PROGRESS",
+                "status": "COMPLETED",
             }
         ]
     )
     answer_store = AnswerStore(
         [
-            {
-                "answer_id": "date-answer",
-                "value": "No, I need to report for a different period",
-            },
             {"answer_id": "date-entry-answer-from", "value": "2016-04-16"},
             {"answer_id": "date-entry-answer-to", "value": "2016-04-28"},
         ]
@@ -1247,10 +1237,10 @@ def test_placeholder_dependencies_cache(mocker, mock_renderer):
         location=location,
     )
 
-    placeholder_1 = placeholder_parser(placeholder_list_1)
+    placeholder_1 = placeholder_parser(placeholder_list=placeholder_list_1)
     assert placeholder_1["date_entry_answer_from"] == "16 April 2016"
     assert path_finder.called == 1
 
-    placeholder_2 = placeholder_parser(placeholder_list_2)
+    placeholder_2 = placeholder_parser(placeholder_list=placeholder_list_2)
     assert placeholder_2["date_entry_answer_to"] == "28 April 2016"
     assert path_finder.called == 1
