@@ -414,9 +414,7 @@ class Router:
         return self.get_first_incomplete_location_in_questionnaire_url()
 
     def get_section_resume_url(self, routing_path: RoutingPath) -> str:
-        section_key = SectionKey(
-            routing_path.section_id, routing_path.list_item_id
-        )
+        section_key = SectionKey(routing_path.section_id, routing_path.list_item_id)
 
         if section_key in self._progress_store:
             location = self._get_first_incomplete_location_in_section(routing_path)
