@@ -82,9 +82,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         ] = defaultdict(set)
         self._language_code = language_code
         self._questionnaire_json = questionnaire_json
-        self._min_and_max_map: defaultdict[
-            str, (str | int) | dict[str, str | int]
-        ] = defaultdict(lambda: defaultdict(int))
+        self._min_and_max_map: ImmutableDict[str, dict[str, int]] = defaultdict(
+            lambda: defaultdict(int)
+        )
 
         # The ordering here is required as they depend on each other.
         self._sections_by_id = self._get_sections_by_id()
@@ -131,13 +131,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                         int(self._min_and_max_map[value["identifier"]][min_max])
                         > longest_string
                     ):
-                        longest_string = int(self._min_and_max_map[value["identifier"]][
-                            min_max
-                        ])
+                        longest_string = int(
+                            self._min_and_max_map[value["identifier"]][min_max]
+                        )
                     if not longest_string:
-                        longest_string = int(self._min_and_max_map[value["identifier"]][
-                            min_max
-                        ])
+                        longest_string = int(
+                            self._min_and_max_map[value["identifier"]][min_max]
+                        )
 
         if longest_string:
             self._min_and_max_map[answer_id][min_max] = longest_string  # type: ignore
