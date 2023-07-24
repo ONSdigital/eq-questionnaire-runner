@@ -3,6 +3,7 @@ from typing import Iterable, Iterator, MutableMapping, Optional
 
 from app.data_models.progress import Progress, ProgressDictType
 from app.questionnaire.location import Location
+from app.utilities.types import LocationType
 
 SectionKeyType = tuple[str, Optional[str]]
 
@@ -160,7 +161,7 @@ class ProgressStore:
 
         return []
 
-    def add_completed_location(self, location: Location) -> None:
+    def add_completed_location(self, location: LocationType) -> None:
         section_id = location.section_id
         list_item_id = location.list_item_id
 
@@ -185,7 +186,7 @@ class ProgressStore:
 
             self._is_dirty = True
 
-    def remove_completed_location(self, location: Location) -> bool:
+    def remove_completed_location(self, location: LocationType) -> bool:
         section_key = (location.section_id, location.list_item_id)
         if (
             section_key in self._progress
