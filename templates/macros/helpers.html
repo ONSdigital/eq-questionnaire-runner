@@ -4,7 +4,9 @@
 
 {%- macro format_paragraphs(paragraphs) -%}
   {%- for paragraph in paragraphs -%}
-    <p>{{paragraph}}</p>
+    {%- if paragraph -%}
+      <p>{{paragraph}}</p>
+    {%- endif -%}
   {%- else -%}
   {%- endfor -%}
 {%- endmacro -%}

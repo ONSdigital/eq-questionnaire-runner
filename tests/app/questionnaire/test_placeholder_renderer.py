@@ -356,13 +356,16 @@ def get_placeholder_render(
     metadata=None,
     response_metadata=None,
 ):
+    schema = MagicMock()
+    schema.is_answer_dynamic = MagicMock(return_value=False)
+    schema.is_answer_in_list_collector_repeating_block = MagicMock(return_value=False)
     renderer = PlaceholderRenderer(
         language=language,
         answer_store=answer_store,
         list_store=list_store,
         metadata=metadata or {},
         response_metadata=response_metadata or {},
-        schema=MagicMock(),
+        schema=schema,
         progress_store=ProgressStore(),
         location=Location(section_id="default-section"),
     )

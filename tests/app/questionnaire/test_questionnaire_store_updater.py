@@ -16,6 +16,7 @@ from app.questionnaire.questionnaire_store_updater import (
     DependentSection,
     QuestionnaireStoreUpdater,
 )
+from app.utilities.schema import load_schema_from_name
 
 
 # pylint: disable=too-many-locals, too-many-lines
@@ -298,7 +299,7 @@ def test_remove_all_answers_with_list_item_id(
     questionnaire_store_updater = QuestionnaireStoreUpdater(
         mock_location, mock_empty_schema, mock_questionnaire_store, mock_router, None
     )
-    questionnaire_store_updater.remove_list_item_and_answers("abc", "abcdef")
+    questionnaire_store_updater.remove_list_item_data("abc", "abcdef")
 
     assert len(mock_empty_answer_store) == 1
     assert mock_empty_answer_store.get_answer("test3", "uvwxyz")
@@ -646,7 +647,8 @@ def test_update_answers_captures_answer_dependencies(
 @pytest.mark.parametrize(
     "answer_dependent_answer_id, updated_answer_value, expected_output",
     [
-        (  # when the answer dependent has an answer_id, then the dependent answer should be removed from the answer store
+        (
+            # when the answer dependent has an answer_id, then the dependent answer should be removed from the answer store
             "second-answer",
             "answer updated",
             AnswerStore(
@@ -665,7 +667,8 @@ def test_update_answers_captures_answer_dependencies(
                 ]
             ),
         ),
-        (  # When the answer dependent has an answer_id, but the answer dependency value is not changed, then the answer store should not change
+        (
+            # When the answer dependent has an answer_id, but the answer dependency value is not changed, then the answer store should not change
             "second-answer",
             "original answer",
             AnswerStore(
@@ -826,13 +829,15 @@ def test_update_repeating_answers_with_answer_dependents(
 @pytest.mark.parametrize(
     "section_status, updated_answer_value, is_path_complete, expected_status",
     [
-        (  # When an answer is changed which causes the path of a dependent section to be incomplete, Then that sections is update to IN_PROGRESS
+        (
+            # When an answer is changed which causes the path of a dependent section to be incomplete, Then that sections is update to IN_PROGRESS
             "COMPLETED",
             "answer updated",
             False,
             "IN_PROGRESS",
         ),
-        (  # When an answer is changed which causes the path of a dependent section to be complete, Then that sections is update to COMPLETED
+        (
+            # When an answer is changed which causes the path of a dependent section to be complete, Then that sections is update to COMPLETED
             "IN_PROGRESS",
             "answer updated",
             True,
@@ -904,14 +909,20 @@ def test_answer_id_section_dependents(
     questionnaire_store_updater.update_answers(form_data)
     questionnaire_store_updater.update_progress_for_dependent_sections()
 
-    assert progress_store.get_section_status(section_id="section-2") is expected_status
+    assert (
+        progress_store.get_section_or_repeating_blocks_progress_status(
+            section_id="section-2"
+        )
+        is expected_status
+    )
 
 
 @pytest.mark.parametrize(
     "list_item_1_section_status, list_item_2_section_status, updated_answer_value, "
     "is_list_item_1_path_complete, is_list_item_2_path_complete, expected_list_item_1_status, expected_list_item_2_status",
     [
-        (  # When an answer is changed which causes repeating dependent section to be incomplete, Then those repeating sections are updated to IN_PROGRESS
+        (
+            # When an answer is changed which causes repeating dependent section to be incomplete, Then those repeating sections are updated to IN_PROGRESS
             "COMPLETED",
             "COMPLETED",
             "answer updated",
@@ -920,7 +931,8 @@ def test_answer_id_section_dependents(
             "IN_PROGRESS",
             "IN_PROGRESS",
         ),
-        (  # When an answer is changed which causes repeating dependent section to be complete, Then those repeating sections are updated to COMPLETED
+        (
+            # When an answer is changed which causes repeating dependent section to be complete, Then those repeating sections are updated to COMPLETED
             "IN_PROGRESS",
             "IN_PROGRESS",
             "answer updated",
@@ -929,7 +941,8 @@ def test_answer_id_section_dependents(
             "COMPLETED",
             "COMPLETED",
         ),
-        (  # When an answer is changed which causes repeating section paths to change, Then those repeating sections statuses are updated correctly
+        (
+            # When an answer is changed which causes repeating section paths to change, Then those repeating sections statuses are updated correctly
             "COMPLETED",
             "IN_PROGRESS",
             "answer updated",
@@ -1035,13 +1048,13 @@ def test_answer_id_section_dependents_repeating(
     questionnaire_store_updater.update_progress_for_dependent_sections()
 
     assert (
-        progress_store.get_section_status(
+        progress_store.get_section_or_repeating_blocks_progress_status(
             section_id="section-2", list_item_id="list-item-id-1"
         )
         is expected_list_item_1_status
     )
     assert (
-        progress_store.get_section_status(
+        progress_store.get_section_or_repeating_blocks_progress_status(
             section_id="section-2", list_item_id="list-item-id-2"
         )
         is expected_list_item_2_status
@@ -1134,7 +1147,7 @@ def test_dependent_sections_completed_dependant_blocks_removed_and_status_update
     )
 
     mocker.patch(
-        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater.get_chronological_section_dependents",
+        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater._get_chronological_section_dependents",
         return_value=[
             DependentSection(
                 section_id="breakdown-section", list_item_id=None, is_complete=False
@@ -1150,7 +1163,7 @@ def test_dependent_sections_completed_dependant_blocks_removed_and_status_update
         section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
     )
     assert (
-        progress_store.get_section_status(
+        progress_store.get_section_or_repeating_blocks_progress_status(
             section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
         )
         == CompletionStatus.IN_PROGRESS
@@ -1184,7 +1197,9 @@ def test_dependent_sections_current_section_status_not_updated(mocker):
         dependent_section_key: {dependent_block_id}
     }
 
-    questionnaire_store_updater.update_section_status = mocker.Mock()
+    questionnaire_store_updater.update_section_or_repeating_blocks_progress_completion_status = (
+        mocker.Mock()
+    )
     assert dependent_block_id in progress_store.get_completed_block_ids(
         section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
     )
@@ -1198,11 +1213,17 @@ def test_dependent_sections_current_section_status_not_updated(mocker):
         section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
     )
     # Status for current section is handled separately by handle post.
-    assert questionnaire_store_updater.update_section_status.call_count == 0
+    assert (
+        questionnaire_store_updater.update_section_or_repeating_blocks_progress_completion_status.call_count
+        == 0
+    )
 
 
 def test_dependent_sections_not_started_skipped(mock_router, mocker):
     # Given
+    schema = load_schema_from_name(
+        "test_validation_sum_against_total_hub_with_dependent_section"
+    )
     current_location = Location(
         section_id="company-summary-section", block_id="total-turnover-block"
     )
@@ -1219,6 +1240,7 @@ def test_dependent_sections_not_started_skipped(mock_router, mocker):
         current_location=current_location,
         progress_store=progress_store,
         router=mock_router,
+        schema=schema,
     )
 
     dependent_section_key = ("breakdown-section", None)
@@ -1229,7 +1251,9 @@ def test_dependent_sections_not_started_skipped(mock_router, mocker):
     }
 
     questionnaire_store_updater.remove_completed_location = mocker.Mock()
-    questionnaire_store_updater.update_section_status = mocker.Mock()
+    questionnaire_store_updater.update_section_or_repeating_blocks_progress_completion_status = (
+        mocker.Mock()
+    )
 
     # When
     questionnaire_store_updater.remove_dependent_blocks_and_capture_dependent_sections()
@@ -1237,7 +1261,10 @@ def test_dependent_sections_not_started_skipped(mock_router, mocker):
 
     # Then
     assert questionnaire_store_updater.remove_completed_location.call_count == 0
-    assert questionnaire_store_updater.update_section_status.call_count == 0
+    assert (
+        questionnaire_store_updater.update_section_or_repeating_blocks_progress_completion_status.call_count
+        == 0
+    )
 
 
 def test_dependent_sections_started_but_blocks_incomplete(mock_router, mocker):
@@ -1273,7 +1300,9 @@ def test_dependent_sections_started_but_blocks_incomplete(mock_router, mocker):
     questionnaire_store_updater.dependent_block_id_by_section_key = {
         dependent_section_key: {dependent_block_id}
     }
-    questionnaire_store_updater.update_section_status = mocker.Mock()
+    questionnaire_store_updater.update_section_or_repeating_blocks_progress_completion_status = (
+        mocker.Mock()
+    )
 
     assert dependent_block_id not in progress_store.get_completed_block_ids(
         section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
@@ -1284,7 +1313,10 @@ def test_dependent_sections_started_but_blocks_incomplete(mock_router, mocker):
     questionnaire_store_updater.update_progress_for_dependent_sections()
 
     # Then
-    assert questionnaire_store_updater.update_section_status.call_count == 0
+    assert (
+        questionnaire_store_updater.update_section_or_repeating_blocks_progress_completion_status.call_count
+        == 0
+    )
 
 
 @pytest.mark.parametrize(
@@ -1294,7 +1326,9 @@ def test_dependent_sections_started_but_blocks_incomplete(mock_router, mocker):
 def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_status_updated(
     mocker, dependent_section_status, mock_router
 ):
-    # Given
+    schema = load_schema_from_name(
+        "test_validation_sum_against_total_hub_with_dependent_section"
+    )
     current_location = Location(
         section_id="company-summary-section", block_id="total-turnover-block"
     )
@@ -1336,6 +1370,7 @@ def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_sta
         progress_store=progress_store,
         list_store=list_store,
         router=mock_router,
+        schema=schema,
     )
 
     questionnaire_store_updater.dependent_block_id_by_section_key = {
@@ -1349,7 +1384,7 @@ def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_sta
     )
 
     mocker.patch(
-        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater.get_chronological_section_dependents",
+        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater._get_chronological_section_dependents",
         return_value=[
             DependentSection(
                 section_id="breakdown-section", list_item_id=None, is_complete=None
@@ -1367,7 +1402,9 @@ def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_sta
             section_id=section_id, list_item_id=list_item_id
         )
         assert (
-            progress_store.get_section_status(section_id, list_item_id)
+            progress_store.get_section_or_repeating_blocks_progress_status(
+                section_id, list_item_id
+            )
             == CompletionStatus.IN_PROGRESS
         )
         assert questionnaire_store_updater.dependent_sections == {
@@ -1524,7 +1561,7 @@ def test_questionnaire_store_updater_dependency_capture(
         schema=mock_schema,
     )
     mocker.patch(
-        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater.get_chronological_section_dependents",
+        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater._get_chronological_section_dependents",
         return_value=[
             DependentSection(
                 section_id="section-1", list_item_id=None, is_complete=None

@@ -1,7 +1,10 @@
 keys:
   2225f01580a949801274a5f3e6861947018aff5b:
+    platform: sdc
     purpose: submission
+    service: sdx
     type: public
+    use: encryption
     value: |
       -----BEGIN PUBLIC KEY-----
       MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu4UO1frTr8LPyyKXkQNi
@@ -12,9 +15,13 @@ keys:
       ddIEdYRuxd9A7yWjP1I8jWC/DSq8UEAooVfe6XNsoWWF2zn9XDjhWw0hwEXSX/QT
       9wIDAQAB
       -----END PUBLIC KEY-----
+    version: v1
   709eb42cfee5570058ce0711f730bfbb7d4c8ade:
+    platform: sdc
     purpose: authentication
+    service: launcher
     type: public
+    use: signing
     value: |
       -----BEGIN PUBLIC KEY-----
       MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvZzMraB96Wd1zfHS3vW3
@@ -25,9 +32,13 @@ keys:
       JEfyLEM0zKrkQQ796gfYpkzDYwJvkiW7fb2Yh1teNHpFR5tozzMwUxkREl/TQ4U1
       kwIDAQAB
       -----END PUBLIC KEY-----
+    version: v1
   e19091072f920cbf3ca9f436ceba309e7d814a62:
+    platform: sdc
     purpose: authentication
+    service: eq
     type: private
+    use: encryption
     value: |
       -----BEGIN RSA PRIVATE KEY-----
       MIIEogIBAAKCAQEAt8LZnIhuOdL/BC029GOaJkVUAqgp2PcmbFr2Qwhf/514DUUQ
@@ -56,9 +67,13 @@ keys:
       OZrki4MBTK/6GFkHLFkF6w2Le+Y5Nos9O2UUZs45lwLEYbQ4yKcx2KlWGLZOypB8
       i7/6TB95Ej2i5KgaSlcJjOyOx7g20TwDD1THtLXgY54d0Yr9T/U=
       -----END RSA PRIVATE KEY-----
+    version: v1
   fe425f951a0917d7acdd49230b23a5c405c28510:
+    platform: sdc
     purpose: submission
+    service: eq
     type: private
+    use: signing
     value: |
       -----BEGIN RSA PRIVATE KEY-----
       MIIEowIBAAKCAQEAq0rFub/fC2S4kcP4l9ivxgljh8l3hYOKG5z8mJ1cggoRqTaI
@@ -87,3 +102,63 @@ keys:
       V7ZuRp//4vIzEONqqyLUFt1JZKuCwWQB2sRjKWpqRB07C0o243XefD5f7844nmXq
       H0xKMFRYjDqhFdTXFWVPnk/tu/MxoSTdK0FfsgUnjs+TGvN5TnBW
       -----END RSA PRIVATE KEY-----
+    version: v1
+  df88fdad2612ae1e80571120e6c6371f55896696:
+    platform: sdc
+    purpose: supplementary_data
+    service: sds
+    type: private
+    use: encryption
+    value: |
+      -----BEGIN RSA PRIVATE KEY-----
+      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
+      -----END RSA PRIVATE KEY-----
+    version: v1

@@ -7,7 +7,7 @@ from typing import Any, Mapping, Optional
 
 from werkzeug.datastructures import ImmutableDict
 
-from app.authentication.auth_payload_version import AuthPayloadVersion
+from app.authentication.auth_payload_versions import AuthPayloadVersion
 from app.utilities.make_immutable import make_immutable
 
 

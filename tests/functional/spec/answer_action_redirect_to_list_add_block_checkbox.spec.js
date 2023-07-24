@@ -1,4 +1,4 @@
-import checkPeopleInList from "../helpers";
+import { checkItemsInList } from "../helpers";
 import AnyoneLiveAtListCollector from "../generated_pages/answer_action_redirect_to_list_add_block_checkbox/anyone-else-live-at.page";
 import AnyoneLiveAtListCollectorAddPage from "../generated_pages/answer_action_redirect_to_list_add_block_checkbox/anyone-else-live-at-add.page";
 import AnyoneLiveAtListCollectorRemovePage from "../generated_pages/answer_action_redirect_to_list_add_block_checkbox/anyone-else-live-at-remove.page";
@@ -37,7 +37,7 @@ describe("Answer Action: Redirect To List Add Question (Checkbox)", () => {
       await expect(await browser.getUrl()).to.contain(AnyoneLiveAtListCollector.pageName);
 
       const peopleExpected = ["Marcus Twin"];
-      checkPeopleInList(peopleExpected, AnyoneLiveAtListCollector.listLabel);
+      checkItemsInList(peopleExpected, AnyoneLiveAtListCollector.listLabel);
     });
 
     it('When the user click the "Previous" link from the list collector, Then, they are taken to the last complete block', async () => {

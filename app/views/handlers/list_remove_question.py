@@ -27,7 +27,7 @@ class ListRemoveQuestion(ListAction):
 
         if answer_action and answer_action["type"] == "RemoveListItemAndAnswers":
             list_name = self.parent_block["for_list"]
-            self.questionnaire_store_updater.remove_list_item_and_answers(
+            self.questionnaire_store_updater.remove_list_item_data(
                 # Type ignore: list_item_id will exist within the remove block
                 list_name,
                 self._current_location.list_item_id,  # type: ignore

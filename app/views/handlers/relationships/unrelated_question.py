@@ -24,8 +24,10 @@ class UnrelatedQuestion(RelationshipQuestion):
 
     def get_list_summary_context(self) -> dict[str, dict]:
         return self.list_context(
-            self.rendered_block["list_summary"]["summary"],
-            self.list_name,
+            summary_definition=self.rendered_block["list_summary"]["summary"],
+            for_list=self.list_name,
+            section_id=self.current_location.section_id,
+            has_repeating_blocks=bool(self.rendered_block.get("repeating_blocks")),
             for_list_item_ids=self.get_remaining_relationships_for_individual(),
         )
 

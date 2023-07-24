@@ -89,6 +89,34 @@ class Group:
         blocks = []
 
         for block in group_schema["blocks"]:
+            # the block type will only be ListRepeatingQuestion when in the context of a calculated summary or grand calculated summary
+            # any other summary like section-summary will use the parent list collector instead and render items as part of the ListCollector check further down
+            if block["type"] == "ListRepeatingQuestion":
+                # list repeating questions aren't themselves on the path, it's determined by the parent list collector
+                parent_list_collector_block_id = schema.parent_id_map[block["id"]]
+                if parent_list_collector_block_id not in routing_path_block_ids:
+                    continue
+
+                list_collector_block = ListCollectorBlock(
+                    routing_path_block_ids=routing_path_block_ids,
+                    answer_store=answer_store,
+                    list_store=list_store,
+                    progress_store=progress_store,
+                    metadata=metadata,
+                    response_metadata=response_metadata,
+                    schema=schema,
+                    location=location,
+                    language=language,
+                    return_to=return_to,
+                    return_to_block_id=return_to_block_id,
+                )
+                repeating_answer_blocks = (
+                    list_collector_block.get_repeating_block_related_answer_blocks(
+                        block
+                    )
+                )
+                blocks.extend(repeating_answer_blocks)
+
             if block["id"] not in routing_path_block_ids:
                 continue
             if block["type"] in [
@@ -152,6 +180,7 @@ class Group:
                         schema=schema,
                         location=location,
                         language=language,
+                        return_to=return_to,
                     )
 
                     list_summary_element = list_collector_block.list_summary_element(

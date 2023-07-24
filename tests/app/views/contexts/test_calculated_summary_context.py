@@ -1,5 +1,6 @@
 import pytest
 
+from app.data_models import AnswerStore, ListStore
 from app.questionnaire import Location
 from app.questionnaire.routing_path import RoutingPath
 from app.views.contexts.calculated_summary_context import CalculatedSummaryContext
@@ -232,3 +233,198 @@ def test_build_view_context_for_return_to_calculated_summary(
     assert f"return_to=calculated-summary,{return_to}" in answer_change_link
     assert f"return_to_answer_id={return_to_answer_id}" in answer_change_link
     assert f"return_to_block_id={block_id},{return_to_block_id}" in answer_change_link
+
+
+@pytest.mark.usefixtures("app")
+@pytest.mark.parametrize(
+    "block_id,expected_answer_ids,expected_block_ids",
+    (
+        (
+            "calculated-summary-spending",
+            [
+                "cost-of-shopping-CHKtQS",
+                "cost-of-shopping-laFWcs",
+                "cost-of-other-CHKtQS",
+                "cost-of-other-laFWcs",
+                "extra-static-answer",
+            ],
+            ["dynamic-answer", "extra-spending-block"],
+        ),
+        (
+            "calculated-summary-visits",
+            [
+                "days-a-week-CHKtQS",
+                "days-a-week-laFWcs",
+            ],
+            ["dynamic-answer"],
+        ),
+    ),
+)
+def test_build_view_context_for_calculated_summary_with_dynamic_answers(
+    test_calculated_summary_repeating_and_static_answers_schema,
+    answer_store,
+    progress_store,
+    mocker,
+    block_id,
+    expected_answer_ids,
+    expected_block_ids,
+):
+    """
+    Tests that when different dynamic answers for the same list are used in different calculated summaries
+    that the calculated summary context filters the answers to keep correctly.
+    """
+    mocker.patch(
+        "app.jinja_filters.flask_babel.get_locale",
+        mocker.MagicMock(return_value="en_GB"),
+    )
+
+    block_ids = [
+        "any-supermarket",
+        "list-collector",
+        "dynamic-answer",
+        "extra-spending-block",
+    ]
+
+    calculated_summary_context = CalculatedSummaryContext(
+        language="en",
+        schema=test_calculated_summary_repeating_and_static_answers_schema,
+        answer_store=answer_store,
+        list_store=ListStore([{"items": ["CHKtQS", "laFWcs"], "name": "supermarkets"}]),
+        progress_store=progress_store,
+        metadata=None,
+        response_metadata={},
+        routing_path=RoutingPath(section_id="section-1", block_ids=block_ids),
+        current_location=Location(section_id="section-1", block_id=block_id),
+    )
+
+    context = calculated_summary_context.build_view_context()
+    assert "summary" in context
+    assert_summary_context(context)
+    context_summary = context["summary"]
+    calculation_blocks = context_summary["sections"][0]["groups"][0]["blocks"]
+
+    block_ids = [block["id"] for block in calculation_blocks]
+    assert block_ids == expected_block_ids
+
+    answers_to_keep = calculation_blocks[0]["question"]["answers"]
+    answer_ids = [answer["id"] for answer in answers_to_keep]
+    assert answer_ids == expected_answer_ids
+
+    # blocks with dynamic answers show each answer suffixed with the list item id, so the anchor needs to also include it
+    assert all(
+        answer["link"].endswith(
+            f"return_to=calculated-summary&return_to_answer_id={answer['id']}&return_to_block_id={block_id}#{answer['id']}"
+        )
+        for answer in answers_to_keep
+    )
+
+
+@pytest.mark.usefixtures("app")
+@pytest.mark.parametrize(
+    "block_id,expected_answer_ids,expected_answer_labels,expected_block_ids,anchors",
+    (
+        (
+            "calculated-summary-spending",
+            [
+                "answer-car",
+                "transport-cost-CHKtQS",
+                "transport-additional-cost-CHKtQS",
+                "transport-cost-laFWcs",
+                "transport-additional-cost-laFWcs",
+            ],
+            [
+                "Monthly expenditure travelling by car",
+                "Monthly season ticket expenditure for travel by Train",
+                "Additional monthly expenditure for travel by Train",
+                "Monthly season ticket expenditure for travel by Bus",
+                "Additional monthly expenditure for travel by Bus",
+            ],
+            [
+                "block-car",
+                "transport-repeating-block-1-CHKtQS",
+                "transport-repeating-block-1-laFWcs",
+            ],
+            [
+                "answer-car",
+                "transport-cost",
+                "transport-additional-cost",
+                "transport-cost",
+                "transport-additional-cost",
+            ],
+        ),
+        (
+            "calculated-summary-count",
+            ["transport-count-CHKtQS", "transport-count-laFWcs"],
+            ["Monthly journeys by Train", "Monthly journeys by Bus"],
+            [
+                "transport-repeating-block-2-CHKtQS",
+                "transport-repeating-block-2-laFWcs",
+            ],
+            ["transport-count", "transport-count"],
+        ),
+    ),
+)
+def test_build_view_context_for_calculated_summary_with_answers_from_repeating_blocks(
+    test_calculated_summary_repeating_blocks,
+    progress_store,
+    mocker,
+    block_id,
+    expected_answer_ids,
+    expected_answer_labels,
+    expected_block_ids,
+    anchors,
+):
+    """
+    Tests that when different dynamic answers for the same list are used in different calculated summaries
+    that the calculated summary context filters the answers to keep correctly.
+    """
+    mocker.patch(
+        "app.jinja_filters.flask_babel.get_locale",
+        mocker.MagicMock(return_value="en_GB"),
+    )
+
+    block_ids = ["block-car", "list-collector"]
+    answer_store = AnswerStore(
+        [
+            {"answer_id": "transport-name", "value": "Train", "list_item_id": "CHKtQS"},
+            {"answer_id": "transport-name", "value": "Bus", "list_item_id": "laFWcs"},
+        ]
+    )
+
+    calculated_summary_context = CalculatedSummaryContext(
+        language="en",
+        schema=test_calculated_summary_repeating_blocks,
+        answer_store=answer_store,
+        list_store=ListStore([{"items": ["CHKtQS", "laFWcs"], "name": "transport"}]),
+        progress_store=progress_store,
+        metadata=None,
+        response_metadata={},
+        routing_path=RoutingPath(section_id="section-1", block_ids=block_ids),
+        current_location=Location(section_id="section-1", block_id=block_id),
+    )
+
+    context = calculated_summary_context.build_view_context()
+    assert "summary" in context
+    assert_summary_context(context)
+    context_summary = context["summary"]
+    calculation_blocks = context_summary["sections"][0]["groups"][0]["blocks"]
+
+    block_ids = [block["id"] for block in calculation_blocks]
+    assert block_ids == expected_block_ids
+
+    questions = [block["question"] for block in calculation_blocks]
+    answers = [answer for question in questions for answer in question["answers"]]
+    answer_ids = [answer["id"] for answer in answers]
+    assert answer_ids == expected_answer_ids
+
+    answer_labels = [answer["label"] for answer in answers]
+    assert answer_labels == expected_answer_labels
+
+    # on summary pages, repeating block answer ids are suffixed with list item ids,
+    # but the anchor on the change links needs to not have them, because the repeating block itself doesn't do that
+    assert all(
+        answer["link"].endswith(
+            f"return_to=calculated-summary&return_to_answer_id={answer['id']}&return_to_block_id={block_id}#{anchor}"
+        )
+        for anchor, answer in zip(anchors, answers)
+    )

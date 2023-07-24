@@ -50,7 +50,7 @@ def get_block_ids_for_calculated_summary_dependencies(
         if key in sections_to_ignore:
             continue
 
-        if key in progress_store.started_section_keys():
+        if key in progress_store.started_section_and_repeating_blocks_progress_keys():
             routing_path = path_finder.routing_path(*key)
             block_ids_by_section[key] = routing_path.block_ids
 

@@ -1,11 +1,11 @@
 from dataclasses import astuple, dataclass
-from typing import Iterable, Iterator, MutableMapping, Optional
+from typing import Iterable, Iterator, MutableMapping
 
 from app.data_models.progress import Progress, ProgressDictType
 from app.questionnaire.location import Location
 from app.utilities.types import LocationType
 
-SectionKeyType = tuple[str, Optional[str]]
+ProgressKeyType = tuple[str, str | None]
 
 
 @dataclass
@@ -21,34 +21,52 @@ class CompletionStatus:
 
 class ProgressStore:
     """
-    An object that stores and updates references to sections and blocks
+    An object that stores and updates references to sections and list items
     that have been started.
     """
 
     def __init__(
-        self, in_progress_sections: Optional[Iterable[ProgressDictType]] = None
+        self,
+        in_progress_sections_and_repeating_blocks: Iterable[ProgressDictType]
+        | None = None,
     ) -> None:
         """
-        Instantiate a ProgressStore object that tracks the status of sections and its completed blocks
+        Instantiate a ProgressStore object that tracks the progress status of Sections & Repeating Sections,
+        and their completed blocks, as well as Repeating Blocks for List Items.
+            - Standard Sections are keyed by Section ID, and a None List Item ID
+            - Repeating Sections (dynamic Sections created for List Items that have been added using a List Collector)
+                are keyed by their Section ID, and the List Item ID of the item it is the section for.
+            - Repeating Blocks for List Items are keyed by the Section ID for the Section in which their List Collector
+                appears, and the List Item ID. Repeating Blocks progress is only tracked if the List Collector
+                that created the List Item has Repeating Blocks, and progress of the Repeating Blocks for a List Item
+                indicates if all required Repeating Blocks from the List Collector have been completed for the List Item.
         Args:
-            in_progress_sections: A list of hierarchical dict containing the section status and completed blocks
+            in_progress_sections_and_repeating_blocks: A list of hierarchical dict containing the completion status
+                and completed blocks of Sections, Repeating Sections and List Items
         """
         self._is_dirty: bool = False
         self._is_routing_backwards: bool = False
-        self._progress: MutableMapping[SectionKeyType, Progress] = self._build_map(
-            in_progress_sections or []
+        self._section_and_repeating_blocks_progress: MutableMapping[
+            ProgressKeyType, Progress
+        ] = self._build_map(in_progress_sections_and_repeating_blocks or [])
+
+    def __contains__(
+        self, section_and_repeating_blocks_progress_key: ProgressKeyType
+    ) -> bool:
+        return (
+            section_and_repeating_blocks_progress_key
+            in self._section_and_repeating_blocks_progress
         )
 
-    def __contains__(self, section_key: SectionKeyType) -> bool:
-        return section_key in self._progress
-
     @staticmethod
-    def _build_map(section_progress_list: Iterable[ProgressDictType]) -> MutableMapping:
+    def _build_map(
+        section_and_repeating_blocks_progress_list: Iterable[ProgressDictType],
+    ) -> MutableMapping:
         """
-        Builds the progress_store's data structure from a list of progress dictionaries.
+        Builds the ProgressStore's data structure from a list of progress dictionaries.
 
-        The `section_key` is tuple consisting of `section_id` and the `list_item_id`.
-        The `section_progress` is a mutableMapping created from the Progress object.
+        The `progress_key` is tuple consisting of `section_id` and the `list_item_id`.
+        The `progress` is a mutableMapping created from the Progress object.
 
         Example structure:
         {
@@ -63,10 +81,10 @@ class ProgressStore:
 
         return {
             (
-                section_progress["section_id"],
-                section_progress.get("list_item_id"),
-            ): Progress.from_dict(section_progress)
-            for section_progress in section_progress_list
+                progress["section_id"],
+                progress.get("list_item_id"),
+            ): Progress.from_dict(progress)
+            for progress in section_and_repeating_blocks_progress_list
         }
 
     @property
@@ -77,77 +95,108 @@ class ProgressStore:
     def is_routing_backwards(self) -> bool:
         return self._is_routing_backwards
 
-    def is_section_complete(
-        self, section_id: str, list_item_id: Optional[str] = None
+    def is_section_or_repeating_blocks_progress_complete(
+        self, section_id: str, list_item_id: str | None = None
     ) -> bool:
-        return (section_id, list_item_id) in self.section_keys(
+        """
+        Return True if the CompletionStatus of the Section or List Item specified by the given section_id and
+         list_item_id is COMPLETED or INDIVIDUAL_RESPONSE_REQUESTED, else False.
+        """
+        return (
+            section_id,
+            list_item_id,
+        ) in self.section_and_repeating_blocks_progress_keys(
             statuses={
                 CompletionStatus.COMPLETED,
                 CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED,
             }
         )
 
-    def section_keys(
+    def section_and_repeating_blocks_progress_keys(
         self,
-        statuses: Optional[Iterable[str]] = None,
-        section_ids: Optional[Iterable[str]] = None,
-    ) -> list[SectionKeyType]:
+        statuses: Iterable[str] | None = None,
+        section_ids: Iterable[str] | None = None,
+    ) -> list[ProgressKeyType]:
+        """
+        Return the Keys of the Section and Repeating Blocks progresses stored in this ProgressStore.
+        """
         if not statuses:
             statuses = {*CompletionStatus()}
 
-        section_keys = [
+        progress_keys = [
             section_key
-            for section_key, section_progress in self._progress.items()
+            for section_key, section_progress in self._section_and_repeating_blocks_progress.items()
             if section_progress.status in statuses
         ]
 
         if section_ids is None:
-            return section_keys
+            return progress_keys
 
         return [
-            section_key
-            for section_key in section_keys
-            if any(section_id in section_key for section_id in section_ids)
+            progress_key
+            for progress_key in progress_keys
+            if any(section_id in progress_key for section_id in section_ids)
         ]
 
-    def update_section_status(
-        self, section_status: str, section_id: str, list_item_id: Optional[str] = None
+    def update_section_or_repeating_blocks_progress_completion_status(
+        self,
+        completion_status: str,
+        section_id: str,
+        list_item_id: str | None = None,
     ) -> bool:
+        """
+        Updates the completion status of the section or repeating blocks for a list item specified by the key based on the given section id and list item id.
+        """
         updated = False
         section_key = (section_id, list_item_id)
-        if section_key in self._progress:
-            if self._progress[section_key].status != section_status:
+        if section_key in self._section_and_repeating_blocks_progress:
+            if (
+                self._section_and_repeating_blocks_progress[section_key].status
+                != completion_status
+            ):
                 updated = True
-                self._progress[section_key].status = section_status
+                self._section_and_repeating_blocks_progress[
+                    section_key
+                ].status = completion_status
                 self._is_dirty = True
 
-        elif section_status == CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED:
-            self._progress[section_key] = Progress(
+        elif completion_status == CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED:
+            self._section_and_repeating_blocks_progress[section_key] = Progress(
                 section_id=section_id,
                 list_item_id=list_item_id,
                 block_ids=[],
-                status=section_status,
+                status=completion_status,
             )
             self._is_dirty = True
 
         return updated
 
-    def get_section_status(
-        self, section_id: str, list_item_id: Optional[str] = None
+    def get_section_or_repeating_blocks_progress_status(
+        self, section_id: str, list_item_id: str | None = None
     ) -> str:
-        section_key = (section_id, list_item_id)
-        if section_key in self._progress:
-            return self._progress[section_key].status
+        """
+        Return the CompletionStatus of the Section or Repeating Blocks for a list item,
+        specified by the given section_id and list_item_id.
+        Returns NOT_STARTED if the progress does not exist
+        """
+        progress_key = (section_id, list_item_id)
+        if progress_key in self._section_and_repeating_blocks_progress:
+            return self._section_and_repeating_blocks_progress[progress_key].status
 
         return CompletionStatus.NOT_STARTED
 
     def get_block_status(
         self, *, block_id: str, section_id: str, list_item_id: str | None = None
     ) -> str:
-        section_blocks = self.get_completed_block_ids(
+        """
+        Return the completion status of the block specified by the given block_id,
+        if it is part of the progress of the given Section or Repeating Blocks for list item
+        specified by the given section_id or list_item_id
+        """
+        blocks = self.get_completed_block_ids(
             section_id=section_id, list_item_id=list_item_id
         )
-        if block_id in section_blocks:
+        if block_id in blocks:
             return CompletionStatus.COMPLETED
 
         return CompletionStatus.NOT_STARTED
@@ -155,13 +204,21 @@ class ProgressStore:
     def get_completed_block_ids(
         self, *, section_id: str, list_item_id: str | None = None
     ) -> list[str]:
-        section_key = (section_id, list_item_id)
-        if section_key in self._progress:
-            return self._progress[section_key].block_ids
+        """
+        Return the block ids recorded as part of the progress for the Section or Repeating Blocks
+        for list item specified by the given section_id and list_item_id
+        """
+        progress_key = (section_id, list_item_id)
+        if progress_key in self._section_and_repeating_blocks_progress:
+            return self._section_and_repeating_blocks_progress[progress_key].block_ids
 
         return []
 
     def add_completed_location(self, location: LocationType) -> None:
+        """
+        Adds the block from the given Location, to the progress specified by the
+        section id and list item id within the Location.
+        """
         section_id = location.section_id
         list_item_id = location.list_item_id
 
@@ -172,12 +229,14 @@ class ProgressStore:
         if location.block_id not in completed_block_ids:
             completed_block_ids.append(location.block_id)  # type: ignore
 
-            section_key = (section_id, list_item_id)
+            progress_key = (section_id, list_item_id)
 
-            if section_key in self._progress:
-                self._progress[section_key].block_ids = completed_block_ids
+            if progress_key in self._section_and_repeating_blocks_progress:
+                self._section_and_repeating_blocks_progress[
+                    progress_key
+                ].block_ids = completed_block_ids
             else:
-                self._progress[section_key] = Progress(
+                self._section_and_repeating_blocks_progress[progress_key] = Progress(
                     section_id=section_id,
                     list_item_id=list_item_id,
                     block_ids=completed_block_ids,
@@ -187,15 +246,24 @@ class ProgressStore:
             self._is_dirty = True
 
     def remove_completed_location(self, location: LocationType) -> bool:
-        section_key = (location.section_id, location.list_item_id)
+        """
+        Removes the block in the given Location, from the progress specified by the
+        section id and list item id within the Location if it exists in the store.
+        """
+        progress_key = (location.section_id, location.list_item_id)
         if (
-            section_key in self._progress
-            and location.block_id in self._progress[section_key].block_ids
+            progress_key in self._section_and_repeating_blocks_progress
+            and location.block_id
+            in self._section_and_repeating_blocks_progress[progress_key].block_ids
         ):
-            self._progress[section_key].block_ids.remove(location.block_id)
+            self._section_and_repeating_blocks_progress[progress_key].block_ids.remove(
+                location.block_id
+            )
 
-            if not self._progress[section_key].block_ids:
-                self._progress[section_key].status = CompletionStatus.IN_PROGRESS
+            if not self._section_and_repeating_blocks_progress[progress_key].block_ids:
+                self._section_and_repeating_blocks_progress[
+                    progress_key
+                ].status = CompletionStatus.IN_PROGRESS
 
             self._is_dirty = True
             return True
@@ -209,32 +277,32 @@ class ProgressStore:
         *Not efficient.*
         """
 
-        section_keys_to_delete = [
+        progress_keys_to_delete = [
             (section_id, progress_list_item_id)
-            for section_id, progress_list_item_id in self._progress
+            for section_id, progress_list_item_id in self._section_and_repeating_blocks_progress
             if progress_list_item_id == list_item_id
         ]
 
-        for section_key in section_keys_to_delete:
-            del self._progress[section_key]
+        for progress_key in progress_keys_to_delete:
+            del self._section_and_repeating_blocks_progress[progress_key]
 
             self._is_dirty = True
 
     def serialize(self) -> list[Progress]:
-        return list(self._progress.values())
+        return list(self._section_and_repeating_blocks_progress.values())
 
     def remove_location_for_backwards_routing(self, location: Location) -> None:
         self.remove_completed_location(location=location)
         self._is_routing_backwards = True
 
     def clear(self) -> None:
-        self._progress.clear()
+        self._section_and_repeating_blocks_progress.clear()
         self._is_dirty = True
 
-    def started_section_keys(
-        self, section_ids: Optional[Iterable[str]] = None
-    ) -> list[SectionKeyType]:
-        return self.section_keys(
+    def started_section_and_repeating_blocks_progress_keys(
+        self, section_ids: Iterable[str] | None = None
+    ) -> list[ProgressKeyType]:
+        return self.section_and_repeating_blocks_progress_keys(
             statuses={CompletionStatus.COMPLETED, CompletionStatus.IN_PROGRESS},
             section_ids=section_ids,
         )

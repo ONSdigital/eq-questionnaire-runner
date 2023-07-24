@@ -139,7 +139,7 @@ class BlockHandler:
     ) -> None:
         location = location or self._current_location
 
-        self.questionnaire_store_updater.update_section_status(
+        self.questionnaire_store_updater.update_section_or_repeating_blocks_progress_completion_status(
             is_complete=self.router.is_path_complete(self._routing_path),
             section_id=location.section_id,
             list_item_id=location.list_item_id,

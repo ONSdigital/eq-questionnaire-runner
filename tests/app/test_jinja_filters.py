@@ -323,14 +323,14 @@ def test_map_list_collector_config_no_actions():
         {"item_title": "Joe Bloggs", "list_item_id": "two"},
     ]
 
-    output = map_list_collector_config(list_items, "icon")
+    output = map_list_collector_config(list_items, False)
 
     expected = [
         {
             "rowItems": [
                 {
                     "actions": [],
-                    "iconType": "icon",
+                    "iconType": None,
                     "id": "one",
                     "rowTitleAttributes": {
                         "data-list-item-id": "one",
@@ -344,7 +344,7 @@ def test_map_list_collector_config_no_actions():
             "rowItems": [
                 {
                     "actions": [],
-                    "iconType": "icon",
+                    "iconType": None,
                     "id": "two",
                     "rowTitleAttributes": {
                         "data-list-item-id": "two",
@@ -381,7 +381,7 @@ def test_map_list_collector_config():
 
     output = map_list_collector_config(
         list_items,
-        "icon",
+        False,
         "edit_link_text",
         "edit_link_aria_label",
         "remove_link_text",
@@ -400,7 +400,7 @@ def test_map_list_collector_config():
                             "url": "/primary/change",
                         }
                     ],
-                    "iconType": "icon",
+                    "iconType": None,
                     "id": "primary",
                     "rowTitleAttributes": {
                         "data-list-item-id": "primary",
@@ -427,7 +427,7 @@ def test_map_list_collector_config():
                             "url": "/nonprimary/remove",
                         },
                     ],
-                    "iconType": "icon",
+                    "iconType": None,
                     "id": "nonprimary",
                     "rowTitleAttributes": {
                         "data-list-item-id": "nonprimary",
@@ -457,7 +457,7 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
 
     output = map_list_collector_config(
         list_items,
-        "icon",
+        False,
         "edit_link_text",
         "edit_link_aria_label",
         "remove_link_text",
@@ -521,7 +521,7 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                             "url": "/nonprimary/remove",
                         },
                     ],
-                    "iconType": "icon",
+                    "iconType": None,
                     "id": "VHoiow",
                     "rowTitle": "Name of UK company or branch",
                     "rowTitleAttributes": {
@@ -783,7 +783,6 @@ def test_calculated_summary_config():
             "id": "calculated-summary-question",
             "answers": [{"id": "calculated-summary-answer", "value": "£2.00"}],
         },
-        icon="",
     )
 
     assert to_dict(expected) == to_dict(result)
@@ -809,7 +808,7 @@ def test_summary_item_config_with_list_collector():
                             "url": "remove_link_url",
                         },
                     ],
-                    "iconType": "",
+                    "iconType": None,
                     "id": "vmmPmD",
                     "rowTitle": "Company A",
                     "rowTitleAttributes": {
@@ -939,7 +938,6 @@ def test_summary_item_config_with_list_collector():
         edit_link_text="Change",
         edit_link_aria_label="Change your answer for:",
         calculated_question={},
-        icon="",
     )
 
     assert to_dict(expected) == to_dict(result)

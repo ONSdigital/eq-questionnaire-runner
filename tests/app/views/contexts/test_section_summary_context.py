@@ -124,7 +124,7 @@ def test_custom_section(
 
 
 @pytest.mark.usefixtures("app")
-def test_context_for_section_list_summary(people_answer_store):
+def test_context_for_section_list_summary(people_answer_store, progress_store):
     schema = load_schema_from_name("test_list_collector_list_summary")
 
     summary_context = SectionSummaryContext(
@@ -137,7 +137,7 @@ def test_context_for_section_list_summary(people_answer_store):
                 {"items": ["gTrlio"], "name": "visitors"},
             ]
         ),
-        progress_store=ProgressStore(),
+        progress_store=progress_store,
         metadata=get_metadata({"display_address": "70 Abingdon Road, Goathill"}),
         response_metadata={},
         current_location=Location(section_id="section"),
@@ -167,18 +167,22 @@ def test_context_for_section_list_summary(people_answer_store):
                         "editable": True,
                         "list_items": [
                             {
-                                "edit_link": "/questionnaire/people/PlwgoG/edit-person/?return_to=section-summary",
+                                "edit_link": "/questionnaire/people/PlwgoG/edit-person/?return_to=section-summary&return_to_answer_id=PlwgoG",
                                 "item_title": "Toni Morrison",
                                 "list_item_id": "PlwgoG",
                                 "primary_person": False,
                                 "remove_link": "/questionnaire/people/PlwgoG/remove-person/?return_to=section-summary",
+                                "is_complete": False,
+                                "repeating_blocks": False,
                             },
                             {
-                                "edit_link": "/questionnaire/people/UHPLbX/edit-person/?return_to=section-summary",
+                                "edit_link": "/questionnaire/people/UHPLbX/edit-person/?return_to=section-summary&return_to_answer_id=UHPLbX",
                                 "item_title": "Barry Pheloung",
                                 "list_item_id": "UHPLbX",
                                 "primary_person": False,
                                 "remove_link": "/questionnaire/people/UHPLbX/remove-person/?return_to=section-summary",
+                                "is_complete": False,
+                                "repeating_blocks": False,
                             },
                         ],
                     },
@@ -197,11 +201,13 @@ def test_context_for_section_list_summary(people_answer_store):
                         "editable": True,
                         "list_items": [
                             {
-                                "edit_link": "/questionnaire/visitors/gTrlio/edit-visitor-person/?return_to=section-summary",
+                                "edit_link": "/questionnaire/visitors/gTrlio/edit-visitor-person/?return_to=section-summary&return_to_answer_id=gTrlio",
                                 "item_title": "",
                                 "list_item_id": "gTrlio",
                                 "primary_person": False,
                                 "remove_link": "/questionnaire/visitors/gTrlio/remove-visitor/?return_to=section-summary",
+                                "is_complete": False,
+                                "repeating_blocks": False,
                             }
                         ],
                     },
@@ -221,203 +227,54 @@ def test_context_for_section_list_summary(people_answer_store):
 
 
 # pylint: disable=line-too-long
-@pytest.mark.usefixtures("app")
-def test_context_for_section_summary_with_list_summary(companies_answer_store):
-    schema = load_schema_from_name("test_list_collector_section_summary")
-
-    summary_context = SectionSummaryContext(
-        language=DEFAULT_LANGUAGE_CODE,
-        schema=schema,
-        answer_store=companies_answer_store,
-        list_store=ListStore(
-            [
-                {"items": ["PlwgoG", "UHPLbX"], "name": "companies"},
-            ]
+@pytest.mark.parametrize(
+    "test_schema, answer_store_fixture, item_label, answer_1_label, answer_2_label",
+    [
+        (
+            "test_list_collector_section_summary",
+            "companies_answer_store",
+            "Name of UK company or branch",
+            "Registration number",
+            "Is this UK company or branch an authorised insurer?",
         ),
-        progress_store=ProgressStore(),
-        metadata=None,
-        response_metadata={},
-        current_location=Location(section_id="section-companies"),
-        routing_path=RoutingPath(
-            [
-                "any-other-companies-or-branches",
-            ],
-            section_id="section-companies",
+        (
+            "test_list_collector_variants_section_summary",
+            "companies_variants_answer_store_first_variant",
+            "Name of UK or non-UK company or branch",
+            "UK Registration number",
+            "Is this UK company or branch an authorised insurer?",
         ),
-    )
-    context = summary_context()
-    expected = {
-        "summary": {
-            "answers_are_editable": True,
-            "collapsible": False,
-            "sections": [
-                {
-                    "groups": [
-                        {
-                            "blocks": [],
-                            "id": "group-companies-0",
-                            "links": {},
-                            "placeholder_text": None,
-                            "title": None,
-                        },
-                        {
-                            "blocks": [
-                                {
-                                    "add_link": "/questionnaire/companies/add-company/?return_to=section-summary",
-                                    "add_link_text": "Add another UK company or branch",
-                                    "empty_list_text": "No UK company or branch added",
-                                    "item_anchor": "#company-or-branch-name",
-                                    "item_label": "Name of UK company or branch",
-                                    "list": {
-                                        "editable": True,
-                                        "list_items": [
-                                            {
-                                                "edit_link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary",
-                                                "item_title": "company a",
-                                                "list_item_id": "PlwgoG",
-                                                "primary_person": False,
-                                                "remove_link": "/questionnaire/companies/PlwgoG/remove-company/?return_to=section-summary",
-                                            },
-                                            {
-                                                "edit_link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary",
-                                                "item_title": "company b",
-                                                "list_item_id": "UHPLbX",
-                                                "primary_person": False,
-                                                "remove_link": "/questionnaire/companies/UHPLbX/remove-company/?return_to=section-summary",
-                                            },
-                                        ],
-                                    },
-                                    "list_name": "companies",
-                                    "related_answers": {
-                                        "PlwgoG": [
-                                            {
-                                                "id": "edit-company",
-                                                "number": None,
-                                                "question": {
-                                                    "answers": [
-                                                        {
-                                                            "currency": None,
-                                                            "id": "registration-number",
-                                                            "label": "Registration number",
-                                                            "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=registration-number#registration-number",
-                                                            "type": "number",
-                                                            "unit": None,
-                                                            "unit_length": None,
-                                                            "value": 123,
-                                                        },
-                                                        {
-                                                            "currency": None,
-                                                            "id": "authorised-insurer-radio",
-                                                            "label": "Is this UK company or branch an authorised insurer?",
-                                                            "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=authorised-insurer-radio#authorised-insurer-radio",
-                                                            "type": "radio",
-                                                            "unit": None,
-                                                            "unit_length": None,
-                                                            "value": {
-                                                                "detail_answer_value": None,
-                                                                "label": "Yes",
-                                                            },
-                                                        },
-                                                    ],
-                                                    "id": "edit-question-companies",
-                                                    "number": None,
-                                                    "title": "What is the name of the company?",
-                                                    "type": "General",
-                                                },
-                                                "title": None,
-                                            }
-                                        ],
-                                        "UHPLbX": [
-                                            {
-                                                "id": "edit-company",
-                                                "number": None,
-                                                "question": {
-                                                    "answers": [
-                                                        {
-                                                            "currency": None,
-                                                            "id": "registration-number",
-                                                            "label": "Registration number",
-                                                            "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=registration-number#registration-number",
-                                                            "type": "number",
-                                                            "unit": None,
-                                                            "unit_length": None,
-                                                            "value": 456,
-                                                        },
-                                                        {
-                                                            "currency": None,
-                                                            "id": "authorised-insurer-radio",
-                                                            "label": "Is this UK company or branch an authorised insurer?",
-                                                            "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=authorised-insurer-radio#authorised-insurer-radio",
-                                                            "type": "radio",
-                                                            "unit": None,
-                                                            "unit_length": None,
-                                                            "value": {
-                                                                "detail_answer_value": None,
-                                                                "label": "No",
-                                                            },
-                                                        },
-                                                    ],
-                                                    "id": "edit-question-companies",
-                                                    "number": None,
-                                                    "title": "What is the name of the company?",
-                                                    "type": "General",
-                                                },
-                                                "title": None,
-                                            }
-                                        ],
-                                    },
-                                    "title": "Companies or UK branches",
-                                    "type": "List",
-                                }
-                            ],
-                            "id": "group-companies-1",
-                            "links": {
-                                "add_link": Link(
-                                    text="Add another UK company or branch",
-                                    url="/questionnaire/companies/add-company/?return_to=section-summary",
-                                    target="_self",
-                                    attributes={"data-qa": "add-item-link"},
-                                )
-                            },
-                            "placeholder_text": "No UK company or branch added",
-                            "title": None,
-                        },
-                        {
-                            "blocks": [],
-                            "id": "group-companies-2",
-                            "links": {},
-                            "placeholder_text": None,
-                            "title": None,
-                        },
-                    ],
-                    "title": "General insurance business",
-                }
-            ],
-            "page_title": "General insurance business",
-            "summary_type": "SectionSummary",
-            "title": "General insurance business",
-        }
-    }
-
-    assert context == expected
-
-
+        (
+            "test_list_collector_variants_section_summary",
+            "companies_variants_answer_store_second_variant",
+            "Name of UK or non-UK company or branch",
+            "Non-UK Registration number",
+            "Is this non-UK company or branch an authorised insurer?",
+        ),
+    ],
+)
 @pytest.mark.usefixtures("app")
 def test_context_for_section_summary_with_list_summary_and_first_variant(
-    companies_variants_answer_store_first_variant,
+    test_schema,
+    answer_store_fixture,
+    item_label,
+    answer_1_label,
+    answer_2_label,
+    progress_store,
+    request,
 ):
-    schema = load_schema_from_name("test_list_collector_variants_section_summary")
-
+    schema = load_schema_from_name(test_schema)
+    answer_store = request.getfixturevalue(answer_store_fixture)
     summary_context = SectionSummaryContext(
         language=DEFAULT_LANGUAGE_CODE,
         schema=schema,
-        answer_store=companies_variants_answer_store_first_variant,
+        answer_store=answer_store,
         list_store=ListStore(
             [
                 {"items": ["PlwgoG", "UHPLbX"], "name": "companies"},
             ]
         ),
-        progress_store=ProgressStore(),
+        progress_store=progress_store,
         metadata=None,
         response_metadata={},
         current_location=Location(section_id="section-companies"),
@@ -450,23 +307,27 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
                                     "add_link_text": "Add another UK company or branch",
                                     "empty_list_text": "No UK company or branch added",
                                     "item_anchor": "#company-or-branch-name",
-                                    "item_label": "Name of UK or non-UK company or branch",
+                                    "item_label": item_label,
                                     "list": {
                                         "editable": True,
                                         "list_items": [
                                             {
-                                                "edit_link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary",
+                                                "edit_link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=PlwgoG",
                                                 "item_title": "company a",
                                                 "list_item_id": "PlwgoG",
                                                 "primary_person": False,
                                                 "remove_link": "/questionnaire/companies/PlwgoG/remove-company/?return_to=section-summary",
+                                                "is_complete": False,
+                                                "repeating_blocks": False,
                                             },
                                             {
-                                                "edit_link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary",
+                                                "edit_link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=UHPLbX",
                                                 "item_title": "company b",
                                                 "list_item_id": "UHPLbX",
                                                 "primary_person": False,
                                                 "remove_link": "/questionnaire/companies/UHPLbX/remove-company/?return_to=section-summary",
+                                                "is_complete": False,
+                                                "repeating_blocks": False,
                                             },
                                         ],
                                     },
@@ -474,15 +335,15 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
                                     "related_answers": {
                                         "PlwgoG": [
                                             {
-                                                "id": "edit-company",
+                                                "id": "edit-company-PlwgoG",
                                                 "number": None,
                                                 "question": {
                                                     "answers": [
                                                         {
                                                             "currency": None,
-                                                            "id": "registration-number",
-                                                            "label": "UK Registration number",
-                                                            "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=registration-number#registration-number",
+                                                            "id": "registration-number-PlwgoG",
+                                                            "label": answer_1_label,
+                                                            "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=registration-number-PlwgoG#registration-number",
                                                             "type": "number",
                                                             "unit": None,
                                                             "unit_length": None,
@@ -490,9 +351,9 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
                                                         },
                                                         {
                                                             "currency": None,
-                                                            "id": "authorised-insurer-radio",
-                                                            "label": "Is this UK company or branch an authorised insurer?",
-                                                            "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=authorised-insurer-radio#authorised-insurer-radio",
+                                                            "id": "authorised-insurer-radio-PlwgoG",
+                                                            "label": answer_2_label,
+                                                            "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=authorised-insurer-radio-PlwgoG#authorised-insurer-radio",
                                                             "type": "radio",
                                                             "unit": None,
                                                             "unit_length": None,
@@ -502,7 +363,7 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
                                                             },
                                                         },
                                                     ],
-                                                    "id": "edit-question-companies",
+                                                    "id": "edit-question-companies-PlwgoG",
                                                     "number": None,
                                                     "title": "What is the name of the company?",
                                                     "type": "General",
@@ -512,15 +373,15 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
                                         ],
                                         "UHPLbX": [
                                             {
-                                                "id": "edit-company",
+                                                "id": "edit-company-UHPLbX",
                                                 "number": None,
                                                 "question": {
                                                     "answers": [
                                                         {
                                                             "currency": None,
-                                                            "id": "registration-number",
-                                                            "label": "UK Registration number",
-                                                            "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=registration-number#registration-number",
+                                                            "id": "registration-number-UHPLbX",
+                                                            "label": answer_1_label,
+                                                            "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=registration-number-UHPLbX#registration-number",
                                                             "type": "number",
                                                             "unit": None,
                                                             "unit_length": None,
@@ -528,9 +389,9 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
                                                         },
                                                         {
                                                             "currency": None,
-                                                            "id": "authorised-insurer-radio",
-                                                            "label": "Is this UK company or branch an authorised insurer?",
-                                                            "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=authorised-insurer-radio#authorised-insurer-radio",
+                                                            "id": "authorised-insurer-radio-UHPLbX",
+                                                            "label": answer_2_label,
+                                                            "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=authorised-insurer-radio-UHPLbX#authorised-insurer-radio",
                                                             "type": "radio",
                                                             "unit": None,
                                                             "unit_length": None,
@@ -540,190 +401,7 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
                                                             },
                                                         },
                                                     ],
-                                                    "id": "edit-question-companies",
-                                                    "number": None,
-                                                    "title": "What is the name of the company?",
-                                                    "type": "General",
-                                                },
-                                                "title": None,
-                                            }
-                                        ],
-                                    },
-                                    "title": "Companies or UK branches",
-                                    "type": "List",
-                                }
-                            ],
-                            "id": "group-companies-1",
-                            "links": {
-                                "add_link": Link(
-                                    text="Add another UK company or branch",
-                                    url="/questionnaire/companies/add-company/?return_to=section-summary",
-                                    target="_self",
-                                    attributes={"data-qa": "add-item-link"},
-                                )
-                            },
-                            "placeholder_text": "No UK company or branch added",
-                            "title": None,
-                        },
-                        {
-                            "blocks": [],
-                            "id": "group-companies-2",
-                            "links": {},
-                            "placeholder_text": None,
-                            "title": None,
-                        },
-                    ],
-                    "title": "General insurance business",
-                }
-            ],
-            "page_title": "General insurance business",
-            "summary_type": "SectionSummary",
-            "title": "General insurance business",
-        }
-    }
-
-    assert context == expected
-
-
-@pytest.mark.usefixtures("app")
-def test_context_for_section_summary_with_list_summary_and_second_variant(
-    companies_variants_answer_store_second_variant,
-):
-    schema = load_schema_from_name("test_list_collector_variants_section_summary")
-
-    summary_context = SectionSummaryContext(
-        language=DEFAULT_LANGUAGE_CODE,
-        schema=schema,
-        answer_store=companies_variants_answer_store_second_variant,
-        list_store=ListStore(
-            [
-                {"items": ["PlwgoG", "UHPLbX"], "name": "companies"},
-            ]
-        ),
-        progress_store=ProgressStore(),
-        metadata=None,
-        response_metadata={},
-        current_location=Location(section_id="section-companies"),
-        routing_path=RoutingPath(
-            [
-                "any-other-companies-or-branches",
-            ],
-            section_id="section-companies",
-        ),
-    )
-    context = summary_context()
-    expected = {
-        "summary": {
-            "answers_are_editable": True,
-            "collapsible": False,
-            "sections": [
-                {
-                    "groups": [
-                        {
-                            "blocks": [],
-                            "id": "group-companies-0",
-                            "links": {},
-                            "placeholder_text": None,
-                            "title": None,
-                        },
-                        {
-                            "blocks": [
-                                {
-                                    "add_link": "/questionnaire/companies/add-company/?return_to=section-summary",
-                                    "add_link_text": "Add another UK company or branch",
-                                    "empty_list_text": "No UK company or branch added",
-                                    "item_anchor": "#company-or-branch-name",
-                                    "item_label": "Name of UK or non-UK company or branch",
-                                    "list": {
-                                        "editable": True,
-                                        "list_items": [
-                                            {
-                                                "edit_link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary",
-                                                "item_title": "company a",
-                                                "list_item_id": "PlwgoG",
-                                                "primary_person": False,
-                                                "remove_link": "/questionnaire/companies/PlwgoG/remove-company/?return_to=section-summary",
-                                            },
-                                            {
-                                                "edit_link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary",
-                                                "item_title": "company b",
-                                                "list_item_id": "UHPLbX",
-                                                "primary_person": False,
-                                                "remove_link": "/questionnaire/companies/UHPLbX/remove-company/?return_to=section-summary",
-                                            },
-                                        ],
-                                    },
-                                    "list_name": "companies",
-                                    "related_answers": {
-                                        "PlwgoG": [
-                                            {
-                                                "id": "edit-company",
-                                                "number": None,
-                                                "question": {
-                                                    "answers": [
-                                                        {
-                                                            "currency": None,
-                                                            "id": "registration-number",
-                                                            "label": "Non-UK Registration number",
-                                                            "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=registration-number#registration-number",
-                                                            "type": "number",
-                                                            "unit": None,
-                                                            "unit_length": None,
-                                                            "value": 123,
-                                                        },
-                                                        {
-                                                            "currency": None,
-                                                            "id": "authorised-insurer-radio",
-                                                            "label": "Is this non-UK company or branch an authorised insurer?",
-                                                            "link": "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary&return_to_answer_id=authorised-insurer-radio#authorised-insurer-radio",
-                                                            "type": "radio",
-                                                            "unit": None,
-                                                            "unit_length": None,
-                                                            "value": {
-                                                                "detail_answer_value": None,
-                                                                "label": "Yes",
-                                                            },
-                                                        },
-                                                    ],
-                                                    "id": "edit-question-companies",
-                                                    "number": None,
-                                                    "title": "What is the name of the company?",
-                                                    "type": "General",
-                                                },
-                                                "title": None,
-                                            }
-                                        ],
-                                        "UHPLbX": [
-                                            {
-                                                "id": "edit-company",
-                                                "number": None,
-                                                "question": {
-                                                    "answers": [
-                                                        {
-                                                            "currency": None,
-                                                            "id": "registration-number",
-                                                            "label": "Non-UK Registration number",
-                                                            "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=registration-number#registration-number",
-                                                            "type": "number",
-                                                            "unit": None,
-                                                            "unit_length": None,
-                                                            "value": 456,
-                                                        },
-                                                        {
-                                                            "currency": None,
-                                                            "id": "authorised-insurer-radio",
-                                                            "label": "Is this non-UK company or branch an authorised insurer?",
-                                                            "link": "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary&return_to_answer_id=authorised-insurer-radio#authorised-insurer-radio",
-                                                            "type": "radio",
-                                                            "unit": None,
-                                                            "unit_length": None,
-                                                            "value": {
-                                                                "detail_answer_value": None,
-                                                                "label": "No",
-                                                            },
-                                                        },
-                                                    ],
-                                                    "id": "edit-question-companies",
+                                                    "id": "edit-question-companies-UHPLbX",
                                                     "number": None,
                                                     "title": "What is the name of the company?",
                                                     "type": "General",
@@ -812,7 +490,7 @@ def test_context_for_driving_question_summary_empty_list():
 
 
 @pytest.mark.usefixtures("app")
-def test_context_for_driving_question_summary():
+def test_context_for_driving_question_summary(progress_store):
     schema = load_schema_from_name("test_list_collector_driving_question")
 
     summary_context = SectionSummaryContext(
@@ -830,7 +508,7 @@ def test_context_for_driving_question_summary():
             ]
         ),
         ListStore([{"items": ["PlwgoG"], "name": "people"}]),
-        ProgressStore(),
+        progress_store,
         metadata=None,
         response_metadata={},
         current_location=Location(section_id="section"),
@@ -856,11 +534,13 @@ def test_context_for_driving_question_summary():
                         "editable": True,
                         "list_items": [
                             {
-                                "edit_link": "/questionnaire/people/PlwgoG/edit-person/?return_to=section-summary",
+                                "edit_link": "/questionnaire/people/PlwgoG/edit-person/?return_to=section-summary&return_to_answer_id=PlwgoG",
                                 "item_title": "Toni Morrison",
                                 "list_item_id": "PlwgoG",
                                 "primary_person": False,
                                 "remove_link": "/questionnaire/people/PlwgoG/remove-person/?return_to=section-summary",
+                                "is_complete": False,
+                                "repeating_blocks": False,
                             }
                         ],
                     },

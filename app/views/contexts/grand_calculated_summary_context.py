@@ -17,7 +17,9 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
         Build list of calculated summary blocks that the grand calculated summary will be adding up
         """
         # Type ignore: the block, group and section will all exist at this point
-        calculated_summary_group: ImmutableDict = self._schema.get_group_for_block_id(self.current_location.block_id)  # type: ignore
+        calculated_summary_group: ImmutableDict = self._schema.get_group_for_block_id(
+            self.current_location.block_id  # type: ignore
+        )
 
         calculated_summary_ids = get_calculation_block_ids_for_grand_calculated_summary(
             rendered_block
@@ -40,10 +42,16 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
         Find all blocks on the routing path for each of the calculated summaries
         """
         # Type ignore: each block must have a section id
-        section_ids: set[str] = {self._schema.get_section_id_for_block_id(block_id) for block_id in calculated_summary_ids}  # type: ignore
+        section_ids: set[str] = {
+            self._schema.get_section_id_for_block_id(block_id)  # type: ignore
+            for block_id in calculated_summary_ids
+        }
         # find any sections involved in the grand calculated summary (but only if they have started, to avoid evaluating the path if not necessary)
         started_sections = [
-            key for key, _ in self._progress_store.started_section_keys(section_ids)
+            key
+            for key, _ in self._progress_store.started_section_and_repeating_blocks_progress_keys(
+                section_ids
+            )
         ]
         routing_path_block_ids: list[str] = []
 

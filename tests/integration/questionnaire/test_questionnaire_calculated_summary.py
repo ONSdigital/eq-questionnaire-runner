@@ -1,4 +1,4 @@
-from . import QuestionnaireTestCase
+from tests.integration.questionnaire import QuestionnaireTestCase
 
 
 class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
@@ -186,3 +186,110 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
             }
         )
         self.assertInBody("Enter an answer more than or equal to £60.00")
+
+    def test_calculated_summary_repeating_answers_only(self):
+        """
+        Tests a calculated summary with a dynamic answer source resolving to a list of repeating answers
+        """
+        self.launchSurvey("test_new_calculated_summary_repeating_answers_only")
+
+        self.post({"any-transport-answer": "Yes"})
+        self.post({"transport-name": "Bus"})
+        self.post({"list-collector-answer": "Yes"})
+        self.post({"transport-name": "Tube"})
+
+        # get the ids before finishing the collector
+        list_item_ids = self.get_list_item_ids()
+        assert len(list_item_ids) == 2
+        self.post({"list-collector-answer": "No"})
+
+        self.post(
+            {
+                f"cost-of-transport-{list_item_ids[0]}": "100",
+                f"cost-of-transport-{list_item_ids[1]}": "200",
+            }
+        )
+        self.assertInBody(
+            "We calculate the total monthly spending on public transport to be £300.00. Is this correct?"
+        )
+
+    def test_new_calculated_summary_repeating_blocks(self):
+        """
+        Tests a calculated summary with a repeating block answer id source resolving to a list of answers
+        """
+        self.launchSurvey("test_new_calculated_summary_repeating_blocks")
+        self.post({"answer-car": "100"})
+        self.post({"answer-skip": "No"})
+        self.post({"list-collector-answer": "Yes"})
+        self.post({"transport-name": "Bus"})
+        self.post(
+            {
+                "transport-company": "First",
+                "transport-cost": "30",
+                "transport-additional-cost": "5",
+            }
+        )
+        self.post({"transport-count": "10"})
+        self.post({"list-collector-answer": "Yes"})
+        self.post({"transport-name": "Plane"})
+        self.post(
+            {
+                "transport-company": "EasyJet",
+                "transport-cost": "0",
+                "transport-additional-cost": "265",
+            }
+        )
+        self.post({"transport-count": "2"})
+        list_item_ids = self.get_list_item_ids()
+        self.post({"list-collector-answer": "No"})
+        self.assertInBody(
+            "We calculate the total monthly expenditure on transport to be £400.00. Is this correct?"
+        )
+        self.post()
+        self.assertInBody(
+            "We calculate the total journeys made per month to be 12. Is this correct?"
+        )
+
+        # check that using a change link and editing an answer takes you straight back to the relevant calculated summary
+        change_link = self.get_list_item_change_link(
+            "transport-count", list_item_ids[1]
+        )
+        self.get(change_link)
+        self.post({"transport-count": "4"})
+        self.assertInUrl("/calculated-summary-count/")
+        self.assertInBody(
+            "We calculate the total journeys made per month to be 14. Is this correct?"
+        )
+        self.previous()
+
+        # likewise for the other calculated summary
+        change_link = self.get_list_item_change_link("transport-cost", list_item_ids[0])
+        self.get(change_link)
+        self.post(
+            {
+                "transport-company": "First",
+                "transport-cost": "300",
+                "transport-additional-cost": "50",
+            }
+        )
+        self.assertInUrl("/calculated-summary-spending/")
+        self.assertInBody(
+            "We calculate the total monthly expenditure on transport to be £715.00. Is this correct?"
+        )
+
+        # check that removing the list collector from the path updates the calculated summary correctly
+        self.previous()
+        self.previous()
+        self.post({"answer-skip": "Yes"})
+
+        # calculated summary count should now not be on the path
+        self.assertInUrl("/calculated-summary-spending/")
+        self.assertInBody(
+            "We calculate the total monthly expenditure on transport to be £100.00. Is this correct?"
+        )
+        # no list items should be there
+        self.assertNotInBody("Give details of your expenditure travelling by")
+        self.post()
+        # should be absent from section summary too
+        self.assertInUrl("/sections/section-1")
+        self.assertNotInBody("Name of transport")

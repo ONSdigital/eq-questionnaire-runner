@@ -12,6 +12,10 @@ class CalculatedSummaryPage extends BasePage {
   calculatedSummaryAnswer() {
     return "[data-qa=calculated-summary-answer]";
   }
+
+  summaryItems() {
+    return "div.ons-summary__items";
+  }
 }
 
 export default CalculatedSummaryPage;

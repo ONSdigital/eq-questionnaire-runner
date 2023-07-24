@@ -144,6 +144,7 @@ VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS = int(
 
 SURVEY_TYPE = os.getenv("SURVEY_TYPE", "business")
 
+SDS_API_BASE_URL = os.getenv("SDS_API_BASE_URL")
 
 ACCOUNT_SERVICE_BASE_URL = os.getenv(
     "ACCOUNT_SERVICE_BASE_URL", "https://surveys.ons.gov.uk"
