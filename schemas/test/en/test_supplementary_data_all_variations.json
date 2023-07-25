@@ -84,22 +84,30 @@
                                                     {
                                                         "title": "Guidance for completing this survey",
                                                         "list": [
+                                                            "The company name, telephone number all come from supplementary data",
+                                                            "if you picked the supplementary dataset with guidance, there will be a 3rd bullet point below this one, with the supplementary guidance.",
                                                             {
                                                                 "text": "{survey_guidance}",
                                                                 "placeholders": [
                                                                     {
                                                                         "placeholder": "survey_guidance",
-                                                                        "value": {
-                                                                            "source": "supplementary_data",
-                                                                            "identifier": "guidance"
-                                                                        }
+                                                                        "transforms": [
+                                                                            {
+                                                                                "transform": "first_non_empty_item",
+                                                                                "arguments": {
+                                                                                    "items": [
+                                                                                        {
+                                                                                            "source": "supplementary_data",
+                                                                                            "identifier": "guidance"
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            }
+                                                                        ]
                                                                     }
                                                                 ]
                                                             }
                                                         ]
-                                                    },
-                                                    {
-                                                        "description": "<p>The company name, telephone number and guidance on the line above, all come from supplementary data</p>"
                                                     }
                                                 ]
                                             }
@@ -114,7 +122,7 @@
         },
         {
             "id": "section-1",
-            "title": "Section 1",
+            "title": "Company Details",
             "summary": {
                 "page_title": "Summary title",
                 "show_on_completion": true
@@ -211,6 +219,64 @@
                                         "label": "Contact email",
                                         "mandatory": true,
                                         "type": "TextField"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "trading",
+                            "question": {
+                                "id": "trading-question",
+                                "type": "General",
+                                "title": {
+                                    "text": "When did {company_name} begin trading?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "company_name",
+                                            "value": {
+                                                "source": "supplementary_data",
+                                                "identifier": "company_name"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "trading-answer",
+                                        "label": "Date commenced",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "dynamic_options": {
+                                            "values": {
+                                                "map": [
+                                                    {
+                                                        "format-date": ["self", "yyyy-MM-dd"]
+                                                    },
+                                                    {
+                                                        "date-range": [
+                                                            {
+                                                                "date": [
+                                                                    {
+                                                                        "source": "supplementary_data",
+                                                                        "identifier": "incorporation_date"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            7
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            "transform": {
+                                                "format-date": [
+                                                    {
+                                                        "date": ["self"]
+                                                    },
+                                                    "EEEE d MMMM yyyy"
+                                                ]
+                                            }
+                                        }
                                     }
                                 ]
                             }
@@ -403,6 +469,46 @@
                                                 ]
                                             },
                                             {
+                                                "text": "<strong>Incorporation Date</strong>: {incorporation_date}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "incorporation_date",
+                                                        "transforms": [
+                                                            {
+                                                                "arguments": {
+                                                                    "date_format": "d MMMM yyyy",
+                                                                    "date_to_format": {
+                                                                        "source": "supplementary_data",
+                                                                        "identifier": "incorporation_date"
+                                                                    }
+                                                                },
+                                                                "transform": "format_date"
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "<strong>Trading start date</strong>: {trading_date}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "trading_date",
+                                                        "transforms": [
+                                                            {
+                                                                "arguments": {
+                                                                    "date_format": "d MMMM yyyy",
+                                                                    "date_to_format": {
+                                                                        "source": "answers",
+                                                                        "identifier": "trading-answer"
+                                                                    }
+                                                                },
+                                                                "transform": "format_date"
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
                                                 "text": "<strong>Guidance</strong>: {guidance}",
                                                 "placeholders": [
                                                     {
@@ -491,6 +597,331 @@
                                                 ]
                                             }
                                         ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-2",
+            "title": "Employees",
+            "summary": {
+                "show_on_completion": true,
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "employees",
+                        "title": "employees",
+                        "add_link_text": "Add another employee",
+                        "empty_list_text": "There are no employees"
+                    }
+                ],
+                "show_non_item_answers": true
+            },
+            "groups": [
+                {
+                    "id": "group-2",
+                    "blocks": [
+                        {
+                            "type": "ListCollectorDrivingQuestion",
+                            "id": "any-employees",
+                            "for_list": "employees",
+                            "question": {
+                                "type": "General",
+                                "id": "any-employee-question",
+                                "title": "Do you have any employees to report on?",
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "any-employee-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock",
+                                                    "params": {
+                                                        "block_id": "add-employee",
+                                                        "list_name": "employees"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "section": "End",
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "any-employee-answer"
+                                            },
+                                            "No"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "list-collector"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "list-collector",
+                            "type": "ListCollector",
+                            "for_list": "employees",
+                            "question": {
+                                "id": "confirmation-question",
+                                "type": "General",
+                                "title": "Do you need to add any more employees?",
+                                "answers": [
+                                    {
+                                        "id": "list-collector-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "add_block": {
+                                "id": "add-employee",
+                                "type": "ListAddQuestion",
+                                "cancel_text": "Don’t need to add any other employees?",
+                                "question": {
+                                    "id": "add-question",
+                                    "type": "General",
+                                    "title": "What is the name of the employee?",
+                                    "answers": [
+                                        {
+                                            "id": "employee-first-name",
+                                            "label": "First name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "employee-last-name",
+                                            "label": "Last name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "edit_block": {
+                                "id": "edit-employee",
+                                "type": "ListEditQuestion",
+                                "cancel_text": "Don’t need to change anything?",
+                                "question": {
+                                    "id": "edit-question",
+                                    "type": "General",
+                                    "title": "What is the name of the employee?",
+                                    "answers": [
+                                        {
+                                            "id": "employee-first-name",
+                                            "label": "First name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "employee-last-name",
+                                            "label": "Last name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "remove_block": {
+                                "id": "remove-employee",
+                                "type": "ListRemoveQuestion",
+                                "cancel_text": "Don’t need to remove this employee?",
+                                "question": {
+                                    "id": "remove-question",
+                                    "type": "General",
+                                    "title": "Are you sure you want to remove this employee?",
+                                    "warning": "All of the information about this employee will be deleted",
+                                    "answers": [
+                                        {
+                                            "id": "remove-confirmation",
+                                            "mandatory": true,
+                                            "type": "Radio",
+                                            "options": [
+                                                {
+                                                    "label": "Yes",
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
+                                                },
+                                                {
+                                                    "label": "No",
+                                                    "value": "No"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "summary": {
+                                "title": "employees",
+                                "item_title": {
+                                    "text": "{employee_name}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "employee_name",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "employee-first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "employee-last-name"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-3",
+            "title": "Employee Details",
+            "summary": {
+                "show_on_completion": true
+            },
+            "repeat": {
+                "for_list": "employees",
+                "title": {
+                    "text": "{employee_name}",
+                    "placeholders": [
+                        {
+                            "placeholder": "employee_name",
+                            "transforms": [
+                                {
+                                    "arguments": {
+                                        "delimiter": " ",
+                                        "list_to_concatenate": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "employee-first-name"
+                                            },
+                                            {
+                                                "source": "answers",
+                                                "identifier": "employee-last-name"
+                                            }
+                                        ]
+                                    },
+                                    "transform": "concatenate_list"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "groups": [
+                {
+                    "id": "group-3",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "length-of-employment",
+                            "question": {
+                                "id": "length-employment-question",
+                                "type": "General",
+                                "title": {
+                                    "text": "When did {employee_name} start working for {company_name}?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "company_name",
+                                            "value": {
+                                                "source": "supplementary_data",
+                                                "identifier": "company_name"
+                                            }
+                                        },
+                                        {
+                                            "placeholder": "employee_name",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "employee-first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "employee-last-name"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "employment-start",
+                                        "label": {
+                                            "text": "Start date at {company_name}",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "company_name",
+                                                    "value": {
+                                                        "source": "supplementary_data",
+                                                        "identifier": "company_name"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "mandatory": true,
+                                        "type": "Date",
+                                        "maximum": {
+                                            "value": "now"
+                                        },
+                                        "minimum": {
+                                            "value": {
+                                                "source": "supplementary_data",
+                                                "identifier": "incorporation_date"
+                                            }
+                                        }
                                     }
                                 ]
                             }

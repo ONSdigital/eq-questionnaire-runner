@@ -17,7 +17,7 @@
                 "description": "Sales across all EU stores"
             }
         },
-        "guidance": "Guidance from supplementary data for this survey",
-        "total_uk_sales": 555000.00
+        "total_uk_sales": 555000.00,
+        "incorporation_date": "1947-11-27"
     }
 }

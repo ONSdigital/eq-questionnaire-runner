@@ -988,7 +988,8 @@ def test_format_date(rule, expected_result):
 
 
 @freeze_time("2021-01-01")
-def test_map_without_nested_date_operator():
+@pytest.mark.parametrize("source", ("response_metadata", "supplementary_data"))
+def test_map_without_nested_date_operator(source):
     rule = {
         Operator.MAP: [
             {Operator.FORMAT_DATE: ["self", "yyyy-MM-dd"]},
@@ -996,7 +997,7 @@ def test_map_without_nested_date_operator():
                 Operator.DATE_RANGE: [
                     {
                         Operator.DATE: [
-                            {"source": "response_metadata", "identifier": "started_at"},
+                            {"source": source, "identifier": "started_at"},
                             {"days": -7, "day_of_week": "MONDAY"},
                         ]
                     },
@@ -1006,8 +1007,10 @@ def test_map_without_nested_date_operator():
         ]
     }
 
+    date_map = {"started_at": datetime.now(timezone.utc).isoformat()}
     rule_evaluator = get_rule_evaluator(
-        response_metadata={"started_at": datetime.now(timezone.utc).isoformat()}
+        response_metadata=date_map,
+        supplementary_data_store=SupplementaryDataStore(date_map),
     )
 
     assert rule_evaluator.evaluate(rule=rule) == [
@@ -1055,3 +1058,36 @@ def test_map_with_nested_date_operator(offset, expected_result):
     )
 
     assert rule_evaluator.evaluate(rule=rule) == expected_result
+
+
+def test_supplementary_data_source(supplementary_data_store_with_data):
+    schema = get_mock_schema()
+    schema.is_repeating_answer = Mock(return_value=False)
+    answer_store = AnswerStore(
+        [{"answer_id": "same-answer", "value": "Volume of total production"}]
+    )
+
+    rule_evaluator = get_rule_evaluator(
+        schema=schema,
+        answer_store=answer_store,
+        supplementary_data_store=supplementary_data_store_with_data,
+        location=Location(
+            section_id="some-section", block_id="some-block", list_item_id="item-1"
+        ),
+    )
+
+    assert (
+        rule_evaluator.evaluate(
+            rule={
+                Operator.EQUAL: [
+                    {
+                        "source": "supplementary_data",
+                        "identifier": "note",
+                        "selectors": ["title"],
+                    },
+                    {"source": "answers", "identifier": "same-answer"},
+                ]
+            }
+        )
+        is True
+    )
