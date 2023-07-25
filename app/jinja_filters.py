@@ -263,7 +263,7 @@ def get_min_max_values(
         ) in schema.min_and_max_map:
             return int(schema.min_and_max_map[identifier][min_max])
 
-    return int(answer.get(min_max, {}).get("value", default_value))
+    return len(str(answer.get(min_max, {}).get("value", default_value)))
 
 
 @blueprint.app_template_filter()
