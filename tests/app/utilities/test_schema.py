@@ -5,7 +5,6 @@ import pytest
 import responses
 from mock import Mock, patch
 from requests import RequestException
-from requests.adapters import ConnectTimeoutError, ReadTimeoutError
 from urllib3.connectionpool import HTTPConnectionPool, HTTPResponse
 
 from app.questionnaire import QuestionnaireSchema
@@ -250,13 +249,6 @@ def test_load_schema_from_metadata_with_schema_url_and_override_language_code():
     assert loaded_schema.language_code == language_code
 
 
-@pytest.fixture(name="mocked_response_content")
-def mocked_response_content_fixture(mocker):
-    decodable_content = Mock()
-    decodable_content.decode.return_value = b"{}"
-    mocker.patch("requests.models.Response.content", decodable_content)
-
-
 def get_mocked_make_request(mocker, status_codes):
     mocked_responses = []
     for status_code in status_codes:
@@ -277,29 +269,6 @@ def get_mocked_make_request(mocker, status_codes):
     )
 
     return patched_make_request
-
-
-@pytest.fixture(name="mocked_make_request_with_timeout")
-def mocked_make_request_with_timeout_fixture(
-    mocker, mocked_response_content  # pylint: disable=unused-argument
-):
-    connect_timeout_error = ConnectTimeoutError("connect timed out")
-    read_timeout_error = ReadTimeoutError(
-        pool=None, message="read timed out", url="test-url"
-    )
-
-    response_not_timed_out = HTTPResponse(status=200, headers={}, msg=HTTPMessage())
-    response_not_timed_out.drain_conn = Mock(return_value=None)
-
-    return mocker.patch.object(
-        HTTPConnectionPool,
-        "_make_request",
-        side_effect=[
-            connect_timeout_error,
-            read_timeout_error,
-            response_not_timed_out,
-        ],
-    )
 
 
 def test_load_schema_from_url_retries_timeout_error(mocked_make_request_with_timeout):

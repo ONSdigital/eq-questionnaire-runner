@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 
 from freezegun import freeze_time
 
-from app.authentication.auth_payload_version import AuthPayloadVersion
+from app.authentication.auth_payload_versions import AuthPayloadVersion
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.views.handlers.feedback import (
     FeedbackMetadata,

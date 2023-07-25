@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 import pytest
 from freezegun import freeze_time
 
-from app.authentication.auth_payload_version import AuthPayloadVersion
+from app.authentication.auth_payload_versions import AuthPayloadVersion
 from app.data_models.session_store import SessionStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.utilities.schema import load_schema_from_name

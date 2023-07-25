@@ -4,7 +4,7 @@ import pytest
 from freezegun import freeze_time
 from marshmallow import ValidationError
 
-from app.authentication.auth_payload_version import AuthPayloadVersion
+from app.authentication.auth_payload_versions import AuthPayloadVersion
 from app.utilities.metadata_parser import validate_runner_claims
 from app.utilities.metadata_parser_v2 import (
     validate_questionnaire_claims,

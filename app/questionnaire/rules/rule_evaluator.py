@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from datetime import date
 from decimal import Decimal
-from typing import Generator, Iterable, MutableMapping, Optional, Sequence, Union
+from typing import Generator, Iterable, MutableMapping, Sequence, TypeAlias
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
@@ -16,9 +16,10 @@ from app.questionnaire.value_source_resolver import (
 )
 from app.utilities.types import LocationType
 
-RuleEvaluatorTypes = Union[
-    bool, Optional[date], list[str], list[date], int, float, Decimal
-]
+RuleEvaluatorTypes: TypeAlias = (
+    bool | date | list[str] | list[date] | int | float | Decimal | None
+)
+ResolvedOperand: TypeAlias = bool | date | ValueSourceTypes | None
 
 
 @dataclass
@@ -30,7 +31,7 @@ class RuleEvaluator:
     response_metadata: MutableMapping
     location: LocationType | None
     progress_store: ProgressStore
-    routing_path_block_ids: Iterable | None = None
+    routing_path_block_ids: Iterable[str] | None = None
     language: str = DEFAULT_LANGUAGE_CODE
 
     # pylint: disable=attribute-defined-outside-init
@@ -63,7 +64,7 @@ class RuleEvaluator:
             language=self.language, schema=self.schema, renderer=renderer
         )
 
-    def _evaluate(self, rule: dict[str, Sequence]) -> Union[bool, Optional[date]]:
+    def _evaluate(self, rule: dict[str, Sequence]) -> bool | date | None:
         operator_name = next(iter(rule))
         operator = Operator(operator_name, self.operations)
         operands = rule[operator_name]
@@ -73,7 +74,7 @@ class RuleEvaluator:
                 f"The rule is invalid, operands should be of type Sequence and not {type(operands)}"
             )
 
-        resolved_operands: Iterable[Union[bool, Optional[date], ValueSourceTypes]]
+        resolved_operands: Iterable[ResolvedOperand]
 
         if operator_name == Operator.MAP:
             resolved_iterables = self._resolve_operand(operands[1])
@@ -83,9 +84,7 @@ class RuleEvaluator:
 
         return operator.evaluate(resolved_operands)
 
-    def _resolve_operand(
-        self, operand: ValueSourceTypes
-    ) -> Union[bool, Optional[date], ValueSourceTypes]:
+    def _resolve_operand(self, operand: ValueSourceTypes) -> ResolvedOperand:
         if isinstance(operand, dict) and "source" in operand:
             return self.value_source_resolver.resolve(operand)
 
@@ -96,7 +95,7 @@ class RuleEvaluator:
 
     def get_resolved_operands(
         self, operands: Sequence[ValueSourceTypes]
-    ) -> Generator[Union[bool, Optional[date], ValueSourceTypes], None, None]:
+    ) -> Generator[ResolvedOperand, None, None]:
         for operand in operands:
             yield self._resolve_operand(operand)
 

@@ -3,7 +3,7 @@ from typing import Mapping, Optional, Union
 
 import pytest
 from freezegun import freeze_time
-from mock import Mock
+from mock import MagicMock, Mock
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.answer import Answer
@@ -21,7 +21,7 @@ current_date_as_yyyy_mm_dd = current_date.strftime("%Y-%m-%d")
 
 
 def get_mock_schema():
-    schema = Mock(
+    schema = MagicMock(
         QuestionnaireSchema(
             {
                 "questionnaire_flow": {
@@ -31,6 +31,8 @@ def get_mock_schema():
             }
         )
     )
+    schema.is_answer_dynamic = Mock(return_value=False)
+    schema.is_answer_in_list_collector_repeating_block = Mock(return_value=False)
     return schema
 
 
@@ -52,6 +54,8 @@ def get_rule_evaluator(
         schema = get_mock_schema()
         schema.is_repeating_answer = Mock(return_value=True)
         schema.get_default_answer = Mock(return_value=None)
+        schema.is_answer_dynamic = Mock(return_value=False)
+        schema.is_answer_in_list_collector_repeating_block = Mock(return_value=False)
 
     return RuleEvaluator(
         language=language,

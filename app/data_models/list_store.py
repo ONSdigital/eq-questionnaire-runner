@@ -223,6 +223,10 @@ class ListStore:
 
         return list_item_id
 
+    def delete_list(self, list_name: str) -> None:
+        """Deletes the entire list"""
+        del self._lists[list_name]
+
     def serialize(self) -> list[ListModelDictType]:
         return [list_model.serialize() for list_model in self]
 
