@@ -139,14 +139,14 @@ class TokenGenerator:
 
         return self.generate_token(payload)
 
-    def create_supplementary_data_token(
-        self, schema_name, sds_dataset_id=None, **extra_payload
-    ):
-        payload = PAYLOAD_V2_SUPPLEMENTARY_DATA
+    def create_supplementary_data_token(self, schema_name, **extra_payload):
+        payload = deepcopy(PAYLOAD_V2_SUPPLEMENTARY_DATA)
 
-        if sds_dataset_id:
-            payload = deepcopy(payload)
-            payload["survey_metadata"]["data"]["sds_dataset_id"] = sds_dataset_id
+        # iterate over a copy so items can be deleted
+        for key, value in list(extra_payload.items()):
+            if key in {"sds_dataset_id", "ru_ref", "survey_id"}:
+                payload["survey_metadata"]["data"][key] = value
+                del extra_payload[key]
 
         payload = self._get_payload_with_params(
             schema_name=schema_name, payload=payload, **extra_payload

@@ -2,7 +2,12 @@ from typing import Generator, Mapping, MutableMapping
 
 from flask import url_for
 
-from app.data_models import AnswerStore, ListStore, ProgressStore
+from app.data_models import (
+    AnswerStore,
+    ListStore,
+    ProgressStore,
+    SupplementaryDataStore,
+)
 from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressKeyType
 from app.questionnaire import QuestionnaireSchema
@@ -22,6 +27,7 @@ class Router:
         progress_store: ProgressStore,
         metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
+        supplementary_data_store: SupplementaryDataStore,
     ):
         self._schema = schema
         self._answer_store = answer_store
@@ -29,6 +35,7 @@ class Router:
         self._progress_store = progress_store
         self._metadata = metadata
         self._response_metadata = response_metadata
+        self._supplementary_data_store = supplementary_data_store
 
         self._path_finder = PathFinder(
             self._schema,
@@ -37,6 +44,7 @@ class Router:
             self._progress_store,
             self._metadata,
             self._response_metadata,
+            self._supplementary_data_store,
         )
 
     @property
@@ -565,6 +573,7 @@ class Router:
             progress_store=self._progress_store,
             location=Location(section_id=section_id),
             routing_path_block_ids=routing_path_block_ids,
+            supplementary_data_store=self._supplementary_data_store,
         )
 
         return bool(when_rule_evaluator.evaluate(enabled["when"]))

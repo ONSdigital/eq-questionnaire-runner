@@ -2,7 +2,12 @@ from typing import Generator, MutableMapping, Optional, Union
 
 from flask_babel import lazy_gettext
 
-from app.data_models import AnswerStore, ListStore, ProgressStore
+from app.data_models import (
+    AnswerStore,
+    ListStore,
+    ProgressStore,
+    SupplementaryDataStore,
+)
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import QuestionnaireSchema
 from app.views.contexts import Context
@@ -23,6 +28,7 @@ class PreviewContext(Context):
         progress_store: ProgressStore,
         metadata: Optional[MetadataProxy],
         response_metadata: MutableMapping[str, Union[str, int, list]],
+        supplementary_data_store: SupplementaryDataStore,
     ):
         if not schema.preview_enabled:
             raise PreviewNotEnabledException
@@ -35,6 +41,7 @@ class PreviewContext(Context):
             progress_store,
             metadata,
             response_metadata,
+            supplementary_data_store,
             placeholder_preview_mode=True,
         )
 
@@ -55,6 +62,7 @@ class PreviewContext(Context):
                 answer_store=self._answer_store,
                 list_store=self._list_store,
                 progress_store=self._progress_store,
+                supplementary_data_store=self._supplementary_data_store,
                 metadata=self._metadata,
                 response_metadata=self._response_metadata,
                 section_id=section_id,

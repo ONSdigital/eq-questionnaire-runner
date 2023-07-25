@@ -4,7 +4,12 @@ import pytest
 from mock import MagicMock, Mock
 
 from app.authentication.auth_payload_versions import AuthPayloadVersion
-from app.data_models import AnswerStore, ListStore, ProgressStore
+from app.data_models import (
+    AnswerStore,
+    ListStore,
+    ProgressStore,
+    SupplementaryDataStore,
+)
 from app.data_models.answer import Answer, AnswerDict
 from app.data_models.metadata_proxy import MetadataProxy, NoMetadataException
 from app.questionnaire import Location, QuestionnaireSchema
@@ -49,6 +54,7 @@ def get_value_source_resolver(
     use_default_answer=False,
     escape_answer_values=False,
     progress_store: ProgressStore | None = None,
+    supplementary_data_store: SupplementaryDataStore | None = None,
 ):
     if not schema:
         schema = get_mock_schema()
@@ -71,6 +77,7 @@ def get_value_source_resolver(
         use_default_answer=use_default_answer,
         escape_answer_values=escape_answer_values,
         progress_store=progress_store,
+        supplementary_data_store=supplementary_data_store,
     )
 
 
@@ -784,3 +791,63 @@ def test_progress_values_source_throws_if_no_location_given():
         value_source_resolver.resolve(
             {"source": "progress", "selector": "block", "identifier": "a-block"}
         )
+
+
+@pytest.mark.parametrize("in_repeating_section", [True, False])
+@pytest.mark.parametrize(
+    "value_source,expected_result",
+    [
+        (
+            {"identifier": "guidance"},
+            "Some supplementary guidance about the survey",
+        ),
+        (
+            {"identifier": "note", "selectors": ["title"]},
+            "Volume of total production",
+        ),
+        (
+            {"identifier": "note", "selectors": ["example", "title"]},
+            "Including",
+        ),
+        (
+            {"identifier": "note", "selectors": ["example", "description"]},
+            "Sales across all UK stores",
+        ),
+        (
+            {"identifier": "INVALID"},
+            None,
+        ),
+    ],
+)
+def test_supplementary_data_value_source_non_list_items(
+    supplementary_data_store_with_data,
+    value_source,
+    expected_result,
+    in_repeating_section,
+):
+    list_store = ListStore([{"name": "some-list", "items": get_list_items(3)}])
+    location = (
+        Location(
+            section_id="section",
+            block_id="block-id",
+            list_name="some-list",
+            list_item_id="item-1",
+        )
+        if in_repeating_section
+        else Location(section_id="section", block_id="block-id")
+    )
+    value_source_resolver = get_value_source_resolver(
+        supplementary_data_store=supplementary_data_store_with_data,
+        location=location,
+        list_item_id=location.list_item_id,
+        list_store=list_store,
+    )
+    assert (
+        value_source_resolver.resolve(
+            {
+                "source": "supplementary_data",
+                **value_source,
+            }
+        )
+        == expected_result
+    )

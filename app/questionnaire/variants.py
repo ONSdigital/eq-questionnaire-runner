@@ -6,6 +6,7 @@ from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
+from app.data_models.supplementary_data_store import SupplementaryDataStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.utilities.types import LocationType
@@ -23,6 +24,7 @@ def choose_variant(  # type: ignore
     single_key: str,
     current_location: LocationType,
     progress_store: ProgressStore,
+    supplementary_data_store: SupplementaryDataStore,
 ) -> dict:
     if block.get(single_key):
         # Type ignore: the key passed in will be for a dictionary
@@ -38,6 +40,7 @@ def choose_variant(  # type: ignore
             response_metadata,
             location=current_location,
             progress_store=progress_store,
+            supplementary_data_store=supplementary_data_store,
         )
 
         if when_rule_evaluator.evaluate(when_rules):
@@ -54,6 +57,7 @@ def choose_question_to_display(
     list_store: ListStore,
     current_location: LocationType,
     progress_store: ProgressStore,
+    supplementary_data_store: SupplementaryDataStore,
 ) -> dict:
     return choose_variant(
         block,
@@ -66,6 +70,7 @@ def choose_question_to_display(
         single_key="question",
         current_location=current_location,
         progress_store=progress_store,
+        supplementary_data_store=supplementary_data_store,
     )
 
 
@@ -78,6 +83,7 @@ def choose_content_to_display(
     list_store: ListStore,
     current_location: LocationType,
     progress_store: ProgressStore,
+    supplementary_data_store: SupplementaryDataStore,
 ) -> dict:
     return choose_variant(
         block,
@@ -90,6 +96,7 @@ def choose_content_to_display(
         single_key="content",
         current_location=current_location,
         progress_store=progress_store,
+        supplementary_data_store=supplementary_data_store,
     )
 
 
@@ -102,6 +109,7 @@ def transform_variants(
     list_store: ListStore,
     current_location: LocationType,
     progress_store: ProgressStore,
+    supplementary_data_store: SupplementaryDataStore,
 ) -> ImmutableDict:
     output_block = dict(block)
     if "question_variants" in block:
@@ -114,6 +122,7 @@ def transform_variants(
             list_store,
             current_location,
             progress_store=progress_store,
+            supplementary_data_store=supplementary_data_store,
         )
         output_block.pop("question_variants", None)
         output_block.pop("question", None)
@@ -130,6 +139,7 @@ def transform_variants(
             list_store,
             current_location,
             progress_store=progress_store,
+            supplementary_data_store=supplementary_data_store,
         )
         output_block.pop("content_variants", None)
         output_block.pop("content", None)
@@ -149,6 +159,7 @@ def transform_variants(
                     list_store,
                     current_location,
                     progress_store=progress_store,
+                    supplementary_data_store=supplementary_data_store,
                 )
 
     return ImmutableDict(output_block)

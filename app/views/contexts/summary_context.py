@@ -2,7 +2,7 @@ from typing import MutableMapping
 
 from app.questionnaire.location import Location
 
-from ...data_models import AnswerStore, ListStore, ProgressStore
+from ...data_models import AnswerStore, ListStore, ProgressStore, SupplementaryDataStore
 from ...data_models.metadata_proxy import MetadataProxy
 from ...questionnaire import QuestionnaireSchema
 from .context import Context
@@ -20,6 +20,7 @@ class SummaryContext(Context):
         metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
         view_submitted_response: bool,
+        supplementary_data_store: SupplementaryDataStore,
     ) -> None:
         super().__init__(
             language,
@@ -29,6 +30,7 @@ class SummaryContext(Context):
             progress_store,
             metadata,
             response_metadata,
+            supplementary_data_store,
         )
         self.view_submitted_response = view_submitted_response
         self.summaries: list[dict] = []
@@ -87,6 +89,7 @@ class SummaryContext(Context):
             routing_path=self._router.routing_path(
                 section_id, list_item_id=list_item_id
             ),
+            supplementary_data_store=self._supplementary_data_store,
         )
 
         summary = section_summary_context(

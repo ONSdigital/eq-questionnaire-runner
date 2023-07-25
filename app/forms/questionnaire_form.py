@@ -12,7 +12,13 @@ from flask_wtf import FlaskForm
 from werkzeug.datastructures import ImmutableMultiDict, MultiDict
 from wtforms import validators
 
-from app.data_models import AnswerStore, AnswerValueTypes, ListStore, ProgressStore
+from app.data_models import (
+    AnswerStore,
+    AnswerValueTypes,
+    ListStore,
+    ProgressStore,
+    SupplementaryDataStore,
+)
 from app.data_models.metadata_proxy import MetadataProxy
 from app.forms import error_messages
 from app.forms.field_handlers import DateHandler, FieldHandler, get_field_handler
@@ -51,6 +57,7 @@ class QuestionnaireForm(FlaskForm):
         response_metadata: MutableMapping,
         location: Union[None, Location, RelationshipLocation],
         progress_store: ProgressStore,
+        supplementary_data_store: SupplementaryDataStore,
         **kwargs: Union[MultiDict, Mapping, None],
     ):
         self.schema = schema
@@ -64,6 +71,7 @@ class QuestionnaireForm(FlaskForm):
         self.options_with_detail_answer: dict = {}
         self.question_title = self.question.get("title", "")
         self.progress_store = progress_store
+        self.supplementary_data_store = supplementary_data_store
         self.value_source_resolver = ValueSourceResolver(
             answer_store=self.answer_store,
             schema=self.schema,
@@ -73,6 +81,7 @@ class QuestionnaireForm(FlaskForm):
             location=self.location,
             list_item_id=self.location.list_item_id if self.location else None,
             progress_store=self.progress_store,
+            supplementary_data_store=self.supplementary_data_store,
         )
 
         super().__init__(**kwargs)
@@ -318,6 +327,7 @@ class QuestionnaireForm(FlaskForm):
             list_item_id=list_item_id,
             escape_answer_values=False,
             progress_store=self.progress_store,
+            supplementary_data_store=self.supplementary_data_store,
         )
 
         rule_evaluator = RuleEvaluator(
@@ -328,6 +338,7 @@ class QuestionnaireForm(FlaskForm):
             response_metadata=self.response_metadata,
             location=self.location,
             progress_store=self.progress_store,
+            supplementary_data_store=self.supplementary_data_store,
         )
 
         handler = DateHandler(
@@ -474,6 +485,7 @@ def get_answer_fields(
     response_metadata: MutableMapping,
     location: LocationType | None,
     progress_store: ProgressStore,
+    supplementary_data_store: SupplementaryDataStore,
 ) -> dict[str, FieldHandler]:
     list_item_id = location.list_item_id if location else None
 
@@ -491,6 +503,7 @@ def get_answer_fields(
                 progress_store=progress_store,
                 metadata=metadata,
                 response_metadata=response_metadata,
+                supplementary_data_store=supplementary_data_store,
             ),
             data=question,
         )
@@ -512,6 +525,7 @@ def get_answer_fields(
             routing_path_block_ids=block_ids,
             assess_routing_path=False,
             progress_store=progress_store,
+            supplementary_data_store=supplementary_data_store,
         )
 
     rule_evaluator = RuleEvaluator(
@@ -522,6 +536,7 @@ def get_answer_fields(
         response_metadata=response_metadata,
         location=location,
         progress_store=progress_store,
+        supplementary_data_store=supplementary_data_store,
     )
 
     answer_fields = {}
@@ -620,6 +635,7 @@ def _clear_detail_answer_field(
 
 
 def generate_form(
+    *,
     schema: QuestionnaireSchema,
     question_schema: QuestionSchemaType,
     answer_store: AnswerStore,
@@ -627,6 +643,7 @@ def generate_form(
     metadata: MetadataProxy | None,
     response_metadata: MutableMapping,
     progress_store: ProgressStore,
+    supplementary_data_store: SupplementaryDataStore,
     location: LocationType | None = None,
     data: dict[str, Any] | None = None,
     form_data: MultiDict | None = None,
@@ -648,6 +665,7 @@ def generate_form(
         response_metadata,
         location,
         progress_store=progress_store,
+        supplementary_data_store=supplementary_data_store,
     )
 
     for answer_id, field in answer_fields.items():
@@ -664,4 +682,5 @@ def generate_form(
         data=data,
         formdata=form_data,
         progress_store=progress_store,
+        supplementary_data_store=supplementary_data_store,
     )

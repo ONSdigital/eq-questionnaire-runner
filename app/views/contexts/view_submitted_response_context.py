@@ -64,6 +64,7 @@ def build_view_submitted_response_context(
             metadata=questionnaire_store.metadata,
             response_metadata=questionnaire_store.response_metadata,
             view_submitted_response=True,
+            supplementary_data_store=questionnaire_store.supplementary_data_store,
         )
         context["summary"] = summary_context()
         context["pdf_url"] = url_for("post_submission.get_view_submitted_response_pdf")
