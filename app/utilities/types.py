@@ -9,3 +9,8 @@ LocationType: TypeAlias = Location | RelationshipLocation
 class SectionKey(NamedTuple):
     section_id: str
     list_item_id: str | None
+
+
+class ProgressKeyType(NamedTuple):
+    section_id: str
+    list_item_id: str | None

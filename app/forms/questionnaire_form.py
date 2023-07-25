@@ -26,7 +26,7 @@ from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.utilities.mappings import get_flattened_mapping_values
-from app.utilities.types import LocationType, SectionKey
+from app.utilities.types import LocationType, ProgressKeyType
 
 logger = logging.getLogger(__name__)
 
@@ -477,7 +477,7 @@ def get_answer_fields(
 ) -> dict[str, FieldHandler]:
     list_item_id = location.list_item_id if location else None
 
-    block_ids_by_section: dict[SectionKey, tuple[str, ...]] = {}
+    block_ids_by_section: dict[ProgressKeyType, tuple[str, ...]] = {}
 
     if location and progress_store:
         block_ids_by_section = (

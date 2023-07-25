@@ -3,7 +3,7 @@ from typing import Iterable, Iterator, MutableMapping
 
 from app.data_models.progress import Progress, ProgressDictType
 from app.questionnaire.location import Location
-from app.utilities.types import LocationType, SectionKey
+from app.utilities.types import LocationType, ProgressKeyType
 
 
 @dataclass
@@ -146,7 +146,7 @@ class ProgressStore:
         Updates the completion status of the section or repeating blocks for a list item specified by the key based on the given section id and list item id.
         """
         updated = False
-        section_key = SectionKey(section_id, list_item_id)
+        section_key = ProgressKeyType(section_id, list_item_id)
         if section_key in self._section_and_repeating_blocks_progress:
             if (
                 self._section_and_repeating_blocks_progress[section_key].status
@@ -177,7 +177,7 @@ class ProgressStore:
         specified by the given section_id and list_item_id.
         Returns NOT_STARTED if the progress does not exist
         """
-        progress_key = SectionKey(section_id, list_item_id)
+        progress_key = ProgressKeyType(section_id, list_item_id)
         if progress_key in self._section_and_repeating_blocks_progress:
             return self._section_and_repeating_blocks_progress[progress_key].status
 
@@ -206,7 +206,7 @@ class ProgressStore:
         Return the block ids recorded as part of the progress for the Section or Repeating Blocks
         for list item specified by the given section_id and list_item_id
         """
-        progress_key = SectionKey(section_id, list_item_id)
+        progress_key = ProgressKeyType(section_id, list_item_id)
         if progress_key in self._section_and_repeating_blocks_progress:
             return self._section_and_repeating_blocks_progress[progress_key].block_ids
 
@@ -226,7 +226,7 @@ class ProgressStore:
 
         if location.block_id not in completed_block_ids:
             completed_block_ids.append(location.block_id)  # type: ignore
-            progress_key = SectionKey(section_id, list_item_id)
+            progress_key = ProgressKeyType(section_id, list_item_id)
             if progress_key in self._section_and_repeating_blocks_progress:
                 self._section_and_repeating_blocks_progress[
                     progress_key
@@ -246,7 +246,7 @@ class ProgressStore:
         Removes the block in the given Location, from the progress specified by the
         section id and list item id within the Location if it exists in the store.
         """
-        progress_key = SectionKey(location.section_id, location.list_item_id)
+        progress_key = ProgressKeyType(location.section_id, location.list_item_id)
         if (
             progress_key in self._section_and_repeating_blocks_progress
             and location.block_id
@@ -273,7 +273,7 @@ class ProgressStore:
         *Not efficient.*
         """
         progress_keys_to_delete = [
-            SectionKey(section_id, progress_list_item_id)
+            ProgressKeyType(section_id, progress_list_item_id)
             for section_id, progress_list_item_id in self._section_and_repeating_blocks_progress
             if progress_list_item_id == list_item_id
         ]

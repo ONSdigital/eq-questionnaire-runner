@@ -4,13 +4,12 @@ from flask import url_for
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
-from app.data_models.progress_store import ProgressKeyType
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
-from app.utilities.types import LocationType, SectionKey
+from app.utilities.types import LocationType, ProgressKeyType, SectionKey
 
 
 class Router:
@@ -427,7 +426,9 @@ class Router:
         return self.get_first_incomplete_location_in_questionnaire_url()
 
     def get_section_resume_url(self, routing_path: RoutingPath) -> str:
-        section_key = SectionKey(routing_path.section_id, routing_path.list_item_id)
+        section_key = ProgressKeyType(
+            routing_path.section_id, routing_path.list_item_id
+        )
 
         if section_key in self._progress_store:
             location = self._get_first_incomplete_location_in_section(routing_path)
@@ -519,13 +520,13 @@ class Router:
 
     def get_enabled_section_keys(
         self,
-    ) -> Generator[ProgressKeyType, None, None]:
+    ) -> Generator[SectionKey, None, None]:
         for section_id in self.enabled_section_ids:
             repeating_list = self._schema.get_repeating_list_for_section(section_id)
 
             if repeating_list:
                 for list_item_id in self._list_store[repeating_list]:
-                    section_key: ProgressKeyType = (section_id, list_item_id)
+                    section_key = SectionKey(section_id, list_item_id)
                     yield section_key
             else:
                 section_key = SectionKey(section_id, None)

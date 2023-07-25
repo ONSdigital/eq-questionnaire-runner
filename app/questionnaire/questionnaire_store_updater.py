@@ -7,13 +7,13 @@ from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import AnswerValueTypes, QuestionnaireStore
 from app.data_models.answer_store import Answer
-from app.data_models.progress_store import CompletionStatus, ProgressKeyType
+from app.data_models.progress_store import CompletionStatus
 from app.data_models.relationship_store import RelationshipDict, RelationshipStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import AnswerDependent
 from app.questionnaire.router import Router
-from app.utilities.types import LocationType, SectionKey
+from app.utilities.types import LocationType, ProgressKeyType
 
 DependentSection = namedtuple("DependentSection", "section_id list_item_id is_complete")
 
@@ -313,7 +313,7 @@ class QuestionnaireStoreUpdater:
                     )
 
                 self.dependent_block_id_by_section_key[
-                    SectionKey(dependency.section_id, list_item_id)
+                    ProgressKeyType(dependency.section_id, list_item_id)
                 ].add(dependency.block_id)
 
     def _get_list_item_ids_for_dependency(
