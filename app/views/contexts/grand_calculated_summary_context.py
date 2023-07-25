@@ -85,6 +85,7 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
                 location=self.current_location,
                 language=self._language,
                 progress_store=self._progress_store,
+                supplementary_data_store=self._supplementary_data_store,
                 return_to="grand-calculated-summary",
                 return_to_block_id=return_to_block_id,
                 summary_type="GrandCalculatedSummary",

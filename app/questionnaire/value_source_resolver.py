@@ -5,7 +5,7 @@ from typing import Callable, Iterable, Mapping, MutableMapping, TypeAlias
 from markupsafe import Markup
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import ProgressStore
+from app.data_models import ProgressStore, SupplementaryDataStore
 from app.data_models.answer import (
     AnswerValueEscapedTypes,
     AnswerValueTypes,
@@ -19,7 +19,7 @@ from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.rules import rule_evaluator
 from app.utilities.types import LocationType
 
-ValueSourceTypes: TypeAlias = None | str | int | Decimal | list
+ValueSourceTypes: TypeAlias = None | str | int | Decimal | list | dict
 ValueSourceEscapedTypes: TypeAlias = Markup | list[Markup]
 IntOrDecimal: TypeAlias = int | Decimal
 ResolvedAnswerList: TypeAlias = list[AnswerValueTypes | AnswerValueEscapedTypes | None]
@@ -35,6 +35,7 @@ class ValueSourceResolver:
     location: LocationType | None
     list_item_id: str | None
     progress_store: ProgressStore
+    supplementary_data_store: SupplementaryDataStore
     routing_path_block_ids: Iterable[str] | None = None
     use_default_answer: bool = False
     escape_answer_values: bool = False
@@ -263,6 +264,7 @@ class ValueSourceResolver:
             self.metadata,
             self.response_metadata,
             progress_store=self.progress_store,
+            supplementary_data_store=self.supplementary_data_store,
             location=self.location,
             routing_path_block_ids=self.routing_path_block_ids,
         )
@@ -291,6 +293,15 @@ class ValueSourceResolver:
             else:
                 values.append(value)
         return values
+ 
+    def _resolve_supplementary_data_source(
+        self, value_source: Mapping
+    ) -> ValueSourceTypes:
+        return self.supplementary_data_store.get_data(
+            identifier=value_source["identifier"],
+            selectors=value_source.get("selectors"),
+            list_item_id=value_source.get("list_item_id"),
+        )
 
     @staticmethod
     def get_calculation_operator(
@@ -317,6 +328,7 @@ class ValueSourceResolver:
             "location": self._resolve_location_source,
             "response_metadata": self._resolve_response_metadata_source,
             "progress": self._resolve_progress_value_source,
+            "supplementary_data": self._resolve_supplementary_data_source,
         }
 
         return resolve_method_mapping[source](value_source)

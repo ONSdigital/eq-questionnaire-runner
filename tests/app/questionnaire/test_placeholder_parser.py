@@ -1,6 +1,6 @@
 from mock import Mock
 
-from app.data_models import ProgressStore
+from app.data_models import ProgressStore, SupplementaryDataStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.questionnaire import Location
@@ -43,6 +43,7 @@ def test_metadata_placeholder(mock_renderer, mock_schema, mock_location):
         renderer=mock_renderer,
         progress_store=ProgressStore(),
         location=mock_location,
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_list)
@@ -85,6 +86,7 @@ def test_previous_answer_transform_placeholder(
         renderer=mock_renderer,
         progress_store=ProgressStore(),
         location=mock_location,
+        supplementary_data_store=SupplementaryDataStore(),
     )
     placeholders = parser(placeholder_list)
 
@@ -122,6 +124,7 @@ def test_metadata_transform_placeholder(mock_renderer, mock_schema, mock_locatio
         renderer=mock_renderer,
         progress_store=ProgressStore(),
         location=mock_location,
+        supplementary_data_store=SupplementaryDataStore(),
     )
     placeholders = parser(placeholder_list)
 
@@ -163,6 +166,7 @@ def test_response_metadata_transform_placeholder(
         renderer=mock_renderer,
         progress_store=ProgressStore(),
         location=mock_location,
+        supplementary_data_store=SupplementaryDataStore(),
     )
     placeholders = parser(placeholder_list)
 
@@ -207,6 +211,7 @@ def test_multiple_answer_transform_placeholder(
         renderer=mock_renderer,
         progress_store=ProgressStore(),
         location=mock_location,
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_list)
@@ -246,6 +251,7 @@ def test_first_non_empty_item_transform_placeholder(
         renderer=mock_renderer,
         progress_store=ProgressStore(),
         location=mock_location,
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_list)
@@ -287,6 +293,7 @@ def test_format_list_answer_transform_placeholder(
         renderer=mock_renderer,
         progress_store=ProgressStore(),
         location=mock_location,
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_list)
@@ -331,6 +338,7 @@ def test_placeholder_parser_escapes_answers(mock_renderer, mock_schema, mock_loc
         renderer=mock_renderer,
         progress_store=ProgressStore(),
         location=mock_location,
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_list)
@@ -381,6 +389,7 @@ def test_multiple_metadata_transform_placeholder(
         renderer=mock_renderer,
         progress_store=ProgressStore(),
         location=mock_location,
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_list)
@@ -423,6 +432,7 @@ def test_multiple_metadata_list_transform_placeholder(
         renderer=mock_renderer,
         progress_store=ProgressStore(),
         location=mock_location,
+        supplementary_data_store=SupplementaryDataStore(),
     )
     placeholders = parser(placeholder_list)
 
@@ -463,6 +473,7 @@ def test_checkbox_transform_placeholder(mock_renderer, mock_schema, mock_locatio
         renderer=mock_renderer,
         progress_store=ProgressStore(),
         location=mock_location,
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_list)
@@ -507,6 +518,7 @@ def test_mixed_transform_placeholder(mock_renderer, mock_schema, mock_location):
         renderer=mock_renderer,
         progress_store=ProgressStore(),
         location=mock_location,
+        supplementary_data_store=SupplementaryDataStore(),
     )
     placeholders = parser(placeholder_list)
 
@@ -546,6 +558,7 @@ def test_mixed_transform_placeholder_value(mock_renderer, mock_schema, mock_loca
         renderer=mock_renderer,
         progress_store=ProgressStore(),
         location=mock_location,
+        supplementary_data_store=SupplementaryDataStore(),
     )
     placeholders = parser(placeholder_list)
 
@@ -574,6 +587,7 @@ def test_list_source_count(mock_renderer, mock_schema, mock_location):
         renderer=mock_renderer,
         progress_store=ProgressStore(),
         location=mock_location,
+        supplementary_data_store=SupplementaryDataStore(),
     )
     placeholders = parser(placeholder_list)
 
@@ -613,6 +627,7 @@ def test_list_source_count_in_transform(mock_renderer, mock_schema, mock_locatio
         renderer=mock_renderer,
         progress_store=ProgressStore(),
         location=mock_location,
+        supplementary_data_store=SupplementaryDataStore(),
     )
     placeholders = parser(placeholder_list)
 
@@ -659,6 +674,7 @@ def test_chain_transform_placeholder(mock_renderer, mock_schema, mock_location):
         renderer=mock_renderer,
         progress_store=ProgressStore(),
         location=mock_location,
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_list)
@@ -705,6 +721,7 @@ def test_placeholder_resolves_answer_value_based_on_first_item_in_list(
         renderer=mock_renderer,
         progress_store=ProgressStore(),
         location=mock_location,
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_list)
@@ -737,6 +754,7 @@ def test_placeholder_resolves_list_item_value_based_on_first_item_in_list(
         renderer=mock_renderer,
         progress_store=ProgressStore(),
         location=mock_location,
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_list)
@@ -778,6 +796,7 @@ def test_placeholder_resolves_same_name_items(
         list_item_id="abc123",
         progress_store=ProgressStore(),
         location=mock_location,
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_list)
@@ -884,6 +903,7 @@ def test_placeholder_resolves_name_is_duplicate_chain(
         renderer=mock_renderer,
         progress_store=ProgressStore(),
         location=mock_location,
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_transforms)
@@ -901,6 +921,7 @@ def test_placeholder_resolves_name_is_duplicate_chain(
         renderer=mock_renderer,
         progress_store=ProgressStore(),
         location=mock_location,
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_transforms)
@@ -1003,6 +1024,7 @@ def test_placeholder_resolves_list_has_items_chain(
         renderer=mock_renderer,
         progress_store=ProgressStore(),
         location=mock_location,
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_transforms)
@@ -1020,6 +1042,7 @@ def test_placeholder_resolves_list_has_items_chain(
         renderer=mock_renderer,
         progress_store=ProgressStore(),
         location=mock_location,
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_transforms)
@@ -1054,6 +1077,7 @@ def test_placeholder_default_value(default_placeholder_value_schema, mock_render
         renderer=mock_renderer,
         progress_store=ProgressStore(),
         location=location,
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_list)
@@ -1137,6 +1161,7 @@ def test_placeholder_parser_calculated_summary_dependencies_cache(
         renderer=mock_renderer,
         progress_store=progress_store,
         location=location,
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholder_1 = placeholder_parser(placeholder_list=placeholder_list_1)

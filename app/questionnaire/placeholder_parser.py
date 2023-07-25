@@ -11,7 +11,7 @@ from typing import (
     TypeAlias,
 )
 
-from app.data_models import ProgressStore
+from app.data_models import ProgressStore, SupplementaryDataStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
@@ -55,6 +55,7 @@ class PlaceholderParser:
         schema: QuestionnaireSchema,
         renderer: PlaceholderRenderer,
         progress_store: ProgressStore,
+        supplementary_data_store: SupplementaryDataStore,
         list_item_id: str | None = None,
         location: LocationType | None = None,
         placeholder_preview_mode: bool | None = False,
@@ -71,6 +72,7 @@ class PlaceholderParser:
         self._schema = schema
         self._location = location
         self._progress_store = progress_store
+        self._supplementary_data_store = supplementary_data_store
         self._placeholder_preview_mode = placeholder_preview_mode
 
         self._path_finder = pf.PathFinder(
@@ -80,6 +82,7 @@ class PlaceholderParser:
             progress_store=self._progress_store,
             metadata=self._metadata,
             response_metadata=self._response_metadata,
+            supplementary_data_store=self._supplementary_data_store,
         )
 
         self._value_source_resolver = self._get_value_source_resolver()
@@ -132,6 +135,7 @@ class PlaceholderParser:
             assess_routing_path=assess_routing_path,
             routing_path_block_ids=routing_path_block_ids,
             progress_store=self._progress_store,
+            supplementary_data_store=self._supplementary_data_store,
         )
 
     def _parse_placeholder(self, placeholder: Mapping) -> Any:
