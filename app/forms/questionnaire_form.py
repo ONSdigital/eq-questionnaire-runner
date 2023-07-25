@@ -503,6 +503,7 @@ def get_answer_fields(
                     progress_store=progress_store,
                     metadata=metadata,
                     response_metadata=response_metadata,
+                    supplementary_data_store=supplementary_data_store,
                 ),
                 data=question,
                 ignore_keys=["when"],

@@ -1269,6 +1269,7 @@ def test_placeholder_dependencies_cache(mocker, mock_renderer):
         renderer=mock_renderer,
         progress_store=progress_store,
         location=location,
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholder_1 = placeholder_parser(placeholder_list=placeholder_list_1)
