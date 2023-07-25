@@ -17,7 +17,7 @@ import SupermarketTransportPage from "../../../generated_pages/new_calculated_su
 import ThankYouPage from "../../../base_pages/thank-you.page";
 import ViewSubmittedResponsePage from "../../../generated_pages/supplementary_data/view-submitted-response.page";
 
-// TODO this test currently only runs locally, remove the .skip once the mock endpoint is running in a container
+// :TODO: this test currently only runs locally, remove the .skip once the mock endpoint is running in a container
 describe.skip("Using supplementary data non list items", () => {
   const summaryTitles = ".ons-summary__item-title";
   const summaryValues = ".ons-summary__values";
