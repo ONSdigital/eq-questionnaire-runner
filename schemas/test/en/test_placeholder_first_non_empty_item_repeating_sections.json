@@ -171,8 +171,8 @@
             ]
         },
         {
-            "id": "repeating-section",
-            "title": "Repeating Section",
+            "id": "list-collector-section",
+            "title": "List Collector Section",
             "summary": {
                 "show_on_completion": true,
                 "items": [
@@ -388,6 +388,136 @@
                                         }
                                     ]
                                 }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "repeating-section",
+            "title": "Personal Details",
+            "summary": { "show_on_completion": true },
+            "repeat": {
+                "for_list": "people",
+                "title": {
+                    "text": "{person_name}",
+                    "placeholders": [
+                        {
+                            "placeholder": "person_name",
+                            "transforms": [
+                                {
+                                    "transform": "concatenate_list",
+                                    "arguments": {
+                                        "list_to_concatenate": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "first-name"
+                                            },
+                                            {
+                                                "source": "answers",
+                                                "identifier": "last-name"
+                                            }
+                                        ],
+                                        "delimiter": " "
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "groups": [
+                {
+                    "id": "personal-details-group",
+                    "title": "Personal Details",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "personal-details-block",
+                            "question": {
+                                "type": "General",
+                                "id": "personal-details-question",
+                                "title": {
+                                    "text": "Between {date_entry_answer_from} to {date_entry_answer_to} what did you drink the most?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "date_entry_answer_from",
+                                            "transforms": [
+                                                {
+                                                    "transform": "first_non_empty_item",
+                                                    "arguments": {
+                                                        "items": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "date-entry-answer-from"
+                                                            },
+                                                            {
+                                                                "source": "metadata",
+                                                                "identifier": "ref_p_start_date"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "previous_transform"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "placeholder": "date_entry_answer_to",
+                                            "transforms": [
+                                                {
+                                                    "transform": "first_non_empty_item",
+                                                    "arguments": {
+                                                        "items": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "date-entry-answer-to"
+                                                            },
+                                                            {
+                                                                "source": "metadata",
+                                                                "identifier": "ref_p_end_date"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "previous_transform"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "personal-details-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Coffee",
+                                                "value": "Coffee"
+                                            },
+                                            {
+                                                "label": "Tea",
+                                                "value": "Tea"
+                                            }
+                                        ],
+                                        "type": "Checkbox"
+                                    }
+                                ]
                             }
                         }
                     ]
