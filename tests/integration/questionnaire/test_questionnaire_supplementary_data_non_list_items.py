@@ -4,11 +4,12 @@ from tests.integration.integration_test_case import IntegrationTestCase
 class TestQuestionnaireSupplementaryDataNonListItems(IntegrationTestCase):
     def test_supplementary_data_non_list_items(self):
         self.launchSupplementaryDataSurvey(
-            "test_supplementary_data_all_variations",
+            "test_supplementary_data",
             sds_dataset_id="693dc252-2e90-4412-bd9c-c4d953e36fcd",
             ru_ref="12346789012A",
             survey_id="123",
         )
+        self.post()
         self.assertInBody("You are completing this survey for Lidl")
         self.assertInBody(
             "If the company details or structure have changed contact us on 01174564561"

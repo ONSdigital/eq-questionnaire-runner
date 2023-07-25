@@ -793,6 +793,7 @@ def test_progress_values_source_throws_if_no_location_given():
         )
 
 
+@pytest.mark.parametrize("in_repeating_section", [True, False])
 @pytest.mark.parametrize(
     "value_source,expected_result",
     [
@@ -819,10 +820,27 @@ def test_progress_values_source_throws_if_no_location_given():
     ],
 )
 def test_supplementary_data_value_source_non_list_items(
-    supplementary_data_store_with_data, value_source, expected_result
+    supplementary_data_store_with_data,
+    value_source,
+    expected_result,
+    in_repeating_section,
 ):
+    list_store = ListStore([{"name": "some-list", "items": get_list_items(3)}])
+    location = (
+        Location(
+            section_id="section",
+            block_id="block-id",
+            list_name="some-list",
+            list_item_id="item-1",
+        )
+        if in_repeating_section
+        else Location(section_id="section", block_id="block-id")
+    )
     value_source_resolver = get_value_source_resolver(
-        supplementary_data_store=supplementary_data_store_with_data
+        supplementary_data_store=supplementary_data_store_with_data,
+        location=location,
+        list_item_id=location.list_item_id,
+        list_store=list_store,
     )
     assert (
         value_source_resolver.resolve(

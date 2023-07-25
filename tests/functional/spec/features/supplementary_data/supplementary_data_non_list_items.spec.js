@@ -1,29 +1,36 @@
 import HubPage from "../../../base_pages/hub.page";
-import IntroductionBlockPage from "../../../generated_pages/supplementary_data_all_variations/introduction-block.page.js";
-import Section1Page from "../../../generated_pages/supplementary_data_all_variations/section-1-summary.page.js";
-import EmailBlockPage from "../../../generated_pages/supplementary_data_all_variations/email-block.page.js";
-import NewEmailPage from "../../../generated_pages/supplementary_data_all_variations/new-email.page.js";
-import SalesBreakdownBlockPage from "../../../generated_pages/supplementary_data_all_variations/sales-breakdown-block.page.js";
-import CalculatedSummarySalesPage from "../../../generated_pages/supplementary_data_all_variations/calculated-summary-sales.page.js";
-import Section1InterstitialPage from "../../../generated_pages/supplementary_data_all_variations/section-1-interstitial.page.js";
-import TradingPage from "../../../generated_pages/supplementary_data_all_variations/trading.page";
-import ListCollectorPage from "../../../generated_pages/supplementary_data_all_variations/list-collector.page";
-import AnyEmployeesPage from "../../../generated_pages/supplementary_data_all_variations/any-employees.page";
-import Section2Page from "../../../generated_pages/supplementary_data_all_variations/section-2-summary.page.js";
-import AddEmployeePage from "../../../generated_pages/supplementary_data_all_variations/list-collector-add.page.js";
-import Section3Page from "../../../generated_pages/supplementary_data_all_variations/section-3-summary.page.js";
-import LengthOfEmploymentPage from "../../../generated_pages/supplementary_data_all_variations/length-of-employment.page.js";
+import IntroductionBlockPage from "../../../generated_pages/supplementary_data/introduction-block.page.js";
+import Section1Page from "../../../generated_pages/supplementary_data/section-1-summary.page.js";
+import EmailBlockPage from "../../../generated_pages/supplementary_data/email-block.page.js";
+import NewEmailPage from "../../../generated_pages/supplementary_data/new-email.page.js";
+import SalesBreakdownBlockPage from "../../../generated_pages/supplementary_data/sales-breakdown-block.page.js";
+import CalculatedSummarySalesPage from "../../../generated_pages/supplementary_data/calculated-summary-sales.page.js";
+import Section1InterstitialPage from "../../../generated_pages/supplementary_data/section-1-interstitial.page.js";
+import TradingPage from "../../../generated_pages/supplementary_data/trading.page";
+import ListCollectorPage from "../../../generated_pages/supplementary_data/list-collector.page";
+import AnyEmployeesPage from "../../../generated_pages/supplementary_data/any-employees.page";
+import Section2Page from "../../../generated_pages/supplementary_data/section-2-summary.page.js";
+import AddEmployeePage from "../../../generated_pages/supplementary_data/list-collector-add.page.js";
+import Section3Page from "../../../generated_pages/supplementary_data/section-3-summary.page.js";
+import LengthOfEmploymentPage from "../../../generated_pages/supplementary_data/length-of-employment.page.js";
 import SupermarketTransportPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/supermarket-transport.page";
+import ThankYouPage from "../../../base_pages/thank-you.page";
+import ViewSubmittedResponsePage from "../../../generated_pages/supplementary_data/view-submitted-response.page";
 
 describe("Using supplementary data non list items", () => {
+  const summaryTitles = ".ons-summary__item-title";
+  const summaryValues = ".ons-summary__values";
+  const summaryRowTitles = ".ons-summary__row-title";
+
   before("Starting the survey", async () => {
-    await browser.openQuestionnaire("test_supplementary_data_all_variations.json", {
+    await browser.openQuestionnaire("test_supplementary_data.json", {
       version: "v2",
       sdsDatasetId: "c067f6de-6d64-42b1-8b02-431a3486c178",
     });
   });
 
   it("Given I launch a survey using supplementary data, When I begin the introduction block, Then I see the supplementary data piped in", async () => {
+    await $(HubPage.submit()).click();
     await expect(await $(IntroductionBlockPage.businessDetailsContent()).getText()).to.contain("You are completing this survey for Tesco");
     await expect(await $(IntroductionBlockPage.businessDetailsContent()).getText()).to.contain(
       "If the company details or structure have changed contact us on 01171231231"
@@ -126,5 +133,32 @@ describe("Using supplementary data non list items", () => {
     await $(LengthOfEmploymentPage.submit()).click();
     await expect(await $(Section3Page.lengthEmploymentQuestion()).getText()).to.contain("When did Jane Doe start working for Tesco?");
     await expect(await $(Section3Page.employmentStart()).getText()).to.contain("1 January 1990");
+  });
+
+  it("Given I can view my response after submission, When I submit the survey, Then I see the values I've entered and correct rendering with supplementary data", async () => {
+    await $(Section3Page.submit()).click();
+    await $(HubPage.submit()).click();
+    await $(LengthOfEmploymentPage.day()).setValue(5);
+    await $(LengthOfEmploymentPage.month()).setValue(6);
+    await $(LengthOfEmploymentPage.year()).setValue(2011);
+    await $(LengthOfEmploymentPage.submit()).click();
+    await $(Section3Page.submit()).click();
+    await $(HubPage.submit()).click();
+    await $(ThankYouPage.savePrintAnswersLink()).click();
+    await expect(await $(ViewSubmittedResponsePage.emailQuestion()).getText()).to.contain("Is contact@tesco.org still the correct contact email for Tesco?");
+    await expect(await $(ViewSubmittedResponsePage.sameEmailAnswer()).getText()).to.contain("No");
+    await expect(await $(ViewSubmittedResponsePage.newEmailQuestion()).getText()).to.contain("What is the new contact email for Tesco?");
+    await expect(await $(ViewSubmittedResponsePage.newEmailAnswer()).getText()).to.contain("new@tesco.com");
+    await expect(await $(ViewSubmittedResponsePage.tradingQuestion()).getText()).to.contain("When did Tesco begin trading?");
+    await expect(await $(ViewSubmittedResponsePage.tradingAnswer()).getText()).to.contain("Sunday 30 November 1947");
+    await expect(await $$(summaryRowTitles)[0].getText()).to.contain("How much of the £555,000.00 total UK sales was from Bristol and London?");
+    await expect(await $(ViewSubmittedResponsePage.salesBristolAnswer()).getText()).to.contain("£333,000.00");
+    await expect(await $(ViewSubmittedResponsePage.salesLondonAnswer()).getText()).to.contain("£111,000.00");
+    await expect(await $(ViewSubmittedResponsePage.group3Content(0)).$$(summaryTitles)[0].getText()).to.equal("When did Jane Doe start working for Tesco?");
+    await expect(await $(ViewSubmittedResponsePage.group3Content(0)).$$(summaryValues)[0].getText()).to.equal("1 January 1990");
+    await expect(await $(ViewSubmittedResponsePage.group3Content("0-1")).$$(summaryTitles)[0].getText()).to.equal(
+      "When did John Smith start working for Tesco?"
+    );
+    await expect(await $(ViewSubmittedResponsePage.group3Content("0-1")).$$(summaryValues)[0].getText()).to.equal("5 June 2011");
   });
 });
