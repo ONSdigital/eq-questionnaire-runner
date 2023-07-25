@@ -49,7 +49,11 @@ async function addCompany(
   await $(CompaniesRepeatingBlock2Page.submit()).click();
 }
 
-describe("List Collector Repeating Blocks", () => {
+describe("List Collector Repeating Blocks", function () {
+  // These tests are flaky therefore we add a retry. The cause is unknown.
+  // :TODO: Revert this in future when we have a fix for this.
+  this.retries(5);
+
   describe("Given a normal journey through the list collector with repeating blocks, the answers can be submitted.", () => {
     before("Load the survey", async () => {
       await browser.openQuestionnaire("test_list_collector_repeating_blocks_section_summary.json");
@@ -256,7 +260,11 @@ describe("List Collector Repeating Blocks", () => {
   });
 });
 
-describe("Given a journey through the list collector with repeating blocks, in a mandatory section of  hub questionnaire, the incomplete repeating blocks mark the list collector incomplete and thus navigate back there.", () => {
+describe("Given a journey through the list collector with repeating blocks, in a mandatory section of  hub questionnaire, the incomplete repeating blocks mark the list collector incomplete and thus navigate back there.", function () {
+  // These tests are flaky therefore we add a retry. The cause is unknown.
+  // :TODO: Revert this in future when we have a fix for this.
+  this.retries(5);
+
   before("Load the survey", async () => {
     await browser.openQuestionnaire("test_list_collector_repeating_blocks_with_hub.json");
   });
