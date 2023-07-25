@@ -1,6 +1,10 @@
+import pytest
+
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
+# TODO this test currently only runs locally, remove the skip once the mock endpoint is running in a container
+@pytest.mark.skip("This test can only run locally at the moment")
 class TestQuestionnaireSupplementaryDataNonListItems(IntegrationTestCase):
     def test_supplementary_data_non_list_items(self):
         self.launchSupplementaryDataSurvey(
