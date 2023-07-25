@@ -7,7 +7,6 @@ import AddPersonPage from "../generated_pages/placeholder_first_non_empty_item_r
 import ListCollectorPage from "../generated_pages/placeholder_first_non_empty_item_repeating_sections/list-collector.page";
 import PersonalDetailsBlockPage from "../generated_pages/placeholder_first_non_empty_item_repeating_sections/personal-details-block.page";
 import HubPage from "../base_pages/hub.page.js";
-import { expect } from "chai";
 
 describe("First Non Empty Item Transform", () => {
   before("Launch survey", async () => {
