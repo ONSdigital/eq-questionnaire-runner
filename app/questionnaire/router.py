@@ -9,7 +9,7 @@ from app.questionnaire.location import Location
 from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
-from app.utilities.types import LocationType, ProgressKeyType, SectionKey
+from app.utilities.types import LocationType, SectionKey
 
 
 class Router:
@@ -426,9 +426,7 @@ class Router:
         return self.get_first_incomplete_location_in_questionnaire_url()
 
     def get_section_resume_url(self, routing_path: RoutingPath) -> str:
-        section_key = ProgressKeyType(
-            routing_path.section_id, routing_path.list_item_id
-        )
+        section_key = SectionKey(routing_path.section_id, routing_path.list_item_id)
 
         if section_key in self._progress_store:
             location = self._get_first_incomplete_location_in_section(routing_path)

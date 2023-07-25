@@ -9,7 +9,7 @@ from app.data_models import ProgressStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.questionnaire_schema import get_sources_for_type_from_data
 from app.utilities.mappings import get_flattened_mapping_values
-from app.utilities.types import LocationType, ProgressKeyType
+from app.utilities.types import LocationType, SectionKey
 
 if TYPE_CHECKING:
     from app.questionnaire.path_finder import PathFinder  # pragma: no cover
@@ -25,8 +25,8 @@ def get_routing_path_block_ids_by_section_for_dependent_sections(
     sections_to_ignore: list | None = None,
     ignore_keys: list[str] | None = None,
     dependent_sections: dict[str, set[str]] | dict[str, OrderedSet[str]],
-) -> dict[ProgressKeyType, tuple[str, ...]]:
-    block_ids_by_section: dict[ProgressKeyType, tuple[str, ...]] = {}
+) -> dict[SectionKey, tuple[str, ...]]:
+    block_ids_by_section: dict[SectionKey, tuple[str, ...]] = {}
     sections_to_ignore = sections_to_ignore or []
 
     dependents = (
@@ -43,7 +43,7 @@ def get_routing_path_block_ids_by_section_for_dependent_sections(
     for section in dependents:
         # Dependent sections other than the current section cannot be a repeating section
         list_item_id = location.list_item_id if section == location.section_id else None
-        key = ProgressKeyType(section, list_item_id)
+        key = SectionKey(section, list_item_id)
 
         if key in sections_to_ignore:
             continue
@@ -64,7 +64,7 @@ def get_routing_path_block_ids_by_section_for_calculated_summary_dependencies(
     sections_to_ignore: list | None = None,
     ignore_keys: list[str] | None = None,
     schema: QuestionnaireSchema,
-) -> dict[ProgressKeyType, tuple[str, ...]]:
+) -> dict[SectionKey, tuple[str, ...]]:
     dependent_sections = schema.calculated_summary_section_dependencies_by_block[
         location.section_id
     ]

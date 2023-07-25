@@ -13,7 +13,7 @@ from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import AnswerDependent
 from app.questionnaire.router import Router
-from app.utilities.types import LocationType, ProgressKeyType
+from app.utilities.types import LocationType, SectionKey
 
 DependentSection = namedtuple("DependentSection", "section_id list_item_id is_complete")
 
@@ -41,7 +41,7 @@ class QuestionnaireStoreUpdater:
         self._router = router
 
         self.dependent_block_id_by_section_key: Mapping[
-            ProgressKeyType, set[str]
+            SectionKey, set[str]
         ] = defaultdict(set)
         self.dependent_sections: set[DependentSection] = set()
 
@@ -313,7 +313,7 @@ class QuestionnaireStoreUpdater:
                     )
 
                 self.dependent_block_id_by_section_key[
-                    ProgressKeyType(dependency.section_id, list_item_id)
+                    SectionKey(dependency.section_id, list_item_id)
                 ].add(dependency.block_id)
 
     def _get_list_item_ids_for_dependency(
@@ -537,7 +537,7 @@ class QuestionnaireStoreUpdater:
 
     def started_section_keys(
         self, section_ids: Iterable[str] | None = None
-    ) -> list[ProgressKeyType]:
+    ) -> list[SectionKey]:
         return self._progress_store.started_section_and_repeating_blocks_progress_keys(
             section_ids
         )
