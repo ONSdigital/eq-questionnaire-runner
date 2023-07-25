@@ -293,7 +293,7 @@ class ValueSourceResolver:
             else:
                 values.append(value)
         return values
- 
+
     def _resolve_supplementary_data_source(
         self, value_source: Mapping
     ) -> ValueSourceTypes:
