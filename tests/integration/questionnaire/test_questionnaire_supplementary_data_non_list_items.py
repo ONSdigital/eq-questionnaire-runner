@@ -15,10 +15,10 @@ class TestQuestionnaireSupplementaryDataNonListItems(IntegrationTestCase):
         )
 
         # as there is no supplementary guidance, the list should only contain the two static pieces.
-        self.guidance_list_items = (
+        guidance_list_items = (
             self.getHtmlSoup().find("div", {"id": "business-details"}).findAll("li")
         )
-        assert len(self.guidance_list_items) == 2
+        assert len(guidance_list_items) == 2
         self.post()
         self.post()
         self.post({"same-email-answer": "Yes"})
