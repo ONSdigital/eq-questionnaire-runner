@@ -85,7 +85,17 @@ describe("Using supplementary data non list items", () => {
     await expect(await $("body").getText()).to.have.string("Bristol sales: £333,000.00");
     await expect(await $("body").getText()).to.have.string("London sales: £111,000.00");
     await expect(await $("body").getText()).to.have.string("Sum of Bristol and London sales: £444,000.00");
+  });
+
+  it("Given I have a section summary enabled, When I reach the section summary, Then I see it rendered correctly with supplementary data", async () => {
     await $(Section1InterstitialPage.submit()).click();
+    await expect(await $(Section1Page.emailQuestion()).getText()).to.contain("Is contact@tesco.org still the correct contact email for Tesco?");
+    await expect(await $(Section1Page.sameEmailAnswer()).getText()).to.contain("Yes");
+    await expect(await $(Section1Page.tradingQuestion()).getText()).to.contain("When did Tesco begin trading?");
+    await expect(await $(Section1Page.tradingAnswer()).getText()).to.contain("Sunday 30 November 1947");
+    await expect(await $$(summaryRowTitles)[0].getText()).to.contain("How much of the £555,000.00 total UK sales was from Bristol and London?");
+    await expect(await $(Section1Page.salesBristolAnswer()).getText()).to.contain("£333,000.00");
+    await expect(await $(Section1Page.salesLondonAnswer()).getText()).to.contain("£111,000.00");
   });
 
   it("Given I change the email for the company, When I return to the interstitial block, Then I see the email has updated", async () => {
