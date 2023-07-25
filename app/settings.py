@@ -146,6 +146,8 @@ SURVEY_TYPE = os.getenv("SURVEY_TYPE", "business")
 
 SDS_API_BASE_URL = os.getenv("SDS_API_BASE_URL")
 
+OIDC_TOKEN_BACKEND = os.getenv("OIDC_TOKEN_BACKEND")
+
 ACCOUNT_SERVICE_BASE_URL = os.getenv(
     "ACCOUNT_SERVICE_BASE_URL", "https://surveys.ons.gov.uk"
 )
