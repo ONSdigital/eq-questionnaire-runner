@@ -257,7 +257,7 @@ def test_format_duration(duration, formatted_duration, app):
         ({"decimal_places": 5, "minimum": {"value": 999999999999999}}, 20),
         ({"decimal_places": 6, "minimum": {"value": 999999999999999}}, 30),
         (
-            {"maximum": {"value": 51}},
+            {"maximum": {"value": 123456789012345678901123456789012345678901234567890}},
             None,
         ),
         ({"maximum": {"value": {"identifier": "set-maximum", "source": "answers"}}}, 5),
