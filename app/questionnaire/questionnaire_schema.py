@@ -83,8 +83,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         ] = defaultdict(set)
         self._language_code = language_code
         self._questionnaire_json = questionnaire_json
-        self._min_and_max_map: ImmutableDict[str, dict[str, int]] = defaultdict(
-            lambda: defaultdict(dict[str, dict[str, int]])
+        self._min_and_max_map: dict[str, dict[str, int]] = defaultdict(
+            lambda: defaultdict(int)
         )
         self._list_names_by_list_repeating_block_id: dict[str, str] = {}
         self._repeating_block_answer_ids: set[str] = set()
