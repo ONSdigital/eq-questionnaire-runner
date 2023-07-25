@@ -1,10 +1,14 @@
+# pylint: disable=redefined-outer-name
 from datetime import datetime, timedelta, timezone
 
 import pytest
+from mock.mock import Mock
 
+from app.data_models import ListStore, QuestionnaireStore
 from app.data_models.answer_store import Answer
 from app.data_models.progress_store import CompletionStatus
 from app.data_models.session_store import SessionStore
+from app.data_models.supplementary_data_store import SupplementaryDataStore
 from app.storage import storage_encryption
 from tests.app.parser.conftest import get_response_expires_at
 
@@ -96,6 +100,7 @@ def basic_input():
                 "block_ids": ["a-test-block"],
             }
         ],
+        "SUPPLEMENTARY_DATA": {"data": {}, "list_mappings": {}},
         "RESPONSE_METADATA": {"test-meta": "test"},
     }
 
@@ -154,3 +159,73 @@ def app_session_store_encoded(mocker, session_data):
         store.user_id, store.user_ik, store.pepper
     )
     return store
+
+
+@pytest.fixture
+def supplementary_data():
+    return {
+        "schema_version": "v1",
+        "identifier": "12346789012A",
+        "note": {
+            "title": "Volume of total production",
+        },
+        "items": {
+            "products": [
+                {
+                    "identifier": "89929001",
+                    "name": "Articles and equipment for sports or outdoor games",
+                    "cn_codes": "2504 + 250610 + 2512 + 2519 + 2524",
+                    "value_sales": {
+                        "answer_code": "89929001",
+                        "label": "Value of sales",
+                    },
+                },
+                {
+                    "identifier": "201630601",
+                    "name": "Other Minerals",
+                    "cn_codes": "5908 + 5910 + 591110 + 591120 + 591140",
+                    "value_sales": {
+                        "answer_code": "201630601",
+                        "label": "Value of sales",
+                    },
+                },
+            ]
+        },
+    }
+
+
+@pytest.fixture
+def supplementary_data_list_mappings():
+    return {
+        "products": {
+            "89929001": "item-1",
+            "201630601": "item-2",
+        },
+    }
+
+
+@pytest.fixture
+def supplementary_data_store_with_data(
+    supplementary_data, supplementary_data_list_mappings
+):
+    return SupplementaryDataStore(
+        supplementary_data=supplementary_data,
+        list_mappings=supplementary_data_list_mappings,
+    )
+
+
+@pytest.fixture
+def questionnaire_store_with_supplementary_data(
+    questionnaire_store, supplementary_data_store_with_data
+):
+    questionnaire_store = QuestionnaireStore(questionnaire_store.storage)
+    questionnaire_store.supplementary_data_store = supplementary_data_store_with_data
+    questionnaire_store.list_store = ListStore(
+        [{"items": ["item-1", "item-2"], "name": "products"}]
+    )
+    # Mock the identifier generation in list store so the ids are item-1, item-2, ...
+    # pylint: disable=protected-access
+    questionnaire_store.list_store._generate_identifier = Mock(
+        side_effect=(f"item-{i}" for i in range(3, 100))
+    )
+    return questionnaire_store

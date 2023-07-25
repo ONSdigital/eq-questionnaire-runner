@@ -28,7 +28,9 @@
     {%- if item.list -%}
         <ul>
             {%- for list_item in item.list -%}
+              {%- if list_item|length > 0 -%}
                 <li>{{ list_item }}</li>
+              {%- endif -%}
             {% endfor %}
         </ul>
     {% endif %}

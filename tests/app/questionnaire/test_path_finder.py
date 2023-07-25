@@ -426,7 +426,9 @@ def test_remove_answer_and_block_if_routing_backwards(list_store):
     assert len(path_finder.answer_store) == 2
     assert not path_finder.answer_store.get_answer("confirm-zero-employees-answer")
     assert (
-        path_finder.progress_store.get_section_status(section_id="default-section")
+        path_finder.progress_store.get_section_or_repeating_blocks_progress_status(
+            section_id="default-section"
+        )
         == CompletionStatus.IN_PROGRESS
     )
 
@@ -482,7 +484,8 @@ def test_remove_answer_and_block_if_routing_backwards(list_store):
             "primary-person",
             ["name-block", "age"],
         ),
-        (  # Answering 'Yes' to the skip age question and the skip-confirmation question, but then changing you answer for the skip age question to 'No'
+        (
+            # Answering 'Yes' to the skip age question and the skip-confirmation question, but then changing you answer for the skip age question to 'No'
             # means because confirmation is not longer on the path in primary-person you will be asked your age, name and why you didn't confirm skipping
             "No",
             "Yes",

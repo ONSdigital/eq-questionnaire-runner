@@ -22,6 +22,11 @@ from app.authentication.no_token_exception import NoTokenException
 from app.globals import get_metadata
 from app.helpers.language_helper import handle_language
 from app.helpers.template_helpers import get_survey_config, render_template
+from app.services.supplementary_data import (
+    InvalidSupplementaryData,
+    MissingSupplementaryDataKey,
+    SupplementaryDataRequestFailed,
+)
 from app.settings import ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.submitter.previously_submitted_exception import PreviouslySubmittedException
 from app.submitter.submission_failed import SubmissionFailedException
@@ -187,6 +192,18 @@ def too_many_feedback_requests(
         heading=title,
         contact_us_message=contact_us_message,
     )
+
+
+@errors_blueprint.app_errorhandler(SupplementaryDataRequestFailed)
+@errors_blueprint.app_errorhandler(MissingSupplementaryDataKey)
+@errors_blueprint.app_errorhandler(InvalidSupplementaryData)
+def supplementary_data_request_failed(
+    exception: SupplementaryDataRequestFailed
+    | MissingSupplementaryDataKey
+    | InvalidSupplementaryData,
+) -> tuple[str, int]:
+    log_exception(exception, 500)
+    return _render_error_page(500, template=500)
 
 
 @errors_blueprint.app_errorhandler(SubmissionFailedException)

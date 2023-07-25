@@ -7,11 +7,12 @@ from google.resumable_media import InvalidResponse
 from mock import MagicMock
 from requests import Response
 
-from app.authentication.auth_payload_version import AuthPayloadVersion
-from app.data_models import QuestionnaireStore
+from app.authentication.auth_payload_versions import AuthPayloadVersion
+from app.data_models import ListStore, QuestionnaireStore
 from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore
 from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.supplementary_data_store import SupplementaryDataStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.settings import ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.submitter import RabbitMQSubmitter
@@ -86,6 +87,7 @@ def get_questionnaire_store(version):
     store = QuestionnaireStore(storage)
 
     store.answer_store = AnswerStore()
+    store.supplementary_data_store = SupplementaryDataStore()
     store.answer_store.add_or_update(user_answer)
     store.metadata = METADATA_V2 if version is AuthPayloadVersion.V2 else METADATA_V1
     store.response_metadata = {"started_at": "2018-07-04T14:49:33.448608+00:00"}
@@ -161,3 +163,72 @@ def gcs_blob_with_retry(mocker):
     )
 
     return blob
+
+
+@pytest.fixture
+def repeating_blocks_answer_store():
+    return AnswerStore(
+        [
+            {"answer_id": "responsible-party-answer", "value": "Yes"},
+            {"answer_id": "any-companies-or-branches-answer", "value": "Yes"},
+            {
+                "answer_id": "company-or-branch-name",
+                "value": "CompanyA",
+                "list_item_id": "PlwgoG",
+            },
+            {
+                "answer_id": "registration-number",
+                "value": "123",
+                "list_item_id": "PlwgoG",
+            },
+            {
+                "answer_id": "registration-date",
+                "value": "2023-01-01",
+                "list_item_id": "PlwgoG",
+            },
+            {
+                "answer_id": "authorised-trader-uk-radio",
+                "value": "Yes",
+                "list_item_id": "PlwgoG",
+            },
+            {
+                "answer_id": "authorised-trader-eu-radio",
+                "value": "Yes",
+                "list_item_id": "PlwgoG",
+            },
+            {
+                "answer_id": "company-or-branch-name",
+                "value": "CompanyB",
+                "list_item_id": "UHPLbX",
+            },
+            {
+                "answer_id": "registration-number",
+                "value": "456",
+                "list_item_id": "UHPLbX",
+            },
+            {
+                "answer_id": "registration-date",
+                "value": "2023-01-01",
+                "list_item_id": "UHPLbX",
+            },
+            {
+                "answer_id": "authorised-trader-uk-radio",
+                "value": "No",
+                "list_item_id": "UHPLbX",
+            },
+            {
+                "answer_id": "authorised-trader-eu-radio",
+                "value": "No",
+                "list_item_id": "UHPLbX",
+            },
+            {
+                "answer_id": "any-other-trading-details",
+                "value": "N/A",
+            },
+        ]
+    )
+
+
+@pytest.fixture
+def repeating_blocks_list_store():
+    return ListStore([{"items": ["PlwgoG", "UHPLbX"], "name": "companies"}])

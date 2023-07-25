@@ -10,7 +10,7 @@ from itsdangerous import base64_decode
 from mock import patch
 from sdc.crypto.key_store import KeyStore
 
-from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SUBMISSION
+from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SDS, KEY_PURPOSE_SUBMISSION
 from app.setup import create_app
 from app.utilities.json import json_loads
 from application import configure_logging
@@ -23,6 +23,8 @@ SR_USER_AUTHENTICATION_PUBLIC_KEY_KID = "e19091072f920cbf3ca9f436ceba309e7d814a6
 EQ_SUBMISSION_SDX_PRIVATE_KEY = "2225f01580a949801274a5f3e6861947018aff5b"
 EQ_SUBMISSION_SR_PRIVATE_SIGNING_KEY = "fe425f951a0917d7acdd49230b23a5c405c28510"
 
+EQ_SUPPLEMENTARY_DATA_PRIVATE_KEY = "df88fdad2612ae1e80571120e6c6371f55896696"
+
 KEYS_FOLDER = "./tests/jwt-test-keys"
 
 
@@ -34,6 +36,41 @@ def get_file_contents(filename, trim=False):
     return data
 
 
+KEYS_DICT = {
+    "keys": {
+        EQ_USER_AUTHENTICATION_RRM_PRIVATE_KEY_KID: {
+            "purpose": KEY_PURPOSE_AUTHENTICATION,
+            "type": "private",
+            "value": get_file_contents("sdc-rrm-authentication-signing-private-v1.pem"),
+        },
+        SR_USER_AUTHENTICATION_PUBLIC_KEY_KID: {
+            "purpose": KEY_PURPOSE_AUTHENTICATION,
+            "type": "public",
+            "value": get_file_contents(
+                "sdc-sr-authentication-encryption-public-v1.pem"
+            ),
+        },
+        EQ_SUBMISSION_SDX_PRIVATE_KEY: {
+            "purpose": KEY_PURPOSE_SUBMISSION,
+            "type": "private",
+            "value": get_file_contents("sdc-sdx-submission-encryption-private-v1.pem"),
+        },
+        EQ_SUBMISSION_SR_PRIVATE_SIGNING_KEY: {
+            "purpose": KEY_PURPOSE_SUBMISSION,
+            "type": "public",
+            "value": get_file_contents("sdc-sr-submission-signing-private-v1.pem"),
+        },
+        EQ_SUPPLEMENTARY_DATA_PRIVATE_KEY: {
+            "purpose": KEY_PURPOSE_SDS,
+            "type": "private",
+            "value": get_file_contents(
+                "sdc-sds-supplementary_data-encryption-private-v1.pem"
+            ),
+        },
+    }
+}
+
+
 class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public-methods
     def setUp(self):
         # Cache for requests
@@ -43,6 +80,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         self.redirect_url = None
         self.last_response_headers = None
         self.last_cookie = None
+        self.key_store = None
         # Perform setup steps
         self._set_up_app()
 
@@ -68,43 +106,10 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
             return_value=(Mock(), "test-project-id"),
         ):
             self._application = create_app(overrides)
-        self._key_store = KeyStore(
-            {
-                "keys": {
-                    EQ_USER_AUTHENTICATION_RRM_PRIVATE_KEY_KID: {
-                        "purpose": KEY_PURPOSE_AUTHENTICATION,
-                        "type": "private",
-                        "value": get_file_contents(
-                            "sdc-rrm-authentication-signing-private-v1.pem"
-                        ),
-                    },
-                    SR_USER_AUTHENTICATION_PUBLIC_KEY_KID: {
-                        "purpose": KEY_PURPOSE_AUTHENTICATION,
-                        "type": "public",
-                        "value": get_file_contents(
-                            "sdc-sr-authentication-encryption-public-v1.pem"
-                        ),
-                    },
-                    EQ_SUBMISSION_SDX_PRIVATE_KEY: {
-                        "purpose": KEY_PURPOSE_SUBMISSION,
-                        "type": "private",
-                        "value": get_file_contents(
-                            "sdc-sdx-submission-encryption-private-v1.pem"
-                        ),
-                    },
-                    EQ_SUBMISSION_SR_PRIVATE_SIGNING_KEY: {
-                        "purpose": KEY_PURPOSE_SUBMISSION,
-                        "type": "public",
-                        "value": get_file_contents(
-                            "sdc-sr-submission-signing-private-v1.pem"
-                        ),
-                    },
-                }
-            }
-        )
+        self.key_store = KeyStore(KEYS_DICT)
 
         self.token_generator = TokenGenerator(
-            self._key_store,
+            self.key_store,
             EQ_USER_AUTHENTICATION_RRM_PRIVATE_KEY_KID,
             SR_USER_AUTHENTICATION_PUBLIC_KEY_KID,
         )
@@ -122,6 +127,19 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         :param schema_name: The name of the schema to load
         """
         token = self.token_generator.create_token(
+            schema_name=schema_name, **payload_kwargs
+        )
+
+        self.get(f"/session?token={token}")
+
+    def launchSupplementaryDataSurvey(
+        self, schema_name="test_supplementary_data", **payload_kwargs
+    ):
+        """
+        Launch a survey as an authenticated user and follow re-directs
+        :param schema_name: The name of the schema to load
+        """
+        token = self.token_generator.create_supplementary_data_token(
             schema_name=schema_name, **payload_kwargs
         )
 
@@ -248,6 +266,9 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
 
     def getLinkById(self, identifier: str):
         return self.getHtmlSoup().find("a", id=identifier)
+
+    def getLinksByAttribute(self, attributes: dict[str, str]):
+        return [tag["href"] for tag in self.getHtmlSoup().findAll("a", attributes)]
 
     def getSignOutButton(self):
         return self.getHtmlSoup().find("a", {"data-qa": "btn-save-sign-out"})
