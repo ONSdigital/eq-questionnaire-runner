@@ -27,7 +27,7 @@ from app.cloud_tasks import CloudTaskPublisher, LogCloudTaskPublisher
 from app.helpers import get_span_and_trace
 from app.jinja_filters import blueprint as filter_blueprint
 from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SUBMISSION
-from app.oidc.token_generator import LogOIDCTokenGenerator, OIDCTokenGenerator
+from app.oidc.token_generator import LocalOIDCCredentials, OIDCCredentials
 from app.publisher import LogPublisher, PubSubPublisher
 from app.routes.dump import dump_blueprint
 from app.routes.errors import errors_blueprint
@@ -383,10 +383,10 @@ def setup_task_client(application):
 
 def setup_oidc(application):
     if application.config["OIDC_TOKEN_BACKEND"] == "gcp":
-        application.eq["oidc_token_generator"] = OIDCTokenGenerator()
+        application.eq["oidc_token_generator"] = OIDCCredentials()
 
-    elif application.config["OIDC_TOKEN_BACKEND"] == "log":
-        application.eq["oidc_token_generator"] = LogOIDCTokenGenerator()
+    elif application.config["OIDC_TOKEN_BACKEND"] == "local":
+        application.eq["oidc_token_generator"] = LocalOIDCCredentials()
 
     else:
         raise NotImplementedError("Unknown OIDC_TOKEN_BACKEND")

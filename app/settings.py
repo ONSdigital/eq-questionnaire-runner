@@ -148,6 +148,12 @@ SDS_API_BASE_URL = os.getenv("SDS_API_BASE_URL")
 
 OIDC_TOKEN_BACKEND = os.getenv("OIDC_TOKEN_BACKEND")
 
+OIDC_TOKEN_LEEWAY_IN_SECONDS = int(os.getenv("OIDC_TOKEN_LEEWAY_IN_SECONDS", "300"))
+
+SDS_OAUTH2_CLIENT_ID = os.getenv(
+    "SDS_OAUTH2_CLIENT_ID", "test-client-id.apps.googleusercontent.com"
+)
+
 ACCOUNT_SERVICE_BASE_URL = os.getenv(
     "ACCOUNT_SERVICE_BASE_URL", "https://surveys.ons.gov.uk"
 )

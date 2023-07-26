@@ -73,6 +73,8 @@ simplejson = "*"
 markupsafe = "*"
 pdfkit = "*"
 ordered-set = "*"
+cachetools = "*"
+types-cachetools = "*"
 
 [requires]
 python_version = "3.10"
