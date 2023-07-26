@@ -2,14 +2,19 @@ from typing import Generator, Mapping, MutableMapping
 
 from flask import url_for
 
-from app.data_models import AnswerStore, ListStore, ProgressStore
+from app.data_models import (
+    AnswerStore,
+    ListStore,
+    ProgressStore,
+    SupplementaryDataStore,
+)
 from app.data_models.metadata_proxy import MetadataProxy
-from app.data_models.progress_store import ProgressKeyType
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
+from app.utilities.types import LocationType, SectionKey
 
 
 class Router:
@@ -21,6 +26,7 @@ class Router:
         progress_store: ProgressStore,
         metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
+        supplementary_data_store: SupplementaryDataStore,
     ):
         self._schema = schema
         self._answer_store = answer_store
@@ -28,6 +34,7 @@ class Router:
         self._progress_store = progress_store
         self._metadata = metadata
         self._response_metadata = response_metadata
+        self._supplementary_data_store = supplementary_data_store
 
         self._path_finder = PathFinder(
             self._schema,
@@ -36,6 +43,7 @@ class Router:
             self._progress_store,
             self._metadata,
             self._response_metadata,
+            self._supplementary_data_store,
         )
 
     @property
@@ -74,7 +82,7 @@ class Router:
         return list_item_id in self._list_store[list_name]
 
     def can_access_location(
-        self, location: Location, routing_path: RoutingPath
+        self, location: LocationType, routing_path: RoutingPath
     ) -> bool:
         """
         Checks whether the location is valid and accessible.
@@ -119,7 +127,7 @@ class Router:
 
     def get_next_location_url(
         self,
-        location: Location,
+        location: LocationType,
         routing_path: RoutingPath,
         return_to: str | None = None,
         return_to_answer_id: str | None = None,
@@ -164,7 +172,9 @@ class Router:
             return_to_block_id=return_to_block_id,
         )
 
-    def _get_next_location_url_for_complete_section(self, location: Location) -> str:
+    def _get_next_location_url_for_complete_section(
+        self, location: LocationType
+    ) -> str:
         if self._schema.show_summary_on_completion_for_section(location.section_id):
             return self._get_section_url(location)
 
@@ -172,7 +182,7 @@ class Router:
 
     def get_previous_location_url(
         self,
-        location: Location,
+        location: LocationType,
         routing_path: RoutingPath,
         return_to: str | None = None,
         return_to_answer_id: str | None = None,
@@ -222,7 +232,7 @@ class Router:
 
     def _get_return_to_location_url(
         self,
-        location: Location,
+        location: LocationType,
         return_to: str | None,
         routing_path: RoutingPath,
         is_for_previous: bool,
@@ -281,7 +291,7 @@ class Router:
         *,
         return_to: str | None,
         return_to_block_id: str | None,
-        location: Location,
+        location: LocationType,
         routing_path: RoutingPath,
         is_for_previous: bool,
         return_to_answer_id: str | None = None,
@@ -339,7 +349,7 @@ class Router:
         *,
         return_to: str,
         return_to_block_id: str | None,
-        location: Location,
+        location: LocationType,
         routing_path: RoutingPath,
         is_for_previous: bool,
         return_to_answer_id: str | None = None,
@@ -424,7 +434,7 @@ class Router:
         return self.get_first_incomplete_location_in_questionnaire_url()
 
     def get_section_resume_url(self, routing_path: RoutingPath) -> str:
-        section_key = (routing_path.section_id, routing_path.list_item_id)
+        section_key = SectionKey(routing_path.section_id, routing_path.list_item_id)
 
         if section_key in self._progress_store:
             location = self._get_first_incomplete_location_in_section(routing_path)
@@ -516,16 +526,16 @@ class Router:
 
     def get_enabled_section_keys(
         self,
-    ) -> Generator[ProgressKeyType, None, None]:
+    ) -> Generator[SectionKey, None, None]:
         for section_id in self.enabled_section_ids:
             repeating_list = self._schema.get_repeating_list_for_section(section_id)
 
             if repeating_list:
                 for list_item_id in self._list_store[repeating_list]:
-                    section_key: ProgressKeyType = (section_id, list_item_id)
+                    section_key = SectionKey(section_id, list_item_id)
                     yield section_key
             else:
-                section_key = (section_id, None)
+                section_key = SectionKey(section_id, None)
                 yield section_key
 
     def _get_first_incomplete_section_key(self) -> tuple[str, str | None] | None:
@@ -562,13 +572,16 @@ class Router:
             progress_store=self._progress_store,
             location=Location(section_id=section_id),
             routing_path_block_ids=routing_path_block_ids,
+            supplementary_data_store=self._supplementary_data_store,
         )
 
         return bool(when_rule_evaluator.evaluate(enabled["when"]))
 
     @staticmethod
     def get_next_block_url(
-        location: Location, routing_path: RoutingPath, **kwargs: str | None
+        location: LocationType,
+        routing_path: RoutingPath,
+        **kwargs: str | None,
     ) -> str:
         # Type ignore: the location will have a block
         next_block_id = routing_path[routing_path.index(location.block_id) + 1]  # type: ignore
@@ -583,7 +596,8 @@ class Router:
 
     @staticmethod
     def _get_section_url(
-        location: Location, return_to_answer_id: str | None = None
+        location: LocationType,
+        return_to_answer_id: str | None = None,
     ) -> str:
         return url_for(
             "questionnaire.get_section",

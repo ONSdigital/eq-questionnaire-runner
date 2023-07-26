@@ -118,7 +118,7 @@ class TestSession(IntegrationTestCase):
             self.assertIn("expires_at", parsed_json)
             self.assertEqual(parsed_json["expires_at"], expected_expires_at)
 
-    @patch("app.routes.session.get_supplementary_data")
+    @patch("app.routes.session.get_supplementary_data_v1")
     @patch(
         "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data"
     )
@@ -132,7 +132,7 @@ class TestSession(IntegrationTestCase):
         mock_get.assert_called_once()
         mock_set.assert_called_once()
 
-    @patch("app.routes.session.get_supplementary_data")
+    @patch("app.routes.session.get_supplementary_data_v1")
     @patch(
         "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data"
     )
@@ -150,7 +150,7 @@ class TestSession(IntegrationTestCase):
         self.assertEqual(mock_get.call_count, 2)
         self.assertEqual(mock_set.call_count, 2)
 
-    @patch("app.routes.session.get_supplementary_data")
+    @patch("app.routes.session.get_supplementary_data_v1")
     @patch(
         "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data"
     )
@@ -170,7 +170,7 @@ class TestSession(IntegrationTestCase):
 
     def test_supplementary_data_raises_500_error_when_sds_api_request_fails(self):
         with patch(
-            "app.routes.session.get_supplementary_data",
+            "app.routes.session.get_supplementary_data_v1",
             side_effect=SupplementaryDataRequestFailed,
         ):
             self.assert_supplementary_data_500_page()

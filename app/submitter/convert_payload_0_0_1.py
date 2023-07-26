@@ -4,7 +4,12 @@ from typing import Any, Iterable, Mapping, MutableMapping
 
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import AnswerStore, ListStore, ProgressStore
+from app.data_models import (
+    AnswerStore,
+    ListStore,
+    ProgressStore,
+    SupplementaryDataStore,
+)
 from app.data_models.answer import AnswerValueTypes, ListAnswer
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import QuestionnaireSchema
@@ -25,6 +30,7 @@ def convert_answers_to_payload_0_0_1(
     schema: QuestionnaireSchema,
     full_routing_path: Iterable[RoutingPath],
     progress_store: ProgressStore,
+    supplementary_data_store: SupplementaryDataStore,
 ) -> OrderedDict[str, Any]:
     """
     Convert answers into the data format below
@@ -40,6 +46,7 @@ def convert_answers_to_payload_0_0_1(
     :param schema: QuestionnaireSchema class with populated schema json
     :param full_routing_path: a list of section routing paths followed in the questionnaire
     :param progress_store: progress store
+    :param supplementary_data_store: supplementary data store
     :return: data in a formatted form
     """
     data = OrderedDict()
@@ -68,6 +75,7 @@ def convert_answers_to_payload_0_0_1(
                     list_store,
                     current_location=current_location,
                     progress_store=progress_store,
+                    supplementary_data_store=supplementary_data_store,
                 )
                 for answer_id, answer in schema.get_answers_for_question_by_id(
                     question

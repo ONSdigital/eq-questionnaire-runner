@@ -2,17 +2,24 @@ from typing import Iterable, Mapping, MutableMapping
 
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import AnswerStore, ListStore, ProgressStore
+from app.data_models import (
+    AnswerStore,
+    ListStore,
+    ProgressStore,
+    SupplementaryDataStore,
+)
 from app.data_models.metadata_proxy import MetadataProxy
-from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.survey_config.link import Link
+from app.utilities.types import LocationType
 from app.views.contexts.summary.block import Block
 from app.views.contexts.summary.calculated_summary_block import CalculatedSummaryBlock
 from app.views.contexts.summary.list_collector_block import ListCollectorBlock
 
 
 class Group:
+    # pylint: disable=too-many-locals
     def __init__(
         self,
         *,
@@ -23,9 +30,10 @@ class Group:
         metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
-        location: Location,
+        location: LocationType,
         language: str,
         progress_store: ProgressStore,
+        supplementary_data_store: SupplementaryDataStore,
         return_to: str | None,
         return_to_block_id: str | None = None,
         summary_type: str | None = None,
@@ -53,6 +61,7 @@ class Group:
             return_to_block_id=return_to_block_id,
             view_submitted_response=view_submitted_response,
             summary_type=summary_type,
+            supplementary_data_store=supplementary_data_store,
         )
 
         self.placeholder_renderer = PlaceholderRenderer(
@@ -64,6 +73,7 @@ class Group:
             response_metadata=response_metadata,
             schema=schema,
             progress_store=progress_store,
+            supplementary_data_store=supplementary_data_store,
         )
 
     # pylint: disable=too-many-locals
@@ -77,9 +87,10 @@ class Group:
         metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
-        location: Location,
+        location: LocationType,
         return_to: str | None,
         progress_store: ProgressStore,
+        supplementary_data_store: SupplementaryDataStore,
         language: str,
         return_to_block_id: str | None,
         view_submitted_response: bool | None = False,
@@ -88,6 +99,35 @@ class Group:
         blocks = []
 
         for block in group_schema["blocks"]:
+            # the block type will only be ListRepeatingQuestion when in the context of a calculated summary or grand calculated summary
+            # any other summary like section-summary will use the parent list collector instead and render items as part of the ListCollector check further down
+            if block["type"] == "ListRepeatingQuestion":
+                # list repeating questions aren't themselves on the path, it's determined by the parent list collector
+                parent_list_collector_block_id = schema.parent_id_map[block["id"]]
+                if parent_list_collector_block_id not in routing_path_block_ids:
+                    continue
+
+                list_collector_block = ListCollectorBlock(
+                    routing_path_block_ids=routing_path_block_ids,
+                    answer_store=answer_store,
+                    list_store=list_store,
+                    progress_store=progress_store,
+                    metadata=metadata,
+                    response_metadata=response_metadata,
+                    schema=schema,
+                    location=location,
+                    language=language,
+                    supplementary_data_store=supplementary_data_store,
+                    return_to=return_to,
+                    return_to_block_id=return_to_block_id,
+                )
+                repeating_answer_blocks = (
+                    list_collector_block.get_repeating_block_related_answer_blocks(
+                        block
+                    )
+                )
+                blocks.extend(repeating_answer_blocks)
+
             if block["id"] not in routing_path_block_ids:
                 continue
             if block["type"] in [
@@ -108,6 +148,7 @@ class Group:
                             return_to_block_id=return_to_block_id,
                             progress_store=progress_store,
                             language=language,
+                            supplementary_data_store=supplementary_data_store,
                         ).serialize()
                     ]
                 )
@@ -128,6 +169,7 @@ class Group:
                             return_to_block_id=return_to_block_id,
                             progress_store=progress_store,
                             routing_path_block_ids=routing_path_block_ids,
+                            supplementary_data_store=supplementary_data_store,
                         ).serialize()
                     ]
                 )
@@ -151,6 +193,8 @@ class Group:
                         schema=schema,
                         location=location,
                         language=language,
+                        return_to=return_to,
+                        supplementary_data_store=supplementary_data_store,
                     )
 
                     list_summary_element = list_collector_block.list_summary_element(

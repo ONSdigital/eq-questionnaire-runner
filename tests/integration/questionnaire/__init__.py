@@ -27,3 +27,9 @@ class QuestionnaireTestCase(IntegrationTestCase):
         selector = f"[data-qa='list-item-{action}-{position}-link']"
         selected = self.getHtmlSoup().select(selector)
         return selected[0].get("href")
+
+    def get_list_item_change_link(self, answer_id, list_item_id):
+        """change link on calculated summary for list item"""
+        selector = f"[data-qa='{answer_id}-{list_item_id}-edit']"
+        selected = self.getHtmlSoup().select(selector)
+        return selected[0].get("href")

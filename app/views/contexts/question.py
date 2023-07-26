@@ -1,15 +1,13 @@
-from typing import Any
-
 from app.forms.questionnaire_form import QuestionnaireForm
 from app.questionnaire import QuestionSchemaType
 
 
 def build_question_context(
     rendered_block: dict[str, QuestionSchemaType], form: QuestionnaireForm
-) -> dict[str, Any]:
+) -> dict:
     question = rendered_block["question"]
 
-    context = {
+    context: dict[str, dict] = {
         "block": rendered_block,
         "form": {
             "errors": form.errors,
@@ -20,7 +18,7 @@ def build_question_context(
         },
     }
 
-    answer_ids = []
+    answer_ids: list[str] = []
 
     for answer in question["answers"]:
         answer_ids.append(answer["id"])

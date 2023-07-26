@@ -1,10 +1,10 @@
 from functools import cached_property
-from typing import Any, Sequence
+from typing import Mapping, Sequence
 
 from flask import url_for
 from flask_babel import gettext
 
-from app.forms.questionnaire_form import generate_form
+from app.forms.questionnaire_form import QuestionnaireForm, generate_form
 from app.helpers import get_address_lookup_api_auth_token
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_store_updater import (
@@ -19,12 +19,12 @@ from app.views.handlers.block import BlockHandler
 
 class Question(BlockHandler):
     @staticmethod
-    def _has_redirect_to_list_add_action(answer_action):
-        return answer_action and answer_action["type"] == "RedirectToListAddBlock"
+    def _has_redirect_to_list_add_action(answer_action: Mapping | None) -> bool:
+        return bool(answer_action and answer_action["type"] == "RedirectToListAddBlock")
 
     @cached_property
-    def form(self):
-        question_json = self.rendered_block.get("question")
+    def form(self) -> QuestionnaireForm:
+        question_json = self.rendered_block["question"]
 
         if self._form_data:
             return generate_form(
@@ -37,6 +37,7 @@ class Question(BlockHandler):
                 location=self._current_location,
                 form_data=self._form_data,
                 progress_store=self._questionnaire_store.progress_store,
+                supplementary_data_store=self._questionnaire_store.supplementary_data_store,
             )
 
         answers = self._get_answers_for_question(question_json)
@@ -50,10 +51,11 @@ class Question(BlockHandler):
             location=self._current_location,
             data=answers,
             progress_store=self._questionnaire_store.progress_store,
+            supplementary_data_store=self._questionnaire_store.supplementary_data_store,
         )
 
     @cached_property
-    def questionnaire_store_updater(self):
+    def questionnaire_store_updater(self) -> QuestionnaireStoreUpdater:
         return QuestionnaireStoreUpdater(
             self._current_location,
             self._schema,
@@ -63,7 +65,7 @@ class Question(BlockHandler):
         )
 
     @cached_property
-    def rendered_block(self):
+    def rendered_block(self) -> dict:
         transformed_block = transform_variants(
             self.block,
             self._schema,
@@ -73,6 +75,7 @@ class Question(BlockHandler):
             self._questionnaire_store.list_store,
             self._current_location,
             self._questionnaire_store.progress_store,
+            self._questionnaire_store.supplementary_data_store,
         )
         page_title = transformed_block.get("page_title") or self._get_safe_page_title(
             transformed_block["question"]["title"]
@@ -89,7 +92,7 @@ class Question(BlockHandler):
         }
 
     @cached_property
-    def list_context(self):
+    def list_context(self) -> ListContext:
         return ListContext(
             language=self._language,
             schema=self._schema,
@@ -98,12 +101,14 @@ class Question(BlockHandler):
             progress_store=self._questionnaire_store.progress_store,
             metadata=self._questionnaire_store.metadata,
             response_metadata=self._questionnaire_store.response_metadata,
+            supplementary_data_store=self._questionnaire_store.supplementary_data_store,
         )
 
-    def get_next_location_url(self):
+    def get_next_location_url(self) -> str:
         answer_action = self._get_answer_action()
         if self._has_redirect_to_list_add_action(answer_action):
-            location_url = self._get_list_add_question_url(answer_action["params"])
+            # Type ignore: this is only called if answer_action is not none.
+            location_url = self._get_list_add_question_url(answer_action["params"])  # type: ignore
 
             if location_url:
                 return location_url
@@ -116,7 +121,7 @@ class Question(BlockHandler):
             self._return_to_block_id,
         )
 
-    def _get_answers_for_question(self, question_json) -> dict[str, Any]:
+    def _get_answers_for_question(self, question_json: Mapping) -> dict:
         answers_by_answer_id = self._schema.get_answers_for_question_by_id(
             question_json
         )
@@ -135,7 +140,7 @@ class Question(BlockHandler):
 
         return answer_value_by_answer_id
 
-    def _get_list_add_question_url(self, params):
+    def _get_list_add_question_url(self, params: dict) -> str | None:
         block_id = params["block_id"]
         list_name = params["list_name"]
         list_items = self._questionnaire_store.list_store[list_name].items
@@ -143,17 +148,20 @@ class Question(BlockHandler):
 
         if self._is_list_just_primary(list_items, list_name) or not list_items:
             return Location(
-                section_id=section_id, block_id=block_id, list_name=list_name
+                # Type ignore: section_id is always valid when this is called
+                section_id=section_id,  # type: ignore
+                block_id=block_id,
+                list_name=list_name,
             ).url(previous=self.current_location.block_id)
 
-    def _is_list_just_primary(self, list_items, list_name):
+    def _is_list_just_primary(self, list_items: list[str], list_name: str) -> bool:
         return (
             len(list_items) == 1
             and list_items[0]
             == self._questionnaire_store.list_store[list_name].primary_person
         )
 
-    def _get_answer_action(self):
+    def _get_answer_action(self) -> dict | None:
         answers = self.rendered_block["question"]["answers"]
 
         for answer in answers:
@@ -162,7 +170,7 @@ class Question(BlockHandler):
             submitted_answer = self.form.data[answer["id"]]
 
             for option in answer.get("options", {}):
-                action = option.get("action")
+                action: dict | None = option.get("action")
 
                 if action and (
                     option["value"] == submitted_answer
@@ -170,7 +178,7 @@ class Question(BlockHandler):
                 ):
                     return action
 
-    def get_context(self):
+    def get_context(self) -> dict[str, dict]:
         context = build_question_context(self.rendered_block, self.form)
         context["return_to_hub_url"] = self.get_return_to_hub_url()
         context[
@@ -193,14 +201,14 @@ class Question(BlockHandler):
 
         return context
 
-    def get_last_viewed_question_guidance_context(self):
+    def get_last_viewed_question_guidance_context(self) -> dict | bool | None:
         if self.resume:
             first_location_in_section_url = self.router.get_first_location_in_section(
                 self._routing_path
             ).url()
             return {"first_location_in_section_url": first_location_in_section_url}
 
-    def get_list_summary_context(self):
+    def get_list_summary_context(self) -> dict:
         return self.list_context(
             summary_definition=self.rendered_block["list_summary"]["summary"],
             for_list=self.rendered_block["list_summary"]["for_list"],
@@ -208,7 +216,7 @@ class Question(BlockHandler):
             has_repeating_blocks=bool(self.rendered_block.get("repeating_blocks")),
         )
 
-    def handle_post(self):
+    def handle_post(self) -> None:
         # pylint: disable=no-member
         # wtforms Form parents are not discoverable in the 2.3.3 implementation
         self.questionnaire_store_updater.update_answers(self.form.data)
@@ -222,14 +230,14 @@ class Question(BlockHandler):
             )
         super().handle_post()
 
-    def get_return_to_hub_url(self):
+    def get_return_to_hub_url(self) -> str | None:
         if (
             self.rendered_block["type"] in ["Question", "ConfirmationQuestion"]
             and self.router.can_access_hub()
         ):
             return url_for(".get_questionnaire")
 
-    def capture_dependent_sections_for_list(self, list_name):
+    def capture_dependent_sections_for_list(self, list_name: str) -> None:
         section_ids = self._schema.get_section_ids_dependent_on_list(list_name)
         section_ids.append(self.current_location.section_id)
 
@@ -251,7 +259,7 @@ class Question(BlockHandler):
                 )
             )
 
-    def clear_radio_answers(self):
+    def clear_radio_answers(self) -> None:
         answer_ids_to_remove = []
         for answer in self.rendered_block["question"]["answers"]:
             if answer["type"] == "Radio":
@@ -263,7 +271,7 @@ class Question(BlockHandler):
             )
             self.questionnaire_store_updater.save()
 
-    def get_first_incomplete_repeating_block_location(
+    def get_first_incomplete_list_repeating_block_location(
         self, *, repeating_block_ids: Sequence[str], section_id: str, list_name: str
     ) -> Location | None:
         if not repeating_block_ids:
@@ -271,7 +279,7 @@ class Question(BlockHandler):
 
         list_model = self._questionnaire_store.list_store.get(list_name)
         for list_item_id in list_model.items:
-            if incomplete_location := self.get_first_incomplete_repeating_block_location_for_list_item(
+            if incomplete_location := self.get_first_incomplete_list_repeating_block_location_for_list_item(
                 repeating_block_ids=repeating_block_ids,
                 section_id=section_id,
                 list_item_id=list_item_id,
@@ -279,7 +287,7 @@ class Question(BlockHandler):
             ):
                 return incomplete_location
 
-    def get_first_incomplete_repeating_block_location_for_list_item(
+    def get_first_incomplete_list_repeating_block_location_for_list_item(
         self,
         *,
         repeating_block_ids: Sequence[str],

@@ -1,18 +1,18 @@
 from copy import deepcopy
-from typing import Any, Mapping, MutableMapping
+from typing import Mapping, MutableMapping
 
 from jsonpointer import resolve_pointer, set_pointer
 
-from app.data_models import ProgressStore
+from app.data_models import ProgressStore, SupplementaryDataStore
 from app.data_models.answer import AnswerValueTypes
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
-from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_parser import PlaceholderParser
 from app.questionnaire.plural_forms import get_plural_form_key
-from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.schema_utils import find_pointers_containing
+from app.utilities.types import LocationType
 
 
 class PlaceholderRenderer:
@@ -30,7 +30,8 @@ class PlaceholderRenderer:
         response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
         progress_store: ProgressStore,
-        location: Location | RelationshipLocation | None = None,
+        supplementary_data_store: SupplementaryDataStore,
+        location: LocationType | None = None,
         placeholder_preview_mode: bool | None = False,
     ):
         self._placeholder_preview_mode = placeholder_preview_mode
@@ -42,6 +43,7 @@ class PlaceholderRenderer:
         self._schema = schema
         self._location = location
         self._progress_store = progress_store
+        self._supplementary_data_store = supplementary_data_store
 
     def render_pointer(
         self,
@@ -88,6 +90,7 @@ class PlaceholderRenderer:
                 renderer=self,
                 progress_store=self._progress_store,
                 placeholder_preview_mode=self._placeholder_preview_mode,
+                supplementary_data_store=self._supplementary_data_store,
             )
 
         placeholder_data = QuestionnaireSchema.get_mutable_deepcopy(placeholder_data)
@@ -124,9 +127,9 @@ class PlaceholderRenderer:
         """
         Transform the current schema json to a fully rendered dictionary
         """
-        data_to_render_mutable: dict[
-            str, Any
-        ] = QuestionnaireSchema.get_mutable_deepcopy(data_to_render)
+        data_to_render_mutable: dict = QuestionnaireSchema.get_mutable_deepcopy(
+            data_to_render
+        )
 
         self._handle_and_resolve_dynamic_answers(data_to_render_mutable)
 
@@ -144,6 +147,7 @@ class PlaceholderRenderer:
             renderer=self,
             placeholder_preview_mode=self._placeholder_preview_mode,
             progress_store=self._progress_store,
+            supplementary_data_store=self._supplementary_data_store,
         )
 
         for pointer in pointers:
@@ -156,9 +160,7 @@ class PlaceholderRenderer:
             set_pointer(data_to_render_mutable, pointer, rendered_text)
         return data_to_render_mutable
 
-    def _handle_and_resolve_dynamic_answers(
-        self, data_to_render_mutable: dict[str, Any]
-    ) -> None:
+    def _handle_and_resolve_dynamic_answers(self, data_to_render_mutable: dict) -> None:
         pointers = find_pointers_containing(data_to_render_mutable, "dynamic_answers")
 
         for pointer in pointers:
@@ -218,6 +220,7 @@ class PlaceholderRenderer:
                 renderer=self,
                 placeholder_preview_mode=self._placeholder_preview_mode,
                 progress_store=self._progress_store,
+                supplementary_data_store=self._supplementary_data_store,
             )
 
             pointers = find_pointers_containing(answer, "placeholders")

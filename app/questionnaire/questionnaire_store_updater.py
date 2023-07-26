@@ -7,12 +7,13 @@ from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import AnswerValueTypes, QuestionnaireStore
 from app.data_models.answer_store import Answer
-from app.data_models.progress_store import CompletionStatus, ProgressKeyType
+from app.data_models.progress_store import CompletionStatus
 from app.data_models.relationship_store import RelationshipDict, RelationshipStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import AnswerDependent
 from app.questionnaire.router import Router
+from app.utilities.types import LocationType, SectionKey
 
 DependentSection = namedtuple("DependentSection", "section_id list_item_id is_complete")
 
@@ -24,7 +25,7 @@ class QuestionnaireStoreUpdater:
 
     def __init__(
         self,
-        current_location: Location,
+        current_location: LocationType,
         schema: QuestionnaireSchema,
         questionnaire_store: QuestionnaireStore,
         router: Router,
@@ -40,7 +41,7 @@ class QuestionnaireStoreUpdater:
         self._router = router
 
         self.dependent_block_id_by_section_key: Mapping[
-            ProgressKeyType, set[str]
+            SectionKey, set[str]
         ] = defaultdict(set)
         self.dependent_sections: set[DependentSection] = set()
 
@@ -165,25 +166,25 @@ class QuestionnaireStoreUpdater:
 
     def _capture_dependencies_for_list_item_removal(self, list_name: str) -> None:
         """
-        If an item is removed from a list, dependencies of both the add block and remove block need to be captured
-        and their progress updated.
-        (E.g. dynamic-answers depending on the add block could have validation, so need revisiting if an item is removed)
+        If an item is removed from a list, dependencies of any child blocks need to be captured and their progress updated.
+        (E.g. dynamic-answers depending on a child block could have validation, so need revisiting if an item is removed)
         """
-        if remove_block_id := self._schema.get_remove_block_id_for_list(list_name):
-            answer_ids = self._schema.get_answer_ids_for_block(remove_block_id)
-            for answer_id in answer_ids:
-                self._capture_block_dependencies_for_answer(answer_id)
-
         for list_collector in self._schema.get_list_collectors_for_list(
             for_list=list_name,
             # Type ignore: section must exist at this point
             section=self._schema.get_section(self._current_location.section_id),  # type: ignore
         ):
-            if add_block := self._schema.get_add_block_for_list_collector(
-                list_collector["id"]
-            ):
-                for answer_id in self._schema.get_answer_ids_for_block(add_block["id"]):
-                    self._capture_block_dependencies_for_answer(answer_id)
+            child_blocks = (
+                list_collector.get("add_block"),
+                list_collector.get("remove_block"),
+                *list_collector.get("repeating_blocks", []),
+            )
+            for child_block in child_blocks:
+                if child_block:
+                    for answer_id in self._schema.get_answer_ids_for_block(
+                        child_block["id"]
+                    ):
+                        self._capture_block_dependencies_for_answer(answer_id)
 
     def _get_relationship_answers_for_list_name(
         self, list_name: str
@@ -238,12 +239,12 @@ class QuestionnaireStoreUpdater:
             answer.value = answers_to_keep
             self._answer_store.add_or_update(answer)
 
-    def add_completed_location(self, location: Location | None = None) -> None:
+    def add_completed_location(self, location: LocationType | None = None) -> None:
         if not self._progress_store.is_routing_backwards:
             location = location or self._current_location
             self._progress_store.add_completed_location(location)
 
-    def remove_completed_location(self, location: Location | None = None) -> bool:
+    def remove_completed_location(self, location: LocationType | None = None) -> bool:
         location = location or self._current_location
         return self._progress_store.remove_completed_location(location)
 
@@ -312,7 +313,7 @@ class QuestionnaireStoreUpdater:
                     )
 
                 self.dependent_block_id_by_section_key[
-                    (dependency.section_id, list_item_id)
+                    SectionKey(dependency.section_id, list_item_id)
                 ].add(dependency.block_id)
 
     def _get_list_item_ids_for_dependency(
@@ -536,7 +537,7 @@ class QuestionnaireStoreUpdater:
 
     def started_section_keys(
         self, section_ids: Iterable[str] | None = None
-    ) -> list[ProgressKeyType]:
+    ) -> list[SectionKey]:
         return self._progress_store.started_section_and_repeating_blocks_progress_keys(
             section_ids
         )

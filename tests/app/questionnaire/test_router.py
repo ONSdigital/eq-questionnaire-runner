@@ -8,6 +8,7 @@ from mock import Mock
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.progress_store import CompletionStatus, ProgressStore
+from app.data_models.supplementary_data_store import SupplementaryDataStore
 from app.questionnaire.location import Location
 from app.questionnaire.router import Router
 from app.questionnaire.routing_path import RoutingPath
@@ -21,6 +22,7 @@ class RouterTestCase:
     list_store = ListStore()
     progress_store = ProgressStore()
     metadata = get_metadata()
+    supplementary_data_store = SupplementaryDataStore()
     response_metadata = {}
 
     @cached_property
@@ -32,6 +34,7 @@ class RouterTestCase:
             self.progress_store,
             self.metadata,
             self.response_metadata,
+            self.supplementary_data_store,
         )
 
 

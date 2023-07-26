@@ -1,15 +1,17 @@
+from typing import Any
+
 from flask import url_for
 
 from app.views.handlers.question import Question
 
 
 class PrimaryPersonListCollector(Question):
-    def __init__(self, *args):
+    def __init__(self, *args: Any):
         self._is_adding = False
-        self._primary_person_id = None
+        self._primary_person_id: str | None = None
         super().__init__(*args)
 
-    def get_next_location_url(self):
+    def get_next_location_url(self) -> str:
         if self._is_adding:
             add_or_edit_url = url_for(
                 "questionnaire.block",
@@ -21,7 +23,7 @@ class PrimaryPersonListCollector(Question):
 
         return super().get_next_location_url()
 
-    def handle_post(self):
+    def handle_post(self) -> None:
         list_name = self.rendered_block["for_list"]
         answer_action = self._get_answer_action()
 

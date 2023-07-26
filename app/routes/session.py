@@ -26,8 +26,9 @@ from app.helpers.template_helpers import (
     render_template,
 )
 from app.questionnaire import QuestionnaireSchema
+from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.routes.errors import _render_error_page
-from app.services.supplementary_data import get_supplementary_data
+from app.services.supplementary_data import get_supplementary_data_v1
 from app.utilities.metadata_parser import validate_runner_claims
 from app.utilities.metadata_parser_v2 import (
     validate_questionnaire_claims,
@@ -132,7 +133,7 @@ def login() -> Response:
             "account_service_log_out_url"
         )
 
-    cookie_session["language_code"] = metadata.language_code
+    cookie_session["language_code"] = metadata.language_code or DEFAULT_LANGUAGE_CODE
 
     return redirect(url_for("questionnaire.get_questionnaire"))
 
@@ -157,10 +158,10 @@ def _set_questionnaire_supplementary_data(
         # no need to fetch again
         return
 
-    supplementary_data = get_supplementary_data(
+    supplementary_data = get_supplementary_data_v1(
         # Type ignore: survey_id and either ru_ref or qid are required for schemas that use supplementary data
         dataset_id=new_sds_dataset_id,
-        unit_id=metadata["ru_ref"] or metadata["qid"],  # type: ignore
+        identifier=metadata["ru_ref"] or metadata["qid"],  # type: ignore
         survey_id=metadata["survey_id"],  # type: ignore
     )
     logger.info(

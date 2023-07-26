@@ -3,13 +3,18 @@ from typing import Any, Generator, Iterable, Mapping, MutableMapping, Optional, 
 
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import AnswerStore, ListStore, ProgressStore
+from app.data_models import (
+    AnswerStore,
+    ListStore,
+    ProgressStore,
+    SupplementaryDataStore,
+)
 from app.questionnaire import QuestionnaireSchema
-from app.questionnaire.location import Location
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities import safe_content
 
 from ...data_models.metadata_proxy import MetadataProxy
+from ...utilities.types import LocationType
 from .context import Context
 from .summary import Group
 from .summary.list_collector_block import ListCollectorBlock
@@ -26,7 +31,8 @@ class SectionSummaryContext(Context):
         metadata: Optional[MetadataProxy],
         response_metadata: MutableMapping,
         routing_path: RoutingPath,
-        current_location: Location,
+        current_location: LocationType,
+        supplementary_data_store: SupplementaryDataStore,
     ) -> None:
         super().__init__(
             language,
@@ -36,13 +42,14 @@ class SectionSummaryContext(Context):
             progress_store,
             metadata,
             response_metadata,
+            supplementary_data_store,
         )
         self.routing_path = routing_path
         self.current_location = current_location
 
     def __call__(
         self,
-        return_to: Optional[str] = "section-summary",
+        return_to: str | None = "section-summary",
         view_submitted_response: bool = False,
     ) -> Mapping[str, Any]:
         summary = self.build_summary(return_to, view_submitted_response)
@@ -147,6 +154,7 @@ class SectionSummaryContext(Context):
                     location=self.current_location,
                     language=self._language,
                     progress_store=self._progress_store,
+                    supplementary_data_store=self._supplementary_data_store,
                     return_to=return_to,
                     return_to_block_id=None,
                     view_submitted_response=view_submitted_response,
@@ -181,6 +189,8 @@ class SectionSummaryContext(Context):
                     schema=self._schema,
                     location=self.current_location,
                     language=self._language,
+                    supplementary_data_store=self._supplementary_data_store,
+                    return_to="section-summary",
                 )
                 yield list_collector_block.list_summary_element(summary_element)
 

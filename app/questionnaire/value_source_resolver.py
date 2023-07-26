@@ -1,23 +1,28 @@
 from dataclasses import dataclass
 from decimal import Decimal
-from typing import Callable, Iterable, Mapping, MutableMapping
+from typing import Callable, Iterable, Mapping, MutableMapping, TypeAlias
 
 from markupsafe import Markup
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import ProgressStore
-from app.data_models.answer import AnswerValueTypes, escape_answer_value
+from app.data_models import ProgressStore, SupplementaryDataStore
+from app.data_models.answer import (
+    AnswerValueEscapedTypes,
+    AnswerValueTypes,
+    escape_answer_value,
+)
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListModel, ListStore
 from app.data_models.metadata_proxy import MetadataProxy, NoMetadataException
-from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException
-from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules import rule_evaluator
+from app.utilities.types import LocationType
 
-ValueSourceTypes = None | str | int | Decimal | list
-ValueSourceEscapedTypes = Markup | list[Markup]
-IntOrDecimal = int | Decimal
+ValueSourceTypes: TypeAlias = None | str | int | Decimal | list | dict
+ValueSourceEscapedTypes: TypeAlias = Markup | list[Markup]
+IntOrDecimal: TypeAlias = int | Decimal
+ResolvedAnswerList: TypeAlias = list[AnswerValueTypes | AnswerValueEscapedTypes | None]
 
 
 @dataclass
@@ -27,13 +32,14 @@ class ValueSourceResolver:
     metadata: MetadataProxy | None
     response_metadata: MutableMapping
     schema: QuestionnaireSchema
-    location: Location | RelationshipLocation | None
+    location: LocationType | None
     list_item_id: str | None
     progress_store: ProgressStore
+    supplementary_data_store: SupplementaryDataStore
     routing_path_block_ids: Iterable[str] | None = None
     use_default_answer: bool = False
     escape_answer_values: bool = False
-    assess_routing_path: bool = True
+    assess_routing_path: bool | None = True
 
     def _is_answer_on_path(self, answer_id: str) -> bool:
         if self.routing_path_block_ids:
@@ -42,10 +48,19 @@ class ValueSourceResolver:
         return True
 
     def _is_block_on_path(self, block_id: str) -> bool:
-        return (
-            self.routing_path_block_ids is not None
-            and block_id in self.routing_path_block_ids
-        )
+        # other usages of this function than _is_answer_on_path don't have this check so require it here
+        if not self.routing_path_block_ids:
+            return True
+
+        if block_id in self.schema.list_collector_repeating_block_ids:
+            # repeating blocks aren't on the path, so check the parent list collector
+            list_name = self.schema.list_names_by_list_repeating_block_id[block_id]
+            # Type ignore: section and list collector will both exist if the block is repeating
+            section: ImmutableDict = self.schema.get_section_for_block_id(block_id)  # type: ignore
+            list_collector_block: ImmutableDict = self.schema.get_list_collector_for_list(section, list_name)  # type: ignore
+            return list_collector_block["id"] in self.routing_path_block_ids
+
+        return block_id in self.routing_path_block_ids
 
     def _get_answer_value(
         self,
@@ -100,39 +115,67 @@ class ValueSourceResolver:
             else None
         )
 
+    def _resolve_repeating_answers_for_list(
+        self, *, answer_id: str, list_name: str
+    ) -> ResolvedAnswerList:
+        """Return the list of answers in answer store that correspond to the given list name and dynamic/repeating answer_id"""
+        answer_values: ResolvedAnswerList = []
+        for list_item_id in self.list_store[list_name]:
+            answer_value = self._get_answer_value(
+                answer_id=answer_id, list_item_id=list_item_id
+            )
+            if answer_value is not None:
+                answer_values.append(
+                    escape_answer_value(answer_value)
+                    if self.escape_answer_values
+                    else answer_value
+                )
+        return answer_values
+
     def _resolve_dynamic_answers(
         self,
         answer_id: str,
-    ) -> list[AnswerValueTypes]:
-        # Type ignore: the answer block will exist at this stage
+    ) -> ResolvedAnswerList | None:
+        # Type ignore: block must exist for this function to be called
         question = self.schema.get_block_for_answer_id(answer_id).get("question", {})  # type: ignore
-        answer_values: list[AnswerValueTypes] = []
+        dynamic_answers = question["dynamic_answers"]
+        values = dynamic_answers["values"]
+        if values["source"] == "list":
+            return self._resolve_repeating_answers_for_list(
+                answer_id=answer_id, list_name=values["identifier"]
+            )
 
-        if dynamic_answers := question.get("dynamic_answers"):
-            values = dynamic_answers["values"]
-            if values["source"] == "list":
-                for list_item_id in self.list_store[values["identifier"]]:
-                    if answer_value := self._get_answer_value(
-                        answer_id=answer_id, list_item_id=list_item_id
-                    ):
-                        answer_values.append(answer_value)
-        return answer_values
+    def _resolve_list_repeating_block_answers(
+        self, answer_id: str
+    ) -> ResolvedAnswerList:
+        # Type ignore: block must exist for this function to be called
+        repeating_block: ImmutableDict = self.schema.get_block_for_answer_id(answer_id)  # type: ignore
+        list_name = self.schema.list_names_by_list_repeating_block_id[
+            repeating_block["id"]
+        ]
+        return self._resolve_repeating_answers_for_list(
+            answer_id=answer_id, list_name=list_name
+        )
 
     def _resolve_answer_value_source(
         self, value_source: Mapping
     ) -> ValueSourceEscapedTypes | ValueSourceTypes:
         """resolves answer value by first checking if the answer is dynamic whilst not in a repeating section,
-        which indicates that it is a dynamic answer resolving to a list. Otherwise, retrieve answer value as normal.
+        which indicates that it is a repeating answer resolving to a list. Otherwise, retrieve answer value as normal.
         """
         list_item_id = self._resolve_list_item_id_for_value_source(value_source)
         answer_id = value_source["identifier"]
 
-        # if not in a repeating section and the id is for a list of dynamic answers, then return the list of values
-        if not list_item_id and self.schema.is_answer_dynamic(answer_id):
-            return self._resolve_dynamic_answers(answer_id)
+        # if not in a repeating section and the id is for a list of dynamic/repeating block answers, then return the list of values
+        if not list_item_id:
+            if self.schema.is_answer_dynamic(answer_id):
+                return self._resolve_dynamic_answers(answer_id)
+            if self.schema.is_answer_in_list_collector_repeating_block(answer_id):
+                return self._resolve_list_repeating_block_answers(answer_id)
 
         answer_value = self._get_answer_value(
-            answer_id=answer_id, list_item_id=list_item_id
+            answer_id=answer_id,
+            list_item_id=list_item_id,
         )
 
         if isinstance(answer_value, Mapping):
@@ -197,9 +240,7 @@ class ValueSourceResolver:
         """
         calculated_summary_block: ImmutableDict = self.schema.get_block(value_source["identifier"])  # type: ignore
 
-        if self.routing_path_block_ids and not self._is_block_on_path(
-            calculated_summary_block["id"]
-        ):
+        if not self._is_block_on_path(calculated_summary_block["id"]):
             return None
 
         calculation = calculated_summary_block["calculation"]
@@ -223,6 +264,7 @@ class ValueSourceResolver:
             self.metadata,
             self.response_metadata,
             progress_store=self.progress_store,
+            supplementary_data_store=self.supplementary_data_store,
             location=self.location,
             routing_path_block_ids=self.routing_path_block_ids,
         )
@@ -242,6 +284,25 @@ class ValueSourceResolver:
     def _resolve_response_metadata_source(self, value_source: Mapping) -> str | None:
         return self.response_metadata.get(value_source.get("identifier"))
 
+    def resolve_list(self, value_source_list: list[Mapping]) -> list[ValueSourceTypes]:
+        values: list[ValueSourceTypes] = []
+        for value_source in value_source_list:
+            value = self.resolve(value_source)
+            if isinstance(value, list):
+                values.extend(value)
+            else:
+                values.append(value)
+        return values
+
+    def _resolve_supplementary_data_source(
+        self, value_source: Mapping
+    ) -> ValueSourceTypes:
+        return self.supplementary_data_store.get_data(
+            identifier=value_source["identifier"],
+            selectors=value_source.get("selectors"),
+            list_item_id=value_source.get("list_item_id"),
+        )
+
     @staticmethod
     def get_calculation_operator(
         calculation_type: str,
@@ -260,7 +321,6 @@ class ValueSourceResolver:
             return self._resolve_calculated_summary_value_source(
                 value_source=value_source, assess_routing_path=True
             )
-
         resolve_method_mapping = {
             "answers": self._resolve_answer_value_source,
             "list": self._resolve_list_value_source,
@@ -268,6 +328,7 @@ class ValueSourceResolver:
             "location": self._resolve_location_source,
             "response_metadata": self._resolve_response_metadata_source,
             "progress": self._resolve_progress_value_source,
+            "supplementary_data": self._resolve_supplementary_data_source,
         }
 
         return resolve_method_mapping[source](value_source)

@@ -3,18 +3,23 @@ from datetime import date
 from decimal import Decimal
 from typing import Generator, Iterable, MutableMapping, Sequence, TypeAlias
 
-from app.data_models import AnswerStore, ListStore, ProgressStore
+from app.data_models import (
+    AnswerStore,
+    ListStore,
+    ProgressStore,
+    SupplementaryDataStore,
+)
 from app.data_models.metadata_proxy import MetadataProxy
-from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
-from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.operations import Operations
 from app.questionnaire.rules.operator import Operator
 from app.questionnaire.value_source_resolver import (
     ValueSourceResolver,
     ValueSourceTypes,
 )
+from app.utilities.types import LocationType
 
 RuleEvaluatorTypes: TypeAlias = (
     bool | date | list[str] | list[date] | int | float | Decimal | None
@@ -29,8 +34,9 @@ class RuleEvaluator:
     list_store: ListStore
     metadata: MetadataProxy | None
     response_metadata: MutableMapping
-    location: Location | RelationshipLocation | None
+    location: LocationType | None
     progress_store: ProgressStore
+    supplementary_data_store: SupplementaryDataStore
     routing_path_block_ids: Iterable[str] | None = None
     language: str = DEFAULT_LANGUAGE_CODE
 
@@ -48,6 +54,7 @@ class RuleEvaluator:
             routing_path_block_ids=self.routing_path_block_ids,
             progress_store=self.progress_store,
             use_default_answer=True,
+            supplementary_data_store=self.supplementary_data_store,
         )
 
         renderer: PlaceholderRenderer = PlaceholderRenderer(
@@ -59,6 +66,7 @@ class RuleEvaluator:
             schema=self.schema,
             location=self.location,
             progress_store=self.progress_store,
+            supplementary_data_store=self.supplementary_data_store,
         )
         self.operations = Operations(
             language=self.language, schema=self.schema, renderer=renderer

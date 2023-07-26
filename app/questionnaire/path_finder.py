@@ -6,10 +6,12 @@ from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import CompletionStatus, ProgressStore
+from app.data_models.supplementary_data_store import SupplementaryDataStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator, RuleEvaluatorTypes
+from app.utilities.types import LocationType
 
 
 class PathFinder:
@@ -21,6 +23,7 @@ class PathFinder:
         progress_store: ProgressStore,
         metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
+        supplementary_data_store: SupplementaryDataStore,
     ):
         self.answer_store = answer_store
         self.metadata = metadata
@@ -28,6 +31,7 @@ class PathFinder:
         self.schema = schema
         self.progress_store = progress_store
         self.list_store = list_store
+        self.supplementary_data_store = supplementary_data_store
 
     def routing_path(
         self, section_id: str, list_item_id: str | None = None
@@ -78,7 +82,7 @@ class PathFinder:
 
     def _get_not_skipped_blocks_in_section(
         self,
-        location: Location,
+        current_location: LocationType,
         routing_path_block_ids: list[str],
         section: ImmutableDict,
         when_rules_block_dependencies: list[str],
@@ -90,7 +94,7 @@ class PathFinder:
                 if "skip_conditions" in group:
                     skip_conditions = group.get("skip_conditions")
                     if self.evaluate_skip_conditions(
-                        location,
+                        current_location,
                         routing_path_block_ids,
                         skip_conditions,
                         when_rules_block_dependencies,
@@ -112,7 +116,7 @@ class PathFinder:
     def _build_routing_path_block_ids(
         self,
         blocks: Sequence[Mapping],
-        current_location: Location,
+        current_location: LocationType,
         when_rules_block_dependencies: list[str],
     ) -> list[str]:
         # Keep going unless we've hit the last block
@@ -200,6 +204,7 @@ class PathFinder:
             progress_store=self.progress_store,
             location=this_location,
             routing_path_block_ids=routing_path_block_ids,
+            supplementary_data_store=self.supplementary_data_store,
         )
         for rule in routing_rules:
             rule_valid = (
@@ -231,7 +236,7 @@ class PathFinder:
 
     def evaluate_skip_conditions(
         self,
-        this_location: Location,
+        current_location: LocationType,
         routing_path_block_ids: list[str],
         skip_conditions: ImmutableDict[str, dict] | None,
         when_rules_block_dependencies: list[str],
@@ -251,8 +256,9 @@ class PathFinder:
             metadata=self.metadata,
             response_metadata=self.response_metadata,
             progress_store=self.progress_store,
-            location=this_location,
+            location=current_location,
             routing_path_block_ids=routing_path_block_ids,
+            supplementary_data_store=self.supplementary_data_store,
         )
 
         return when_rule_evaluator.evaluate(skip_conditions["when"])
