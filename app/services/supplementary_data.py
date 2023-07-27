@@ -11,7 +11,7 @@ from sdc.crypto.key_store import KeyStore
 from structlog import get_logger
 
 from app.keys import KEY_PURPOSE_SDS
-from app.oidc.token_generator import OIDCCredentials
+from app.oidc.oidc_credentials import OIDCCredentials
 from app.settings import SDS_OAUTH2_CLIENT_ID
 from app.utilities.request_session import get_retryable_session
 from app.utilities.supplementary_data_parser import validate_supplementary_data_v1
