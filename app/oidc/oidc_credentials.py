@@ -1,3 +1,5 @@
+import functools
+
 from cachetools.func import ttl_cache
 from google.auth.credentials import AnonymousCredentials, Credentials
 from google.auth.transport.requests import Request
@@ -7,6 +9,18 @@ from structlog import get_logger
 from app.settings import OIDC_TOKEN_LEEWAY_IN_SECONDS
 
 logger = get_logger()
+TTL = 3600 - OIDC_TOKEN_LEEWAY_IN_SECONDS  # 1 hour minus leeway in seconds
+
+
+def check_expiry(func):
+    @functools.wraps(func)
+    def wrapper_check_expiry(*args, **kwargs):
+        credentials = func(*args, **kwargs)
+        if credentials.expiry < TTL:
+            credentials.refresh(Request())
+        return credentials
+
+    return wrapper_check_expiry
 
 
 class LocalOIDCCredentials:
@@ -22,10 +36,9 @@ class LocalOIDCCredentials:
 
 
 class OIDCCredentials:
-    ttl = 3600 - OIDC_TOKEN_LEEWAY_IN_SECONDS
-
     @staticmethod
-    @ttl_cache(maxsize=1, ttl=5)
+    @check_expiry
+    @ttl_cache(maxsize=1, ttl=TTL)
     def get_credentials(
         *,
         iap_client_id: str,
