@@ -3,7 +3,6 @@ from typing import Mapping, MutableMapping
 from urllib.parse import urlencode
 
 from flask import current_app
-from google.auth.transport.requests import Request
 from marshmallow import ValidationError
 from requests import RequestException
 from sdc.crypto.jwe_helper import InvalidTokenException, JWEHelper
@@ -11,7 +10,7 @@ from sdc.crypto.key_store import KeyStore
 from structlog import get_logger
 
 from app.keys import KEY_PURPOSE_SDS
-from app.oidc.oidc_credentials import OIDCCredentials
+from app.oidc.oidc_credentials import OIDCCredentialsService
 from app.settings import SDS_OAUTH2_CLIENT_ID
 from app.utilities.request_session import get_retryable_session
 from app.utilities.supplementary_data_parser import validate_supplementary_data_v1
@@ -67,16 +66,12 @@ def get_supplementary_data_v1(
         backoff_factor=SUPPLEMENTARY_DATA_REQUEST_BACKOFF_FACTOR,
     )
 
-    # Type ignore: OIDC_TOKEN_BACKEND is a singleton of this application
-    token_generator: OIDCCredentials = current_app.eq["oidc_token_generator"]  # type: ignore
-    credentials = token_generator.get_credentials(iap_client_id=SDS_OAUTH2_CLIENT_ID)
-    # Type ignore: args unused in the called method
-    credentials.before_request(
-        request=Request(),
-        headers=session.headers,
-        method=None,  # type: ignore
-        url=None,  # type: ignore
+    # Type ignore: oidc_credentials_service is a singleton of this application
+    oidc_credentials_service: OIDCCredentialsService = current_app.eq["oidc_credentials_service"]  # type: ignore
+    credentials = oidc_credentials_service.get_credentials(
+        iap_client_id=SDS_OAUTH2_CLIENT_ID
     )
+    credentials.apply(headers=session.headers)
 
     try:
         response = session.get(
