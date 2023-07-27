@@ -6,12 +6,17 @@ from cachetools.func import ttl_cache
 from google.auth.credentials import AnonymousCredentials, Credentials
 from google.auth.transport.requests import Request
 from google.oauth2.id_token import fetch_id_token_credentials
+from pytz import UTC
 from structlog import get_logger
 
 from app.settings import OIDC_TOKEN_LEEWAY_IN_SECONDS
 
 logger = get_logger()
 TTL = 3600 - OIDC_TOKEN_LEEWAY_IN_SECONDS  # 1 hour minus leeway in seconds
+
+
+def get_expiry_from_ttl(ttl: int) -> datetime:
+    return datetime.now(timezone.utc) - timedelta(seconds=ttl)
 
 
 def refresh_oidc_credentials(func):
@@ -29,7 +34,7 @@ def refresh_oidc_credentials(func):
     @functools.wraps(func)
     def wrapper_refresh_oidc_credentials(*args, **kwargs):
         credentials = func(*args, **kwargs)
-        if credentials.expiry < datetime.now(timezone.utc) - timedelta(seconds=TTL):
+        if UTC.localize(dt=credentials.expiry) < get_expiry_from_ttl(TTL):
             logger.info("refreshing oidc credentials")
             credentials.refresh(Request())
         return credentials
@@ -38,6 +43,10 @@ def refresh_oidc_credentials(func):
 
 
 class LocalOIDCCredentials(AnonymousCredentials):
+    # Type ignore: AnonymousCredentials has no constructor and does not call its parent's constructor
+    def __init__(self):  # pylint: disable=super-init-not-called
+        self.expiry = get_expiry_from_ttl(TTL)
+
     def refresh(self, request):
         pass
 
@@ -45,9 +54,9 @@ class LocalOIDCCredentials(AnonymousCredentials):
 class OIDCCredentialsService(ABC):
     @abstractmethod
     def get_credentials(
-            self,
-            *,
-            iap_client_id: str,
+        self,
+        *,
+        iap_client_id: str,
     ):
         pass
 
@@ -56,9 +65,9 @@ class LocalOIDCCredentialsService(OIDCCredentialsService):
     @refresh_oidc_credentials
     @ttl_cache(maxsize=None, ttl=TTL)
     def get_credentials(
-            self,
-            *,
-            iap_client_id: str,
+        self,
+        *,
+        iap_client_id: str,
     ) -> Credentials:
         logger.info("generating local oidc credentials")
         logger.info(f"using IAP Client ID {iap_client_id}")
@@ -71,9 +80,9 @@ class GCPCredentialsService(OIDCCredentialsService):
     @refresh_oidc_credentials
     @ttl_cache(maxsize=None, ttl=TTL)
     def get_credentials(
-            self,
-            *,
-            iap_client_id: str,
+        self,
+        *,
+        iap_client_id: str,
     ) -> Credentials:
         logger.info("fetching oidc credentials from GCP")
         logger.info(f"using IAP Client ID {iap_client_id}")
