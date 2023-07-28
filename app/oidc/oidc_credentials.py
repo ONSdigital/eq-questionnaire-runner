@@ -2,11 +2,11 @@ import functools
 from abc import ABC, abstractmethod
 from datetime import datetime, timedelta, timezone
 
+import pytz
 from cachetools.func import ttl_cache
 from google.auth.credentials import AnonymousCredentials, Credentials
 from google.auth.transport.requests import Request
 from google.oauth2.id_token import fetch_id_token_credentials
-from pytz import UTC
 from structlog import get_logger
 
 from app.settings import OIDC_TOKEN_LEEWAY_IN_SECONDS
@@ -34,7 +34,7 @@ def refresh_oidc_credentials(func):
     @functools.wraps(func)
     def wrapper_refresh_oidc_credentials(*args, **kwargs):
         credentials = func(*args, **kwargs)
-        if UTC.localize(dt=credentials.expiry) < get_expiry_from_ttl(TTL):
+        if pytz.utc.localize(dt=credentials.expiry) < get_expiry_from_ttl(TTL):
             logger.info("refreshing oidc credentials")
             credentials.refresh(Request())
         return credentials
