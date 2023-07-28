@@ -1,39 +1,26 @@
 [
-  {
-    "survey_id": "123",
-    "period_id": "202301",
-    "title": "Supplementary data without repeating items",
-    "sds_schema_version": 1,
-    "sds_published_at": "2022-03-01T12:30:02Z",
-    "total_reporting_units": 2,
-    "schema_version": "v1.0.0",
-    "sds_dataset_version": 1,
-    "filename": "",
-    "dataset_id": "c067f6de-6d64-42b1-8b02-431a3486c178"
-  },
-  {
-    "survey_id": "123",
-    "period_id": "202302",
-    "title": "Supplementary data with repeating items",
-    "sds_schema_version": 1,
-    "sds_published_at": "2022-03-01T12:30:02Z",
-    "total_reporting_units": 2,
-    "schema_version": "v1.0.0",
-    "sds_dataset_version": 1,
-    "filename": "",
-    "dataset_id": "34a80231-c49a-44d0-91a6-8fe1fb190e64"
-  },
-  {
-    "survey_id": "123",
-    "period_id": "202303",
-    "title": "Supplementary data with repeats v2 additional items",
-    "sds_schema_version": 1,
-    "sds_published_at": "2023-05-04T14:35:05Z",
-    "total_reporting_units": 2,
-    "schema_version": "v1.0.0",
-    "sds_dataset_version": 1,
-    "filename": "",
-    "dataset_id": "6b378962-f0c7-4e8c-947e-7d24ee1b6b88"
-  }
+    {
+        "survey_id": "123",
+        "period_id": "202301",
+        "title": "Supplementary data",
+        "sds_schema_version": 1,
+        "sds_published_at": "2022-03-01T12:30:02Z",
+        "total_reporting_units": 2,
+        "schema_version": "v1.0.0",
+        "sds_dataset_version": 1,
+        "filename": "",
+        "dataset_id": "c067f6de-6d64-42b1-8b02-431a3486c178"
+    },
+    {
+        "survey_id": "123",
+        "period_id": "202301",
+        "title": "Supplementary data v2",
+        "sds_schema_version": 1,
+        "sds_published_at": "2023-07-01T11:25:01Z",
+        "total_reporting_units": 2,
+        "schema_version": "v1.0.0",
+        "sds_dataset_version": 1,
+        "filename": "",
+        "dataset_id": "693dc252-2e90-4412-bd9c-c4d953e36fcd"
+    }
 ]
-

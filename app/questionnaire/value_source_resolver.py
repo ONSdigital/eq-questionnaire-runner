@@ -88,25 +88,29 @@ class ValueSourceResolver:
     def _resolve_list_item_id_for_value_source(
         self, value_source: Mapping
     ) -> str | None:
-        list_item_id: str | None = None
-
         if list_item_selector := value_source.get("list_item_selector"):
             if list_item_selector["source"] == "location":
                 if not self.location:
                     raise InvalidLocationException(
                         "list_item_selector source location used without location"
                     )
+                # Type ignore: the identifier is a string, same below
+                return getattr(self.location, list_item_selector["identifier"])  # type: ignore
 
-                list_item_id = getattr(self.location, list_item_selector["identifier"])
-
-            elif list_item_selector["source"] == "list":
-                list_item_id = getattr(
+            if list_item_selector["source"] == "list":
+                return getattr(  # type: ignore
                     self.list_store[list_item_selector["identifier"]],
                     list_item_selector["selector"],
                 )
 
-        if list_item_id:
-            return list_item_id
+        if value_source["source"] == "supplementary_data":
+            return (
+                self.list_item_id
+                if self.supplementary_data_store.is_data_repeating(
+                    value_source["identifier"]
+                )
+                else None
+            )
 
         return (
             self.list_item_id
@@ -286,10 +290,12 @@ class ValueSourceResolver:
     def _resolve_supplementary_data_source(
         self, value_source: Mapping
     ) -> ValueSourceTypes:
+        list_item_id = self._resolve_list_item_id_for_value_source(value_source)
+
         return self.supplementary_data_store.get_data(
             identifier=value_source["identifier"],
             selectors=value_source.get("selectors"),
-            list_item_id=value_source.get("list_item_id"),
+            list_item_id=list_item_id,
         )
 
     @staticmethod
