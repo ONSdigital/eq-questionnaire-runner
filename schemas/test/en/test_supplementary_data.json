@@ -653,14 +653,14 @@
                             "type": "ListCollector",
                             "for_list": "employees",
                             "question": {
-                                "id": "confirmation-question",
+                                "id": "confirmation-employee-question",
                                 "type": "General",
                                 "title": "Do you need to add any more employees?",
                                 "guidance": {
                                     "contents": [
                                         {
                                             "title": "Important guidance",
-                                            "description": "This list collector is a placeholder until it can be replaced with a list collector content block - <strong>do not add any people to this list because it won't work correctly</strong>"
+                                            "description": "This list collector is a placeholder until it can be replaced with a list collector content block - <strong>do not add any people to this list because it won’t work correctly</strong>"
                                         }
                                     ]
                                 },
@@ -690,7 +690,7 @@
                                 "type": "ListAddQuestion",
                                 "cancel_text": "Don’t need to add any other employees?",
                                 "question": {
-                                    "id": "add-question",
+                                    "id": "add-employee-question",
                                     "type": "General",
                                     "title": "What is the name of the employee?",
                                     "answers": [
@@ -714,7 +714,7 @@
                                 "type": "ListEditQuestion",
                                 "cancel_text": "Don’t need to change anything?",
                                 "question": {
-                                    "id": "edit-question",
+                                    "id": "edit-employee-question",
                                     "type": "General",
                                     "title": "What is the name of the employee?",
                                     "answers": [
@@ -738,7 +738,7 @@
                                 "type": "ListRemoveQuestion",
                                 "cancel_text": "Don’t need to remove this employee?",
                                 "question": {
-                                    "id": "remove-question",
+                                    "id": "remove-employee-question",
                                     "type": "General",
                                     "title": "Are you sure you want to remove this employee?",
                                     "warning": "All of the information about this employee will be deleted",
@@ -883,7 +883,7 @@
                             "type": "ListCollector",
                             "for_list": "additional-employees",
                             "question": {
-                                "id": "confirmation-question",
+                                "id": "confirmation-additional-question",
                                 "type": "General",
                                 "title": "Do you need to add any more employees?",
                                 "answers": [
@@ -912,7 +912,7 @@
                                 "type": "ListAddQuestion",
                                 "cancel_text": "Don’t need to add any other employees?",
                                 "question": {
-                                    "id": "add-question",
+                                    "id": "add-additional-question",
                                     "type": "General",
                                     "title": "What is the name of the employee?",
                                     "answers": [
@@ -936,7 +936,7 @@
                                 "type": "ListEditQuestion",
                                 "cancel_text": "Don’t need to change anything?",
                                 "question": {
-                                    "id": "edit-question",
+                                    "id": "edit-additional-question",
                                     "type": "General",
                                     "title": "What is the name of the employee?",
                                     "answers": [
@@ -960,7 +960,7 @@
                                 "type": "ListRemoveQuestion",
                                 "cancel_text": "Don’t need to remove this employee?",
                                 "question": {
-                                    "id": "remove-question",
+                                    "id": "remove-additional-question",
                                     "type": "General",
                                     "title": "Are you sure you want to remove this employee?",
                                     "warning": "All of the information about this employee will be deleted",
@@ -1325,14 +1325,14 @@
                             "type": "ListCollector",
                             "for_list": "products",
                             "question": {
-                                "id": "confirmation-question",
+                                "id": "confirmation-product-question",
                                 "type": "General",
                                 "title": "Do you need to add any more products?",
                                 "guidance": {
                                     "contents": [
                                         {
                                             "title": "Important guidance",
-                                            "description": "This list collector is a placeholder until it can be replaced with a list collector content block - <strong>do not add any products to this list because it won't work correctly</strong>"
+                                            "description": "This list collector is a placeholder until it can be replaced with a list collector content block - <strong>do not add any products to this list because it won’t work correctly</strong>"
                                         },
                                         {
                                             "description": "Until this can be replaced with a list collector content block, keep clicking no and pressing save and continue to complete the repeating blocks"
@@ -1365,7 +1365,7 @@
                                 "type": "ListAddQuestion",
                                 "cancel_text": "Don’t need to add any other products?",
                                 "question": {
-                                    "id": "add-question",
+                                    "id": "add-product-question",
                                     "type": "General",
                                     "title": "What is the name of the product?",
                                     "guidance": {
@@ -1390,7 +1390,7 @@
                                 "type": "ListEditQuestion",
                                 "cancel_text": "Don’t need to change anything?",
                                 "question": {
-                                    "id": "edit-question",
+                                    "id": "edit-product-question",
                                     "type": "General",
                                     "title": "What is the name of the product?",
                                     "answers": [
@@ -1408,7 +1408,7 @@
                                 "type": "ListRemoveQuestion",
                                 "cancel_text": "Don’t need to remove this product?",
                                 "question": {
-                                    "id": "remove-question",
+                                    "id": "remove-product-question",
                                     "type": "General",
                                     "title": "Are you sure you want to remove this product?",
                                     "warning": "All of the information about this product will be deleted",

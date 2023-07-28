@@ -115,7 +115,7 @@ class SupplementaryDataStore:
 
     def is_data_repeating(self, identifier: str) -> bool:
         """
-        Returns true if the identifier is for one of the list items
+        Returns true if the identifier is for one of the lists
         """
         return identifier in self._list_mappings
 
