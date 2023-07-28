@@ -39,7 +39,7 @@ class ValueSourceResolver:
     routing_path_block_ids: Iterable[str] | None = None
     use_default_answer: bool = False
     escape_answer_values: bool = False
-    assess_routing_path: bool = True
+    assess_routing_path: bool | None = True
 
     def _is_answer_on_path(self, answer_id: str) -> bool:
         if self.routing_path_block_ids:
@@ -178,7 +178,8 @@ class ValueSourceResolver:
                 return self._resolve_list_repeating_block_answers(answer_id)
 
         answer_value = self._get_answer_value(
-            answer_id=answer_id, list_item_id=list_item_id
+            answer_id=answer_id,
+            list_item_id=list_item_id,
         )
 
         if isinstance(answer_value, Mapping):
@@ -287,6 +288,16 @@ class ValueSourceResolver:
     def _resolve_response_metadata_source(self, value_source: Mapping) -> str | None:
         return self.response_metadata.get(value_source.get("identifier"))
 
+    def resolve_list(self, value_source_list: list[Mapping]) -> list[ValueSourceTypes]:
+        values: list[ValueSourceTypes] = []
+        for value_source in value_source_list:
+            value = self.resolve(value_source)
+            if isinstance(value, list):
+                values.extend(value)
+            else:
+                values.append(value)
+        return values
+
     def _resolve_supplementary_data_source(
         self, value_source: Mapping
     ) -> ValueSourceTypes:
@@ -316,7 +327,6 @@ class ValueSourceResolver:
             return self._resolve_calculated_summary_value_source(
                 value_source=value_source, assess_routing_path=True
             )
-
         resolve_method_mapping = {
             "answers": self._resolve_answer_value_source,
             "list": self._resolve_list_value_source,
