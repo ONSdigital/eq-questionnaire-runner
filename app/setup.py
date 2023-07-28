@@ -27,7 +27,8 @@ from app.cloud_tasks import CloudTaskPublisher, LogCloudTaskPublisher
 from app.helpers import get_span_and_trace
 from app.jinja_filters import blueprint as filter_blueprint
 from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SUBMISSION
-from app.oidc.oidc_credentials import GCPCredentialsService, LocalOIDCCredentialsService
+from app.oidc.gcp_oidc import GCPCredentialsService
+from app.oidc.local_oidc import LocalOIDCCredentialsService
 from app.publisher import LogPublisher, PubSubPublisher
 from app.routes.dump import dump_blueprint
 from app.routes.errors import errors_blueprint
