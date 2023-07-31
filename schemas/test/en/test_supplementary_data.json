@@ -1466,30 +1466,26 @@
                                                             }
                                                         ]
                                                     },
-                                                    "list": [
-                                                        {
-                                                            "text": "{guidance_include_list}",
-                                                            "placeholders": [
-                                                                {
-                                                                    "placeholder": "guidance_include_list",
-                                                                    "transforms": [
-                                                                        {
-                                                                            "transform": "first_non_empty_item",
-                                                                            "arguments": {
-                                                                                "items": [
-                                                                                    {
-                                                                                        "source": "supplementary_data",
-                                                                                        "identifier": "products",
-                                                                                        "selectors": ["guidance_include", "list"]
-                                                                                    }
-                                                                                ]
+                                                    "description": {
+                                                        "text": "{guidance_include_list}",
+                                                        "placeholders": [
+                                                            {
+                                                                "placeholder": "guidance_include_list",
+                                                                "transforms": [
+                                                                    {
+                                                                        "transform": "format_list",
+                                                                        "arguments": {
+                                                                            "list_to_format": {
+                                                                                "source": "supplementary_data",
+                                                                                "identifier": "products",
+                                                                                "selectors": ["guidance_include", "list"]
                                                                             }
                                                                         }
-                                                                    ]
-                                                                }
-                                                            ]
-                                                        }
-                                                    ]
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
                                                 },
                                                 {
                                                     "title": {
@@ -1514,30 +1510,26 @@
                                                             }
                                                         ]
                                                     },
-                                                    "list": [
-                                                        {
-                                                            "text": "{guidance_exclude_list}",
-                                                            "placeholders": [
-                                                                {
-                                                                    "placeholder": "guidance_exclude_list",
-                                                                    "transforms": [
-                                                                        {
-                                                                            "transform": "first_non_empty_item",
-                                                                            "arguments": {
-                                                                                "items": [
-                                                                                    {
-                                                                                        "source": "supplementary_data",
-                                                                                        "identifier": "products",
-                                                                                        "selectors": ["guidance_exclude", "list"]
-                                                                                    }
-                                                                                ]
+                                                    "description": {
+                                                        "text": "{guidance_exclude_list}",
+                                                        "placeholders": [
+                                                            {
+                                                                "placeholder": "guidance_exclude_list",
+                                                                "transforms": [
+                                                                    {
+                                                                        "transform": "format_list",
+                                                                        "arguments": {
+                                                                            "list_to_format": {
+                                                                                "source": "supplementary_data",
+                                                                                "identifier": "products",
+                                                                                "selectors": ["guidance_exclude", "list"]
                                                                             }
                                                                         }
-                                                                    ]
-                                                                }
-                                                            ]
-                                                        }
-                                                    ]
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
                                                 }
                                             ]
                                         },

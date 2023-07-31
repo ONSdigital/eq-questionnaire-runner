@@ -56,9 +56,12 @@ class PlaceholderTransforms:
         return formatted_datetime
 
     @staticmethod
-    def format_list(list_to_format: Sequence[str]) -> str:
-        formatted_list = "<ul>" + "".join(f"<li>{item}</li>" for item in list_to_format)
-        formatted_list += "</ul>"
+    def format_list(list_to_format: Sequence[str] | None) -> str:
+        formatted_list = (
+            f"<ul>{''.join(f'<li>{item}</li>' for item in list_to_format)}</ul>"
+            if list_to_format
+            else ""
+        )
         return formatted_list
 
     @staticmethod
