@@ -35,6 +35,8 @@ types-redis = "*"
 types-PyYAML = "*"
 types-python-dateutil = "*"
 pytest-mock = "*"
+types-cachetools = "*"
+types-pytz = "*"
 
 [packages]
 colorama = "*"
@@ -42,7 +44,7 @@ flask = "==2.2.2"
 flask-babel = "*"
 flask-login = "*"
 flask-wtf = "*"
-gevent = {version = "*",platform_python_implementation = "=='CPython'"}
+gevent = { version = "*", platform_python_implementation = "=='CPython'" }
 google-cloud-datastore = "*"
 grpcio = "*"
 gunicorn = "*"
@@ -74,8 +76,6 @@ markupsafe = "*"
 pdfkit = "*"
 ordered-set = "*"
 cachetools = "*"
-types-cachetools = "*"
-types-pytz = "*"
 
 [requires]
 python_version = "3.10"

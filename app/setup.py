@@ -27,7 +27,7 @@ from app.cloud_tasks import CloudTaskPublisher, LogCloudTaskPublisher
 from app.helpers import get_span_and_trace
 from app.jinja_filters import blueprint as filter_blueprint
 from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SUBMISSION
-from app.oidc.gcp_oidc import GCPCredentialsService
+from app.oidc.gcp_oidc import GCPOIDCCredentialsService
 from app.oidc.local_oidc import LocalOIDCCredentialsService
 from app.publisher import LogPublisher, PubSubPublisher
 from app.routes.dump import dump_blueprint
@@ -383,10 +383,16 @@ def setup_task_client(application):
 
 
 def setup_oidc(application):
-    if application.config["OIDC_TOKEN_BACKEND"] == "gcp":
-        application.eq["oidc_credentials_service"] = GCPCredentialsService()
+    if not application.config.get("SDS_OAUTH2_CLIENT_ID"):
+        raise MissingEnvironmentVariable("Setting SDS_OAUTH2_CLIENT_ID Missing")
 
-    elif application.config["OIDC_TOKEN_BACKEND"] == "local":
+    if not (oidc_token_backend := application.config.get("OIDC_TOKEN_BACKEND")):
+        raise MissingEnvironmentVariable("Setting OIDC_TOKEN_BACKEND Missing")
+
+    if oidc_token_backend == "gcp":
+        application.eq["oidc_credentials_service"] = GCPOIDCCredentialsService()
+
+    elif oidc_token_backend == "local":
         application.eq["oidc_credentials_service"] = LocalOIDCCredentialsService()
 
     else:

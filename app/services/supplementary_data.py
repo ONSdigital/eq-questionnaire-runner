@@ -68,8 +68,9 @@ def get_supplementary_data_v1(
 
     # Type ignore: oidc_credentials_service is a singleton of this application
     oidc_credentials_service: OIDCCredentialsService = current_app.eq["oidc_credentials_service"]  # type: ignore
+    # Type ignore: SDS_OAUTH2_CLIENT_ID is an env var which must exist as it is verified in setup.py
     credentials = oidc_credentials_service.get_credentials(
-        iap_client_id=SDS_OAUTH2_CLIENT_ID
+        iap_client_id=SDS_OAUTH2_CLIENT_ID  # type: ignore
     )
     credentials.apply(headers=session.headers)
 

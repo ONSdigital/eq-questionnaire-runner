@@ -30,8 +30,7 @@ class LocalOIDCCredentialsService(OIDCCredentialsService):
         *,
         iap_client_id: str,
     ) -> Credentials:
-        logger.info("generating local oidc credentials")
-        logger.info(f"using IAP Client ID {iap_client_id}")
+        logger.info("generating local oidc credential", iap_client_id=iap_client_id)
 
         # Return Credentials which do not provide any authentication or make any requests for tokens
         return LocalOIDCCredentials()

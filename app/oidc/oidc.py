@@ -3,17 +3,20 @@ from abc import ABC, abstractmethod
 from datetime import datetime, timedelta, timezone
 from typing import Callable, ParamSpec
 
-import pytz
 from google.auth.credentials import Credentials
 from google.auth.transport.requests import Request
 from structlog import get_logger
 
-from app.settings import OIDC_TOKEN_LEEWAY_IN_SECONDS
+from app.settings import (
+    OIDC_TOKEN_LEEWAY_IN_SECONDS,
+    OIDC_TOKEN_VALIDITY_IN_SECONDS,
+    SDS_OAUTH2_CLIENT_ID,
+)
 
 P = ParamSpec("P")
 
 logger = get_logger()
-TTL = 3600 - OIDC_TOKEN_LEEWAY_IN_SECONDS  # 1 hour minus leeway in seconds
+TTL = OIDC_TOKEN_VALIDITY_IN_SECONDS - OIDC_TOKEN_LEEWAY_IN_SECONDS
 
 
 def get_expiry_from_ttl(ttl: int) -> datetime:
@@ -43,13 +46,11 @@ def refresh_oidc_credentials(
         *args: P.args, **kwargs: P.kwargs
     ) -> Credentials:
         credentials = func(*args, **kwargs)
-        expiry = (
-            pytz.utc.localize(dt=credentials.expiry)
-            if is_naive(credentials.expiry)
-            else credentials.expiry
-        )
+        expiry = credentials.expiry.replace(tzinfo=timezone.utc)
         if expiry < get_expiry_from_ttl(TTL):
-            logger.info("refreshing oidc credentials")
+            logger.info(
+                "refreshing oidc credentials", iap_client_id=SDS_OAUTH2_CLIENT_ID
+            )
             credentials.refresh(Request())
         return credentials
 

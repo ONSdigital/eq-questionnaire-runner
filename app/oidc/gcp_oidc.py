@@ -9,7 +9,7 @@ from app.oidc.oidc import TTL, OIDCCredentialsService, refresh_oidc_credentials
 logger = get_logger()
 
 
-class GCPCredentialsService(OIDCCredentialsService):
+class GCPOIDCCredentialsService(OIDCCredentialsService):
     @refresh_oidc_credentials
     @ttl_cache(maxsize=None, ttl=TTL)
     def get_credentials(
@@ -17,8 +17,7 @@ class GCPCredentialsService(OIDCCredentialsService):
         *,
         iap_client_id: str,
     ) -> Credentials:
-        logger.info("fetching oidc credentials from GCP")
-        logger.info(f"using IAP Client ID {iap_client_id}")
+        logger.info("fetching oidc credentials from GCP", iap_client_id=iap_client_id)
 
         request = Request()
         target_audience = iap_client_id
