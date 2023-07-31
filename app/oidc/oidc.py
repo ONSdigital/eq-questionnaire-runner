@@ -1,7 +1,7 @@
 import functools
 from abc import ABC, abstractmethod
 from datetime import datetime, timedelta, timezone
-from typing import Callable, ParamSpec, TypeVar
+from typing import Callable, ParamSpec
 
 import pytz
 from google.auth.credentials import Credentials
@@ -10,7 +10,6 @@ from structlog import get_logger
 
 from app.settings import OIDC_TOKEN_LEEWAY_IN_SECONDS
 
-T = TypeVar("T")
 P = ParamSpec("P")
 
 logger = get_logger()
