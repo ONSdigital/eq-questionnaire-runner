@@ -162,22 +162,24 @@ class Question(BlockHandler):
         )
 
     def _get_answer_action(self) -> Any:
-        if self.rendered_block.get("question"):
-            answers = self.rendered_block["question"]["answers"]
+        if not self.rendered_block.get("question"):
+            return
 
-            for answer in answers:
-                # pylint: disable=no-member
-                # wtforms Form parents are not discoverable in the 2.3.3 implementation
-                submitted_answer = self.form.data[answer["id"]]
+        answers = self.rendered_block["question"]["answers"]
 
-                for option in answer.get("options", {}):
-                    action = option.get("action")
+        for answer in answers:
+            # pylint: disable=no-member
+            # wtforms Form parents are not discoverable in the 2.3.3 implementation
+            submitted_answer = self.form.data[answer["id"]]
 
-                    if action and (
-                        option["value"] == submitted_answer
-                        or option["value"] in submitted_answer
-                    ):
-                        return action
+            for option in answer.get("options", {}):
+                action = option.get("action")
+
+                if action and (
+                    option["value"] == submitted_answer
+                    or option["value"] in submitted_answer
+                ):
+                    return action
 
     def get_context(self) -> dict[str, dict]:
         context = build_question_context(self.rendered_block, self.form)
