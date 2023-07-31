@@ -47,6 +47,7 @@ describe.skip("Using supplementary data", () => {
 
   it("Given I launch a survey using supplementary data, When I begin the introduction block, Then I see the supplementary data piped in", async () => {
     await $(LoadedSuccessfullyBlockPage.submit()).click();
+    await $(IntroductionBlockPage.acceptCookies()).click();
     await expect(await $(IntroductionBlockPage.businessDetailsContent()).getText()).to.contain("You are completing this survey for Tesco");
     await expect(await $(IntroductionBlockPage.businessDetailsContent()).getText()).to.contain(
       "If the company details or structure have changed contact us on 01171231231"
