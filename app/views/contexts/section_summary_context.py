@@ -202,7 +202,7 @@ class SectionSummaryContext(Context):
             non_list_collector_blocks: list[dict[str, str]] = []
             list_collector_blocks: list[dict[str, str]] = []
             for block in group["blocks"]:
-                if block["type"] in ["ListCollector", "ListCollectorContent"]:
+                if block["type"] in {"ListCollector", "ListCollectorContent"}:
                     # if list collector block encountered, close the previously started non list collector blocks list if exists
                     if non_list_collector_blocks:
                         previously_started_group = {

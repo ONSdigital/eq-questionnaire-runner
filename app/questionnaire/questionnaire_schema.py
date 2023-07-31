@@ -1433,6 +1433,5 @@ def get_calculation_block_ids_for_grand_calculated_summary(
     )
 
 
-def is_list_collector_block_editable(block: Mapping) -> bool | None:
-    # Type will always exist at this point
-    return block["type"] == "ListCollector"  # type: ignore
+def is_list_collector_block_editable(block: Mapping) -> bool:
+    return bool(block["type"] == "ListCollector")

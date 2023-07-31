@@ -1,4 +1,4 @@
-from typing import Iterable, Mapping, MutableMapping, Type
+from typing import Iterable, Mapping, MutableMapping
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -173,9 +173,7 @@ class Group:
                     section_id=section["id"],  # type: ignore
                     list_name=block["for_list"],
                 ):
-                    list_collector_block_class: Type[
-                        ListCollectorBlock | ListCollectorContentBlock
-                    ] = (
+                    list_collector_block_class = (
                         ListCollectorBlock
                         if is_list_collector_block_editable(block)
                         else ListCollectorContentBlock
