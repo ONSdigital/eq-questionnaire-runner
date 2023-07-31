@@ -22,6 +22,7 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
 
   describe("Given I add list items with hardcoded total used for validation of dynamic answers", () => {
     it("When I continue and enter numbers on dynamic and static answers page that don't add up to that total, Then validation error should be displayed with appropriate message", async () => {
+      await $(TotalBlockPage.acceptCookies()).click();
       await addTwoSupermarkets();
       await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
       await expect(await $$(DynamicAnswerPage.labels()).length).to.equal(3);
