@@ -69,7 +69,8 @@ class ListAction(Question):
 
         if (
             self.router.is_block_complete(
-                block_id=self.parent_location.block_id,
+                # Type ignore: block_id would exist at this point
+                block_id=self.parent_location.block_id,  # type: ignore
                 section_id=self.parent_location.section_id,
                 list_item_id=self.parent_location.list_item_id,
             )

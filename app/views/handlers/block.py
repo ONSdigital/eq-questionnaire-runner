@@ -25,7 +25,7 @@ class BlockHandler:
         schema: QuestionnaireSchema,
         questionnaire_store: QuestionnaireStore,
         language: str,
-        current_location: LocationType,
+        current_location: Location,
         request_args: MutableMapping,
         form_data: ImmutableMultiDict,
     ):

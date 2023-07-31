@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Mapping, Sequence
+from typing import Any, Mapping, Sequence
 
 from flask import url_for
 from flask_babel import gettext
@@ -161,7 +161,7 @@ class Question(BlockHandler):
             == self._questionnaire_store.list_store[list_name].primary_person
         )
 
-    def _get_answer_action(self) -> dict | None:
+    def _get_answer_action(self) -> Any:
         if self.rendered_block.get("question"):
             answers = self.rendered_block["question"]["answers"]
 

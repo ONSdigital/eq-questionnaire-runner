@@ -76,7 +76,7 @@ class ListCollector(Question):
     def _get_additional_view_context(self) -> dict:
         return super().get_context()
 
-    def get_context(self):
+    def get_context(self) -> dict:
         return {**self._get_additional_view_context(), **self._get_list_context()}
 
     def handle_post(self) -> None:
