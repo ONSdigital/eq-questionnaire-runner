@@ -65,6 +65,7 @@ class PlaceholderParser:
         self._progress_store = progress_store
         self._placeholder_preview_mode = placeholder_preview_mode
 
+
         self._path_finder = pf.PathFinder(
             schema=self._schema,
             answer_store=self._answer_store,
@@ -140,11 +141,15 @@ class PlaceholderParser:
     ) -> TransformedValueTypes:
         transformed_value: TransformedValueTypes = None
 
+        # answers = self._schema.get_answers_by_answer_id(self, transform_list["identifier"][0]["arguments"])
+
         for transform in transform_list:
             transform_args: MutableMapping = {}
 
             for arg_key, arg_value in transform["arguments"].items():
                 resolved_value: ValueSourceEscapedTypes | ValueSourceTypes | TransformedValueTypes
+
+
 
                 if isinstance(arg_value, list):
                     resolved_value = self._resolve_value_source_list(arg_value)
@@ -159,6 +164,10 @@ class PlaceholderParser:
                     resolved_value = arg_value
 
                 transform_args[arg_key] = resolved_value
+
+                if transform["transform"] == "format_currency":
+                    answer = self._schema.get_answers_by_answer_id(arg_value["identifier"])[0]
+                    transform_args["schema_limit"] = answer["decimal_places"]
 
             transformed_value = getattr(self._transformer, transform["transform"])(
                 **transform_args

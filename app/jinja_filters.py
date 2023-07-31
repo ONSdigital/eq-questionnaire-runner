@@ -9,7 +9,7 @@ import babel
 import flask
 import flask_babel
 from babel import numbers, units
-from flask import current_app
+from flask import current_app, g
 from jinja2 import nodes, pass_eval_context
 from markupsafe import Markup, escape
 from wtforms import SelectFieldBase
@@ -483,6 +483,9 @@ class SummaryRowItem:
         edit_link_aria_label: str,
         summary_type: str,
     ) -> None:
+
+
+
         if "type" in answer:
             answer_type = answer["type"]
         else:

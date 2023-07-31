@@ -29,7 +29,7 @@ def eq_format_decimal(
 def eq_custom_currency(
     value: float | Decimal,
     currency: str,
-    locale_p: Locale,
+    locale_p: Locale | str,
     schema_limit: int | None = None,
 ):
     decimal_separator = babel.numbers.get_decimal_symbol(locale_p)
@@ -45,17 +45,14 @@ def eq_custom_currency(
 
     # if schema_limit is undefined then check if there are no decimal places first, format if so. If no decimal places then format currency as a default
     if schema_limit is None:
-        if decimal_places == 0:
-            pattern.frac_prec = (0, 0)
-            currency_digits = False
-        elif decimal_places < 2:
-            currency_digits = True
-        else:
+        if decimal_places > 2:
             pattern.frac_prec = (0, decimal_places)
-            currency_digits = False
-        return numbers.format_currency(
-            value, currency, pattern, locale_p, currency_digits=currency_digits
-        )
+            return numbers.format_currency(
+                value, currency, pattern, locale, currency_digits=False
+            )
+        else:
+            return numbers.format_currency(
+                value, currency, pattern, locale_p)
 
     # if schema_limit is less than 2 then return the value the user entered
     if schema_limit < 2:

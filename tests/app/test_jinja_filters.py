@@ -713,6 +713,7 @@ def test_calculated_summary_config():
                         "type": "currency",
                         "currency": "GBP",
                         "link": "/questionnaire/first-number-block/?return_to=final-summary&return_to_answer_id=first-number-answer#first-number-answer",
+                        "decimal_places": 2,
                     }
                 ],
             },
@@ -735,6 +736,7 @@ def test_calculated_summary_config():
                         "type": "currency",
                         "currency": "GBP",
                         "link": "/questionnaire/second-number-block/?return_to=final-summary&return_to_answer_id=second-number-answer#second-number-answer",
+                        "decimal_places": 2,
                     }
                 ],
             },

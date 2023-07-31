@@ -62,7 +62,8 @@ def test_previous_answer_transform_placeholder(
                         "number": {
                             "source": "answers",
                             "identifier": "total-retail-turnover-answer",
-                        }
+
+                        },
                     },
                 }
             ],
