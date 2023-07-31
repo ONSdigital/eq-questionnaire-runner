@@ -22,7 +22,7 @@ class LocalOIDCCredentials(AnonymousCredentials):
         pass
 
 
-class LocalOIDCCredentialsService(OIDCCredentialsService):
+class OIDCCredentialsServiceLocal(OIDCCredentialsService):
     @refresh_oidc_credentials
     @ttl_cache(maxsize=None, ttl=TTL)
     def get_credentials(

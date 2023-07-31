@@ -27,8 +27,8 @@ from app.cloud_tasks import CloudTaskPublisher, LogCloudTaskPublisher
 from app.helpers import get_span_and_trace
 from app.jinja_filters import blueprint as filter_blueprint
 from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SUBMISSION
-from app.oidc.gcp_oidc import GCPOIDCCredentialsService
-from app.oidc.local_oidc import LocalOIDCCredentialsService
+from app.oidc.gcp_oidc import OIDCCredentialsServiceGCP
+from app.oidc.local_oidc import OIDCCredentialsServiceLocal
 from app.publisher import LogPublisher, PubSubPublisher
 from app.routes.dump import dump_blueprint
 from app.routes.errors import errors_blueprint
@@ -392,10 +392,10 @@ def setup_oidc(application):
 
     if oidc_token_backend == "gcp":
         sds_client_id_exists()
-        application.eq["oidc_credentials_service"] = GCPOIDCCredentialsService()
+        application.eq["oidc_credentials_service"] = OIDCCredentialsServiceGCP()
 
     elif oidc_token_backend == "local":
-        application.eq["oidc_credentials_service"] = LocalOIDCCredentialsService()
+        application.eq["oidc_credentials_service"] = OIDCCredentialsServiceLocal()
 
     else:
         raise NotImplementedError("Unknown OIDC_TOKEN_BACKEND")

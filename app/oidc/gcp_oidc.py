@@ -9,7 +9,7 @@ from app.oidc.oidc import TTL, OIDCCredentialsService, refresh_oidc_credentials
 logger = get_logger()
 
 
-class GCPOIDCCredentialsService(OIDCCredentialsService):
+class OIDCCredentialsServiceGCP(OIDCCredentialsService):
     @refresh_oidc_credentials
     @ttl_cache(maxsize=None, ttl=TTL)
     def get_credentials(
