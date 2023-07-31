@@ -24,7 +24,7 @@ class Question(BlockHandler):
 
     @cached_property
     def form(self) -> QuestionnaireForm:
-        question_json = self.rendered_block["question"]
+        question_json = self.rendered_block.get("question", {})
 
         if self._form_data:
             return generate_form(
