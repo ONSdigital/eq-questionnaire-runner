@@ -105,7 +105,7 @@ class AWSReverseProxied:
 
 
 def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
-    setting_overrides=None,
+        setting_overrides=None,
 ):
     application = Flask(__name__, template_folder="../templates")
     application.config.from_object(settings)
@@ -217,8 +217,8 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
         minify html response to decrease site traffic
         """
         if (
-            application.config["EQ_ENABLE_HTML_MINIFY"]
-            and response.content_type == "text/html; charset=utf-8"
+                application.config["EQ_ENABLE_HTML_MINIFY"]
+                and response.content_type == "text/html; charset=utf-8"
         ):
             response.set_data(
                 minify(
@@ -383,13 +383,15 @@ def setup_task_client(application):
 
 
 def setup_oidc(application):
-    if not application.config.get("SDS_OAUTH2_CLIENT_ID"):
-        raise MissingEnvironmentVariable("Setting SDS_OAUTH2_CLIENT_ID Missing")
+    def sds_client_id_exists():
+        if not application.config.get("SDS_OAUTH2_CLIENT_ID"):
+            raise MissingEnvironmentVariable("Setting SDS_OAUTH2_CLIENT_ID Missing")
 
     if not (oidc_token_backend := application.config.get("OIDC_TOKEN_BACKEND")):
         raise MissingEnvironmentVariable("Setting OIDC_TOKEN_BACKEND Missing")
 
     if oidc_token_backend == "gcp":
+        sds_client_id_exists()
         application.eq["oidc_credentials_service"] = GCPOIDCCredentialsService()
 
     elif oidc_token_backend == "local":
