@@ -1,3 +1,5 @@
+from typing import Any
+
 from werkzeug.datastructures import ImmutableMultiDict, MultiDict
 
 from app.data_models import QuestionnaireStore
@@ -51,7 +53,7 @@ def get_block_handler(
     to_list_item_id: str | None = None,
     request_args: MultiDict[str, str] | None = None,
     form_data: ImmutableMultiDict[str, str] | None = None,
-):
+) -> Any:
     block = schema.get_block(block_id)
 
     if not block:

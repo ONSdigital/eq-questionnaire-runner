@@ -1,6 +1,7 @@
 from functools import cached_property
 
 from flask import url_for
+from werkzeug.datastructures import ImmutableDict
 
 from app.questionnaire import Location
 from app.views.handlers.list_edit_question import ListEditQuestion
@@ -11,7 +12,7 @@ class ListRepeatingQuestion(ListEditQuestion):
     def repeating_block_ids(self) -> list[str]:
         return self._schema.list_collector_repeating_block_ids
 
-    def get_previous_location_url(self):
+    def get_previous_location_url(self) -> str:
         """
         return to previous location, or when return to is None, navigate to the previous repeating block
         unless this is the first repeating block, in which case, route back to the edit block
@@ -19,7 +20,8 @@ class ListRepeatingQuestion(ListEditQuestion):
         if url := self.get_section_or_final_summary_url():
             return url
 
-        edit_block = self._schema.get_edit_block_for_list_collector(
+        # Type ignore: edit_block will exist at this point
+        edit_block: ImmutableDict = self._schema.get_edit_block_for_list_collector(  # type: ignore
             self.parent_block["id"]
         )
         if not edit_block:
@@ -44,7 +46,8 @@ class ListRepeatingQuestion(ListEditQuestion):
             )
 
         repeating_block_index = self.repeating_block_ids.index(
-            self.current_location.block_id
+            # Type ignore: block_id will exist at this point
+            self.current_location.block_id  # type: ignore
         )
         if repeating_block_index != 0:
             previous_repeating_block_id = self.repeating_block_ids[
@@ -70,13 +73,14 @@ class ListRepeatingQuestion(ListEditQuestion):
             return_to_block_id=self._return_to_block_id,
         )
 
-    def handle_post(self):
+    def handle_post(self) -> None:
         self.questionnaire_store_updater.add_completed_location(self.current_location)
         if not self.get_first_incomplete_list_repeating_block_location_for_list_item(
             repeating_block_ids=self.repeating_block_ids,
             section_id=self.current_location.section_id,
-            list_item_id=self.current_location.list_item_id,
-            list_name=self.current_location.list_name,
+            # Type ignore: list_name and list_item_id will always exist at this point
+            list_item_id=self.current_location.list_item_id,  # type: ignore
+            list_name=self.current_location.list_name,  # type: ignore
         ):
             self.questionnaire_store_updater.update_section_or_repeating_blocks_progress_completion_status(
                 is_complete=True,

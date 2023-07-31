@@ -7,7 +7,7 @@ from flask import current_app, redirect
 from flask.helpers import url_for
 from flask_babel import LazyString, lazy_gettext
 from itsdangerous import BadSignature
-from werkzeug.datastructures import ImmutableMultiDict
+from werkzeug.datastructures import ImmutableMultiDict, MultiDict
 from werkzeug.exceptions import BadRequest, NotFound
 from werkzeug.wrappers.response import Response
 
@@ -100,7 +100,7 @@ class IndividualResponseHandler:
 
     @cached_property
     def has_postal_deadline_passed(self) -> bool:
-        individual_response_postal_deadline = current_app.config[
+        individual_response_postal_deadline: datetime = current_app.config[
             "EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE"
         ]
         return individual_response_postal_deadline < datetime.now(timezone.utc)
@@ -121,7 +121,8 @@ class IndividualResponseHandler:
         self._form_data = form_data
         self._answers: dict[str, Any] | None = None
         self._list_item_id = list_item_id
-        self._list_name = self._schema.get_individual_response_list()
+        # Type ignore: in individual_response for_list is required which is where list_name comes from
+        self._list_name: str = self._schema.get_individual_response_list()  # type: ignore
 
         self._metadata = self._questionnaire_store.metadata
 
@@ -132,8 +133,7 @@ class IndividualResponseHandler:
 
     @cached_property
     def _list_model(self) -> ListModel:
-        # Type ignore: Current usages of this cached property occur when List Name will exist and be not None
-        return self._questionnaire_store.list_store[self._list_name]  # type: ignore
+        return self._questionnaire_store.list_store[self._list_name]
 
     @cached_property
     def _list_item_position(self) -> int:
@@ -165,7 +165,7 @@ class IndividualResponseHandler:
         return True
 
     @cached_property
-    def rendered_block(self) -> Mapping[str, Any]:
+    def rendered_block(self) -> dict:
         return self._render_block()
 
     @cached_property
@@ -194,8 +194,9 @@ class IndividualResponseHandler:
         )
 
     @cached_property
-    def individual_section_id(self) -> str | None:
-        return self._schema.get_individual_response_individual_section_id()
+    def individual_section_id(self) -> str:
+        # Type ignore: In an individual response handler this will not be none
+        return self._schema.get_individual_response_individual_section_id()  # type: ignore
 
     @cached_property
     def form(self) -> QuestionnaireForm:
@@ -211,10 +212,10 @@ class IndividualResponseHandler:
             progress_store=self._questionnaire_store.progress_store,
         )
 
-    def get_context(self):
+    def get_context(self) -> dict:
         return build_question_context(self.rendered_block, self.form)
 
-    def _publish_fulfilment_request(self, mobile_number=None) -> None:
+    def _publish_fulfilment_request(self, mobile_number: str | None = None) -> None:
         self._check_individual_response_count()
         topic_id = current_app.config["EQ_FULFILMENT_TOPIC_ID"]
         fulfilment_request = IndividualResponseFulfilmentRequest(
@@ -516,20 +517,29 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
         }
 
     @cached_property
-    def request_separate_census_option(self):
-        return self.rendered_block["question"]["answers"][0]["options"][0]["value"]
+    def request_separate_census_option(self) -> str:
+        value: str = self.rendered_block["question"]["answers"][0]["options"][0][
+            "value"
+        ]
+        return value
 
     @cached_property
-    def cancel_go_to_hub_option(self):
-        return self.rendered_block["question"]["answers"][0]["options"][1]["value"]
+    def cancel_go_to_hub_option(self) -> str:
+        value: str = self.rendered_block["question"]["answers"][0]["options"][1][
+            "value"
+        ]
+        return value
 
     @cached_property
-    def cancel_go_to_section_option(self):
-        return self.rendered_block["question"]["answers"][0]["options"][2]["value"]
+    def cancel_go_to_section_option(self) -> str:
+        value: str = self.rendered_block["question"]["answers"][0]["options"][2][
+            "value"
+        ]
+        return value
 
     @cached_property
-    def selected_option(self):
-        answer_id = self.rendered_block["question"]["answers"][0]["id"]
+    def selected_option(self) -> str:
+        answer_id: str = self.rendered_block["question"]["answers"][0]["id"]
         return self.form.get_data(answer_id)
 
     def handle_get(self) -> str:
@@ -562,8 +572,7 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
         if self.selected_option == self.cancel_go_to_section_option:
             self._update_section_completeness()
             individual_section_first_block_id = (
-                # Type ignore: Current usages of this method occur when Individual Section ID exists and is not None
-                self._schema.get_first_block_id_for_section(self.individual_section_id)  # type: ignore
+                self._schema.get_first_block_id_for_section(self.individual_section_id)
             )
             return redirect(
                 url_for(
@@ -575,7 +584,7 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
                 )
             )
 
-    def _update_section_completeness(self):
+    def _update_section_completeness(self) -> None:
         if not self._questionnaire_store.progress_store.get_completed_block_ids(
             section_id=self.individual_section_id, list_item_id=self._list_item_id
         ):
@@ -595,7 +604,7 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
 
 
 class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any):
         if self.has_postal_deadline_passed:
             raise IndividualResponsePostalDeadlinePast
         super().__init__(**kwargs)
@@ -653,15 +662,19 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
         }
 
     @cached_property
-    def answer_id(self):
-        return self.rendered_block["question"]["answers"][0]["id"]
+    def answer_id(self) -> str:
+        value: str = self.rendered_block["question"]["answers"][0]["id"]
+        return value
 
     @cached_property
-    def confirm_option(self):
-        return self.rendered_block["question"]["answers"][0]["options"][0]["value"]
+    def confirm_option(self) -> str:
+        value: str = self.rendered_block["question"]["answers"][0]["options"][0][
+            "value"
+        ]
+        return value
 
     @cached_property
-    def selected_option(self):
+    def selected_option(self) -> str:
         return self.form.get_data(self.answer_id)
 
     def handle_get(self) -> str:
@@ -701,8 +714,15 @@ class IndividualResponsePostAddressConfirmHandler(IndividualResponseHandler):
 
 
 class IndividualResponseWhoHandler(IndividualResponseHandler):
-    def __init__(self, schema, questionnaire_store, language, request_args, form_data):
-        self._list_name = schema.get_individual_response_list()
+    def __init__(
+        self,
+        schema: QuestionnaireSchema,
+        questionnaire_store: QuestionnaireStore,
+        language: str,
+        request_args: dict[str, str],
+        form_data: ImmutableMultiDict[str, str],
+    ):
+        self._list_name: str = schema.get_individual_response_list()  # type: ignore
         list_model = questionnaire_store.list_store[self._list_name]
         self.non_primary_people_names = {}
 
@@ -715,7 +735,8 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
             name_answers = questionnaire_store.answer_store.get_answers_by_answer_id(
                 name_answer_ids, list_item_id=list_item_id
             )
-            name = " ".join(name_answer.value for name_answer in name_answers)
+            # Type ignore: AnswerValues can be any type, however name_answers in this context will always be strings
+            name = " ".join(name_answer.value for name_answer in name_answers)  # type: ignore
             self.non_primary_people_names[list_item_id] = name
 
         super().__init__(
@@ -753,7 +774,7 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
         }
 
     @cached_property
-    def selected_option(self):
+    def selected_option(self) -> str:
         answer_id = self.rendered_block["question"]["answers"][0]["id"]
         return self.form.get_data(answer_id)
 
@@ -816,12 +837,14 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
         }
 
     @cached_property
-    def answer_id(self):
-        return self.rendered_block["question"]["answers"][0]["id"]
+    def answer_id(self) -> str:
+        value: str = self.rendered_block["question"]["answers"][0]["id"]
+        return value
 
     @cached_property
-    def mobile_number(self):
-        return self.form.get_data(self.answer_id)
+    def mobile_number(self) -> str:
+        value: str = self.form.get_data(self.answer_id)
+        return value
 
     def handle_get(self) -> str:
         if "mobile_number" in self._request_args:
@@ -859,12 +882,12 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
 class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
     def __init__(
         self,
-        schema,
-        questionnaire_store,
-        language,
-        request_args,
-        form_data,
-        list_item_id,
+        schema: QuestionnaireSchema,
+        questionnaire_store: QuestionnaireStore,
+        language: str,
+        request_args: MultiDict[str, str],
+        form_data: ImmutableMultiDict[str, str],
+        list_item_id: str,
     ):
         try:
             self.mobile_number = url_safe_serializer().loads(
@@ -912,15 +935,19 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
         }
 
     @cached_property
-    def answer_id(self):
-        return self.rendered_block["question"]["answers"][0]["id"]
+    def answer_id(self) -> str:
+        value: str = self.rendered_block["question"]["answers"][0]["id"]
+        return value
 
     @cached_property
-    def confirm_option(self):
-        return self.rendered_block["question"]["answers"][0]["options"][0]["value"]
+    def confirm_option(self) -> str:
+        value: str = self.rendered_block["question"]["answers"][0]["options"][0][
+            "value"
+        ]
+        return value
 
     @cached_property
-    def selected_option(self):
+    def selected_option(self) -> str:
         return self.form.get_data(self.answer_id)
 
     def handle_get(self) -> str:

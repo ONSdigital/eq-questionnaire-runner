@@ -14,10 +14,10 @@ from app.data_models.answer import (
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListModel, ListStore
 from app.data_models.metadata_proxy import MetadataProxy, NoMetadataException
-from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException
-from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules import rule_evaluator
+from app.utilities.types import LocationType
 
 ValueSourceTypes: TypeAlias = None | str | int | Decimal | list
 ValueSourceEscapedTypes: TypeAlias = Markup | list[Markup]
@@ -32,7 +32,7 @@ class ValueSourceResolver:
     metadata: MetadataProxy | None
     response_metadata: MutableMapping
     schema: QuestionnaireSchema
-    location: Location | RelationshipLocation | None
+    location: LocationType | None
     list_item_id: str | None
     progress_store: ProgressStore
     routing_path_block_ids: Iterable[str] | None = None

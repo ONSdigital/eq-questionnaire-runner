@@ -4,11 +4,12 @@ from jsonpointer import resolve_pointer
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
-from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.schema_utils import find_pointers_containing
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.questionnaire.variants import choose_variant
+from app.utilities.types import LocationType
 from app.views.contexts.summary.question import Question
 
 
@@ -22,7 +23,7 @@ class Block:
         metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
-        location: Location,
+        location: LocationType,
         return_to: str | None,
         return_to_block_id: str | None = None,
         progress_store: ProgressStore,
