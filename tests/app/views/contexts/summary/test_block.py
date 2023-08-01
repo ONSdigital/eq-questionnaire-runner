@@ -32,6 +32,7 @@ def test_create_block(mocker):
         return_to="final-summary",
         progress_store=ProgressStore(),
         language="en",
+        supplementary_data_store=mocker.MagicMock(),
     )
 
     # Then

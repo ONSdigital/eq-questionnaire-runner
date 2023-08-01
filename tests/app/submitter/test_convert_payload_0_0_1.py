@@ -60,6 +60,7 @@ def test_convert_answers_v2_to_payload_0_0_1_with_key_error(version):
         schema=QuestionnaireSchema(questionnaire),
         full_routing_path=full_routing_path,
         progress_store=questionnaire_store.progress_store,
+        supplementary_data_store=questionnaire_store.supplementary_data_store,
     )
     assert answer_object["002"] == "2016-03-30"
     assert len(answer_object) == 1

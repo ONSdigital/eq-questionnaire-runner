@@ -34,6 +34,7 @@ def test_build_view_context_for_grand_calculated_summary(
     test_grand_calculated_summary_schema,
     test_grand_calculated_summary_answers,
     list_store,
+    supplementary_data_store,
     mocker,
     return_to_answer_id,
 ):
@@ -88,6 +89,7 @@ def test_build_view_context_for_grand_calculated_summary(
         current_location=Location(section_id="default-section", block_id=block_id),
         return_to=None,
         return_to_block_id=None,
+        supplementary_data_store=supplementary_data_store,
     )
 
     context = grand_calculated_summary_context.build_view_context()

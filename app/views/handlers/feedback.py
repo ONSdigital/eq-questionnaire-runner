@@ -72,6 +72,7 @@ class Feedback:
             data=None,
             form_data=self._form_data,
             progress_store=self._questionnaire_store.progress_store,
+            supplementary_data_store=self._questionnaire_store.supplementary_data_store,
         )
 
     def get_context(self) -> Mapping[str, Union[str, bool, dict]]:

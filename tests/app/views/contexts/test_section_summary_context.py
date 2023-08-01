@@ -4,6 +4,7 @@ from mock import MagicMock
 from app.data_models.answer_store import Answer, AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.progress_store import ProgressStore
+from app.data_models.supplementary_data_store import SupplementaryDataStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.questionnaire.routing_path import RoutingPath
@@ -15,7 +16,12 @@ from tests.app.views.contexts import assert_summary_context
 
 
 def test_build_summary_rendering_context(
-    test_section_summary_schema, answer_store, list_store, progress_store, mocker
+    test_section_summary_schema,
+    answer_store,
+    list_store,
+    progress_store,
+    mocker,
+    supplementary_data_store,
 ):
     section_summary_context = SectionSummaryContext(
         "en",
@@ -27,6 +33,7 @@ def test_build_summary_rendering_context(
         response_metadata={},
         current_location=Location(section_id="property-details-section"),
         routing_path=mocker.MagicMock(),
+        supplementary_data_store=supplementary_data_store,
     )
 
     single_section_context = section_summary_context()
@@ -35,7 +42,12 @@ def test_build_summary_rendering_context(
 
 
 def test_build_view_context_for_section_summary(
-    test_section_summary_schema, answer_store, list_store, progress_store, mocker
+    test_section_summary_schema,
+    answer_store,
+    list_store,
+    progress_store,
+    mocker,
+    supplementary_data_store,
 ):
     summary_context = SectionSummaryContext(
         "en",
@@ -50,6 +62,7 @@ def test_build_view_context_for_section_summary(
             block_id="property-details-summary",
         ),
         routing_path=mocker.MagicMock(),
+        supplementary_data_store=supplementary_data_store,
     )
     context = summary_context()
 
@@ -104,6 +117,7 @@ def test_custom_section(
     list_store,
     progress_store,
     mocker,
+    supplementary_data_store,
 ):
     for answer in answers:
         answer_store.add_or_update(answer)
@@ -118,13 +132,16 @@ def test_custom_section(
         response_metadata={},
         current_location=location,
         routing_path=mocker.MagicMock(),
+        supplementary_data_store=supplementary_data_store,
     )
     context = summary_context()
     assert context["summary"][title_key] == expected_title
 
 
 @pytest.mark.usefixtures("app")
-def test_context_for_section_list_summary(people_answer_store, progress_store):
+def test_context_for_section_list_summary(
+    people_answer_store, progress_store, supplementary_data_store
+):
     schema = load_schema_from_name("test_list_collector_list_summary")
 
     summary_context = SectionSummaryContext(
@@ -149,6 +166,7 @@ def test_context_for_section_list_summary(people_answer_store, progress_store):
             ],
             section_id="section",
         ),
+        supplementary_data_store=supplementary_data_store,
     )
 
     context = summary_context()
@@ -261,6 +279,7 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
     answer_1_label,
     answer_2_label,
     progress_store,
+    supplementary_data_store,
     request,
 ):
     schema = load_schema_from_name(test_schema)
@@ -284,6 +303,7 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
             ],
             section_id="section-companies",
         ),
+        supplementary_data_store=supplementary_data_store,
     )
     context = summary_context()
     expected = {
@@ -460,6 +480,7 @@ def test_context_for_driving_question_summary_empty_list():
         response_metadata={},
         current_location=Location(section_id="section"),
         routing_path=RoutingPath(["anyone-usually-live-at"], section_id="section"),
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     context = summary_context()
@@ -515,6 +536,7 @@ def test_context_for_driving_question_summary(progress_store):
         routing_path=RoutingPath(
             ["anyone-usually-live-at", "anyone-else-live-at"], section_id="section"
         ),
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     context = summary_context()
@@ -581,6 +603,7 @@ def test_titles_for_repeating_section_summary(people_answer_store):
             list_item_id="PlwgoG",
         ),
         routing_path=MagicMock(),
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     context = section_summary_context()
@@ -607,6 +630,7 @@ def test_titles_for_repeating_section_summary(people_answer_store):
             list_item_id="UHPLbX",
         ),
         routing_path=MagicMock(),
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     context = section_summary_context()
@@ -636,6 +660,7 @@ def test_primary_only_links_for_section_summary(people_answer_store):
             ],
             section_id="section",
         ),
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     context = summary_context()
@@ -674,6 +699,7 @@ def test_primary_links_for_section_summary(people_answer_store):
             ],
             section_id="section",
         ),
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     context = summary_context()

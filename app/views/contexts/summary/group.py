@@ -2,7 +2,12 @@ from typing import Iterable, Mapping, MutableMapping
 
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import AnswerStore, ListStore, ProgressStore
+from app.data_models import (
+    AnswerStore,
+    ListStore,
+    ProgressStore,
+    SupplementaryDataStore,
+)
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
@@ -14,6 +19,7 @@ from app.views.contexts.summary.list_collector_block import ListCollectorBlock
 
 
 class Group:
+    # pylint: disable=too-many-locals
     def __init__(
         self,
         *,
@@ -27,6 +33,7 @@ class Group:
         location: LocationType,
         language: str,
         progress_store: ProgressStore,
+        supplementary_data_store: SupplementaryDataStore,
         return_to: str | None,
         return_to_block_id: str | None = None,
         summary_type: str | None = None,
@@ -54,6 +61,7 @@ class Group:
             return_to_block_id=return_to_block_id,
             view_submitted_response=view_submitted_response,
             summary_type=summary_type,
+            supplementary_data_store=supplementary_data_store,
         )
 
         self.placeholder_renderer = PlaceholderRenderer(
@@ -65,6 +73,7 @@ class Group:
             response_metadata=response_metadata,
             schema=schema,
             progress_store=progress_store,
+            supplementary_data_store=supplementary_data_store,
         )
 
     # pylint: disable=too-many-locals
@@ -81,6 +90,7 @@ class Group:
         location: LocationType,
         return_to: str | None,
         progress_store: ProgressStore,
+        supplementary_data_store: SupplementaryDataStore,
         language: str,
         return_to_block_id: str | None,
         view_submitted_response: bool | None = False,
@@ -107,6 +117,7 @@ class Group:
                     schema=schema,
                     location=location,
                     language=language,
+                    supplementary_data_store=supplementary_data_store,
                     return_to=return_to,
                     return_to_block_id=return_to_block_id,
                 )
@@ -137,6 +148,7 @@ class Group:
                             return_to_block_id=return_to_block_id,
                             progress_store=progress_store,
                             language=language,
+                            supplementary_data_store=supplementary_data_store,
                         ).serialize()
                     ]
                 )
@@ -157,6 +169,7 @@ class Group:
                             return_to_block_id=return_to_block_id,
                             progress_store=progress_store,
                             routing_path_block_ids=routing_path_block_ids,
+                            supplementary_data_store=supplementary_data_store,
                         ).serialize()
                     ]
                 )
@@ -181,6 +194,7 @@ class Group:
                         location=location,
                         language=language,
                         return_to=return_to,
+                        supplementary_data_store=supplementary_data_store,
                     )
 
                     list_summary_element = list_collector_block.list_summary_element(

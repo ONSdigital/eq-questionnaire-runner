@@ -66,8 +66,11 @@ export function generateToken(
     userId,
     collectionId,
     responseId,
+    surveyId = "123",
     periodId = "201605",
     periodStr = "May 2016",
+    ruRef = "12346789012A",
+    sdsDatasetId = null,
     regionCode = "GB-ENG",
     languageCode = "en",
     includeLogoutUrl = true,
@@ -107,7 +110,7 @@ export function generateToken(
       region_code: regionCode,
       language_code: languageCode,
       account_service_url: "http://localhost:8000",
-      survey_metadata: getSurveyMetadata(theme, userId, displayAddress, periodId, periodStr),
+      survey_metadata: getSurveyMetadata(theme, userId, displayAddress, surveyId, periodId, periodStr, ruRef, sdsDatasetId),
       version: "v2",
       response_expires_at: isoDate,
     };
@@ -181,7 +184,7 @@ export function generateToken(
     });
 }
 
-function getSurveyMetadata(theme, userId, displayAddress, periodId, periodStr) {
+function getSurveyMetadata(theme, userId, displayAddress, surveyId, periodId, periodStr, ruRef, sdsDatasetId) {
   let surveyMetadata = {};
 
   if (theme === "social") {
@@ -194,20 +197,20 @@ function getSurveyMetadata(theme, userId, displayAddress, periodId, periodStr) {
     };
   } else {
     surveyMetadata = {
-      survey_metadata: {
-        data: {
-          user_id: userId,
-          display_address: displayAddress,
-          ru_ref: "12346789012A",
-          period_id: periodId,
-          period_str: periodStr,
-          ref_p_start_date: "2017-01-01",
-          ref_p_end_date: "2017-02-01",
-          employment_date: "2016-06-10",
-          return_by: "2017-03-01",
-          ru_name: "Apple",
-          trad_as: "Apple",
-        },
+      data: {
+        user_id: userId,
+        display_address: displayAddress,
+        ru_ref: ruRef,
+        survey_id: surveyId,
+        period_id: periodId,
+        period_str: periodStr,
+        sds_dataset_id: sdsDatasetId,
+        ref_p_start_date: "2017-01-01",
+        ref_p_end_date: "2017-02-01",
+        employment_date: "2016-06-10",
+        return_by: "2017-03-01",
+        ru_name: "Apple",
+        trad_as: "Apple",
       },
     };
   }
