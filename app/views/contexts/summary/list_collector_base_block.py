@@ -176,3 +176,20 @@ class ListCollectorBaseBlock:
             blocks.append(mutable_block)
 
         return blocks
+
+    def get_repeating_block_related_answer_blocks(
+        self, block: ImmutableDict
+    ) -> list[dict]:
+        """
+        Given a repeating block question to render,
+        return the list of rendered question blocks for each list item id
+        """
+        list_name = self._schema.list_names_by_list_repeating_block_id[block["id"]]
+        list_model = self._list_store[list_name]
+        blocks: list[dict] = []
+        if answer_blocks_by_list_item_id := self._get_related_answer_blocks_by_list_item_id(
+            list_model=list_model, repeating_blocks=[block]
+        ):
+            for answer_blocks in answer_blocks_by_list_item_id.values():
+                blocks.extend(answer_blocks)
+        return blocks

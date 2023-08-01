@@ -102,8 +102,15 @@ class Group:
                 parent_list_collector_block_id = schema.parent_id_map[block["id"]]
                 if parent_list_collector_block_id not in routing_path_block_ids:
                     continue
-
-                list_collector_block = ListCollectorBlock(
+                list_collector_block_class = (
+                    ListCollectorBlock
+                    if is_list_collector_block_editable(
+                        # Type ignore: return types differ
+                        schema.get_block(parent_list_collector_block_id)  # type: ignore
+                    )
+                    else ListCollectorContentBlock
+                )
+                list_collector_block = list_collector_block_class(
                     routing_path_block_ids=routing_path_block_ids,
                     answer_store=answer_store,
                     list_store=list_store,
@@ -116,6 +123,7 @@ class Group:
                     return_to=return_to,
                     return_to_block_id=return_to_block_id,
                 )
+
                 repeating_answer_blocks = (
                     list_collector_block.get_repeating_block_related_answer_blocks(
                         block
@@ -195,7 +203,8 @@ class Group:
                         return_to_block_id=return_to_block_id,
                     )
 
-                    list_summary_element = list_collector_block.list_summary_element(
+                    # Type ignore: base block check not required here as both child blocks have list_summary_element
+                    list_summary_element = list_collector_block.list_summary_element(  # type: ignore
                         summary_item
                     )
                     blocks.extend([list_summary_element])
