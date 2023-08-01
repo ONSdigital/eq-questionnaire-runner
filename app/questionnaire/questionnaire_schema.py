@@ -132,31 +132,31 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         answers: list,
         default_min_max: str,
     ) -> None:
-        longest_string: int = 0
+        longest_value_length: int = 0
         for answer in answers:
             value = answer.get(min_max, {}).get("value")
 
             if isinstance(value, int):
-                if longest_string and len(str(value)) > longest_string:
-                    longest_string = len(str(value))
-                if not longest_string:
-                    longest_string = len(str(value))
+                if longest_value_length and len(str(value)) > longest_value_length:
+                    longest_value_length = len(str(value))
+                if not longest_value_length:
+                    longest_value_length = len(str(value))
 
             elif isinstance(value, dict) and value:
                 if value.get("source") == "answers":
-                    if longest_string != 0 and (
+                    if longest_value_length != 0 and (
                         int(self._min_and_max_map[value["identifier"]][min_max])
-                        > longest_string
+                        > longest_value_length
                     ):
-                        longest_string = int(
+                        longest_value_length = int(
                             self._min_and_max_map[value["identifier"]][min_max]
                         )
-                    if longest_string == 0:
-                        longest_string = int(
+                    if longest_value_length == 0:
+                        longest_value_length = int(
                             self._min_and_max_map[value["identifier"]][min_max]
                         )
 
-        self._min_and_max_map[answer_id][min_max] = longest_string or len(
+        self._min_and_max_map[answer_id][min_max] = longest_value_length or len(
             default_min_max
         )
 
