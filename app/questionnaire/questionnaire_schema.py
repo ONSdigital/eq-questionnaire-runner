@@ -516,7 +516,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         )
         for calculated_summary_id in grand_calculated_summary_calculated_summary_ids:
             # Type ignore: safe to assume block exists
-            calculated_summary_block: ImmutableDict = self.get_block(calculated_summary_id)  # type: ignore
+            calculated_summary_block: ImmutableDict = self.get_block(calculated_summary_id)
             self._update_answer_dependencies_for_calculated_summary_dependency(
                 calculated_summary_block=calculated_summary_block,
                 dependent_block=grand_calculated_summary_block,
@@ -529,7 +529,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             if source_answer_id := calculation.get("answer_id"):
                 dependents = {
                     self._get_answer_dependent_for_block_id(
-                        block_id=self.get_block_for_answer_id(answer_id)["id"]  # type: ignore
+                        block_id=self.get_block_for_answer_id(answer_id)["id"]
                     )
                     for answer_id in calculation["answers_to_calculate"]
                 }
