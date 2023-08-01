@@ -33,6 +33,8 @@ QuestionSchemaType = Mapping
 
 DependencyDictType: TypeAlias = dict[str, OrderedSet[str]]
 
+TRANSFORMS_REQUIRING_ROUTING_PATH = {"first_non_empty_item"}
+
 
 class InvalidSchemaConfigurationException(Exception):
     pass
@@ -81,6 +83,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._when_rules_section_dependencies_by_answer: dict[
             str, set[str]
         ] = defaultdict(set)
+        self._placeholder_transform_section_dependencies_by_block: dict[
+            str, dict[str, set[str]]
+        ] = defaultdict(lambda: defaultdict(set))
         self._language_code = language_code
         self._questionnaire_json = questionnaire_json
         self._min_and_max_map: dict[str, dict[str, int]] = defaultdict(
@@ -104,6 +109,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._populate_when_rules_section_dependencies()
         self._populate_calculated_summary_section_dependencies()
         self._populate_min_max_for_numeric_answers()
+        self._populate_placeholder_transform_section_dependencies()
+
+    @property
+    def placeholder_transform_section_dependencies_by_block(
+        self,
+    ) -> dict[str, dict[str, set[str]]]:
+        return self._placeholder_transform_section_dependencies_by_block
 
     @cached_property
     def answer_dependencies(self) -> ImmutableDict[str, set[AnswerDependent]]:
@@ -1390,6 +1402,15 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         return section_dependencies
 
+    def _get_section_ids_for_answer_ids(self, answer_ids: set[str]) -> OrderedSet[str]:
+        section_dependencies: OrderedSet[str] = OrderedSet()
+        for answer_id in answer_ids:
+            block = self.get_block_for_answer_id(answer_id)
+            # Type ignore: block_id and section_id is never None
+            section_id = self.get_section_id_for_block_id(block["id"])  # type: ignore
+            section_dependencies.add(section_id)  # type: ignore
+        return section_dependencies
+
     def get_summary_item_for_list_for_section(
         self, *, section_id: str, list_name: str
     ) -> ImmutableDict | None:
@@ -1417,6 +1438,28 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             for item in summary.get("items", []):
                 if item["for_list"] == list_name and item.get("item_anchor_answer_id"):
                     return f"#{str(item['item_anchor_answer_id'])}"
+
+    def _populate_placeholder_transform_section_dependencies(self) -> None:
+        for block in self.get_blocks():
+            transforms = get_mappings_with_key("transform", block)
+            placeholder_answer_ids = {
+                item["identifier"]
+                for transform in transforms
+                if transform["transform"] in TRANSFORMS_REQUIRING_ROUTING_PATH
+                for item in transform["arguments"]["items"]
+                if item.get("source") == "answers"
+            }
+            placeholder_dependencies = self._get_section_ids_for_answer_ids(
+                answer_ids=placeholder_answer_ids
+            )
+            if placeholder_dependencies:
+                # Type Ignore: At this point we section id  and block id cannot be None
+                section_id = self.get_section_id_for_block_id(block["id"])
+                self._placeholder_transform_section_dependencies_by_block[section_id][  # type: ignore
+                    block["id"]
+                ].update(
+                    placeholder_dependencies
+                )
 
     def update_dependencies_for_dynamic_answers(
         self, *, question: Mapping, block_id: str

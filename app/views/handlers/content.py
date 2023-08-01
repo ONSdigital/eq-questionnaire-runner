@@ -19,6 +19,7 @@ class Content(BlockHandler):
             self._questionnaire_store.list_store,
             self._current_location,
             self._questionnaire_store.progress_store,
+            self._questionnaire_store.supplementary_data_store,
         )
 
         content_page_title = transformed_block.get(
