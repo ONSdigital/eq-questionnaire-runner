@@ -117,7 +117,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self,
         min_max: Any,
         answer_id: str,
-        answers: list[dict],
+        answers: list,
         default_min_max: str,
     ) -> None:
         longest_string: int = 0
