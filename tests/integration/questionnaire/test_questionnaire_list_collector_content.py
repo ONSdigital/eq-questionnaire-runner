@@ -22,21 +22,14 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
         self.launchSurvey("test_list_collector_content_page")
 
         self.post({"any-companies-or-branches-answer": "Yes"})
-
         self.add_company("Company A", "123", "No")
-
         self.post({"any-other-companies-or-branches-answer": "Yes"})
-
         self.add_company("Company B", "456", "No")
-
         self.post({"any-other-companies-or-branches-answer": "No"})
-
         self.post()
-
         self.post()
 
         self.assertInUrl("/questionnaire/list-collector-content/")
-
         self.assertInBody(
             "You have previously reported the following companies. Press continue to updated registration and trading information."
         )
@@ -44,7 +37,6 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
         self.post()
 
         self.assertInUrl("/companies-repeating-block-1/")
-
         self.assertInBody("Give details about Company A")
 
         self.post(
@@ -57,7 +49,6 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
         )
 
         self.assertInUrl("/companies-repeating-block-2/")
-
         self.assertInBody("Give details about how Company A")
 
         self.post(
@@ -66,11 +57,9 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
                 "authorised-trader-eu-radio-repeating-block": "No",
             }
         )
-
         self.post()
 
         self.assertInBody("Give details about Company B")
-
         self.assertInUrl("/companies-repeating-block-1/")
 
         self.post(
@@ -98,7 +87,6 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
         self.post()
 
         self.assertInUrl("questionnaire/sections/section-list-collector-contents/")
-
         self.assertInBody("List Collector Contents")
 
         self.post()
@@ -109,21 +97,14 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
         self.launchSurvey("test_list_collector_content_page")
 
         self.post({"any-companies-or-branches-answer": "Yes"})
-
         self.add_company("Company A", "123", "No")
-
         self.post({"any-other-companies-or-branches-answer": "Yes"})
-
         self.add_company("Company B", "456", "No")
-
         self.post({"any-other-companies-or-branches-answer": "No"})
-
         self.post()
-
         self.post()
 
         self.assertInUrl("/questionnaire/list-collector-content/")
-
         self.assertInBody(
             "You have previously reported the following companies. Press continue to updated registration and trading information."
         )
@@ -131,7 +112,6 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
         self.post()
 
         self.assertInUrl("/companies-repeating-block-1/")
-
         self.assertInBody("Give details about Company A")
 
         self.post(
@@ -142,9 +122,8 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
                 "registration-date-repeating-block-year": "1990",
             }
         )
-
         self.previous()
-
+        self.previous()
         self.previous()
 
         self.assertInBody("Partially completed")
@@ -153,21 +132,14 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
         self.launchSurvey("test_list_collector_content_page")
 
         self.post({"any-companies-or-branches-answer": "Yes"})
-
         self.add_company("Company A", "123", "No")
-
         self.post({"any-other-companies-or-branches-answer": "Yes"})
-
         self.add_company("Company B", "456", "No")
-
         self.post({"any-other-companies-or-branches-answer": "No"})
-
         self.post()
-
         self.post()
 
         self.assertInUrl("/questionnaire/list-collector-content/")
-
         self.assertInBody(
             "You have previously reported the following companies. Press continue to updated registration and trading information."
         )
@@ -188,7 +160,6 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
         )
 
         self.assertInUrl("/companies-repeating-block-2/")
-
         self.assertInBody("Give details about how Company A")
 
         self.post(
@@ -197,7 +168,6 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
                 "authorised-trader-eu-radio-repeating-block": "No",
             }
         )
-
         self.previous()
 
         self.assertInBody("Partially completed")

@@ -1,7 +1,6 @@
 from functools import cached_property
 
 from flask import url_for
-from werkzeug.datastructures import ImmutableDict
 
 from app.questionnaire import Location
 from app.views.handlers.list_edit_question import ListEditQuestion
@@ -19,19 +18,6 @@ class ListRepeatingQuestion(ListEditQuestion):
         """
         if url := self.get_section_or_final_summary_url():
             return url
-
-        # Type ignore: edit_block will exist at this point
-        edit_block: ImmutableDict = self._schema.get_edit_block_for_list_collector(  # type: ignore
-            self.parent_block["id"]
-        )
-        if not edit_block:
-            block_id = self._request_args.get("previous")
-            return self._get_location_url(
-                block_id=block_id,
-                return_to=self._return_to,
-                return_to_answer_id=self._return_to_answer_id,
-                return_to_block_id=self._return_to_block_id,
-            )
 
         if self.return_to and self.router.can_access_location(
             Location(
@@ -58,6 +44,18 @@ class ListRepeatingQuestion(ListEditQuestion):
                 list_name=self.current_location.list_name,
                 list_item_id=self.current_location.list_item_id,
                 block_id=previous_repeating_block_id,
+                return_to=self._return_to,
+                return_to_answer_id=self._return_to_answer_id,
+                return_to_block_id=self._return_to_block_id,
+            )
+
+        edit_block = self._schema.get_edit_block_for_list_collector(
+            self.parent_block["id"]
+        )
+        if not edit_block:
+            block_id = self.parent_block["id"]
+            return self._get_location_url(
+                block_id=block_id,
                 return_to=self._return_to,
                 return_to_answer_id=self._return_to_answer_id,
                 return_to_block_id=self._return_to_block_id,
