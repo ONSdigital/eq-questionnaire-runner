@@ -122,7 +122,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return ImmutableDict(self._answer_dependencies_map)
 
     @cached_property
-    def min_and_max_map(self) -> ImmutableDict:
+    def min_and_max_map(self) -> Any:
         return make_immutable(ImmutableDict(self._min_and_max_map))
 
     def _create_min_max_map(
