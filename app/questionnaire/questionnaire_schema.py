@@ -144,10 +144,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                             self._min_and_max_map[value["identifier"]][min_max]
                         )
 
-        if longest_string:
-            self._min_and_max_map[answer_id][min_max] = longest_string  # type: ignore
-        else:
-            self._min_and_max_map[answer_id][min_max] = len(default_min_max)  # type: ignore
+        self._min_and_max_map[answer_id][min_max] = longest_string or len(default_min_max)
 
     def _populate_min_max_for_numeric_answers(self) -> None:
         for answer_id, answers in self._answers_by_id.items():
