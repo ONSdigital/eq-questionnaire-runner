@@ -137,10 +137,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             value = answer.get(min_max, {}).get("value")
 
             if isinstance(value, int):
-                if longest_value_length and len(str(value)) > longest_value_length:
-                    longest_value_length = len(str(value))
-                if not longest_value_length:
-                    longest_value_length = len(str(value))
+                longest_value_length = max(longest_value_length, len(str(value)))
 
             elif isinstance(value, dict) and value:
                 if value.get("source") == "answers":
