@@ -163,6 +163,7 @@ def get_questionnaire(
         progress_store=questionnaire_store.progress_store,
         metadata=questionnaire_store.metadata,
         response_metadata=questionnaire_store.response_metadata,
+        supplementary_data_store=questionnaire_store.supplementary_data_store,
     )
 
     if not router.can_access_hub():
@@ -188,6 +189,7 @@ def get_questionnaire(
         progress_store=questionnaire_store.progress_store,
         metadata=questionnaire_store.metadata,
         response_metadata=questionnaire_store.response_metadata,
+        supplementary_data_store=questionnaire_store.supplementary_data_store,
     )
     context = hub_context(
         survey_complete=router.is_questionnaire_complete,
@@ -246,6 +248,7 @@ def get_preview(
             progress_store=questionnaire_store.progress_store,
             metadata=questionnaire_store.metadata,
             response_metadata=questionnaire_store.response_metadata,
+            supplementary_data_store=questionnaire_store.supplementary_data_store,
         )
     except PreviewNotEnabledException as exc:
         raise NotFound from exc

@@ -1,7 +1,10 @@
+# pylint: disable=redefined-outer-name
 from datetime import datetime, timedelta, timezone
 
 import pytest
+from mock.mock import Mock
 
+from app.data_models import ListStore, QuestionnaireStore
 from app.data_models.answer_store import Answer
 from app.data_models.progress_store import CompletionStatus
 from app.data_models.session_store import SessionStore
@@ -96,6 +99,7 @@ def basic_input():
                 "block_ids": ["a-test-block"],
             }
         ],
+        "SUPPLEMENTARY_DATA": {"data": {}, "list_mappings": {}},
         "RESPONSE_METADATA": {"test-meta": "test"},
     }
 
@@ -154,3 +158,20 @@ def app_session_store_encoded(mocker, session_data):
         store.user_id, store.user_ik, store.pepper
     )
     return store
+
+
+@pytest.fixture
+def questionnaire_store_with_supplementary_data(
+    questionnaire_store, supplementary_data_store_with_data
+):
+    questionnaire_store = QuestionnaireStore(questionnaire_store.storage)
+    questionnaire_store.supplementary_data_store = supplementary_data_store_with_data
+    questionnaire_store.list_store = ListStore(
+        [{"items": ["item-1", "item-2"], "name": "products"}]
+    )
+    # Mock the identifier generation in list store so the ids are item-1, item-2, ...
+    # pylint: disable=protected-access
+    questionnaire_store.list_store._generate_identifier = Mock(
+        side_effect=(f"item-{i}" for i in range(3, 100))
+    )
+    return questionnaire_store

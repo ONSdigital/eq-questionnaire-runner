@@ -1,3 +1,5 @@
+from typing import Any
+
 from werkzeug.datastructures import ImmutableMultiDict, MultiDict
 
 from app.data_models import QuestionnaireStore
@@ -13,6 +15,7 @@ from app.views.handlers.list_add_question import ListAddQuestion
 from app.views.handlers.list_collector import ListCollector
 from app.views.handlers.list_edit_question import ListEditQuestion
 from app.views.handlers.list_remove_question import ListRemoveQuestion
+from app.views.handlers.list_repeating_question import ListRepeatingQuestion
 from app.views.handlers.primary_person_list_collector import PrimaryPersonListCollector
 from app.views.handlers.primary_person_question import PrimaryPersonQuestion
 from app.views.handlers.question import Question
@@ -26,6 +29,7 @@ BLOCK_MAPPINGS = {
     "ListAddQuestion": ListAddQuestion,
     "ListEditQuestion": ListEditQuestion,
     "ListRemoveQuestion": ListRemoveQuestion,
+    "ListRepeatingQuestion": ListRepeatingQuestion,
     "PrimaryPersonListCollector": PrimaryPersonListCollector,
     "PrimaryPersonListAddOrEditQuestion": PrimaryPersonQuestion,
     "RelationshipCollector": RelationshipCollector,
@@ -47,7 +51,7 @@ def get_block_handler(
     to_list_item_id: str | None = None,
     request_args: MultiDict[str, str] | None = None,
     form_data: ImmutableMultiDict[str, str] | None = None,
-):
+) -> Any:
     block = schema.get_block(block_id)
 
     if not block:

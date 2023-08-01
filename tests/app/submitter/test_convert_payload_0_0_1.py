@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 
 import pytest
 
-from app.authentication.auth_payload_version import AuthPayloadVersion
+from app.authentication.auth_payload_versions import AuthPayloadVersion
 from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
@@ -60,6 +60,7 @@ def test_convert_answers_v2_to_payload_0_0_1_with_key_error(version):
         schema=QuestionnaireSchema(questionnaire),
         full_routing_path=full_routing_path,
         progress_store=questionnaire_store.progress_store,
+        supplementary_data_store=questionnaire_store.supplementary_data_store,
     )
     assert answer_object["002"] == "2016-03-30"
     assert len(answer_object) == 1
@@ -99,6 +100,7 @@ def test_answer_with_zero(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     assert data_payload["003"] == "0"
@@ -138,6 +140,7 @@ def test_answer_with_float(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     # Check the converter correctly
@@ -180,6 +183,7 @@ def test_answer_with_string(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     # Check the converter correctly
@@ -222,6 +226,7 @@ def test_answer_without_qcode(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     assert not data_payload
@@ -289,6 +294,7 @@ def test_converter_checkboxes_with_q_codes(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     # Then
@@ -368,6 +374,7 @@ def test_converter_checkboxes_with_q_codes_and_other_value(
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     # Then
@@ -445,6 +452,7 @@ def test_converter_checkboxes_with_missing_detail_answer_value_in_answer_store(v
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     # Then
@@ -517,6 +525,7 @@ def test_converter_checkboxes_with_missing_q_codes_uses_answer_q_code(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     # Then
@@ -571,6 +580,7 @@ def test_converter_q_codes_for_empty_strings(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     # Then
@@ -639,6 +649,7 @@ def test_radio_answer(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     # Then
@@ -685,6 +696,7 @@ def test_number_answer(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     # Then
@@ -730,6 +742,7 @@ def test_percentage_answer(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     # Then
@@ -775,6 +788,7 @@ def test_textarea_answer(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     # Then
@@ -820,6 +834,7 @@ def test_currency_answer(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     # Then
@@ -876,6 +891,7 @@ def test_dropdown_answer(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     # Then
@@ -928,6 +944,7 @@ def test_date_answer(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     # Then
@@ -974,6 +991,7 @@ def test_unit_answer(version):
         questionnaire_store.metadata,
         questionnaire_store.response_metadata,
         questionnaire_store.progress_store,
+        questionnaire_store.supplementary_data_store,
     )
 
     # Then

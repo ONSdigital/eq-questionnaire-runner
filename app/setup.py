@@ -26,7 +26,7 @@ from app.authentication.user_id_generator import UserIDGenerator
 from app.cloud_tasks import CloudTaskPublisher, LogCloudTaskPublisher
 from app.helpers import get_span_and_trace
 from app.jinja_filters import blueprint as filter_blueprint
-from app.keys import KEY_PURPOSE_SUBMISSION
+from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SUBMISSION
 from app.publisher import LogPublisher, PubSubPublisher
 from app.routes.dump import dump_blueprint
 from app.routes.errors import errors_blueprint
@@ -36,6 +36,7 @@ from app.routes.questionnaire import post_submission_blueprint, questionnaire_bl
 from app.routes.schema import schema_blueprint
 from app.routes.session import session_blueprint
 from app.secrets import SecretStore, validate_required_secrets
+from app.settings import DEFAULT_LOCALE
 from app.storage import Datastore, Dynamodb, Redis
 from app.submitter import (
     GCSFeedbackSubmitter,
@@ -121,6 +122,7 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
     with open(application.config["EQ_KEYS_FILE"], encoding="UTF-8") as keys_file:
         keys = yaml.safe_load(keys_file)
     validate_required_keys(keys, KEY_PURPOSE_SUBMISSION)
+    validate_required_keys(keys, KEY_PURPOSE_AUTHENTICATION)
     application.eq["key_store"] = KeyStore(keys)
 
     if application.config["EQ_APPLICATION_VERSION"]:
@@ -479,7 +481,11 @@ def get_minimized_asset(filename):
 
 
 def get_locale():
-    return cookie_session.get("language_code")
+    return (
+        DEFAULT_LOCALE
+        if cookie_session.get("language_code") == "en"
+        else cookie_session.get("language_code")
+    )
 
 
 def get_timezone():

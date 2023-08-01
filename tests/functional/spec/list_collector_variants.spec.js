@@ -1,4 +1,4 @@
-import checkPeopleInList from "../helpers";
+import { checkItemsInList } from "../helpers";
 import YouLiveHerePage from "../generated_pages/list_collector_variants/you-live-here-block.page.js";
 import ListCollectorPage from "../generated_pages/list_collector_variants/list-collector.page.js";
 import ListCollectorAddPage from "../generated_pages/list_collector_variants/list-collector-add.page.js";
@@ -30,7 +30,7 @@ describe("List Collector With Variants", () => {
 
     it("The user can see all household members in the summary", async () => {
       const peopleExpected = ["Samuel Clemens"];
-      checkPeopleInList(peopleExpected, ListCollectorPage.listLabel);
+      checkItemsInList(peopleExpected, ListCollectorPage.listLabel);
     });
 
     it("The questionnaire has the correct question text on the change and remove pages", async () => {
@@ -76,7 +76,7 @@ describe("List Collector With Variants", () => {
 
     it("The user can see all household members in the summary", async () => {
       const peopleExpected = ["Samuel Clemens"];
-      checkPeopleInList(peopleExpected, ListCollectorPage.listLabel);
+      checkItemsInList(peopleExpected, ListCollectorPage.listLabel);
     });
 
     it("The questionnaire has the correct question text on the change and remove pages", async () => {

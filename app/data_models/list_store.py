@@ -3,7 +3,7 @@ from __future__ import annotations
 import random
 from functools import cached_property
 from string import ascii_letters
-from typing import Iterable, Iterator, Optional, TypedDict
+from typing import Iterable, Iterator, Optional, TypedDict, overload
 
 from structlog import get_logger
 
@@ -44,7 +44,15 @@ class ListModel:
     def __iter__(self) -> Iterator[str]:
         yield from self.items
 
+    @overload
     def __getitem__(self, list_item_index: int) -> str:
+        ...  # pragma: no cover
+
+    @overload
+    def __getitem__(self, list_item_index: slice) -> list[str]:
+        ...  # pragma: no cover
+
+    def __getitem__(self, list_item_index: slice | int) -> str | list[str]:
         return self.items[list_item_index]
 
     def __len__(self) -> int:
@@ -214,6 +222,10 @@ class ListStore:
         self._is_dirty = True
 
         return list_item_id
+
+    def delete_list(self, list_name: str) -> None:
+        """Deletes the entire list"""
+        del self._lists[list_name]
 
     def serialize(self) -> list[ListModelDictType]:
         return [list_model.serialize() for list_model in self]

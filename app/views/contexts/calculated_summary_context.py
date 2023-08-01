@@ -2,7 +2,12 @@ from typing import Callable, Iterable, Literal, Mapping, MutableMapping, Tuple
 
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import AnswerStore, ListStore, ProgressStore
+from app.data_models import (
+    AnswerStore,
+    ListStore,
+    ProgressStore,
+    SupplementaryDataStore,
+)
 from app.data_models.metadata_proxy import MetadataProxy
 from app.jinja_filters import (
     format_number,
@@ -10,7 +15,6 @@ from app.jinja_filters import (
     format_unit,
     get_formatted_currency,
 )
-from app.questionnaire import Location
 from app.questionnaire.questionnaire_schema import (
     QuestionnaireSchema,
     get_calculated_summary_answer_ids,
@@ -20,6 +24,7 @@ from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.schema_utils import get_answer_ids_in_block
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.questionnaire.variants import choose_question_to_display, transform_variants
+from app.utilities.types import LocationType
 from app.views.contexts.context import Context
 from app.views.contexts.summary.calculated_summary_block import NumericType
 from app.views.contexts.summary.group import Group
@@ -36,7 +41,8 @@ class CalculatedSummaryContext(Context):
         metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
         routing_path: RoutingPath,
-        current_location: Location,
+        current_location: LocationType,
+        supplementary_data_store: SupplementaryDataStore,
         return_to: str | None = None,
         return_to_block_id: str | None = None,
     ) -> None:
@@ -48,6 +54,7 @@ class CalculatedSummaryContext(Context):
             progress_store,
             metadata,
             response_metadata,
+            supplementary_data_store,
         )
         self.routing_path_block_ids = routing_path.block_ids
         self.current_location = current_location
@@ -81,6 +88,7 @@ class CalculatedSummaryContext(Context):
                 location=self.current_location,
                 language=self._language,
                 progress_store=self._progress_store,
+                supplementary_data_store=self._supplementary_data_store,
                 return_to=return_to,
                 return_to_block_id=return_to_block_id,
                 summary_type="CalculatedSummary",
@@ -197,6 +205,7 @@ class CalculatedSummaryContext(Context):
             self._list_store,
             self.current_location,
             self._progress_store,
+            self._supplementary_data_store,
         )
         transformed_block: dict = QuestionnaireSchema.get_mutable_deepcopy(
             block_to_transform
@@ -212,12 +221,18 @@ class CalculatedSummaryContext(Context):
         ]
 
         if block_question["id"] in questions_to_keep:
-            answers_to_keep = [
-                answer
-                for answer in block_question["answers"]
-                if answer["id"] in answer_ids_to_keep
-            ]
-            block_question["answers"] = answers_to_keep
+            if answers := block_question.get("answers"):
+                answers_to_keep = [
+                    answer for answer in answers if answer["id"] in answer_ids_to_keep
+                ]
+                block_question["answers"] = answers_to_keep
+            if dynamic_answers := block_question.get("dynamic_answers"):
+                dynamic_answers_to_keep = [
+                    answer
+                    for answer in dynamic_answers["answers"]
+                    if answer["id"] in answer_ids_to_keep
+                ]
+                block_question["dynamic_answers"]["answers"] = dynamic_answers_to_keep
 
         return transformed_block
 
@@ -239,6 +254,7 @@ class CalculatedSummaryContext(Context):
             routing_path_block_ids=routing_path_block_ids,
             location=self.current_location,
             progress_store=self._progress_store,
+            supplementary_data_store=self._supplementary_data_store,
         )
         # Type ignore: in the case of a calculated summation it will always be a numeric type
         calculated_total: NumericType = evaluate_calculated_summary.evaluate(calculation)  # type: ignore
@@ -273,6 +289,7 @@ class CalculatedSummaryContext(Context):
                     self._list_store,
                     current_location=self.current_location,
                     progress_store=self._progress_store,
+                    supplementary_data_store=self._supplementary_data_store,
                 )
                 for answer in question["answers"]:
                     if not answer_format["type"]:

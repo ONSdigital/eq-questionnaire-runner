@@ -7,7 +7,7 @@ from sdc.crypto.encrypter import encrypt
 from sdc.crypto.key_store import KeyStore
 from structlog import contextvars, get_logger
 
-from app.authentication.auth_payload_version import AuthPayloadVersion
+from app.authentication.auth_payload_versions import AuthPayloadVersion
 from app.authentication.user import User
 from app.authentication.user_id_generator import UserIDGenerator
 from app.data_models import QuestionnaireStore
@@ -87,6 +87,7 @@ def _submit_data(user: User) -> bool:
             progress_store=questionnaire_store.progress_store,
             metadata=questionnaire_store.metadata,
             response_metadata=questionnaire_store.response_metadata,
+            supplementary_data_store=questionnaire_store.supplementary_data_store,
         )
         full_routing_path = router.full_routing_path()
 

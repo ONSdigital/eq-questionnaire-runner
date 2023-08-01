@@ -1,10 +1,14 @@
 # pylint: disable=redefined-outer-name
 
 from datetime import datetime, timedelta, timezone
+from http.client import HTTPMessage
 
 import fakeredis
 import pytest
 from mock import MagicMock
+from mock.mock import Mock
+from requests.adapters import ConnectTimeoutError, ReadTimeoutError
+from urllib3.connectionpool import HTTPConnectionPool, HTTPResponse
 
 from app.data_models import QuestionnaireStore
 from app.data_models.answer_store import AnswerStore
@@ -13,6 +17,7 @@ from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
+from app.data_models.supplementary_data_store import SupplementaryDataStore
 from app.publisher import PubSubPublisher
 from app.questionnaire.location import Location
 from app.setup import create_app
@@ -160,6 +165,11 @@ def progress_store():
 
 
 @pytest.fixture
+def supplementary_data_store():
+    return SupplementaryDataStore()
+
+
+@pytest.fixture
 def publisher(mocker):
     mocker.patch(
         "app.publisher.publisher.google.auth._default._get_explicit_environ_credentials",
@@ -187,5 +197,98 @@ def current_location():
 
 
 @pytest.fixture
+def location():
+    return Location("test-section", "test-block", "test-list", "list_item_id")
+
+
+@pytest.fixture
 def mock_autoescape_context(mocker):
     return mocker.Mock(autoescape=True)
+
+
+@pytest.fixture
+def mocked_response_content(mocker):
+    decodable_content = Mock()
+    decodable_content.decode.return_value = b"{}"
+    mocker.patch("requests.models.Response.content", decodable_content)
+
+
+@pytest.fixture
+def mocked_make_request_with_timeout(
+    mocker, mocked_response_content  # pylint: disable=unused-argument
+):
+    connect_timeout_error = ConnectTimeoutError("connect timed out")
+    read_timeout_error = ReadTimeoutError(
+        pool=None, message="read timed out", url="test-url"
+    )
+
+    response_not_timed_out = HTTPResponse(status=200, headers={}, msg=HTTPMessage())
+    response_not_timed_out.drain_conn = Mock(return_value=None)
+
+    return mocker.patch.object(
+        HTTPConnectionPool,
+        "_make_request",
+        side_effect=[
+            connect_timeout_error,
+            read_timeout_error,
+            response_not_timed_out,
+        ],
+    )
+
+
+@pytest.fixture
+def supplementary_data():
+    return {
+        "schema_version": "v1",
+        "identifier": "12346789012A",
+        "note": {
+            "title": "Volume of total production",
+            "example": {
+                "title": "Including",
+                "description": "Sales across all UK stores",
+            },
+        },
+        "guidance": "Some supplementary guidance about the survey",
+        "items": {
+            "products": [
+                {
+                    "identifier": "89929001",
+                    "name": "Articles and equipment for sports or outdoor games",
+                    "cn_codes": "2504 + 250610 + 2512 + 2519 + 2524",
+                    "value_sales": {
+                        "answer_code": "89929001",
+                        "label": "Value of sales",
+                    },
+                },
+                {
+                    "identifier": "201630601",
+                    "name": "Other Minerals",
+                    "cn_codes": "5908 + 5910 + 591110 + 591120 + 591140",
+                    "value_sales": {
+                        "answer_code": "201630601",
+                        "label": "Value of sales",
+                    },
+                },
+            ]
+        },
+    }
+
+
+@pytest.fixture
+def supplementary_data_list_mappings():
+    return {
+        "products": {
+            "89929001": "item-1",
+            "201630601": "item-2",
+        },
+    }
+
+
+@pytest.fixture
+def supplementary_data_store_with_data(
+    supplementary_data, supplementary_data_list_mappings
+):
+    return SupplementaryDataStore(
+        supplementary_data=supplementary_data,
+        list_mappings=supplementary_data_list_mappings,
+    )

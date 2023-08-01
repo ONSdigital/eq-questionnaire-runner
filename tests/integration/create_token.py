@@ -1,9 +1,10 @@
 import time
+from copy import deepcopy
 from uuid import uuid4
 
 from sdc.crypto.encrypter import encrypt
 
-from app.authentication.auth_payload_version import AuthPayloadVersion
+from app.authentication.auth_payload_versions import AuthPayloadVersion
 from app.keys import KEY_PURPOSE_AUTHENTICATION
 from tests.app.parser.conftest import get_response_expires_at
 
@@ -42,6 +43,31 @@ PAYLOAD_V2_BUSINESS = {
             "trad_as": "Integration Tests",
             "employment_date": "1983-06-02",
             "display_address": "68 Abingdon Road, Goathill",
+        }
+    },
+    "collection_exercise_sid": "789",
+    "response_id": "1234567890123456",
+    "language_code": "en",
+    "roles": [],
+    "account_service_url": ACCOUNT_SERVICE_URL,
+}
+
+PAYLOAD_V2_SUPPLEMENTARY_DATA = {
+    "version": AuthPayloadVersion.V2.value,
+    "survey_metadata": {
+        "data": {
+            "user_id": "integration-test",
+            "period_str": "April 2016",
+            "period_id": "201604",
+            "ru_ref": "123456789012A",
+            "ru_name": "Integration Testing",
+            "ref_p_start_date": "2016-04-01",
+            "ref_p_end_date": "2016-04-30",
+            "trad_as": "Integration Tests",
+            "employment_date": "1983-06-02",
+            "display_address": "68 Abingdon Road, Goathill",
+            "sds_dataset_id": "44f1b432-9421-49e5-bd26-e63e18a30b69",
+            "survey_id": "123",
         }
     },
     "collection_exercise_sid": "789",
@@ -113,6 +139,21 @@ class TokenGenerator:
 
         return self.generate_token(payload)
 
+    def create_supplementary_data_token(self, schema_name, **extra_payload):
+        payload = deepcopy(PAYLOAD_V2_SUPPLEMENTARY_DATA)
+
+        # iterate over a copy so items can be deleted
+        for key, value in list(extra_payload.items()):
+            if key in {"sds_dataset_id", "ru_ref", "survey_id"}:
+                payload["survey_metadata"]["data"][key] = value
+                del extra_payload[key]
+
+        payload = self._get_payload_with_params(
+            schema_name=schema_name, payload=payload, **extra_payload
+        )
+
+        return self.generate_token(payload)
+
     def create_token_invalid_version(self, schema_name, **extra_payload):
         payload = self._get_payload_with_params(
             schema_name=schema_name, payload=PAYLOAD_V2_BUSINESS, **extra_payload
@@ -160,6 +201,14 @@ class TokenGenerator:
         payload_vars = self._get_payload_with_params(
             schema_name=schema_name, schema_url=schema_url, **extra_payload
         )
+
+        return self.generate_token(payload_vars)
+
+    def create_token_with_none_language_code(self, schema_name, **extra_payload):
+        payload_vars = self._get_payload_with_params(
+            schema_name=schema_name, **extra_payload
+        )
+        del payload_vars["language_code"]
 
         return self.generate_token(payload_vars)
 

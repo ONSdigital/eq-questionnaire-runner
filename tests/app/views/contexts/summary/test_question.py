@@ -2,7 +2,7 @@
 import pytest
 from mock import MagicMock
 
-from app.data_models import Answer, ListStore, ProgressStore
+from app.data_models import Answer, ListStore, ProgressStore, SupplementaryDataStore
 from app.data_models.answer_store import AnswerStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
@@ -20,6 +20,7 @@ def get_rule_evaluator(answer_store, list_store, schema, response_metadata=None)
         response_metadata=response_metadata or {},
         location=None,
         progress_store=ProgressStore(),
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
 
@@ -35,6 +36,7 @@ def get_value_source_resolver(answer_store, list_store, schema, response_metadat
         routing_path_block_ids=None,
         use_default_answer=True,
         progress_store=ProgressStore(),
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
 
@@ -129,7 +131,13 @@ def address_questionnaire_schema(concatenation_type):
     )
 
 
-def address_question(answer_store, list_store, progress_store, schema):
+def address_question(
+    answer_store,
+    list_store,
+    progress_store,
+    schema,
+    supplementary_data_store,
+):
     question_schema = schema.get_questions("what-is-your-address-question")[0]
     return Question(
         question_schema,
@@ -147,6 +155,7 @@ def address_question(answer_store, list_store, progress_store, schema):
         language="en",
         metadata={},
         response_metadata={},
+        supplementary_data_store=supplementary_data_store,
     )
 
 
@@ -173,6 +182,7 @@ def test_create_question(
     list_store,
     progress_store,
     mock_schema,
+    supplementary_data_store,
 ):
     # Given
     question_schema = {
@@ -199,6 +209,7 @@ def test_create_question(
         language="en",
         metadata={},
         response_metadata={},
+        supplementary_data_store=supplementary_data_store,
     )
 
     # Then
@@ -221,6 +232,7 @@ def test_concatenate_textfield_answers(
     list_store,
     progress_store,
     answer_store,
+    supplementary_data_store,
 ):
     # Given
     schema = address_questionnaire_schema(concatenation_type)
@@ -232,7 +244,13 @@ def test_concatenate_textfield_answers(
     ):
         answer_store.add_or_update(answer)
 
-    question = address_question(answer_store, list_store, progress_store, schema)
+    question = address_question(
+        answer_store,
+        list_store,
+        progress_store,
+        schema,
+        supplementary_data_store,
+    )
     # Then
     assert (
         question.answers[0]["value"]
@@ -255,6 +273,7 @@ def test_concatenate_textfield_answers_default(
     list_store,
     answer_store,
     progress_store,
+    supplementary_data_store,
 ):
     # Given
     schema = address_questionnaire_schema(concatenation_type)
@@ -266,7 +285,13 @@ def test_concatenate_textfield_answers_default(
         answer_store.add_or_update(answer)
 
     # When
-    question = address_question(answer_store, list_store, progress_store, schema)
+    question = address_question(
+        answer_store,
+        list_store,
+        progress_store,
+        schema,
+        supplementary_data_store,
+    )
 
     # Then
     assert (
@@ -291,6 +316,7 @@ def test_concatenate_number_and_checkbox_answers(
     answer_store,
     progress_store,
     mock_schema,
+    supplementary_data_store,
 ):
     # Given
     answer_store.add_or_update(Answer(answer_id="age", value=7))
@@ -341,6 +367,7 @@ def test_concatenate_number_and_checkbox_answers(
         language="en",
         metadata={},
         response_metadata={},
+        supplementary_data_store=supplementary_data_store,
     )
 
     # Then
@@ -353,7 +380,11 @@ def test_concatenate_number_and_checkbox_answers(
 
 @pytest.mark.usefixtures("app")
 def test_merge_date_range_answers(
-    answer_store, list_store, progress_store, mock_schema
+    answer_store,
+    list_store,
+    progress_store,
+    mock_schema,
+    supplementary_data_store,
 ):
     # Given
     answer_store.add_or_update(Answer(answer_id="answer_1", value="13/02/2016"))
@@ -386,6 +417,7 @@ def test_merge_date_range_answers(
         language="en",
         metadata={},
         response_metadata={},
+        supplementary_data_store=supplementary_data_store,
     )
 
     # Then
@@ -396,7 +428,11 @@ def test_merge_date_range_answers(
 
 @pytest.mark.usefixtures("app")
 def test_merge_multiple_date_range_answers(
-    answer_store, list_store, progress_store, mock_schema
+    answer_store,
+    list_store,
+    progress_store,
+    mock_schema,
+    supplementary_data_store,
 ):
     # Given
     for answer in (
@@ -436,6 +472,7 @@ def test_merge_multiple_date_range_answers(
         language="en",
         metadata={},
         response_metadata={},
+        supplementary_data_store=supplementary_data_store,
     )
 
     # Then
@@ -448,7 +485,11 @@ def test_merge_multiple_date_range_answers(
 
 @pytest.mark.usefixtures("app")
 def test_create_question_with_multiple_answers(
-    answer_store, list_store, progress_store, mock_schema
+    answer_store,
+    list_store,
+    progress_store,
+    mock_schema,
+    supplementary_data_store,
 ):
     # Given
     for answer in (
@@ -484,6 +525,7 @@ def test_create_question_with_multiple_answers(
         language="en",
         metadata={},
         response_metadata={},
+        supplementary_data_store=supplementary_data_store,
     )
 
     # Then
@@ -493,7 +535,13 @@ def test_create_question_with_multiple_answers(
 
 
 @pytest.mark.usefixtures("app")
-def test_checkbox_button_options(answer_store, list_store, progress_store, mock_schema):
+def test_checkbox_button_options(
+    answer_store,
+    list_store,
+    progress_store,
+    mock_schema,
+    supplementary_data_store,
+):
     # Given
     answer_store.add_or_update(
         Answer(answer_id="answer_1", value=["Light Side", "Dark Side"])
@@ -533,6 +581,7 @@ def test_checkbox_button_options(answer_store, list_store, progress_store, mock_
         language="en",
         metadata={},
         response_metadata={},
+        supplementary_data_store=supplementary_data_store,
     )
 
     # Then
@@ -543,7 +592,11 @@ def test_checkbox_button_options(answer_store, list_store, progress_store, mock_
 
 @pytest.mark.usefixtures("app")
 def test_checkbox_button_detail_answer_empty(
-    answer_store, list_store, progress_store, mock_schema
+    answer_store,
+    list_store,
+    progress_store,
+    mock_schema,
+    supplementary_data_store,
 ):
     # Given
     answer_store.add_or_update(Answer(answer_id="answer_1", value=["other", ""]))
@@ -586,6 +639,7 @@ def test_checkbox_button_detail_answer_empty(
         language="en",
         metadata={},
         response_metadata={},
+        supplementary_data_store=supplementary_data_store,
     )
 
     # Then
@@ -641,6 +695,7 @@ def test_checkbox_answer_with_detail_answer_returns_the_value(
     list_store,
     progress_store,
     mock_schema,
+    supplementary_data_store,
 ):
     # Given
     for answer in answers:
@@ -677,6 +732,7 @@ def test_checkbox_answer_with_detail_answer_returns_the_value(
         language="en",
         metadata={},
         response_metadata={},
+        supplementary_data_store=supplementary_data_store,
     )
 
     # Then
@@ -686,7 +742,11 @@ def test_checkbox_answer_with_detail_answer_returns_the_value(
 
 @pytest.mark.usefixtures("app")
 def test_checkbox_button_other_option_text(
-    answer_store, list_store, progress_store, mock_schema
+    answer_store,
+    list_store,
+    progress_store,
+    mock_schema,
+    supplementary_data_store,
 ):
     # Given
     answer_store.add_or_update(
@@ -732,6 +792,7 @@ def test_checkbox_button_other_option_text(
         language="en",
         metadata={},
         response_metadata={},
+        supplementary_data_store=supplementary_data_store,
     )
 
     # Then
@@ -786,6 +847,7 @@ def test_radio_answer_with_detail_answers_returns_correct_value(
     list_store,
     progress_store,
     mock_schema,
+    supplementary_data_store,
 ):
     # Given
     for answer in answers:
@@ -822,6 +884,7 @@ def test_radio_answer_with_detail_answers_returns_correct_value(
         language="en",
         metadata={},
         response_metadata={},
+        supplementary_data_store=supplementary_data_store,
     )
 
     # Then
@@ -870,6 +933,7 @@ def test_answer_types_selected_option_label(
     list_store,
     progress_store,
     mock_schema,
+    supplementary_data_store,
 ):
     for answer in answers:
         answer_store.add_or_update(answer)
@@ -905,6 +969,7 @@ def test_answer_types_selected_option_label(
         language="en",
         metadata={},
         response_metadata={},
+        supplementary_data_store=supplementary_data_store,
     )
 
     # Then
@@ -913,7 +978,12 @@ def test_answer_types_selected_option_label(
 
 @pytest.mark.usefixtures("app")
 def test_dynamic_checkbox_answer_options(
-    answer_store, list_store, progress_store, mock_schema, dynamic_answer_options_schema
+    answer_store,
+    list_store,
+    progress_store,
+    mock_schema,
+    dynamic_answer_options_schema,
+    supplementary_data_store,
 ):
     # Given
     answer_schema = {
@@ -954,6 +1024,7 @@ def test_dynamic_checkbox_answer_options(
         language="en",
         metadata={},
         response_metadata={},
+        supplementary_data_store=supplementary_data_store,
     )
 
     # Then
@@ -997,6 +1068,7 @@ def test_dynamic_answer_options(
     list_store,
     progress_store,
     answer_store_value,
+    supplementary_data_store,
     expected,
     dynamic_answer_options_schema,
     mock_schema,
@@ -1032,6 +1104,7 @@ def test_dynamic_answer_options(
         language="en",
         metadata={},
         response_metadata={},
+        supplementary_data_store=supplementary_data_store,
     )
 
     # Then
@@ -1074,7 +1147,14 @@ def test_dynamic_answer_options(
         ),
     ),
 )
-def test_get_answer(answer_schema, answer_store, expected, list_store, progress_store):
+def test_get_answer(
+    answer_schema,
+    answer_store,
+    expected,
+    list_store,
+    progress_store,
+    supplementary_data_store,
+):
     schema = address_questionnaire_schema("Newline")
 
     # Given
@@ -1097,6 +1177,7 @@ def test_get_answer(answer_schema, answer_store, expected, list_store, progress_
         language="en",
         metadata={},
         response_metadata={},
+        supplementary_data_store=supplementary_data_store,
     )
 
     # Then
@@ -1179,7 +1260,13 @@ def test_get_answer(answer_schema, answer_store, expected, list_store, progress_
         ),
     ),
 )
-def test_dynamic_answers(answer_store, list_store, progress_store, expected):
+def test_dynamic_answers(
+    answer_store,
+    list_store,
+    progress_store,
+    expected,
+    supplementary_data_store,
+):
     schema = load_schema_from_name("test_dynamic_answers_list_source", "en")
 
     # Given
@@ -1249,6 +1336,7 @@ def test_dynamic_answers(answer_store, list_store, progress_store, expected):
         language="en",
         metadata={},
         response_metadata={},
+        supplementary_data_store=supplementary_data_store,
     )
 
     # Then

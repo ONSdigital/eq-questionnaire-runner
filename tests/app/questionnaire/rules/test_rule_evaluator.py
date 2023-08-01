@@ -3,9 +3,14 @@ from typing import Mapping, Optional, Union
 
 import pytest
 from freezegun import freeze_time
-from mock import Mock
+from mock import MagicMock, Mock
 
-from app.data_models import AnswerStore, ListStore, ProgressStore
+from app.data_models import (
+    AnswerStore,
+    ListStore,
+    ProgressStore,
+    SupplementaryDataStore,
+)
 from app.data_models.answer import Answer
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
@@ -21,7 +26,7 @@ current_date_as_yyyy_mm_dd = current_date.strftime("%Y-%m-%d")
 
 
 def get_mock_schema():
-    schema = Mock(
+    schema = MagicMock(
         QuestionnaireSchema(
             {
                 "questionnaire_flow": {
@@ -31,6 +36,8 @@ def get_mock_schema():
             }
         )
     )
+    schema.is_answer_dynamic = Mock(return_value=False)
+    schema.is_answer_in_list_collector_repeating_block = Mock(return_value=False)
     return schema
 
 
@@ -47,11 +54,14 @@ def get_rule_evaluator(
     ),
     routing_path_block_ids: Optional[list] = None,
     progress: ProgressStore = ProgressStore(),
+    supplementary_data_store: SupplementaryDataStore = SupplementaryDataStore(),
 ):
     if not schema:
         schema = get_mock_schema()
         schema.is_repeating_answer = Mock(return_value=True)
         schema.get_default_answer = Mock(return_value=None)
+        schema.is_answer_dynamic = Mock(return_value=False)
+        schema.is_answer_in_list_collector_repeating_block = Mock(return_value=False)
 
     return RuleEvaluator(
         language=language,
@@ -63,6 +73,7 @@ def get_rule_evaluator(
         location=location,
         routing_path_block_ids=routing_path_block_ids,
         progress_store=progress,
+        supplementary_data_store=supplementary_data_store,
     )
 
 
@@ -977,7 +988,8 @@ def test_format_date(rule, expected_result):
 
 
 @freeze_time("2021-01-01")
-def test_map_without_nested_date_operator():
+@pytest.mark.parametrize("source", ("response_metadata", "supplementary_data"))
+def test_map_without_nested_date_operator(source):
     rule = {
         Operator.MAP: [
             {Operator.FORMAT_DATE: ["self", "yyyy-MM-dd"]},
@@ -985,7 +997,7 @@ def test_map_without_nested_date_operator():
                 Operator.DATE_RANGE: [
                     {
                         Operator.DATE: [
-                            {"source": "response_metadata", "identifier": "started_at"},
+                            {"source": source, "identifier": "started_at"},
                             {"days": -7, "day_of_week": "MONDAY"},
                         ]
                     },
@@ -995,8 +1007,10 @@ def test_map_without_nested_date_operator():
         ]
     }
 
+    date_map = {"started_at": datetime.now(timezone.utc).isoformat()}
     rule_evaluator = get_rule_evaluator(
-        response_metadata={"started_at": datetime.now(timezone.utc).isoformat()}
+        response_metadata=date_map,
+        supplementary_data_store=SupplementaryDataStore(date_map),
     )
 
     assert rule_evaluator.evaluate(rule=rule) == [
@@ -1044,3 +1058,36 @@ def test_map_with_nested_date_operator(offset, expected_result):
     )
 
     assert rule_evaluator.evaluate(rule=rule) == expected_result
+
+
+def test_supplementary_data_source(supplementary_data_store_with_data):
+    schema = get_mock_schema()
+    schema.is_repeating_answer = Mock(return_value=False)
+    answer_store = AnswerStore(
+        [{"answer_id": "same-answer", "value": "Volume of total production"}]
+    )
+
+    rule_evaluator = get_rule_evaluator(
+        schema=schema,
+        answer_store=answer_store,
+        supplementary_data_store=supplementary_data_store_with_data,
+        location=Location(
+            section_id="some-section", block_id="some-block", list_item_id="item-1"
+        ),
+    )
+
+    assert (
+        rule_evaluator.evaluate(
+            rule={
+                Operator.EQUAL: [
+                    {
+                        "source": "supplementary_data",
+                        "identifier": "note",
+                        "selectors": ["title"],
+                    },
+                    {"source": "answers", "identifier": "same-answer"},
+                ]
+            }
+        )
+        is True
+    )

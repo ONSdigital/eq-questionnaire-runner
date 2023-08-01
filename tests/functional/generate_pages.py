@@ -102,6 +102,12 @@ GUIDANCE_PANEL_GETTER = Template(
 """
 )
 
+CONTENT_ITEM_GETTER = Template(
+    r"""  ${contentName}Content() { return `#${contentId}`; }
+
+"""
+)
+
 QUESTION_ERROR_PANEL = Template(
     r"""  ${questionName}ErrorPanel() { return `#${questionOrAnswerId}-error`; }
 
@@ -292,7 +298,6 @@ LIST_SECTION_SUMMARY_REMOVE_LINK_GETTER = Template(
 
 """
 )
-
 
 NON_ITEM_ANSWERS_LIST_SECTION_SUMMARY_LABEL_GETTER = Template(
     r"""  ${list_name}ListLabel(listItemInstance) { return `dt[data-qa="list-item-` + listItemInstance + `-label"]`; }
@@ -591,6 +596,10 @@ def process_guidance(context, page_spec):
     page_spec.write(GUIDANCE_PANEL_GETTER.safe_substitute(context))
 
 
+def process_content(context, page_spec):
+    page_spec.write(CONTENT_ITEM_GETTER.safe_substitute(context))
+
+
 # pylint: disable=too-many-locals
 def write_summary_spec(
     page_spec,
@@ -831,6 +840,15 @@ def process_block(
                 relative_require,
                 page_filename=f'{block["id"]}-{list_operation}.page.js',
             )
+        for repeating_block in block.get("repeating_blocks", []):
+            process_block(
+                repeating_block,
+                dir_out,
+                schema_data,
+                spec_file,
+                relative_require,
+                page_filename=f'{repeating_block["id"]}-repeating-block.page.js',
+            )
 
     if block["type"] == "PrimaryPersonListCollector":
         process_block(
@@ -889,6 +907,13 @@ def process_block(
             has_guidance = False
             for content in block.get("primary_content", []):
                 contents_block = content.get("contents")
+                content_context = {
+                    "contentId": content["id"],
+                    "contentName": camel_case(
+                        generate_pascal_case_from_id(content["id"])
+                    ),
+                }
+                process_content(content_context, page_spec)
 
                 if contents_block and _has_guidance_in_primary_contents(contents_block):
                     has_guidance = True

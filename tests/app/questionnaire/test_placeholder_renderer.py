@@ -1,7 +1,7 @@
 import pytest
 from mock import MagicMock
 
-from app.data_models import ProgressStore
+from app.data_models import ProgressStore, SupplementaryDataStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.questionnaire import Location
@@ -56,6 +56,7 @@ def test_renders_pointer(
             location=mock_location,
             renderer=mock_renderer,
             progress_store=ProgressStore(),
+            supplementary_data_store=SupplementaryDataStore(),
         ),
     )
 
@@ -142,6 +143,7 @@ def test_errors_on_invalid_pointer(placholder_transform_question_json, mock_sche
                 location=None,
                 renderer=renderer,
                 progress_store=ProgressStore(),
+                supplementary_data_store=SupplementaryDataStore(),
             ),
         )
 
@@ -164,6 +166,7 @@ def test_errors_on_invalid_json(mock_schema):
                 location=None,
                 renderer=renderer,
                 progress_store=ProgressStore(),
+                supplementary_data_store=SupplementaryDataStore(),
             ),
         )
 
@@ -333,6 +336,7 @@ def get_placeholder_render_dynamic_answers(
     answer_store=AnswerStore(),
     list_store=ListStore(),
     progress_store=ProgressStore(),
+    supplementary_data_store=SupplementaryDataStore(),
     metadata=None,
     response_metadata=None,
 ):
@@ -345,6 +349,7 @@ def get_placeholder_render_dynamic_answers(
         metadata=metadata or {},
         response_metadata=response_metadata or {},
         schema=schema,
+        supplementary_data_store=supplementary_data_store,
     )
 
 
@@ -356,14 +361,18 @@ def get_placeholder_render(
     metadata=None,
     response_metadata=None,
 ):
+    schema = MagicMock()
+    schema.is_answer_dynamic = MagicMock(return_value=False)
+    schema.is_answer_in_list_collector_repeating_block = MagicMock(return_value=False)
     renderer = PlaceholderRenderer(
         language=language,
         answer_store=answer_store,
         list_store=list_store,
         metadata=metadata or {},
         response_metadata=response_metadata or {},
-        schema=MagicMock(),
+        schema=schema,
         progress_store=ProgressStore(),
         location=Location(section_id="default-section"),
+        supplementary_data_store=SupplementaryDataStore(),
     )
     return renderer

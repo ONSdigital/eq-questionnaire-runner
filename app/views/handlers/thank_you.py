@@ -2,9 +2,10 @@ from datetime import datetime
 from functools import cached_property
 
 from flask import session as cookie_session
-from flask_babel import gettext
+from flask_babel import LazyString, gettext
 from flask_login import current_user
 
+from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.session_store import SessionStore
 from app.globals import get_metadata
 from app.helpers.template_helpers import get_survey_type
@@ -43,14 +44,14 @@ class ThankYou:
         )
 
     @cached_property
-    def confirmation_email(self):
+    def confirmation_email(self) -> ConfirmationEmail | None:
         try:
             return ConfirmationEmail(self._session_store, self._schema, self.PAGE_TITLE)
         except (ConfirmationEmailNotEnabled, ConfirmationEmailLimitReached):
             return None
 
-    def get_context(self):
-        metadata = get_metadata(current_user) or {}
+    def get_context(self) -> dict:
+        metadata: MetadataProxy = get_metadata(current_user)  # type: ignore
 
         if not self._is_census_theme:
             guidance_content = self._schema.get_post_submission().get("guidance")
@@ -69,10 +70,11 @@ class ThankYou:
         return build_census_thank_you_context(
             metadata,
             confirmation_email_form,
-            self._schema.form_type,
+            # Type ignore: form_type will already be populated at this stage
+            self._schema.form_type,  # type: ignore
         )
 
-    def get_page_title(self):
+    def get_page_title(self) -> str | LazyString:
         if self.confirmation_email:
             return self.confirmation_email.get_page_title()
         return self.PAGE_TITLE

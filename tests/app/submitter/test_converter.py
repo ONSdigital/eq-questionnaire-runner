@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 
 import pytest
 
-from app.authentication.auth_payload_version import AuthPayloadVersion
+from app.authentication.auth_payload_versions import AuthPayloadVersion
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.submitter.converter import convert_answers
 from app.submitter.converter_v2 import (

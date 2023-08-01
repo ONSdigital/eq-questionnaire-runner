@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import Optional, Union
 
 from app.data_models import QuestionnaireStore
 from app.questionnaire import QuestionnaireSchema
@@ -34,9 +33,10 @@ class SubmitQuestionnaireHandler:
             progress_store=self._questionnaire_store.progress_store,
             metadata=self._questionnaire_store.metadata,
             response_metadata=self._questionnaire_store.response_metadata,
+            supplementary_data_store=self._questionnaire_store.supplementary_data_store,
         )
 
-    def get_context(self) -> dict[str, Union[str, dict]]:
+    def get_context(self) -> dict[str, str | dict]:
         submit_questionnaire_context = SubmitQuestionnaireContext(
             language=self._language,
             schema=self._schema,
@@ -45,10 +45,11 @@ class SubmitQuestionnaireHandler:
             progress_store=self._questionnaire_store.progress_store,
             metadata=self._questionnaire_store.metadata,
             response_metadata=self._questionnaire_store.response_metadata,
+            supplementary_data_store=self._questionnaire_store.supplementary_data_store,
         )
         return submit_questionnaire_context()
 
-    def get_previous_location_url(self) -> Optional[str]:
+    def get_previous_location_url(self) -> str | None:
         return self.router.get_last_location_in_questionnaire_url()
 
     @property

@@ -1,10 +1,15 @@
 from typing import Mapping, Optional, Union
 
 import pytest
-from mock import Mock
+from mock import MagicMock, Mock
 
-from app.authentication.auth_payload_version import AuthPayloadVersion
-from app.data_models import AnswerStore, ListStore, ProgressStore
+from app.authentication.auth_payload_versions import AuthPayloadVersion
+from app.data_models import (
+    AnswerStore,
+    ListStore,
+    ProgressStore,
+    SupplementaryDataStore,
+)
 from app.data_models.answer import Answer, AnswerDict
 from app.data_models.metadata_proxy import MetadataProxy, NoMetadataException
 from app.questionnaire import Location, QuestionnaireSchema
@@ -20,7 +25,7 @@ def get_list_items(num: int):
 
 
 def get_mock_schema():
-    schema = Mock(
+    schema = MagicMock(
         QuestionnaireSchema(
             {
                 "questionnaire_flow": {
@@ -30,6 +35,8 @@ def get_mock_schema():
             }
         )
     )
+    schema.is_answer_dynamic = Mock(return_value=False)
+    schema.is_answer_in_list_collector_repeating_block = Mock(return_value=False)
     return schema
 
 
@@ -47,10 +54,13 @@ def get_value_source_resolver(
     use_default_answer=False,
     escape_answer_values=False,
     progress_store: ProgressStore | None = None,
+    supplementary_data_store: SupplementaryDataStore | None = None,
 ):
     if not schema:
         schema = get_mock_schema()
         schema.is_repeating_answer = Mock(return_value=bool(list_item_id))
+        schema.is_answer_dynamic = Mock(return_value=False)
+        schema.is_answer_in_list_collector_repeating_block = Mock(return_value=False)
 
     if not use_default_answer:
         schema.get_default_answer = Mock(return_value=None)
@@ -67,6 +77,7 @@ def get_value_source_resolver(
         use_default_answer=use_default_answer,
         escape_answer_values=escape_answer_values,
         progress_store=progress_store,
+        supplementary_data_store=supplementary_data_store,
     )
 
 
@@ -343,6 +354,86 @@ def test_answer_source_default_answer(use_default_answer):
 
 
 @pytest.mark.parametrize(
+    "answer_values,escape_answer_values",
+    (([], False), ([10, 5], False), ([100, 200, 300], False), ([HTML_CONTENT], True)),
+)
+def test_answer_source_dynamic_answer(
+    mocker,
+    placeholder_transform_question_dynamic_answers_json,
+    answer_values,
+    escape_answer_values,
+):
+    """
+    Tests that a dynamic answer id as a value source resolves to the list of answers for that list and question
+    """
+    schema = mocker.MagicMock()
+    schema.is_answer_dynamic = Mock(return_value=True)
+    schema.get_block_for_answer_id = Mock(
+        return_value={"question": placeholder_transform_question_dynamic_answers_json}
+    )
+    list_item_ids = get_list_items(len(answer_values))
+    value_source_resolver = get_value_source_resolver(
+        answer_store=AnswerStore(
+            [
+                AnswerDict(
+                    answer_id="percentage-of-shopping",
+                    value=value,
+                    list_item_id=list_item_id,
+                )
+                for list_item_id, value in zip(list_item_ids, answer_values)
+            ]
+        ),
+        list_store=ListStore([{"name": "supermarkets", "items": list_item_ids}]),
+        schema=schema,
+        escape_answer_values=escape_answer_values,
+    )
+    expected_result = [ESCAPED_CONTENT] if escape_answer_values else answer_values
+    assert (
+        value_source_resolver.resolve(
+            {"source": "answers", "identifier": "percentage-of-shopping"}
+        )
+        == expected_result
+    )
+
+
+@pytest.mark.parametrize("answer_values", ([], [10, 5], [100, 200, 300]))
+def test_answer_source_repeating_block_answers(
+    mocker, placeholder_transform_question_repeating_block, answer_values
+):
+    """
+    Tests that an answer id from a repeating block resolves to the list of answers for that list and repeating block question
+    """
+    schema = mocker.MagicMock()
+    schema.list_names_by_list_repeating_block_id = {"repeating-block-1": "transport"}
+    schema.is_answer_dynamic = Mock(return_value=False)
+    schema.is_answer_in_list_collector_repeating_block = Mock(return_value=True)
+    schema.get_block_for_answer_id = Mock(
+        return_value=placeholder_transform_question_repeating_block
+    )
+    list_item_ids = get_list_items(len(answer_values))
+    value_source_resolver = get_value_source_resolver(
+        answer_store=AnswerStore(
+            [
+                AnswerDict(
+                    answer_id="transport-cost",
+                    value=value,
+                    list_item_id=list_item_id,
+                )
+                for list_item_id, value in zip(list_item_ids, answer_values)
+            ]
+        ),
+        list_store=ListStore([{"name": "transport", "items": list_item_ids}]),
+        schema=schema,
+    )
+    assert (
+        value_source_resolver.resolve(
+            {"source": "answers", "identifier": "transport-cost"}
+        )
+        == answer_values
+    )
+
+
+@pytest.mark.parametrize(
     "metadata_identifier, expected_result",
     [("region_code", "GB-ENG"), ("language_code", None)],
 )
@@ -553,6 +644,8 @@ def test_new_calculated_summary_value_source(mocker, list_item_id):
             },
         },
     )
+    schema.is_answer_dynamic = Mock(return_value=False)
+    schema.is_answer_in_list_collector_repeating_block = Mock(return_value=False)
 
     location = Location(
         section_id="test-section", block_id="test-block", list_item_id=list_item_id
@@ -608,6 +701,8 @@ def test_new_calculated_summary_nested_value_source(mocker, list_item_id):
             },
         },
     )
+    schema.is_answer_dynamic = Mock(return_value=False)
+    schema.is_answer_in_list_collector_repeating_block = Mock(return_value=False)
 
     location = Location(
         section_id="test-section", block_id="test-block", list_item_id=list_item_id
@@ -696,3 +791,63 @@ def test_progress_values_source_throws_if_no_location_given():
         value_source_resolver.resolve(
             {"source": "progress", "selector": "block", "identifier": "a-block"}
         )
+
+
+@pytest.mark.parametrize("in_repeating_section", [True, False])
+@pytest.mark.parametrize(
+    "value_source,expected_result",
+    [
+        (
+            {"identifier": "guidance"},
+            "Some supplementary guidance about the survey",
+        ),
+        (
+            {"identifier": "note", "selectors": ["title"]},
+            "Volume of total production",
+        ),
+        (
+            {"identifier": "note", "selectors": ["example", "title"]},
+            "Including",
+        ),
+        (
+            {"identifier": "note", "selectors": ["example", "description"]},
+            "Sales across all UK stores",
+        ),
+        (
+            {"identifier": "INVALID"},
+            None,
+        ),
+    ],
+)
+def test_supplementary_data_value_source_non_list_items(
+    supplementary_data_store_with_data,
+    value_source,
+    expected_result,
+    in_repeating_section,
+):
+    list_store = ListStore([{"name": "some-list", "items": get_list_items(3)}])
+    location = (
+        Location(
+            section_id="section",
+            block_id="block-id",
+            list_name="some-list",
+            list_item_id="item-1",
+        )
+        if in_repeating_section
+        else Location(section_id="section", block_id="block-id")
+    )
+    value_source_resolver = get_value_source_resolver(
+        supplementary_data_store=supplementary_data_store_with_data,
+        location=location,
+        list_item_id=location.list_item_id,
+        list_store=list_store,
+    )
+    assert (
+        value_source_resolver.resolve(
+            {
+                "source": "supplementary_data",
+                **value_source,
+            }
+        )
+        == expected_result
+    )

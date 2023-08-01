@@ -11,9 +11,13 @@ from structlog import contextvars, get_logger
 from werkzeug.exceptions import Unauthorized
 from werkzeug.wrappers.response import Response
 
-from app.authentication.auth_payload_version import AuthPayloadVersion
-from app.authentication.authenticator import decrypt_token, store_session
+from app.authentication.auth_payload_versions import AuthPayloadVersion
+from app.authentication.authenticator import (
+    create_session_questionnaire_store,
+    decrypt_token,
+)
 from app.authentication.jti_claim_storage import JtiTokenUsed, use_jti_claim
+from app.data_models import QuestionnaireStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import get_session_store, get_session_timeout_in_seconds
 from app.helpers.template_helpers import (
@@ -22,7 +26,9 @@ from app.helpers.template_helpers import (
     render_template,
 )
 from app.questionnaire import QuestionnaireSchema
+from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.routes.errors import _render_error_page
+from app.services.supplementary_data import get_supplementary_data_v1
 from app.utilities.metadata_parser import validate_runner_claims
 from app.utilities.metadata_parser_v2 import (
     validate_questionnaire_claims,
@@ -112,7 +118,8 @@ def login() -> Response:
 
     logger.info("decrypted token and parsed metadata")
 
-    store_session(claims)
+    with create_session_questionnaire_store(claims) as questionnaire_store:
+        _set_questionnaire_supplementary_data(questionnaire_store, metadata)
 
     cookie_session["expires_in"] = get_session_timeout_in_seconds(g.schema)
 
@@ -126,9 +133,43 @@ def login() -> Response:
             "account_service_log_out_url"
         )
 
-    cookie_session["language_code"] = metadata.language_code
+    cookie_session["language_code"] = metadata.language_code or DEFAULT_LANGUAGE_CODE
 
     return redirect(url_for("questionnaire.get_questionnaire"))
+
+
+def _set_questionnaire_supplementary_data(
+    questionnaire_store: QuestionnaireStore, metadata: MetadataProxy
+) -> None:
+    """
+    If the survey metadata has an sds dataset id, and it either doesn't match what it stored, or there is no stored supplementary data
+    then fetch it and add it to the store
+    """
+    if not (new_sds_dataset_id := metadata["sds_dataset_id"]):
+        return
+
+    existing_sds_dataset_id = (
+        questionnaire_store.metadata.survey_metadata["sds_dataset_id"]
+        if questionnaire_store.metadata and questionnaire_store.metadata.survey_metadata
+        else None
+    )
+
+    if existing_sds_dataset_id == new_sds_dataset_id:
+        # no need to fetch again
+        return
+
+    supplementary_data = get_supplementary_data_v1(
+        # Type ignore: survey_id and either ru_ref or qid are required for schemas that use supplementary data
+        dataset_id=new_sds_dataset_id,
+        identifier=metadata["ru_ref"] or metadata["qid"],  # type: ignore
+        survey_id=metadata["survey_id"],  # type: ignore
+    )
+    logger.info(
+        "fetched supplementary data",
+        survey_id=metadata["survey_id"],
+        sds_dataset_id=new_sds_dataset_id,
+    )
+    questionnaire_store.set_supplementary_data(supplementary_data["data"])
 
 
 def validate_jti(decrypted_token: dict[str, str | list | int]) -> None:

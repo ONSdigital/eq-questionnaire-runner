@@ -4,14 +4,20 @@ from flask import url_for
 from markupsafe import Markup, escape
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import AnswerStore, ListStore, ProgressStore
+from app.data_models import (
+    AnswerStore,
+    ListStore,
+    ProgressStore,
+    SupplementaryDataStore,
+)
 from app.data_models.answer import AnswerValueEscapedTypes, escape_answer_value
 from app.data_models.metadata_proxy import MetadataProxy
 from app.forms.field_handlers.select_handlers import DynamicAnswerOptions
-from app.questionnaire import Location, QuestionnaireSchema, QuestionSchemaType
+from app.questionnaire import QuestionnaireSchema, QuestionSchemaType
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
+from app.utilities.types import LocationType
 from app.views.contexts.summary.answer import (
     Answer,
     InferredAnswerValueTypes,
@@ -28,10 +34,11 @@ class Question:
         answer_store: AnswerStore,
         list_store: ListStore,
         progress_store: ProgressStore,
+        supplementary_data_store: SupplementaryDataStore,
         schema: QuestionnaireSchema,
         rule_evaluator: RuleEvaluator,
         value_source_resolver: ValueSourceResolver,
-        location: Location,
+        location: LocationType,
         block_id: str,
         return_to: Optional[str],
         return_to_block_id: Optional[str] = None,
@@ -47,6 +54,7 @@ class Question:
         self.answer_store = answer_store
         self.list_store = list_store
         self.progress_store = progress_store
+        self.supplementary_data_store = supplementary_data_store
         self.summary = question_schema.get("summary")
         self.title = (
             question_schema.get("title") or question_schema["answers"][0]["label"]
@@ -55,6 +63,10 @@ class Question:
 
         self.rule_evaluator = rule_evaluator
         self.value_source_resolver = value_source_resolver
+        # no need to call the method if no list item id
+        self._is_in_repeating_section = bool(
+            self.list_item_id and self.schema.is_block_in_repeating_section(block_id)
+        )
 
         self.answers = self._build_answers(
             answer_store=answer_store,
@@ -137,6 +149,7 @@ class Question:
                 list_item_id=list_item_id or self.list_item_id,
                 return_to=return_to,
                 return_to_block_id=return_to_block_id,
+                is_in_repeating_section=self._is_in_repeating_section,
             ).serialize()
             summary_answers.append(summary_answer)
 
@@ -297,6 +310,7 @@ class Question:
                 language=language,
                 metadata=metadata,
                 response_metadata=response_metadata,
+                supplementary_data_store=self.supplementary_data_store,
             )
 
             resolved_question = ImmutableDict(

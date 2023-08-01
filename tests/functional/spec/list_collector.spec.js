@@ -1,4 +1,4 @@
-import checkPeopleInList from "../helpers";
+import { checkItemsInList } from "../helpers";
 import AnotherListCollectorPage from "../generated_pages/list_collector/another-list-collector-block.page.js";
 import AnotherListCollectorAddPage from "../generated_pages/list_collector/another-list-collector-block-add.page.js";
 import AnotherListCollectorEditPage from "../generated_pages/list_collector/another-list-collector-block-edit.page.js";
@@ -19,6 +19,7 @@ import VisitorListCollectorPage from "../generated_pages/list_collector_list_sum
 import VisitorListCollectorAddPage from "../generated_pages/list_collector_list_summary/visitor-list-collector-add.page.js";
 import PeopleListSectionSummaryPage from "../generated_pages/list_collector_list_summary/section-summary.page.js";
 import { SubmitPage } from "../base_pages/submit.page.js";
+import IntroductionPage from "../generated_pages/list_collector_list_summary/introduction.page.js";
 
 describe("List Collector", () => {
   describe("Given a normal journey through the list collector without variants", () => {
@@ -51,7 +52,7 @@ describe("List Collector", () => {
 
     it("The collector shows all of the household members in the summary", async () => {
       const peopleExpected = ["Marcus Twin", "Samuel Clemens", "Olivia Clemens", "Suzy Clemens"];
-      checkPeopleInList(peopleExpected, ListCollectorPage.listLabel);
+      checkItemsInList(peopleExpected, ListCollectorPage.listLabel);
     });
 
     it("The questionnaire allows the name of a person to be changed", async () => {
@@ -109,7 +110,7 @@ describe("List Collector", () => {
 
     it("The collector shows everyone on the summary", async () => {
       const peopleExpected = ["Samuel Clemens", "Olivia Clemens", "Suzy Clemens", "Clara Clemens", "Jean Clemens"];
-      checkPeopleInList(peopleExpected, ListCollectorPage.listLabel);
+      checkItemsInList(peopleExpected, ListCollectorPage.listLabel);
     });
 
     it("When No is answered on the list collector the user sees an interstitial", async () => {
@@ -125,7 +126,7 @@ describe("List Collector", () => {
 
     it("The collector still shows the same list of people on the summary", async () => {
       const peopleExpected = ["Samuel Clemens", "Olivia Clemens", "Suzy Clemens", "Clara Clemens", "Jean Clemens"];
-      checkPeopleInList(peopleExpected, ListCollectorPage.listLabel);
+      checkItemsInList(peopleExpected, ListCollectorPage.listLabel);
     });
 
     it("The collector allows the user to add another person to the same list", async () => {
@@ -172,6 +173,7 @@ describe("List Collector", () => {
   describe("Given I start a list collector survey and complete to Section Summary", () => {
     beforeEach(async () => {
       await browser.openQuestionnaire("test_list_collector_list_summary.json");
+      await $(IntroductionPage.submit()).click();
       await $(PrimaryPersonListCollectorPage.yes()).click();
       await $(PrimaryPersonListCollectorPage.submit()).click();
       await $(PrimaryPersonListCollectorAddPage.firstName()).setValue("Marcus");

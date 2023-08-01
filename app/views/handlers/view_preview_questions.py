@@ -26,6 +26,7 @@ class ViewPreviewQuestions:
             progress_store=self._questionnaire_store.progress_store,
             metadata=self._questionnaire_store.metadata,
             response_metadata=self._questionnaire_store.response_metadata,
+            supplementary_data_store=self._questionnaire_store.supplementary_data_store,
         )
         context = {
             "hide_sign_out_button": True,
