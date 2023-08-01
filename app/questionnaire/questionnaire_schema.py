@@ -152,13 +152,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _populate_min_max_for_numeric_answers(self) -> None:
         for answer_id, answers in self._answers_by_id.items():
-            if answers[0]["type"] in [
+            if answers[0]["type"] in {
                 "Currency",
                 "Duration",
                 "Number",
                 "Percentage",
                 "Unit",
-            ]:
+            }:
                 self._create_min_max_map("minimum", answer_id, answers, "0")
                 self._create_min_max_map("maximum", answer_id, answers, str(MAX_NUMBER))
 
