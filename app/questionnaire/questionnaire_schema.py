@@ -3,7 +3,7 @@ from collections import defaultdict
 from copy import deepcopy
 from dataclasses import dataclass
 from functools import cached_property
-from typing import Any, Generator, Iterable, Mapping, Sequence, TypeAlias
+from typing import Any, Generator, Iterable, Literal, Mapping, Sequence, TypeAlias
 
 from flask_babel import force_locale
 from ordered_set import OrderedSet
@@ -127,7 +127,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _create_min_max_map(
         self,
-        min_max: Any,
+        min_max: Literal["minimum", "maximum"],
         answer_id: str,
         answers: list,
         default_min_max: str,
