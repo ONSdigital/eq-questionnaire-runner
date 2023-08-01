@@ -18,6 +18,8 @@ from app.utilities.mappings import get_flattened_mapping_values, get_mappings_wi
 
 DEFAULT_LANGUAGE_CODE = "en"
 
+LIST_COLLECTORS_WITH_REPEATING_BLOCKS = {"ListCollector", "ListCollectorContent"}
+
 LIST_COLLECTOR_CHILDREN = [
     "ListAddQuestion",
     "ListEditQuestion",
@@ -1103,7 +1105,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         if (
             parent_block
-            and is_list_collector_block_editable(parent_block)
+            and parent_block["type"] in LIST_COLLECTORS_WITH_REPEATING_BLOCKS
             and block_id not in self.list_collector_repeating_block_ids
         ):
             return parent_block

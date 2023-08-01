@@ -23,6 +23,7 @@ describe("List Collector Section Summary and Summary Items", () => {
     it("When I get to the list collector content page, Then the relevant content is displayed.", async () => {
       await fillInListCollectorSection();
       await $(HubPage.submit()).click();
+      await expect
       await expect(await $(await $("body")).getHTML()).to.contain(
         "You have previously reported the following companies. Press continue to updated registration and trading information."
       );

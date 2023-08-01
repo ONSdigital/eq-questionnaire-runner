@@ -6,7 +6,10 @@ from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
-from app.questionnaire.questionnaire_schema import is_list_collector_block_editable
+from app.questionnaire.questionnaire_schema import (
+    LIST_COLLECTORS_WITH_REPEATING_BLOCKS,
+    is_list_collector_block_editable,
+)
 from app.survey_config.link import Link
 from app.views.contexts.summary.block import Block
 from app.views.contexts.summary.calculated_summary_block import CalculatedSummaryBlock
@@ -164,7 +167,7 @@ class Group:
                     ]
                 )
 
-            elif block["type"] in {"ListCollector", "ListCollectorContent"}:
+            elif block["type"] in LIST_COLLECTORS_WITH_REPEATING_BLOCKS:
                 section: ImmutableDict | None = schema.get_section(location.section_id)
 
                 summary_item: ImmutableDict | None

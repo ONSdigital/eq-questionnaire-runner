@@ -9,6 +9,7 @@ from app.questionnaire.routing_path import RoutingPath
 from app.utilities import safe_content
 
 from ...data_models.metadata_proxy import MetadataProxy
+from ...questionnaire.questionnaire_schema import LIST_COLLECTORS_WITH_REPEATING_BLOCKS
 from .context import Context
 from .summary import Group
 from .summary.list_collector_block import ListCollectorBlock
@@ -202,7 +203,7 @@ class SectionSummaryContext(Context):
             non_list_collector_blocks: list[dict[str, str]] = []
             list_collector_blocks: list[dict[str, str]] = []
             for block in group["blocks"]:
-                if block["type"] in {"ListCollector", "ListCollectorContent"}:
+                if block["type"] in LIST_COLLECTORS_WITH_REPEATING_BLOCKS:
                     # if list collector block encountered, close the previously started non list collector blocks list if exists
                     if non_list_collector_blocks:
                         previously_started_group = {
