@@ -523,9 +523,7 @@ class SummaryRowItem:
                 for option in value
             ]
         elif answer_type == "currency":
-            decimal_places = (
-                answer["decimal_places"] if answer["decimal_places"] else None
-            )
+            decimal_places = answer.get("decimal_places", None)
             self.valueList = [
                 SummaryRowItemValue(
                     get_formatted_currency(value, answer["currency"], decimal_places)
