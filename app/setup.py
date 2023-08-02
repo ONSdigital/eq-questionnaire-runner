@@ -70,7 +70,6 @@ CSP_POLICY = {
         "'unsafe-inline'",
     ],
     "connect-src": ["'self'", "https://www.google-analytics.com"],
-    "frame-src": ["https://www.googletagmanager.com"],
     "img-src": [
         "'self'",
         "data:",
