@@ -104,7 +104,7 @@ class SupplementaryDataStore:
         for selector in selectors or []:
             if value is None:
                 return None
-            if not isinstance(value, dict):
+            if not isinstance(value, Mapping):
                 # if value is not None, and also not index able, raise an error
                 raise InvalidSupplementaryDataSelector(
                     f"Cannot use the selector `{selector}` on non-nested data"
