@@ -216,7 +216,7 @@ export const config = {
           region = "GB-ENG",
           language = "en",
           includeLogoutUrl = false,
-        } = {}
+        } = {},
       ) {
         const token = await JwtHelper.generateToken(schema, {
           version,
@@ -234,7 +234,7 @@ export const config = {
           includeLogoutUrl,
         });
         this.url(`/session?token=${token}`);
-      }
+      },
     );
   },
   // beforeCommand: function (commandName, args) {

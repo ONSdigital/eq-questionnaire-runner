@@ -46,7 +46,7 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
 
   it("Given I have a calculated summary using both list repeating block and static answers, When I reach the calculated summary page, Then I see the correct items and total.", async () => {
     await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).to.contain(
-      "We calculate the total monthly expenditure on transport to be £400.00. Is this correct?"
+      "We calculate the total monthly expenditure on transport to be £400.00. Is this correct?",
     );
     await assertSummaryValues(["£100.00", "£30.00", "£5.00", "£0.00", "£265.00"]);
     await expect(await $(CalculatedSummarySpendingPage.summaryItems()).getText()).to.contain("Monthly expenditure travelling by car");
@@ -59,7 +59,7 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
 
   it("Given I have a calculated summary using a single answer from a repeating block, When I reach the calculated summary page, Then I see the correct items and total", async () => {
     await expect(await $(CalculatedSummaryCountPage.calculatedSummaryTitle()).getText()).to.contain(
-      "We calculate the total journeys made per month to be 12. Is this correct?"
+      "We calculate the total journeys made per month to be 12. Is this correct?",
     );
     await assertSummaryValues(["10", "2"]);
     await expect(await $(CalculatedSummaryCountPage.summaryItems()).getText()).to.contain("Monthly journeys by Bus");
@@ -81,7 +81,7 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
     await $(ListCollectorPage.submit()).click();
     await expect(await browser.getUrl()).to.contain(CalculatedSummarySpendingPage.pageName);
     await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).to.contain(
-      "We calculate the total monthly expenditure on transport to be £550.00. Is this correct?"
+      "We calculate the total monthly expenditure on transport to be £550.00. Is this correct?",
     );
     await assertSummaryValues(["£100.00", "£30.00", "£5.00", "£0.00", "£265.00", "£100.00", "£50.00"]);
   });
@@ -90,7 +90,7 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
     await $(CalculatedSummarySpendingPage.submit()).click();
     await expect(await browser.getUrl()).to.contain(CalculatedSummaryCountPage.pageName);
     await expect(await $(CalculatedSummaryCountPage.calculatedSummaryTitle()).getText()).to.contain(
-      "We calculate the total journeys made per month to be 18. Is this correct?"
+      "We calculate the total journeys made per month to be 18. Is this correct?",
     );
     await assertSummaryValues(["10", "2", "6"]);
     await $(CalculatedSummaryCountPage.previous()).click();
@@ -118,7 +118,7 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
     await $(TransportRepeatingBlock1Page.submit()).click();
     await expect(await browser.getUrl()).to.contain(CalculatedSummarySpendingPage.pageName);
     await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).to.contain(
-      "We calculate the total monthly expenditure on transport to be £580.00. Is this correct?"
+      "We calculate the total monthly expenditure on transport to be £580.00. Is this correct?",
     );
     await assertSummaryValues(["£100.00", "£60.00", "£5.00", "£0.00", "£265.00", "£100.00", "£50.00"]);
     await $(CalculatedSummarySpendingPage.submit()).click();
@@ -130,7 +130,7 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
     await $(TransportRepeatingBlock2Page.submit()).click();
     await expect(await browser.getUrl()).to.contain(CalculatedSummaryCountPage.pageName);
     await expect(await $(CalculatedSummaryCountPage.calculatedSummaryTitle()).getText()).to.contain(
-      "We calculate the total journeys made per month to be 24. Is this correct?"
+      "We calculate the total journeys made per month to be 24. Is this correct?",
     );
     await assertSummaryValues(["10", "2", "12"]);
     await $(CalculatedSummaryCountPage.submit()).click();
@@ -142,7 +142,7 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
     await $(RemoveTransportPage.submit()).click();
     await expect(await browser.getUrl()).to.contain(CalculatedSummarySpendingPage.pageName);
     await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).to.contain(
-      "We calculate the total monthly expenditure on transport to be £515.00. Is this correct?"
+      "We calculate the total monthly expenditure on transport to be £515.00. Is this correct?",
     );
     await assertSummaryValues(["£100.00", "£0.00", "£265.00", "£100.00", "£50.00"]);
   });
@@ -151,7 +151,7 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
     await $(CalculatedSummarySpendingPage.submit()).click();
     await expect(await browser.getUrl()).to.contain(CalculatedSummaryCountPage.pageName);
     await expect(await $(CalculatedSummaryCountPage.calculatedSummaryTitle()).getText()).to.contain(
-      "We calculate the total journeys made per month to be 14. Is this correct?"
+      "We calculate the total journeys made per month to be 14. Is this correct?",
     );
     await assertSummaryValues(["2", "12"]);
   });
@@ -222,7 +222,7 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
     // other calculated summary should not be on the path, so go straight back to the spending one which now has none of the list items
     await expect(await browser.getUrl()).to.contain(CalculatedSummarySpendingPage.pageName);
     await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).to.contain(
-      "We calculate the total monthly expenditure on transport to be £100.00. Is this correct?"
+      "We calculate the total monthly expenditure on transport to be £100.00. Is this correct?",
     );
     await assertSummaryValues(["£100.00"]);
   });

@@ -33,7 +33,7 @@ describe("Feature: Grand Calculated Summary", () => {
       await $(Section1SummaryPage.submit()).click();
       await $(HubPage.submit()).click();
       await expect(await $(GrandCalculatedSummaryShoppingPage.grandCalculatedSummaryTitle()).getText()).to.contain(
-        "Grand Calculated Summary of purchases this week comes to £360.00. Is this correct?"
+        "Grand Calculated Summary of purchases this week comes to £360.00. Is this correct?",
       );
       await $(GrandCalculatedSummaryShoppingPage.submit()).click();
     });
@@ -52,7 +52,7 @@ describe("Feature: Grand Calculated Summary", () => {
       // then grand calculated summary
       await expect(await browser.getUrl()).to.contain(GrandCalculatedSummaryShoppingPage.pageName);
       await expect(await $(GrandCalculatedSummaryShoppingPage.grandCalculatedSummaryTitle()).getText()).to.contain(
-        "Grand Calculated Summary of purchases this week comes to £460.00. Is this correct?"
+        "Grand Calculated Summary of purchases this week comes to £460.00. Is this correct?",
       );
     });
 
@@ -65,21 +65,21 @@ describe("Feature: Grand Calculated Summary", () => {
       // taken back to the FIRST calculated summary which uses it
       await expect(await browser.getUrl()).to.contain(CalculatedSummary2Page.pageName);
       await expect(await $(CalculatedSummary2Page.calculatedSummaryTitle()).getText()).to.contain(
-        "Total of eggs and cheese is calculated to be £700.00. Is this correct?"
+        "Total of eggs and cheese is calculated to be £700.00. Is this correct?",
       );
       await $(CalculatedSummary2Page.submit()).click();
 
       // taken back to the SECOND calculated summary which uses it
       await expect(await browser.getUrl()).to.contain(CalculatedSummary4Page.pageName);
       await expect(await $(CalculatedSummary4Page.calculatedSummaryTitle()).getText()).to.contain(
-        "Total extra items cost is calculated to be £410.00. Is this correct?"
+        "Total extra items cost is calculated to be £410.00. Is this correct?",
       );
       await $(CalculatedSummary4Page.submit()).click();
 
       // then grand calculated summary
       await expect(await browser.getUrl()).to.contain(GrandCalculatedSummaryShoppingPage.pageName);
       await expect(await $(GrandCalculatedSummaryShoppingPage.grandCalculatedSummaryTitle()).getText()).to.contain(
-        "Grand Calculated Summary of purchases this week comes to £1,220.00. Is this correct?"
+        "Grand Calculated Summary of purchases this week comes to £1,220.00. Is this correct?",
       );
     });
 
@@ -92,21 +92,21 @@ describe("Feature: Grand Calculated Summary", () => {
       // taken back to the FIRST calculated summary which uses it
       await expect(await browser.getUrl()).to.contain(CalculatedSummary2Page.pageName);
       await expect(await $(CalculatedSummary2Page.calculatedSummaryTitle()).getText()).to.contain(
-        "Total of eggs and cheese is calculated to be £800.00. Is this correct?"
+        "Total of eggs and cheese is calculated to be £800.00. Is this correct?",
       );
       await $(CalculatedSummary2Page.submit()).click();
 
       // taken back to the SECOND calculated summary which uses it
       await expect(await browser.getUrl()).to.contain(CalculatedSummary4Page.pageName);
       await expect(await $(CalculatedSummary4Page.calculatedSummaryTitle()).getText()).to.contain(
-        "Total extra items cost is calculated to be £510.00. Is this correct?"
+        "Total extra items cost is calculated to be £510.00. Is this correct?",
       );
       await $(CalculatedSummary4Page.submit()).click();
 
       // then grand calculated summary
       await expect(await browser.getUrl()).to.contain(GrandCalculatedSummaryShoppingPage.pageName);
       await expect(await $(GrandCalculatedSummaryShoppingPage.grandCalculatedSummaryTitle()).getText()).to.contain(
-        "Grand Calculated Summary of purchases this week comes to £1,420.00. Is this correct?"
+        "Grand Calculated Summary of purchases this week comes to £1,420.00. Is this correct?",
       );
       await $(GrandCalculatedSummaryShoppingPage.submit()).click();
     });
