@@ -62,6 +62,8 @@ def test_empty_supplementary_data_deserialisation():
         ("note", None, ["title"], "Volume of total production"),
         ("products", "item-2", ["name"], "Other Minerals"),
         ("products", "item-1", ["value_sales", "answer_code"], "89929001"),
+        ("products", "item-1", ["guidance", "title"], "Include"),
+        ("products", "item-2", ["guidance", "title"], None),
         ("INVALID", None, None, None),
     ],
 )

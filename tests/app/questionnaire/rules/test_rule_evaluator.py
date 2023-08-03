@@ -1060,12 +1060,20 @@ def test_map_with_nested_date_operator(offset, expected_result):
     assert rule_evaluator.evaluate(rule=rule) == expected_result
 
 
-def test_supplementary_data_source(supplementary_data_store_with_data):
+@pytest.mark.parametrize(
+    "identifier,selectors,value",
+    [
+        ("note", ["title"], "Volume of total production"),
+        ("products", ["name"], "Articles and equipment for sports or outdoor games"),
+    ],
+)
+def test_supplementary_data_source(
+    supplementary_data_store_with_data, identifier, selectors, value
+):
+    """Tests rule evaluation of repeating and non-repeating supplementary data source inside a repeat"""
     schema = get_mock_schema()
     schema.is_repeating_answer = Mock(return_value=False)
-    answer_store = AnswerStore(
-        [{"answer_id": "same-answer", "value": "Volume of total production"}]
-    )
+    answer_store = AnswerStore([{"answer_id": "same-answer", "value": value}])
 
     rule_evaluator = get_rule_evaluator(
         schema=schema,
@@ -1082,8 +1090,8 @@ def test_supplementary_data_source(supplementary_data_store_with_data):
                 Operator.EQUAL: [
                     {
                         "source": "supplementary_data",
-                        "identifier": "note",
-                        "selectors": ["title"],
+                        "identifier": identifier,
+                        "selectors": selectors,
                     },
                     {"source": "answers", "identifier": "same-answer"},
                 ]

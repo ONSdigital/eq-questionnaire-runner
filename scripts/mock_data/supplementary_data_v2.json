@@ -1,0 +1,162 @@
+{
+    "dataset_id": "693dc252-2e90-4412-bd9c-c4d953e36fcd",
+    "survey_id": "123",
+    "data": {
+        "schema_version": "v1",
+        "identifier": "12346789012A",
+        "company_name": "Lidl",
+        "company_details": {
+            "telephone_number": "01174564561",
+            "email": "contact@lidl.org"
+        },
+        "note": {
+            "title": "Value of total sales",
+            "description": "Total value of goods sold",
+            "example": {
+                "title": "Includes",
+                "description": "Sales across all EU stores"
+            }
+        },
+        "total_uk_sales": 555000.00,
+        "incorporation_date": "1947-11-27",
+        "items": {
+            "products": [
+                {
+                    "identifier": "89929001",
+                    "name": "Articles and equipment for sports or outdoor games",
+                    "cn_codes": "2504 + 250610 + 2512 + 2519 + 2524",
+                    "guidance_include": {
+                        "title": "Include",
+                        "list": [
+                            "for children's playgrounds",
+                            "swimming pools and paddling pools"
+                        ]
+                    },
+                    "guidance_exclude": {
+                        "title": "Exclude",
+                        "list": [
+                            "sports holdalls, gloves, clothing of textile materials, footwear, protective eyewear, rackets, balls, skates",
+                            "for skiing, water sports, golf, fishing', for skiing, water sports, golf, fishing, table tennis, PE, gymnastics, athletics"
+                        ]
+                    },
+                    "value_sales": {
+                        "answer_code": "89929001",
+                        "label": "Value of sales"
+                    },
+                    "volume_sales": {
+                        "answer_code": "89929002",
+                        "label": "Volume of sales",
+                        "unit_label": "Tonnes"
+                    },
+                    "total_volume": {
+                        "answer_code": "89929005",
+                        "label": "Total volume produced",
+                        "unit_label": "Tonnes"
+                    }
+                },
+                {
+                    "identifier": "202346331",
+                    "name": "Kitchen Equipment",
+                    "cn_codes": "1028 + 5908 + 5910 + 591110 + 591120",
+                    "guidance_include": {
+                        "title": "Include",
+                        "list": [
+                            "pots and pans",
+                            "chopping board"
+                        ]
+                    },
+                    "guidance_exclude": {
+                        "title": "Exclude",
+                        "list": [
+                            "cutlery"
+                        ]
+                    },
+                    "value_sales": {
+                        "answer_code": "20234633101",
+                        "label": "Value of sales"
+                    },
+                    "volume_sales": {
+                        "answer_code": "20234633102",
+                        "label": "Volume of sales",
+                        "unit_label": "Kilogram"
+                    },
+                    "total_volume": {
+                        "answer_code": "20234633103",
+                        "label": "Total volume produced",
+                        "unit_label": "Kilogram"
+                    }
+                },
+                {
+                    "identifier": "246331",
+                    "name": "Groceries",
+                    "cn_codes": "1028 + 5908 + 5910 + 591110 + 591120",
+                    "guidance_include": {
+                        "title": "Include",
+                        "list": [
+                            "fruit and vegetables",
+                            "baked goods"
+                        ]
+                    },
+                    "value_sales": {
+                        "answer_code": "202101",
+                        "label": "Value of sales"
+                    },
+                    "volume_sales": {
+                        "answer_code": "202102",
+                        "label": "Volume of sales",
+                        "unit_label": "Kilogram"
+                    },
+                    "total_volume": {
+                        "answer_code": "202103",
+                        "label": "Total volume produced",
+                        "unit_label": "Kilogram"
+                    }
+                }
+            ],
+            "employees": [
+                {
+                    "identifier": "429001",
+                    "personal_details": {
+                        "forename": "Harry",
+                        "surname": "Potter",
+                        "address": {
+                            "postcode": "BS1 1AJ",
+                            "house_number": "12",
+                            "city": "Bristol"
+                        }
+                    },
+                    "employment_details": {
+                        "job_title": "Customer assistant",
+                        "start_date": "2020-01-01",
+                        "salary": {
+                            "payroll_number": "54345",
+                            "value": "25000",
+                            "currency": "GBP"
+                        }
+                    }
+                },
+                {
+                    "identifier": "529001",
+                    "personal_details": {
+                        "forename": "Bruce",
+                        "surname": "Wayne",
+                        "address": {
+                            "postcode": "BS1 1HJ",
+                            "house_number": "15",
+                            "city": "Bristol"
+                        }
+                    },
+                    "employment_details": {
+                        "job_title": "Customer assistant",
+                        "start_date": "2019-03-01",
+                        "salary": {
+                            "payroll_number": "4345",
+                            "value": "27000",
+                            "currency": "GBP"
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}
