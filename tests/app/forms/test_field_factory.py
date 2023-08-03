@@ -1,6 +1,6 @@
 import pytest
 
-from app.data_models import ProgressStore
+from app.data_models import ProgressStore, SupplementaryDataStore
 from app.forms import error_messages
 from app.forms.field_handlers import get_field_handler
 from app.questionnaire import QuestionnaireSchema
@@ -45,6 +45,7 @@ def test_invalid_field_type_raises_on_invalid(answer_store, list_store):
         list_item_id=None,
         escape_answer_values=False,
         progress_store=ProgressStore(),
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     rule_evaluator = RuleEvaluator(
@@ -55,6 +56,7 @@ def test_invalid_field_type_raises_on_invalid(answer_store, list_store):
         schema=schema,
         location=None,
         progress_store=ProgressStore(),
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     # Given

@@ -1,7 +1,12 @@
 # pylint: disable=redefined-outer-name
 import pytest
 
-from app.data_models import AnswerStore, ListStore, ProgressStore
+from app.data_models import (
+    AnswerStore,
+    ListStore,
+    ProgressStore,
+    SupplementaryDataStore,
+)
 from app.data_models.answer_store import Answer
 from app.questionnaire.dynamic_answer_options import DynamicAnswerOptions
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
@@ -18,6 +23,7 @@ def rule_evaluator(mock_schema, response_metadata):
         schema=mock_schema,
         location=None,
         progress_store=ProgressStore(),
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     return evaluator
@@ -36,6 +42,7 @@ def value_source_resolver(mock_schema, response_metadata):
         routing_path_block_ids=None,
         use_default_answer=True,
         progress_store=ProgressStore(),
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
     return resolver

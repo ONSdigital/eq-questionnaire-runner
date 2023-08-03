@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Any, Mapping, Sequence
+from typing import Mapping, Sequence
 
 from flask import url_for
 from flask_babel import gettext
@@ -37,6 +37,7 @@ class Question(BlockHandler):
                 location=self._current_location,
                 form_data=self._form_data,
                 progress_store=self._questionnaire_store.progress_store,
+                supplementary_data_store=self._questionnaire_store.supplementary_data_store,
             )
 
         answers = self._get_answers_for_question(question_json)
@@ -50,6 +51,7 @@ class Question(BlockHandler):
             location=self._current_location,
             data=answers,
             progress_store=self._questionnaire_store.progress_store,
+            supplementary_data_store=self._questionnaire_store.supplementary_data_store,
         )
 
     @cached_property
@@ -73,6 +75,7 @@ class Question(BlockHandler):
             self._questionnaire_store.list_store,
             self._current_location,
             self._questionnaire_store.progress_store,
+            self._questionnaire_store.supplementary_data_store,
         )
         page_title = transformed_block.get("page_title") or self._get_safe_page_title(
             transformed_block["question"]["title"]
@@ -102,6 +105,7 @@ class Question(BlockHandler):
             progress_store=self._questionnaire_store.progress_store,
             metadata=self._questionnaire_store.metadata,
             response_metadata=self._questionnaire_store.response_metadata,
+            supplementary_data_store=self._questionnaire_store.supplementary_data_store,
         )
 
     def get_next_location_url(self) -> str:
@@ -161,9 +165,9 @@ class Question(BlockHandler):
             == self._questionnaire_store.list_store[list_name].primary_person
         )
 
-    def _get_answer_action(self) -> Any:
+    def _get_answer_action(self) -> dict | None:
         if not self.rendered_block.get("question"):
-            return
+            return None
 
         answers = self.rendered_block["question"]["answers"]
 
@@ -173,7 +177,7 @@ class Question(BlockHandler):
             submitted_answer = self.form.data[answer["id"]]
 
             for option in answer.get("options", {}):
-                action = option.get("action")
+                action: dict | None = option.get("action")
 
                 if action and (
                     option["value"] == submitted_answer

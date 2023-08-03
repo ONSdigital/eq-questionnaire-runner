@@ -2,7 +2,7 @@
 
 import pytest
 
-from app.data_models import QuestionnaireStore
+from app.data_models import QuestionnaireStore, SupplementaryDataStore
 from app.data_models.answer_store import Answer, AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
@@ -65,6 +65,7 @@ def parser(answer_store, location, mock_schema, mock_renderer):
         location=location,
         renderer=mock_renderer,
         progress_store=ProgressStore(),
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
 
@@ -1007,6 +1008,7 @@ def placeholder_renderer(option_label_from_value_schema):
         schema=option_label_from_value_schema,
         progress_store=ProgressStore(),
         location=Location(section_id="checkbox-section"),
+        supplementary_data_store=SupplementaryDataStore(),
     )
     return renderer
 
@@ -1021,6 +1023,7 @@ def mock_renderer(mock_schema):
         response_metadata={},
         schema=mock_schema,
         progress_store=ProgressStore(),
+        supplementary_data_store=SupplementaryDataStore(),
     )
 
 
@@ -1168,8 +1171,18 @@ def mock_empty_progress_store(mocker):
 
 
 @pytest.fixture
+def mock_empty_supplementary_data_store(mocker):
+    supplementary_data_store = mocker.MagicMock(spec=SupplementaryDataStore)
+    return supplementary_data_store
+
+
+@pytest.fixture
 def mock_questionnaire_store(
-    populated_list_store, mock_empty_answer_store, mock_empty_progress_store, mocker
+    populated_list_store,
+    mock_empty_answer_store,
+    mock_empty_progress_store,
+    mock_empty_supplementary_data_store,
+    mocker,
 ):
     return mocker.MagicMock(
         spec=QuestionnaireStore,
@@ -1177,6 +1190,7 @@ def mock_questionnaire_store(
         answer_store=mock_empty_answer_store,
         list_store=populated_list_store,
         progress_store=mock_empty_progress_store,
+        supplementary_data_store=mock_empty_supplementary_data_store,
     )
 
 

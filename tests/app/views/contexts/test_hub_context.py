@@ -9,7 +9,13 @@ from tests.app.questionnaire.conftest import get_metadata
 
 
 @pytest.fixture
-def router(schema, answer_store, list_store, progress_store):
+def router(
+    schema,
+    answer_store,
+    list_store,
+    progress_store,
+    supplementary_data_store,
+):
     return Router(
         schema,
         answer_store,
@@ -17,11 +23,16 @@ def router(schema, answer_store, list_store, progress_store):
         progress_store,
         metadata=get_metadata(),
         response_metadata={},
+        supplementary_data_store=supplementary_data_store,
     )
 
 
 def test_get_not_started_row_for_section(
-    schema, progress_store, answer_store, list_store
+    schema,
+    progress_store,
+    answer_store,
+    list_store,
+    supplementary_data_store,
 ):
     expected = {
         "rowItems": [
@@ -50,6 +61,7 @@ def test_get_not_started_row_for_section(
         answer_store=answer_store,
         metadata=get_metadata(),
         response_metadata={},
+        supplementary_data_store=supplementary_data_store,
     )
 
     actual = hub.get_row_context_for_section(
@@ -63,7 +75,11 @@ def test_get_not_started_row_for_section(
 
 
 def test_get_completed_row_for_section(
-    schema, progress_store, answer_store, list_store
+    schema,
+    progress_store,
+    answer_store,
+    list_store,
+    supplementary_data_store,
 ):
     expected = {
         "rowItems": [
@@ -93,6 +109,7 @@ def test_get_completed_row_for_section(
         answer_store=answer_store,
         metadata=get_metadata(),
         response_metadata={},
+        supplementary_data_store=supplementary_data_store,
     )
 
     actual = hub.get_row_context_for_section(
@@ -105,7 +122,13 @@ def test_get_completed_row_for_section(
     assert expected == actual
 
 
-def test_get_context(progress_store, answer_store, list_store, router):
+def test_get_context(
+    progress_store,
+    answer_store,
+    list_store,
+    router,
+    supplementary_data_store,
+):
     schema = load_schema_from_name("test_hub_and_spoke")
     hub = HubContext(
         language="en",
@@ -115,6 +138,7 @@ def test_get_context(progress_store, answer_store, list_store, router):
         answer_store=answer_store,
         metadata=get_metadata(),
         response_metadata={},
+        supplementary_data_store=supplementary_data_store,
     )
 
     expected_context = {
@@ -133,7 +157,11 @@ def test_get_context(progress_store, answer_store, list_store, router):
 
 
 def test_get_context_custom_content_incomplete(
-    progress_store, answer_store, list_store, router
+    progress_store,
+    answer_store,
+    list_store,
+    router,
+    supplementary_data_store,
 ):
     schema = load_schema_from_name("test_hub_and_spoke_custom_content")
     hub_context = HubContext(
@@ -144,6 +172,7 @@ def test_get_context_custom_content_incomplete(
         answer_store=answer_store,
         metadata=get_metadata(),
         response_metadata={},
+        supplementary_data_store=supplementary_data_store,
     )
 
     expected_context = {
@@ -162,7 +191,11 @@ def test_get_context_custom_content_incomplete(
 
 
 def test_get_context_custom_content_complete(
-    progress_store, answer_store, list_store, router
+    progress_store,
+    answer_store,
+    list_store,
+    router,
+    supplementary_data_store,
 ):
     schema = load_schema_from_name("test_hub_and_spoke_custom_content")
     hub_context = HubContext(
@@ -173,6 +206,7 @@ def test_get_context_custom_content_complete(
         answer_store=answer_store,
         metadata=get_metadata(),
         response_metadata={},
+        supplementary_data_store=supplementary_data_store,
     )
 
     expected_context = {
@@ -191,7 +225,11 @@ def test_get_context_custom_content_complete(
 
 
 def test_get_context_no_list_items_survey_incomplete_individual_response_disabled(
-    progress_store, answer_store, list_store, router
+    progress_store,
+    answer_store,
+    list_store,
+    router,
+    supplementary_data_store,
 ):
     schema = load_schema_from_name("test_individual_response")
     hub_context = HubContext(
@@ -202,6 +240,7 @@ def test_get_context_no_list_items_survey_incomplete_individual_response_disable
         answer_store=answer_store,
         metadata=get_metadata(),
         response_metadata={},
+        supplementary_data_store=supplementary_data_store,
     )
 
     assert not (
