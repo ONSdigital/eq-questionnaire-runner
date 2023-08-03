@@ -38,7 +38,7 @@ class ListCollectorContentBlock(ListCollectorBaseBlock):
             for_list=list_collector_block["for_list"],
             section_id=self._location.section_id,
             has_repeating_blocks=bool(list_collector_block.get("repeating_blocks")),
-            return_to="section-summary",
+            return_to=self._return_to,
         )
 
         return {

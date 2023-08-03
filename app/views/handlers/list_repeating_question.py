@@ -49,23 +49,20 @@ class ListRepeatingQuestion(ListEditQuestion):
                 return_to_block_id=self._return_to_block_id,
             )
 
-        edit_block = self._schema.get_edit_block_for_list_collector(
+        if edit_block := self._schema.get_edit_block_for_list_collector(
             self.parent_block["id"]
-        )
-        if not edit_block:
-            block_id = self.parent_block["id"]
-            return self._get_location_url(
-                block_id=block_id,
+        ):
+            return url_for(
+                "questionnaire.block",
+                list_name=self.current_location.list_name,
+                list_item_id=self.current_location.list_item_id,
+                block_id=edit_block["id"],
                 return_to=self._return_to,
                 return_to_answer_id=self._return_to_answer_id,
                 return_to_block_id=self._return_to_block_id,
             )
 
-        return url_for(
-            "questionnaire.block",
-            list_name=self.current_location.list_name,
-            list_item_id=self.current_location.list_item_id,
-            block_id=edit_block["id"],
+        return self.parent_location.url(
             return_to=self._return_to,
             return_to_answer_id=self._return_to_answer_id,
             return_to_block_id=self._return_to_block_id,
