@@ -1,4 +1,4 @@
-from typing import Iterable, Mapping, MutableMapping
+from typing import Iterable, Mapping, MutableMapping, Type
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -113,7 +113,9 @@ class Group:
                 if parent_list_collector_block_id not in routing_path_block_ids:
                     continue
 
-                list_collector_block_class = (
+                list_collector_block_class: Type[
+                    ListCollectorBlock | ListCollectorContentBlock
+                ] = (
                     ListCollectorBlock
                     if is_list_collector_block_editable(
                         # Type ignore: return types differ
@@ -217,11 +219,8 @@ class Group:
                         supplementary_data_store=supplementary_data_store,
                         return_to_block_id=return_to_block_id,
                     )
-                    # Type ignore: Checking base block for a method instead of list collector block
-                    list_summary_element = (
-                        list_collector_block.list_summary_element(  # type:ignore
-                            summary_item
-                        )
+                    list_summary_element = list_collector_block.list_summary_element(
+                        summary_item
                     )
                     blocks.extend([list_summary_element])
 

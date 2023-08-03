@@ -563,25 +563,25 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             section=section,
             for_list=list_name,
         )
-
-        add_block_question = self.get_add_block_for_list_collector(  # type: ignore
+        if add_block := self.get_add_block_for_list_collector(  # type: ignore
             list_collector["id"]
-        )["question"]
-        answer_ids_for_block = list(
-            self.get_answers_for_question_by_id(add_block_question)
-        )
-        for block_answer_id in answer_ids_for_block:
-            self._answer_dependencies_map[block_answer_id] |= {
-                self._get_answer_dependent_for_block_id(
-                    block_id=block_id, for_list=list_name
-                )
-                if self.is_block_in_repeating_section(block_id)
-                # non-repeating blocks such as dynamic-answers could depend on the list
-                else self._get_answer_dependent_for_block_id(block_id=block_id)
-            }
-        self._list_dependent_block_additional_dependencies[block_id] = set(
-            answer_ids_for_block
-        )
+        ):
+            add_block_question = add_block["question"]
+            answer_ids_for_block = list(
+                self.get_answers_for_question_by_id(add_block_question)
+            )
+            for block_answer_id in answer_ids_for_block:
+                self._answer_dependencies_map[block_answer_id] |= {
+                    self._get_answer_dependent_for_block_id(
+                        block_id=block_id, for_list=list_name
+                    )
+                    if self.is_block_in_repeating_section(block_id)
+                    # non-repeating blocks such as dynamic-answers could depend on the list
+                    else self._get_answer_dependent_for_block_id(block_id=block_id)
+                }
+            self._list_dependent_block_additional_dependencies[block_id] = set(
+                answer_ids_for_block
+            )
         # removing an item from a list will require any dependent calculated summaries to be re-confirmed, so cache dependencies
         if remove_block_id := self.get_remove_block_id_for_list(list_name):
             self._list_dependent_block_additional_dependencies[block_id].update(
