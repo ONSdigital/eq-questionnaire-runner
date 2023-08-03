@@ -29,7 +29,7 @@ class TestApplicationVariables(IntegrationTestCase):
         self.assertInHead(
             f'dataLayer = [{{"form_type": "H", "survey_id": "0", "title": "Feedback test schema"}}, {{"tx_id": "{actual["METADATA"]["tx_id"]}"}}]'
         )
-        self.assertInBody("https://www.googletagmanager.com")
+        self.assertInHead("https://www.googletagmanager.com")
         self.assertInHead(settings.EQ_GOOGLE_TAG_MANAGER_AUTH)
         self.assertInHead(settings.EQ_GOOGLE_TAG_MANAGER_ID)
 
