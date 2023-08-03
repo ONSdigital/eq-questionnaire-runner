@@ -614,7 +614,11 @@ def write_summary_spec(
         if summary_element["type"] == "List"
     ]
     for list_block in list_summaries:
-        list_context = {"list_name": list_block["for_list"]}
+        list_context = {
+            "list_name": camel_case(
+                generate_pascal_case_from_id(list_block["for_list"])
+            )
+        }
         if answers_are_editable:
             if show_non_item_answers:
                 page_spec.write(

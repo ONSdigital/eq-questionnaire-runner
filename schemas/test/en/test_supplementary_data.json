@@ -31,7 +31,9 @@
     ],
     "questionnaire_flow": {
         "type": "Hub",
-        "options": {}
+        "options": {
+            "required_completed_sections": ["introduction-section"]
+        }
     },
     "post_submission": {
         "view_response": true
@@ -45,6 +47,26 @@
                     "id": "introduction-group",
                     "title": "Introduction Group",
                     "blocks": [
+                        {
+                            "id": "loaded-successfully-block",
+                            "type": "Interstitial",
+                            "content": {
+                                "title": "Supplementary Data",
+                                "contents": [
+                                    {
+                                        "title": "You have successfully loaded Supplementary data",
+                                        "description": "Press continue to proceed to the introduction",
+                                        "guidance": {
+                                            "contents": [
+                                                {
+                                                    "description": "The purpose of this block, is to test that supplementary data loads successfully, separate to using the supplementary data"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
                         {
                             "id": "introduction-block",
                             "type": "Introduction",
@@ -130,7 +152,7 @@
             },
             "groups": [
                 {
-                    "id": "group-1",
+                    "id": "introduction",
                     "title": "Group 1",
                     "blocks": [
                         {
@@ -615,79 +637,36 @@
                     {
                         "type": "List",
                         "for_list": "employees",
-                        "title": "employees",
-                        "add_link_text": "Add another employee",
-                        "empty_list_text": "There are no employees"
+                        "title": "Employees",
+                        "empty_list_text": "There are no employees",
+                        "add_link_text": "DO NOT use this link to add another employee, this will be replaced with list collector content"
                     }
                 ],
                 "show_non_item_answers": true
             },
             "groups": [
                 {
-                    "id": "group-2",
+                    "id": "employee-reporting",
                     "blocks": [
                         {
-                            "type": "ListCollectorDrivingQuestion",
-                            "id": "any-employees",
-                            "for_list": "employees",
-                            "question": {
-                                "type": "General",
-                                "id": "any-employee-question",
-                                "title": "Do you have any employees to report on?",
-                                "answers": [
-                                    {
-                                        "type": "Radio",
-                                        "id": "any-employee-answer",
-                                        "mandatory": true,
-                                        "options": [
-                                            {
-                                                "label": "Yes",
-                                                "value": "Yes",
-                                                "action": {
-                                                    "type": "RedirectToListAddBlock",
-                                                    "params": {
-                                                        "block_id": "add-employee",
-                                                        "list_name": "employees"
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "label": "No",
-                                                "value": "No"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            "routing_rules": [
-                                {
-                                    "section": "End",
-                                    "when": {
-                                        "==": [
-                                            {
-                                                "source": "answers",
-                                                "identifier": "any-employee-answer"
-                                            },
-                                            "No"
-                                        ]
-                                    }
-                                },
-                                {
-                                    "block": "list-collector"
-                                }
-                            ]
-                        },
-                        {
-                            "id": "list-collector",
+                            "id": "list-collector-employees",
                             "type": "ListCollector",
                             "for_list": "employees",
                             "question": {
-                                "id": "confirmation-question",
+                                "id": "confirmation-employee-question",
                                 "type": "General",
                                 "title": "Do you need to add any more employees?",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "title": "Important guidance",
+                                            "description": "This list collector is a placeholder until it can be replaced with a list collector content block - <strong>do not add any people to this list because it won’t work correctly</strong>"
+                                        }
+                                    ]
+                                },
                                 "answers": [
                                     {
-                                        "id": "list-collector-answer",
+                                        "id": "list-collector-employees-answer",
                                         "mandatory": true,
                                         "type": "Radio",
                                         "options": [
@@ -711,7 +690,7 @@
                                 "type": "ListAddQuestion",
                                 "cancel_text": "Don’t need to add any other employees?",
                                 "question": {
-                                    "id": "add-question",
+                                    "id": "add-employee-question",
                                     "type": "General",
                                     "title": "What is the name of the employee?",
                                     "answers": [
@@ -735,7 +714,7 @@
                                 "type": "ListEditQuestion",
                                 "cancel_text": "Don’t need to change anything?",
                                 "question": {
-                                    "id": "edit-question",
+                                    "id": "edit-employee-question",
                                     "type": "General",
                                     "title": "What is the name of the employee?",
                                     "answers": [
@@ -759,7 +738,229 @@
                                 "type": "ListRemoveQuestion",
                                 "cancel_text": "Don’t need to remove this employee?",
                                 "question": {
-                                    "id": "remove-question",
+                                    "id": "remove-employee-question",
+                                    "type": "General",
+                                    "title": "Are you sure you want to remove this employee?",
+                                    "warning": "All of the information about this employee will be deleted",
+                                    "answers": [
+                                        {
+                                            "id": "remove-confirmation",
+                                            "mandatory": true,
+                                            "type": "Radio",
+                                            "options": [
+                                                {
+                                                    "label": "Yes",
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
+                                                },
+                                                {
+                                                    "label": "No",
+                                                    "value": "No"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "summary": {
+                                "title": "employees",
+                                "item_title": {
+                                    "text": "{employee_name}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "employee_name",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "supplementary_data",
+                                                                "identifier": "employees",
+                                                                "selectors": ["personal_details", "forename"]
+                                                            },
+                                                            {
+                                                                "source": "supplementary_data",
+                                                                "identifier": "employees",
+                                                                "selectors": ["personal_details", "surname"]
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-3",
+            "title": "Additional Employees",
+            "summary": {
+                "show_on_completion": true,
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "additional-employees",
+                        "title": "employees",
+                        "add_link_text": "Add another employee",
+                        "empty_list_text": "There are no employees"
+                    }
+                ],
+                "show_non_item_answers": true
+            },
+            "groups": [
+                {
+                    "id": "additional-employee-reporting",
+                    "blocks": [
+                        {
+                            "type": "ListCollectorDrivingQuestion",
+                            "id": "any-additional-employees",
+                            "for_list": "additional-employees",
+                            "question": {
+                                "type": "General",
+                                "id": "any-additional-employee-question",
+                                "title": "Do you have any additional employees to report on?",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "This uses a different employees list, and the items from this list and the supplementary list will then be used in repeating sections"
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "any-additional-employee-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock",
+                                                    "params": {
+                                                        "block_id": "add-additional-employee",
+                                                        "list_name": "additional-employees"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "section": "End",
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "any-additional-employee-answer"
+                                            },
+                                            "No"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "list-collector-additional"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "list-collector-additional",
+                            "type": "ListCollector",
+                            "for_list": "additional-employees",
+                            "question": {
+                                "id": "confirmation-additional-question",
+                                "type": "General",
+                                "title": "Do you need to add any more employees?",
+                                "answers": [
+                                    {
+                                        "id": "list-collector-additional-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "add_block": {
+                                "id": "add-additional-employee",
+                                "type": "ListAddQuestion",
+                                "cancel_text": "Don’t need to add any other employees?",
+                                "question": {
+                                    "id": "add-additional-question",
+                                    "type": "General",
+                                    "title": "What is the name of the employee?",
+                                    "answers": [
+                                        {
+                                            "id": "employee-first-name",
+                                            "label": "First name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "employee-last-name",
+                                            "label": "Last name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "edit_block": {
+                                "id": "edit-additional-employee",
+                                "type": "ListEditQuestion",
+                                "cancel_text": "Don’t need to change anything?",
+                                "question": {
+                                    "id": "edit-additional-question",
+                                    "type": "General",
+                                    "title": "What is the name of the employee?",
+                                    "answers": [
+                                        {
+                                            "id": "employee-first-name",
+                                            "label": "First name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "employee-last-name",
+                                            "label": "Last name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "remove_block": {
+                                "id": "remove-additional-employee",
+                                "type": "ListRemoveQuestion",
+                                "cancel_text": "Don’t need to remove this employee?",
+                                "question": {
+                                    "id": "remove-additional-question",
                                     "type": "General",
                                     "title": "Are you sure you want to remove this employee?",
                                     "warning": "All of the information about this employee will be deleted",
@@ -820,7 +1021,33 @@
             ]
         },
         {
-            "id": "section-3",
+            "enabled": {
+                "when": {
+                    "and": [
+                        {
+                            "==": [
+                                {
+                                    "source": "progress",
+                                    "selector": "section",
+                                    "identifier": "section-2"
+                                },
+                                "COMPLETED"
+                            ]
+                        },
+                        {
+                            "==": [
+                                {
+                                    "source": "progress",
+                                    "selector": "section",
+                                    "identifier": "section-3"
+                                },
+                                "COMPLETED"
+                            ]
+                        }
+                    ]
+                }
+            },
+            "id": "section-4",
             "title": "Employee Details",
             "summary": {
                 "show_on_completion": true
@@ -838,12 +1065,14 @@
                                         "delimiter": " ",
                                         "list_to_concatenate": [
                                             {
-                                                "source": "answers",
-                                                "identifier": "employee-first-name"
+                                                "source": "supplementary_data",
+                                                "identifier": "employees",
+                                                "selectors": ["personal_details", "forename"]
                                             },
                                             {
-                                                "source": "answers",
-                                                "identifier": "employee-last-name"
+                                                "source": "supplementary_data",
+                                                "identifier": "employees",
+                                                "selectors": ["personal_details", "surname"]
                                             }
                                         ]
                                     },
@@ -856,7 +1085,7 @@
             },
             "groups": [
                 {
-                    "id": "group-3",
+                    "id": "employee-detail-questions",
                     "blocks": [
                         {
                             "type": "Question",
@@ -882,12 +1111,14 @@
                                                         "delimiter": " ",
                                                         "list_to_concatenate": [
                                                             {
-                                                                "source": "answers",
-                                                                "identifier": "employee-first-name"
+                                                                "source": "supplementary_data",
+                                                                "identifier": "employees",
+                                                                "selectors": ["personal_details", "forename"]
                                                             },
                                                             {
-                                                                "source": "answers",
-                                                                "identifier": "employee-last-name"
+                                                                "source": "supplementary_data",
+                                                                "identifier": "employees",
+                                                                "selectors": ["personal_details", "surname"]
                                                             }
                                                         ]
                                                     },
@@ -925,6 +1156,594 @@
                                         }
                                     }
                                 ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "enabled": {
+                "when": {
+                    "and": [
+                        {
+                            "==": [
+                                {
+                                    "source": "progress",
+                                    "selector": "section",
+                                    "identifier": "section-2"
+                                },
+                                "COMPLETED"
+                            ]
+                        },
+                        {
+                            "==": [
+                                {
+                                    "source": "progress",
+                                    "selector": "section",
+                                    "identifier": "section-3"
+                                },
+                                "COMPLETED"
+                            ]
+                        }
+                    ]
+                }
+            },
+            "id": "section-5",
+            "title": "Additional Employee Details",
+            "summary": {
+                "show_on_completion": true
+            },
+            "repeat": {
+                "for_list": "additional-employees",
+                "title": {
+                    "text": "{employee_name}",
+                    "placeholders": [
+                        {
+                            "placeholder": "employee_name",
+                            "transforms": [
+                                {
+                                    "arguments": {
+                                        "delimiter": " ",
+                                        "list_to_concatenate": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "employee-first-name"
+                                            },
+                                            {
+                                                "source": "answers",
+                                                "identifier": "employee-last-name"
+                                            }
+                                        ]
+                                    },
+                                    "transform": "concatenate_list"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "groups": [
+                {
+                    "id": "additional-employee-detail-questions",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "additional-length-of-employment",
+                            "question": {
+                                "id": "additional-length-employment-question",
+                                "type": "General",
+                                "title": {
+                                    "text": "When did {employee_name} start working for {company_name}?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "company_name",
+                                            "value": {
+                                                "source": "supplementary_data",
+                                                "identifier": "company_name"
+                                            }
+                                        },
+                                        {
+                                            "placeholder": "employee_name",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "employee-first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "employee-last-name"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "additional-employment-start",
+                                        "label": {
+                                            "text": "Start date at {company_name}",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "company_name",
+                                                    "value": {
+                                                        "source": "supplementary_data",
+                                                        "identifier": "company_name"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "mandatory": true,
+                                        "type": "Date",
+                                        "maximum": {
+                                            "value": "now"
+                                        },
+                                        "minimum": {
+                                            "value": {
+                                                "source": "supplementary_data",
+                                                "identifier": "incorporation_date"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-6",
+            "title": "Product details",
+            "summary": {
+                "show_on_completion": true,
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "products",
+                        "title": "Products",
+                        "add_link_text": "DO NOT use this link to add another product, this will be replaced with list collector content",
+                        "empty_list_text": "There are no products"
+                    }
+                ],
+                "show_non_item_answers": true
+            },
+            "groups": [
+                {
+                    "id": "product-reporting",
+                    "blocks": [
+                        {
+                            "id": "list-collector-products",
+                            "type": "ListCollector",
+                            "for_list": "products",
+                            "question": {
+                                "id": "confirmation-product-question",
+                                "type": "General",
+                                "title": "Do you need to add any more products?",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "title": "Important guidance",
+                                            "description": "This list collector is a placeholder until it can be replaced with a list collector content block - <strong>do not add any products to this list because it won’t work correctly</strong>"
+                                        },
+                                        {
+                                            "description": "Until this can be replaced with a list collector content block, keep clicking no and pressing save and continue to complete the repeating blocks"
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "list-collector-products-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "add_block": {
+                                "id": "add-product",
+                                "type": "ListAddQuestion",
+                                "cancel_text": "Don’t need to add any other products?",
+                                "question": {
+                                    "id": "add-product-question",
+                                    "type": "General",
+                                    "title": "What is the name of the product?",
+                                    "guidance": {
+                                        "contents": [
+                                            {
+                                                "description": "This uses a different employees list, and the items from this list and the supplementary list will then be used in repeating sections"
+                                            }
+                                        ]
+                                    },
+                                    "answers": [
+                                        {
+                                            "id": "product-name",
+                                            "label": "Product name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "edit_block": {
+                                "id": "edit-product",
+                                "type": "ListEditQuestion",
+                                "cancel_text": "Don’t need to change anything?",
+                                "question": {
+                                    "id": "edit-product-question",
+                                    "type": "General",
+                                    "title": "What is the name of the product?",
+                                    "answers": [
+                                        {
+                                            "id": "product-name",
+                                            "label": "Product name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "remove_block": {
+                                "id": "remove-product",
+                                "type": "ListRemoveQuestion",
+                                "cancel_text": "Don’t need to remove this product?",
+                                "question": {
+                                    "id": "remove-product-question",
+                                    "type": "General",
+                                    "title": "Are you sure you want to remove this product?",
+                                    "warning": "All of the information about this product will be deleted",
+                                    "answers": [
+                                        {
+                                            "id": "remove-confirmation",
+                                            "mandatory": true,
+                                            "type": "Radio",
+                                            "options": [
+                                                {
+                                                    "label": "Yes",
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
+                                                },
+                                                {
+                                                    "label": "No",
+                                                    "value": "No"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "repeating_blocks": [
+                                {
+                                    "id": "product-repeating-block-1",
+                                    "type": "ListRepeatingQuestion",
+                                    "question": {
+                                        "id": "product-repeating-block-1-question",
+                                        "type": "General",
+                                        "guidance": {
+                                            "contents": [
+                                                {
+                                                    "title": {
+                                                        "text": "{guidance_include}",
+                                                        "placeholders": [
+                                                            {
+                                                                "placeholder": "guidance_include",
+                                                                "transforms": [
+                                                                    {
+                                                                        "transform": "first_non_empty_item",
+                                                                        "arguments": {
+                                                                            "items": [
+                                                                                {
+                                                                                    "source": "supplementary_data",
+                                                                                    "identifier": "products",
+                                                                                    "selectors": ["guidance_include", "title"]
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    "description": {
+                                                        "text": "{guidance_include_list}",
+                                                        "placeholders": [
+                                                            {
+                                                                "placeholder": "guidance_include_list",
+                                                                "transforms": [
+                                                                    {
+                                                                        "transform": "format_list",
+                                                                        "arguments": {
+                                                                            "list_to_format": {
+                                                                                "source": "supplementary_data",
+                                                                                "identifier": "products",
+                                                                                "selectors": ["guidance_include", "list"]
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "title": {
+                                                        "text": "{guidance_exclude}",
+                                                        "placeholders": [
+                                                            {
+                                                                "placeholder": "guidance_exclude",
+                                                                "transforms": [
+                                                                    {
+                                                                        "transform": "first_non_empty_item",
+                                                                        "arguments": {
+                                                                            "items": [
+                                                                                {
+                                                                                    "source": "supplementary_data",
+                                                                                    "identifier": "products",
+                                                                                    "selectors": ["guidance_exclude", "title"]
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    "description": {
+                                                        "text": "{guidance_exclude_list}",
+                                                        "placeholders": [
+                                                            {
+                                                                "placeholder": "guidance_exclude_list",
+                                                                "transforms": [
+                                                                    {
+                                                                        "transform": "format_list",
+                                                                        "arguments": {
+                                                                            "list_to_format": {
+                                                                                "source": "supplementary_data",
+                                                                                "identifier": "products",
+                                                                                "selectors": ["guidance_exclude", "list"]
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "title": {
+                                            "text": "Volume of production and sales for {product_name}",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "product_name",
+                                                    "value": {
+                                                        "source": "supplementary_data",
+                                                        "identifier": "products",
+                                                        "selectors": ["name"]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "answers": [
+                                            {
+                                                "id": "product-volume-sales",
+                                                "label": {
+                                                    "text": "{volume_sales} for {product_name}",
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "volume_sales",
+                                                            "value": {
+                                                                "source": "supplementary_data",
+                                                                "identifier": "products",
+                                                                "selectors": ["volume_sales", "label"]
+                                                            }
+                                                        },
+                                                        {
+                                                            "placeholder": "product_name",
+                                                            "value": {
+                                                                "source": "supplementary_data",
+                                                                "identifier": "products",
+                                                                "selectors": ["name"]
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "mandatory": false,
+                                                "type": "Unit",
+                                                "unit": "mass-kilogram",
+                                                "unit_length": "short"
+                                            },
+                                            {
+                                                "id": "product-volume-total",
+                                                "label": {
+                                                    "text": "{total_volume} for {product_name}",
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "total_volume",
+                                                            "value": {
+                                                                "source": "supplementary_data",
+                                                                "identifier": "products",
+                                                                "selectors": ["total_volume", "label"]
+                                                            }
+                                                        },
+                                                        {
+                                                            "placeholder": "product_name",
+                                                            "value": {
+                                                                "source": "supplementary_data",
+                                                                "identifier": "products",
+                                                                "selectors": ["name"]
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "mandatory": false,
+                                                "type": "Unit",
+                                                "unit": "mass-kilogram",
+                                                "unit_length": "short"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "summary": {
+                                "title": "products",
+                                "item_title": {
+                                    "text": "{product_name}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "product_name",
+                                            "value": {
+                                                "source": "supplementary_data",
+                                                "identifier": "products",
+                                                "selectors": ["name"]
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "calculated-summary-volume-sales",
+                            "title": "We calculate the total volume of sales over the previous quarter to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "title": "Total sales volume",
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "product-volume-sales"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "calculated-summary-volume-total",
+                            "title": "We calculate the total volume produced over the previous quarter to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "title": "Total volume produced",
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "product-volume-total"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "dynamic-products",
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
+                                        {
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "products"
+                                                }
+                                            ]
+                                        },
+                                        0
+                                    ]
+                                }
+                            },
+                            "question": {
+                                "dynamic_answers": {
+                                    "values": {
+                                        "source": "list",
+                                        "identifier": "products"
+                                    },
+                                    "answers": [
+                                        {
+                                            "label": {
+                                                "text": "{value_sales} for {product_name}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "value_sales",
+                                                        "value": {
+                                                            "source": "supplementary_data",
+                                                            "identifier": "products",
+                                                            "selectors": ["value_sales", "label"]
+                                                        }
+                                                    },
+                                                    {
+                                                        "placeholder": "product_name",
+                                                        "value": {
+                                                            "source": "supplementary_data",
+                                                            "identifier": "products",
+                                                            "selectors": ["name"]
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "id": "product-sales-answer",
+                                            "type": "Currency",
+                                            "mandatory": true,
+                                            "currency": "GBP",
+                                            "decimal_places": 2
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "extra-static-answer",
+                                        "label": "Value of sales from other categories",
+                                        "type": "Currency",
+                                        "mandatory": false,
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ],
+                                "id": "dynamic-answer-question",
+                                "title": "Sales during the previous quarter",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "calculated-summary-value-sales",
+                            "title": "We calculate the total value of sales over the previous quarter to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "title": "Total sales value",
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "product-sales-answer"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "extra-static-answer"
+                                        }
+                                    ]
+                                }
                             }
                         }
                     ]
