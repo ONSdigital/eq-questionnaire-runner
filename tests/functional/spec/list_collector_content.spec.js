@@ -16,7 +16,7 @@ describe("List Collector Section Summary and Summary Items", () => {
     it("When I get to the Hub, Then from there the next block in list collector content section should be list collector content page.", async () => {
       await fillInListCollectorSection();
       await expect(await browser.getUrl()).to.contain(HubPage.url());
-      await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).to.contain("Not started",);
+      await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).to.contain("Not started");
       await $(HubPage.submit()).click();
       await expect(await browser.getUrl()).to.contain(ListCollectorContentPage.url());
     });
@@ -67,7 +67,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await $(ListCollectorSecondRepeatingBlockPage.authorisedTraderEuRadioRepeatingBlockYes()).click();
       await $(ListCollectorSecondRepeatingBlockPage.submit()).click();
       await $(ListCollectorContentPage.previous()).click();
-      await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).to.contain("Partially completed",);
+      await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).to.contain("Partially completed");
     });
     it("When I fill in both items repeating blocks, Then after going back to the hub the section should be completed.", async () => {
       await fillInListCollectorSection();
@@ -94,7 +94,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await $(ListCollectorContentPage.submit()).click();
       await $(ListCollectorContentSectionSummaryPage.previous()).click();
       await $(ListCollectorContentPage.previous()).click();
-      await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).to.contain("Completed",);
+      await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).to.contain("Completed");
     });
   });
 });
