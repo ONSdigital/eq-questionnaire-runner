@@ -67,14 +67,11 @@ class ListAction(Question):
         if url := self.get_section_or_final_summary_url():
             return url
 
-        if (
-            self.router.is_block_complete(
-                # Type ignore: block_id would exist at this point
-                block_id=self.parent_location.block_id,  # type: ignore
-                section_id=self.parent_location.section_id,
-                list_item_id=self.parent_location.list_item_id,
-            )
-            and not self.parent_block["type"] == "ListCollectorContent"
+        if self.router.is_block_complete(
+            # Type ignore: block_id would exist at this point
+            block_id=self.parent_location.block_id,  # type: ignore
+            section_id=self.parent_location.section_id,
+            list_item_id=self.parent_location.list_item_id,
         ):
             return self.router.get_next_location_url(
                 self.parent_location,

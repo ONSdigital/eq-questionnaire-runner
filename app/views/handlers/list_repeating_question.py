@@ -70,6 +70,8 @@ class ListRepeatingQuestion(ListEditQuestion):
 
     def handle_post(self) -> None:
         self.questionnaire_store_updater.add_completed_location(self.current_location)
+        self._update_section_completeness(self.parent_location)
+        self.questionnaire_store_updater.remove_completed_location(self.parent_location)
         if not self.get_first_incomplete_list_repeating_block_location_for_list_item(
             repeating_block_ids=self.repeating_block_ids,
             section_id=self.current_location.section_id,

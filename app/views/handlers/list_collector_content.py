@@ -16,5 +16,4 @@ class ListCollectorContent(ListCollector):
             )
             return super(Question, self).handle_post()
         self.questionnaire_store_updater.add_completed_location()
-        self.questionnaire_store_updater.update_progress_for_dependent_sections()
         self.questionnaire_store_updater.save()
