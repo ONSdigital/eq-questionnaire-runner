@@ -27,7 +27,7 @@ async function addCompany(
   registrationDateMonth,
   registrationDateYear,
   authorisedTraderUk,
-  authorisedTraderEu
+  authorisedTraderEu,
 ) {
   await $(AddCompanyPage.companyOrBranchName()).setValue(companyOrBranchName);
   await $(AddCompanyPage.submit()).click();
