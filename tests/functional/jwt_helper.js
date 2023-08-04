@@ -75,7 +75,7 @@ export function generateToken(
     languageCode = "en",
     includeLogoutUrl = true,
     displayAddress = "",
-  }
+  },
 ) {
   const schemaParts = schemaRegEx.exec(schema);
 
@@ -100,9 +100,9 @@ export function generateToken(
   if (version === "v2") {
     payload = {
       tx_id: txId,
-      jti: jti,
-      iat: iat,
-      exp: exp,
+      jti,
+      iat,
+      exp,
       case_id: caseId,
       response_id: responseId,
       schema_name: `${schemaParts[1]}_${schemaParts[2]}`,
@@ -117,9 +117,9 @@ export function generateToken(
   } else {
     payload = {
       tx_id: txId,
-      jti: jti,
-      iat: iat,
-      exp: exp,
+      jti,
+      iat,
+      exp,
       user_id: userId,
       case_id: caseId,
       ru_ref: "12346789012A",

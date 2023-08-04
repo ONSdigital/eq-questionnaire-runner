@@ -12,6 +12,7 @@ from app.data_models import (
 )
 from app.data_models.answer import Answer, AnswerDict
 from app.data_models.metadata_proxy import MetadataProxy, NoMetadataException
+from app.data_models.supplementary_data_store import InvalidSupplementaryDataSelector
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.relationship_location import RelationshipLocation
@@ -814,6 +815,10 @@ def test_progress_values_source_throws_if_no_location_given():
             "Sales across all UK stores",
         ),
         (
+            {"identifier": "note", "selectors": ["invalid", "description"]},
+            None,
+        ),
+        (
             {"identifier": "INVALID"},
             None,
         ),
@@ -851,3 +856,126 @@ def test_supplementary_data_value_source_non_list_items(
         )
         == expected_result
     )
+
+
+@pytest.mark.parametrize(
+    "list_item_id, value_source ,expected_result",
+    [
+        (
+            "item-1",
+            {"identifier": "products", "selectors": ["name"]},
+            "Articles and equipment for sports or outdoor games",
+        ),
+        (
+            "item-1",
+            {"identifier": "products", "selectors": ["value_sales", "answer_code"]},
+            "89929001",
+        ),
+        (
+            "item-1",
+            {"identifier": "products", "selectors": ["value_sales", "label"]},
+            "Value of sales",
+        ),
+        (
+            "item-1",
+            {"identifier": "products", "selectors": ["guidance", "description"]},
+            "sportswear",
+        ),
+        (
+            "item-2",
+            {"identifier": "products", "selectors": ["guidance", "description"]},
+            None,
+        ),
+        (
+            "item-2",
+            {"identifier": "products", "selectors": ["non_existing_optional_key"]},
+            None,
+        ),
+        (
+            "item-2",
+            {"identifier": "products", "selectors": ["name"]},
+            "Other Minerals",
+        ),
+        (
+            "item-2",
+            {"identifier": "products", "selectors": ["value_sales", "answer_code"]},
+            "201630601",
+        ),
+    ],
+)
+def test_supplementary_data_value_source_list_items(
+    supplementary_data_store_with_data,
+    list_item_id,
+    value_source,
+    expected_result,
+):
+    list_store = ListStore([{"name": "products", "items": get_list_items(2)}])
+    location = Location(
+        section_id="section",
+        block_id="block-id",
+        list_name="products",
+        list_item_id=list_item_id,
+    )
+    value_source_resolver = get_value_source_resolver(
+        supplementary_data_store=supplementary_data_store_with_data,
+        location=location,
+        list_item_id=list_item_id,
+        list_store=list_store,
+    )
+    assert (
+        value_source_resolver.resolve(
+            {
+                "source": "supplementary_data",
+                **value_source,
+            }
+        )
+        == expected_result
+    )
+
+
+def test_supplementary_data_invalid_selector_raises_exception(
+    supplementary_data_store_with_data,
+):
+    location = Location(
+        section_id="section",
+        block_id="block-id",
+    )
+    value_source_resolver = get_value_source_resolver(
+        supplementary_data_store=supplementary_data_store_with_data,
+        location=location,
+    )
+    with pytest.raises(InvalidSupplementaryDataSelector) as e:
+        value_source_resolver.resolve(
+            {
+                "source": "supplementary_data",
+                "identifier": "guidance",
+                "selectors": ["invalid"],
+            }
+        )
+
+    assert e.value.args[0] == "Cannot use the selector `invalid` on non-nested data"
+
+
+def test_supplementary_data_list_item_outside_repeating_section_raises_exception(
+    supplementary_data_store_with_data,
+):
+    list_store = ListStore([{"name": "products", "items": get_list_items(2)}])
+    location = Location(
+        section_id="section",
+        block_id="block-id",
+    )
+    value_source_resolver = get_value_source_resolver(
+        supplementary_data_store=supplementary_data_store_with_data,
+        location=location,
+        list_store=list_store,
+    )
+    with pytest.raises(InvalidSupplementaryDataSelector) as e:
+        value_source_resolver.resolve(
+            {
+                "source": "supplementary_data",
+                "identifier": "products",
+                "selectors": ["name"],
+            }
+        )
+
+    assert e.value.args[0] == "Cannot reference items from `products` outside a repeat"
