@@ -9,7 +9,7 @@ import babel
 import flask
 import flask_babel
 from babel import numbers, units
-from flask import current_app, g
+from flask import current_app
 from jinja2 import nodes, pass_eval_context
 from markupsafe import Markup, escape
 from wtforms import SelectFieldBase
