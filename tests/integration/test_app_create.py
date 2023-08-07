@@ -137,8 +137,8 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
             csp_policy_parts = headers["Content-Security-Policy"].split("; ")
             self.assertIn(f"default-src 'self' {cdn_url}", csp_policy_parts)
             self.assertIn(
-                "script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com "
-                f"https://ssl.google-analytics.com 'unsafe-inline' {cdn_url} 'nonce-{request.csp_nonce}'",
+                "script-src 'self' https://tagmanager.google.com https://*.googletagmanager.com "
+                f"'unsafe-inline' {cdn_url} 'nonce-{request.csp_nonce}'",
                 csp_policy_parts,
             )
             self.assertIn(
@@ -146,7 +146,8 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
                 csp_policy_parts,
             )
             self.assertIn(
-                f"img-src 'self' data: https://www.google-analytics.com https://ssl.gstatic.com https://www.gstatic.com {cdn_url}",
+                "img-src 'self' data: https://ssl.gstatic.com https://www.gstatic.com https://*.google-analytics.com"
+                f" https://*.googletagmanager.com {cdn_url}",
                 csp_policy_parts,
             )
             self.assertIn(
@@ -154,7 +155,8 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
                 csp_policy_parts,
             )
             self.assertIn(
-                f"connect-src 'self' https://www.google-analytics.com {cdn_url} {address_lookup_api_url}",
+                "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com"
+                f" https://*.googletagmanager.com {cdn_url} {address_lookup_api_url}",
                 csp_policy_parts,
             )
             self.assertIn(

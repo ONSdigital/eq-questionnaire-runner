@@ -58,9 +58,8 @@ CSP_POLICY = {
     "font-src": ["'self'", "data:", "https://fonts.gstatic.com"],
     "script-src": [
         "'self'",
-        "https://www.googletagmanager.com",
-        "https://www.google-analytics.com",
-        "https://ssl.google-analytics.com",
+        "https://tagmanager.google.com",
+        "https://*.googletagmanager.com",
         "'unsafe-inline'",
     ],
     "style-src": [
@@ -69,13 +68,19 @@ CSP_POLICY = {
         "https://fonts.googleapis.com",
         "'unsafe-inline'",
     ],
-    "connect-src": ["'self'", "https://www.google-analytics.com"],
+    "connect-src": [
+        "'self'",
+        "https://*.google-analytics.com",
+        "https://*.analytics.google.com",
+        "https://*.googletagmanager.com",
+    ],
     "img-src": [
         "'self'",
         "data:",
-        "https://www.google-analytics.com",
         "https://ssl.gstatic.com",
         "https://www.gstatic.com",
+        "https://*.google-analytics.com",
+        "https://*.googletagmanager.com",
     ],
     "object-src": ["'none'"],
     "base-uri": ["'none'"],
