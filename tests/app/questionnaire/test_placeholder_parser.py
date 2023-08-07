@@ -50,9 +50,9 @@ def test_metadata_placeholder(mock_renderer, mock_schema, mock_location):
     assert period_str == placeholders["period"]
 
 
-def test_previous_answer_transform_placeholder(
-    mock_renderer, mock_schema, mock_location
-):
+def test_previous_answer_transform_placeholder(mock_renderer, mock_location):
+    schema = load_schema_from_name("test_placeholder_transform")
+
     placeholder_list = [
         {
             "placeholder": "total_turnover",
@@ -63,7 +63,6 @@ def test_previous_answer_transform_placeholder(
                         "number": {
                             "source": "answers",
                             "identifier": "total-retail-turnover-answer",
-
                         },
                     },
                 }
@@ -83,7 +82,7 @@ def test_previous_answer_transform_placeholder(
         list_store=ListStore(),
         metadata=get_metadata(),
         response_metadata={},
-        schema=mock_schema,
+        schema=schema,
         renderer=mock_renderer,
         progress_store=ProgressStore(),
         location=mock_location,

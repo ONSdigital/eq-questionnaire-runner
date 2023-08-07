@@ -1230,6 +1230,7 @@ def test_get_answer(
                     "unit": None,
                     "unit_length": None,
                     "value": 12,
+                    "decimal_places": 0,
                 },
                 {
                     "currency": None,
@@ -1240,6 +1241,7 @@ def test_get_answer(
                     "unit": None,
                     "unit_length": None,
                     "value": 21,
+                    "decimal_places": 0,
                 },
                 {
                     "currency": None,
@@ -1255,6 +1257,7 @@ def test_get_answer(
                             "label": "Non UK based supermarkets",
                         }
                     ],
+                    "decimal_places": None,
                 },
             ],
         ),
