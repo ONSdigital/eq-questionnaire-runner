@@ -50,8 +50,7 @@ def eq_custom_currency(
             return numbers.format_currency(
                 value, currency, pattern, locale, currency_digits=False
             )
-        else:
-            return numbers.format_currency(value, currency, pattern, locale_p)
+        return numbers.format_currency(value, currency, pattern, locale_p)
 
     # if schema_limit is less than 2 then return the value the user entered
     if schema_limit < 2:
