@@ -75,7 +75,6 @@ class PlaceholderParser:
         self._supplementary_data_store = supplementary_data_store
         self._placeholder_preview_mode = placeholder_preview_mode
 
-
         self._path_finder = pf.PathFinder(
             schema=self._schema,
             answer_store=self._answer_store,
@@ -165,8 +164,6 @@ class PlaceholderParser:
             for arg_key, arg_value in transform["arguments"].items():
                 resolved_value: ValueSourceEscapedTypes | ValueSourceTypes | TransformedValueTypes
 
-
-
                 if isinstance(arg_value, list):
                     resolved_value = value_source_resolver.resolve_list(
                         value_source_list=arg_value,
@@ -184,7 +181,9 @@ class PlaceholderParser:
                 transform_args[arg_key] = resolved_value
 
                 if transform["transform"] == "format_currency":
-                    answer = self._schema.get_answers_by_answer_id(arg_value["identifier"])[0]
+                    answer = self._schema.get_answers_by_answer_id(
+                        arg_value["identifier"]
+                    )[0]
                     transform_args["schema_limit"] = answer["decimal_places"]
 
             transformed_value = getattr(self._transformer, transform["transform"])(

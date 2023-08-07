@@ -483,9 +483,6 @@ class SummaryRowItem:
         edit_link_aria_label: str,
         summary_type: str,
     ) -> None:
-
-
-
         if "type" in answer:
             answer_type = answer["type"]
         else:

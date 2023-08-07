@@ -269,7 +269,7 @@ def test_context_for_section_list_summary(
             "Non-UK Registration number",
             "Is this non-UK company or branch an authorised insurer?",
         ),
-    ]
+    ],
 )
 @pytest.mark.usefixtures("app")
 def test_context_for_section_summary_with_list_summary_and_first_variant(

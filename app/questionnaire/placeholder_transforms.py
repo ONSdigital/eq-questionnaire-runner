@@ -15,7 +15,7 @@ from app.questionnaire.rules.operations import DateOffset
 from app.questionnaire.rules.operations_helper import OperationHelper
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import DEFAULT_LOCALE
-from app.utilities.decimal_places import eq_format_decimal, eq_custom_currency
+from app.utilities.decimal_places import eq_custom_currency, eq_format_decimal
 
 if TYPE_CHECKING:
     from app.questionnaire.placeholder_renderer import (
@@ -43,15 +43,21 @@ class PlaceholderTransforms:
 
     input_date_format = "%Y-%m-%d"
 
-    def format_currency(self, number: Decimal | float, currency: str = "GBP", schema_limit: int | None = None) -> str:
-
+    def format_currency(
+        self,
+        number: Decimal | float,
+        currency: str = "GBP",
+        schema_limit: int | None = None,
+    ) -> str:
         if number or number == 0:
-            formatted_currency: str = eq_custom_currency(value=number, currency=currency, locale_p=self.locale, schema_limit=schema_limit)
+            formatted_currency: str = eq_custom_currency(
+                value=number,
+                currency=currency,
+                locale_p=self.locale,
+                schema_limit=schema_limit,
+            )
             return formatted_currency
         return ""
-
-
-
 
     def format_date(self, date_to_format: str, date_format: str) -> str:
         date_as_datetime = datetime.strptime(

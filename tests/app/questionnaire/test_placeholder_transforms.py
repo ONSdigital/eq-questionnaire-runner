@@ -21,9 +21,15 @@ from app.questionnaire.questionnaire_schema import QuestionnaireSchema
         ("", "", "", ""),
     ),
 )
-def test_format_currency(value, currency, schema_limits, formatted_currency, transformer, app):
+def test_format_currency(
+    value, currency, schema_limits, formatted_currency, transformer, app
+):
     with app.app_context():
-        assert transformer().format_currency(value, currency or "GBP", schema_limits) == formatted_currency
+        assert (
+            transformer().format_currency(value, currency or "GBP", schema_limits)
+            == formatted_currency
+        )
+
 
 @pytest.mark.parametrize(
     "number, expected",
