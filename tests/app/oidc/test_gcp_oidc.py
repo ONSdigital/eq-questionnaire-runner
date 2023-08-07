@@ -4,7 +4,7 @@ from cachetools.func import ttl_cache
 from freezegun import freeze_time
 from mock import Mock, patch
 
-from app.oidc.gcp_oidc import OIDCCredentialsServiceGCP
+from app.oidc.gcp_oidc import TTL, OIDCCredentialsServiceGCP
 
 TEST_SDS_OAUTH2_CLIENT_ID = "TEST_SDS_OAUTH2_CLIENT_ID"
 
@@ -32,12 +32,11 @@ def test_oidc_credentials_service_gcp_ttl(mock_token_fetch):
     to work around this and test the caching, we can replace the timer with a time.monotonic lambda
     """
     oidc_credentials_service = OIDCCredentialsServiceGCP()
-    credentials_cache = oidc_credentials_service.get_credentials.cache
 
     # overwrite the timer
     oidc_credentials_service.get_credentials = ttl_cache(
-        maxsize=credentials_cache.maxsize,
-        ttl=credentials_cache.ttl,
+        maxsize=None,
+        ttl=TTL,
         timer=lambda: time.monotonic(),  # pylint: disable-next=unnecessary-lambda
     )(oidc_credentials_service.get_credentials.__wrapped__)
 
