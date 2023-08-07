@@ -37,7 +37,7 @@ def test_oidc_credentials_service_gcp_ttl(mock_token_fetch):
     oidc_credentials_service.get_credentials = ttl_cache(
         maxsize=None,
         ttl=TTL,
-        timer=lambda: time.monotonic(),  # pylint: disable-next=unnecessary-lambda
+        timer=lambda: time.monotonic(),  # pylint: disable=unnecessary-lambda
     )(oidc_credentials_service.get_credentials.__wrapped__)
 
     # initial fetch
