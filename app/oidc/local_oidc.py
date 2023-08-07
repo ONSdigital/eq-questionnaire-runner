@@ -15,7 +15,7 @@ class OIDCCredentialsServiceLocal(OIDCCredentialsService):
         """
         Anonymous credentials don't expire so can be generated once and cached
         """
-        logger.info("generating local oidc credential", iap_client_id=iap_client_id)
+        logger.info("generating local OIDC credentials", iap_client_id=iap_client_id)
 
         # Return Credentials which do not provide any authentication or make any requests for tokens
         return AnonymousCredentials()

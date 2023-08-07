@@ -21,12 +21,11 @@ class OIDCCredentialsServiceGCP(OIDCCredentialsService):
         this is to ensure that even in the edge case where the timers on the cache and the credentials don't quite align,
         the 5 minutes leeway should be more than enough to cover it and guarantee safety
         """
-        logger.info("fetching oidc credentials from GCP", iap_client_id=iap_client_id)
+        logger.info("fetching OIDC credentials from GCP", iap_client_id=iap_client_id)
 
         request = Request()
         target_audience = iap_client_id
 
-        # Create ID token credentials.
         credentials = fetch_id_token_credentials(
             audience=target_audience, request=request
         )
@@ -34,5 +33,4 @@ class OIDCCredentialsServiceGCP(OIDCCredentialsService):
         # Refresh the credential to obtain an ID token.
         credentials.refresh(request)
 
-        # Return the generated credentials
         return credentials
