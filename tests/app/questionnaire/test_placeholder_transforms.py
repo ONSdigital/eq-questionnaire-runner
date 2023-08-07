@@ -109,6 +109,12 @@ def test_format_list(transformer):
     assert expected_result == format_value
 
 
+@pytest.mark.parametrize("list_to_format", ([], None, [[], (), ""]))
+def test_format_list_empty_or_none(transformer, list_to_format):
+    transform = transformer()
+    assert transform.format_list(list_to_format) == ""
+
+
 @pytest.mark.parametrize(
     "name, expected",
     (
