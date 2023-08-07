@@ -395,6 +395,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
     def test_setup_oidc_service_gcp(self):
         # Given
         self._setting_overrides["OIDC_TOKEN_BACKEND"] = "gcp"
+        self._setting_overrides["SDS_OAUTH2_CLIENT_ID"] = "1234567890"
 
         # When
         application = create_app(self._setting_overrides)
