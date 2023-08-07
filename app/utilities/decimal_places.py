@@ -62,9 +62,6 @@ def eq_custom_currency(
     if schema_limit > 2:
         if decimal_places < 2:
             currency_digits = True
-        elif decimal_places == 0:
-            pattern.frac_prec = (0, 0)
-            currency_digits = False
         else:
             pattern.frac_prec = (0, decimal_places)
             currency_digits = False

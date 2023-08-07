@@ -6,7 +6,6 @@ from app.questionnaire.placeholder_transforms import PlaceholderTransforms
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 
 
-@pytest.mark.usefixtures("gb_locale")
 @pytest.mark.parametrize(
     "value, currency, schema_limits, formatted_currency",
     (
