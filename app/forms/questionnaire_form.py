@@ -25,14 +25,14 @@ from app.forms.field_handlers import DateHandler, FieldHandler, get_field_handle
 from app.forms.validators import DateRangeCheck, MutuallyExclusiveCheck, SumCheck
 from app.questionnaire import Location, QuestionnaireSchema, QuestionSchemaType
 from app.questionnaire.dependencies import (
-    get_block_ids_for_calculated_summary_dependencies,
+    get_routing_path_block_ids_by_section_for_calculated_summary_dependencies,
 )
 from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.utilities.mappings import get_flattened_mapping_values
-from app.utilities.types import LocationType
+from app.utilities.types import LocationType, SectionKey
 
 logger = logging.getLogger(__name__)
 
@@ -489,28 +489,30 @@ def get_answer_fields(
 ) -> dict[str, FieldHandler]:
     list_item_id = location.list_item_id if location else None
 
-    routing_path_block_ids: dict[tuple, tuple[str, ...]] = {}
+    block_ids_by_section: dict[SectionKey, tuple[str, ...]] = {}
 
     if location and progress_store:
-        routing_path_block_ids = get_block_ids_for_calculated_summary_dependencies(
-            schema=schema,
-            location=location,
-            progress_store=progress_store,
-            path_finder=PathFinder(
-                schema=schema,
-                answer_store=answer_store,
-                list_store=list_store,
+        block_ids_by_section = (
+            get_routing_path_block_ids_by_section_for_calculated_summary_dependencies(
+                location=location,
                 progress_store=progress_store,
-                metadata=metadata,
-                response_metadata=response_metadata,
-                supplementary_data_store=supplementary_data_store,
-            ),
-            data=question,
+                path_finder=PathFinder(
+                    schema=schema,
+                    answer_store=answer_store,
+                    list_store=list_store,
+                    progress_store=progress_store,
+                    metadata=metadata,
+                    response_metadata=response_metadata,
+                    supplementary_data_store=supplementary_data_store,
+                ),
+                data=question,
+                ignore_keys=["when"],
+                schema=schema,
+            )
         )
-
     block_ids = None
-    if routing_path_block_ids:
-        block_ids = get_flattened_mapping_values(routing_path_block_ids)
+    if block_ids_by_section:
+        block_ids = get_flattened_mapping_values(block_ids_by_section)
 
     def _get_value_source_resolver(list_item: str | None = None) -> ValueSourceResolver:
         return ValueSourceResolver(

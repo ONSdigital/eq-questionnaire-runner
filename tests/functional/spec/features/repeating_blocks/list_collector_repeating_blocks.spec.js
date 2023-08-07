@@ -27,7 +27,7 @@ async function addCompany(
   registrationDateMonth,
   registrationDateYear,
   authorisedTraderUk,
-  authorisedTraderEu
+  authorisedTraderEu,
 ) {
   await $(AddCompanyPage.companyOrBranchName()).setValue(companyOrBranchName);
   await $(AddCompanyPage.submit()).click();
@@ -57,6 +57,8 @@ describe("List Collector Repeating Blocks", function () {
   describe("Given a normal journey through the list collector with repeating blocks, the answers can be submitted.", () => {
     before("Load the survey", async () => {
       await browser.openQuestionnaire("test_list_collector_repeating_blocks_section_summary.json");
+      // These tests sometimes fail when a button is on the screen, but right on the very edge, accept cookies to increase screen space
+      await $(ResponsiblePartyPage.acceptCookies()).click();
     });
     it("The user is able to add companies, complete repeating blocks, and submit.", async () => {
       await proceedToListCollector();

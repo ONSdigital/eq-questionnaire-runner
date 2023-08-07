@@ -94,16 +94,30 @@ class SupplementaryDataStore:
         For example if you wanted the identifier for the first item in "some_list"
         it would be get_data(identifier="some_list", selectors=["identifier"], list_item_id=list_item_id-1)
         """
+        if self.is_data_repeating(identifier) and not list_item_id:
+            raise InvalidSupplementaryDataSelector(
+                f"Cannot reference items from `{identifier}` outside a repeat"
+            )
+
         value = self._data_map.get((identifier, list_item_id))
-        # for nested data, index with each selector
+        # for nested data, index with each selector, or return None if there is no data to index
         for selector in selectors or []:
-            if not isinstance(value, dict):
+            if value is None:
+                return None
+            if not isinstance(value, Mapping):
+                # if value is not None, and also not index able, raise an error
                 raise InvalidSupplementaryDataSelector(
                     f"Cannot use the selector `{selector}` on non-nested data"
                 )
-            value = value[selector]
+            value = value.get(selector)
 
         return value
+
+    def is_data_repeating(self, identifier: str) -> bool:
+        """
+        Returns true if the identifier is for one of the lists
+        """
+        return identifier in self._list_mappings
 
     def serialize(self) -> dict:
         return {

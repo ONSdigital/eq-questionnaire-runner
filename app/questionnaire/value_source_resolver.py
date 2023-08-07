@@ -39,7 +39,7 @@ class ValueSourceResolver:
     routing_path_block_ids: Iterable[str] | None = None
     use_default_answer: bool = False
     escape_answer_values: bool = False
-    assess_routing_path: bool = True
+    assess_routing_path: bool | None = True
 
     def _is_answer_on_path(self, answer_id: str) -> bool:
         if self.routing_path_block_ids:
@@ -88,25 +88,29 @@ class ValueSourceResolver:
     def _resolve_list_item_id_for_value_source(
         self, value_source: Mapping
     ) -> str | None:
-        list_item_id: str | None = None
-
         if list_item_selector := value_source.get("list_item_selector"):
             if list_item_selector["source"] == "location":
                 if not self.location:
                     raise InvalidLocationException(
                         "list_item_selector source location used without location"
                     )
+                # Type ignore: the identifier is a string, same below
+                return getattr(self.location, list_item_selector["identifier"])  # type: ignore
 
-                list_item_id = getattr(self.location, list_item_selector["identifier"])
-
-            elif list_item_selector["source"] == "list":
-                list_item_id = getattr(
+            if list_item_selector["source"] == "list":
+                return getattr(  # type: ignore
                     self.list_store[list_item_selector["identifier"]],
                     list_item_selector["selector"],
                 )
 
-        if list_item_id:
-            return list_item_id
+        if value_source["source"] == "supplementary_data":
+            return (
+                self.list_item_id
+                if self.supplementary_data_store.is_data_repeating(
+                    value_source["identifier"]
+                )
+                else None
+            )
 
         return (
             self.list_item_id
@@ -174,7 +178,8 @@ class ValueSourceResolver:
                 return self._resolve_list_repeating_block_answers(answer_id)
 
         answer_value = self._get_answer_value(
-            answer_id=answer_id, list_item_id=list_item_id
+            answer_id=answer_id,
+            list_item_id=list_item_id,
         )
 
         if isinstance(answer_value, Mapping):
@@ -283,13 +288,25 @@ class ValueSourceResolver:
     def _resolve_response_metadata_source(self, value_source: Mapping) -> str | None:
         return self.response_metadata.get(value_source.get("identifier"))
 
+    def resolve_list(self, value_source_list: list[Mapping]) -> list[ValueSourceTypes]:
+        values: list[ValueSourceTypes] = []
+        for value_source in value_source_list:
+            value = self.resolve(value_source)
+            if isinstance(value, list):
+                values.extend(value)
+            else:
+                values.append(value)
+        return values
+
     def _resolve_supplementary_data_source(
         self, value_source: Mapping
     ) -> ValueSourceTypes:
+        list_item_id = self._resolve_list_item_id_for_value_source(value_source)
+
         return self.supplementary_data_store.get_data(
             identifier=value_source["identifier"],
             selectors=value_source.get("selectors"),
-            list_item_id=value_source.get("list_item_id"),
+            list_item_id=list_item_id,
         )
 
     @staticmethod
@@ -310,7 +327,6 @@ class ValueSourceResolver:
             return self._resolve_calculated_summary_value_source(
                 value_source=value_source, assess_routing_path=True
             )
-
         resolve_method_mapping = {
             "answers": self._resolve_answer_value_source,
             "list": self._resolve_list_value_source,

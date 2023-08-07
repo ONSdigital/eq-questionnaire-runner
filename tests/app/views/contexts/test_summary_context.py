@@ -444,5 +444,4 @@ def test_context_for_summary():
         "summary_type": "Summary",
         "view_submitted_response": False,
     }
-
     assert context == expected

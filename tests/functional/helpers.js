@@ -13,15 +13,19 @@ export const checkListItemIncomplete = async (listItemLabel) => {
   await expect(await $(listItemLabel).$(`.ons-summary__item-title-icon.ons-summary__item-title-icon--check`).isExisting()).to.be.false;
 };
 
-export const assertSummaryValues = async (values) => {
-  // check each summary value provided is present and that the number of them matches what is on the page
-  // needs to include both dynamic and static answers on any summary with both
-  const summaryValues = 'dd[class="ons-summary__values"]';
-  await values.map(async (value, index) => {
-    await expect(await $$(summaryValues)[index].getText()).to.equal(value);
-  });
-  await expect(await $$(summaryValues).length).to.equal(values.length);
+const assertSummaryFunction = (selector) => {
+  return async (entities) => {
+    // check each summary value/item/title is present and that the number of them matches what is on the page
+    await entities.map(async (entity, index) => {
+      await expect(await $$(selector)[index].getText()).to.equal(entity);
+    });
+    await expect(await $$(selector).length).to.equal(entities.length);
+  };
 };
+
+export const assertSummaryValues = assertSummaryFunction('dd[class="ons-summary__values"]');
+export const assertSummaryTitles = assertSummaryFunction('dt[class="ons-summary__title"]');
+export const assertSummaryItems = assertSummaryFunction('dd[class="ons-summary__item--text"]');
 
 export const repeatingAnswerChangeLink = (answerIndex) => {
   return $$('dd[class="ons-summary__actions"]')[answerIndex].$("a");
