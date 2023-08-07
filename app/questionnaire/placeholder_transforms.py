@@ -6,7 +6,7 @@ from urllib.parse import quote
 import babel.numbers
 from babel import units
 from babel.dates import format_datetime
-from babel.numbers import format_currency, format_decimal
+from babel.numbers import format_decimal
 from dateutil.relativedelta import relativedelta
 from flask_babel import ngettext
 
