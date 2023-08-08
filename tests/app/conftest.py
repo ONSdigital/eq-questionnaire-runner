@@ -255,6 +255,7 @@ def supplementary_data():
                     "identifier": "89929001",
                     "name": "Articles and equipment for sports or outdoor games",
                     "cn_codes": "2504 + 250610 + 2512 + 2519 + 2524",
+                    "guidance": {"title": "Include", "description": "sportswear"},
                     "value_sales": {
                         "answer_code": "89929001",
                         "label": "Value of sales",

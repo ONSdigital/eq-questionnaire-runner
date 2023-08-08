@@ -58,7 +58,7 @@ describe("Thank You Default View Response Enabled", () => {
       await expect(await $(ThankYouPage.viewAnswersTitle()).getHTML()).to.contain("Get a copy of your answers");
       await expect(await $(ThankYouPage.viewAnswersLink()).getText()).to.contain("save or print your answers");
       await expect(await $(ThankYouPage.viewSubmittedCountdown()).getHTML()).to.contain(
-        "For security, your answers will only be available to view for another"
+        "For security, your answers will only be available to view for another",
       );
     });
 

@@ -17,7 +17,7 @@ const testCases = [
   {
     schemaName: "test_dynamic_answer_options_function_driven.json",
     answerOptionCount: 7,
-    dropdownOptionValues: dropdownOptionValues,
+    dropdownOptionValues,
   },
 ];
 
