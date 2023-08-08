@@ -20,7 +20,7 @@
         "format": "yarn format:tests && yarn format:test-schemas",
         "format:tests": "prettier \"tests/functional/**/*.js\" --write && eslint --fix \"tests/functional/**/*.js\"",
         "format:test-schemas": "prettier \"schemas/test/*/*.json\" --write && eslint --fix \"schemas/test/*/*.json\"",
-        "wdio": "wdio run ./wdio.conf.js"
+        "wdio": "wdio run ./tests/functional/wdio.conf.js"
     },
     "devDependencies": {
         "@babel/core": "^7.22.9",
@@ -33,7 +33,6 @@
         "@wdio/mocha-framework": "^8.14.0",
         "@wdio/spec-reporter": "^8.14.0",
         "chai": "^4.3.7",
-        "chromedriver": "^115.0.0",
         "eslint": "^8.46.0",
         "eslint-cli": "^1.1.1",
         "eslint-config-standard": "^17.1.0",
@@ -52,7 +51,6 @@
         "prettier": "^3.0.1",
         "typescript": "^5.1.6",
         "uuid": "^9.0.0",
-        "wdio-chromedriver-service": "^8.1.1",
         "webdriverio": "8.14.3"
     },
     "prettier": {}
