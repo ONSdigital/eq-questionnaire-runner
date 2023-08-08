@@ -250,11 +250,11 @@
                             "question": {
                                 "answers": [
                                     {
-                                        "id": "mass-ton",
+                                        "id": "mass-tonne",
                                         "label": "Mass tonnes",
                                         "mandatory": false,
                                         "type": "Unit",
-                                        "unit": "mass-ton",
+                                        "unit": "mass-tonne",
                                         "unit_length": "short"
                                     }
                                 ],
