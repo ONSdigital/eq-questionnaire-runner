@@ -130,7 +130,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         min_max: Literal["minimum", "maximum"],
         answer_id: str,
         answers: Iterable[ImmutableDict],
-        default_min_max: str,
+        default_min_max: int,
     ) -> None:
         longest_value_length = 0
         for answer in answers:
