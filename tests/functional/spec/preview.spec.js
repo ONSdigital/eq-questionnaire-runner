@@ -68,7 +68,7 @@ describe("Introduction preview questions", () => {
     expect(await browser.getUrl()).to.contain("questionnaire/preview");
     expect(await $(previewSectionTitle).getText()).to.equal("Main section");
     expect(await $$(previewQuestion)[2].$("h3").getText()).to.equal(
-      "Are you sure you are able to report for the calendar month {calendar_start_date} to {calendar_end_date}?",
+      "Are you sure you are able to report for the calendar month {calendar_start_date} to {calendar_end_date}?"
     );
   });
 

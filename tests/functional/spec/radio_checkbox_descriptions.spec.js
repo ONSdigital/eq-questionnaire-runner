@@ -9,7 +9,7 @@ describe("Checkbox and Radio item descriptions", () => {
 
     it("When the schema defines a description for a checkbox option, then that description is displayed", async () => {
       await expect(
-        await $(CheckboxBlockPage.newMethodsOfOrganisingExternalRelationshipsWithOtherFirmsOrPublicInstitutionsLabelDescription()).getText(),
+        await $(CheckboxBlockPage.newMethodsOfOrganisingExternalRelationshipsWithOtherFirmsOrPublicInstitutionsLabelDescription()).getText()
       ).to.contain("For example first use of alliances, partnerships, outsourcing or sub-contracting");
     });
 
@@ -17,7 +17,7 @@ describe("Checkbox and Radio item descriptions", () => {
       await $(CheckboxBlockPage.newBusinessPracticesForOrganisingProcedures()).click();
       await $(CheckboxBlockPage.submit()).click();
       await expect(
-        await $(RadioBlockPage.newMethodsOfOrganisingExternalRelationshipsWithOtherFirmsOrPublicInstitutionsLabelDescription()).getText(),
+        await $(RadioBlockPage.newMethodsOfOrganisingExternalRelationshipsWithOtherFirmsOrPublicInstitutionsLabelDescription()).getText()
       ).to.contain("For example first use of alliances, partnerships, outsourcing or sub-contracting");
     });
   });

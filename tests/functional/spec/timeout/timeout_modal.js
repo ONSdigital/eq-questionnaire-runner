@@ -12,7 +12,7 @@ class TestCase {
           "This is because you have either:",
           "been inactive for 45 minutes and your session has timed out to protect your information",
           "followed a link to a page you are not signed in to",
-          "followed a link to a survey that has already been submitted",
+          "followed a link to a survey that has already been submitted"
         )
         .to.not.include("To protect your information, your progress will be saved and you will be signed out in");
     }).timeout(140000);
@@ -44,7 +44,7 @@ class TestCase {
   async checkTimeoutModal() {
     await $(TimeoutModalPage.timer()).waitForDisplayed({ timeout: 70000 });
     await expect(await $(TimeoutModalPage.timer()).getText()).to.equal(
-      "To protect your information, your progress will be saved and you will be signed out in 59 seconds.",
+      "To protect your information, your progress will be saved and you will be signed out in 59 seconds."
     );
   }
 }

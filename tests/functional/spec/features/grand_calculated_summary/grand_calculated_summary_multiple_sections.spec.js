@@ -44,7 +44,7 @@ describe("Feature: Grand Calculated Summary", () => {
 
     it("Given I click on the change link for a calculated summary then press continue, I am taken back to the grand calculated summary", async () => {
       await expect(await $(GrandCalculatedSummary2Page.grandCalculatedSummaryTitle()).getText()).to.contain(
-        "Grand Calculated Summary for section 1 and 2 is calculated to be £415.00. Is this correct?",
+        "Grand Calculated Summary for section 1 and 2 is calculated to be £415.00. Is this correct?"
       );
       await $(GrandCalculatedSummary2Page.calculatedSummary1Edit()).click();
       await expect(await browser.getUrl()).to.contain(CalculatedSummary1Page.pageName);
@@ -56,7 +56,7 @@ describe("Feature: Grand Calculated Summary", () => {
     it("Given I go back to the calculated summary and then to a question and edit the answer. I am first taken back to the each calculated summary that uses the answer, the grand calculated summary in section 1, and then the updated grand calculated summary in section 3.", async () => {
       await $(GrandCalculatedSummary2Page.calculatedSummary4Edit()).click();
       await expect(await $(CalculatedSummary4Page.calculatedSummaryTitle()).getText()).to.contain(
-        "Calculated Summary for Question 4 is calculated to be £15.00. Is this correct?",
+        "Calculated Summary for Question 4 is calculated to be £15.00. Is this correct?"
       );
       await $(CalculatedSummary4Page.q4A1Edit()).click();
       await expect(await browser.getUrl()).to.contain(Block4Page.pageName);
@@ -67,21 +67,21 @@ describe("Feature: Grand Calculated Summary", () => {
       // first taken back to the calculated summary which has updated
       await expect(await browser.getUrl()).to.contain(CalculatedSummary4Page.pageName);
       await expect(await $(CalculatedSummary4Page.calculatedSummaryTitle()).getText()).to.contain(
-        "Calculated Summary for Question 4 is calculated to be £60.00. Is this correct?",
+        "Calculated Summary for Question 4 is calculated to be £60.00. Is this correct?"
       );
       await $(CalculatedSummary4Page.submit()).click();
 
       // then taken back to the grand calculated summary which has also been updated correctly
       await expect(await browser.getUrl()).to.contain(GrandCalculatedSummary2Page.pageName);
       await expect(await $(GrandCalculatedSummary2Page.grandCalculatedSummaryTitle()).getText()).to.contain(
-        "Grand Calculated Summary for section 1 and 2 is calculated to be £460.00. Is this correct?",
+        "Grand Calculated Summary for section 1 and 2 is calculated to be £460.00. Is this correct?"
       );
     });
 
     it("Given I go back to another calculated summary and edit multiple answers, I am still correctly routed back to the grand calculated summary", async () => {
       await $(GrandCalculatedSummary2Page.calculatedSummary1Edit()).click();
       await expect(await $(CalculatedSummary1Page.calculatedSummaryTitle()).getText()).to.contain(
-        "Calculated Summary for Question 1 is calculated to be £100.00. Is this correct?",
+        "Calculated Summary for Question 1 is calculated to be £100.00. Is this correct?"
       );
 
       // change first answer
@@ -93,7 +93,7 @@ describe("Feature: Grand Calculated Summary", () => {
       // go to each calculated summary that uses the answer in turn, then each grand calculated summary up to the one we were editing
       await expect(await browser.getUrl()).to.contain(CalculatedSummary1Page.pageName);
       await expect(await $(CalculatedSummary1Page.calculatedSummaryTitle()).getText()).to.contain(
-        "Calculated Summary for Question 1 is calculated to be £190.00. Is this correct?",
+        "Calculated Summary for Question 1 is calculated to be £190.00. Is this correct?"
       );
 
       // change another answer
@@ -104,7 +104,7 @@ describe("Feature: Grand Calculated Summary", () => {
 
       // back at updated calculated summary
       await expect(await $(CalculatedSummary1Page.calculatedSummaryTitle()).getText()).to.contain(
-        "Calculated Summary for Question 1 is calculated to be £550.00. Is this correct?",
+        "Calculated Summary for Question 1 is calculated to be £550.00. Is this correct?"
       );
 
       // Go to each calculated/grand calculated summary including this answer and reconfirm before being taken back to grand calculated summary
@@ -115,7 +115,7 @@ describe("Feature: Grand Calculated Summary", () => {
       await $(GrandCalculatedSummary1Page.submit()).click();
       await expect(await browser.getUrl()).to.contain(GrandCalculatedSummary2Page.pageName);
       await expect(await $(GrandCalculatedSummary2Page.grandCalculatedSummaryTitle()).getText()).to.contain(
-        "Grand Calculated Summary for section 1 and 2 is calculated to be £910.00. Is this correct?",
+        "Grand Calculated Summary for section 1 and 2 is calculated to be £910.00. Is this correct?"
       );
     });
 

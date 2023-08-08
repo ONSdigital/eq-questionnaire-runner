@@ -35,11 +35,11 @@ describe("List Collector Section Summary and Summary Items", () => {
       await expect(await $(companiesListRowItem(1, 3)).getText()).to.contain("Yes");
       const listItemId = (await listItemIds())[0];
       await expect(await $(companiesListRowItemAnchor(1)).getHTML()).to.contain(
-        `return_to=section-summary&amp;return_to_answer_id=${listItemId}#company-or-branch-name`,
+        `return_to=section-summary&amp;return_to_answer_id=${listItemId}#company-or-branch-name`
       );
       await expect(await $(companiesListRowItemAnchor(2)).getHTML()).to.contain(`return_to_answer_id=registration-number-${listItemId}#registration-number`);
       await expect(await $(companiesListRowItemAnchor(3)).getHTML()).to.contain(
-        `return_to_answer_id=authorised-insurer-radio-${listItemId}#authorised-insurer-radio`,
+        `return_to_answer_id=authorised-insurer-radio-${listItemId}#authorised-insurer-radio`
       );
     });
     it("When I add multiple items, Then all the items should be visible on the section summary and have correct values", async () => {
@@ -105,7 +105,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await expect(await $(AnyCompaniesOrBranchesAddPage.registrationNumber()).isExisting()).to.be.true;
       await expect(await $(AnyCompaniesOrBranchesAddPage.authorisedInsurerRadioYes()).isExisting()).to.be.true;
       await expect(await $(AnyCompaniesOrBranchesAddPage.heading()).getText()).to.contain(
-        "Give details about the company or branch that undertakes general insurance business",
+        "Give details about the company or branch that undertakes general insurance business"
       );
     });
     it("When I add an item and relevant data, Then I should be able to edit that item from the section summary page.", async () => {

@@ -55,7 +55,7 @@ describe("View Submitted Response", () => {
       await $(ViewSubmittedResponsePage.downloadButton()).click();
       await expect(await $(ViewSubmittedResponsePage.informationPanel()).isDisplayed()).to.be.true;
       await expect(await $(ViewSubmittedResponsePage.informationPanel()).getHTML()).to.contain(
-        "For security, you can no longer view or get a copy of your answers",
+        "For security, you can no longer view or get a copy of your answers"
       );
     });
   });

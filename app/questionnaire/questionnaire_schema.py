@@ -143,11 +143,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 if value.get("source") == "answers":
                     longest_value_length = max(
                         longest_value_length,
-                        self._min_and_max_map[value["identifier"]][min_max],
+                        int(self._min_and_max_map[value["identifier"]][min_max]),
                     )
 
-        self._min_and_max_map[answer_id][min_max] = longest_value_length or len(
-            default_min_max
+        self._min_and_max_map[answer_id][min_max] = (
+            longest_value_length or default_min_max
         )
 
     def _populate_min_max_for_numeric_answers(self) -> None:
@@ -159,8 +159,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 "Percentage",
                 "Unit",
             }:
-                self._create_min_max_map("minimum", answer_id, answers, "0")
-                self._create_min_max_map("maximum", answer_id, answers, str(MAX_NUMBER))
+                self._create_min_max_map("minimum", answer_id, answers, len("0"))
+                self._create_min_max_map(
+                    "maximum", answer_id, answers, len(str(MAX_NUMBER))
+                )
 
     @cached_property
     def when_rules_section_dependencies_by_section(

@@ -187,7 +187,7 @@ describe("Routing and skipping section dependencies", () => {
       await expectPersonalDetailsName();
       await expectPersonalDetailsAge();
       await expect(await $(PrimaryPersonSummaryPage.reasonNoConfirmationAnswer()).getText()).to.contain(
-        "I did, but it was removed from the path as I changed my answer to No on the skip question",
+        "I did, but it was removed from the path as I changed my answer to No on the skip question"
       );
     });
   });
@@ -478,7 +478,7 @@ const expectPersonalDetailsAge = async () => {
 
 const expectReasonNoConfirmationAnswer = async () => {
   await expect(await $(PrimaryPersonSummaryPage.reasonNoConfirmationAnswer()).getText()).to.contain(
-    "I did not visit section 2, so confirmation was not needed",
+    "I did not visit section 2, so confirmation was not needed"
   );
 };
 

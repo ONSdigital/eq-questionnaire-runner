@@ -50,13 +50,13 @@ describe("Calculated summary with repeating answers", function () {
   it("Given I complete all list collector dynamic answers for two calculated summaries one of which also has static answers, I'm taken to each one in turn, showing the correct answers", async () => {
     await $(ExtraSpendingBlockPage.submit()).click();
     await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).to.contain(
-      "We calculate the total cost of your weekly shopping to be £550.00. Is this correct?",
+      "We calculate the total cost of your weekly shopping to be £550.00. Is this correct?"
     );
     await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryAnswer()).getText()).to.contain("£550.00");
     await assertSummaryValues(["£300.00", "£200.00", "£30.00", "£15.00", "£5.00", "£0.00"]);
     await $(CalculatedSummarySpendingPage.submit()).click();
     await expect(await $(CalculatedSummaryVisitsPage.calculatedSummaryTitle()).getText()).to.contain(
-      "We calculate the total visits to the shop to be 6. Is this correct?",
+      "We calculate the total visits to the shop to be 6. Is this correct?"
     );
     await assertSummaryValues(["4", "2"]);
   });
@@ -74,7 +74,7 @@ describe("Calculated summary with repeating answers", function () {
     await $(DynamicAnswerPage.submit()).click();
     await expect(await browser.getUrl()).to.contain(CalculatedSummaryVisitsPage.pageName);
     await expect(await $(CalculatedSummaryVisitsPage.calculatedSummaryTitle()).getText()).to.contain(
-      "We calculate the total visits to the shop to be 7. Is this correct?",
+      "We calculate the total visits to the shop to be 7. Is this correct?"
     );
     await assertSummaryValues(["4", "3"]);
     await $(CalculatedSummaryVisitsPage.submit()).click();
@@ -93,7 +93,7 @@ describe("Calculated summary with repeating answers", function () {
     // then calculated summary
     await expect(await browser.getUrl()).to.contain(CalculatedSummarySpendingPage.pageName);
     await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).to.contain(
-      "We calculate the total cost of your weekly shopping to be £600.00. Is this correct?",
+      "We calculate the total cost of your weekly shopping to be £600.00. Is this correct?"
     );
 
     // then jump straight back to section summary (as other calculated summary is unchanged
@@ -124,14 +124,14 @@ describe("Calculated summary with repeating answers", function () {
     // first calc summary
     await expect(await browser.getUrl()).to.contain(CalculatedSummarySpendingPage.pageName);
     await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).to.contain(
-      "We calculate the total cost of your weekly shopping to be £710.00. Is this correct?",
+      "We calculate the total cost of your weekly shopping to be £710.00. Is this correct?"
     );
     await assertSummaryValues(["£300.00", "£200.00", "£100.00", "£30.00", "£15.00", "£10.00", "£5.00", "£0.00"]);
 
     // second calculated summary
     await $(CalculatedSummarySpendingPage.submit()).click();
     await expect(await $(CalculatedSummaryVisitsPage.calculatedSummaryTitle()).getText()).to.contain(
-      "We calculate the total visits to the shop to be 14. Is this correct?",
+      "We calculate the total visits to the shop to be 14. Is this correct?"
     );
     await assertSummaryValues(["4", "3", "2"]);
     await $(CalculatedSummaryVisitsPage.submit()).click();
@@ -157,12 +157,12 @@ describe("Calculated summary with repeating answers", function () {
 
     // Tesco is now gone
     await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).to.contain(
-      "We calculate the total cost of your weekly shopping to be £380.00. Is this correct?",
+      "We calculate the total cost of your weekly shopping to be £380.00. Is this correct?"
     );
     await assertSummaryValues(["£200.00", "£100.00", "£15.00", "£10.00", "£5.00", "£50.00"]);
     await $(CalculatedSummarySpendingPage.submit()).click();
     await expect(await $(CalculatedSummaryVisitsPage.calculatedSummaryTitle()).getText()).to.contain(
-      "We calculate the total visits to the shop to be 10. Is this correct?",
+      "We calculate the total visits to the shop to be 10. Is this correct?"
     );
     await assertSummaryValues(["3", "7"]);
     await $(CalculatedSummaryVisitsPage.submit()).click();

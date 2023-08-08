@@ -14,7 +14,7 @@ describe("Component: Definition", () => {
 
       // Then
       await expect(await $(DefinitionPage.definitionContent()).getText()).to.contain(
-        "A typical photovoltaic system employs solar panels, each comprising a number of solar cells, which generate electrical power.",
+        "A typical photovoltaic system employs solar panels, each comprising a number of solar cells, which generate electrical power."
       );
     });
 
