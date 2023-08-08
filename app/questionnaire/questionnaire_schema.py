@@ -136,7 +136,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         for answer in answers:
             value = answer.get(min_max, {}).get("value")
 
-            if isinstance(value, float):
+            if isinstance(value, float | int):
                 longest_value_length = max(longest_value_length, len(str(value)))
 
             elif isinstance(value, Mapping) and value:
@@ -159,7 +159,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 "Percentage",
                 "Unit",
             }:
-                self._create_min_max_map("minimum", answer_id, answers, len("0"))
+                self._create_min_max_map("minimum", answer_id, answers, 1)
                 self._create_min_max_map(
                     "maximum", answer_id, answers, len(str(MAX_NUMBER))
                 )
