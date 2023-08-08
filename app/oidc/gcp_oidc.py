@@ -17,7 +17,7 @@ class OIDCCredentialsServiceGCP(OIDCCredentialsService):
     @ttl_cache(maxsize=None, ttl=TTL)
     def get_credentials(*, iap_client_id: str) -> Credentials:
         """
-        The credentials are valid for an hour, and we use a ttl cache of this minus a configurable leeway
+        The credentials are valid for OIDC_TOKEN_VALIDITY_IN_SECONDS, and we use a ttl cache of this minus a configurable leeway
         this is to ensure that even in the edge case where the timers on the cache and the credentials don't quite align,
         the OIDC_TOKEN_LEEWAY_IN_SECONDS should be more than enough to cover it and guarantee safety
         """
