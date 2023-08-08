@@ -137,7 +137,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             value = answer.get(min_max, {}).get("value")
 
             if isinstance(value, float | int):
-                value_length =len(str(value))
+                value_length = len(str(value))
                 decimal_places = answer.get("decimal_places")
 
                 if decimal_places:
