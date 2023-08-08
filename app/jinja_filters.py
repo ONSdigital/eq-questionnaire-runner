@@ -253,6 +253,12 @@ def should_wrap_with_fieldset_processor() -> dict[str, Callable]:
     return {"should_wrap_with_fieldset": should_wrap_with_fieldset}
 
 
+"""
+This function gets the minimum and maximum value accepted for a question.
+Which then allows us to use that value to set the width of the textbox to suit that min and max.
+"""
+
+
 def get_mix_max_value_width(
     min_max: Literal["minimum", "maximum"], answer: AnswerType, default_value: int
 ) -> int:
