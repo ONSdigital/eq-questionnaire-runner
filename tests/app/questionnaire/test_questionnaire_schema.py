@@ -31,19 +31,19 @@ def test_schema_json_is_immutable_and_hashable(question_schema):
 def test_schema_min_max_populate():
     schema = load_schema_from_name("test_numbers")
     assert schema.min_and_max_map == {
-        "set-minimum": {"maximum": 4, "minimum": 5},
-        "set-maximum": {"maximum": 5, "minimum": 4},
-        "test-range": {"maximum": 5, "minimum": 5},
-        "test-range-exclusive": {"maximum": 5, "minimum": 5},
+        "set-minimum": {"maximum": 6, "minimum": 7},
+        "set-maximum": {"maximum": 7, "minimum": 6},
+        "test-range": {"maximum": 7, "minimum": 7},
+        "test-range-exclusive": {"maximum": 7, "minimum": 7},
         "test-min": {"maximum": 15, "minimum": 4},
         "test-max": {"maximum": 4, "minimum": 1},
         "test-min-exclusive": {"maximum": 15, "minimum": 3},
         "test-max-exclusive": {"maximum": 4, "minimum": 1},
         "test-percent": {"maximum": 3, "minimum": 1},
-        "test-decimal": {"maximum": 5, "minimum": 5},
-        "other-answer": {"maximum": 5, "minimum": 1},
-        "first-number-answer": {"maximum": 4, "minimum": 2},
-        "second-number-answer": {"maximum": 5, "minimum": 3},
+        "test-decimal": {"maximum": 7, "minimum": 7},
+        "other-answer": {"maximum": 7, "minimum": 1},
+        "first-number-answer": {"maximum": 6, "minimum": 4},
+        "second-number-answer": {"maximum": 7, "minimum": 5},
     }
 
 

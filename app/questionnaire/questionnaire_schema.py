@@ -137,7 +137,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             value = answer.get(min_max, {}).get("value")
 
             if isinstance(value, float | int):
-                longest_value_length = max(longest_value_length, len(str(value)))
+                value_length =len(str(value))
+                decimal_places = answer.get("decimal_places")
+
+                if decimal_places:
+                    value_length = value_length + decimal_places
+
+                longest_value_length = max(longest_value_length, value_length)
 
             elif isinstance(value, Mapping) and value:
                 if value.get("source") == "answers":
