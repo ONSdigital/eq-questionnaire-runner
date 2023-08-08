@@ -261,12 +261,14 @@ def get_mix_max_value_width(
     Which then allows us to use that value to set the width of the textbox to suit that min and max.
     """
 
-    if answer.get(min_max, {}) and isinstance(answer[min_max]["value"], dict):
+    if (
+        answer.get(min_max, {})
+        and isinstance(answer[min_max]["value"], dict)
+        and answer[min_max]["value"].get("source") == "answers"
+    ):
         schema = g.get("schema")
-        if (
-            identifier := answer[min_max]["value"].get("identifier")
-        ) in schema.min_and_max_map:
-            return int(schema.min_and_max_map[identifier][min_max])
+        identifier = answer[min_max]["value"].get("identifier")
+        return int(schema.min_and_max_map[identifier][min_max])
 
     return len(str(answer.get(min_max, {}).get("value", default_value)))
 
