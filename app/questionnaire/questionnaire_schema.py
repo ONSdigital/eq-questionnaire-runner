@@ -136,14 +136,14 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         for answer in answers:
             value = answer.get(min_max, {}).get("value")
 
-            if isinstance(value, int):
+            if isinstance(value, float):
                 longest_value_length = max(longest_value_length, len(str(value)))
 
-            elif isinstance(value, dict) and value:
+            elif isinstance(value, Mapping) and value:
                 if value.get("source") == "answers":
                     longest_value_length = max(
                         longest_value_length,
-                        int(self._min_and_max_map[value["identifier"]][min_max]),
+                        self._min_and_max_map[value["identifier"]][min_max],
                     )
 
         self._min_and_max_map[answer_id][min_max] = longest_value_length or len(
