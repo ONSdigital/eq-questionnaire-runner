@@ -62,7 +62,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
     it("Given I complete every question, When I get to the currency summary, Then I should see the correct total", async () => {
       // Totals and titles should be shown
       await expect(await $(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
-        "We calculate the total of currency values entered to be £20.71. Is this correct?"
+        "We calculate the total of currency values entered to be £20.71. Is this correct?",
       );
       await expect(await $(CurrencyTotalPlaybackPage.calculatedSummaryQuestion()).getText()).to.contain("Grand total of previous values");
       await expect(await $(CurrencyTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("£20.71");
@@ -73,7 +73,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await expect(await $(CurrencyTotalPlaybackPage.secondNumberAnswerLabel()).getText()).to.contain("Second answer in currency label");
       await expect(await $(CurrencyTotalPlaybackPage.secondNumberAnswer()).getText()).to.contain("£4.56");
       await expect(await $(CurrencyTotalPlaybackPage.secondNumberAnswerAlsoInTotalLabel()).getText()).to.contain(
-        "Second answer label also in currency total (optional)"
+        "Second answer label also in currency total (optional)",
       );
       await expect(await $(CurrencyTotalPlaybackPage.secondNumberAnswerAlsoInTotal()).getText()).to.contain("£0.12");
       await expect(await $(CurrencyTotalPlaybackPage.thirdNumberAnswerLabel()).getText()).to.contain("Third answer label");
@@ -81,7 +81,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await expect(await $(CurrencyTotalPlaybackPage.fourthNumberAnswerLabel()).getText()).to.contain("Fourth answer label (optional)");
       await expect(await $(CurrencyTotalPlaybackPage.fourthNumberAnswer()).getText()).to.contain("£9.01");
       await expect(await $(CurrencyTotalPlaybackPage.fourthAndAHalfNumberAnswerAlsoInTotalLabel()).getText()).to.contain(
-        "Fourth answer label also in total (optional)"
+        "Fourth answer label also in total (optional)",
       );
       await expect(await $(CurrencyTotalPlaybackPage.fourthAndAHalfNumberAnswerAlsoInTotal()).getText()).to.contain("£2.34");
 
@@ -94,7 +94,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
 
     it("Given I reach the calculated summary page, Then the Change link url should contain return_to, return_to_answer_id and return_to_block_id query params", async () => {
       await expect(await $(CurrencyTotalPlaybackPage.firstNumberAnswerEdit()).getAttribute("href")).to.contain(
-        "first-number-block/?return_to=calculated-summary&return_to_answer_id=first-number-answer&return_to_block_id=currency-total-playback#first-number-answer"
+        "first-number-block/?return_to=calculated-summary&return_to_answer_id=first-number-answer&return_to_block_id=currency-total-playback#first-number-answer",
       );
     });
 
@@ -117,7 +117,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
 
       await expect(await browser.getUrl()).to.contain(CurrencyTotalPlaybackPage.pageName);
       await expect(await $(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
-        "We calculate the total of currency values entered to be £30.71. Is this correct?"
+        "We calculate the total of currency values entered to be £30.71. Is this correct?",
       );
       await expect(await $(CurrencyTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("£30.71");
     });
@@ -129,7 +129,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
 
       await expect(await browser.getUrl()).to.contain(CurrencyTotalPlaybackPage.pageName);
       await expect(await $(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
-        "We calculate the total of currency values entered to be £28.37. Is this correct?"
+        "We calculate the total of currency values entered to be £28.37. Is this correct?",
       );
       await expect(await $(CurrencyTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("£28.37");
       await expect(await $(CurrencyTotalPlaybackPage.fourthAndAHalfNumberAnswerAlsoInTotal()).getText()).to.contain("No answer provided");
@@ -154,7 +154,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await expect(await $$(CurrencyTotalPlaybackPage.fourthNumberAnswer())).to.be.empty;
       await expect(await $$(CurrencyTotalPlaybackPage.fourthAndAHalfNumberAnswerAlsoInTotal())).to.be.empty;
       await expect(await $(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
-        "We calculate the total of currency values entered to be £9.36. Is this correct?"
+        "We calculate the total of currency values entered to be £9.36. Is this correct?",
       );
       await expect(await $(CurrencyTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("£9.36");
     });
@@ -163,7 +163,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       // Totals and titles should be shown
       await $(CurrencyTotalPlaybackPage.submit()).click();
       await expect(await $(UnitTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
-        "We calculate the total of unit values entered to be 1,467 cm. Is this correct?"
+        "We calculate the total of unit values entered to be 1,467 cm. Is this correct?",
       );
       await expect(await $(UnitTotalPlaybackPage.calculatedSummaryQuestion()).getText()).to.contain("Grand total of previous values");
       await expect(await $(UnitTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("1,467 cm");
@@ -183,7 +183,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       // Totals and titles should be shown
       await $(UnitTotalPlaybackPage.submit()).click();
       await expect(await $(UnitTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
-        "We calculate the total of percentage values entered to be 79%. Is this correct?"
+        "We calculate the total of percentage values entered to be 79%. Is this correct?",
       );
       await expect(await $(UnitTotalPlaybackPage.calculatedSummaryQuestion()).getText()).to.contain("Grand total of previous values");
       await expect(await $(UnitTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("79%");
@@ -203,7 +203,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       // Totals and titles should be shown
       await $(UnitTotalPlaybackPage.submit()).click();
       await expect(await $(UnitTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
-        "We calculate the total of number values entered to be 124.58. Is this correct?"
+        "We calculate the total of number values entered to be 124.58. Is this correct?",
       );
       await expect(await $(UnitTotalPlaybackPage.calculatedSummaryQuestion()).getText()).to.contain("Grand total of previous values");
       await expect(await $(UnitTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("124.58");
@@ -223,7 +223,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await $(BreakdownPage.submit()).click();
       await expect(await browser.getUrl()).to.contain(SecondCurrencyTotalPlaybackPage.pageName);
       await expect(await $(SecondCurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
-        "We calculate the total of number values entered to be £124.58. Is this correct?"
+        "We calculate the total of number values entered to be £124.58. Is this correct?",
       );
       await expect(await $("body").getText()).to.have.string("Enter two values that add up to the previous calculated summary total of £124.58");
       await expect(await $(SecondCurrencyTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("124.58");
@@ -269,7 +269,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await $(SixthNumberBlockPage.submit()).click();
 
       await expect(await $(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
-        "We calculate the total of currency values entered to be £9.41. Is this correct?"
+        "We calculate the total of currency values entered to be £9.41. Is this correct?",
       );
 
       await $(CurrencyTotalPlaybackPage.submit()).click();
@@ -297,7 +297,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await $(SixthNumberBlockPage.submit()).click();
 
       await expect(await $(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
-        "We calculate the total of currency values entered to be £15.91. Is this correct?"
+        "We calculate the total of currency values entered to be £15.91. Is this correct?",
       );
 
       await $(CurrencyTotalPlaybackPage.submit()).click();
@@ -326,7 +326,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await $(SixthNumberBlockPage.submit()).click();
 
       await expect(await $(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
-        "We calculate the total of currency values entered to be £6.91. Is this correct?"
+        "We calculate the total of currency values entered to be £6.91. Is this correct?",
       );
 
       await $(CurrencyTotalPlaybackPage.submit()).click();
@@ -445,10 +445,10 @@ describe("Feature: Calculated Summary Repeating Section", () => {
     it("Given I have a placeholder displaying a calculated summary value source, When the calculated summary value is from a previous section, Then the value displayed should be correct", async () => {
       await expect(await browser.getUrl()).to.contain(DependencyQuestionSectionTwo.pageName);
       await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue1Label()).getText()).to.contain(
-        "60 - calculated summary answer (previous section)"
+        "60 - calculated summary answer (previous section)",
       );
       await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2Label()).getText()).to.contain(
-        "40 - calculated summary answer (current section)"
+        "40 - calculated summary answer (current section)",
       );
     });
 
@@ -476,10 +476,10 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await expect(await $("body").getText()).to.have.string("30 - calculated summary answer (previous section)");
       await $(SectionSummarySectionTwo.checkboxAnswerEdit()).click();
       await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue1Label()).getText()).to.contain(
-        "30 - calculated summary answer (previous section)"
+        "30 - calculated summary answer (previous section)",
       );
       await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2Label()).getText()).to.contain(
-        "40 - calculated summary answer (current section)"
+        "40 - calculated summary answer (current section)",
       );
     });
   });

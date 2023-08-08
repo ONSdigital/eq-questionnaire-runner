@@ -75,7 +75,7 @@ export function generateToken(
     languageCode = "en",
     includeLogoutUrl = true,
     displayAddress = "",
-  }
+  },
 ) {
   const schemaParts = schemaRegEx.exec(schema);
 

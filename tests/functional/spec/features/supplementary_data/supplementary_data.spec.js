@@ -50,7 +50,7 @@ describe.skip("Using supplementary data", () => {
     await $(IntroductionBlockPage.acceptCookies()).click();
     await expect(await $(IntroductionBlockPage.businessDetailsContent()).getText()).to.contain("You are completing this survey for Tesco");
     await expect(await $(IntroductionBlockPage.businessDetailsContent()).getText()).to.contain(
-      "If the company details or structure have changed contact us on 01171231231"
+      "If the company details or structure have changed contact us on 01171231231",
     );
     await expect(await $(IntroductionBlockPage.guidancePanel(1)).getText()).to.contain("Some supplementary guidance about the survey");
     await $(IntroductionBlockPage.submit()).click();
@@ -82,7 +82,7 @@ describe.skip("Using supplementary data", () => {
     await $(SalesBreakdownBlockPage.salesLondon()).setValue(111000);
     await $(SalesBreakdownBlockPage.submit()).click();
     await expect(await $(CalculatedSummarySalesPage.calculatedSummaryTitle()).getText()).to.contain(
-      "Total value of sales from Bristol and London is calculated to be £444,000.00. Is this correct?"
+      "Total value of sales from Bristol and London is calculated to be £444,000.00. Is this correct?",
     );
   });
 
@@ -236,16 +236,16 @@ describe.skip("Using supplementary data", () => {
     await expect(await $("body").getHTML()).to.have.string("<li>swimming pools and paddling pools</li>");
     await expect(await $("body").getHTML()).to.have.string("<h2>Exclude</h2>");
     await expect(await $("body").getHTML()).to.have.string(
-      "<li>sports holdalls, gloves, clothing of textile materials, footwear, protective eyewear, rackets, balls, skates</li>"
+      "<li>sports holdalls, gloves, clothing of textile materials, footwear, protective eyewear, rackets, balls, skates</li>",
     );
     await expect(await $("body").getHTML()).to.have.string(
-      "<li>for skiing, water sports, golf, fishing', for skiing, water sports, golf, fishing, table tennis, PE, gymnastics, athletics</li>"
+      "<li>for skiing, water sports, golf, fishing', for skiing, water sports, golf, fishing, table tennis, PE, gymnastics, athletics</li>",
     );
     await expect(await $(ProductRepeatingBlock1Page.productVolumeSalesLabel()).getText()).to.contain(
-      "Volume of sales for Articles and equipment for sports or outdoor games"
+      "Volume of sales for Articles and equipment for sports or outdoor games",
     );
     await expect(await $(ProductRepeatingBlock1Page.productVolumeTotalLabel()).getText()).to.contain(
-      "Total volume produced for Articles and equipment for sports or outdoor games"
+      "Total volume produced for Articles and equipment for sports or outdoor games",
     );
     await $(ProductRepeatingBlock1Page.productVolumeSales()).setValue(100);
     await $(ProductRepeatingBlock1Page.productVolumeTotal()).setValue(200);
@@ -270,7 +270,7 @@ describe.skip("Using supplementary data", () => {
     await $(ListCollectorProductsPage.no()).click();
     await $(ListCollectorProductsPage.submit()).click();
     await expect(await $(CalculatedSummaryVolumeSalesPage.calculatedSummaryTitle()).getText()).to.contain(
-      "We calculate the total volume of sales over the previous quarter to be 150 kg. Is this correct?"
+      "We calculate the total volume of sales over the previous quarter to be 150 kg. Is this correct?",
     );
     assertSummaryItems(["Volume of sales for Articles and equipment for sports or outdoor games", "Volume of sales for Kitchen Equipment"]);
     assertSummaryValues(["100 kg", "50 kg"]);
@@ -279,7 +279,7 @@ describe.skip("Using supplementary data", () => {
 
   it("Given I have another calculated summary using the repeating blocks, When I reach the Calculated Summary, Then I see the correct total and supplementary data labels", async () => {
     await expect(await $(CalculatedSummaryVolumeTotalPage.calculatedSummaryTitle()).getText()).to.contain(
-      "We calculate the total volume produced over the previous quarter to be 500 kg. Is this correct?"
+      "We calculate the total volume produced over the previous quarter to be 500 kg. Is this correct?",
     );
     assertSummaryItems(["Total volume produced for Articles and equipment for sports or outdoor games", "Total volume produced for Kitchen Equipment"]);
     assertSummaryValues(["200 kg", "300 kg"]);
@@ -298,7 +298,7 @@ describe.skip("Using supplementary data", () => {
 
   it("Given I have a calculated summary of dynamic answers for a supplementary list, When I reach the calculated summary, Then I see the correct supplementary data in the title and labels", async () => {
     await expect(await $(CalculatedSummaryValueSalesPage.calculatedSummaryTitle()).getText()).to.contain(
-      "We calculate the total value of sales over the previous quarter to be £660.00. Is this correct?"
+      "We calculate the total value of sales over the previous quarter to be £660.00. Is this correct?",
     );
     assertSummaryItems([
       "Value of sales for Articles and equipment for sports or outdoor games",
@@ -383,50 +383,50 @@ describe.skip("Using supplementary data", () => {
 
     // Harry Potter
     await expect(await $(ViewSubmittedResponsePage.employeeDetailQuestionsContent(0)).$$(summaryItems)[0].getText()).to.equal(
-      "When did Harry Potter start working for Lidl?"
+      "When did Harry Potter start working for Lidl?",
     );
     await expect(await $(ViewSubmittedResponsePage.employeeDetailQuestionsContent(0)).$$(summaryValues)[0].getText()).to.equal("1 January 1990");
 
     // Bruce Wayne
     await expect(await $(ViewSubmittedResponsePage.employeeDetailQuestionsContent("0-1")).$$(summaryItems)[0].getText()).to.equal(
-      "When did Bruce Wayne start working for Lidl?"
+      "When did Bruce Wayne start working for Lidl?",
     );
     await expect(await $(ViewSubmittedResponsePage.employeeDetailQuestionsContent("0-1")).$$(summaryValues)[0].getText()).to.equal("10 October 1999");
 
     // Jane Doe
     await expect(await $(ViewSubmittedResponsePage.additionalEmployeeDetailQuestionsContent(0)).$$(summaryItems)[0].getText()).to.equal(
-      "When did Jane Doe start working for Lidl?"
+      "When did Jane Doe start working for Lidl?",
     );
     await expect(await $(ViewSubmittedResponsePage.additionalEmployeeDetailQuestionsContent(0)).$$(summaryValues)[0].getText()).to.equal("1 January 2000");
 
     // John Smith
     await expect(await $(ViewSubmittedResponsePage.additionalEmployeeDetailQuestionsContent("0-2")).$$(summaryItems)[0].getText()).to.equal(
-      "When did John Smith start working for Lidl?"
+      "When did John Smith start working for Lidl?",
     );
     await expect(await $(ViewSubmittedResponsePage.additionalEmployeeDetailQuestionsContent("0-2")).$$(summaryValues)[0].getText()).to.equal("3 March 2010");
 
     // Product details
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[0].getText()).to.equal(
-      "Articles and equipment for sports or outdoor games"
+      "Articles and equipment for sports or outdoor games",
     );
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[1].getText()).to.equal(
-      "Volume of sales for Articles and equipment for sports or outdoor games"
+      "Volume of sales for Articles and equipment for sports or outdoor games",
     );
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[2].getText()).to.equal(
-      "Total volume produced for Articles and equipment for sports or outdoor games"
+      "Total volume produced for Articles and equipment for sports or outdoor games",
     );
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryValues)[0].getText()).to.equal("100 kg");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryValues)[1].getText()).to.equal("200 kg");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[3].getText()).to.equal("Kitchen Equipment");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[4].getText()).to.equal("Volume of sales for Kitchen Equipment");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[5].getText()).to.equal(
-      "Total volume produced for Kitchen Equipment"
+      "Total volume produced for Kitchen Equipment",
     );
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryValues)[2].getText()).to.equal("50 kg");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryValues)[3].getText()).to.equal("300 kg");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryRowTitles)[0].getText()).to.equal("Sales during the previous quarter");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryItems)[0].getText()).to.equal(
-      "Value of sales for Articles and equipment for sports or outdoor games"
+      "Value of sales for Articles and equipment for sports or outdoor games",
     );
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryItems)[1].getText()).to.equal("Value of sales for Kitchen Equipment");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryItems)[2].getText()).to.equal("Value of sales for Groceries");

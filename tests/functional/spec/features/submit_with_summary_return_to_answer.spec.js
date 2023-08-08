@@ -26,7 +26,7 @@ describe("Summary Anchor Scrolling", () => {
       await $(InsuranceAddressPage.submit()).click();
       await $(AddressDurationPage.submit()).click();
       await expect(await $(PropertyDetailsSummaryPage.insuranceAddressAnswer2Edit()).getAttribute("href")).to.contain(
-        "insurance-address/?return_to=section-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2"
+        "insurance-address/?return_to=section-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2",
       );
     });
 
@@ -34,7 +34,7 @@ describe("Summary Anchor Scrolling", () => {
       await $(InsuranceAddressPage.submit()).click();
       await $(AddressDurationPage.submit()).click();
       await expect(await $(PropertyDetailsSummaryPage.summaryRowState("name-question-concatenated-answer-edit")).getAttribute("href")).to.contain(
-        "name/?return_to=section-summary&return_to_answer_id=name-question-concatenated-answer#first-name"
+        "name/?return_to=section-summary&return_to_answer_id=name-question-concatenated-answer#first-name",
       );
     });
 
@@ -69,7 +69,7 @@ describe("Summary Anchor Scrolling", () => {
       await $(HouseholdDetailsSummaryPage.submit()).click();
       await $(SubmitPage.summaryShowAllButton()).click();
       await expect(await $(SubmitPage.insuranceAddressAnswer2Edit()).getAttribute("href")).to.contain(
-        "?return_to=final-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2"
+        "?return_to=final-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2",
       );
     });
 
