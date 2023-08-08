@@ -11,7 +11,7 @@ TEST_SDS_OAUTH2_CLIENT_ID = "TEST_SDS_OAUTH2_CLIENT_ID"
 
 @patch("app.oidc.gcp_oidc.Request")
 @patch("app.oidc.gcp_oidc.fetch_id_token_credentials")
-def test_oidc_credentials_service_gcp(mock_token_fetch, mock_request):
+def test_get_credentials(mock_token_fetch, mock_request):
     oidc_credentials_service = OIDCCredentialsServiceGCP()
 
     # fetch credentials and check the gcp call is made
@@ -25,7 +25,7 @@ def test_oidc_credentials_service_gcp(mock_token_fetch, mock_request):
 @freeze_time("2023-01-01T12:00:00")
 @patch("app.oidc.gcp_oidc.Request", Mock)
 @patch("app.oidc.gcp_oidc.fetch_id_token_credentials")
-def test_oidc_credentials_service_gcp_ttl(mock_token_fetch):
+def test_get_credentials_ttl(mock_token_fetch):
     """
     by default, TTLCache uses a cached version of time.monotonic for the timer
     which means that mocking time with freezegun doesn't work, as it won't affect the timer

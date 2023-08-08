@@ -24,10 +24,9 @@ class OIDCCredentialsServiceGCP(OIDCCredentialsService):
         logger.info("fetching OIDC credentials from GCP", iap_client_id=iap_client_id)
 
         request = Request()
-        target_audience = iap_client_id
 
         credentials = fetch_id_token_credentials(
-            audience=target_audience, request=request
+            audience=iap_client_id, request=request
         )
 
         # Refresh the credential to obtain an ID token.
