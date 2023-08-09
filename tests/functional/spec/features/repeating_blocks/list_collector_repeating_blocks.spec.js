@@ -230,11 +230,38 @@ describe("List Collector Repeating Blocks", function () {
     });
 
     it("Edit each type of answer on different items from the section summary.", async () => {
-      await expect(await $$(summaryValues)[8].getText()).to.have.string(456);
-      await repeatingAnswerChangeLink(8).click();
-      await $(CompaniesRepeatingBlock1Page.registrationNumber()).setValue(789);
-      await $(CompaniesRepeatingBlock1Page.submit()).click();
-      await expect(await $$(summaryValues)[8].getText()).to.have.string(789);
+      const logWithTime = (text) => {
+        const now = new Date();
+        const ms = now.getMilliseconds().toString().padStart(3, "0");
+        // eslint-disable-next-line no-console
+        console.log(`${now.toLocaleTimeString("en-GB")}:${ms} - ${text}`);
+      };
+
+      await expect(
+        await $$(summaryValues)[8]
+          .getText()
+          .then((value) => {
+            logWithTime("Asserting summary value is 456");
+            return value;
+          }),
+      ).to.have.string(456);
+      await repeatingAnswerChangeLink(8)
+        .click()
+        .then(() => logWithTime("Clicking repeating answer change link"));
+      await $(CompaniesRepeatingBlock1Page.registrationNumber())
+        .setValue(789)
+        .then(() => logWithTime("Setting answer to 789"));
+      await $(CompaniesRepeatingBlock1Page.submit())
+        .click()
+        .then(() => logWithTime("Clicking repeating block submit button"));
+      await expect(
+        await $$(summaryValues)[8]
+          .getText()
+          .then((value) => {
+            logWithTime("Asserting summary value is 789");
+            return value;
+          }),
+      ).to.have.string(789);
 
       await expect(await $$(summaryValues)[4].getText()).to.have.string("1 January 2023");
       await repeatingAnswerChangeLink(4).click();
