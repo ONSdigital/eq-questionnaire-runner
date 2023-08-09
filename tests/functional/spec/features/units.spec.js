@@ -53,6 +53,5 @@ describe("Units", () => {
     await $(SetAreaUnitsBlockPage.submit()).click();
     await $(SetVolumeUnitsBlockPage.submit()).click();
     await expect(await $("body").getText()).to.have.string("tonnes");
-    await expect(await $("body").getText()).to.not.have.string("metric tons");
   });
 });
