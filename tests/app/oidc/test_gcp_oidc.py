@@ -1,12 +1,16 @@
 import time
 
+import responses
 from cachetools.func import ttl_cache
 from freezegun import freeze_time
+from google.auth.exceptions import TransportError
+from google.auth.transport.requests import Request
 from mock import Mock, patch
 
 from app.oidc.gcp_oidc import TTL, OIDCCredentialsServiceGCP
 
 TEST_SDS_OAUTH2_CLIENT_ID = "TEST_SDS_OAUTH2_CLIENT_ID"
+MOCK_TOKEN_URL = "http://mock-url"
 
 
 @patch("app.oidc.gcp_oidc.Request")
@@ -63,3 +67,34 @@ def test_get_credentials_ttl(mock_token_fetch):
             assert (
                 mock_token_fetch.return_value.refresh.call_count == expected_call_count
             )
+
+
+@patch(
+    "google.auth.compute_engine._metadata.get_service_account_info",
+    Mock(return_value={"email": "mock-email@gcp.com"}),
+)
+@patch("google.auth.compute_engine._metadata.ping", Mock(return_value=True))
+@patch(
+    "google.auth.compute_engine.credentials.jwt._unverified_decode",
+    Mock(return_value=(None, {"exp": 1672576200}, None, None)),
+)
+@patch("google.auth._helpers.update_query", Mock(return_value=MOCK_TOKEN_URL))
+@freeze_time("2023-01-01T12:00:00")
+@responses.activate
+def test_get_credentials_with_retry():
+    oidc_credentials_service = OIDCCredentialsServiceGCP()
+
+    responses.add(responses.GET, url=MOCK_TOKEN_URL, body=TransportError())
+    responses.add(responses.GET, url=MOCK_TOKEN_URL, body=TransportError())
+    responses.add(responses.GET, url=MOCK_TOKEN_URL, json={}, status=200)
+
+    # use a side effect of Request so that the code executes as normal but the call count can be tracked
+    tracked_request = Mock(side_effect=Request())
+
+    with patch("app.oidc.gcp_oidc.Request", Mock(return_value=tracked_request)):
+        credentials = oidc_credentials_service.get_credentials(
+            iap_client_id=TEST_SDS_OAUTH2_CLIENT_ID
+        )
+        assert credentials.valid
+        # the request should have 3 attempts, the two transport failures and the success
+        assert tracked_request.call_count == 3
