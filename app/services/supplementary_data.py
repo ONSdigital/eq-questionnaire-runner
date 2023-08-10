@@ -10,6 +10,8 @@ from sdc.crypto.key_store import KeyStore
 from structlog import get_logger
 
 from app.keys import KEY_PURPOSE_SDS
+from app.oidc.oidc import OIDCCredentialsService
+from app.settings import SDS_OAUTH2_CLIENT_ID
 from app.utilities.request_session import get_retryable_session
 from app.utilities.supplementary_data_parser import validate_supplementary_data_v1
 
@@ -63,6 +65,14 @@ def get_supplementary_data_v1(
         retry_status_codes=SUPPLEMENTARY_DATA_REQUEST_RETRY_STATUS_CODES,
         backoff_factor=SUPPLEMENTARY_DATA_REQUEST_BACKOFF_FACTOR,
     )
+
+    # Type ignore: oidc_credentials_service is a singleton of this application
+    oidc_credentials_service: OIDCCredentialsService = current_app.eq["oidc_credentials_service"]  # type: ignore
+    # Type ignore: SDS_OAUTH2_CLIENT_ID is an env var which must exist as it is verified in setup.py
+    credentials = oidc_credentials_service.get_credentials(
+        iap_client_id=SDS_OAUTH2_CLIENT_ID  # type: ignore
+    )
+    credentials.apply(headers=session.headers)
 
     try:
         response = session.get(
