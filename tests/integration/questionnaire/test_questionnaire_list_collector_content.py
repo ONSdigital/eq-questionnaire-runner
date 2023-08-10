@@ -29,6 +29,7 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
         self.post()
         self.post()
 
+        self.post({"responsible-party-answer": "Yes"})
         self.assertInUrl("/questionnaire/list-collector-content/")
         self.assertInBody(
             "You have previously reported the following companies. Press continue to updated registration and trading information."
@@ -104,6 +105,7 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
         self.post()
         self.post()
 
+        self.post({"responsible-party-answer": "Yes"})
         self.assertInUrl("/questionnaire/list-collector-content/")
         self.assertInBody(
             "You have previously reported the following companies. Press continue to updated registration and trading information."
@@ -125,6 +127,7 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
         self.previous()
         self.previous()
         self.previous()
+        self.previous()
 
         self.assertInBody("Partially completed")
 
@@ -139,6 +142,7 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
         self.post()
         self.post()
 
+        self.post({"responsible-party-answer": "Yes"})
         self.assertInUrl("/questionnaire/list-collector-content/")
         self.assertInBody(
             "You have previously reported the following companies. Press continue to updated registration and trading information."
@@ -168,6 +172,7 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
                 "authorised-trader-eu-radio-repeating-block": "No",
             }
         )
+        self.previous()
         self.previous()
 
         self.assertInBody("Partially completed")

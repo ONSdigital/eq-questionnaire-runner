@@ -337,6 +337,49 @@
                     "title": "Companies",
                     "blocks": [
                         {
+                            "type": "Question",
+                            "id": "responsible-party",
+                            "question": {
+                                "type": "General",
+                                "id": "responsible-party-question",
+                                "title": "Are you the responsible party for reporting trading details for a company of branch?",
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "responsible-party-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "block": "list-collector-content",
+                                    "when": {
+                                        "==": [
+                                            "Yes",
+                                            {
+                                                "source": "answers",
+                                                "identifier": "responsible-party-answer"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "section": "End"
+                                }
+                            ]
+                        },
+                        {
                             "id": "list-collector-content",
                             "type": "ListCollectorContent",
                             "page_title": "Companies",

@@ -15,5 +15,3 @@ class ListCollectorContent(ListCollector):
                 list_item_id=self._current_location.list_item_id,
             )
             return super(Question, self).handle_post()
-        self.questionnaire_store_updater.add_completed_location()
-        self.questionnaire_store_updater.save()
