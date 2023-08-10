@@ -27,6 +27,8 @@ from app.cloud_tasks import CloudTaskPublisher, LogCloudTaskPublisher
 from app.helpers import get_span_and_trace
 from app.jinja_filters import blueprint as filter_blueprint
 from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SUBMISSION
+from app.oidc.gcp_oidc import OIDCCredentialsServiceGCP
+from app.oidc.local_oidc import OIDCCredentialsServiceLocal
 from app.publisher import LogPublisher, PubSubPublisher
 from app.routes.dump import dump_blueprint
 from app.routes.errors import errors_blueprint
@@ -58,9 +60,8 @@ CSP_POLICY = {
     "font-src": ["'self'", "data:", "https://fonts.gstatic.com"],
     "script-src": [
         "'self'",
-        "https://www.googletagmanager.com",
-        "https://www.google-analytics.com",
-        "https://ssl.google-analytics.com",
+        "https://tagmanager.google.com",
+        "https://*.googletagmanager.com",
         "'unsafe-inline'",
     ],
     "style-src": [
@@ -69,13 +70,19 @@ CSP_POLICY = {
         "https://fonts.googleapis.com",
         "'unsafe-inline'",
     ],
-    "connect-src": ["'self'", "https://www.google-analytics.com"],
+    "connect-src": [
+        "'self'",
+        "https://*.google-analytics.com",
+        "https://*.analytics.google.com",
+        "https://*.googletagmanager.com",
+    ],
     "img-src": [
         "'self'",
         "data:",
-        "https://www.google-analytics.com",
         "https://ssl.gstatic.com",
         "https://www.gstatic.com",
+        "https://*.google-analytics.com",
+        "https://*.googletagmanager.com",
     ],
     "object-src": ["'none'"],
     "base-uri": ["'none'"],
@@ -163,6 +170,8 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
     setup_publisher(application)
 
     setup_task_client(application)
+
+    setup_oidc(application)
 
     application.eq["id_generator"] = UserIDGenerator(
         application.config["EQ_SERVER_SIDE_STORAGE_USER_ID_ITERATIONS"],
@@ -375,6 +384,25 @@ def setup_task_client(application):
         application.eq["cloud_tasks"] = LogCloudTaskPublisher()
     else:
         raise NotImplementedError("Unknown EQ_SUBMISSION_CONFIRMATION_BACKEND")
+
+
+def setup_oidc(application):
+    def sds_client_id_exists():
+        if not application.config.get("SDS_OAUTH2_CLIENT_ID"):
+            raise MissingEnvironmentVariable("Setting SDS_OAUTH2_CLIENT_ID Missing")
+
+    if not (oidc_token_backend := application.config.get("OIDC_TOKEN_BACKEND")):
+        raise MissingEnvironmentVariable("Setting OIDC_TOKEN_BACKEND Missing")
+
+    if oidc_token_backend == "gcp":
+        sds_client_id_exists()
+        application.eq["oidc_credentials_service"] = OIDCCredentialsServiceGCP()
+
+    elif oidc_token_backend == "local":
+        application.eq["oidc_credentials_service"] = OIDCCredentialsServiceLocal()
+
+    else:
+        raise NotImplementedError("Unknown OIDC_TOKEN_BACKEND")
 
 
 def setup_publisher(application):

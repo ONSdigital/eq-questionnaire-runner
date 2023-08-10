@@ -96,7 +96,7 @@ def format_unit(
 
     formatted_unit: str = units.format_unit(
         value=value,
-        measurement_unit=measurement_unit,
+        measurement_unit=unit,
         length=length,
         locale=locale_,
     )
