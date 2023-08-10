@@ -236,32 +236,25 @@ describe("List Collector Repeating Blocks", function () {
         // eslint-disable-next-line no-console
         console.log(`${now.toLocaleTimeString("en-GB")}:${ms} - ${text}`);
       };
+      const promiseLog = (text) => (value) => {
+        logWithTime(`${text} (value: ${value})`);
+        return value;
+      };
 
-      await expect(
-        await $$(summaryValues)[8]
-          .getText()
-          .then((value) => {
-            logWithTime("Asserting summary value is 456");
-            return value;
-          }),
-      ).to.have.string(456);
-      await repeatingAnswerChangeLink(8)
-        .click()
-        .then(() => logWithTime("Clicking repeating answer change link"));
-      await $(CompaniesRepeatingBlock1Page.registrationNumber())
-        .setValue(789)
-        .then(() => logWithTime("Setting answer to 789"));
-      await $(CompaniesRepeatingBlock1Page.submit())
-        .click()
-        .then(() => logWithTime("Clicking repeating block submit button"));
-      await expect(
-        await $$(summaryValues)[8]
-          .getText()
-          .then((value) => {
-            logWithTime("Asserting summary value is 789");
-            return value;
-          }),
-      ).to.have.string(789);
+      await expect(await $$(summaryValues)[8].getText().then(promiseLog("1. Asserting summary value is 456"))).to.have.string(456);
+      logWithTime("1. Finished");
+
+      await repeatingAnswerChangeLink(8).click().then(promiseLog("2. Clicking repeating answer change link"));
+      logWithTime("2. Finished");
+
+      await $(CompaniesRepeatingBlock1Page.registrationNumber()).setValue(789).then(promiseLog("3. Setting answer to 789"));
+      logWithTime("3. Finished");
+
+      await $(CompaniesRepeatingBlock1Page.submit()).click().then(promiseLog("4. Clicking repeating block submit button"));
+      logWithTime("4. Finished");
+
+      await expect(await $$(summaryValues)[8].getText().then(promiseLog("5. Asserting summary value is 789"))).to.have.string(789);
+      logWithTime("5. Finished");
 
       await expect(await $$(summaryValues)[4].getText()).to.have.string("1 January 2023");
       await repeatingAnswerChangeLink(4).click();
