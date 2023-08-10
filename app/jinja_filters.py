@@ -101,13 +101,6 @@ def format_unit(
         locale=locale_,
     )
 
-    locale_decimal_point = babel.numbers.get_decimal_symbol(locale_)
-
-    if locale_decimal_point in str(value):
-        x = eq_format_decimal(value, locale_, locale_decimal_point)
-        y = formatted_unit.split(" ")[1]
-        return f"{x} {y}"
-
     return formatted_unit
 
 
