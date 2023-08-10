@@ -5789,7 +5789,7 @@ webdriver@8.14.3:
     wait-port "^1.0.4"
     ws "^8.8.0"
 
-webdriverio@8.14.3, webdriverio@^8.13.1:
+webdriverio@8.14.3, webdriverio@^8.13.1, webdriverio@^8.14.3:
   version "8.14.3"
   resolved "https://registry.yarnpkg.com/webdriverio/-/webdriverio-8.14.3.tgz#490cdd505b6cf57a50d6f67841b8295d6f25c94f"
   integrity sha512-NMVap664xbbPKrVWpcxyTEVmkUadS8wu2eBtT8uMhesLCtaCZjxTF5andHpIEFitKhgHf22SeP++1ZrQpMoRCA==
