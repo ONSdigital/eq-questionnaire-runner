@@ -147,8 +147,6 @@ class PlaceholderParser:
         try:
             return self._parse_transforms(placeholder["transforms"])
         except KeyError:
-            print("************")
-            print(str(placeholder))
             return self._value_source_resolver.resolve(placeholder["value"])
 
     def _parse_transforms(
