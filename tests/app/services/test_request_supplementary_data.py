@@ -2,9 +2,11 @@ import pytest
 import responses
 from flask import Flask, current_app
 from marshmallow import ValidationError
+from mock import Mock
 from requests import RequestException
 from sdc.crypto.key_store import KeyStore
 
+from app.oidc.gcp_oidc import OIDCCredentialsServiceGCP
 from app.services.supplementary_data import (
     SUPPLEMENTARY_DATA_REQUEST_MAX_RETRIES,
     InvalidSupplementaryData,
@@ -220,3 +222,33 @@ def test_get_supplementary_data_v1_raises_missing_supplementary_data_key_error_w
                 identifier="12346789012A",
                 survey_id="123",
             )
+
+
+@responses.activate
+def test_get_supplementary_data_v1_with_gcp_authentication(
+    app: Flask, mocker, encrypted_mock_supplementary_data_payload
+):
+    with app.app_context():
+        current_app.config["SDS_API_BASE_URL"] = TEST_SDS_URL
+
+        mock_oidc_service = Mock(spec=OIDCCredentialsServiceGCP)
+        mocker.patch.dict(
+            "app.services.supplementary_data.current_app.eq",
+            {"oidc_credentials_service": mock_oidc_service},
+        )
+
+        responses.add(
+            responses.GET,
+            f"{TEST_SDS_URL}/v1/unit_data",
+            json=encrypted_mock_supplementary_data_payload,
+            status=200,
+        )
+
+        get_supplementary_data_v1(
+            dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
+            identifier="12346789012A",
+            survey_id="123",
+        )
+        mock_oidc_service.get_credentials.assert_called_once_with(
+            iap_client_id=current_app.config["SDS_OAUTH2_CLIENT_ID"]
+        )
