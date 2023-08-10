@@ -137,7 +137,6 @@ jobs:
     env:
       EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
     steps:
-      - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: "18.14.0"
