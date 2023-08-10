@@ -9,8 +9,10 @@ from flask_babel import Babel
 from mock import patch
 
 from app.cloud_tasks import CloudTaskPublisher
+from app.oidc.gcp_oidc import OIDCCredentialsServiceGCP
+from app.oidc.local_oidc import OIDCCredentialsServiceLocal
 from app.publisher import LogPublisher, PubSubPublisher
-from app.setup import create_app
+from app.setup import MissingEnvironmentVariable, create_app
 from app.storage.datastore import Datastore
 from app.storage.dynamodb import Dynamodb
 from app.submitter.submitter import (
@@ -137,8 +139,8 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
             csp_policy_parts = headers["Content-Security-Policy"].split("; ")
             self.assertIn(f"default-src 'self' {cdn_url}", csp_policy_parts)
             self.assertIn(
-                "script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com "
-                f"https://ssl.google-analytics.com 'unsafe-inline' {cdn_url} 'nonce-{request.csp_nonce}'",
+                "script-src 'self' https://tagmanager.google.com https://*.googletagmanager.com "
+                f"'unsafe-inline' {cdn_url} 'nonce-{request.csp_nonce}'",
                 csp_policy_parts,
             )
             self.assertIn(
@@ -146,7 +148,8 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
                 csp_policy_parts,
             )
             self.assertIn(
-                f"img-src 'self' data: https://www.google-analytics.com https://ssl.gstatic.com https://www.gstatic.com {cdn_url}",
+                "img-src 'self' data: https://ssl.gstatic.com https://www.gstatic.com https://*.google-analytics.com"
+                f" https://*.googletagmanager.com {cdn_url}",
                 csp_policy_parts,
             )
             self.assertIn(
@@ -154,7 +157,8 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
                 csp_policy_parts,
             )
             self.assertIn(
-                f"connect-src 'self' https://www.google-analytics.com {cdn_url} {address_lookup_api_url}",
+                "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com"
+                f" https://*.googletagmanager.com {cdn_url} {address_lookup_api_url}",
                 csp_policy_parts,
             )
             self.assertIn(
@@ -386,3 +390,62 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
         assert "Missing Secret [ADDRESS_LOOKUP_API_AUTH_TOKEN_SECRET]" in str(
             ex.exception
         )
+
+    def test_setup_oidc_service_gcp(self):
+        # Given
+        self._setting_overrides["OIDC_TOKEN_BACKEND"] = "gcp"
+        self._setting_overrides["SDS_OAUTH2_CLIENT_ID"] = "1234567890"
+
+        # When
+        application = create_app(self._setting_overrides)
+
+        # Then
+        assert isinstance(
+            application.eq["oidc_credentials_service"], OIDCCredentialsServiceGCP
+        )
+
+    def test_setup_oidc_service_local(self):
+        # Given
+        self._setting_overrides["OIDC_TOKEN_BACKEND"] = "local"
+
+        # When
+        application = create_app(self._setting_overrides)
+
+        # Then
+        assert isinstance(
+            application.eq["oidc_credentials_service"], OIDCCredentialsServiceLocal
+        )
+
+    def test_oidc_backend_invalid_raises_exception(self):
+        # Given
+        self._setting_overrides["OIDC_TOKEN_BACKEND"] = "invalid"
+
+        # When
+        with self.assertRaises(NotImplementedError) as ex:
+            create_app(self._setting_overrides)
+
+        # Then
+        assert "Unknown OIDC_TOKEN_BACKEND" in str(ex.exception)
+
+    def test_oidc_backend_missing_raises_exception(self):
+        # Given
+        self._setting_overrides["OIDC_TOKEN_BACKEND"] = ""
+
+        # When
+        with self.assertRaises(MissingEnvironmentVariable) as ex:
+            create_app(self._setting_overrides)
+
+        # Then
+        assert "Setting OIDC_TOKEN_BACKEND Missing" in str(ex.exception)
+
+    def test_sds_oauth_2_client_id_missing_raises_exception(self):
+        # Given
+        self._setting_overrides["OIDC_TOKEN_BACKEND"] = "gcp"
+        self._setting_overrides["SDS_OAUTH2_CLIENT_ID"] = ""
+
+        # When
+        with self.assertRaises(MissingEnvironmentVariable) as ex:
+            create_app(self._setting_overrides)
+
+        # Then
+        assert "Setting SDS_OAUTH2_CLIENT_ID Missing" in str(ex.exception)
