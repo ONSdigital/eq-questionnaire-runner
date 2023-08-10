@@ -179,9 +179,11 @@ class PlaceholderParser:
                     resolved_value = arg_value
 
                 transform_args[arg_key] = resolved_value
-                print("************************************")
-                print(str(arg_value))
-                if transform["transform"] == "format_currency" and arg_value["source"] != "calculated_summary":
+
+                if (
+                    transform["transform"] == "format_currency"
+                    and arg_value["source"] != "calculated_summary"
+                ):
                     answer = self._schema.get_answers_by_answer_id(
                         arg_value["identifier"]
                     )[0]
