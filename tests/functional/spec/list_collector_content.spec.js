@@ -20,12 +20,14 @@ describe("List Collector Section Summary and Summary Items", () => {
       await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).to.contain("Not started");
       await $(HubPage.submit()).click();
       await $(ResponsiblePartyQuestionPage.yes()).click();
+      await $(ResponsiblePartyQuestionPage.submit()).click();
       await expect(await browser.getUrl()).to.contain(ListCollectorContentPage.url());
     });
     it("When I get to the list collector content page, Then the relevant content is displayed.", async () => {
       await fillInListCollectorSection();
       await $(HubPage.submit()).click();
       await $(ResponsiblePartyQuestionPage.yes()).click();
+      await $(ResponsiblePartyQuestionPage.submit()).click();
       await expect(await $("#main-content").getText()).to.contain(
         "You have previously reported the following companies. Press continue to updated registration and trading information.",
       );
@@ -35,6 +37,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await fillInListCollectorSection();
       await $(HubPage.submit()).click();
       await $(ResponsiblePartyQuestionPage.yes()).click();
+      await $(ResponsiblePartyQuestionPage.submit()).click();
       await $(ListCollectorContentPage.submit()).click();
       await $(ListCollectorFirstRepeatingBlockPage.registrationNumberRepeatingBlock()).setValue(123);
       await $(ListCollectorFirstRepeatingBlockPage.registrationDateRepeatingBlockday()).setValue(1);
@@ -60,6 +63,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await fillInListCollectorSection();
       await $(HubPage.submit()).click();
       await $(ResponsiblePartyQuestionPage.yes()).click();
+      await $(ResponsiblePartyQuestionPage.submit()).click();
       await $(ListCollectorContentPage.submit()).click();
       await $(ListCollectorFirstRepeatingBlockPage.registrationNumberRepeatingBlock()).setValue(123);
       await $(ListCollectorFirstRepeatingBlockPage.registrationDateRepeatingBlockday()).setValue(1);
@@ -77,6 +81,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await fillInListCollectorSection();
       await $(HubPage.submit()).click();
       await $(ResponsiblePartyQuestionPage.yes()).click();
+      await $(ResponsiblePartyQuestionPage.submit()).click();
       await $(ListCollectorContentPage.submit()).click();
       await $(ListCollectorFirstRepeatingBlockPage.registrationNumberRepeatingBlock()).setValue(123);
       await $(ListCollectorFirstRepeatingBlockPage.registrationDateRepeatingBlockday()).setValue(1);
