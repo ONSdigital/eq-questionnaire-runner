@@ -545,6 +545,18 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 block_id=block_id, list_name=value_source["identifier"]
             )
 
+    def _get_list_collector_by_list_name(self, list_name: str) -> ImmutableDict:
+        list_collector: ImmutableDict = ImmutableDict({})
+        for section in self._sections_by_id.values():
+            list_collector = self.get_list_collector_for_list(  # type: ignore
+                section=section,
+                for_list=list_name,
+            )
+            if list_collector:
+                break
+
+        return list_collector
+
     def _update_answer_dependencies_for_list_source(
         self, *, block_id: str, list_name: str
     ) -> None:
@@ -555,11 +567,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         but a block depending on the dynamic answers might (such as a calculated summary)
         """
         # Type ignore: section will always exist at this point, same with optional returns below
-        section: ImmutableDict = self.get_section_for_block_id(block_id)  # type: ignore
-        list_collector: ImmutableDict = self.get_list_collector_for_list(  # type: ignore
-            section=section,
-            for_list=list_name,
-        )
+        list_collector = self._get_list_collector_by_list_name(list_name)
 
         add_block_question = self.get_add_block_for_list_collector(  # type: ignore
             list_collector["id"]

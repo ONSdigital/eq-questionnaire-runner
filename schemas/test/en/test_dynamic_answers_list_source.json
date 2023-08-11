@@ -22,12 +22,12 @@
         }
     ],
     "questionnaire_flow": {
-        "type": "Linear",
-        "options": {}
+        "type": "Hub",
+        "options": { "required_completed_sections": ["list-collector-section"] }
     },
     "sections": [
         {
-            "id": "section",
+            "id": "list-collector-section",
             "title": "List Collector Section",
             "summary": {
                 "show_on_completion": true,
@@ -44,7 +44,7 @@
             },
             "groups": [
                 {
-                    "id": "group",
+                    "id": "list-collector-group",
                     "blocks": [
                         {
                             "type": "ListCollectorDrivingQuestion",
@@ -260,7 +260,21 @@
                                     ]
                                 }
                             }
-                        },
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "dynamic-answers-section",
+            "title": "Dynamic Answers Section",
+            "summary": {
+                "show_on_completion": true
+            },
+            "groups": [
+                {
+                    "id": "dynamic-answers-group",
+                    "blocks": [
                         {
                             "type": "Question",
                             "id": "dynamic-answer",
