@@ -170,11 +170,6 @@ class PlaceholderParser:
                     )
                 elif isinstance(arg_value, dict):
                     if "value" in arg_value:
-                        if transform["transform"] == "format_currency":
-                            answer = self._schema.get_answers_by_answer_id(
-                                arg_value["identifier"]
-                            )[0]
-                            transform_args["schema_limit"] = answer["decimal_places"]
                         resolved_value = arg_value["value"]
                     elif arg_value["source"] == "previous_transform":
                         resolved_value = transformed_value
