@@ -179,13 +179,13 @@ class PlaceholderParser:
                     resolved_value = arg_value
 
                 transform_args[arg_key] = resolved_value
-                
                 if transform["transform"] == "format_currency":
-                    answer = self._schema.get_answers_by_answer_id(
+                    if answers := self._schema.get_answers_by_answer_id(
                         arg_value["identifier"]
-                    )
-                    if answer:
-                        transform_args["schema_limit"] = answer[0].get("decimal_places")
+                    ):
+                        transform_args["schema_limit"] = answers[0].get(
+                            "decimal_places"
+                        )
 
             transformed_value = getattr(self._transformer, transform["transform"])(
                 **transform_args
