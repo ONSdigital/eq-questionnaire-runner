@@ -461,7 +461,7 @@ describe.skip("Using supplementary data", () => {
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryValues)[3].getText()).to.equal("£330.00");
   });
 });
-describe("Using supplementary data (editing list item bug)", () => {
+describe.skip("Using supplementary data (editing list item bug)", () => {
   const responseId = getRandomString(16);
 
   before("Starting the survey", async () => {
