@@ -62,6 +62,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     ):
         self._parent_id_map: dict[str, str] = {}
         self._list_name_to_section_map: dict[str, list[str]] = {}
+        self._list_name_to_section_id_origin_map: dict[str, str] = {}
         self._answer_dependencies_map: dict[str, set[AnswerDependent]] = defaultdict(
             set
         )
@@ -302,6 +303,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     "PrimaryPersonListCollector",
                     "RelationshipCollector",
                 ):
+                    self._list_name_to_section_id_origin_map[
+                        block["for_list"]
+                    ] = self._parent_id_map[group["id"]]
                     for nested_block_name in [
                         "add_block",
                         "edit_block",
@@ -545,18 +549,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 block_id=block_id, list_name=value_source["identifier"]
             )
 
-    def _get_list_collector_by_list_name(self, list_name: str) -> ImmutableDict:
-        list_collector: ImmutableDict = ImmutableDict({})
-        for section in self._sections_by_id.values():
-            list_collector = self.get_list_collector_for_list(  # type: ignore
-                section=section,
-                for_list=list_name,
-            )
-            if list_collector:
-                break
-
-        return list_collector
-
     def _update_answer_dependencies_for_list_source(
         self, *, block_id: str, list_name: str
     ) -> None:
@@ -567,10 +559,17 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         but a block depending on the dynamic answers might (such as a calculated summary)
         """
         # Type ignore: section will always exist at this point, same with optional returns below
-        list_collector = self._get_list_collector_by_list_name(list_name)
+        section_id = self._list_name_to_section_id_origin_map[list_name]
 
-        add_block_question = self.get_add_block_for_list_collector(  # type: ignore
-            list_collector["id"]
+        section = self.get_section(section_id)
+
+        list_collector = self.get_list_collector_for_list(
+            section=section,  # type: ignore
+            for_list=list_name,
+        )
+
+        add_block_question = self.get_add_block_for_list_collector(
+            list_collector["id"]  # type: ignore
         )["question"]
         answer_ids_for_block = list(
             self.get_answers_for_question_by_id(add_block_question)
