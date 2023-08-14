@@ -67,7 +67,10 @@ class ListRepeatingQuestion(ListEditQuestion):
     def handle_post(self) -> None:
         self.questionnaire_store_updater.add_completed_location(self.current_location)
         if not self.get_first_incomplete_list_repeating_block_location_for_list_item(
-            repeating_block_ids=self.repeating_block_ids,
+            repeating_block_ids=[
+                repeating_block["id"]
+                for repeating_block in self.parent_block.get("repeating_blocks", [])
+            ],
             section_id=self.current_location.section_id,
             # Type ignore: list_name and list_item_id will always exist at this point
             list_item_id=self.current_location.list_item_id,  # type: ignore

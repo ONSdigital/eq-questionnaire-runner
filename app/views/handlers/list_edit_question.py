@@ -24,7 +24,10 @@ class ListEditQuestion(ListAction):
             return url
 
         if first_incomplete_block := self.get_first_incomplete_list_repeating_block_location_for_list_item(
-            repeating_block_ids=self._schema.list_collector_repeating_block_ids,
+            repeating_block_ids=[
+                repeating_block["id"]
+                for repeating_block in self.parent_block.get("repeating_blocks", [])
+            ],
             section_id=self.current_location.section_id,
             # Type ignore: list_name and list_item_id will exist at this point
             list_item_id=self.current_location.list_item_id,  # type: ignore

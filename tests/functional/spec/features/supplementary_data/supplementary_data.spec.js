@@ -11,6 +11,7 @@ import HubPage from "../../../base_pages/hub.page";
 import IntroductionBlockPage from "../../../generated_pages/supplementary_data/introduction-block.page.js";
 import LengthOfEmploymentPage from "../../../generated_pages/supplementary_data/length-of-employment.page.js";
 import ListCollectorAdditionalPage from "../../../generated_pages/supplementary_data/list-collector-additional.page.js";
+import ListCollectorAdditionalRemovePage from "../../../generated_pages/supplementary_data/list-collector-additional-remove.page.js";
 import ListCollectorEmployeesPage from "../../../generated_pages/supplementary_data/list-collector-employees.page.js";
 import ListCollectorProductsPage from "../../../generated_pages/supplementary_data/list-collector-products.page.js";
 import LoadedSuccessfullyBlockPage from "../../../generated_pages/supplementary_data/loaded-successfully-block.page.js";
@@ -353,6 +354,29 @@ describe.skip("Using supplementary data", () => {
     await expect(await $(Section4Page.employmentStart()).getText()).to.contain("10 October 1999");
     await $(Section4Page.submit()).click();
   });
+  it("Given I add some additional employees via a list collector, When I edit newly added supplementary list item, Then I safely return to list collector page", async () => {
+    await $(HubPage.summaryRowLink("section-3")).click();
+    await $(Section3Page.additionalEmployeesListAddLink()).click();
+    await $(AddAdditionalEmployeePage.employeeFirstName()).setValue("Joe");
+    await $(AddAdditionalEmployeePage.employeeLastName()).setValue("Bloggs");
+    await $(AddAdditionalEmployeePage.submit()).click();
+    await $(ListCollectorAdditionalPage.listEditLink(3)).click();
+    await $(AddAdditionalEmployeePage.submit()).click();
+    await $(ListCollectorAdditionalPage.no()).click();
+    await $(ListCollectorAdditionalPage.submit()).click();
+    await $(Section3Page.additionalEmployeesListRemoveLink(3)).click();
+    await $(ListCollectorAdditionalRemovePage.yes()).click();
+    await $(ListCollectorAdditionalRemovePage.submit()).click();
+    await $(Section3Page.submit()).click();
+    await $(HubPage.submit()).click();
+    await $(CalculatedSummaryVolumeSalesPage.submit()).click();
+    await $(CalculatedSummaryVolumeTotalPage.submit()).click();
+    await $$(DynamicProductsPage.inputs())[2].setValue(440);
+    await $(DynamicProductsPage.submit()).click();
+    await $(CalculatedSummaryValueSalesPage.submit()).click();
+    await $(Section6Page.submit()).click();
+    await expect(await browser.getUrl()).to.contain(HubPage.url());
+  });
 
   it("Given I can view my response after submission, When I submit the survey, Then I see the values I've entered and correct rendering with supplementary data", async () => {
     await $(HubPage.submit()).click();
@@ -433,7 +457,32 @@ describe.skip("Using supplementary data", () => {
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryItems)[3].getText()).to.equal("Value of sales from other categories");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryValues)[0].getText()).to.equal("£110.00");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryValues)[1].getText()).to.equal("£220.00");
-    await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryValues)[2].getText()).to.equal("No answer provided");
+    await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryValues)[2].getText()).to.equal("£440.00");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryValues)[3].getText()).to.equal("£330.00");
+  });
+});
+describe("Using supplementary data (editing list item bug)", () => {
+  const responseId = getRandomString(16);
+
+  before("Starting the survey", async () => {
+    await browser.openQuestionnaire("test_supplementary_data.json", {
+      version: "v2",
+      sdsDatasetId: "c067f6de-6d64-42b1-8b02-431a3486c178",
+      responseId,
+    });
+  });
+  it("Given I add some additional employees via a list collector, When I edit newly added supplementary list item, Then I safely return to list collector page", async () => {
+    await $(LoadedSuccessfullyBlockPage.submit()).click();
+    await $(IntroductionBlockPage.acceptCookies()).click();
+    await $(IntroductionBlockPage.submit()).click();
+    await $(HubPage.summaryRowLink("section-3")).click();
+    await $(AnyAdditionalEmployeesPage.yes()).click();
+    await $(AnyAdditionalEmployeesPage.submit()).click();
+    await $(AddAdditionalEmployeePage.employeeFirstName()).setValue("Joe");
+    await $(AddAdditionalEmployeePage.employeeLastName()).setValue("Bloggs");
+    await $(AddAdditionalEmployeePage.submit()).click();
+    await $(ListCollectorAdditionalPage.listEditLink(1)).click();
+    await $(AddAdditionalEmployeePage.submit()).click();
+    await expect(await browser.getUrl()).to.contain(ListCollectorAdditionalPage.pageName);
   });
 });
