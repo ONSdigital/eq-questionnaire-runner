@@ -474,3 +474,24 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         # previous link should return to submit page
         self.previous()
         self.assertInUrl("/submit/")
+
+    def test_previous_link_in_two_list_collectors_with_repeating_blocks_returns_to_previous_location(
+        self,
+    ):
+        self.launchSurvey("test_list_collector_repeating_blocks_two_list_collectors")
+        self.post({"responsible-party-answer": "Yes"})
+
+        # Add some items and progress to submit page
+        self.add_three_companies()
+        self.post({"any-other-companies-or-branches-answer": "No"})
+        self.post({"any-other-trading-details-answer": "No other details"})
+        self.post()
+
+        # click an edit link
+        self.post({"responsible-party-business-answer": "Yes"})
+        self.post({"any-businesses-or-branches-answer": "Yes"})
+        self.post({"business-or-branch-name": "Business1"})
+        self.previous()
+
+        # previous link should return to submit page
+        self.assertInUrl("/edit-business/")
