@@ -689,14 +689,6 @@ def test_answer_dependencies_for_min_max(numbers_schema):
                 answer_id=None,
             )
         },
-        "test-range": {
-            AnswerDependent(
-                section_id="default-section",
-                block_id="test-min-max-block",
-                for_list=None,
-                answer_id=None,
-            )
-        },
     }
 
 
