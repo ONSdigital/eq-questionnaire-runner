@@ -271,7 +271,7 @@
                                         "mandatory": false,
                                         "type": "Currency",
                                         "currency": "GBP",
-                                        "decimal_places": 2,
+                                        "decimal_places": 5,
                                         "maximum": {
                                             "value": {
                                                 "source": "answers",

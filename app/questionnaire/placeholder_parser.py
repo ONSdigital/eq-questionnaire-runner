@@ -153,9 +153,6 @@ class PlaceholderParser:
         self, transform_list: Sequence[Mapping]
     ) -> TransformedValueTypes:
         transformed_value: TransformedValueTypes = None
-
-        # answers = self._schema.get_answers_by_answer_id(self, transform_list["identifier"][0]["arguments"])
-
         for transform in transform_list:
             transform_args: MutableMapping = {}
             value_source_resolver = self._get_value_source_resolver_for_transform(
@@ -179,13 +176,6 @@ class PlaceholderParser:
                     resolved_value = arg_value
 
                 transform_args[arg_key] = resolved_value
-                if transform["transform"] == "format_currency":
-                    if answers := self._schema.get_answers_by_answer_id(
-                        arg_value["identifier"]
-                    ):
-                        transform_args["schema_limit"] = answers[0].get(
-                            "decimal_places"
-                        )
 
             transformed_value = getattr(self._transformer, transform["transform"])(
                 **transform_args

@@ -5,7 +5,6 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Any, Callable, Literal, Mapping, Optional, TypeAlias, Union
 
-import babel
 import flask
 import flask_babel
 from babel import numbers, units
@@ -17,7 +16,7 @@ from wtforms import SelectFieldBase
 from app.questionnaire.questionnaire_schema import is_summary_with_calculation
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import MAX_NUMBER
-from app.utilities.decimal_places import eq_custom_currency, eq_format_decimal
+from app.utilities.decimal_places import custom_format_currency, custom_format_decimal
 
 blueprint = flask.Blueprint("filters", __name__)
 FormType = Mapping[str, Mapping[str, Any]]
@@ -35,15 +34,17 @@ def strip_tags(value: str) -> Markup:
 
 @blueprint.app_template_filter()
 def format_number(value: Union[int, Decimal, float]) -> str:
-    locale_ = flask_babel.get_locale()
-    locale_decimal_point = babel.numbers.get_decimal_symbol(flask_babel.get_locale())
+    locale = flask_babel.get_locale()
+    locale_decimal_point = numbers.get_decimal_symbol(locale)
 
     if locale_decimal_point in str(value):
-        x: str = eq_format_decimal(value, locale_, locale_decimal_point)
-        return x
+        formatted_decimal: str = custom_format_decimal(
+            value, locale, locale_decimal_point
+        )
+        return formatted_decimal
 
     if value or value == 0:
-        formatted_number: str = numbers.format_decimal(value, locale=locale_)
+        formatted_number: str = numbers.format_decimal(value, locale=locale)
         return formatted_number
     return ""
 
@@ -59,11 +60,11 @@ def get_formatted_currency(
     schema_limits: int | None = None,
 ) -> str:
     if value or value == 0:
-        formatted_currency: str = eq_custom_currency(
+        formatted_currency: str = custom_format_currency(
             value=value,
             currency=currency,
-            locale_p=flask_babel.get_locale(),
-            schema_limit=schema_limits,
+            locale=flask_babel.get_locale(),
+            decimal_limit=schema_limits,
         )
         return formatted_currency
 
@@ -88,17 +89,11 @@ def format_unit(
     value: int | float | Decimal,
     length: UnitLengthType = "short",
 ) -> str:
-    # mass-metric-ton no longer supported for en_GB and related locales, but still present in business schema and allowed in validator,
-    # until removed from schema we substitute mass-tonne for mass-metric-ton before format unit
-    measurement_unit = "mass-tonne" if unit == "mass-metric-ton" else unit
-
-    locale_ = flask_babel.get_locale()
-
     formatted_unit: str = units.format_unit(
         value=value,
-        measurement_unit=measurement_unit,
+        measurement_unit=unit,
         length=length,
-        locale=locale_,
+        locale=flask_babel.get_locale(),
     )
 
     return formatted_unit

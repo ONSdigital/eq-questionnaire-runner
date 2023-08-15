@@ -7,9 +7,15 @@ from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 
 
 @pytest.mark.parametrize(
-    "value, currency, schema_limits, formatted_currency",
+    "value, currency, decimal_limit, formatted_currency",
     (
         (2, "GBP", 6, "£2.00"),
+        ("11", "GBP", 2, "£11.00"),
+        ("11.99", "GBP", 2, "£11.99"),
+        ("11000", "USD", 2, "US$11,000.00"),
+        (0, None, 2, "£0.00"),
+        (0.00, None, 2, "£0.00"),
+        (11000, "USD", 2, "US$11,000.00"),
         (Decimal("2.14564"), "GBP", 6, "£2.14564"),
         (Decimal("2.1"), "GBP", 1, "£2.1"),
         (Decimal("2.1"), "GBP", None, "£2.10"),
@@ -21,11 +27,11 @@ from app.questionnaire.questionnaire_schema import QuestionnaireSchema
     ),
 )
 def test_format_currency(
-    value, currency, schema_limits, formatted_currency, transformer, app
+    value, currency, decimal_limit, formatted_currency, transformer, app
 ):
     with app.app_context():
         assert (
-            transformer().format_currency(value, currency or "GBP", schema_limits)
+            transformer().format_currency(value, currency or "GBP", decimal_limit)
             == formatted_currency
         )
 

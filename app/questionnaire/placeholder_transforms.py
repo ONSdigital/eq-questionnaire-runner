@@ -15,7 +15,7 @@ from app.questionnaire.rules.operations import DateOffset
 from app.questionnaire.rules.operations_helper import OperationHelper
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import DEFAULT_LOCALE
-from app.utilities.decimal_places import eq_custom_currency, eq_format_decimal
+from app.utilities.decimal_places import custom_format_currency, custom_format_decimal
 
 if TYPE_CHECKING:
     from app.questionnaire.placeholder_renderer import (
@@ -47,14 +47,14 @@ class PlaceholderTransforms:
         self,
         number: Decimal | float,
         currency: str = "GBP",
-        schema_limit: int | None = None,
+        decimal_limit: int | None = None,
     ) -> str:
         if number or number == 0:
-            formatted_currency: str = eq_custom_currency(
+            formatted_currency: str = custom_format_currency(
                 value=number,
                 currency=currency,
-                locale_p=self.locale,
-                schema_limit=schema_limit,
+                locale=self.locale,
+                decimal_limit=decimal_limit,
             )
             return formatted_currency
         return ""
@@ -142,13 +142,9 @@ class PlaceholderTransforms:
         locale_decimal_point = babel.numbers.get_decimal_symbol(self.locale)
 
         if locale_decimal_point in str(number):
-            x: str = eq_format_decimal(number, self.locale, locale_decimal_point)
-            return x
-
+            return custom_format_decimal(number, self.locale, locale_decimal_point)
         if number or number == 0:
-            formatted_decimal: str = format_decimal(number, locale=self.locale)
-            return formatted_decimal
-
+            return format_decimal(number, locale=self.locale)
         return ""
 
     @staticmethod
@@ -173,7 +169,7 @@ class PlaceholderTransforms:
         locale_decimal_point = babel.numbers.get_decimal_symbol(self.locale)
 
         if locale_decimal_point in str(value):
-            x = eq_format_decimal(value, self.locale, locale_decimal_point)
+            x = custom_format_decimal(value, self.locale, locale_decimal_point)
             y = formatted_unit.split(" ")[1]
             return f"{x} {y}"
 
