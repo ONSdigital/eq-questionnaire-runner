@@ -35,6 +35,14 @@ DependencyDictType: TypeAlias = dict[str, OrderedSet[str]]
 
 TRANSFORMS_REQUIRING_ROUTING_PATH = {"first_non_empty_item"}
 
+NUMERIC_ANSWER_TYPES = {
+    "Currency",
+    "Duration",
+    "Number",
+    "Percentage",
+    "Unit",
+}
+
 
 class InvalidSchemaConfigurationException(Exception):
     pass
@@ -141,7 +149,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 decimal_places = answer.get("decimal_places")
 
                 if decimal_places:
-                    value_length = value_length + decimal_places
+                    # + 1 for decimal place
+                    value_length = value_length + decimal_places + 1
 
                 longest_value_length = max(longest_value_length, value_length)
 
@@ -158,13 +167,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _populate_min_max_for_numeric_answers(self) -> None:
         for answer_id, answers in self._answers_by_id.items():
-            if answers[0]["type"] in {
-                "Currency",
-                "Duration",
-                "Number",
-                "Percentage",
-                "Unit",
-            }:
+            if answers[0]["type"] in NUMERIC_ANSWER_TYPES:
                 self._create_min_max_map("minimum", answer_id, answers, 1)
                 self._create_min_max_map(
                     "maximum", answer_id, answers, len(str(MAX_NUMBER))
