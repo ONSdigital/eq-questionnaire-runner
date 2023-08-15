@@ -173,14 +173,14 @@
                                         "maximum": {
                                             "value": {
                                                 "source": "answers",
-                                                "identifier": "test-range"
+                                                "identifier": "set-maximum"
                                             },
                                             "exclusive": true
                                         },
                                         "minimum": {
                                             "value": {
                                                 "source": "answers",
-                                                "identifier": "test-range"
+                                                "identifier": "set-minimum"
                                             },
                                             "exclusive": true
                                         }
