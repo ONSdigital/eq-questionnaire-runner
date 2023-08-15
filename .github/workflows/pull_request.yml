@@ -43,9 +43,6 @@ jobs:
         with:
           path: ${{ steps.get-yarn-cache.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-      - name: Install yarn deps
-        if: steps.cache-yarn.outputs.cache-hit != 'true'
-        run: yarn
   lint:
     needs: [python-dependencies, node-dependencies]
     runs-on: ubuntu-22.04
