@@ -692,11 +692,11 @@ def test_answer_dependencies_for_min_max(numbers_schema):
         "test-range": {
             AnswerDependent(
                 section_id="default-section",
-                block_id='test-min-max-block',
+                block_id="test-min-max-block",
                 for_list=None,
-                answer_id=None
+                answer_id=None,
             )
-        }
+        },
     }
 
 
