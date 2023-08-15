@@ -249,7 +249,7 @@ def should_wrap_with_fieldset_processor() -> dict[str, Callable]:
     return {"should_wrap_with_fieldset": should_wrap_with_fieldset}
 
 
-def get_mix_max_value_width(
+def get_min_max_value_width(
     min_max: Literal["minimum", "maximum"], answer: AnswerType, default_value: int
 ) -> int:
     """
@@ -273,8 +273,8 @@ def get_mix_max_value_width(
 def get_width_for_number(answer: AnswerType) -> Optional[int]:
     allowable_widths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30, 40, 50]
 
-    min_value_width = get_mix_max_value_width("minimum", answer, 0)
-    max_value_width = get_mix_max_value_width("maximum", answer, MAX_NUMBER)
+    min_value_width = get_min_max_value_width("minimum", answer, 0)
+    max_value_width = get_min_max_value_width("maximum", answer, MAX_NUMBER)
 
     width = max(min_value_width, max_value_width)
 

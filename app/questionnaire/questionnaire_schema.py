@@ -146,11 +146,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
             if isinstance(value, float | int):
                 value_length = len(str(value))
-                decimal_places = answer.get("decimal_places")
-
-                if decimal_places:
-                    # + 1 for decimal place
-                    value_length = value_length + decimal_places + 1
 
                 longest_value_length = max(longest_value_length, value_length)
 
