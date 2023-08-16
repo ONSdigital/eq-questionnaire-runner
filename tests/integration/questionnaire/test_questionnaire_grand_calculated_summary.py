@@ -26,7 +26,10 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
         )
 
     def test_grand_calculated_summary_multiple_sections(self):
-        self.launchSurvey("test_grand_calculated_summary_multiple_sections")
+        """
+        Use the repeating answers schema to test the grand calculated summary which uses calculated summaries in multiple different sections
+        """
+        self.launchSurvey("test_grand_calculated_summary_repeating_answers")
         # section 1
         self.post()
         self.post({"q1-a1": 10, "q1-a2": 20})
@@ -36,7 +39,7 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
         self.post()
         # confirm calculated and grand calculated summary
         self.assertInBody(
-            "Calculated summary for section 1 is calculated to be £210.00. Is this correct?"
+            "Calculated summary for food and clothing is calculated to be £210.00. Is this correct?"
         )
         self.post()
         self.assertInBody(
@@ -51,7 +54,7 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
         # grand calculated summary section with calculated summaries from multiple sections
         self.post()
         self.assertInBody(
-            "Grand Calculated Summary for section 1 and 2 is calculated to be £510.00. Is this correct?"
+            "Grand Calculated Summary for shopping and entertainment is calculated to be £510.00. Is this correct?"
         )
 
     def _complete_upto_grand_calculated_summary_cross_section_dependencies(self):
