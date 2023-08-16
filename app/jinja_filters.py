@@ -37,7 +37,7 @@ def strip_tags(value: str) -> Markup:
 
 
 @blueprint.app_template_filter()
-def format_number(value: Union[int, Decimal, float]) -> str:
+def format_number(value: int | Decimal | float) -> str:
     locale = flask_babel.get_locale()
 
     if value or value == 0:
@@ -86,12 +86,11 @@ def format_unit(
     value: int | float | Decimal,
     length: UnitLengthType = "short",
 ) -> str:
-    locale = flask_babel.get_locale()
     formatted_unit: str = custom_format_unit(
         value=value,
         measurement_unit=unit,
         length=length,
-        locale=locale,
+        locale=flask_babel.get_locale(),
     )
 
     return formatted_unit
@@ -506,7 +505,7 @@ class SummaryRowItem:
                 for option in value
             ]
         elif answer_type == "currency":
-            decimal_places = answer.get("decimal_places", None)
+            decimal_places = answer.get("decimal_places")
             self.valueList = [
                 SummaryRowItemValue(
                     get_formatted_currency(value, answer["currency"], decimal_places)

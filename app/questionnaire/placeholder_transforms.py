@@ -46,7 +46,7 @@ class PlaceholderTransforms:
 
     def format_currency(
         self,
-        number: Decimal | float,
+        number: int | Decimal | float,
         currency: str = "GBP",
         decimal_limit: int | None = None,
     ) -> str:
