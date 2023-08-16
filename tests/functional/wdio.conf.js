@@ -45,7 +45,7 @@ export const config = {
   // and 30 processes will get spawned. The property handles how many capabilities
   // from the same test should run tests.
   //
-  maxInstances: process.env.EQ_FUNCTIONAL_TEST_MAX_INSTANCES ? 1 : 2,
+  maxInstances: parseInt(process.env.EQ_FUNCTIONAL_TEST_MAX_INSTANCES) || 2,
   // If you have trouble getting all important capabilities together, check out the
   // Sauce Labs platform configurator - a great tool to configure your capabilities:
   // https://docs.saucelabs.com/reference/platforms-configurator
