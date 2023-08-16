@@ -39,16 +39,9 @@ def strip_tags(value: str) -> Markup:
 @blueprint.app_template_filter()
 def format_number(value: Union[int, Decimal, float]) -> str:
     locale = flask_babel.get_locale()
-    locale_decimal_point = numbers.get_decimal_symbol(locale)
-
-    if locale_decimal_point in str(value):
-        formatted_decimal: str = custom_format_decimal(
-            value, locale, locale_decimal_point
-        )
-        return formatted_decimal
 
     if value or value == 0:
-        formatted_number: str = numbers.format_decimal(value, locale=locale)
+        formatted_number: str = custom_format_decimal(value, locale)
         return formatted_number
     return ""
 

@@ -3,9 +3,7 @@ from decimal import Decimal
 from typing import TYPE_CHECKING, Literal, Sequence, Sized
 from urllib.parse import quote
 
-from babel import numbers
 from babel.dates import format_datetime
-from babel.numbers import format_decimal
 from dateutil.relativedelta import relativedelta
 from flask_babel import ngettext
 
@@ -142,12 +140,8 @@ class PlaceholderTransforms:
         return string_to_format
 
     def format_number(self, number: int | Decimal | float) -> str:
-        decimal_separator = numbers.get_decimal_symbol(self.locale)
-
-        if decimal_separator in str(number):
-            return custom_format_decimal(number, self.locale, decimal_separator)
         if number or number == 0:
-            return format_decimal(number, locale=self.locale)
+            return custom_format_decimal(number, self.locale)
         return ""
 
     @staticmethod

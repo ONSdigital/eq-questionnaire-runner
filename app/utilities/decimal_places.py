@@ -6,14 +6,12 @@ from babel import Locale, numbers, units
 UnitLengthType: TypeAlias = Literal["short", "long", "narrow"]
 
 
-def custom_format_decimal(
-    value: int | Decimal | float, locale: Locale | str, decimal_separator: str
-) -> str:
+def custom_format_decimal(value: int | Decimal | float, locale: Locale | str) -> str:
     """
     Function is used to format decimal numbers avoiding the decimal_quantization=True/False constraints and preserving the number input by the user.
     e.g 123.430 stays as 123.430 (if schema allows).
     """
-    number_format = get_number_format(value, locale, decimal_separator)
+    number_format = get_number_format(value, locale)
 
     return numbers.format_decimal(
         value,
@@ -66,9 +64,7 @@ def custom_format_unit(
     locale: Locale | str,
     length: UnitLengthType = "short",
 ):
-    decimal_separator = numbers.get_decimal_symbol(locale)
-
-    number_format = get_number_format(value, locale, decimal_separator)
+    number_format = get_number_format(value, locale)
 
     formatted_unit: str = units.format_unit(
         value=value,
@@ -81,9 +77,9 @@ def custom_format_unit(
     return formatted_unit
 
 
-def get_number_format(
-    value: int | float | Decimal, locale: Locale | str, decimal_separator: str
-) -> str:
+def get_number_format(value: int | float | Decimal, locale: Locale | str) -> str:
+    decimal_separator = numbers.get_decimal_symbol(locale)
+
     decimal_places = (
         len(str(value).split(f"{decimal_separator}")[1])
         if decimal_separator in str(value)
