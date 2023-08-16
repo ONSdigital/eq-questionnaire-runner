@@ -1,12 +1,10 @@
-from typing import Any
-
 from app.views.handlers.list_collector import ListCollector
 from app.views.handlers.question import Question
 
 
 class ListCollectorContent(ListCollector):
-    def _get_additional_view_context(self) -> Any:
-        return self.rendered_block["content"]
+    def _get_additional_view_context(self) -> dict:
+        return self.rendered_block.get("content", {})
 
     def handle_post(self) -> None:
         if self._is_list_collector_complete():

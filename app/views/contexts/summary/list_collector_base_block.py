@@ -70,7 +70,7 @@ class ListCollectorBaseBlock:
             self._supplementary_data_store,
         )
 
-    def _list_collector_block_on_path(self, for_list: str) -> list:
+    def _list_collector_block_on_path(self, for_list: str) -> list[ImmutableDict]:
         list_collector_blocks = list(
             self._schema.get_list_collectors_for_list(self._section, for_list=for_list)
         )
@@ -82,13 +82,12 @@ class ListCollectorBaseBlock:
         ]
 
     def _list_collector_block(
-        self, for_list: str, list_collector_blocks_on_path: list
+        self, for_list: str, list_collector_blocks_on_path: list[ImmutableDict]
     ) -> ImmutableDict:
         list_collector_blocks = list(
             self._schema.get_list_collectors_for_list(self._section, for_list=for_list)
         )
-        # Type ignore: self._schema.get_list_collectors_for_list can return None
-        return (  # type: ignore
+        return (
             list_collector_blocks_on_path[0]
             if list_collector_blocks_on_path
             else list_collector_blocks[0]

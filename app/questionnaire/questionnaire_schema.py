@@ -918,7 +918,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         collector_type = (
             {"PrimaryPersonListCollector"}
             if primary
-            else {"ListCollectorContent", "ListCollector"}
+            else LIST_COLLECTORS_WITH_REPEATING_BLOCKS
         )
 
         return (
