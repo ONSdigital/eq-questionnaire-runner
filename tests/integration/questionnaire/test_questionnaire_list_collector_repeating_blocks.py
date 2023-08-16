@@ -478,7 +478,7 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
     def test_previous_link_in_two_list_collectors_with_repeating_blocks_returns_to_previous_location(
         self,
     ):
-        self.launchSurvey("test_list_collector_repeating_blocks_two_list_collectors")
+        self.launchSurvey("test_list_collector_repeating_blocks_with_hub")
         self.post({"responsible-party-answer": "Yes"})
 
         # Add some items and progress to second list collector
@@ -486,6 +486,7 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         self.post({"any-other-companies-or-branches-answer": "No"})
         self.post({"any-other-trading-details-answer": "No other details"})
         self.post()
+        self.get("/questionnaire/sections/section-businesses/")
 
         # Answer initial questions and click previous link
         self.post({"responsible-party-business-answer": "Yes"})
