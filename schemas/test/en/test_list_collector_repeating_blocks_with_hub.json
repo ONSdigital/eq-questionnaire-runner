@@ -98,10 +98,7 @@
     "questionnaire_flow": {
         "type": "Hub",
         "options": {
-            "required_completed_sections": ["section-companies"],
-            "summary": {
-                "collapsible": false
-            }
+            "required_completed_sections": ["section-companies"]
         }
     },
     "sections": [
