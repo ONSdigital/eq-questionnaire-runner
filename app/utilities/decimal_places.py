@@ -36,7 +36,10 @@ def custom_format_currency(
     # get locale pattern
     parsed_locale = Locale.parse(locale)
     number_format = parsed_locale.currency_formats["standard"]
-    number_format.frac_prec = (0, decimal_places)
+    if decimal_limit:
+        number_format.frac_prec = (0, decimal_limit)
+    else:
+        number_format.frac_prec = (0, decimal_places)
 
     # if decimal_limit is less than 2 then return the value the user entered
     if decimal_limit is not None and decimal_limit < 2:

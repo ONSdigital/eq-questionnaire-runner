@@ -16,6 +16,7 @@ from app.questionnaire.questionnaire_schema import QuestionnaireSchema
         (0, None, 2, "£0.00"),
         (0.00, None, 2, "£0.00"),
         (11000, "USD", 2, "US$11,000.00"),
+        (Decimal("123.45"), "GBP", 1, "£123.4"),
         (Decimal("2.14564"), "GBP", 6, "£2.14564"),
         (Decimal("2.1"), "GBP", 1, "£2.1"),
         (Decimal("2.1"), "GBP", None, "£2.10"),
