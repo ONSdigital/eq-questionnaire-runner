@@ -558,13 +558,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         blocks like dynamic_answers, don't directly need to depend on the add_block/remove_block,
         but a block depending on the dynamic answers might (such as a calculated summary)
         """
-        # Type ignore: section will always exist at this point, same with optional returns below
-        section_id = self._list_name_to_section_id_origin_map[list_name]
-
-        section = self.get_section(section_id)
-
         list_collector = self.get_list_collector_for_list(
-            section=section,  # type: ignore
             for_list=list_name,
         )
 
@@ -912,30 +906,24 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         """
         return self._questions_by_id.get(question_id)
 
-    @staticmethod
     def get_list_collectors_for_list(
-        section: Mapping, for_list: str, primary: bool = False
+        self, section: ImmutableDict, for_list: str, primary: bool = False
     ) -> Generator[ImmutableDict, None, None]:
         collector_type = "PrimaryPersonListCollector" if primary else "ListCollector"
 
         return (
             block
-            for block in QuestionnaireSchema.get_blocks_for_section(section)
+            for block in self.get_blocks_for_section(section)
             if block["type"] == collector_type and block["for_list"] == for_list
         )
 
-    @staticmethod
     def get_list_collector_for_list(
-        section: Mapping, for_list: str, primary: bool = False
+        self, for_list: str, primary: bool = False
     ) -> ImmutableDict | None:
-        try:
-            return next(
-                QuestionnaireSchema.get_list_collectors_for_list(
-                    section, for_list, primary
-                )
-            )
-        except StopIteration:
-            return None
+        # Type ignore: Section will exist at this point
+        section: ImmutableDict = self.get_section(self._list_name_to_section_id_origin_map[for_list])  # type: ignore
+
+        return next(self.get_list_collectors_for_list(section, for_list, primary))
 
     @classmethod
     def get_answers_for_question_by_id(
