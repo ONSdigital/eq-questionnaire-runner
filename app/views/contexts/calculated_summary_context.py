@@ -15,7 +15,6 @@ from app.jinja_filters import (
     format_unit,
     get_formatted_currency,
 )
-from app.questionnaire import Location
 from app.questionnaire.questionnaire_schema import (
     QuestionnaireSchema,
     get_calculated_summary_answer_ids,
@@ -25,6 +24,7 @@ from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.schema_utils import get_answer_ids_in_block
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.questionnaire.variants import choose_question_to_display, transform_variants
+from app.utilities.types import LocationType
 from app.views.contexts.context import Context
 from app.views.contexts.summary.calculated_summary_block import NumericType
 from app.views.contexts.summary.group import Group
@@ -41,7 +41,7 @@ class CalculatedSummaryContext(Context):
         metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
         routing_path: RoutingPath,
-        current_location: Location,
+        current_location: LocationType,
         supplementary_data_store: SupplementaryDataStore,
         return_to: str | None = None,
         return_to_block_id: str | None = None,
