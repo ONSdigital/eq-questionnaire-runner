@@ -20,6 +20,7 @@ services:
         environment:
             DATASTORE_EMULATOR_HOST: datastore:8432
             EQ_REDIS_HOST: "redis"
+            SDS_API_BASE_URL: http://sds:5003
         restart: always
         depends_on:
             - datastore
