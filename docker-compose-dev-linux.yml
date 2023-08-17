@@ -20,7 +20,7 @@ services:
         environment:
             SURVEY_RUNNER_URL: http://localhost:5000
             SURVEY_RUNNER_SCHEMA_URL: http://host.docker.internal:5000
-            SDS_API_BASE_URL: http://sds:5003
+            SDS_API_BASE_URL: http://host.docker.internal:5003
         networks:
             - eq-env
         restart: always
