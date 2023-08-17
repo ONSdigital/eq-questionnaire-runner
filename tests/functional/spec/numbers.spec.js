@@ -56,7 +56,7 @@ describe("Number validation", () => {
 
     it("When I enter values inside the set range, Then I should be able to submit the survey", async () => {
       await $(TestMinMax.testRange()).setValue("12");
-      await $(TestMinMax.testDecimal()).setValue("11.12345");
+      await $(TestMinMax.testDecimal()).setValue("11.10000");
       await $(TestMinMax.testPercent()).setValue("99");
       await $(TestMinMax.submit()).click();
       await $(DetailAnswer.other()).click();
@@ -96,7 +96,7 @@ describe("Number validation", () => {
     });
 
     it("When a number with more than 3 decimal places has been entered, Then it should be displayed correctly on the summary", async () => {
-      await expect(await $(SubmitPage.testDecimal()).getText()).to.equal("£11.12345");
+      await expect(await $(SubmitPage.testDecimal()).getText()).to.equal("£11.10000");
     });
   });
 });

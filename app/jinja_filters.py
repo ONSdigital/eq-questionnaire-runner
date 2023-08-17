@@ -40,10 +40,8 @@ def strip_tags(value: str) -> Markup:
 def format_number(value: int | Decimal | float) -> str:
     locale = flask_babel.get_locale()
 
-    if value or value == 0:
-        formatted_number: str = custom_format_decimal(value, locale)
-        return formatted_number
-    return ""
+    formatted_number: str = custom_format_decimal(value, locale)
+    return formatted_number
 
 
 def get_formatted_address(address_fields: dict[str, str]) -> str:
@@ -52,20 +50,17 @@ def get_formatted_address(address_fields: dict[str, str]) -> str:
 
 
 def get_formatted_currency(
-    value: Union[float, Decimal],
+    value: float | Decimal,
     currency: str = "GBP",
-    schema_limits: int | None = None,
+    decimal_limit: int | None = None,
 ) -> str:
-    if value or value == 0:
-        formatted_currency: str = custom_format_currency(
-            value=value,
-            currency=currency,
-            locale=flask_babel.get_locale(),
-            decimal_limit=schema_limits,
-        )
-        return formatted_currency
-
-    return ""
+    formatted_currency: str = custom_format_currency(
+        value=value,
+        currency=currency,
+        locale=flask_babel.get_locale(),
+        decimal_limit=decimal_limit,
+    )
+    return formatted_currency
 
 
 @blueprint.app_template_filter()

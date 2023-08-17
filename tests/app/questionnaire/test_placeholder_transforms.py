@@ -4,30 +4,14 @@ import pytest
 
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-
-
-@pytest.mark.parametrize(
-    "value, currency, decimal_limit, formatted_currency",
-    (
-        (Decimal("3000.44545"), "GBP", None, "£3,000.44545"),
-        (Decimal("2.1"), "GBP", None, "£2.10"),
-        (Decimal("3000"), "GBP", 0, "£3,000"),
-        (Decimal("3000"), "JPY", 0, "JP¥3,000"),
-        (Decimal("123.45"), "GBP", 1, "£123.4"),
-        (Decimal("2.1"), "GBP", 1, "£2.1"),
-        (11, "GBP", 2, "£11.00"),
-        (0, "GBP", 2, "£0.00"),
-        (0.00, "GBP", 2, "£0.00"),
-        (11000, "USD", 2, "US$11,000.00"),
-        (11000, "USD", 2, "US$11,000.00"),
-        (Decimal("11.99"), "GBP", 2, "£11.99"),
-        (2, "GBP", 6, "£2.00"),
-        (Decimal("2.14564"), "GBP", 6, "£2.14564"),
-        (Decimal("1.1"), "GBP", 6, "£1.10"),
-        (Decimal("1.00000"), "GBP", 6, "£1.00000"),
-        (Decimal("3000.445"), "GBP", 6, "£3,000.445"),
-    ),
+from tests.app.test_jinja_filters import (
+    TEST_FORMAT_CURRENCY_PARAMS,
+    TEST_FORMAT_NUMBER_PARAMS,
+    TEST_FORMAT_UNIT_PARAMS,
 )
+
+
+@pytest.mark.parametrize(*TEST_FORMAT_CURRENCY_PARAMS)
 def test_format_currency(
     value, currency, decimal_limit, formatted_currency, transformer, app
 ):
@@ -38,29 +22,10 @@ def test_format_currency(
         )
 
 
-@pytest.mark.parametrize(
-    "number, expected",
-    (
-        (123, "123"),
-        ("123.4", "123.4"),
-        ("123.40", "123.40"),
-        (123434.7678, "123,434.7678"),
-        ("123.45678", "123.45678"),
-        ("2344.6533", "2,344.6533"),
-        ("1000", "1,000"),
-        ("10000", "10,000"),
-        ("100000000", "100,000,000"),
-        (0, "0"),
-        (Decimal("0.00"), "0.00"),
-        (Decimal("0.000"), "0.000"),
-        (Decimal("0.0000"), "0.0000"),
-        ("", ""),
-        (None, ""),
-    ),
-)
-def test_format_number(number, expected, transformer, app):
+@pytest.mark.parametrize(*TEST_FORMAT_NUMBER_PARAMS)
+def test_format_number(number, formatted_number, transformer, app):
     with app.app_context():
-        assert transformer().format_number(number) == expected
+        assert transformer().format_number(number) == formatted_number
 
 
 @pytest.mark.parametrize(
@@ -79,29 +44,10 @@ def test_format_percentage(value, expected, transformer):
     assert transformer().format_percentage(value) == expected
 
 
-@pytest.mark.parametrize(
-    "unit, value, unit_length, expected",
-    (
-        (
-            "millimeter",
-            Decimal("0.123"),
-            "short",
-            "0.123 mm",
-        ),
-        ("centimeter", 123, "short", "123 cm"),
-        ("kilometer", 123, "long", "123 kilometres"),
-        ("kilometer", 3, "long", "3 kilometres"),
-        ("kilometer", 1.2, "long", "1.2 kilometres"),
-        ("kilometer", 1.2345, "long", "1.2345 kilometres"),
-        ("mile", "123", "short", "123 mi"),
-        ("mile", "123", "narrow", "123mi"),
-        ("mile", "123", None, "123 mi"),
-        ("mile", "123.456789", None, "123.456789 mi"),
-    ),
-)
-def test_format_unit(unit, value, unit_length, expected, transformer, app):
+@pytest.mark.parametrize(*TEST_FORMAT_UNIT_PARAMS)
+def test_format_unit(unit, value, length, formatted_unit, transformer, app):
     with app.app_context():
-        assert transformer().format_unit(unit, value, unit_length) == expected
+        assert transformer().format_unit(unit, value, length) == formatted_unit
 
 
 def test_format_list(transformer):

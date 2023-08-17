@@ -38,7 +38,6 @@ from app.utilities.decimal_places import (
         (Decimal("0.000"), "en_GB", "0.000"),
         (Decimal("0.000"), "es_ES", "0,000"),
         (Decimal("0.00000"), "en_GB", "0.00000"),
-        (Decimal("0.00000"), "en_GB", "0.00000"),
         (Decimal("0.00000"), "es_ES", "0,00000"),
     ),
 )

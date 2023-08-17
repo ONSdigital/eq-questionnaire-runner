@@ -64,13 +64,13 @@ describe("Units", () => {
     await $(SetVolumeUnitsBlockPage.cubicMetres()).setValue(1.12);
     await $(SetVolumeUnitsBlockPage.litres()).setValue(1.123);
     await $(SetVolumeUnitsBlockPage.hectolitres()).setValue(1.1234);
-    await $(SetVolumeUnitsBlockPage.megalitres()).setValue(1.12345);
+    await $(SetVolumeUnitsBlockPage.megalitres()).setValue(1.1);
     await $(SetVolumeUnitsBlockPage.submit()).click();
     await $(SetWeightUnitsBlockPage.submit()).click();
     await expect(await $(SubmitPage.cubicCentimetres()).getText()).to.equal("1.1 cm³");
     await expect(await $(SubmitPage.cubicMetres()).getText()).to.equal("1.12 m³");
     await expect(await $(SubmitPage.litres()).getText()).to.equal("1.123 l");
     await expect(await $(SubmitPage.hectolitres()).getText()).to.equal("1.1234 hl");
-    await expect(await $(SubmitPage.megalitres()).getText()).to.equal("1.12345 Ml");
+    await expect(await $(SubmitPage.megalitres()).getText()).to.equal("1.10000 Ml");
   });
 });
