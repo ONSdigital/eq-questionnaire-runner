@@ -833,17 +833,7 @@ def process_block(
     if not page_filename:
         page_filename = block["id"] + ".page.js"
 
-    if block["type"] == "ListCollector":
-        list_operations = ["add", "edit", "remove"]
-        for list_operation in list_operations:
-            process_block(
-                block[f"{list_operation}_block"],
-                dir_out,
-                schema_data,
-                spec_file,
-                relative_require,
-                page_filename=f'{block["id"]}-{list_operation}.page.js',
-            )
+    if block["type"] in {"ListCollector", "ListCollectorContent"}:
         for repeating_block in block.get("repeating_blocks", []):
             process_block(
                 repeating_block,
@@ -854,15 +844,16 @@ def process_block(
                 page_filename=f'{repeating_block["id"]}-repeating-block.page.js',
             )
 
-    if block["type"] in {"ListCollector", "ListCollectorContent"}:
-        for repeating_block in block.get("repeating_blocks", []):
+    if block["type"] == "ListCollector":
+        list_operations = ["add", "edit", "remove"]
+        for list_operation in list_operations:
             process_block(
-                repeating_block,
+                block[f"{list_operation}_block"],
                 dir_out,
                 schema_data,
                 spec_file,
                 relative_require,
-                page_filename=f'{repeating_block["id"]}-repeating-block.page.js',
+                page_filename=f'{block["id"]}-{list_operation}.page.js',
             )
 
     if block["type"] == "PrimaryPersonListCollector":

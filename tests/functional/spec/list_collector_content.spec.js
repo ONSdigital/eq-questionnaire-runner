@@ -8,7 +8,6 @@ import ListCollectorFirstRepeatingBlockPage from "../generated_pages/list_collec
 import ListCollectorSecondRepeatingBlockPage from "../generated_pages/list_collector_content_page/companies-repeating-block-2-repeating-block.page";
 import ListCollectorContentPage from "../generated_pages/list_collector_content_page/list-collector-content.page";
 import ListCollectorContentSectionSummaryPage from "../generated_pages/list_collector_content_page/section-list-collector-contents-summary.page";
-import PropertyDetailsSummaryPage from "../generated_pages/section_summary/property-details-section-summary.page";
 
 describe("List Collector Section Summary and Summary Items", () => {
   describe("Given I launch the test list collector section summary items survey", () => {
