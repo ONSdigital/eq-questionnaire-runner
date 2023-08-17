@@ -310,9 +310,12 @@ class Router:
         )
         if grand_calculated_summary_section != location.section_id:
             # the grand calculated summary is in a different section which will have a different routing path
-            # but don't go to it unless the current section is complete
-            if not self._progress_store.is_section_or_repeating_blocks_progress_complete(
-                location.section_id
+            # but don't go to it unless the section is enabled and the current section is complete
+            if (
+                not self._progress_store.is_section_or_repeating_blocks_progress_complete(
+                    location.section_id
+                )
+                or grand_calculated_summary_section not in self.enabled_section_ids
             ):
                 return self._get_return_url_for_inaccessible_location(
                     is_for_previous=is_for_previous,
@@ -338,13 +341,12 @@ class Router:
                 return_to=return_to,
                 _anchor=return_to_answer_id,
             )
-        if routing_path.section_id in self.enabled_section_ids:
-            return self._get_return_url_for_inaccessible_location(
-                is_for_previous=is_for_previous,
-                return_to_block_id=return_to_block_id,
-                return_to=return_to,
-                routing_path=routing_path,
-            )
+        return self._get_return_url_for_inaccessible_location(
+            is_for_previous=is_for_previous,
+            return_to_block_id=return_to_block_id,
+            return_to=return_to,
+            routing_path=routing_path,
+        )
 
     def _get_return_to_for_calculated_summary(
         self,
