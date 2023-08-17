@@ -78,6 +78,7 @@ run-uwsgi-async: link-development-env
 	WEB_SERVER_TYPE=uwsgi-async pipenv run ./run_app.sh
 
 dev-compose-up:
+	pipenv run ./scripts/run_sds.sh
 	docker-compose -f docker-compose-dev-mac.yml pull eq-questionnaire-launcher
 	docker-compose -f docker-compose-dev-mac.yml up -d
 

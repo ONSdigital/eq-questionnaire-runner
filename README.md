@@ -91,20 +91,14 @@ make run
 
 ### Supporting services
 
-Runner requires three supporting services - a questionnaire launcher, a storage backend, and a cache. \
-If using schemas with supplementary data, it requires a fourth supporting service - the supplementary data service.
+Runner requires four supporting services - a questionnaire launcher, a storage backend, a cache and the supplementary data service.
 
 #### Run supporting services with Docker
 
-To run the app locally, but the three supporting services in Docker, run:
+To run the app locally, but the supporting services in Docker, run:
 
 ``` shell
 make dev-compose-up
-```
-
-To run the supplementary data service, run:
-``` shell
-make run-sds
 ```
 
 Note that on Linux you will need to use:
