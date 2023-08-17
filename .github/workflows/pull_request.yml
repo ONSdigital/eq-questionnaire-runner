@@ -137,13 +137,9 @@ jobs:
     env:
       EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
       # :TODO: Revisit & update when 2 instances can be used without adverse effects
-      EQ_FUNCTIONAL_TEST_MAX_INSTANCES: 2
+      EQ_FUNCTIONAL_TEST_MAX_INSTANCES: 1
     steps:
       - uses: actions/checkout@v3
-      - name: Update to latest stable Chrome
-        run: |
-          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          sudo apt install ./google-chrome-stable_current_amd64.deb
       - uses: actions/setup-node@v3
         with:
           node-version: "18.14.0"
