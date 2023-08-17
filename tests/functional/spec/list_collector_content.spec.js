@@ -28,10 +28,12 @@ describe("List Collector Section Summary and Summary Items", () => {
       await $(HubPage.submit()).click();
       await $(ResponsiblePartyQuestionPage.yes()).click();
       await $(ResponsiblePartyQuestionPage.submit()).click();
-      await expect(await $("#main-content").getText()).to.contain(
+      await expect(await $(ListCollectorContentPage.heading()).getHTML()).to.contain("Companies");
+      await expect(await $("#main-content > p").getText()).to.contain(
         "You have previously reported the following companies. Press continue to updated registration and trading information.",
       );
-      await expect(await $(ListCollectorContentPage.questionText()).getHTML()).to.contain("Companies");
+      await expect(await $("#main-content > #guidance-1").getText()).to.contain("Include all companies");
+      await expect(await $("#main-content > #definition").getText()).to.contain("Companies definition");
       await expect(await $(ListCollectorContentPage.submit()).getText()).to.equal("Continue");
     });
     it("When I get to list collector content block section, Then I should be able to complete repeating blocks and get to the summary.", async () => {

@@ -403,6 +403,25 @@
                                 "title": "Companies",
                                 "contents": [
                                     {
+                                        "guidance": {
+                                            "contents": [
+                                                {
+                                                    "description": "Include all companies"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "definition": {
+                                            "title": "Companies definition",
+                                            "contents": [
+                                                {
+                                                    "description": "Legal entities formed by a group of individuals to engage in and operate a business enterprise in a commercial or industrial capacity."
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
                                         "description": "You have previously reported the following companies. Press continue to updated registration and trading information."
                                     }
                                 ]
