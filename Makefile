@@ -53,6 +53,9 @@ translate:
 run-validator:
 	pipenv run ./scripts/run_validator.sh
 
+run-sds:
+	pipenv run ./scripts/run_sds.sh
+
 link-development-env:
 	ln -sf $(RUNNER_ENV_FILE) .env
 

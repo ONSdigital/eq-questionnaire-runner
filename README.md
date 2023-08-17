@@ -91,14 +91,20 @@ make run
 
 ### Supporting services
 
-Runner requires three supporting services - a questionnaire launcher, a storage backend, and a cache.
+Runner requires three supporting services - a questionnaire launcher, a storage backend, and a cache. \
+If using schemas with supplementary data, it requires a fourth supporting service - the supplementary data service.
 
 #### Run supporting services with Docker
 
-To run the app locally, but the supporting services in Docker, run:
+To run the app locally, but the three supporting services in Docker, run:
 
 ``` shell
 make dev-compose-up
+```
+
+To run the supplementary data service, run:
+``` shell
+make run-sds
 ```
 
 Note that on Linux you will need to use:
@@ -113,6 +119,12 @@ make dev-compose-up-linux
 
 ``` shell
 docker run -e SURVEY_RUNNER_SCHEMA_URL=http://docker.for.mac.host.internal:5000 -it -p 8000:8000 onsdigital/eq-questionnaire-launcher:latest
+```
+
+##### [Mock Supplementary data service](https://github.com/ONSDigital/eq-runner-mock-sds)
+
+``` shell
+docker run -it -p 5003:5003 onsdigital/eq-runner-mock-sds:latest
 ```
 
 ##### Storage backends

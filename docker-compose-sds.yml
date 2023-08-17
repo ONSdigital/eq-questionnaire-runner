@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+    sds:
+        image: onsdigital/eq-runner-mock-sds:latest
+        networks:
+            - eq-env
+        restart: always
+        ports:
+            - 5003:5003
+
+networks:
+  eq-env:
+    driver: bridge
