@@ -168,8 +168,6 @@ jobs:
         run: yarn install
       - name: Docker compose
         run: docker-compose --version && RUNNER_ENV_FILE=.functional-tests.env docker-compose up --build -d
-      - name: Run SDS
-        run: ./scripts/run_sds.sh
       - name: Functional tests
         run: ./scripts/run_tests_functional.sh ${{ matrix.suite }}
       - name: Docker compose shutdown
