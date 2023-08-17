@@ -338,12 +338,13 @@ class Router:
                 return_to=return_to,
                 _anchor=return_to_answer_id,
             )
-        return self._get_return_url_for_inaccessible_location(
-            is_for_previous=is_for_previous,
-            return_to_block_id=return_to_block_id,
-            return_to=return_to,
-            routing_path=routing_path,
-        )
+        if routing_path.section_id in self.enabled_section_ids:
+            return self._get_return_url_for_inaccessible_location(
+                is_for_previous=is_for_previous,
+                return_to_block_id=return_to_block_id,
+                return_to=return_to,
+                routing_path=routing_path,
+            )
 
     def _get_return_to_for_calculated_summary(
         self,
@@ -414,7 +415,6 @@ class Router:
         if (
             not is_for_previous
             and return_to_block_id
-            and routing_path.section_id in self.enabled_section_ids
             and (
                 next_incomplete_location := self._get_first_incomplete_location_in_section(
                     routing_path
