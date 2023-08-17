@@ -260,22 +260,38 @@ def test_format_duration(duration, formatted_duration, app):
             {"maximum": {"value": 123456789012345678901123456789012345678901234567890}},
             None,
         ),
-        ({"maximum": {"value": {"identifier": "set-maximum", "source": "answers"}}}, 5),
-        (
-            {"minimum": {"value": {"identifier": "set-minimum", "source": "answers"}}},
-            15,
-        ),
     ),
 )
 def test_get_width_for_number(answer, width, app):
     with app.app_context():
         schema = QuestionnaireSchema({})
-        schema.min_and_max_map = {
-            "set-maximum": {"maximum": 5, "minimum": 0},
-            "set-minimum": {"maximum": 15, "minimum": 5},
-        }
         g.schema = schema
         assert get_width_for_number(answer) == width
+
+
+def test_form_errors_are_correctly_mapped(app, answer_store, list_store):
+    with app.test_request_context():
+        schema = load_schema_from_name("test_numbers")
+
+        question_schema = schema.get_block("set-min-max-block").get("question")
+
+        form = generate_form(
+            schema=schema,
+            question_schema=question_schema,
+            answer_store=answer_store,
+            list_store=list_store,
+            metadata=get_metadata(),
+            response_metadata={},
+            progress_store=ProgressStore(),
+            supplementary_data_store=SupplementaryDataStore(),
+        )
+
+        form.validate()
+        mapped_errors = form.map_errors()
+
+        assert error_exists(
+            "set-minimum", schema.error_messages["MANDATORY_NUMBER"], mapped_errors
+        )
 
 
 @pytest.mark.parametrize(
