@@ -9,22 +9,23 @@ from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 @pytest.mark.parametrize(
     "value, currency, decimal_limit, formatted_currency",
     (
-        (2, "GBP", 6, "£2.00"),
-        ("11", "GBP", 2, "£11.00"),
-        ("11.99", "GBP", 2, "£11.99"),
-        ("11000", "USD", 2, "US$11,000.00"),
-        (0, None, 2, "£0.00"),
-        (0.00, None, 2, "£0.00"),
-        (11000, "USD", 2, "US$11,000.00"),
-        (Decimal("123.45"), "GBP", 1, "£123.4"),
-        (Decimal("2.14564"), "GBP", 6, "£2.14564"),
-        (Decimal("2.1"), "GBP", 1, "£2.1"),
-        (Decimal("2.1"), "GBP", None, "£2.10"),
-        (Decimal("3000"), "JPY", 0, "JP¥3,000"),
-        (Decimal("1.1"), "GBP", 6, "£1.10"),
-        (Decimal("3000.445"), "GBP", 6, "£3,000.445"),
         (Decimal("3000.44545"), "GBP", None, "£3,000.44545"),
-        ("", "", "", ""),
+        (Decimal("2.1"), "GBP", None, "£2.10"),
+        (Decimal("3000"), "GBP", 0, "£3,000"),
+        (Decimal("3000"), "JPY", 0, "JP¥3,000"),
+        (Decimal("123.45"), "GBP", 1, "£123.4"),
+        (Decimal("2.1"), "GBP", 1, "£2.1"),
+        (11, "GBP", 2, "£11.00"),
+        (0, "GBP", 2, "£0.00"),
+        (0.00, "GBP", 2, "£0.00"),
+        (11000, "USD", 2, "US$11,000.00"),
+        (11000, "USD", 2, "US$11,000.00"),
+        (Decimal("11.99"), "GBP", 2, "£11.99"),
+        (2, "GBP", 6, "£2.00"),
+        (Decimal("2.14564"), "GBP", 6, "£2.14564"),
+        (Decimal("1.1"), "GBP", 6, "£1.10"),
+        (Decimal("1.00000"), "GBP", 6, "£1.00000"),
+        (Decimal("3000.445"), "GBP", 6, "£3,000.445"),
     ),
 )
 def test_format_currency(
@@ -32,7 +33,7 @@ def test_format_currency(
 ):
     with app.app_context():
         assert (
-            transformer().format_currency(value, currency or "GBP", decimal_limit)
+            transformer().format_currency(value, currency, decimal_limit)
             == formatted_currency
         )
 
@@ -51,6 +52,8 @@ def test_format_currency(
         ("100000000", "100,000,000"),
         (0, "0"),
         (Decimal("0.00"), "0.00"),
+        (Decimal("0.000"), "0.000"),
+        (Decimal("0.0000"), "0.0000"),
         ("", ""),
         (None, ""),
     ),

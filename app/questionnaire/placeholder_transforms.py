@@ -50,15 +50,13 @@ class PlaceholderTransforms:
         currency: str = "GBP",
         decimal_limit: int | None = None,
     ) -> str:
-        if number or number == 0:
-            formatted_currency: str = custom_format_currency(
-                value=number,
-                currency=currency,
-                locale=self.locale,
-                decimal_limit=decimal_limit,
-            )
-            return formatted_currency
-        return ""
+        formatted_currency: str = custom_format_currency(
+            value=number,
+            currency=currency,
+            locale=self.locale,
+            decimal_limit=decimal_limit,
+        )
+        return formatted_currency
 
     def format_date(self, date_to_format: str, date_format: str) -> str:
         date_as_datetime = datetime.strptime(

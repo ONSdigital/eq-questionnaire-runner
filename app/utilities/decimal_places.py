@@ -8,8 +8,9 @@ UnitLengthType: TypeAlias = Literal["short", "long", "narrow"]
 
 def custom_format_decimal(value: int | Decimal | float, locale: Locale | str) -> str:
     """
-    Function is used to format decimal numbers avoiding the decimal_quantization=True/False constraints and preserving the number input by the user.
-    e.g 123.430 stays as 123.430 (if schema allows).
+    This function provides a wrapper for the numbers `format_decimal` method, generating the
+    number format (including the desired number of decimals), based on the value entered by the user and
+    the locale.
     """
     number_format = get_number_format(value, locale)
 
@@ -26,22 +27,31 @@ def custom_format_currency(
     locale: Locale | str,
     decimal_limit: int | None = None,
 ) -> str:
-    decimal_separator = numbers.get_decimal_symbol(locale)
-    decimal_places = (
-        len(str(value).split(f"{decimal_separator}")[1])
-        if decimal_separator in str(value)
-        else 0
-    )
+    """
+    This function provides a wrapper for the numbers `format_currency` method, generating the
+    number format (including the desired number of decimals).
+
+    The number of decimals displayed is based on the value entered by the user, the decimal limit set in the schema
+    and the locale.
+    """
+    decimal_places = len(str(value).split(".")[1]) if "." in str(value) else 0
 
     # get locale pattern
     parsed_locale = Locale.parse(locale)
     number_format = parsed_locale.currency_formats["standard"]
-    if decimal_limit:
-        number_format.frac_prec = (0, decimal_limit)
-    else:
-        number_format.frac_prec = (0, decimal_places)
 
-    # if decimal_limit is less than 2 then return the value the user entered
+    # If set, the number of decimals displayed is limited based on the value of the `decimal_limit` parameter.
+    # If the number of decimal places entered by the user is less than the `decimal_limit` then we should display the
+    # number of decimals as entered by the user. Otherwise, we should display the number of decimals as entered by the user.
+    if decimal_limit:
+        if decimal_places < decimal_limit:
+            number_format.frac_prec = (decimal_places, decimal_limit)
+        else:
+            number_format.frac_prec = (decimal_limit, decimal_limit)
+    else:
+        number_format.frac_prec = (decimal_places, decimal_places)
+
+    # Needed to stop trailing decimal `.00` being added when no decimal places have been entered by the user
     if decimal_limit is not None and decimal_limit < 2:
         return numbers.format_currency(
             number=value,
@@ -51,6 +61,7 @@ def custom_format_currency(
             currency_digits=False,
         )
 
+    # Logic to stop trailing decimals being cut off when two or more decimals have been entered by the user
     currency_digits = decimal_places < 2
     return numbers.format_currency(
         number=value,
@@ -67,6 +78,11 @@ def custom_format_unit(
     locale: Locale | str,
     length: UnitLengthType = "short",
 ):
+    """
+    This function provides a wrapper for the numbers `format_unit` method, generating the
+    number format (including the desired number of decimals), based on the value entered by the user and
+    the locale.
+    """
     number_format = get_number_format(value, locale)
 
     formatted_unit: str = units.format_unit(
@@ -81,17 +97,17 @@ def custom_format_unit(
 
 
 def get_number_format(value: int | float | Decimal, locale: Locale | str) -> str:
-    decimal_separator = numbers.get_decimal_symbol(locale)
+    """
+    Generates the number format based on the value entered by the user and the locale
 
-    decimal_places = (
-        len(str(value).split(f"{decimal_separator}")[1])
-        if decimal_separator in str(value)
-        else 0
-    )
-    # set the locale_format by parsing the number pattern for the given locale and applying the number of decimal places passed through
+    Format follows the number formats as specified in the babel docs e.g: '#,##0.###'
+
+    Uses the decimal places set by the user with frac_prec to ensure that trailing zeroes
+    are not dropped and that the correct number of decimal places as entered by the user are displayed
+    after formatting.
+    """
+    decimal_places = len(str(value).split(".")[1]) if "." in str(value) else 0
     locale = Locale.parse(locale)
     locale_decimal_format = locale.decimal_formats[None]
-    locale_format = locale_decimal_format.number_pattern.split(f"{decimal_separator}")[
-        0
-    ]
-    return f'{locale_format}{decimal_separator}{"0" * decimal_places}'
+    locale_decimal_format.frac_prec = (decimal_places, decimal_places)
+    return locale_decimal_format
