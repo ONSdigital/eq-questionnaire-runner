@@ -83,6 +83,7 @@ class Question(BlockHandler):
 
         self._set_page_title(page_title)
 
+        # We inherit from question in list collector content block which doesn't have "question" sub-block
         if not transformed_block.get("question"):
             return transformed_block
 
@@ -166,6 +167,7 @@ class Question(BlockHandler):
         )
 
     def _get_answer_action(self) -> dict | None:
+        # When used by list collector content class rendered block we won't have "question" sub-block
         if not self.rendered_block.get("question"):
             return None
 
