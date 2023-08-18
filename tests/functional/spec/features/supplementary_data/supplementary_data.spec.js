@@ -30,8 +30,7 @@ import ViewSubmittedResponsePage from "../../../generated_pages/supplementary_da
 import { assertSummaryItems, assertSummaryTitles, assertSummaryValues } from "../../../helpers";
 import { getRandomString } from "../../../jwt_helper";
 
-// :TODO: this test currently only runs locally, remove the .skip once the mock endpoint is running in a container
-describe.skip("Using supplementary data", () => {
+describe("Using supplementary data", () => {
   const responseId = getRandomString(16);
   const summaryItems = ".ons-summary__item--text";
   const summaryValues = ".ons-summary__values";
