@@ -249,6 +249,7 @@ describe("List Collector Repeating Blocks", function () {
       await $(CompaniesRepeatingBlock1Page.submit()).click().then(promiseLog("4. Clicking repeating block submit button"));
       logWithTime("4. Finished");
 
+      logWithTime(await $$(summaryValues).map((element) => element.getText()).map((value, index) => `\n[Summary value ${index}]: ${value}`));
       await expect(await $$(summaryValues)[8].getText().then(promiseLog("5. Asserting summary value is 789"))).to.have.string(789);
       logWithTime("5. Finished");
 
