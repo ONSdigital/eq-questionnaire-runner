@@ -53,7 +53,7 @@ jobs:
         suite: [ flaky ]
     runs-on: ubuntu-22.04
     env:
-      EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: False
+      EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
       EQ_FUNCTIONAL_TEST_MAX_INSTANCES: 2
     steps:
       - uses: actions/checkout@v3
