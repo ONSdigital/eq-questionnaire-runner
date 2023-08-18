@@ -58,7 +58,7 @@ describe("Number validation", () => {
     });
 
     it("When I enter values inside the set range, Then I should be able to submit the survey", async () => {
-      await $(TestMinMax.testRange()).setValue("1001");
+      await $(TestMinMax.testRange()).setValue("1019");
       await $(TestMinMax.testDecimal()).setValue("11.23");
       await $(TestMinMax.submit()).click();
       await $(DetailAnswer.other()).click();
@@ -66,9 +66,9 @@ describe("Number validation", () => {
       await $(DetailAnswer.submit()).click();
       await $(currencyBlock.usDollars()).click();
       await $(currencyBlock.submit()).click();
-      await $(firstNumberBlock.firstNumber()).setValue(50);
+      await $(firstNumberBlock.firstNumber()).setValue("50");
       await $(firstNumberBlock.submit()).click();
-      await $(secondNumberBlock.secondNumber()).setValue(321);
+      await $(secondNumberBlock.secondNumber()).setValue("321");
       await $(secondNumberBlock.submit()).click();
       await $(currencySectionSummary.submit()).click();
 
@@ -77,12 +77,13 @@ describe("Number validation", () => {
 
     it("When I edit and change the maximum value, Then I must re-validate and submit any dependent answers before I can return to the summary", async () => {
       await $(SubmitPage.setMaximumEdit()).click();
-      await $(SetMinMax.setMaximum()).setValue("1001");
+      await $(SetMinMax.setMaximum()).setValue("1018");
       await $(SetMinMax.submit()).click();
+      await $(TestMinMax.testRange()).setValue("1018");
       await $(TestMinMax.submit()).click();
       await $(DetailAnswer.submit()).click();
 
-      await expect(await $(DetailAnswer.errorNumber(1)).getText()).to.contain("Enter an answer less than or equal to 1,019");
+      await expect(await $(DetailAnswer.errorNumber(1)).getText()).to.contain("Enter an answer less than or equal to 1,018");
 
       await $(DetailAnswer.otherDetail()).setValue("1001");
       await $(DetailAnswer.submit()).click();
