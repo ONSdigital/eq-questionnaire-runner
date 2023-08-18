@@ -690,7 +690,7 @@ def test_answer_dependencies_for_min_max(numbers_schema):
                 for_list=None,
                 answer_id=None,
             )
-        }
+        },
     }
 
 
