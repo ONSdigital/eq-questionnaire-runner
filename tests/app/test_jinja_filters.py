@@ -6,7 +6,6 @@ import simplejson as json
 from flask import g
 from jinja2 import Undefined
 from mock import Mock
-from app.utilities.schema import load_schema_from_name
 
 from app.jinja_filters import (
     OtherConfig,
@@ -27,6 +26,7 @@ from app.jinja_filters import (
     strip_tags,
 )
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.utilities.schema import load_schema_from_name
 
 
 @pytest.mark.parametrize(
@@ -270,7 +270,7 @@ def test_get_width_for_number(answer, width, app):
         assert get_width_for_number(answer) == width
 
 
-def test_get_width_for_number_recursive(app, answer_store, list_store):
+def test_get_width_for_number_recursive(app):
     with app.test_request_context():
         schema = load_schema_from_name("test_numbers")
 
