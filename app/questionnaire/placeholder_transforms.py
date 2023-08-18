@@ -138,9 +138,7 @@ class PlaceholderTransforms:
         return string_to_format
 
     def format_number(self, number: int | Decimal | float) -> str:
-        if number or number == 0:
-            return custom_format_decimal(number, self.locale)
-        return ""
+        return custom_format_decimal(number, self.locale)
 
     @staticmethod
     def format_percentage(value: int | Decimal | str) -> str:
