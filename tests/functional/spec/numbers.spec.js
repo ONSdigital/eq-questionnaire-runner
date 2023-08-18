@@ -43,14 +43,13 @@ describe("Number validation", () => {
     });
 
     it("When I enter values inside the set range but provide too many decimal places, Then the correct error messages are displayed", async () => {
-      await $(TestMinMax.testRange()).setValue("1020");
+      await $(TestMinMax.testRange()).setValue("12.344");
       await $(TestMinMax.testRangeExclusive()).setValue("11");
       await $(TestMinMax.testMin()).setValue("123");
       await $(TestMinMax.testMax()).setValue("1019");
       await $(TestMinMax.testMinExclusive()).setValue("124");
       await $(TestMinMax.testMaxExclusive()).setValue("1233");
       await $(TestMinMax.testPercent()).setValue("100");
-      await $(TestMinMax.testRange()).setValue("12.344");
       await $(TestMinMax.testDecimal()).setValue("11.234");
       await $(TestMinMax.submit()).click();
 
@@ -63,7 +62,7 @@ describe("Number validation", () => {
       await $(TestMinMax.testDecimal()).setValue("11.23");
       await $(TestMinMax.submit()).click();
       await $(DetailAnswer.other()).click();
-      await $(DetailAnswer.otherDetail()).setValue("1020");
+      await $(DetailAnswer.otherDetail()).setValue("12");
       await $(DetailAnswer.submit()).click();
       await $(currencyBlock.usDollars()).click();
       await $(currencyBlock.submit()).click();

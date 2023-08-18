@@ -173,14 +173,14 @@
                                         "maximum": {
                                             "value": {
                                                 "source": "answers",
-                                                "identifier": "test-range"
+                                                "identifier": "set-maximum"
                                             },
                                             "exclusive": true
                                         },
                                         "minimum": {
                                             "value": {
                                                 "source": "answers",
-                                                "identifier": "test-range"
+                                                "identifier": "set-minimum"
                                             },
                                             "exclusive": true
                                         }
@@ -319,7 +319,7 @@
                                                     "maximum": {
                                                         "value": {
                                                             "source": "answers",
-                                                            "identifier": "set-maximum"
+                                                            "identifier": "test-range"
                                                         }
                                                     }
                                                 }
@@ -340,7 +340,7 @@
                                                     "arguments": {
                                                         "number": {
                                                             "source": "answers",
-                                                            "identifier": "set-maximum"
+                                                            "identifier": "test-range"
                                                         }
                                                     }
                                                 }
