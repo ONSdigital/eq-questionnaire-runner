@@ -670,16 +670,18 @@ def test_answer_dependencies_for_min_max(numbers_schema):
             ),
             AnswerDependent(
                 section_id="default-section",
-                block_id="detail-answer-block",
-                for_list=None,
-                answer_id=None,
-            ),
-            AnswerDependent(
-                section_id="default-section",
                 block_id="test-min-max-block",
                 for_list=None,
                 answer_id=None,
             ),
+        },
+        "test-range": {
+            AnswerDependent(
+                section_id="default-section",
+                block_id="detail-answer-block",
+                for_list=None,
+                answer_id=None,
+            )
         },
         "first-number-answer": {
             AnswerDependent(
@@ -688,7 +690,7 @@ def test_answer_dependencies_for_min_max(numbers_schema):
                 for_list=None,
                 answer_id=None,
             )
-        },
+        }
     }
 
 
