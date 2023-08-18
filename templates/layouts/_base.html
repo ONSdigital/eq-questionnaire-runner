@@ -80,6 +80,11 @@
 
 
 {% block head %}
+  <style>
+    .ons-btn:active {
+      top: 0;
+    }
+  </style>
   {% if google_tag_manager_id and google_tag_manager_auth %}
     <!--
     Information such as events or variables can be passed to Google Tag Manager via the data layer,
