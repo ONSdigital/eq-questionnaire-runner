@@ -229,8 +229,10 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
 
   it("Given I confirm the calculated summary and finish the section, When I return to the Hub, Then I see that section 2 is no longer available", async () => {
     await $(CalculatedSummarySpendingPage.submit()).click();
+    await expect(await browser.getUrl()).to.contain(SectionOnePage.pageName);
     await $(SectionOnePage.submit()).click();
     // section 2 is now gone
+    await expect(await browser.getUrl()).to.contain(HubPage.pageName);
     await expect(await $$(HubPage.summaryItems()).length).to.equal(1);
   });
 });

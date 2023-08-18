@@ -248,7 +248,7 @@ describe("List Collector Repeating Blocks", function () {
       await $(CompaniesRepeatingBlock1Page.submit()).click().then(promiseLog("4. Clicking repeating block submit button"));
       logWithTime("4. Finished");
 
-      logWithTime(await $$(summaryValues).map((element) => element.getText()).map((value, index) => `\n[(1)Summary value ${index}]: ${value}`));
+      await expect(await browser.getUrl().then(promiseLog("5. Asserting url is for submit page"))).to.contain(SubmitPage.pageName);
       await expect(await $$(summaryValues)[8].getText().then(promiseLog("5. Asserting summary value is 789"))).to.have.string(789);
       logWithTime("5. Finished");
     });
@@ -258,7 +258,7 @@ describe("List Collector Repeating Blocks", function () {
       await $(CompaniesRepeatingBlock1Page.registrationDateday()).setValue(4);
       await $(CompaniesRepeatingBlock1Page.registrationDatemonth()).setValue(4);
       await $(CompaniesRepeatingBlock1Page.submit()).click();
-      logWithTime(await $$(summaryValues).map((element) => element.getText()).map((value, index) => `\n[(2)Summary value ${index}]: ${value}`));
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
       await expect(await $$(summaryValues)[4].getText()).to.have.string("4 April 2023");
     });
     it("Edit radio", async () => {
@@ -266,7 +266,7 @@ describe("List Collector Repeating Blocks", function () {
       await repeatingAnswerChangeLink(5).click();
       await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioNo()).click();
       await $(CompaniesRepeatingBlock2Page.submit()).click();
-      logWithTime(await $$(summaryValues).map((element) => element.getText()).map((value, index) => `\n[(3)Summary value ${index}]: ${value}`));
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
       await expect(await $$(summaryValues)[5].getText()).to.have.string("No");
     });
     it("Edit checkbox", async () => {
@@ -274,7 +274,7 @@ describe("List Collector Repeating Blocks", function () {
       await repeatingAnswerChangeLink(11).click();
       await $(CompaniesRepeatingBlock2Page.authorisedTraderEuRadioYes()).click();
       await $(CompaniesRepeatingBlock2Page.submit()).click();
-      logWithTime(await $$(summaryValues).map((element) => element.getText()).map((value, index) => `\n[(4)Summary value ${index}]: ${value}`));
+      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
       await expect(await $$(summaryValues)[11].getText()).to.have.string("Yes");
     });
 
