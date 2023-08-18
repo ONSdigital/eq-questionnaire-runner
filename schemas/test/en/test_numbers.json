@@ -145,7 +145,7 @@
                                                             "arguments": {
                                                                 "number": {
                                                                     "source": "answers",
-                                                                    "identifier": "test-range"
+                                                                    "identifier": "set-minimum"
                                                                 }
                                                             }
                                                         }
@@ -159,7 +159,7 @@
                                                             "arguments": {
                                                                 "number": {
                                                                     "source": "answers",
-                                                                    "identifier": "test-range"
+                                                                    "identifier": "set-maximum"
                                                                 }
                                                             }
                                                         }
