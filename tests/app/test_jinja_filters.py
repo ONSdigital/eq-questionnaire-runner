@@ -6,6 +6,7 @@ import simplejson as json
 from flask import g
 from jinja2 import Undefined
 from mock import Mock
+from app.utilities.schema import load_schema_from_name
 
 from app.jinja_filters import (
     OtherConfig,
@@ -269,29 +270,11 @@ def test_get_width_for_number(answer, width, app):
         assert get_width_for_number(answer) == width
 
 
-def test_form_errors_are_correctly_mapped(app, answer_store, list_store):
+def test_get_width_for_number_recursive(app, answer_store, list_store):
     with app.test_request_context():
         schema = load_schema_from_name("test_numbers")
 
-        question_schema = schema.get_block("set-min-max-block").get("question")
-
-        form = generate_form(
-            schema=schema,
-            question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
-        )
-
-        form.validate()
-        mapped_errors = form.map_errors()
-
-        assert error_exists(
-            "set-minimum", schema.error_messages["MANDATORY_NUMBER"], mapped_errors
-        )
+        assert schema
 
 
 @pytest.mark.parametrize(

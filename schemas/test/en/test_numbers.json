@@ -145,7 +145,7 @@
                                                             "arguments": {
                                                                 "number": {
                                                                     "source": "answers",
-                                                                    "identifier": "set-minimum"
+                                                                    "identifier": "test-range"
                                                                 }
                                                             }
                                                         }
@@ -159,7 +159,7 @@
                                                             "arguments": {
                                                                 "number": {
                                                                     "source": "answers",
-                                                                    "identifier": "set-maximum"
+                                                                    "identifier": "test-range"
                                                                 }
                                                             }
                                                         }
@@ -173,14 +173,14 @@
                                         "maximum": {
                                             "value": {
                                                 "source": "answers",
-                                                "identifier": "set-maximum"
+                                                "identifier": "test-range"
                                             },
                                             "exclusive": true
                                         },
                                         "minimum": {
                                             "value": {
                                                 "source": "answers",
-                                                "identifier": "set-minimum"
+                                                "identifier": "test-range"
                                             },
                                             "exclusive": true
                                         }
