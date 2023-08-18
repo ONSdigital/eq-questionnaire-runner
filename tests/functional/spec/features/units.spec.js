@@ -64,7 +64,7 @@ describe("Units", () => {
     await $(SetVolumeUnitsBlockPage.cubicMetres()).setValue(1.12);
     await $(SetVolumeUnitsBlockPage.litres()).setValue(1.123);
     await $(SetVolumeUnitsBlockPage.hectolitres()).setValue(1.1234);
-    await $(SetVolumeUnitsBlockPage.megalitres()).setValue(1.10000);
+    await $(SetVolumeUnitsBlockPage.megalitres()).setValue("1.10000");
     await $(SetVolumeUnitsBlockPage.submit()).click();
     await $(SetWeightUnitsBlockPage.submit()).click();
     await expect(await $(SubmitPage.cubicCentimetres()).getText()).to.equal("1.1 cm³");
