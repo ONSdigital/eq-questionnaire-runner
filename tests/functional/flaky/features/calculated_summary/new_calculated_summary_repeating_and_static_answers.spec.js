@@ -15,16 +15,11 @@ import CalculatedSummaryPipingPage from "../../../generated_pages/new_calculated
 import { assertSummaryValues } from "../../../helpers";
 
 describe("Calculated summary with repeating answers", function () {
-  // These tests are flaky therefore we add a retry. The cause is unknown.
-  // :TODO: Revert this in future when we have a fix for this.
-  this.retries(5);
-
   const summaryActions = 'dd[class="ons-summary__actions"]';
   const dynamicAnswerChangeLink = (answerIndex) => $$(summaryActions)[answerIndex].$("a");
 
   before("Completing the list collector and dynamic answer", async () => {
     await browser.openQuestionnaire("test_new_calculated_summary_repeating_and_static_answers.json");
-    await $(HubPage.acceptCookies()).click();
     await $(HubPage.submit()).click();
     await $(AnySupermarketPage.yes()).click();
     await $(AnySupermarketPage.submit()).click();

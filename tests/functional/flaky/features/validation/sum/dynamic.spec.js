@@ -11,10 +11,6 @@ import HubPage from "../../../../base_pages/hub.page";
 import TotalBlockOtherPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers/total-block-other.page";
 
 describe("Feature: Sum of dynamic answers based on list and optional static answers equal to validation against total ", function () {
-  // These tests are flaky therefore we add a retry. The cause is unknown.
-  // :TODO: Revert this in future when we have a fix for this.
-  this.retries(5);
-
   const summaryTitles = 'dt[class="ons-summary__item-title"]';
   beforeEach(async () => {
     await browser.openQuestionnaire("test_validation_sum_against_total_dynamic_answers.json");
@@ -22,7 +18,6 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
 
   describe("Given I add list items with hardcoded total used for validation of dynamic answers", () => {
     it("When I continue and enter numbers on dynamic and static answers page that don't add up to that total, Then validation error should be displayed with appropriate message", async () => {
-      await $(TotalBlockPage.acceptCookies()).click();
       await addTwoSupermarkets();
       await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
       await expect(await $$(DynamicAnswerPage.labels()).length).to.equal(3);
