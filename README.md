@@ -91,7 +91,7 @@ make run
 
 ### Supporting services
 
-Runner requires three supporting services - a questionnaire launcher, a storage backend, and a cache.
+Runner requires four supporting services - a questionnaire launcher, a storage backend, a cache and the supplementary data service.
 
 #### Run supporting services with Docker
 
@@ -112,7 +112,13 @@ make dev-compose-up-linux
 ##### [Questionnaire launcher](https://github.com/ONSDigital/eq-questionnaire-launcher)
 
 ``` shell
-docker run -e SURVEY_RUNNER_SCHEMA_URL=http://docker.for.mac.host.internal:5000 -it -p 8000:8000 onsdigital/eq-questionnaire-launcher:latest
+docker run -e SURVEY_RUNNER_SCHEMA_URL=http://docker.for.mac.host.internal:5000 -e SDS_API_BASE_URL=http://docker.for.mac.host.internal:5003 -it -p 8000:8000 onsdigital/eq-questionnaire-launcher:latest
+```
+
+##### [Mock Supplementary data service](https://github.com/ONSDigital/eq-runner-mock-sds)
+
+``` shell
+docker run -it -p 5003:5003 onsdigital/eq-runner-mock-sds:latest
 ```
 
 ##### Storage backends
@@ -184,7 +190,7 @@ Available commands:
 
 ### Development with functional tests
 
-The tests are written using [WebdriverIO](https://webdriver.io/docs), [Chai](https://www.chaijs.com/), and [Mocha](https://mochajs.org/)
+The tests are written using [WebdriverIO](https://webdriver.io/docs/gettingstarted), [Chai](https://www.chaijs.com/), and [Mocha](https://mochajs.org/)
 
 ### Functional test options
 
