@@ -225,18 +225,19 @@ describe("List Collector Repeating Blocks", function () {
       await $(SectionCompaniesPage.submit()).click();
     });
 
-    it("Edit each type of answer on different items from the section summary.", async () => {
-      const logWithTime = (text) => {
-        const now = new Date();
-        const ms = now.getMilliseconds().toString().padStart(3, "0");
-        // eslint-disable-next-line no-console
-        console.log(`[TEST 5] ${now.toLocaleTimeString("en-GB")}:${ms} - ${text}`);
-      };
-      const promiseLog = (text) => (value) => {
-        logWithTime(`${text} (value: ${value})`);
-        return value;
-      };
+    const logWithTime = (text) => {
+      const now = new Date();
+      const ms = now.getMilliseconds().toString().padStart(3, "0");
+      // eslint-disable-next-line no-console
+      console.log(`[TEST 5] ${now.toLocaleTimeString("en-GB")}:${ms} - ${text}`);
+    };
+    const promiseLog = (text) => (value) => {
+      logWithTime(`${text} (value: ${value})`);
+      return value;
+    };
 
+    it("Edit each type of answer on different items from the section summary.", async () => {
+      logWithTime(await $$(summaryValues).map((element) => element.getText()).map((value, index) => `\n[(0)Summary value ${index}]: ${value}`));
       await expect(await $$(summaryValues)[8].getText().then(promiseLog("1. Asserting summary value is 456"))).to.have.string(456);
       logWithTime("1. Finished");
 
@@ -249,27 +250,33 @@ describe("List Collector Repeating Blocks", function () {
       await $(CompaniesRepeatingBlock1Page.submit()).click().then(promiseLog("4. Clicking repeating block submit button"));
       logWithTime("4. Finished");
 
-      logWithTime(await $$(summaryValues).map((element) => element.getText()).map((value, index) => `\n[Summary value ${index}]: ${value}`));
+      logWithTime(await $$(summaryValues).map((element) => element.getText()).map((value, index) => `\n[(1)Summary value ${index}]: ${value}`));
       await expect(await $$(summaryValues)[8].getText().then(promiseLog("5. Asserting summary value is 789"))).to.have.string(789);
       logWithTime("5. Finished");
-
+    });
+    it("Edit date", async () => {
       await expect(await $$(summaryValues)[4].getText()).to.have.string("1 January 2023");
       await repeatingAnswerChangeLink(4).click();
       await $(CompaniesRepeatingBlock1Page.registrationDateday()).setValue(4);
       await $(CompaniesRepeatingBlock1Page.registrationDatemonth()).setValue(4);
       await $(CompaniesRepeatingBlock1Page.submit()).click();
+      logWithTime(await $$(summaryValues).map((element) => element.getText()).map((value, index) => `\n[(2)Summary value ${index}]: ${value}`));
       await expect(await $$(summaryValues)[4].getText()).to.have.string("4 April 2023");
-
+    });
+    it("Edit radio", async () => {
       await expect(await $$(summaryValues)[5].getText()).to.have.string("Yes");
       await repeatingAnswerChangeLink(5).click();
       await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioNo()).click();
       await $(CompaniesRepeatingBlock2Page.submit()).click();
+      logWithTime(await $$(summaryValues).map((element) => element.getText()).map((value, index) => `\n[(3)Summary value ${index}]: ${value}`));
       await expect(await $$(summaryValues)[5].getText()).to.have.string("No");
-
+    });
+    it("Edit checkbox", async () => {
       await expect(await $$(summaryValues)[11].getText()).to.have.string("No answer provided");
       await repeatingAnswerChangeLink(11).click();
       await $(CompaniesRepeatingBlock2Page.authorisedTraderEuRadioYes()).click();
       await $(CompaniesRepeatingBlock2Page.submit()).click();
+      logWithTime(await $$(summaryValues).map((element) => element.getText()).map((value, index) => `\n[(4)Summary value ${index}]: ${value}`));
       await expect(await $$(summaryValues)[11].getText()).to.have.string("Yes");
     });
 
