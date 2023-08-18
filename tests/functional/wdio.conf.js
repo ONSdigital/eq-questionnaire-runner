@@ -18,7 +18,7 @@ export const config = {
   //
   specs: ["./flaky/**/*.js"],
   suites: {
-    flaky: ["./flaky/*.spec.js"],
+    flaky: ["./flaky/**/*.spec.js"],
   },
   // Patterns to exclude.
   exclude: [
