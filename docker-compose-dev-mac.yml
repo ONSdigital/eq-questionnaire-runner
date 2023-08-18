@@ -3,11 +3,15 @@ version: "3"
 services:
     datastore:
         image: knarz/datastore-emulator
+        networks:
+            - eq-env
         ports:
             - "8432:8432"
 
     redis:
         image: redis:4
+        networks:
+            - eq-env
         ports:
             - "6379:6379"
 
@@ -16,6 +20,21 @@ services:
         environment:
             SURVEY_RUNNER_URL: http://localhost:5000
             SURVEY_RUNNER_SCHEMA_URL: http://docker.for.mac.host.internal:5000
+            SDS_API_BASE_URL: http://docker.for.mac.host.internal:5003
+        networks:
+            - eq-env
         restart: always
         ports:
             - "8000:8000"
+
+    sds:
+        image: "onsdigital/eq-runner-mock-sds:latest"
+        networks:
+            - eq-env
+        restart: always
+        ports:
+            - "5003:5003"
+
+networks:
+    eq-env:
+        driver: bridge
