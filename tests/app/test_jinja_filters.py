@@ -293,7 +293,7 @@ def test_get_width_for_number_recursive(answer, width, app):
     with app.test_request_context():
         schema = load_schema_from_name("test_numbers")
         g.schema = schema
-        answer_to_test = schema.get_answers_by_answer_id(answer)
+        answer_to_test = schema.get_answers_by_answer_id(answer)[0]
         assert get_width_for_number(answer_to_test) == width
 
 
