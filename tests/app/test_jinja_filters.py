@@ -270,11 +270,31 @@ def test_get_width_for_number(answer, width, app):
         assert get_width_for_number(answer) == width
 
 
-def test_get_width_for_number_recursive(app):
+@pytest.mark.parametrize(
+    "answer, width",
+    (
+        ("set-minimum", 10),
+        ("set-maximum", 10),
+        ("test-range", 10),
+        ("test-range-exclusive", 10),
+        ("test-min", 10),
+        ("test-max", 10),
+        ("test-min-exclusive", 10),
+        ("test-max-exclusive", 10),
+        ("test-percent", 10),
+        ("test-decimal", 10),
+        ("other-answer", 10),
+        ("first-number-answer", 10),
+        ("second-number-answer", 10),
+        ("detail-answer", 10),
+    ),
+)
+def test_get_width_for_number_recursive(answer, width, app):
     with app.test_request_context():
         schema = load_schema_from_name("test_numbers")
-
-        assert schema
+        g.schema = schema
+        answer_to_test = schema.get_answers_by_answer_id(answer)
+        assert get_width_for_number(answer_to_test) == width
 
 
 @pytest.mark.parametrize(
