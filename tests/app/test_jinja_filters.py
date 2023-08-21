@@ -1,9 +1,9 @@
 # coding: utf-8
 from datetime import datetime, timezone
+from decimal import Decimal
 
 import pytest
 import simplejson as json
-from _decimal import Decimal
 from mock import Mock
 
 from app.jinja_filters import (

@@ -43,26 +43,15 @@ def custom_format_currency(
     # If set, the number of decimals displayed is limited based on the value of the `decimal_limit` parameter.
     # If the number of decimal places entered by the user is less than the `decimal_limit` then we should display the
     # number of decimals as entered by the user. Otherwise, we should display the number of decimals as entered by the user.
-    if decimal_limit:
-        if decimal_places < decimal_limit:
-            number_format.frac_prec = (decimal_places, decimal_limit)
-        else:
-            number_format.frac_prec = (decimal_limit, decimal_limit)
-    else:
-        number_format.frac_prec = (decimal_places, decimal_places)
+    decimal_max = decimal_limit if decimal_limit is not None else decimal_places
+    number_format.frac_prec = (min(decimal_places, decimal_max), decimal_max)
 
     # Needed to stop trailing decimal `.00` being added when no decimal places have been entered by the user
-    if decimal_limit is not None and decimal_limit < 2:
-        return numbers.format_currency(
-            number=value,
-            currency=currency,
-            format=number_format,
-            locale=locale,
-            currency_digits=False,
-        )
-
-    # Logic to stop trailing decimals being cut off when two or more decimals have been entered by the user
+    #  and trailing decimals being cut off when two or more decimals have been entered by the user
     currency_digits = decimal_places < 2
+    if decimal_limit is not None and decimal_limit < 2:
+        currency_digits = False
+
     return numbers.format_currency(
         number=value,
         currency=currency,

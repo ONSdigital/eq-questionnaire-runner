@@ -96,6 +96,7 @@ def test_custom_format_unit(
     "value, currency, locale_string, decimal_limit, expected_result",
     (
         (123, "GBP", "en_GB", 1, "£123"),
+        (Decimal("123.1234"), "GBP", "en_GB", 0, "£123"),
         (Decimal("3000.44545"), "GBP", "en_GB", None, "£3,000.44545"),
         (Decimal("2.1"), "GBP", "en_GB", None, "£2.10"),
         (Decimal("3000"), "GBP", "en_GB", 0, "£3,000"),

@@ -50,7 +50,7 @@ def get_formatted_address(address_fields: dict[str, str]) -> str:
 
 
 def get_formatted_currency(
-    value: float | Decimal,
+    value: int | float | Decimal,
     currency: str = "GBP",
     decimal_limit: int | None = None,
 ) -> str:
