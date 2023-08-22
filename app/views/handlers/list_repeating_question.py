@@ -1,5 +1,3 @@
-from functools import cached_property
-
 from flask import url_for
 from werkzeug.datastructures import ImmutableDict
 
@@ -7,10 +5,6 @@ from app.views.handlers.list_edit_question import ListEditQuestion
 
 
 class ListRepeatingQuestion(ListEditQuestion):
-    @cached_property
-    def repeating_block_ids(self) -> list[str]:
-        return self._schema.list_collector_repeating_block_ids
-
     def get_previous_location_url(self) -> str:
         """
         return to previous location, or when return to is None, navigate to the previous repeating block

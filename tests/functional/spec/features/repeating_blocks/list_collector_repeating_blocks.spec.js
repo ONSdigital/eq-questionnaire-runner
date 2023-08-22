@@ -11,6 +11,7 @@ import AnyOtherTradingDetailsPage from "../../../generated_pages/list_collector_
 import SubmitPage from "../../../generated_pages/list_collector_repeating_blocks_section_summary/submit.page";
 import { repeatingAnswerChangeLink, checkItemsInList, checkListItemComplete, checkListItemIncomplete } from "../../../helpers";
 import HubPage from "../../../base_pages/hub.page";
+import ResponsiblePartyHubPage from "../../../generated_pages/list_collector_repeating_blocks_with_hub/responsible-party-business.page";
 
 const summaryValues = 'dd[class="ons-summary__values"]';
 async function proceedToListCollector() {
@@ -320,11 +321,36 @@ describe("Given a journey through the list collector with repeating blocks, in a
     await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioYes()).click();
     await $(CompaniesRepeatingBlock2Page.submit()).click();
   });
-
-  it("The section can now be submitted and and hub completed.", async () => {
+  it("The user is able to add additional company via a list collector, edit this newly added list item and return to list collector page", async () => {
     await $(AnyOtherCompaniesOrBranchesPage.no()).click();
     await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
     await $(SectionCompaniesPage.submit()).click();
+    await $(HubPage.summaryRowLink("section-companies")).click();
+    await $(SectionCompaniesPage.companiesListAddLink()).click();
+    await $(AddCompanyPage.companyOrBranchName()).setValue("MOJ");
+    await $(AddCompanyPage.submit()).click();
+    await $(CompaniesRepeatingBlock1Page.previous()).click();
+    await $(EditCompanyPage.previous()).click();
+    await $(AnyOtherCompaniesOrBranchesPage.listEditLink(4)).click();
+    await expect(await browser.getUrl()).to.contain(EditCompanyPage.pageName);
+    await $(EditCompanyPage.submit()).click();
+    await $(CompaniesRepeatingBlock1Page.previous()).click();
+    await $(EditCompanyPage.previous()).click();
+    await $(AnyOtherCompaniesOrBranchesPage.no()).click();
+    await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
+    await $(CompaniesRepeatingBlock1Page.registrationNumber()).setValue(789);
+    await $(CompaniesRepeatingBlock1Page.registrationDateday()).setValue(3);
+    await $(CompaniesRepeatingBlock1Page.registrationDatemonth()).setValue(3);
+    await $(CompaniesRepeatingBlock1Page.registrationDateyear()).setValue(2023);
+    await $(CompaniesRepeatingBlock1Page.submit()).click();
+    await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioYes()).click();
+    await $(CompaniesRepeatingBlock2Page.submit()).click();
+    await $(AnyOtherCompaniesOrBranchesPage.no()).click();
+    await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
+    await $(SectionCompaniesPage.submit()).click();
+  });
+  it("The section can now be submitted and and hub will redirect user to the next section.", async () => {
     await $(HubPage.submit()).click();
+    await expect(await browser.getUrl()).to.contain(ResponsiblePartyHubPage.pageName);
   });
 });
