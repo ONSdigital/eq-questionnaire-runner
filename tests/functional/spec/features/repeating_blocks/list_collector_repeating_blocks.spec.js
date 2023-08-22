@@ -321,7 +321,7 @@ describe("Given a journey through the list collector with repeating blocks, in a
     await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioYes()).click();
     await $(CompaniesRepeatingBlock2Page.submit()).click();
   });
-  it("Given I add additional company via a list collector, When I edit newly added list item, Then I safely return to list collector page", async () => {
+  it("The user is able to add additional company via a list collector, edit this newly added list item and return to list collector page", async () => {
     await $(AnyOtherCompaniesOrBranchesPage.no()).click();
     await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
     await $(SectionCompaniesPage.submit()).click();
