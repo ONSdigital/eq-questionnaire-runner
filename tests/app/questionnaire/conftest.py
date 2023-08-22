@@ -1357,6 +1357,77 @@ def grand_calculated_summary_progress_store():
 
 
 @pytest.fixture
+def grand_calculated_summary_repeating_answers_schema():
+    return load_schema_from_name("test_grand_calculated_summary_repeating_answers")
+
+
+@pytest.fixture
+def grand_calculated_summary_repeating_answers_progress_store():
+    return ProgressStore(
+        [
+            {
+                "section_id": "section-5",
+                "block_ids": [
+                    "any-streaming-services",
+                    "any-other-streaming-services",
+                    "calculated-summary-6",
+                    "calculated-summary-7",
+                    "other-internet-usage",
+                    "calculated-summary-8",
+                ],
+                "status": "COMPLETED",
+            },
+            {
+                "section_id": "section-5",
+                "block_ids": [
+                    "streaming-service-repeating-block-1",
+                    "streaming-service-repeating-block-2",
+                ],
+                "status": "COMPLETED",
+                "list_item_id": "item-1",
+            },
+            {
+                "section_id": "section-5",
+                "block_ids": [
+                    "streaming-service-repeating-block-1",
+                    "streaming-service-repeating-block-2",
+                ],
+                "status": "COMPLETED",
+                "list_item_id": "item-2",
+            },
+            {
+                "section_id": "section-4",
+                "block_ids": [
+                    "any-utility-bills",
+                    "any-other-utility-bills",
+                    "dynamic-answer",
+                    "calculated-summary-5",
+                ],
+                "status": "COMPLETED",
+            },
+            {
+                "section_id": "section-1",
+                "block_ids": [
+                    "block-1",
+                    "block-2",
+                    "calculated-summary-1",
+                    "block-3",
+                    "calculated-summary-2",
+                    "calculated-summary-3",
+                    "grand-calculated-summary-1",
+                ],
+                "status": "COMPLETED",
+            },
+            {
+                "section_id": "section-2",
+                "block_ids": ["block-4", "calculated-summary-4"],
+                "status": "COMPLETED",
+            },
+        ]
+    )
+
+
+@pytest.fixture
 @pytest.mark.usefixtures("app", "gb_locale")
 def placeholder_transform_question_dynamic_answers_json():
     return {
