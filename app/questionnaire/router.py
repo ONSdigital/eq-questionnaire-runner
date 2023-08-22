@@ -78,7 +78,7 @@ class Router:
             routing_path = self.routing_path(*section_key)
             return self.get_last_location_in_section(routing_path).url()
 
-    def is_list_item_in_list_store(self, list_item_id: str, list_name: str) -> bool:
+    def _is_list_item_in_list_store(self, list_item_id: str, list_name: str) -> bool:
         return list_item_id in self._list_store[list_name]
 
     def can_access_location(
@@ -94,7 +94,7 @@ class Router:
         if (
             location.list_item_id
             and location.list_name
-            and not self.is_list_item_in_list_store(
+            and not self._is_list_item_in_list_store(
                 location.list_item_id, location.list_name
             )
         ):
@@ -143,10 +143,10 @@ class Router:
             )
         )
 
-        if return_to_url := self._get_return_to_location_url(
-            location,
-            return_to,
-            routing_path,
+        if return_to_url := self.get_return_to_location_url(
+            location=location,
+            return_to=return_to,
+            routing_path=routing_path,
             is_for_previous=False,
             is_section_complete=is_section_complete,
             return_to_answer_id=return_to_answer_id,
@@ -164,7 +164,7 @@ class Router:
             next_location: Location = self._get_first_incomplete_location_in_section(routing_path)  # type: ignore
             return next_location.url()
 
-        return self.get_next_block_url(
+        return self._get_next_block_url(
             location,
             routing_path,
             return_to=return_to,
@@ -192,10 +192,10 @@ class Router:
         Returns the previous 'location' to visit given a set of user answers or returns to the summary if
         the `return_to` var is set and the section is complete.
         """
-        if return_to_url := self._get_return_to_location_url(
-            location,
-            return_to,
-            routing_path,
+        if return_to_url := self.get_return_to_location_url(
+            location=location,
+            return_to=return_to,
+            routing_path=routing_path,
             is_for_previous=True,
             return_to_answer_id=return_to_answer_id,
             return_to_block_id=return_to_block_id,
@@ -230,8 +230,9 @@ class Router:
 
         return None
 
-    def _get_return_to_location_url(
+    def get_return_to_location_url(
         self,
+        *,
         location: LocationType,
         return_to: str | None,
         routing_path: RoutingPath,
@@ -309,9 +310,12 @@ class Router:
         )
         if grand_calculated_summary_section != location.section_id:
             # the grand calculated summary is in a different section which will have a different routing path
-            # but don't go to it unless the current section is complete
-            if not self._progress_store.is_section_or_repeating_blocks_progress_complete(
-                location.section_id
+            # but don't go to it unless the section is enabled and the current section is complete
+            if (
+                not self._progress_store.is_section_or_repeating_blocks_progress_complete(
+                    location.section_id
+                )
+                or grand_calculated_summary_section not in self.enabled_section_ids
             ):
                 return self._get_return_url_for_inaccessible_location(
                     is_for_previous=is_for_previous,
@@ -524,7 +528,7 @@ class Router:
 
         return allowable_path
 
-    def get_enabled_section_keys(
+    def _get_enabled_section_keys(
         self,
     ) -> Generator[SectionKey, None, None]:
         for section_id in self.enabled_section_ids:
@@ -539,14 +543,14 @@ class Router:
                 yield section_key
 
     def _get_first_incomplete_section_key(self) -> tuple[str, str | None] | None:
-        for section_id, list_item_id in self.get_enabled_section_keys():
+        for section_id, list_item_id in self._get_enabled_section_keys():
             if not self._progress_store.is_section_or_repeating_blocks_progress_complete(
                 section_id, list_item_id
             ):
                 return section_id, list_item_id
 
     def _get_last_complete_section_key(self) -> tuple[str, str | None] | None:
-        for section_id, list_item_id in list(self.get_enabled_section_keys())[::-1]:
+        for section_id, list_item_id in list(self._get_enabled_section_keys())[::-1]:
             if self._progress_store.is_section_or_repeating_blocks_progress_complete(
                 section_id, list_item_id
             ):
@@ -578,7 +582,7 @@ class Router:
         return bool(when_rule_evaluator.evaluate(enabled["when"]))
 
     @staticmethod
-    def get_next_block_url(
+    def _get_next_block_url(
         location: LocationType,
         routing_path: RoutingPath,
         **kwargs: str | None,
