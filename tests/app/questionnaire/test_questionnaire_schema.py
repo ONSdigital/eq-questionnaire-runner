@@ -336,7 +336,7 @@ def test_get_list_collector_for_list(list_collector_variant_schema):
 
     result = schema.get_list_collector_for_list(for_list="people")
 
-    assert result["id"] == "block1"
+    assert result[0]["id"] == "block1"
 
     filtered_result = schema.get_list_collector_for_list(for_list="people")
 

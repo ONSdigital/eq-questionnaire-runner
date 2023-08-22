@@ -71,9 +71,7 @@ class ListCollectorBlock:
         list_model = self._list_store[summary["for_list"]]
 
         list_collector_blocks = list(
-            self._schema.get_list_collectors_for_list(
-                self._section, for_list=summary["for_list"]
-            )
+            self._schema.get_list_collector_for_list(for_list=summary["for_list"])
         )
 
         add_link = self._add_link(summary, list_collector_block)
@@ -107,12 +105,13 @@ class ListCollectorBlock:
             item_label = self._schema.get_item_label(section_id, list_model.name)
 
         if len(list_model) == 1 and list_model.primary_person:
-            if primary_person_block := self._schema.get_list_collector_for_list(
+            if primary_list_collectors := self._schema.get_list_collector_for_list(
                 for_list=summary["for_list"], primary=True
             ):
-                primary_person_edit_block_id = edit_block_id = primary_person_block[
-                    "add_or_edit_block"
-                ]["id"]
+                for primary_person_block in primary_list_collectors:
+                    primary_person_edit_block_id = edit_block_id = primary_person_block[
+                        "add_or_edit_block"
+                    ]["id"]
 
         list_summary_context = self.list_context(
             list_collector_block["summary"],
