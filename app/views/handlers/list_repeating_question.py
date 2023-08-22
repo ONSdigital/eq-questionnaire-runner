@@ -1,7 +1,6 @@
 from flask import url_for
 from werkzeug.datastructures import ImmutableDict
 
-from app.questionnaire import Location
 from app.views.handlers.list_edit_question import ListEditQuestion
 
 
@@ -14,17 +13,17 @@ class ListRepeatingQuestion(ListEditQuestion):
         if url := self.get_section_or_final_summary_url():
             return url
 
-        if self.return_to and self.router.can_access_location(
-            Location(
-                section_id=self.current_location.section_id,
-                block_id=self.return_to_block_id,
-            ),
+        # the locations list_item_id is referring to where to return to within the context of a repeating section
+        # since the list collector won't be in a repeating section, use the parent location which doesn't have a list item id
+        if url := self.router.get_return_to_location_url(
+            location=self.parent_location,
+            return_to=self._return_to,
             routing_path=self._routing_path,
+            is_for_previous=True,
+            return_to_answer_id=self._return_to_answer_id,
+            return_to_block_id=self._return_to_block_id,
         ):
-            return self._get_location_url(
-                block_id=self._return_to_block_id,
-                anchor=self._return_to_answer_id,
-            )
+            return url
 
         repeating_block_index = self.repeating_block_ids.index(
             # Type ignore: block_id will exist at this point

@@ -1,0 +1,1170 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Grand Calculated Summary cross section demo",
+    "theme": "default",
+    "description": "A schema to showcase grand calculated summary across multiple sections featuring static, dynamic and list repeating block answers",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Hub",
+        "options": {}
+    },
+    "sections": [
+        {
+            "id": "section-1",
+            "title": "Food and clothing",
+            "summary": {
+                "show_on_completion": true
+            },
+            "groups": [
+                {
+                    "id": "group-1",
+                    "title": "Food",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "block-1",
+                            "question": {
+                                "type": "General",
+                                "id": "question-1",
+                                "title": "How much do you spend per month on fruit and veg?",
+                                "answers": [
+                                    {
+                                        "id": "q1-a1",
+                                        "label": "Money spent on fruit",
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "id": "q1-a2",
+                                        "label": "Money spent on veg",
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "mandatory": false
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "block-2",
+                            "question": {
+                                "type": "General",
+                                "id": "question-2",
+                                "title": "How much do you spend per month on other food?",
+                                "answers": [
+                                    {
+                                        "id": "q2-a1",
+                                        "label": "Money spent on bread",
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "id": "q2-a2",
+                                        "label": "Money spent on not bread",
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "mandatory": false
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "calculated-summary-1",
+                            "title": "Calculated Summary for food expenditure is calculated to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "title": "Total monthly food expenditure",
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q1-a1"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q1-a2"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q2-a1"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q2-a2"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "group-2",
+                    "title": "Clothing",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "block-3",
+                            "question": {
+                                "type": "General",
+                                "id": "question-3",
+                                "title": "How much do you spend per month on clothes?",
+                                "answers": [
+                                    {
+                                        "id": "q3-a1",
+                                        "label": "Money spent on jumpers",
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "id": "q3-a2",
+                                        "label": "Money spent on hats",
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "mandatory": false
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "calculated-summary-2",
+                            "title": "Calculated summary for clothes expenditure is calculated to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "title": "Total monthly clothes expenditure",
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q3-a1"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q3-a2"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "calculated-summary-3",
+                            "title": "Calculated summary for food and clothing is calculated to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "title": "Total food and clothes expenditure",
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q1-a1"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q1-a2"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q2-a1"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q2-a2"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q3-a1"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q3-a2"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "GrandCalculatedSummary",
+                            "id": "grand-calculated-summary-1",
+                            "title": "Grand Calculated Summary which should match the previous calculated summary is calculated to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "title": "Grand calculated summary",
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "calculated-summary-1"
+                                        },
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "calculated-summary-2"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-2",
+            "title": "Entertainment",
+            "groups": [
+                {
+                    "id": "group-3",
+                    "title": "Group title for questions about games",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "block-4",
+                            "question": {
+                                "type": "General",
+                                "id": "question-4",
+                                "title": "How much do you spend per week on games?",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "<strong>Note:</strong>"
+                                        },
+                                        {
+                                            "list": [
+                                                "The grand calculated summary section after this will only show if the total spending on games is not zero",
+                                                "You should test that if you use the change links on the grand calculated summary to come back here and set both answers to 0, that you are <strong>not</strong> routed to the grand calculated summary when you press continue on the calculated summary, but instead, taken to the Hub.",
+                                                "If you use the change links on the grand calculated summary to edit these answer values to a non-zero sum, pressing continue twice should take you back to the grand calculated summary"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "q4-a1",
+                                        "label": "Video games",
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "id": "q4-a2",
+                                        "label": "Board games",
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "mandatory": false
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "calculated-summary-4",
+                            "title": "Calculated Summary for games expenditure is calculated to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "title": "Total games expenditure",
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q4-a1"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q4-a2"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-3",
+            "title": "Grand calculated summary of shopping and entertainment",
+            "enabled": {
+                "when": {
+                    "and": [
+                        {
+                            "!=": [
+                                0,
+                                {
+                                    "source": "calculated_summary",
+                                    "identifier": "calculated-summary-4"
+                                }
+                            ]
+                        },
+                        {
+                            "==": [
+                                "COMPLETED",
+                                {
+                                    "source": "progress",
+                                    "selector": "section",
+                                    "identifier": "section-1"
+                                }
+                            ]
+                        },
+                        {
+                            "==": [
+                                "COMPLETED",
+                                {
+                                    "source": "progress",
+                                    "selector": "section",
+                                    "identifier": "section-2"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "groups": [
+                {
+                    "id": "group-4",
+                    "title": "Group title for the grand calculated summary of both sections",
+                    "blocks": [
+                        {
+                            "type": "GrandCalculatedSummary",
+                            "id": "grand-calculated-summary-2",
+                            "title": "Grand Calculated Summary for shopping and entertainment is calculated to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "title": "Total food clothes and games expenditure",
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "calculated-summary-1"
+                                        },
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "calculated-summary-2"
+                                        },
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "calculated-summary-4"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-4",
+            "title": "Utility bills",
+            "summary": {
+                "show_on_completion": true,
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "utility-bills",
+                        "title": "Utility bills",
+                        "item_anchor_answer_id": "utility-bill-name",
+                        "item_label": "Utility bill",
+                        "add_link_text": "Add another utility bill",
+                        "empty_list_text": "No utility bills added"
+                    }
+                ],
+                "show_non_item_answers": true
+            },
+            "groups": [
+                {
+                    "id": "group-5",
+                    "title": "Utility bills",
+                    "blocks": [
+                        {
+                            "type": "ListCollectorDrivingQuestion",
+                            "id": "any-utility-bills",
+                            "for_list": "utility-bills",
+                            "question": {
+                                "type": "General",
+                                "id": "any-utility-bills-question",
+                                "title": "Do you have any monthly expenditure on Utility bills?",
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "any-utility-bills-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock",
+                                                    "params": {
+                                                        "block_id": "add-utility-bill",
+                                                        "list_name": "utility-bills"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "any-utility-bills-answer"
+                                            },
+                                            "Yes"
+                                        ]
+                                    },
+                                    "block": "any-other-utility-bills"
+                                },
+                                {
+                                    "section": "End"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "any-other-utility-bills",
+                            "type": "ListCollector",
+                            "for_list": "utility-bills",
+                            "question": {
+                                "id": "any-other-utility-bills-question",
+                                "type": "General",
+                                "title": "Do you need to add any other Utility bills?",
+                                "answers": [
+                                    {
+                                        "id": "any-other-utility-bills-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "add_block": {
+                                "id": "add-utility-bill",
+                                "type": "ListAddQuestion",
+                                "question": {
+                                    "id": "add-utility-bill-question",
+                                    "type": "General",
+                                    "title": "What bill do you need to add expenditure for?",
+                                    "answers": [
+                                        {
+                                            "id": "utility-bill-name",
+                                            "label": "Utility bill",
+                                            "mandatory": true,
+                                            "type": "Dropdown",
+                                            "options": [
+                                                {
+                                                    "label": "Electricity",
+                                                    "value": "Electricity"
+                                                },
+                                                {
+                                                    "label": "Water",
+                                                    "value": "Water"
+                                                },
+                                                {
+                                                    "label": "Gas",
+                                                    "value": "Gas"
+                                                },
+                                                {
+                                                    "label": "Internet",
+                                                    "value": "Internet"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "edit_block": {
+                                "id": "edit-utility-bill",
+                                "type": "ListEditQuestion",
+                                "question": {
+                                    "id": "edit-utility-bill-question",
+                                    "type": "General",
+                                    "title": "What is the name of the game?",
+                                    "answers": [
+                                        {
+                                            "id": "utility-bill-name",
+                                            "label": "Name of Utility bill",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "remove_block": {
+                                "id": "remove-utility-bill",
+                                "type": "ListRemoveQuestion",
+                                "question": {
+                                    "id": "remove-utility-bill-question",
+                                    "type": "General",
+                                    "title": "Are you sure you want to remove this Utility bill?",
+                                    "answers": [
+                                        {
+                                            "id": "remove-utility-bill-confirmation",
+                                            "mandatory": true,
+                                            "type": "Radio",
+                                            "options": [
+                                                {
+                                                    "label": "Yes",
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
+                                                },
+                                                {
+                                                    "label": "No",
+                                                    "value": "No"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "summary": {
+                                "title": "Utility bills",
+                                "item_title": {
+                                    "text": "{utility_bill}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "utility_bill",
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "utility-bill-name"
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "dynamic-answer",
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
+                                        {
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "utility-bills"
+                                                }
+                                            ]
+                                        },
+                                        0
+                                    ]
+                                }
+                            },
+                            "question": {
+                                "dynamic_answers": {
+                                    "values": {
+                                        "source": "list",
+                                        "identifier": "utility-bills"
+                                    },
+                                    "answers": [
+                                        {
+                                            "label": {
+                                                "text": "Monthly expenditure on {utility_bill} bills",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "utility_bill",
+                                                        "value": {
+                                                            "source": "answers",
+                                                            "identifier": "utility-bill-name"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "id": "utility-bill-monthly-cost",
+                                            "type": "Currency",
+                                            "mandatory": true,
+                                            "currency": "GBP",
+                                            "decimal_places": 2
+                                        }
+                                    ]
+                                },
+                                "id": "dynamic-answer-question",
+                                "title": "Monthly expenditure on utility bills",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "calculated-summary-5",
+                            "title": "Calculated Summary for monthly spending on utility bills is calculated to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "title": "Total monthly expenditure on utility bills",
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "utility-bill-monthly-cost"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-5",
+            "title": "Streaming services",
+            "summary": {
+                "show_on_completion": true,
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "streaming-services",
+                        "title": "Streaming services",
+                        "item_anchor_answer_id": "streaming-service-name",
+                        "item_label": "Streaming service",
+                        "add_link_text": "Add another streaming service",
+                        "empty_list_text": "No streaming services added"
+                    }
+                ],
+                "show_non_item_answers": true
+            },
+            "groups": [
+                {
+                    "id": "group-6",
+                    "title": "Streaming services",
+                    "blocks": [
+                        {
+                            "type": "ListCollectorDrivingQuestion",
+                            "id": "any-streaming-services",
+                            "for_list": "streaming-services",
+                            "question": {
+                                "type": "General",
+                                "id": "any-streaming-services-question",
+                                "title": "Do you have any monthly expenditure on streaming services?",
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "any-streaming-services-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock",
+                                                    "params": {
+                                                        "block_id": "add-streaming-service",
+                                                        "list_name": "streaming-services"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "any-streaming-services-answer"
+                                            },
+                                            "Yes"
+                                        ]
+                                    },
+                                    "block": "any-other-streaming-services"
+                                },
+                                {
+                                    "section": "End"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "any-other-streaming-services",
+                            "type": "ListCollector",
+                            "for_list": "streaming-services",
+                            "question": {
+                                "id": "any-other-streaming-services-question",
+                                "type": "General",
+                                "title": "Do you need to add any other streaming services?",
+                                "answers": [
+                                    {
+                                        "id": "any-other-streaming-services-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "add_block": {
+                                "id": "add-streaming-service",
+                                "type": "ListAddQuestion",
+                                "question": {
+                                    "id": "add-streaming-service-question",
+                                    "type": "General",
+                                    "title": "What is the name of the Streaming service?",
+                                    "answers": [
+                                        {
+                                            "id": "streaming-service-name",
+                                            "label": "Name of Streaming service",
+                                            "mandatory": true,
+                                            "type": "Dropdown",
+                                            "options": [
+                                                {
+                                                    "label": "Netflix",
+                                                    "value": "Netflix"
+                                                },
+                                                {
+                                                    "label": "Prime video",
+                                                    "value": "Prime video"
+                                                },
+                                                {
+                                                    "label": "Now TV",
+                                                    "value": "Now TV"
+                                                },
+                                                {
+                                                    "label": "Apple TV",
+                                                    "value": "Apple TV"
+                                                },
+                                                {
+                                                    "label": "Disney+",
+                                                    "value": "Disney+"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "edit_block": {
+                                "id": "edit-streaming-service",
+                                "type": "ListEditQuestion",
+                                "question": {
+                                    "id": "edit-streaming-service-question",
+                                    "type": "General",
+                                    "title": "What is the name of the Streaming service?",
+                                    "answers": [
+                                        {
+                                            "id": "streaming-service-name",
+                                            "label": "Name of Streaming service",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "remove_block": {
+                                "id": "remove-streaming-service",
+                                "type": "ListRemoveQuestion",
+                                "question": {
+                                    "id": "remove-streaming-service-question",
+                                    "type": "General",
+                                    "title": "Are you sure you want to remove this Streaming service?",
+                                    "answers": [
+                                        {
+                                            "id": "remove-streaming-service-confirmation",
+                                            "mandatory": true,
+                                            "type": "Radio",
+                                            "options": [
+                                                {
+                                                    "label": "Yes",
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
+                                                },
+                                                {
+                                                    "label": "No",
+                                                    "value": "No"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "repeating_blocks": [
+                                {
+                                    "id": "streaming-service-repeating-block-1",
+                                    "type": "ListRepeatingQuestion",
+                                    "question": {
+                                        "id": "streaming-service-repeating-block-1-question",
+                                        "type": "General",
+                                        "title": {
+                                            "text": "What is your monthly expenditure on {streaming_service} bills?",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "streaming_service",
+                                                    "value": {
+                                                        "source": "answers",
+                                                        "identifier": "streaming-service-name"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "answers": [
+                                            {
+                                                "id": "streaming-service-monthly-cost",
+                                                "label": {
+                                                    "text": "Monthly subscription cost for {streaming_service}",
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "streaming_service",
+                                                            "value": {
+                                                                "source": "answers",
+                                                                "identifier": "streaming-service-name"
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "mandatory": true,
+                                                "type": "Currency",
+                                                "currency": "GBP",
+                                                "decimal_places": 2
+                                            },
+                                            {
+                                                "id": "streaming-service-extra-cost",
+                                                "label": {
+                                                    "text": "Additional monthly spending on {streaming_service}",
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "streaming_service",
+                                                            "value": {
+                                                                "source": "answers",
+                                                                "identifier": "streaming-service-name"
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "mandatory": false,
+                                                "type": "Currency",
+                                                "currency": "GBP",
+                                                "decimal_places": 2
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "streaming-service-repeating-block-2",
+                                    "type": "ListRepeatingQuestion",
+                                    "question": {
+                                        "id": "streaming-service-repeating-block-2-question",
+                                        "type": "General",
+                                        "title": {
+                                            "text": "What is your average monthly internet usage for {streaming_service}?",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "streaming_service",
+                                                    "value": {
+                                                        "source": "answers",
+                                                        "identifier": "streaming-service-name"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "answers": [
+                                            {
+                                                "id": "streaming-service-usage",
+                                                "label": {
+                                                    "text": "Monthly Internet usage for {streaming_service}",
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "streaming_service",
+                                                            "value": {
+                                                                "source": "answers",
+                                                                "identifier": "streaming-service-name"
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "mandatory": true,
+                                                "type": "Unit",
+                                                "unit_length": "short",
+                                                "unit": "digital-gigabyte",
+                                                "decimal_places": 2
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "summary": {
+                                "title": "Streaming services",
+                                "item_title": {
+                                    "text": "{streaming_service_name}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "streaming_service_name",
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "streaming-service-name"
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "calculated-summary-6",
+                            "title": "Calculated Summary for monthly expenditure on streaming services is calculated to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "title": "Total monthly expenditure on streaming services",
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "streaming-service-monthly-cost"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "streaming-service-extra-cost"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "calculated-summary-7",
+                            "title": "Total monthly internet usage on streaming services is calculated to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "title": "Total internet usage on streaming services",
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "streaming-service-usage"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "other-internet-usage",
+                            "question": {
+                                "type": "General",
+                                "id": "other-internet-question",
+                                "title": "Do you have any additional internet usage to report?",
+                                "answers": [
+                                    {
+                                        "id": "media-downloads",
+                                        "label": "Internet usage on media downloads",
+                                        "mandatory": false,
+                                        "type": "Unit",
+                                        "unit_length": "short",
+                                        "unit": "digital-gigabyte",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "misc-internet",
+                                        "label": "Other miscellaneous internet usage",
+                                        "mandatory": false,
+                                        "type": "Unit",
+                                        "unit_length": "short",
+                                        "unit": "digital-gigabyte",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "calculated-summary-8",
+                            "title": "Total monthly internet usage on other services is calculated to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "title": "Total internet usage on other services",
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "media-downloads"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "misc-internet"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-6",
+            "title": "Grand calculated summary of household expenditure",
+            "enabled": {
+                "when": {
+                    "and": [
+                        {
+                            "==": [
+                                "COMPLETED",
+                                {
+                                    "source": "progress",
+                                    "selector": "section",
+                                    "identifier": "section-1"
+                                }
+                            ]
+                        },
+                        {
+                            "==": [
+                                "COMPLETED",
+                                {
+                                    "source": "progress",
+                                    "selector": "section",
+                                    "identifier": "section-2"
+                                }
+                            ]
+                        },
+                        {
+                            "==": [
+                                "COMPLETED",
+                                {
+                                    "source": "progress",
+                                    "selector": "section",
+                                    "identifier": "section-4"
+                                }
+                            ]
+                        },
+                        {
+                            "==": [
+                                "COMPLETED",
+                                {
+                                    "source": "progress",
+                                    "selector": "section",
+                                    "identifier": "section-5"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "groups": [
+                {
+                    "id": "group-7",
+                    "title": "Expenditure grand totals",
+                    "blocks": [
+                        {
+                            "type": "GrandCalculatedSummary",
+                            "id": "grand-calculated-summary-3",
+                            "title": "Grand Calculated Summary for monthly spending on bills and services is calculated to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "title": "Total monthly expenditure on bills and streaming services",
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "calculated-summary-5"
+                                        },
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "calculated-summary-6"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "GrandCalculatedSummary",
+                            "id": "grand-calculated-summary-4",
+                            "title": "Grand Calculated Summary for internet usage is calculated to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "title": "Total internet usage",
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "calculated-summary-7"
+                                        },
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "calculated-summary-8"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "GrandCalculatedSummary",
+                            "id": "grand-calculated-summary-5",
+                            "title": "Grand Calculated Summary for total monthly household expenditure is calculated to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "title": "Total monthly expenditure",
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "calculated-summary-1"
+                                        },
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "calculated-summary-2"
+                                        },
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "calculated-summary-4"
+                                        },
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "calculated-summary-5"
+                                        },
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "calculated-summary-6"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
