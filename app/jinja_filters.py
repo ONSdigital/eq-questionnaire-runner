@@ -259,7 +259,7 @@ def get_min_max_value_width(
 
     if (
         answer.get(min_max, {})
-        and isinstance(answer[min_max]["value"], dict)
+        and isinstance(answer[min_max]["value"], Mapping)
         and answer[min_max]["value"].get("source") == "answers"
     ):
         schema = g.get("schema")
