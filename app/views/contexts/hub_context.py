@@ -95,7 +95,7 @@ class HubContext(Context):
                     "actions": [
                         {
                             "text": section_content["link"]["text"],
-                            "ariaLabel": section_content["link"]["aria_label"].format(
+                            "visuallyHiddenText": section_content["link"]["aria_label"].format(
                                 section_name=section_name
                             ),
                             "url": section_url,
