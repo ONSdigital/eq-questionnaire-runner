@@ -798,7 +798,7 @@ class TestRouterNextLocation(RouterTestCase):
         you are routed to the next block in the incomplete section rather than the grand calculated summary
         """
         self.schema = load_schema_from_name(
-            "test_grand_calculated_summary_multiple_sections"
+            "test_grand_calculated_summary_repeating_answers"
         )
         # calculated summary 3 is not complete yet
         self.progress_store = ProgressStore(
@@ -1234,6 +1234,45 @@ class TestRouterPreviousLocation(RouterTestCase):
         )
 
         assert expected_url == previous_location_url
+
+    @pytest.mark.usefixtures("app")
+    def test_return_to_grand_calculated_summary_from_repeating_answer(
+        self,
+        grand_calculated_summary_repeating_answers_progress_store,
+        grand_calculated_summary_repeating_answers_schema,
+    ):
+        """
+        Test returning to a calculated summary from a list repeating question as part of a grand calculated summary change link
+        """
+        self.schema = grand_calculated_summary_repeating_answers_schema
+        self.progress_store = grand_calculated_summary_repeating_answers_progress_store
+
+        parent_location = Location(
+            section_id="section-5",
+            block_id="any-other-streaming-services",
+        )
+
+        routing_path = RoutingPath(
+            ["calculated-summary-6"],
+            section_id="section-5",
+        )
+        next_location_url = self.router.get_previous_location_url(
+            parent_location,
+            routing_path,
+            return_to="calculated-summary,grand-calculated-summary",
+            return_to_answer_id="calculated-summary-6",
+            return_to_block_id="calculated-summary-6,grand-calculated-summary-3",
+        )
+
+        expected_previous_url = url_for(
+            "questionnaire.block",
+            return_to="grand-calculated-summary",
+            block_id="calculated-summary-6",
+            return_to_block_id="grand-calculated-summary-3",
+            _anchor="calculated-summary-6",
+        )
+
+        assert expected_previous_url == next_location_url
 
     @pytest.mark.usefixtures("app")
     def test_return_to_section_summary_section_is_complete(self):
