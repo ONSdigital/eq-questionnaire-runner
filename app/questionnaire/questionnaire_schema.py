@@ -911,7 +911,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def get_list_collectors_for_list_for_sections(
         self, sections: list[str], for_list: str, primary: bool = False
-    ) -> list:
+    ) -> list[ImmutableDict]:
         blocks: list[ImmutableDict] = []
         for section_id in sections:
             if section := self.get_section(section_id):
