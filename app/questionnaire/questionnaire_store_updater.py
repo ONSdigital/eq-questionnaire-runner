@@ -169,7 +169,7 @@ class QuestionnaireStoreUpdater:
         If an item is removed from a list, dependencies of any child blocks need to be captured and their progress updated.
         (E.g. dynamic-answers depending on a child block could have validation, so need revisiting if an item is removed)
         """
-        for list_collector in self._schema.get_list_collector_for_list(
+        for list_collector in self._schema.get_list_collectors_for_list(
             for_list=list_name
         ):
             child_blocks = (

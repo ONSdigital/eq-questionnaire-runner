@@ -57,13 +57,11 @@ class ValueSourceResolver:
             list_name = self.schema.list_names_by_list_repeating_block_id[block_id]
             # Type ignore: list collector will exist if the block is repeating
             section: ImmutableDict = self.schema.get_section_for_block_id(block_id)  # type: ignore
-            list_collector_blocks: ImmutableDict = self.schema.get_list_collector_for_list(list_name)  # type: ignore
+            list_collector_blocks: list = self.schema.get_list_collectors_for_list(for_list=list_name, section_id=section["id"])  # type: ignore
 
             for list_collector_block in list_collector_blocks:
-                if section["id"] == self.schema.get_section_id_for_block_id(
-                    list_collector_block["id"]
-                ):
-                    return list_collector_block["id"] in self.routing_path_block_ids
+                if list_collector_block["id"] in self.routing_path_block_ids:
+                    return True
 
         return block_id in self.routing_path_block_ids
 

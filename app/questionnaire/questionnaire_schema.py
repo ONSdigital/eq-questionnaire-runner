@@ -61,8 +61,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self, questionnaire_json: Mapping, language_code: str = DEFAULT_LANGUAGE_CODE
     ):
         self._parent_id_map: dict[str, str] = {}
-        self._list_name_to_section_map: dict[str, list[str]] = {}
-        self._list_name_to_section_id_origin_map: dict[str, list] = {}
+        self._section_dependencies_by_list_name: dict[str, list[str]] = {}
+        self._list_collector_section_ids_by_list_name: dict[str, list] = defaultdict(
+            list
+        )
         self._answer_dependencies_map: dict[str, set[AnswerDependent]] = defaultdict(
             set
         )
@@ -303,14 +305,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     "PrimaryPersonListCollector",
                     "RelationshipCollector",
                 ):
-                    if self._list_name_to_section_id_origin_map.get(block["for_list"]):
-                        self._list_name_to_section_id_origin_map[
-                            block["for_list"]
-                        ].append(self._parent_id_map[group["id"]])
-                    else:
-                        self._list_name_to_section_id_origin_map[block["for_list"]] = [
-                            self._parent_id_map[group["id"]]
-                        ]
+                    self._list_collector_section_ids_by_list_name[
+                        block["for_list"]
+                    ].append(self._parent_id_map[group["id"]])
                     for nested_block_name in [
                         "add_block",
                         "edit_block",
@@ -563,7 +560,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         blocks like dynamic_answers, don't directly need to depend on the add_block/remove_block,
         but a block depending on the dynamic answers might (such as a calculated summary)
         """
-        list_collectors = self.get_list_collector_for_list(
+        list_collectors = self.get_list_collectors_for_list(
             for_list=list_name,
         )
 
@@ -634,10 +631,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def get_section_ids_dependent_on_list(self, list_name: str) -> list[str]:
         try:
-            return self._list_name_to_section_map[list_name]
+            return self._section_dependencies_by_list_name[list_name]
         except KeyError:
             section_ids = self._section_ids_associated_to_list_name(list_name)
-            self._list_name_to_section_map[list_name] = section_ids
+            self._section_dependencies_by_list_name[list_name] = section_ids
             return section_ids
 
     def get_submission(self) -> ImmutableDict:
@@ -912,7 +909,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         """
         return self._questions_by_id.get(question_id)
 
-    def get_list_collectors_for_list(
+    def get_list_collectors_for_list_for_sections(
         self, sections: list, for_list: str, primary: bool = False
     ) -> list:
         blocks: list = []
@@ -930,12 +927,17 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         return blocks
 
-    def get_list_collector_for_list(
-        self, for_list: str, primary: bool = False
+    def get_list_collectors_for_list(
+        self, for_list: str, primary: bool = False, section_id: str | None = None
     ) -> list[ImmutableDict]:
-        sections = self._list_name_to_section_id_origin_map[for_list]
+        if section_id:
+            sections = [section_id]
+        else:
+            sections = self._list_collector_section_ids_by_list_name[for_list]
 
-        return self.get_list_collectors_for_list(sections, for_list, primary)
+        return self.get_list_collectors_for_list_for_sections(
+            sections, for_list, primary
+        )
 
     @classmethod
     def get_answers_for_question_by_id(

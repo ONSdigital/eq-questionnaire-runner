@@ -334,11 +334,11 @@ def test_is_repeating_answer_within_list_collector(
 def test_get_list_collector_for_list(list_collector_variant_schema):
     schema = QuestionnaireSchema(list_collector_variant_schema)
 
-    result = schema.get_list_collector_for_list(for_list="people")
+    result = schema.get_list_collectors_for_list(for_list="people")
 
     assert result[0]["id"] == "block1"
 
-    filtered_result = schema.get_list_collector_for_list(for_list="people")
+    filtered_result = schema.get_list_collectors_for_list(for_list="people")
 
     assert filtered_result == result
 
