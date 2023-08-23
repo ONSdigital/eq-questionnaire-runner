@@ -1,9 +1,18 @@
+from functools import cached_property
+
 from flask import url_for
 
 from app.views.handlers.list_action import ListAction
 
 
 class ListEditQuestion(ListAction):
+    @cached_property
+    def repeating_block_ids(self) -> list[str]:
+        return [
+            repeating_block["id"]
+            for repeating_block in self.parent_block.get("repeating_blocks", [])
+        ]
+
     def is_location_valid(self) -> bool:
         list_item_doesnt_exist = (
             self._current_location.list_item_id
@@ -24,7 +33,7 @@ class ListEditQuestion(ListAction):
             return url
 
         if first_incomplete_block := self.get_first_incomplete_list_repeating_block_location_for_list_item(
-            repeating_block_ids=self._schema.list_collector_repeating_block_ids,
+            repeating_block_ids=self.repeating_block_ids,
             section_id=self.current_location.section_id,
             # Type ignore: list_name and list_item_id will exist at this point
             list_item_id=self.current_location.list_item_id,  # type: ignore
