@@ -40,7 +40,7 @@ types-pytz = "*"
 
 [packages]
 colorama = "*"
-flask = "==2.2.2"
+flask = "*"
 flask-babel = "*"
 flask-login = "*"
 flask-wtf = "*"
