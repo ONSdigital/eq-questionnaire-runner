@@ -26,9 +26,7 @@ jobs:
       - name: Install Pipenv
         run: pip install pipenv==2022.11.30
       - name: Install virtual environment
-        run: |
-          sudo apt-get install libsnappy-dev
-          pipenv install --dev
+        run: pipenv install --dev
   node-dependencies:
     runs-on: ubuntu-22.04
     steps:
