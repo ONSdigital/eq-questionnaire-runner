@@ -35,6 +35,7 @@ describe("Calculated summary with repeating answers", function () {
     await click(ListCollectorAddPage.submit());
     await $(ListCollectorPage.no()).click();
     await click(ListCollectorPage.submit());
+    await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
     await $$(DynamicAnswerPage.inputs())[0].setValue(300);
     await $$(DynamicAnswerPage.inputs())[1].setValue(200);
     await $$(DynamicAnswerPage.inputs())[2].setValue(30);
@@ -69,6 +70,7 @@ describe("Calculated summary with repeating answers", function () {
 
   it("Given I click on a change link, edit an answer and continue, I return to the calculated summary to reconfirm it", async () => {
     await dynamicAnswerChangeLink(0).click();
+    await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
     await $$(DynamicAnswerPage.inputs())[5].setValue(3);
     await click(DynamicAnswerPage.submit());
     await expect(await browser.getUrl()).to.contain(CalculatedSummaryVisitsPage.pageName);
@@ -201,6 +203,7 @@ describe("Calculated summary with repeating answers", function () {
     await expect(await $(HubPage.summaryRowState("section-2")).getText()).to.equal("Completed");
     await $(HubPage.summaryRowLink("section-1")).click();
     await dynamicAnswerChangeLink(8).click();
+    await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
     await $$(DynamicAnswerPage.inputs())[5].setValue(1);
     await click(DynamicAnswerPage.submit());
     await click(ExtraSpendingBlockPage.submit());

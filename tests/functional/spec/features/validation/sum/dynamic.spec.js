@@ -74,6 +74,7 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
   describe("Given I add list items and fill all the dynamic answers", () => {
     it("When I continue and add another list item, Then I should be revisiting dynamic answers which should be updated to reflect the changes", async () => {
       await addTwoSupermarkets();
+      await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
       await expect(await $$(DynamicAnswerPage.labels()).length).to.equal(3);
       await fillDynamicAnswers();
       await $(SectionSummaryPage.supermarketsListAddLink()).click();
@@ -88,6 +89,7 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
   describe("Given I add list items and fill all the dynamic answers", () => {
     it("When I continue and remove existing list item, Then I should be revisiting dynamic answers which should be updated to reflect the changes", async () => {
       await addTwoSupermarkets();
+      await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
       await fillDynamicAnswers();
       await $(SectionSummaryPage.supermarketsListRemoveLink(1)).click();
       await $(ListCollectorRemovePage.yes()).click();
@@ -99,6 +101,7 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
   describe("Given I add list items and fill all the dynamic answers", () => {
     it("When I continue and edit existing list item, Then I should be revisiting dynamic answers which should be updated to reflect the changes", async () => {
       await addTwoSupermarkets();
+      await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
       await fillDynamicAnswers();
       await $(SectionSummaryPage.supermarketsListEditLink(1)).click();
       await $(ListCollectorEditPage.supermarketName()).setValue("Aldi");
@@ -114,6 +117,7 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
   describe("Given I add list items and fill all the dynamic answers", () => {
     it("When I journey backwards, Then I should be revisiting all the previous blocks", async () => {
       await addTwoSupermarkets();
+      await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
       await fillDynamicAnswers();
       await expect(await browser.getUrl()).to.contain(SectionSummaryPage.pageName);
       await $(SectionSummaryPage.previous()).click();
