@@ -32,7 +32,7 @@ describe("Dynamic answers list value source", () => {
     await $(ListCollectorPage.no()).click();
     await click(ListCollectorPage.submit());
     await $(DynamicAnswerPage.labels()).waitForExist({ timeout });
-    await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
+    await browser.waitUntil(() => browser.getUrl().then((url) => url.includes(DynamicAnswerPage.pageName)));
     await expect(await $$(DynamicAnswerPage.labels())[0].getText()).to.equal("Percentage of shopping at Tesco");
     await expect(await $$(DynamicAnswerPage.labels()).length).to.equal(2);
     await setMinimumAndGetSectionSummary(timeout);
@@ -43,7 +43,7 @@ describe("Dynamic answers list value source", () => {
     await $(ListCollectorPage.no()).click();
     await click(ListCollectorPage.submit());
     await $(DynamicAnswerPage.inputs()).waitForExist({ timeout });
-    await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
+    await browser.waitUntil(() => browser.getUrl().then((url) => url.includes(DynamicAnswerPage.pageName)));
     await expect(await $$(DynamicAnswerPage.labels())[0].getText()).to.equal("Percentage of shopping at Tesco");
     await expect(await $$(DynamicAnswerPage.labels())[1].getText()).to.equal("Percentage of shopping at Aldi");
     await expect(await $$(DynamicAnswerPage.labels()).length).to.equal(4);
@@ -73,7 +73,7 @@ describe("Dynamic answers list value source", () => {
     await $(SectionSummaryPage.previous()).click();
     await $(DynamicAnswerOnlyPage.previous()).click();
     await $(SetMinimumPage.previous()).click();
-    await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
+    await browser.waitUntil(() => browser.getUrl().then((url) => url.includes(DynamicAnswerPage.pageName)));
     await $(DynamicAnswerPage.inputs()).waitForExist({ timeout });
     await $(DynamicAnswerPage.labels()).waitForExist({ timeout });
     await expect(await $$(DynamicAnswerPage.inputs())[0].getValue()).to.equal("12");
@@ -103,13 +103,13 @@ describe("Dynamic answers list value source", () => {
     await $$(DynamicAnswerPage.inputs())[1].setValue(21);
     await setMinimumAndGetSectionSummary(timeout);
     await $(SectionSummaryPage.groupContent(2)).$$(summaryActions)[0].$("a").click();
-    await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
+    await browser.waitUntil(() => browser.getUrl().then((url) => url.includes(DynamicAnswerPage.pageName)));
     await expect(await $$(DynamicAnswerPage.inputs())[0].isFocused()).to.be.true;
     await click(DynamicAnswerPage.submit());
     await $(SectionSummaryPage.groupContent(2)).waitForExist({ timeout });
-    await expect(await browser.getUrl()).to.contain(SectionSummaryPage.pageName);
+    await browser.waitUntil(() => browser.getUrl().then((url) => url.includes(SectionSummaryPage.pageName)));
     await $(SectionSummaryPage.groupContent(2)).$$(summaryActions)[1].$("a").click();
-    await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
+    await browser.waitUntil(() => browser.getUrl().then((url) => url.includes(DynamicAnswerPage.pageName)));
     await expect(await $$(DynamicAnswerPage.inputs())[1].isFocused()).to.be.true;
   });
   it("Given list items have been added and the dynamic answers are submitted, When the dynamic answers are resubmitted with answers updated, Then they should be displayed correctly on summary", async () => {
@@ -118,7 +118,7 @@ describe("Dynamic answers list value source", () => {
     await $$(DynamicAnswerPage.inputs())[1].setValue(21);
     await setMinimumAndGetSectionSummary(timeout);
     await $(SectionSummaryPage.groupContent(2)).$$(summaryActions)[0].$("a").click();
-    await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
+    await browser.waitUntil(() => browser.getUrl().then((url) => url.includes(DynamicAnswerPage.pageName)));
     await $$(DynamicAnswerPage.inputs())[0].setValue(21);
     await click(DynamicAnswerPage.submit());
     await $(SectionSummaryPage.groupContent(2)).waitForExist({ timeout });
@@ -138,7 +138,7 @@ describe("Dynamic answers list value source", () => {
     await $(SetMinimumPage.setMinimum()).setValue(2);
     await click(SetMinimumPage.submit());
     await click(DynamicAnswerOnlyPage.submit());
-    await expect(await browser.getUrl()).to.contain(SectionSummaryPage.pageName);
+    await browser.waitUntil(() => browser.getUrl().then((url) => url.includes(SectionSummaryPage.pageName)));
     await $(SectionSummaryPage.groupContent(2)).waitForExist({ timeout });
     await expect(await $(SectionSummaryPage.groupContent(2)).$$(summaryTitles)[0].getText()).to.equal("Percentage of shopping at Aldi");
     await expect(await $(SectionSummaryPage.groupContent(2)).$$(summaryValues)[0].getText()).to.equal("21%");
@@ -161,7 +161,7 @@ describe("Dynamic answers list value source", () => {
     await $(DriverPage.yes()).click();
     await click(DriverPage.submit());
     await $(SectionSummaryPage.groupContent(2)).waitForExist({ timeout });
-    await expect(await browser.getUrl()).to.contain(SectionSummaryPage.pageName);
+    await browser.waitUntil(() => browser.getUrl().then((url) => url.includes(SectionSummaryPage.pageName)));
     await expect(await $(SectionSummaryPage.supermarketsListEditLink(1)).isExisting()).to.be.true;
     await expect(await $(SectionSummaryPage.supermarketsListAddLink()).isExisting()).to.be.true;
     await expect(await $(SectionSummaryPage.groupContent(2)).$$(summaryTitles)[0].getText()).to.equal("Percentage of shopping at Tesco");
@@ -189,7 +189,7 @@ async function addTwoSupermarkets(timeout) {
   await $(ListCollectorPage.no()).click();
   await click(ListCollectorPage.submit());
   await $(DynamicAnswerPage.inputs()).waitForExist({ timeout });
-  await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
+  await browser.waitUntil(() => browser.getUrl().then((url) => url.includes(DynamicAnswerPage.pageName)));
 }
 
 async function setMinimumAndGetSectionSummary(timeout) {
@@ -198,5 +198,5 @@ async function setMinimumAndGetSectionSummary(timeout) {
   await click(SetMinimumPage.submit());
   await click(DynamicAnswerOnlyPage.submit());
   await $(SectionSummaryPage.groupContent(2)).waitForExist({ timeout });
-  await expect(await browser.getUrl()).to.contain(SectionSummaryPage.pageName);
+  await browser.waitUntil(() => browser.getUrl().then((url) => url.includes(SectionSummaryPage.pageName)));
 }
