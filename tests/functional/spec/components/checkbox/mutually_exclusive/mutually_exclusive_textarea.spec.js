@@ -1,5 +1,6 @@
 import TextFieldPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-textarea.page";
 import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-textarea-section-summary.page";
+import { click } from "../../../../helpers";
 
 describe("Component: Mutually Exclusive TextArea With Single Checkbox Override", () => {
   beforeEach(async () => {
@@ -20,7 +21,7 @@ describe("Component: Mutually Exclusive TextArea With Single Checkbox Override",
       await expect(await $(TextFieldPage.textarea()).getValue()).to.contain("Blue");
       await expect(await $(TextFieldPage.textareaExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
-      await $(TextFieldPage.submit()).click();
+      await click(TextFieldPage.submit());
 
       await expect(await $(SummaryPage.textareaAnswer()).getText()).to.have.string("Blue");
       await expect(await $(SummaryPage.textareaAnswer()).getText()).to.not.have.string("I prefer not to say");
@@ -37,7 +38,7 @@ describe("Component: Mutually Exclusive TextArea With Single Checkbox Override",
       await expect(await $(TextFieldPage.textareaExclusiveIPreferNotToSay()).isSelected()).to.be.true;
 
       // Then
-      await $(TextFieldPage.submit()).click();
+      await click(TextFieldPage.submit());
 
       await expect(await $(SummaryPage.textareaExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
       await expect(await $(SummaryPage.textareaExclusiveAnswer()).getText()).to.not.have.string("Blue");
@@ -51,7 +52,7 @@ describe("Component: Mutually Exclusive TextArea With Single Checkbox Override",
       await expect(await $(TextFieldPage.textareaExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
       // When
-      await $(TextFieldPage.submit()).click();
+      await click(TextFieldPage.submit());
 
       // Then
       await expect(await $(SummaryPage.textareaAnswer()).getText()).to.contain("No answer provided");

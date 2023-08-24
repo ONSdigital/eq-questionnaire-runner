@@ -4,18 +4,18 @@ import CarerPage from "../../generated_pages/confirmation_question_within_repeat
 import DateOfBirthPage from "../../generated_pages/confirmation_question_within_repeating_section/dob-block.page";
 import ConfirmDateOfBirthPage from "../../generated_pages/confirmation_question_within_repeating_section/confirm-dob-block.page";
 import DefaultSectionSummary from "../../generated_pages/confirmation_question_within_repeating_section/default-section-summary.page";
-
+import { click } from "../../helpers";
 describe("Feature: Confirmation Question Within A Repeating Section", () => {
   describe("Given I am in a repeating section", () => {
     beforeEach("Add a person", async () => {
       await browser.openQuestionnaire("test_confirmation_question_within_repeating_section.json");
       await $(DoesAnyoneLiveHerePage.yes()).click();
-      await $(DoesAnyoneLiveHerePage.submit()).click();
+      await click(DoesAnyoneLiveHerePage.submit());
       await $(AddPersonPage.firstName()).setValue("John");
       await $(AddPersonPage.lastName()).setValue("Doe");
-      await $(AddPersonPage.submit()).click();
+      await click(AddPersonPage.submit());
       await $(DoesAnyoneLiveHerePage.no()).click();
-      await $(DoesAnyoneLiveHerePage.submit()).click();
+      await click(DoesAnyoneLiveHerePage.submit());
       await expect(await browser.getUrl()).to.contain(DateOfBirthPage.url().split("/").slice(-1)[0]);
     });
 
@@ -25,11 +25,11 @@ describe("Feature: Confirmation Question Within A Repeating Section", () => {
         await $(DateOfBirthPage.day()).setValue("01");
         await $(DateOfBirthPage.month()).setValue("01");
         await $(DateOfBirthPage.year()).setValue("2015");
-        await $(DateOfBirthPage.submit()).click();
+        await click(DateOfBirthPage.submit());
 
         // Answer 'No' to confirmation question
         await $(ConfirmDateOfBirthPage.noINeedToChangeTheirDateOfBirth()).click();
-        await $(ConfirmDateOfBirthPage.submit()).click();
+        await click(ConfirmDateOfBirthPage.submit());
         await expect(await browser.getUrl()).to.contain(DateOfBirthPage.pageName);
       });
     });
@@ -39,10 +39,10 @@ describe("Feature: Confirmation Question Within A Repeating Section", () => {
         await $(DateOfBirthPage.day()).setValue("01");
         await $(DateOfBirthPage.month()).setValue("01");
         await $(DateOfBirthPage.year()).setValue("2015");
-        await $(DateOfBirthPage.submit()).click();
+        await click(DateOfBirthPage.submit());
 
         await $(ConfirmDateOfBirthPage.yesPersonNameIsAgeOld()).click();
-        await $(ConfirmDateOfBirthPage.submit()).click();
+        await click(ConfirmDateOfBirthPage.submit());
 
         await expect(await browser.getUrl()).to.contain("sections/default-section/");
         await expect(await $(DefaultSectionSummary.confirmDateOfBirth()).isExisting()).to.be.false;
@@ -54,7 +54,7 @@ describe("Feature: Confirmation Question Within A Repeating Section", () => {
         await $(DateOfBirthPage.day()).setValue("01");
         await $(DateOfBirthPage.month()).setValue("01");
         await $(DateOfBirthPage.year()).setValue("2000");
-        await $(DateOfBirthPage.submit()).click();
+        await click(DateOfBirthPage.submit());
 
         await expect(await browser.getUrl()).to.contain(CarerPage.pageName);
         await expect(await $(CarerPage.questionText()).getText()).to.contain("Does John Doe look");

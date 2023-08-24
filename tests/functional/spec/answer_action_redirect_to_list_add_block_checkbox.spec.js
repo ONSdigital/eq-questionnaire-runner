@@ -1,4 +1,4 @@
-import { checkItemsInList } from "../helpers";
+import { checkItemsInList, click } from "../helpers";
 import AnyoneLiveAtListCollector from "../generated_pages/answer_action_redirect_to_list_add_block_checkbox/anyone-else-live-at.page";
 import AnyoneLiveAtListCollectorAddPage from "../generated_pages/answer_action_redirect_to_list_add_block_checkbox/anyone-else-live-at-add.page";
 import AnyoneLiveAtListCollectorRemovePage from "../generated_pages/answer_action_redirect_to_list_add_block_checkbox/anyone-else-live-at-remove.page";
@@ -12,14 +12,14 @@ describe("Answer Action: Redirect To List Add Question (Checkbox)", () => {
 
     it('When the user selects "No", Then, they should be taken to the list collector.', async () => {
       await $(AnyoneUsuallyLiveAt.no()).click();
-      await $(AnyoneUsuallyLiveAt.submit()).click();
+      await click(AnyoneUsuallyLiveAt.submit());
       await expect(await browser.getUrl()).to.contain(AnyoneLiveAtListCollector.pageName);
     });
 
     it('When the user selects "Yes" then they should be taken to the list collector add question.', async () => {
       await browser.url(AnyoneUsuallyLiveAt.url());
       await $(AnyoneUsuallyLiveAt.iThinkSo()).click();
-      await $(AnyoneUsuallyLiveAt.submit()).click();
+      await click(AnyoneUsuallyLiveAt.submit());
       await expect(await browser.getUrl()).to.contain(AnyoneLiveAtListCollectorAddPage.pageName);
       await expect(await browser.getUrl()).to.contain("?previous=anyone-usually-live-at");
     });
@@ -30,10 +30,10 @@ describe("Answer Action: Redirect To List Add Question (Checkbox)", () => {
     });
 
     it("When the user adds a household member, Then, they are taken to the list collector and the household members are displayed", async () => {
-      await $(AnyoneUsuallyLiveAt.submit()).click();
+      await click(AnyoneUsuallyLiveAt.submit());
       await $(AnyoneLiveAtListCollectorAddPage.firstName()).setValue("Marcus");
       await $(AnyoneLiveAtListCollectorAddPage.lastName()).setValue("Twin");
-      await $(AnyoneLiveAtListCollectorAddPage.submit()).click();
+      await click(AnyoneLiveAtListCollectorAddPage.submit());
       await expect(await browser.getUrl()).to.contain(AnyoneLiveAtListCollector.pageName);
 
       const peopleExpected = ["Marcus Twin"];
@@ -46,14 +46,14 @@ describe("Answer Action: Redirect To List Add Question (Checkbox)", () => {
     });
 
     it("When the user resubmits the first block and then list is not empty, Then they are taken to the list collector", async () => {
-      await $(AnyoneUsuallyLiveAt.submit()).click();
+      await click(AnyoneUsuallyLiveAt.submit());
       await expect(await browser.getUrl()).to.contain(AnyoneLiveAtListCollector.pageName);
     });
 
     it("When the users removes the only person (Marcus Twain), Then, they are shown an empty list collector", async () => {
       await $(AnyoneLiveAtListCollector.listRemoveLink(1)).click();
       await $(AnyoneLiveAtListCollectorRemovePage.yes()).click();
-      await $(AnyoneLiveAtListCollectorRemovePage.submit()).click();
+      await click(AnyoneLiveAtListCollectorRemovePage.submit());
       await expect(await browser.getUrl()).to.contain(AnyoneLiveAtListCollector.pageName);
       await expect(await $(AnyoneLiveAtListCollector.listLabel(1)).isExisting()).to.be.false;
     });
@@ -64,7 +64,7 @@ describe("Answer Action: Redirect To List Add Question (Checkbox)", () => {
       await $(AnyoneLiveAtListCollector.previous()).click();
       await expect(await browser.getUrl()).to.contain(AnyoneUsuallyLiveAt.pageName);
 
-      await $(AnyoneUsuallyLiveAt.submit()).click();
+      await click(AnyoneUsuallyLiveAt.submit());
       await expect(await browser.getUrl()).to.contain(AnyoneLiveAtListCollectorAddPage.pageName);
     });
   });

@@ -2,7 +2,7 @@ import RoutingCheckboxContains from "../generated_pages/routing_checkbox_contain
 import ContainsAllPage from "../generated_pages/routing_checkbox_contains/country-interstitial-all.page";
 import ContainsAnyPage from "../generated_pages/routing_checkbox_contains/country-interstitial-any.page";
 import SubmitPage from "../generated_pages/routing_checkbox_contains/submit.page";
-
+import { click } from "../helpers";
 describe("Routing Checkbox Contains Condition.", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_routing_checkbox_contains.json");
@@ -13,7 +13,7 @@ describe("Routing Checkbox Contains Condition.", () => {
     await expect(await $(RoutingCheckboxContains.liechtenstein()).isSelected()).to.be.false;
 
     await $(RoutingCheckboxContains.india()).click();
-    await $(RoutingCheckboxContains.submit()).click();
+    await click(RoutingCheckboxContains.submit());
     // Then
     await expect(await browser.getUrl()).to.contain(ContainsAnyPage.pageName);
 
@@ -23,7 +23,7 @@ describe("Routing Checkbox Contains Condition.", () => {
     // When
     await $(RoutingCheckboxContains.india()).click();
     await $(RoutingCheckboxContains.azerbaijan()).click();
-    await $(RoutingCheckboxContains.submit()).click();
+    await click(RoutingCheckboxContains.submit());
 
     // Then
     await expect(await browser.getUrl()).to.contain(ContainsAnyPage.pageName);
@@ -33,7 +33,7 @@ describe("Routing Checkbox Contains Condition.", () => {
 
     // When
     await $(RoutingCheckboxContains.india()).click();
-    await $(RoutingCheckboxContains.submit()).click();
+    await click(RoutingCheckboxContains.submit());
 
     // Then
     await expect(await browser.getUrl()).to.contain(ContainsAnyPage.pageName);
@@ -42,7 +42,7 @@ describe("Routing Checkbox Contains Condition.", () => {
   it('Given a list of checkbox options, when I select the option "Malta" or the option "Liechtenstein" or both then I should be routed to the summary condition page', async () => {
     // When
     await $(RoutingCheckboxContains.liechtenstein()).click();
-    await $(RoutingCheckboxContains.submit()).click();
+    await click(RoutingCheckboxContains.submit());
     // Then
     await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
 
@@ -52,7 +52,7 @@ describe("Routing Checkbox Contains Condition.", () => {
     // When
     await $(RoutingCheckboxContains.liechtenstein()).click();
     await $(RoutingCheckboxContains.malta()).click();
-    await $(RoutingCheckboxContains.submit()).click();
+    await click(RoutingCheckboxContains.submit());
 
     // Then
     await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
@@ -62,7 +62,7 @@ describe("Routing Checkbox Contains Condition.", () => {
 
     // When
     await $(RoutingCheckboxContains.liechtenstein()).click();
-    await $(RoutingCheckboxContains.submit()).click();
+    await click(RoutingCheckboxContains.submit());
 
     // Then
     await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
@@ -73,7 +73,7 @@ describe("Routing Checkbox Contains Condition.", () => {
     await $(RoutingCheckboxContains.india()).click();
     await $(RoutingCheckboxContains.azerbaijan()).click();
     await $(RoutingCheckboxContains.liechtenstein()).click();
-    await $(RoutingCheckboxContains.submit()).click();
+    await click(RoutingCheckboxContains.submit());
     // Then
     await expect(await browser.getUrl()).to.contain(ContainsAllPage.pageName);
   });

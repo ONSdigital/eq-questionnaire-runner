@@ -7,7 +7,7 @@ import IntroInterstitialPage from "../generated_pages/introduction/general-busin
 import IntroThankYouPagePage from "../base_pages/thank-you.page";
 import HouseHolderConfirmationPage from "../generated_pages/thank_you_census_household/household-confirmation.page";
 import { getRandomString } from "../jwt_helper";
-
+import { click } from "../helpers";
 describe("Save sign out / Exit", () => {
   const responseId = getRandomString(16);
 
@@ -25,7 +25,7 @@ describe("Save sign out / Exit", () => {
     await browser.openQuestionnaire("test_numbers.json", { userId: "test_user", responseId });
     await $(SetMinMax.setMinimum()).setValue("10");
     await $(SetMinMax.setMaximum()).setValue("1020");
-    await $(SetMinMax.submit()).click();
+    await click(SetMinMax.submit());
     await $(TestMinMax.saveSignOut()).click();
 
     await expect(await browser.getUrl()).to.contain("/signed-out");
@@ -41,11 +41,11 @@ describe("Save sign out / Exit", () => {
     await $(TestMinMax.testMin()).setValue("123");
     await $(TestMinMax.testMax()).setValue("1000");
     await $(TestMinMax.testPercent()).setValue("100");
-    await $(TestMinMax.submit()).click();
+    await click(TestMinMax.submit());
     await $(DetailAnswer.answer1()).click();
-    await $(DetailAnswer.submit()).click();
+    await click(DetailAnswer.submit());
 
-    await $(SubmitPage.submit()).click();
+    await click(SubmitPage.submit());
     await expect(await browser.getUrl()).to.contain("thank-you");
   });
 
@@ -75,10 +75,10 @@ describe("Save sign out / Exit", () => {
     await $(IntroductionPage.getStarted()).click();
 
     await expect(await $(IntroInterstitialPage.saveSignOut()).getText()).to.contain("Save and exit survey");
-    await $(IntroInterstitialPage.submit()).click();
+    await click(IntroInterstitialPage.submit());
 
     await expect(await $(SubmitPage.saveSignOut()).getText()).to.contain("Save and exit survey");
-    await $(SubmitPage.submit()).click();
+    await click(SubmitPage.submit());
 
     await expect(await $(IntroThankYouPagePage.exitButton()).isExisting()).to.be.false;
   });
@@ -87,7 +87,7 @@ describe("Save sign out / Exit", () => {
     await browser.openQuestionnaire("test_thank_you_census_household.json");
 
     await expect(await $(HouseHolderConfirmationPage.saveSignOut()).getText()).to.contain("Save and complete later");
-    await $(HouseHolderConfirmationPage.submit()).click();
+    await click(HouseHolderConfirmationPage.submit());
 
     await expect(await $(SubmitPage.saveSignOut()).getText()).to.contain("Save and complete later");
   });

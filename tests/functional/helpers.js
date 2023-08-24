@@ -34,3 +34,8 @@ export const repeatingAnswerChangeLink = (answerIndex) => {
 export const listItemIds = () => {
   return $$("[data-list-item-id]").map((listItem) => listItem.getAttribute("data-list-item-id"));
 };
+
+export const click = async (selector) => {
+  await $(selector).scrollIntoView({ block: "center", inline: "center" });
+  await $(selector).click();
+};
