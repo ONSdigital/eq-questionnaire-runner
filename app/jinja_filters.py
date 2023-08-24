@@ -667,9 +667,7 @@ def map_list_collector_config(
             }
 
             if edit_link_aria_label:
-                edit_link_hidden_text = edit_link_aria_label.format(
-                    item_name=item_name
-                )
+                edit_link_hidden_text = edit_link_aria_label.format(item_name=item_name)
             edit_link["visuallyHiddenText"] = edit_link_hidden_text
 
             actions.append(edit_link)
