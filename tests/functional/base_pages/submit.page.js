@@ -14,7 +14,7 @@ class SubmitBasePage extends BasePage {
   }
 
   summaryShowAllButton() {
-    return ".ons-js-accordion-all";
+    return ".ons-accordion__toggle-all";
   }
 }
 
