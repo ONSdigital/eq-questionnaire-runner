@@ -147,6 +147,7 @@ describe("Calculated summary with repeating answers", function () {
     await click(ListCollectorRemovePage.submit());
 
     // section is now incomplete so step through each block until calculated summary is re-confirmed
+    await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
     await click(DynamicAnswerPage.submit());
     await click(ExtraSpendingBlockPage.submit());
     await click(ExtraSpendingMethodBlockPage.submit());
