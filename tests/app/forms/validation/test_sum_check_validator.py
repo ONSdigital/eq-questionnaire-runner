@@ -46,7 +46,9 @@ def test_currency_playback(mock_form):
         validator(mock_form, conditions, calculation_total, target_total)
 
     assert error_messages["TOTAL_SUM_NOT_EQUALS"] % {
-        "total": format_playback_value(target_total, currency="EUR"),
+        "total": format_playback_value(
+            value=target_total, currency="EUR", decimal_places=1
+        ),
     } == str(exc.value)
 
 
