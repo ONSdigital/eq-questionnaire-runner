@@ -62,9 +62,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     ):
         self._parent_id_map: dict[str, str] = {}
         self._section_dependencies_by_list_name: dict[str, list[str]] = {}
-        self._list_collector_section_ids_by_list_name: dict[str, list] = defaultdict(
-            list
-        )
+        self._list_collector_section_ids_by_list_name: dict[
+            str, list[str]
+        ] = defaultdict(list)
         self._answer_dependencies_map: dict[str, set[AnswerDependent]] = defaultdict(
             set
         )
@@ -930,10 +930,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def get_list_collectors_for_list(
         self, for_list: str, primary: bool = False, section_id: str | None = None
     ) -> list[ImmutableDict]:
-        if section_id:
-            sections = [section_id]
-        else:
-            sections = self._list_collector_section_ids_by_list_name[for_list]
+        sections = (
+            [section_id]
+            if section_id
+            else self._list_collector_section_ids_by_list_name[for_list]
+        )
 
         return self.get_list_collectors_for_list_for_sections(
             sections, for_list, primary
