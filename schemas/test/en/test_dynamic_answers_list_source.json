@@ -22,13 +22,13 @@
         }
     ],
     "questionnaire_flow": {
-        "type": "Linear",
-        "options": {}
+        "type": "Hub",
+        "options": { "required_completed_sections": ["list-collector-section"] }
     },
     "sections": [
         {
-            "id": "section",
-            "title": "List Collector Section",
+            "id": "list-collector-section",
+            "title": "Supermarket Shopping Section",
             "summary": {
                 "show_on_completion": true,
                 "items": [
@@ -44,7 +44,7 @@
             },
             "groups": [
                 {
-                    "id": "group",
+                    "id": "list-collector-group",
                     "blocks": [
                         {
                             "type": "ListCollectorDrivingQuestion",
@@ -475,6 +475,108 @@
                                 },
                                 "id": "dynamic-answer-only-question",
                                 "title": "How much do you spend at each of the following supermarket?",
+                                "type": "General"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "dynamic-answers-section",
+            "title": "Online Shopping Section",
+            "enabled": {
+                "when": {
+                    "==": [
+                        "Yes",
+                        {
+                            "source": "answers",
+                            "identifier": "any-supermarket-answer"
+                        }
+                    ]
+                }
+            },
+            "summary": {
+                "show_on_completion": true
+            },
+            "groups": [
+                {
+                    "id": "dynamic-answers-group",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "dynamic-answer-separate-section",
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
+                                        {
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "supermarkets"
+                                                }
+                                            ]
+                                        },
+                                        0
+                                    ]
+                                }
+                            },
+                            "question": {
+                                "dynamic_answers": {
+                                    "values": {
+                                        "source": "list",
+                                        "identifier": "supermarkets"
+                                    },
+                                    "answers": [
+                                        {
+                                            "label": {
+                                                "text": "Percentage of online shopping at {transformed_value}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "transformed_value",
+                                                        "value": {
+                                                            "source": "answers",
+                                                            "identifier": "supermarket-name"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "id": "percentage-of-online-shopping",
+                                            "mandatory": false,
+                                            "type": "Percentage",
+                                            "maximum": {
+                                                "value": 100
+                                            },
+                                            "decimal_places": 0
+                                        },
+                                        {
+                                            "id": "online-days-a-week",
+                                            "label": {
+                                                "text": "How many days a week do you shop online at {transformed_value}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "transformed_value",
+                                                        "value": {
+                                                            "source": "answers",
+                                                            "identifier": "supermarket-name"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "mandatory": false,
+                                            "type": "Number",
+                                            "decimal_places": 0,
+                                            "minimum": {
+                                                "value": 1
+                                            },
+                                            "maximum": {
+                                                "value": 7
+                                            }
+                                        }
+                                    ]
+                                },
+                                "id": "dynamic-answer-online-question",
+                                "title": "What percent of your online shopping do you do at each of the following supermarket?",
                                 "type": "General"
                             }
                         }
