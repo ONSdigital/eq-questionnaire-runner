@@ -12,7 +12,7 @@ from jinja2 import nodes, pass_eval_context
 from markupsafe import Markup, escape
 from wtforms import SelectFieldBase
 
-from app.questionnaire.questionnaire_schema import is_summary_with_calculation
+from app.questionnaire.questionnaire_schema import QuestionnaireSchema, is_summary_with_calculation
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import MAX_NUMBER
 
@@ -251,7 +251,7 @@ def should_wrap_with_fieldset_processor() -> dict[str, Callable]:
 
 def get_min_max_value_width(
     min_max: Literal["minimum", "maximum"], answer: AnswerType, default_value: int
-) -> dict[str, dict[str, int]]:
+) -> int:
     """
     This function gets the minimum and maximum value accepted for a question.
     Which then allows us to use that value to set the width of the textbox to suit that min and max.
@@ -262,7 +262,7 @@ def get_min_max_value_width(
         and isinstance(answer[min_max]["value"], Mapping)
         and answer[min_max]["value"].get("source") == "answers"
     ):
-        schema = g.get("schema")
+        schema: QuestionnaireSchema = g.get("schema")
         identifier = answer[min_max]["value"].get("identifier")
         return schema.min_and_max_map[identifier][min_max]
 
