@@ -12,7 +12,10 @@ from jinja2 import nodes, pass_eval_context
 from markupsafe import Markup, escape
 from wtforms import SelectFieldBase
 
-from app.questionnaire.questionnaire_schema import QuestionnaireSchema, is_summary_with_calculation
+from app.questionnaire.questionnaire_schema import (
+    QuestionnaireSchema,
+    is_summary_with_calculation,
+)
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import MAX_NUMBER
 
