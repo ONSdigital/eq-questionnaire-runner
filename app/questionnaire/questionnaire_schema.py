@@ -135,7 +135,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     @cached_property
     # Type ignore: safe to assume _min_and_max_map exists
     def min_and_max_map(self) -> ImmutableDict[str, ImmutableDict[str, int]]:
-        return make_immutable(self._min_and_max_map) # type: ignore
+        return make_immutable(self._min_and_max_map)  # type: ignore
 
     def _create_min_max_map(
         self,
