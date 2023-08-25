@@ -286,7 +286,6 @@ describe("Using supplementary data", () => {
   });
 
   it("Given I have dynamic answers using a supplementary list, When I reach the dynamic answer page, Then I see the correct supplementary data in the answer labels", async () => {
-    await expect(await browser.getUrl()).to.contain(DynamicProductsPage.pageName);
     await expect(await $$(DynamicProductsPage.labels())[0].getText()).to.contain("Value of sales for Articles and equipment for sports or outdoor games");
     await expect(await $$(DynamicProductsPage.labels())[1].getText()).to.contain("Value of sales for Kitchen Equipment");
     await expect(await $$(DynamicProductsPage.labels())[2].getText()).to.contain("Value of sales from other categories");

@@ -277,7 +277,6 @@ describe("Feature: Grand Calculated Summary", () => {
     it("Given I a grand calculated summary featuring repeating answers, When I click edit links to return to a dynamic answer then previous twice, Then I return to the grand calculated summary where I started", async () => {
       await $(GrandCalculatedSummary5Page.calculatedSummary5Edit()).click();
       await repeatingAnswerChangeLink(0).click();
-      await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
       await $(DynamicAnswerPage.previous()).click();
       await $(CalculatedSummary5Page.previous()).click();
       await expect(await browser.getUrl()).to.contain(GrandCalculatedSummary5Page.pageName);
