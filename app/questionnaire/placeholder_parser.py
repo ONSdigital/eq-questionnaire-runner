@@ -177,6 +177,14 @@ class PlaceholderParser:
 
                 transform_args[arg_key] = resolved_value
 
+                if (
+                    transform["transform"] == "format_currency"
+                    and arg_value.get("source") == "answers"
+                ):
+                    transform_args["decimal_limit"] = self._schema.get_decimal_limit(
+                        [arg_value["identifier"]]
+                    )
+
             transformed_value = getattr(self._transformer, transform["transform"])(
                 **transform_args
             )
