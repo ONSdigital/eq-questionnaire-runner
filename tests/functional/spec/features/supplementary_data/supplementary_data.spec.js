@@ -97,7 +97,7 @@ describe("Using supplementary data", () => {
     await expect(await $("body").getText()).to.have.string("Incorporation Date: 27 November 1947");
     await expect(await $("body").getText()).to.have.string("Trading start date: 30 November 1947");
     await expect(await $("body").getText()).to.have.string("Guidance: Some supplementary guidance about the survey");
-    await expect(await $("body").getText()).to.have.string("Total Uk Sales: £555,000.00");
+    await expect(await $("body").getText()).to.have.string("Total Uk Sales: £555,000");
     await expect(await $("body").getText()).to.have.string("Bristol sales: £333,000.00");
     await expect(await $("body").getText()).to.have.string("London sales: £111,000.00");
     await expect(await $("body").getText()).to.have.string("Sum of Bristol and London sales: £444,000.00");

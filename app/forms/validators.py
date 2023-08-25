@@ -148,14 +148,18 @@ class NumberRange:
         if self.minimum_exclusive and value <= self.minimum:
             return self.messages["NUMBER_TOO_SMALL_EXCLUSIVE"] % {
                 "min": format_playback_value(
-                    self.minimum, self.currency, decimal_places
+                    value=self.minimum,
+                    currency=self.currency,
+                    decimal_places=decimal_places,
                 )
             }
 
         if value < self.minimum:
             return self.messages["NUMBER_TOO_SMALL"] % {
                 "min": format_playback_value(
-                    self.minimum, self.currency, decimal_places
+                    value=self.minimum,
+                    currency=self.currency,
+                    decimal_places=decimal_places,
                 )
             }
 
@@ -170,13 +174,17 @@ class NumberRange:
         if self.maximum_exclusive and value >= self.maximum:
             return self.messages["NUMBER_TOO_LARGE_EXCLUSIVE"] % {
                 "max": format_playback_value(
-                    self.maximum, self.currency, decimal_places
+                    value=self.maximum,
+                    currency=self.currency,
+                    decimal_places=decimal_places,
                 )
             }
         if value > self.maximum:
             return self.messages["NUMBER_TOO_LARGE"] % {
                 "max": format_playback_value(
-                    self.maximum, self.currency, decimal_places
+                    value=self.maximum,
+                    currency=self.currency,
+                    decimal_places=decimal_places,
                 )
             }
 
@@ -441,9 +449,16 @@ class SumCheck:
         is_valid, message = self._is_valid(condition, total, target_total)
 
         if not is_valid:
+            decimal_places = str(target_total)[::-1].find(".")
             raise validators.ValidationError(
                 self.messages[message]
-                % {"total": format_playback_value(target_total, self.currency)}
+                % {
+                    "total": format_playback_value(
+                        value=target_total,
+                        currency=self.currency,
+                        decimal_places=decimal_places,
+                    )
+                }
             )
 
     @staticmethod
