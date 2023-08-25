@@ -28,8 +28,8 @@ from app.jinja_filters import (
 TEST_FORMAT_CURRENCY_PARAMS = (
     "value, currency, decimal_limit, formatted_currency",
     [
-        (Decimal("3000.44545"), "GBP", None, "£3,000.44545"),
-        (Decimal("2.1"), "GBP", None, "£2.10"),
+        (Decimal("3000.44545"), "GBP", None, "£3,000"),
+        (Decimal("2.1"), "GBP", None, "£2"),
         (Decimal("3000"), "GBP", 0, "£3,000"),
         (Decimal("3000"), "JPY", 0, "JP¥3,000"),
         (Decimal("2.1"), "GBP", 1, "£2.1"),

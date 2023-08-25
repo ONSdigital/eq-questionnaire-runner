@@ -960,14 +960,29 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         """
         # Type ignore: the block will exist for any valid calculated summary id
         calculated_summary_block: ImmutableDict = self.get_block(calculated_summary_block_id)  # type: ignore
-        first_answer_id = get_calculated_summary_answer_ids(calculated_summary_block)[0]
+        answer_ids = get_calculated_summary_answer_ids(calculated_summary_block)
+        decimal_limit = self.get_decimal_limit(answer_ids)
+        first_answer_id = answer_ids[0]
         first_answer = self.get_answers_by_answer_id(first_answer_id)[0]
         return {
             "type": first_answer["type"].lower(),
             "unit": first_answer.get("unit"),
             "unit_length": first_answer.get("unit_length"),
             "currency": first_answer.get("currency"),
+            "decimal_places": decimal_limit,
         }
+
+    def get_decimal_limit(self, answer_ids: list[str]) -> int:
+        decimal_limit = 0
+        for answer_id in answer_ids:
+            for answer in self.get_answers_by_answer_id(answer_id):
+                if (
+                    answer.get("decimal_places")
+                    and answer["decimal_places"] > decimal_limit
+                ):
+                    decimal_limit = answer["decimal_places"]
+
+        return decimal_limit
 
     def get_answer_ids_for_block(self, block_id: str) -> list[str]:
         if block := self.get_block(block_id):

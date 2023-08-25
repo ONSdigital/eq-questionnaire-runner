@@ -40,7 +40,7 @@ class TestPlaceholders(IntegrationTestCase):
         self.post({"total-retail-turnover-answer": 2000})
 
         self.assertInBody(
-            "Of the <em>£2,000.00</em> total retail turnover, what was the value of internet sales?"
+            "Of the <em>£2,000</em> total retail turnover, what was the value of internet sales?"
         )
 
         self.post({"total-retail-turnover-internet-sales-answer": 3000})

@@ -298,7 +298,16 @@ class CalculatedSummaryContext(Context):
                             "unit": answer.get("unit"),
                             "unit_length": answer.get("unit_length"),
                             "currency": answer.get("currency"),
+                            "decimal_places": 0,
                         }
+
+                        if (
+                            answer.get("decimal_places")
+                            and answer["decimal_places"]
+                            > answer_format["decimal_places"]
+                        ):
+                            answer_format["decimal_places"] = answer["decimal_places"]
+
                     answer_value = answer.get("value") or 0
                     values_to_calculate.append(answer_value)
 
@@ -307,11 +316,15 @@ class CalculatedSummaryContext(Context):
     @staticmethod
     def _format_total(
         *,
-        answer_format: Mapping[str, Literal["short", "long", "narrow"]],
+        answer_format: Mapping[str, Literal["short", "long", "narrow"] | int],
         total: NumericType,
     ) -> str:
         if answer_format["type"] == "currency":
-            return get_formatted_currency(total, answer_format["currency"])
+            return get_formatted_currency(
+                value=total,
+                currency=answer_format["currency"],
+                decimal_limit=answer_format.get("decimal_places") or 0,
+            )
 
         if answer_format["type"] == "unit":
             return format_unit(

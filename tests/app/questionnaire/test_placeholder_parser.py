@@ -90,7 +90,7 @@ def test_previous_answer_transform_placeholder(mock_renderer, mock_location):
     )
     placeholders = parser(placeholder_list)
 
-    assert placeholders["total_turnover"] == "£1,000.00"
+    assert placeholders["total_turnover"] == "£1,000"
 
 
 def test_metadata_transform_placeholder(mock_renderer, mock_schema, mock_location):

@@ -128,39 +128,56 @@ class NumberRange:
         field: Union[DecimalFieldWithSeparator, IntegerFieldWithSeparator],
     ) -> None:
         value: Union[int, Decimal] = field.data
+        decimal_places = 0
+        if field.type == "DecimalFieldWithSeparator":
+            decimal_places = field.places
 
         if value is not None:
-            error_message = self.validate_minimum(value) or self.validate_maximum(value)
+            error_message = self.validate_minimum(
+                value, decimal_places
+            ) or self.validate_maximum(value, decimal_places)
             if error_message:
                 raise validators.ValidationError(error_message)
 
-    def validate_minimum(self, value: NumType) -> Optional[str]:
+    def validate_minimum(
+        self, value: NumType, decimal_places: int | None
+    ) -> Optional[str]:
         if self.minimum is None:
             return None
 
         if self.minimum_exclusive and value <= self.minimum:
             return self.messages["NUMBER_TOO_SMALL_EXCLUSIVE"] % {
-                "min": format_playback_value(self.minimum, self.currency)
+                "min": format_playback_value(
+                    self.minimum, self.currency, decimal_places
+                )
             }
 
         if value < self.minimum:
             return self.messages["NUMBER_TOO_SMALL"] % {
-                "min": format_playback_value(self.minimum, self.currency)
+                "min": format_playback_value(
+                    self.minimum, self.currency, decimal_places
+                )
             }
 
         return None
 
-    def validate_maximum(self, value: NumType) -> Optional[str]:
+    def validate_maximum(
+        self, value: NumType, decimal_places: int | None
+    ) -> Optional[str]:
         if self.maximum is None:
             return None
 
         if self.maximum_exclusive and value >= self.maximum:
             return self.messages["NUMBER_TOO_LARGE_EXCLUSIVE"] % {
-                "max": format_playback_value(self.maximum, self.currency)
+                "max": format_playback_value(
+                    self.maximum, self.currency, decimal_places
+                )
             }
         if value > self.maximum:
             return self.messages["NUMBER_TOO_LARGE"] % {
-                "max": format_playback_value(self.maximum, self.currency)
+                "max": format_playback_value(
+                    self.maximum, self.currency, decimal_places
+                )
             }
 
         return None

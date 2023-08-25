@@ -25,7 +25,7 @@ def custom_format_currency(
     value: float | Decimal,
     currency: str,
     locale: Locale | str,
-    decimal_limit: int | None = None,
+    decimal_limit: int | None = 0,
 ) -> str:
     """
     This function provides a wrapper for the numbers `format_currency` method, generating the
@@ -40,17 +40,17 @@ def custom_format_currency(
     parsed_locale = Locale.parse(locale)
     number_format = parsed_locale.currency_formats["standard"]
 
-    # If set, the number of decimals displayed is limited based on the value of the `decimal_limit` parameter.
+    if not decimal_limit:
+        decimal_limit = 0
+
+    # The number of decimals displayed is limited based on the value of the `decimal_limit` parameter, if not set, defaults to 0.
     # If the number of decimal places entered by the user is less than the `decimal_limit` then we should display the
     # number of decimals as entered by the user. Otherwise, we should display the number of decimals as entered by the user.
-    decimal_max = decimal_limit if decimal_limit is not None else decimal_places
-    number_format.frac_prec = (min(decimal_places, decimal_max), decimal_max)
+    number_format.frac_prec = (min(decimal_places, decimal_limit), decimal_limit)
 
     # Needed to stop trailing decimal `.00` being added when no decimal places have been entered by the user
     #  and trailing decimals being cut off when two or more decimals have been entered by the user
-    currency_digits = decimal_places < 2
-    if decimal_limit is not None and decimal_limit < 2:
-        currency_digits = False
+    currency_digits = False if decimal_limit < 2 else decimal_places < 2
 
     return numbers.format_currency(
         number=value,

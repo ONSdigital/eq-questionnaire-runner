@@ -21,9 +21,11 @@ def sanitise_mobile_number(data: str) -> str:
     return re.sub(r"^(0{1,2}44|\+44|0)", "", data)
 
 
-def format_playback_value(value: float | Decimal, currency: str | None = None) -> str:
+def format_playback_value(
+    value: float | Decimal, currency: str | None = None, decimal_places: int | None = 0
+) -> str:
     if currency:
-        return get_formatted_currency(value, currency)
+        return get_formatted_currency(value, currency, decimal_places)
 
     formatted_number: str = format_number(value)
     return formatted_number
