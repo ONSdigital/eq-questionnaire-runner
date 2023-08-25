@@ -70,7 +70,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self, questionnaire_json: Mapping, language_code: str = DEFAULT_LANGUAGE_CODE
     ):
         self._parent_id_map: dict[str, str] = {}
-        self._list_name_to_section_map: dict[str, list[str]] = {}
+        self._section_dependencies_by_list_name: dict[str, list[str]] = {}
+        self._list_collector_section_ids_by_list_name: dict[
+            str, list[str]
+        ] = defaultdict(list)
         self._answer_dependencies_map: dict[str, set[AnswerDependent]] = defaultdict(
             set
         )
@@ -354,6 +357,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     "PrimaryPersonListCollector",
                     "RelationshipCollector",
                 ):
+                    self._list_collector_section_ids_by_list_name[
+                        block["for_list"]
+                    ].append(self._parent_id_map[group["id"]])
                     for nested_block_name in [
                         "add_block",
                         "edit_block",
@@ -606,36 +612,34 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         blocks like dynamic_answers, don't directly need to depend on the add_block/remove_block,
         but a block depending on the dynamic answers might (such as a calculated summary)
         """
-        # Type ignore: section will always exist at this point, same with optional returns below
-        section: ImmutableDict = self.get_section_for_block_id(block_id)  # type: ignore
-        list_collector: ImmutableDict = self.get_list_collector_for_list(  # type: ignore
-            section=section,
+        list_collectors = self.get_list_collectors_for_list(
             for_list=list_name,
         )
 
-        add_block_question = self.get_add_block_for_list_collector(  # type: ignore
-            list_collector["id"]
-        )["question"]
-        answer_ids_for_block = list(
-            self.get_answers_for_question_by_id(add_block_question)
-        )
-        for block_answer_id in answer_ids_for_block:
-            self._answer_dependencies_map[block_answer_id] |= {
-                self._get_answer_dependent_for_block_id(
-                    block_id=block_id, for_list=list_name
-                )
-                if self.is_block_in_repeating_section(block_id)
-                # non-repeating blocks such as dynamic-answers could depend on the list
-                else self._get_answer_dependent_for_block_id(block_id=block_id)
-            }
-        self._list_dependent_block_additional_dependencies[block_id] = set(
-            answer_ids_for_block
-        )
-        # removing an item from a list will require any dependent calculated summaries to be re-confirmed, so cache dependencies
-        if remove_block_id := self.get_remove_block_id_for_list(list_name):
-            self._list_dependent_block_additional_dependencies[block_id].update(
-                self.get_answer_ids_for_block(remove_block_id)
+        for list_collector in list_collectors:
+            add_block_question = self.get_add_block_for_list_collector(
+                list_collector["id"]  # type: ignore
+            )["question"]
+            answer_ids_for_block = list(
+                self.get_answers_for_question_by_id(add_block_question)
             )
+            for block_answer_id in answer_ids_for_block:
+                self._answer_dependencies_map[block_answer_id] |= {
+                    self._get_answer_dependent_for_block_id(
+                        block_id=block_id, for_list=list_name
+                    )
+                    if self.is_block_in_repeating_section(block_id)
+                    # non-repeating blocks such as dynamic-answers could depend on the list
+                    else self._get_answer_dependent_for_block_id(block_id=block_id)
+                }
+            self._list_dependent_block_additional_dependencies[block_id] = set(
+                answer_ids_for_block
+            )
+            # removing an item from a list will require any dependent calculated summaries to be re-confirmed, so cache dependencies
+            if remove_block_id := self.get_remove_block_id_for_list(list_name):
+                self._list_dependent_block_additional_dependencies[block_id].update(
+                    self.get_answer_ids_for_block(remove_block_id)
+                )
 
     def _get_answer_dependent_for_block_id(
         self,
@@ -679,10 +683,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def get_section_ids_dependent_on_list(self, list_name: str) -> list[str]:
         try:
-            return self._list_name_to_section_map[list_name]
+            return self._section_dependencies_by_list_name[list_name]
         except KeyError:
             section_ids = self._section_ids_associated_to_list_name(list_name)
-            self._list_name_to_section_map[list_name] = section_ids
+            self._section_dependencies_by_list_name[list_name] = section_ids
             return section_ids
 
     def get_submission(self) -> ImmutableDict:
@@ -957,30 +961,36 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         """
         return self._questions_by_id.get(question_id)
 
-    @staticmethod
-    def get_list_collectors_for_list(
-        section: Mapping, for_list: str, primary: bool = False
-    ) -> Generator[ImmutableDict, None, None]:
-        collector_type = "PrimaryPersonListCollector" if primary else "ListCollector"
+    def get_list_collectors_for_list_for_sections(
+        self, sections: list[str], for_list: str, primary: bool = False
+    ) -> list[ImmutableDict]:
+        blocks: list[ImmutableDict] = []
+        for section_id in sections:
+            if section := self.get_section(section_id):
+                collector_type = (
+                    "PrimaryPersonListCollector" if primary else "ListCollector"
+                )
 
-        return (
-            block
-            for block in QuestionnaireSchema.get_blocks_for_section(section)
-            if block["type"] == collector_type and block["for_list"] == for_list
+                blocks.extend(
+                    block
+                    for block in self.get_blocks_for_section(section)
+                    if block["type"] == collector_type and block["for_list"] == for_list
+                )
+
+        return blocks
+
+    def get_list_collectors_for_list(
+        self, for_list: str, primary: bool = False, section_id: str | None = None
+    ) -> list[ImmutableDict]:
+        sections = (
+            [section_id]
+            if section_id
+            else self._list_collector_section_ids_by_list_name[for_list]
         )
 
-    @staticmethod
-    def get_list_collector_for_list(
-        section: Mapping, for_list: str, primary: bool = False
-    ) -> ImmutableDict | None:
-        try:
-            return next(
-                QuestionnaireSchema.get_list_collectors_for_list(
-                    section, for_list, primary
-                )
-            )
-        except StopIteration:
-            return None
+        return self.get_list_collectors_for_list_for_sections(
+            sections, for_list, primary
+        )
 
     @classmethod
     def get_answers_for_question_by_id(
