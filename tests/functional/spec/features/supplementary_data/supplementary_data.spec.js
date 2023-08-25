@@ -109,7 +109,7 @@ describe("Using supplementary data", () => {
     await expect(await $(Section1Page.sameEmailAnswer()).getText()).to.contain("Yes");
     await expect(await $(Section1Page.tradingQuestion()).getText()).to.contain("When did Tesco begin trading?");
     await expect(await $(Section1Page.tradingAnswer()).getText()).to.contain("Sunday 30 November 1947");
-    await expect(await $$(summaryRowTitles)[0].getText()).to.contain("How much of the £555,000.00 total UK sales was from Bristol and London?");
+    await expect(await $$(summaryRowTitles)[0].getText()).to.contain("How much of the £555,000 total UK sales was from Bristol and London?");
     await expect(await $(Section1Page.salesBristolAnswer()).getText()).to.contain("£333,000.00");
     await expect(await $(Section1Page.salesLondonAnswer()).getText()).to.contain("£111,000.00");
   });
@@ -366,7 +366,7 @@ describe("Using supplementary data", () => {
     await expect(await $(ViewSubmittedResponsePage.newEmailAnswer()).getText()).to.contain("new.contact@gmail.com");
     await expect(await $(ViewSubmittedResponsePage.tradingQuestion()).getText()).to.contain("When did Lidl begin trading?");
     await expect(await $(ViewSubmittedResponsePage.tradingAnswer()).getText()).to.contain("Sunday 30 November 1947");
-    await expect(await $$(summaryRowTitles)[0].getText()).to.contain("How much of the £555,000.00 total UK sales was from Bristol and London?");
+    await expect(await $$(summaryRowTitles)[0].getText()).to.contain("How much of the £555,000 total UK sales was from Bristol and London?");
     await expect(await $(ViewSubmittedResponsePage.salesBristolAnswer()).getText()).to.contain("£333,000.00");
     await expect(await $(ViewSubmittedResponsePage.salesLondonAnswer()).getText()).to.contain("£111,000.00");
 

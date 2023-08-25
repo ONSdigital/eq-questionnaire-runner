@@ -430,8 +430,8 @@ class SumCheck:
         self,
         form: QuestionnaireForm,
         conditions: List[str],
-        total: Union[Decimal, int],
-        target_total: Union[Decimal, float],
+        total: Decimal | int,
+        target_total: Decimal | float | int,
     ) -> None:
         if len(conditions) > 1:
             try:
@@ -449,7 +449,11 @@ class SumCheck:
         is_valid, message = self._is_valid(condition, total, target_total)
 
         if not is_valid:
-            decimal_places = str(target_total)[::-1].find(".")
+            decimal_places = (
+                2
+                if isinstance(target_total, int)
+                else str(target_total)[::-1].find(".")
+            )
             raise validators.ValidationError(
                 self.messages[message]
                 % {
