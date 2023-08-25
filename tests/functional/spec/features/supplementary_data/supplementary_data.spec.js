@@ -100,7 +100,7 @@ describe("Using supplementary data", () => {
     await expect(await $("body").getText()).to.have.string("Total Uk Sales: £555,000");
     await expect(await $("body").getText()).to.have.string("Bristol sales: £333,000.00");
     await expect(await $("body").getText()).to.have.string("London sales: £111,000.00");
-    await expect(await $("body").getText()).to.have.string("Sum of Bristol and London sales: £444,000.00");
+    await expect(await $("body").getText()).to.have.string("Sum of Bristol and London sales: £444,000");
   });
 
   it("Given I have a section summary enabled, When I reach the section summary, Then I see it rendered correctly with supplementary data", async () => {
