@@ -133,8 +133,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return ImmutableDict(self._answer_dependencies_map)
 
     @cached_property
-    def min_and_max_map(self) -> Any:
-        return make_immutable(self._min_and_max_map)
+    # Type ignore: safe to assume _min_and_max_map exists
+    def min_and_max_map(self) -> ImmutableDict[str, ImmutableDict[str, int]]:
+        return make_immutable(self._min_and_max_map) # type: ignore
 
     def _create_min_max_map(
         self,
@@ -165,6 +166,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _populate_min_max_for_numeric_answers(self) -> None:
         for answer_id, answers in self._answers_by_id.items():
+            # validator ensures all answers will be of the same type so its sufficient to only check the first
             if answers[0]["type"] in NUMERIC_ANSWER_TYPES:
                 self._create_min_max_map("minimum", answer_id, answers, 1)
                 self._create_min_max_map(

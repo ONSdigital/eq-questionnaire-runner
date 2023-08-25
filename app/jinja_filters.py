@@ -264,7 +264,7 @@ def get_min_max_value_width(
     ):
         schema = g.get("schema")
         identifier = answer[min_max]["value"].get("identifier")
-        return int(schema.min_and_max_map[identifier][min_max])
+        return schema.min_and_max_map[identifier][min_max]
 
     return len(str(answer.get(min_max, {}).get("value", default_value)))
 
