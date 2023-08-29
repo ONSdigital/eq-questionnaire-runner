@@ -3,13 +3,13 @@ import BreakdownAnswerPage from "../../../../generated_pages/validation_sum_agai
 import TotalPlaybackPage from "../../../../generated_pages/validation_sum_against_value_source/number-total-playback.page";
 import SecondBreakdownAnswerPage from "../../../../generated_pages/validation_sum_against_value_source/second-breakdown-block.page";
 import SubmitPage from "../../../../generated_pages/validation_sum_against_total_equal/submit.page";
-
+import { click } from "../../../../helpers";
 const answerAndSubmitBreakdownQuestion = async (breakdown1, breakdown2, breakdown3, breakdown4) => {
   await $(BreakdownAnswerPage.breakdown1()).setValue(breakdown1);
   await $(BreakdownAnswerPage.breakdown2()).setValue(breakdown2);
   await $(BreakdownAnswerPage.breakdown3()).setValue(breakdown3);
   await $(BreakdownAnswerPage.breakdown4()).setValue(breakdown4);
-  await $(BreakdownAnswerPage.submit()).click();
+  await click(BreakdownAnswerPage.submit());
 };
 
 const answerAndSubmitSecondBreakdownQuestion = async (breakdown1, breakdown2, breakdown3, breakdown4) => {
@@ -17,13 +17,13 @@ const answerAndSubmitSecondBreakdownQuestion = async (breakdown1, breakdown2, br
   await $(SecondBreakdownAnswerPage.secondBreakdown2()).setValue(breakdown2);
   await $(SecondBreakdownAnswerPage.secondBreakdown3()).setValue(breakdown3);
   await $(SecondBreakdownAnswerPage.secondBreakdown4()).setValue(breakdown4);
-  await $(SecondBreakdownAnswerPage.submit()).click();
+  await click(SecondBreakdownAnswerPage.submit());
 };
 
 const answerBothBreakdownQuestions = async (array1, array2) => {
   await answerAndSubmitBreakdownQuestion(array1[0], array1[1], array1[2], array1[3]);
 
-  await $(TotalPlaybackPage.submit()).click();
+  await click(TotalPlaybackPage.submit());
 
   await answerAndSubmitSecondBreakdownQuestion(array2[0], array2[1], array2[2], array2[3]);
 };
@@ -36,7 +36,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
   describe("Given I start a grouped answer validation survey and enter 12 into the total", () => {
     it("When I continue and enter 3 in each breakdown field, Then I should be able to get to the total playback page", async () => {
       await $(TotalAnswerPage.total()).setValue("12");
-      await $(TotalAnswerPage.submit()).click();
+      await click(TotalAnswerPage.submit());
 
       await answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
 
@@ -47,7 +47,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
   describe("Given I have a calculated summary value of 12", () => {
     it("When I continue to second breakdown and enter values equal to calculated summary total, Then I should be able to get to the summary page", async () => {
       await $(TotalAnswerPage.total()).setValue("12");
-      await $(TotalAnswerPage.submit()).click();
+      await click(TotalAnswerPage.submit());
 
       await answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
 
@@ -58,15 +58,15 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
   describe("Given I completed both grouped answer validation questions and I am on the summary", () => {
     it("When I go back from the summary and change the total, Then I must reconfirm both breakdown questions with valid answers before I can get to the summary", async () => {
       await $(TotalAnswerPage.total()).setValue("12");
-      await $(TotalAnswerPage.submit()).click();
+      await click(TotalAnswerPage.submit());
 
       await answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
 
       await $(SubmitPage.totalAnswerEdit()).click();
       await $(TotalAnswerPage.total()).setValue("15");
-      await $(TotalAnswerPage.submit()).click();
+      await click(TotalAnswerPage.submit());
 
-      await $(BreakdownAnswerPage.submit()).click();
+      await click(BreakdownAnswerPage.submit());
 
       await expect(await $(BreakdownAnswerPage.singleErrorLink()).isDisplayed()).to.be.true;
 
@@ -81,13 +81,13 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
   describe("Given I completed both grouped answer validation questions and I am on the summary", () => {
     it("When I go back from the summary and change the total, Then I must reconfirm the breakdown question based on answer value source with valid answers before I can continue", async () => {
       await $(TotalAnswerPage.total()).setValue("12");
-      await $(TotalAnswerPage.submit()).click();
+      await click(TotalAnswerPage.submit());
 
       await answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
 
       await $(SubmitPage.totalAnswerEdit()).click();
       await $(TotalAnswerPage.total()).setValue("15");
-      await $(TotalAnswerPage.submit()).click();
+      await click(TotalAnswerPage.submit());
 
       await answerAndSubmitBreakdownQuestion("0", "3", "3", "3");
 
@@ -104,7 +104,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
   describe("Given I completed both grouped answer validation questions and I am on the summary", () => {
     it("When I go back from the summary and change the first breakdown question answers so its total changes, Then I must reconfirm the second breakdown question based on calculated summary value source with valid answers before I can continue", async () => {
       await $(TotalAnswerPage.total()).setValue("12");
-      await $(TotalAnswerPage.submit()).click();
+      await click(TotalAnswerPage.submit());
 
       await answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
 
@@ -112,9 +112,9 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await answerAndSubmitBreakdownQuestion("6", "3", "2", "1");
 
-      await $(TotalPlaybackPage.submit()).click();
+      await click(TotalPlaybackPage.submit());
 
-      await $(SecondBreakdownAnswerPage.submit()).click();
+      await click(SecondBreakdownAnswerPage.submit());
 
       await expect(await $(SecondBreakdownAnswerPage.singleErrorLink()).isDisplayed()).to.be.true;
 
@@ -131,7 +131,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
   describe("Given I start a grouped answer validation survey and enter 5 into the total", () => {
     it("When I continue and enter 3 in each breakdown field, Then I should see a validation error", async () => {
       await $(TotalAnswerPage.total()).setValue("5");
-      await $(TotalAnswerPage.submit()).click();
+      await click(TotalAnswerPage.submit());
 
       await answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
 
@@ -142,7 +142,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
   describe("Given I start a grouped answer validation survey and enter 5 into the total", () => {
     it("When I enter 3 in each breakdown field and continue to second breakdown and enter 3 in each field, Then I should see a validation error", async () => {
       await $(TotalAnswerPage.total()).setValue("5");
-      await $(TotalAnswerPage.submit()).click();
+      await click(TotalAnswerPage.submit());
 
       await answerBothBreakdownQuestions(["2", "1", "1", "1"], ["3", "3", "3", "3"]);
 

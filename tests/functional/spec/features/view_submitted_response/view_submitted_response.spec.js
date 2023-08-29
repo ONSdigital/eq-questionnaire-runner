@@ -20,15 +20,16 @@ import DependencyQuestionSectionTwo from "../../../generated_pages/view_submitte
 import SkippableBlockSectionTwo from "../../../generated_pages/view_submitted_response_repeating_sections/skippable-block.page";
 import SectionSummarySectionTwo from "../../../generated_pages/new_calculated_summary_cross_section_dependencies_repeating/calculated-summary-section-summary.page";
 import ListCollectorAddPage from "../../../generated_pages/view_submitted_response_repeating_sections//list-collector-add.page";
+import { click } from "../../../helpers";
 
 describe("View Submitted Response", () => {
   beforeEach("Load the questionnaire", async () => {
     await browser.openQuestionnaire("test_view_submitted_response.json");
     await $(NameBlockPage.answer()).setValue("John Smith");
-    await $(NameBlockPage.submit()).click();
+    await click(NameBlockPage.submit());
     await $(AddressBlockPage.answer()).setValue("NP10 8XG");
-    await $(AddressBlockPage.submit()).click();
-    await $(SubmitPage.submit()).click();
+    await click(AddressBlockPage.submit());
+    await click(SubmitPage.submit());
     await expect(await browser.getUrl()).to.contain(ThankYouPage.pageName);
     await expect(await $(ThankYouPage.title()).getHTML()).to.contain("Thank you for completing the Test");
     await $(ThankYouPage.savePrintAnswersLink()).click();
@@ -70,58 +71,58 @@ const skippableRepeatingSectionAnswer = '[data-qa="skippable-answer"]';
 describe("View Submitted Response Summary Page With Repeating Sections", () => {
   beforeEach("Load the questionnaire", async () => {
     await browser.openQuestionnaire("test_view_submitted_response_repeating_sections.json");
-    await $(HubPage.submit()).click();
+    await click(HubPage.submit());
 
     await $(NameBlockPage.answer()).setValue("John Smith");
-    await $(NameBlockPage.submit()).click();
+    await click(NameBlockPage.submit());
     await $(AddressBlockPage.answer()).setValue("NP10 8XG");
-    await $(AddressBlockPage.submit()).click();
+    await click(AddressBlockPage.submit());
 
-    await $(HubPage.submit()).click();
+    await click(HubPage.submit());
     await $(PrimaryPersonListCollectorPage.yes()).click();
-    await $(PrimaryPersonListCollectorPage.submit()).click();
+    await click(PrimaryPersonListCollectorPage.submit());
     await $(PrimaryPersonListCollectorAddPage.firstName()).setValue("Marcus");
     await $(PrimaryPersonListCollectorAddPage.lastName()).setValue("Twin");
-    await $(PrimaryPersonListCollectorAddPage.submit()).click();
+    await click(PrimaryPersonListCollectorAddPage.submit());
     await $(ListCollectorPage.yes()).click();
-    await $(ListCollectorPage.submit()).click();
+    await click(ListCollectorPage.submit());
     await $(ListCollectorAddPage.firstName()).setValue("John");
     await $(ListCollectorAddPage.lastName()).setValue("Doe");
-    await $(ListCollectorAddPage.submit()).click();
+    await click(ListCollectorAddPage.submit());
     await $(ListCollectorPage.no()).click();
-    await $(ListCollectorPage.submit()).click();
-    await $(HubPage.submit()).click();
+    await click(ListCollectorPage.submit());
+    await click(HubPage.submit());
 
     await $(SkipFirstNumberBlockPageSectionOne.no()).click();
-    await $(SkipFirstNumberBlockPageSectionOne.submit()).click();
+    await click(SkipFirstNumberBlockPageSectionOne.submit());
     await $(FirstNumberBlockPageSectionOne.firstNumber()).setValue(10);
-    await $(FirstNumberBlockPageSectionOne.submit()).click();
+    await click(FirstNumberBlockPageSectionOne.submit());
     await $(FirstAndAHalfNumberBlockPageSectionOne.firstAndAHalfNumberAlsoInTotal()).setValue(20);
-    await $(FirstAndAHalfNumberBlockPageSectionOne.submit()).click();
+    await click(FirstAndAHalfNumberBlockPageSectionOne.submit());
     await $(SecondNumberBlockPageSectionOne.secondNumberAlsoInTotal()).setValue(30);
-    await $(SecondNumberBlockPageSectionOne.submit()).click();
-    await $(CalculatedSummarySectionOne.submit()).click();
-    await $(SectionSummarySectionOne.submit()).click();
-    await $(HubPage.submit()).click();
+    await click(SecondNumberBlockPageSectionOne.submit());
+    await click(CalculatedSummarySectionOne.submit());
+    await click(SectionSummarySectionOne.submit());
+    await click(HubPage.submit());
     await $(ThirdNumberBlockPageSectionTwo.thirdNumber()).setValue(20);
     await $(ThirdNumberBlockPageSectionTwo.thirdNumberAlsoInTotal()).setValue(20);
-    await $(ThirdNumberBlockPageSectionTwo.submit()).click();
-    await $(CalculatedSummarySectionTwo.submit()).click();
+    await click(ThirdNumberBlockPageSectionTwo.submit());
+    await click(CalculatedSummarySectionTwo.submit());
     await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2()).click();
-    await $(DependencyQuestionSectionTwo.submit()).click();
+    await click(DependencyQuestionSectionTwo.submit());
     await $(SkippableBlockSectionTwo.skippable()).setValue(100);
-    await $(SkippableBlockSectionTwo.submit()).click();
-    await $(SectionSummarySectionTwo.submit()).click();
-    await $(HubPage.submit()).click();
+    await click(SkippableBlockSectionTwo.submit());
+    await click(SectionSummarySectionTwo.submit());
+    await click(HubPage.submit());
     await $(ThirdNumberBlockPageSectionTwo.thirdNumber()).setValue(40);
     await $(ThirdNumberBlockPageSectionTwo.thirdNumberAlsoInTotal()).setValue(40);
-    await $(ThirdNumberBlockPageSectionTwo.submit()).click();
-    await $(CalculatedSummarySectionTwo.submit()).click();
+    await click(ThirdNumberBlockPageSectionTwo.submit());
+    await click(CalculatedSummarySectionTwo.submit());
     await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2()).click();
-    await $(DependencyQuestionSectionTwo.submit()).click();
-    await $(SectionSummarySectionTwo.submit()).click();
+    await click(DependencyQuestionSectionTwo.submit());
+    await click(SectionSummarySectionTwo.submit());
 
-    await $(HubPage.submit()).click();
+    await click(HubPage.submit());
     await expect(await browser.getUrl()).to.contain(ThankYouPage.pageName);
     await expect(await $(ThankYouPage.title()).getHTML()).to.contain("Thank you for completing the Test");
     await $(ThankYouPage.savePrintAnswersLink()).click();

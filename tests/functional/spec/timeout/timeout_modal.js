@@ -1,4 +1,5 @@
 import { TimeoutModalPage } from "../../base_pages/timeout-modal.page.js";
+import { click } from "../../helpers";
 
 class TestCase {
   testCaseExpired(page) {
@@ -21,7 +22,7 @@ class TestCase {
   testCaseExtended(page) {
     it("When the timeout modal is displayed, and I click the “Continue survey” button, Then my session will be extended", async () => {
       await this.checkTimeoutModal();
-      await $(TimeoutModalPage.submit()).click();
+      await click(TimeoutModalPage.submit());
       await expect(await $(TimeoutModalPage.timer()).getText()).to.equal("");
       await browser.pause(65000); // Waiting 65 seconds to sanity check that it hasn’t expired
       await browser.refresh();

@@ -8,7 +8,7 @@ import DateGreaterThanQuestionPage from "../../../generated_pages/routing_date_g
 import DateGreaterThanOrEqualsQuestionPage from "../../../generated_pages/routing_date_greater_than_or_equals/date-question.page";
 import DateLessThanQuestionPage from "../../../generated_pages/routing_date_less_than/date-question.page";
 import DateLessThanOrEqualsQuestionPage from "../../../generated_pages/routing_date_less_than_or_equals/date-question.page";
-
+import { click } from "../../../helpers";
 const today = new Date();
 const dayToday = today.getDate();
 const monthToday = today.getMonth() + 1; // January is 0!
@@ -34,14 +34,14 @@ describe("Feature: Routing on a Date", () => {
         await $(DateEqualsComparisonQuestionPage.day()).setValue(31);
         await $(DateEqualsComparisonQuestionPage.month()).setValue(3);
         await $(DateEqualsComparisonQuestionPage.year()).setValue(2020);
-        await $(DateEqualsComparisonQuestionPage.submit()).click();
+        await click(DateEqualsComparisonQuestionPage.submit());
       });
 
       it("When I enter the same date, Then I should be routed to the correct page", async () => {
         await $(DateEqualsQuestionPage.day()).setValue(31);
         await $(DateEqualsQuestionPage.month()).setValue(3);
         await $(DateEqualsQuestionPage.year()).setValue(2020);
-        await $(DateEqualsQuestionPage.submit()).click();
+        await click(DateEqualsQuestionPage.submit());
         await expect(await browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
@@ -49,7 +49,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateEqualsQuestionPage.day()).setValue(30);
         await $(DateEqualsQuestionPage.month()).setValue(3);
         await $(DateEqualsQuestionPage.year()).setValue(2020);
-        await $(DateEqualsQuestionPage.submit()).click();
+        await click(DateEqualsQuestionPage.submit());
         await expect(await browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
@@ -57,7 +57,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateEqualsQuestionPage.day()).setValue(1);
         await $(DateEqualsQuestionPage.month()).setValue(4);
         await $(DateEqualsQuestionPage.year()).setValue(2020);
-        await $(DateEqualsQuestionPage.submit()).click();
+        await click(DateEqualsQuestionPage.submit());
         await expect(await browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
@@ -65,7 +65,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateEqualsQuestionPage.day()).setValue(29);
         await $(DateEqualsQuestionPage.month()).setValue(2);
         await $(DateEqualsQuestionPage.year()).setValue(2020);
-        await $(DateEqualsQuestionPage.submit()).click();
+        await click(DateEqualsQuestionPage.submit());
         await expect(await browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
@@ -73,7 +73,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateEqualsQuestionPage.day()).setValue(30);
         await $(DateEqualsQuestionPage.month()).setValue(4);
         await $(DateEqualsQuestionPage.year()).setValue(2020);
-        await $(DateEqualsQuestionPage.submit()).click();
+        await click(DateEqualsQuestionPage.submit());
         await expect(await browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
@@ -81,7 +81,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateEqualsQuestionPage.day()).setValue(31);
         await $(DateEqualsQuestionPage.month()).setValue(3);
         await $(DateEqualsQuestionPage.year()).setValue(2019);
-        await $(DateEqualsQuestionPage.submit()).click();
+        await click(DateEqualsQuestionPage.submit());
         await expect(await browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
@@ -89,7 +89,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateEqualsQuestionPage.day()).setValue(31);
         await $(DateEqualsQuestionPage.month()).setValue(3);
         await $(DateEqualsQuestionPage.year()).setValue(2021);
-        await $(DateEqualsQuestionPage.submit()).click();
+        await click(DateEqualsQuestionPage.submit());
         await expect(await browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
 
@@ -97,7 +97,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateEqualsQuestionPage.day()).setValue(1);
         await $(DateEqualsQuestionPage.month()).setValue(3);
         await $(DateEqualsQuestionPage.year()).setValue(2020);
-        await $(DateEqualsComparisonQuestionPage.submit()).click();
+        await click(DateEqualsComparisonQuestionPage.submit());
         await expect(await browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
       });
     });
@@ -112,7 +112,7 @@ describe("Feature: Routing on a Date", () => {
       it("When I enter a different date to February 2018, Then I should be routed to the correct page", async () => {
         await $(DateNotEqualsQuestionPage.Month()).setValue(3);
         await $(DateNotEqualsQuestionPage.Year()).setValue(2018);
-        await $(DateNotEqualsQuestionPage.submit()).click();
+        await click(DateNotEqualsQuestionPage.submit());
 
         const expectedUrl = await browser.getUrl();
 
@@ -122,7 +122,7 @@ describe("Feature: Routing on a Date", () => {
       it("When I enter February 2018, Then I should be routed to the incorrect page", async () => {
         await $(DateNotEqualsQuestionPage.Month()).setValue(2);
         await $(DateNotEqualsQuestionPage.Year()).setValue(2018);
-        await $(DateNotEqualsQuestionPage.submit()).click();
+        await click(DateNotEqualsQuestionPage.submit());
 
         const expectedUrl = await browser.getUrl();
 
@@ -141,7 +141,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateGreaterThanQuestionPage.day()).setValue(2);
         await $(DateGreaterThanQuestionPage.month()).setValue(3);
         await $(DateGreaterThanQuestionPage.year()).setValue(2017);
-        await $(DateGreaterThanQuestionPage.submit()).click();
+        await click(DateGreaterThanQuestionPage.submit());
 
         const expectedUrl = await browser.getUrl();
 
@@ -152,7 +152,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateGreaterThanQuestionPage.day()).setValue(1);
         await $(DateGreaterThanQuestionPage.month()).setValue(3);
         await $(DateGreaterThanQuestionPage.year()).setValue(2017);
-        await $(DateGreaterThanQuestionPage.submit()).click();
+        await click(DateGreaterThanQuestionPage.submit());
 
         const expectedUrl = await browser.getUrl();
 
@@ -163,7 +163,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateGreaterThanQuestionPage.day()).setValue(28);
         await $(DateGreaterThanQuestionPage.month()).setValue(2);
         await $(DateGreaterThanQuestionPage.year()).setValue(2017);
-        await $(DateGreaterThanQuestionPage.submit()).click();
+        await click(DateGreaterThanQuestionPage.submit());
 
         const expectedUrl = await browser.getUrl();
 
@@ -180,7 +180,7 @@ describe("Feature: Routing on a Date", () => {
 
       it("When I enter a date greater than 2017, Then I should be routed to the correct page", async () => {
         await $(DateGreaterThanOrEqualsQuestionPage.Year()).setValue(2018);
-        await $(DateGreaterThanOrEqualsQuestionPage.submit()).click();
+        await click(DateGreaterThanOrEqualsQuestionPage.submit());
 
         const expectedUrl = await browser.getUrl();
 
@@ -189,7 +189,7 @@ describe("Feature: Routing on a Date", () => {
 
       it("When I enter 2017, Then I should be routed to the correct page", async () => {
         await $(DateGreaterThanOrEqualsQuestionPage.Year()).setValue(2017);
-        await $(DateGreaterThanOrEqualsQuestionPage.submit()).click();
+        await click(DateGreaterThanOrEqualsQuestionPage.submit());
 
         const expectedUrl = await browser.getUrl();
 
@@ -198,7 +198,7 @@ describe("Feature: Routing on a Date", () => {
 
       it("When I enter a date less than March 2017, Then I should be routed to the incorrect page", async () => {
         await $(DateGreaterThanOrEqualsQuestionPage.Year()).setValue(2016);
-        await $(DateGreaterThanOrEqualsQuestionPage.submit()).click();
+        await click(DateGreaterThanOrEqualsQuestionPage.submit());
 
         const expectedUrl = await browser.getUrl();
 
@@ -217,7 +217,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateLessThanQuestionPage.day()).setValue(dayYesterday);
         await $(DateLessThanQuestionPage.month()).setValue(monthYesterday);
         await $(DateLessThanQuestionPage.year()).setValue(yearYesterday);
-        await $(DateLessThanQuestionPage.submit()).click();
+        await click(DateLessThanQuestionPage.submit());
 
         const browserUrl = await browser.getUrl();
 
@@ -228,7 +228,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateLessThanQuestionPage.day()).setValue(dayToday);
         await $(DateLessThanQuestionPage.month()).setValue(monthToday);
         await $(DateLessThanQuestionPage.year()).setValue(yearToday);
-        await $(DateLessThanQuestionPage.submit()).click();
+        await click(DateLessThanQuestionPage.submit());
 
         const browserUrl = await browser.getUrl();
 
@@ -239,7 +239,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateLessThanQuestionPage.day()).setValue(dayTomorrow);
         await $(DateLessThanQuestionPage.month()).setValue(monthTomorrow);
         await $(DateLessThanQuestionPage.year()).setValue(yearTomorrow);
-        await $(DateLessThanQuestionPage.submit()).click();
+        await click(DateLessThanQuestionPage.submit());
 
         const browserUrl = await browser.getUrl();
 
@@ -258,7 +258,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateLessThanOrEqualsQuestionPage.day()).setValue(dayYesterday);
         await $(DateLessThanOrEqualsQuestionPage.month()).setValue(monthYesterday);
         await $(DateLessThanOrEqualsQuestionPage.year()).setValue(yearYesterday);
-        await $(DateLessThanOrEqualsQuestionPage.submit()).click();
+        await click(DateLessThanOrEqualsQuestionPage.submit());
 
         const browserUrl = await browser.getUrl();
 
@@ -269,7 +269,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateLessThanOrEqualsQuestionPage.day()).setValue(dayToday);
         await $(DateLessThanOrEqualsQuestionPage.month()).setValue(monthToday);
         await $(DateLessThanOrEqualsQuestionPage.year()).setValue(yearToday);
-        await $(DateLessThanOrEqualsQuestionPage.submit()).click();
+        await click(DateLessThanOrEqualsQuestionPage.submit());
 
         const browserUrl = await browser.getUrl();
 
@@ -280,7 +280,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateLessThanOrEqualsQuestionPage.day()).setValue(dayTomorrow);
         await $(DateLessThanOrEqualsQuestionPage.month()).setValue(monthTomorrow);
         await $(DateLessThanOrEqualsQuestionPage.year()).setValue(yearTomorrow);
-        await $(DateLessThanOrEqualsQuestionPage.submit()).click();
+        await click(DateLessThanOrEqualsQuestionPage.submit());
 
         const browserUrl = await browser.getUrl();
 

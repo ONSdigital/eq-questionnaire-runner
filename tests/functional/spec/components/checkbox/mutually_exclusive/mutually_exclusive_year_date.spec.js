@@ -1,5 +1,6 @@
 import YearDatePage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-year-date.page";
 import SubmitPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-year-date-section-summary.page";
+import { click } from "../../../../helpers";
 
 describe("Component: Mutually Exclusive Year Date With Single Checkbox Override", () => {
   beforeEach(async () => {
@@ -21,7 +22,7 @@ describe("Component: Mutually Exclusive Year Date With Single Checkbox Override"
       await expect(await $(YearDatePage.yearDateExclusiveIPreferNotToSay()).isSelected()).to.be.true;
       await expect(await $(YearDatePage.yearDateYear()).getValue()).to.contain("");
 
-      await $(YearDatePage.submit()).click();
+      await click(YearDatePage.submit());
 
       await expect(await $(SubmitPage.yearDateExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
       await expect(await $(SubmitPage.yearDateExclusiveAnswer()).getText()).to.not.have.string("2018");
@@ -41,7 +42,7 @@ describe("Component: Mutually Exclusive Year Date With Single Checkbox Override"
       await expect(await $(YearDatePage.yearDateYear()).getValue()).to.contain("2018");
       await expect(await $(YearDatePage.yearDateExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
-      await $(YearDatePage.submit()).click();
+      await click(YearDatePage.submit());
 
       await expect(await $(SubmitPage.yearDateAnswer()).getText()).to.have.string("2018");
       await expect(await $(SubmitPage.yearDateAnswer()).getText()).to.not.have.string("I prefer not to say");
@@ -60,7 +61,7 @@ describe("Component: Mutually Exclusive Year Date With Single Checkbox Override"
       await expect(await $(YearDatePage.yearDateYear()).getValue()).to.contain("2018");
       await expect(await $(YearDatePage.yearDateExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
-      await $(YearDatePage.submit()).click();
+      await click(YearDatePage.submit());
 
       await expect(await $(SubmitPage.yearDateAnswer()).getText()).to.have.string("2018");
       await expect(await $(SubmitPage.yearDateAnswer()).getText()).to.not.have.string("I prefer not to say");
@@ -77,7 +78,7 @@ describe("Component: Mutually Exclusive Year Date With Single Checkbox Override"
       await expect(await $(YearDatePage.yearDateExclusiveIPreferNotToSay()).isSelected()).to.be.true;
 
       // Then
-      await $(YearDatePage.submit()).click();
+      await click(YearDatePage.submit());
 
       await expect(await $(SubmitPage.yearDateExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
       await expect(await $(SubmitPage.yearDateExclusiveAnswer()).getText()).to.not.have.string("2018");
@@ -91,7 +92,7 @@ describe("Component: Mutually Exclusive Year Date With Single Checkbox Override"
       await expect(await $(YearDatePage.yearDateExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
       // When
-      await $(YearDatePage.submit()).click();
+      await click(YearDatePage.submit());
 
       // Then
       await expect(await $(SubmitPage.yearDateAnswer()).getText()).to.contain("No answer provided");
