@@ -55,7 +55,6 @@ describe("Save sign out / Exit", () => {
     await $(secondNumberBlock.secondNumber()).setValue(321);
     await click(secondNumberBlock.submit());
     await click(currencySectionSummary.submit());
-    
 
     await click(SubmitPage.submit());
     await expect(await browser.getUrl()).to.contain("thank-you");
