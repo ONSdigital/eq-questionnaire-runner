@@ -73,9 +73,7 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         self.post()
         self.post()
         self.post()
-        self.assertInBody(
-            "Total currency values: <em>£80.00</em>"
-        )
+        self.assertInBody("Total currency values: <em>£80.00</em>")
 
     def test_new_calculated_summary_no_skip(self):
         self.launchSurvey("test_new_calculated_summary")
