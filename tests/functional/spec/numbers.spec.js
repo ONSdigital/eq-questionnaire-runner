@@ -2,6 +2,7 @@ import SetMinMax from "../generated_pages/numbers/set-min-max-block.page.js";
 import TestMinMax from "../generated_pages/numbers/test-min-max-block.page.js";
 import DetailAnswer from "../generated_pages/numbers/detail-answer-block.page";
 import SubmitPage from "../generated_pages/numbers/submit.page";
+import { click } from "../helpers";
 
 describe("Number validation", () => {
   before(async () => {
@@ -16,7 +17,7 @@ describe("Number validation", () => {
     it("When I enter values outside of the set range, Then the correct error messages are displayed", async () => {
       await $(SetMinMax.setMinimum()).setValue("10");
       await $(SetMinMax.setMaximum()).setValue("1020");
-      await $(SetMinMax.submit()).click();
+      await click(SetMinMax.submit());
 
       await $(TestMinMax.testRange()).setValue("9");
       await $(TestMinMax.testRangeExclusive()).setValue("10");
@@ -26,7 +27,7 @@ describe("Number validation", () => {
       await $(TestMinMax.testMaxExclusive()).setValue("12345");
       await $(TestMinMax.testPercent()).setValue("101");
       await $(TestMinMax.testDecimal()).setValue("5.4");
-      await $(TestMinMax.submit()).click();
+      await click(TestMinMax.submit());
 
       await expect(await $(TestMinMax.errorNumber(1)).getText()).to.contain("Enter an answer more than or equal to 10");
       await expect(await $(TestMinMax.errorNumber(2)).getText()).to.contain("Enter an answer more than 10");
@@ -49,6 +50,7 @@ describe("Number validation", () => {
       await $(TestMinMax.testRange()).setValue("12.123456");
       await $(TestMinMax.testDecimal()).setValue("11.123456");
       await $(TestMinMax.submit()).click();
+      await click(TestMinMax.submit());
 
       await expect(await $(TestMinMax.errorNumber(1)).getText()).to.contain("Enter a number rounded to 2 decimal places");
       await expect(await $(TestMinMax.errorNumber(2)).getText()).to.contain("Enter a number rounded to 5 decimal places");
@@ -58,10 +60,10 @@ describe("Number validation", () => {
       await $(TestMinMax.testRange()).setValue("12");
       await $(TestMinMax.testDecimal()).setValue("11.10000");
       await $(TestMinMax.testPercent()).setValue("99");
-      await $(TestMinMax.submit()).click();
+      await click(TestMinMax.submit());
       await $(DetailAnswer.other()).click();
       await $(DetailAnswer.otherDetail()).setValue("1020");
-      await $(DetailAnswer.submit()).click();
+      await click(DetailAnswer.submit());
 
       await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
@@ -69,14 +71,14 @@ describe("Number validation", () => {
     it("When I edit and change the maximum value, Then I must re-validate and submit any dependent answers before I can return to the summary", async () => {
       await $(SubmitPage.setMaximumEdit()).click();
       await $(SetMinMax.setMaximum()).setValue("1019");
-      await $(SetMinMax.submit()).click();
-      await $(TestMinMax.submit()).click();
-      await $(DetailAnswer.submit()).click();
+      await click(SetMinMax.submit());
+      await click(TestMinMax.submit());
+      await click(DetailAnswer.submit());
 
       await expect(await $(DetailAnswer.errorNumber(1)).getText()).to.contain("Enter an answer less than or equal to 1,019");
 
       await $(DetailAnswer.otherDetail()).setValue("1019");
-      await $(DetailAnswer.submit()).click();
+      await click(DetailAnswer.submit());
 
       await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
@@ -84,13 +86,13 @@ describe("Number validation", () => {
     it("When I edit and change the minimum value, Then I must re-validate and submit any dependent answers again before I can return to the summary", async () => {
       await $(SubmitPage.setMinimumEdit()).click();
       await $(SetMinMax.setMinimum()).setValue("11");
-      await $(SetMinMax.submit()).click();
-      await $(TestMinMax.submit()).click();
+      await click(SetMinMax.submit());
+      await click(TestMinMax.submit());
 
       await expect(await $(TestMinMax.errorNumber(1)).getText()).to.contain("Enter an answer more than 11");
 
       await $(TestMinMax.testRangeExclusive()).setValue("12");
-      await $(TestMinMax.submit()).click();
+      await click(TestMinMax.submit());
 
       await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });

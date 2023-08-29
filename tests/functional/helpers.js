@@ -34,3 +34,16 @@ export const repeatingAnswerChangeLink = (answerIndex) => {
 export const listItemIds = () => {
   return $$("[data-list-item-id]").map((listItem) => listItem.getAttribute("data-list-item-id"));
 };
+
+export const click = async (selector) => {
+  // This was introduced due to a css property on ons-btn:
+  // .ons-btn:active {
+  //      top: 0.1666666667em
+  //  }
+  // When the button is right on the very edge of the screen, webdriverio sees that the button is accessible, so does not scroll
+  // but clicks down on the very top of the button which moves down and just below the mouse. When the mouse click is released
+  // it's no longer over the button and the click silently fails. This means that when the test comes to do assertions on the following page
+  // they fail, as we never navigated to that page.
+  await $(selector).scrollIntoView({ block: "center", inline: "center" });
+  await $(selector).click();
+};

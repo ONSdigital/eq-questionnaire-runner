@@ -8,7 +8,7 @@ import HowManyPeopleLiveHere from "../../../generated_pages/hub_and_spoke/how-ma
 import HubPage from "../../../base_pages/hub.page.js";
 import ProxyPage from "../../../generated_pages/hub_and_spoke/proxy.page.js";
 import RelationshipsSummary from "../../../generated_pages/hub_and_spoke/relationships-section-summary.page.js";
-
+import { click } from "../../../helpers";
 describe("Feature: Hub and Spoke", () => {
   const hubAndSpokeSchema = "test_hub_and_spoke.json";
 
@@ -58,13 +58,13 @@ describe("Feature: Hub and Spoke", () => {
     });
 
     it("When the user starts a section, Then the first question in the section should be displayed", async () => {
-      await $(HubPage.submit()).click();
+      await click(HubPage.submit());
       const expectedUrl = await browser.getUrl();
       await expect(expectedUrl).to.contain(EmploymentStatusBlockPage.url());
     });
 
     it("When the user starts a section and clicks the Previous link on the first question, Then they should be taken back to the Hub", async () => {
-      await $(HubPage.submit()).click();
+      await click(HubPage.submit());
       await $(EmploymentStatusBlockPage.previous()).click();
       const expectedUrl = await browser.getUrl();
       await expect(expectedUrl).to.contain(HubPage.url());
@@ -76,7 +76,7 @@ describe("Feature: Hub and Spoke", () => {
       await browser.openQuestionnaire(hubAndSpokeSchema);
       await $(HubPage.summaryRowLink("employment-section")).click();
       await $(EmploymentStatusBlockPage.exclusiveNoneOfTheseApply()).click();
-      await $(EmploymentStatusBlockPage.submit()).click();
+      await click(EmploymentStatusBlockPage.submit());
     });
 
     it("When the user returns to the Hub, Then the Hub should be in a continue state", async () => {
@@ -103,38 +103,38 @@ describe("Feature: Hub and Spoke", () => {
       await browser.openQuestionnaire(hubAndSpokeSchema);
       await $(HubPage.summaryRowLink("employment-section")).click();
       await $(EmploymentStatusBlockPage.exclusiveNoneOfTheseApply()).click();
-      await $(EmploymentStatusBlockPage.submit()).click();
+      await click(EmploymentStatusBlockPage.submit());
       await $(EmploymentTypeBlockPage.studying()).click();
     });
 
     it("When the user clicks the 'Continue' button, it should return them to the hub", async () => {
-      await $(EmploymentTypeBlockPage.submit()).click();
+      await click(EmploymentTypeBlockPage.submit());
       const expectedUrl = await browser.getUrl();
       await expect(expectedUrl).to.contain(HubPage.url());
     });
 
     it("When the user returns to the Hub, Then the Hub should be in a continue state", async () => {
-      await $(EmploymentTypeBlockPage.submit()).click();
+      await click(EmploymentTypeBlockPage.submit());
       await expect(await $(HubPage.submit()).getText()).to.contain("Continue");
       await expect(await $(HubPage.heading()).getText()).to.contain("Choose another section to complete");
     });
 
     it("When the user returns to the Hub, Then the section should be marked as 'Completed'", async () => {
-      await $(EmploymentTypeBlockPage.submit()).click();
+      await click(EmploymentTypeBlockPage.submit());
       await expect(await $(HubPage.summaryRowState("employment-section")).getText()).to.contain("Completed");
     });
 
     it("When the user returns to the Hub and clicks the 'View answers' link on the Hub, if this no summary they are returned to the first block", async () => {
-      await $(EmploymentTypeBlockPage.submit()).click();
+      await click(EmploymentTypeBlockPage.submit());
       await $(HubPage.summaryRowLink("employment-section")).click();
       const expectedUrl = await browser.getUrl();
       await expect(expectedUrl).to.contain(EmploymentStatusBlockPage.url());
     });
 
     it("When the user returns to the Hub and continues, Then they should progress to the next section", async () => {
-      await $(EmploymentTypeBlockPage.submit()).click();
+      await click(EmploymentTypeBlockPage.submit());
       await expect(await browser.getUrl()).to.contain(HubPage.url());
-      await $(HubPage.submit()).click();
+      await click(HubPage.submit());
       const expectedUrl = await browser.getUrl();
       await expect(expectedUrl).to.contain(ProxyPage.url());
     });
@@ -145,7 +145,7 @@ describe("Feature: Hub and Spoke", () => {
       await browser.openQuestionnaire(hubAndSpokeSchema);
       await $(HubPage.summaryRowLink("employment-section")).click();
       await $(EmploymentStatusBlockPage.workingAsAnEmployee()).click();
-      await $(EmploymentStatusBlockPage.submit()).click();
+      await click(EmploymentStatusBlockPage.submit());
 
       await expect(await $(HubPage.summaryRowState("employment-section")).getText()).to.contain("Completed");
     });
@@ -154,7 +154,7 @@ describe("Feature: Hub and Spoke", () => {
       await $(HubPage.summaryRowLink("employment-section")).click();
       await expect(await browser.getUrl()).to.contain(EmploymentStatusBlockPage.url());
       await $(EmploymentStatusBlockPage.exclusiveNoneOfTheseApply()).click();
-      await $(EmploymentStatusBlockPage.submit()).click();
+      await click(EmploymentStatusBlockPage.submit());
       const expectedUrl = await browser.getUrl();
       await expect(expectedUrl).to.contain(EmploymentTypeBlockPage.url());
     });
@@ -163,7 +163,7 @@ describe("Feature: Hub and Spoke", () => {
       await $(HubPage.summaryRowLink("employment-section")).click();
       await expect(await browser.getUrl()).to.contain(EmploymentStatusBlockPage.url());
       await $(EmploymentStatusBlockPage.exclusiveNoneOfTheseApply()).click();
-      await $(EmploymentStatusBlockPage.submit()).click();
+      await click(EmploymentStatusBlockPage.submit());
       await browser.url(HubPage.url());
       const expectedUrl = await browser.getUrl();
       await expect(expectedUrl).to.contain(HubPage.url());
@@ -176,21 +176,21 @@ describe("Feature: Hub and Spoke", () => {
       await browser.openQuestionnaire(hubAndSpokeSchema);
       await $(HubPage.summaryRowLink("employment-section")).click();
       await $(EmploymentStatusBlockPage.exclusiveNoneOfTheseApply()).click();
-      await $(EmploymentStatusBlockPage.submit()).click();
+      await click(EmploymentStatusBlockPage.submit());
       await $(EmploymentTypeBlockPage.studying()).click();
-      await $(EmploymentTypeBlockPage.submit()).click();
-      await $(HubPage.submit()).click();
+      await click(EmploymentTypeBlockPage.submit());
+      await click(HubPage.submit());
       await $(ProxyPage.yes()).click();
-      await $(ProxyPage.submit()).click();
-      await $(AccomodationDetailsSummaryBlockPage.submit()).click();
-      await $(HubPage.submit()).click();
+      await click(ProxyPage.submit());
+      await click(AccomodationDetailsSummaryBlockPage.submit());
+      await click(HubPage.submit());
       await $(DoesAnyoneLiveHere.no()).click();
-      await $(DoesAnyoneLiveHere.submit()).click();
-      await $(HouseholdSummary.submit()).click();
-      await $(HubPage.submit()).click();
+      await click(DoesAnyoneLiveHere.submit());
+      await click(HouseholdSummary.submit());
+      await click(HubPage.submit());
       await $(AnyoneRelated.yes()).click();
-      await $(AnyoneRelated.submit()).click();
-      await $(RelationshipsSummary.submit()).click();
+      await click(AnyoneRelated.submit());
+      await click(RelationshipsSummary.submit());
     });
 
     it("It should return them to the hub", async () => {
@@ -204,7 +204,7 @@ describe("Feature: Hub and Spoke", () => {
     });
 
     it("When the user submits, it should show the thankyou page", async () => {
-      await $(HubPage.submit()).click();
+      await click(HubPage.submit());
       const expectedUrl = await browser.getUrl();
       await expect(expectedUrl).to.contain("thank-you");
     });
@@ -221,9 +221,9 @@ describe("Feature: Hub and Spoke", () => {
 
     it("The hub should only display when required sections are complete", async () => {
       await $(EmploymentStatusBlockPage.exclusiveNoneOfTheseApply()).click();
-      await $(EmploymentStatusBlockPage.submit()).click();
+      await click(EmploymentStatusBlockPage.submit());
       await $(EmploymentTypeBlockPage.studying()).click();
-      await $(EmploymentTypeBlockPage.submit()).click();
+      await click(EmploymentTypeBlockPage.submit());
       await expect(await browser.getUrl()).to.contain(HubPage.url());
     });
   });
@@ -233,13 +233,13 @@ describe("Feature: Hub and Spoke", () => {
       await browser.openQuestionnaire(hubAndSpokeSchema);
       await $(HubPage.summaryRowLink("household-section")).click();
       await $(DoesAnyoneLiveHere.no()).click();
-      await $(DoesAnyoneLiveHere.submit()).click();
-      await $(HouseholdSummary.submit()).click();
+      await click(DoesAnyoneLiveHere.submit());
+      await click(HouseholdSummary.submit());
     });
 
     it("When there are no changes, continue returns directly to the hub", async () => {
       await $(HubPage.summaryRowLink("household-section")).click();
-      await $(HouseholdSummary.submit()).click();
+      await click(HouseholdSummary.submit());
       const expectedUrl = await browser.getUrl();
       await expect(expectedUrl).to.contain(HubPage.url());
     });
@@ -248,8 +248,8 @@ describe("Feature: Hub and Spoke", () => {
       await $(HubPage.summaryRowLink("household-section")).click();
       await $(HouseholdSummary.doesAnyoneLiveHereAnswerEdit()).click();
       await $(DoesAnyoneLiveHere.yes()).click();
-      await $(DoesAnyoneLiveHere.submit()).click();
-      await $(HouseholdSummary.submit()).click();
+      await click(DoesAnyoneLiveHere.submit());
+      await click(HouseholdSummary.submit());
       const expectedUrl = await browser.getUrl();
       await expect(expectedUrl).to.contain(HowManyPeopleLiveHere.url());
     });

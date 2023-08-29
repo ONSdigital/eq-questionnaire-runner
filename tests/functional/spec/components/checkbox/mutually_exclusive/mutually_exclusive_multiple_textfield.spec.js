@@ -1,5 +1,6 @@
 import TextFieldPage from "../../../../generated_pages/mutually_exclusive_multiple/mutually-exclusive-textfield.page";
 import SummaryPage from "../../../../generated_pages/mutually_exclusive_multiple/mutually-exclusive-textfield-section-summary.page";
+import { click } from "../../../../helpers";
 
 describe("Component: Mutually Exclusive Textfield With Multiple Radio Override", () => {
   beforeEach(async () => {
@@ -23,7 +24,7 @@ describe("Component: Mutually Exclusive Textfield With Multiple Radio Override",
       await expect(await $(TextFieldPage.textfieldExclusiveIDontHaveAFavoriteColour()).isSelected()).to.be.false;
       await expect(await $(TextFieldPage.textfield()).getValue()).to.contain("");
 
-      await $(TextFieldPage.submit()).click();
+      await click(TextFieldPage.submit());
 
       await expect(await $(SummaryPage.textfieldExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
       await expect(await $(SummaryPage.textfieldExclusiveAnswer()).getText()).to.not.have.string("I dont have a favorite colour");
@@ -38,7 +39,7 @@ describe("Component: Mutually Exclusive Textfield With Multiple Radio Override",
       await expect(await $(TextFieldPage.textfieldExclusiveIPreferNotToSay()).isSelected()).to.be.false;
       await expect(await $(TextFieldPage.textfield()).getValue()).to.contain("");
 
-      await $(TextFieldPage.submit()).click();
+      await click(TextFieldPage.submit());
 
       await expect(await $(SummaryPage.textfieldExclusiveAnswer()).getText()).to.have.string("I dont have a favorite colour");
       await expect(await $(SummaryPage.textfieldExclusiveAnswer()).getText()).to.not.have.string("I prefer not to say");
@@ -61,7 +62,7 @@ describe("Component: Mutually Exclusive Textfield With Multiple Radio Override",
       await expect(await $(TextFieldPage.textfieldExclusiveIPreferNotToSay()).isSelected()).to.be.false;
       await expect(await $(TextFieldPage.textfieldExclusiveIDontHaveAFavoriteColour()).isSelected()).to.be.false;
 
-      await $(TextFieldPage.submit()).click();
+      await click(TextFieldPage.submit());
 
       await expect(await $(SummaryPage.textfieldAnswer()).getText()).to.have.string("Blue");
       await expect(await $(SummaryPage.textfieldAnswer()).getText()).to.not.have.string("I prefer not to say");
@@ -84,7 +85,7 @@ describe("Component: Mutually Exclusive Textfield With Multiple Radio Override",
       await expect(await $(TextFieldPage.textfieldExclusiveIPreferNotToSay()).isSelected()).to.be.false;
       await expect(await $(TextFieldPage.textfieldExclusiveIDontHaveAFavoriteColour()).isSelected()).to.be.false;
 
-      await $(TextFieldPage.submit()).click();
+      await click(TextFieldPage.submit());
 
       await expect(await $(SummaryPage.textfieldAnswer()).getText()).to.have.string("Blue");
       await expect(await $(SummaryPage.textfieldAnswer()).getText()).to.not.have.string("I prefer not to say");
@@ -106,7 +107,7 @@ describe("Component: Mutually Exclusive Textfield With Multiple Radio Override",
       await expect(await $(TextFieldPage.textfieldExclusiveIPreferNotToSay()).isSelected()).to.be.false;
       await expect(await $(TextFieldPage.textfieldExclusiveIDontHaveAFavoriteColour()).isSelected()).to.be.false;
 
-      await $(TextFieldPage.submit()).click();
+      await click(TextFieldPage.submit());
 
       await expect(await $(SummaryPage.textfieldAnswer()).getText()).to.have.string("Blue");
       await expect(await $(SummaryPage.textfieldAnswer()).getText()).to.not.have.string("I prefer not to say");
@@ -126,7 +127,7 @@ describe("Component: Mutually Exclusive Textfield With Multiple Radio Override",
       await expect(await $(TextFieldPage.textfieldExclusiveIDontHaveAFavoriteColour()).isSelected()).to.be.false;
 
       // Then
-      await $(TextFieldPage.submit()).click();
+      await click(TextFieldPage.submit());
 
       await expect(await $(SummaryPage.textfieldExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
       await expect(await $(SummaryPage.textfieldExclusiveAnswer()).getText()).to.not.have.string("I dont have a favorite colour");
@@ -139,7 +140,7 @@ describe("Component: Mutually Exclusive Textfield With Multiple Radio Override",
       await expect(await $(TextFieldPage.textfieldExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
       // Then
-      await $(TextFieldPage.submit()).click();
+      await click(TextFieldPage.submit());
 
       await expect(await $(SummaryPage.textfieldExclusiveAnswer()).getText()).to.have.string("I dont have a favorite colour");
       await expect(await $(SummaryPage.textfieldExclusiveAnswer()).getText()).to.not.have.string("I prefer not to say");
@@ -155,7 +156,7 @@ describe("Component: Mutually Exclusive Textfield With Multiple Radio Override",
       await expect(await $(TextFieldPage.textfieldExclusiveIDontHaveAFavoriteColour()).isSelected()).to.be.false;
 
       // When
-      await $(TextFieldPage.submit()).click();
+      await click(TextFieldPage.submit());
 
       // Then
       await expect(await $(SummaryPage.textfieldAnswer()).getText()).to.contain("No answer provided");
@@ -173,7 +174,7 @@ describe("Component: Mutually Exclusive Textfield With Multiple Radio Override",
       await $(TextFieldPage.textfieldExclusiveIDontHaveAFavoriteColour()).click();
       await expect(await $(TextFieldPage.textfieldExclusiveIPreferNotToSay()).isSelected()).to.be.false;
       await expect(await $(TextFieldPage.textfieldExclusiveIDontHaveAFavoriteColour()).isSelected()).to.be.true;
-      await $(TextFieldPage.submit()).click();
+      await click(TextFieldPage.submit());
 
       // Then
       await expect(await $(SummaryPage.textfieldExclusiveAnswer()).getText()).to.have.string("I dont have a favorite colour");

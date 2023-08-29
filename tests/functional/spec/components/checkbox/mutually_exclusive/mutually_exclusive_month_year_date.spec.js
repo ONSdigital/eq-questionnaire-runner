@@ -1,5 +1,6 @@
 import MonthYearDatePage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-month-year-date.page";
 import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-month-year-date-section-summary.page";
+import { click } from "../../../../helpers";
 
 describe("Component: Mutually Exclusive Month Year Date With Single Checkbox Override", () => {
   beforeEach(async () => {
@@ -24,7 +25,7 @@ describe("Component: Mutually Exclusive Month Year Date With Single Checkbox Ove
       await expect(await $(MonthYearDatePage.monthYearDateMonth()).getValue()).to.contain("");
       await expect(await $(MonthYearDatePage.monthYearDateYear()).getValue()).to.contain("");
 
-      await $(MonthYearDatePage.submit()).click();
+      await click(MonthYearDatePage.submit());
 
       await expect(await $(SummaryPage.monthYearDateExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
       await expect(await $(SummaryPage.monthYearDateExclusiveAnswer()).getText()).to.not.have.string("March 2018");
@@ -47,7 +48,7 @@ describe("Component: Mutually Exclusive Month Year Date With Single Checkbox Ove
 
       await expect(await $(MonthYearDatePage.monthYearDateExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
-      await $(MonthYearDatePage.submit()).click();
+      await click(MonthYearDatePage.submit());
 
       await expect(await $(SummaryPage.monthYearDateAnswer()).getText()).to.have.string("March 2018");
       await expect(await $(SummaryPage.monthYearDateAnswer()).getText()).to.not.have.string("I prefer not to say");
@@ -68,7 +69,7 @@ describe("Component: Mutually Exclusive Month Year Date With Single Checkbox Ove
       await expect(await $(MonthYearDatePage.monthYearDateYear()).getValue()).to.contain("2018");
       await expect(await $(MonthYearDatePage.monthYearDateExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
-      await $(MonthYearDatePage.submit()).click();
+      await click(MonthYearDatePage.submit());
 
       await expect(await $(SummaryPage.monthYearDateAnswer()).getText()).to.have.string("March 2018");
       await expect(await $(SummaryPage.monthYearDateAnswer()).getText()).to.not.have.string("I prefer not to say");
@@ -86,7 +87,7 @@ describe("Component: Mutually Exclusive Month Year Date With Single Checkbox Ove
       await expect(await $(MonthYearDatePage.monthYearDateExclusiveIPreferNotToSay()).isSelected()).to.be.true;
 
       // Then
-      await $(MonthYearDatePage.submit()).click();
+      await click(MonthYearDatePage.submit());
 
       await expect(await $(SummaryPage.monthYearDateExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
       await expect(await $(SummaryPage.monthYearDateExclusiveAnswer()).getText()).to.not.have.string("March 2018");
@@ -101,7 +102,7 @@ describe("Component: Mutually Exclusive Month Year Date With Single Checkbox Ove
       await expect(await $(MonthYearDatePage.monthYearDateExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
       // When
-      await $(MonthYearDatePage.submit()).click();
+      await click(MonthYearDatePage.submit());
 
       // Then
       await expect(await $(SummaryPage.monthYearDateAnswer()).getText()).to.contain("No answer provided");
