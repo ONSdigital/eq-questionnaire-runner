@@ -1,5 +1,6 @@
 import CurrencyPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-currency.page";
 import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-currency-section-summary.page";
+import { click } from "../../../../helpers";
 
 describe("Component: Mutually Exclusive Currency With Single Checkbox Override", () => {
   beforeEach(async () => {
@@ -21,7 +22,7 @@ describe("Component: Mutually Exclusive Currency With Single Checkbox Override",
       await expect(await $(CurrencyPage.currencyExclusiveIPreferNotToSay()).isSelected()).to.be.true;
       await expect(await $(CurrencyPage.currency()).getValue()).to.contain("");
 
-      await $(CurrencyPage.submit()).click();
+      await click(CurrencyPage.submit());
 
       await expect(await $(SummaryPage.currencyExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
       await expect(await $(SummaryPage.currencyExclusiveAnswer()).getText()).to.not.have.string("123");
@@ -41,7 +42,7 @@ describe("Component: Mutually Exclusive Currency With Single Checkbox Override",
       await $(CurrencyPage.currency()).getValue();
       await expect(await $(CurrencyPage.currencyExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
-      await $(CurrencyPage.submit()).click();
+      await click(CurrencyPage.submit());
 
       await expect(await $(SummaryPage.currencyAnswer()).getText()).to.have.string("123");
       await expect(await $(SummaryPage.currencyAnswer()).getText()).to.not.have.string("I prefer not to say");
@@ -60,7 +61,7 @@ describe("Component: Mutually Exclusive Currency With Single Checkbox Override",
       await expect(await $(CurrencyPage.currency()).getValue()).to.contain("123");
       await expect(await $(CurrencyPage.currencyExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
-      await $(CurrencyPage.submit()).click();
+      await click(CurrencyPage.submit());
 
       await expect(await $(SummaryPage.currencyAnswer()).getText()).to.have.string("123");
       await expect(await $(SummaryPage.currencyAnswer()).getText()).to.not.have.string("I prefer not to say");
@@ -77,7 +78,7 @@ describe("Component: Mutually Exclusive Currency With Single Checkbox Override",
       await expect(await $(CurrencyPage.currencyExclusiveIPreferNotToSay()).isSelected()).to.be.true;
 
       // Then
-      await $(CurrencyPage.submit()).click();
+      await click(CurrencyPage.submit());
 
       await expect(await $(SummaryPage.currencyExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
       await expect(await $(SummaryPage.currencyExclusiveAnswer()).getText()).to.not.have.string("123");
@@ -91,7 +92,7 @@ describe("Component: Mutually Exclusive Currency With Single Checkbox Override",
       await expect(await $(CurrencyPage.currencyExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
       // When
-      await $(CurrencyPage.submit()).click();
+      await click(CurrencyPage.submit());
 
       // Then
       await expect(await $(SummaryPage.currencyAnswer()).getText()).to.contain("No answer provided");

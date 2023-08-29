@@ -16,7 +16,7 @@ import VisitorsDateOfBirthPage from "../../../generated_pages/repeating_sections
 import VisitorsListCollectorAddPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/visitors-block-add.page";
 import VisitorsListCollectorPage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/visitors-block.page";
 import VisitorsListCollectorRemovePage from "../../../generated_pages/repeating_sections_with_hub_and_spoke/visitors-block-remove.page";
-
+import { click } from "../../../helpers";
 describe("Feature: Repeating Sections with Hub and Spoke", () => {
   describe("Given the user has added some members to the household and is on the Hub", () => {
     before("Open survey and add household members", async () => {
@@ -33,41 +33,41 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
 
       // Add a primary person
       await $(PrimaryPersonPage.yes()).click();
-      await $(PrimaryPersonPage.submit()).click();
+      await click(PrimaryPersonPage.submit());
       await $(PrimaryPersonAddPage.firstName()).setValue("Marcus");
       await $(PrimaryPersonAddPage.lastName()).setValue("Twin");
-      await $(PrimaryPersonPage.submit()).click();
+      await click(PrimaryPersonPage.submit());
 
       // Add other household members (First list collector)
       await $(FirstListCollectorPage.yes()).click();
-      await $(FirstListCollectorPage.submit()).click();
+      await click(FirstListCollectorPage.submit());
       await $(FirstListCollectorAddPage.firstName()).setValue("Jean");
       await $(FirstListCollectorAddPage.lastName()).setValue("Clemens");
-      await $(FirstListCollectorAddPage.submit()).click();
+      await click(FirstListCollectorAddPage.submit());
 
       await $(FirstListCollectorPage.yes()).click();
-      await $(FirstListCollectorPage.submit()).click();
+      await click(FirstListCollectorPage.submit());
       await $(FirstListCollectorAddPage.firstName()).setValue("Samuel");
       await $(FirstListCollectorAddPage.lastName()).setValue("Clemens");
-      await $(FirstListCollectorAddPage.submit()).click();
+      await click(FirstListCollectorAddPage.submit());
 
       // Go to second list collector
       await $(FirstListCollectorPage.no()).click();
-      await $(FirstListCollectorPage.submit()).click();
-      await $(SecondListCollectorInterstitialPage.submit()).click();
+      await click(FirstListCollectorPage.submit());
+      await click(SecondListCollectorInterstitialPage.submit());
 
       // Add other household members (Second list collector)
       await $(SecondListCollectorPage.yes()).click();
-      await $(SecondListCollectorPage.submit()).click();
+      await click(SecondListCollectorPage.submit());
       await $(SecondListCollectorAddPage.firstName()).setValue("John");
       await $(SecondListCollectorAddPage.lastName()).setValue("Doe");
-      await $(SecondListCollectorAddPage.submit()).click();
+      await click(SecondListCollectorAddPage.submit());
 
       // Go back to the Hub
       await $(SecondListCollectorPage.no()).click();
-      await $(SecondListCollectorPage.submit()).click();
+      await click(SecondListCollectorPage.submit());
       await $(VisitorsListCollectorPage.no()).click();
-      await $(VisitorsListCollectorPage.submit()).click();
+      await click(VisitorsListCollectorPage.submit());
     });
 
     beforeEach("Navigate to the Hub", async () => await browser.url(HubPage.url()));
@@ -98,15 +98,15 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
     it("When the user partially completes a repeating section, Then that section should be marked as 'Partially completed' on the Hub", async () => {
       await $(HubPage.summaryRowLink("personal-details-section-1")).click();
       await $(ProxyPage.yes()).click();
-      await $(ProxyPage.submit()).click();
+      await click(ProxyPage.submit());
 
       await $(DateOfBirthPage.day()).setValue("01");
       await $(DateOfBirthPage.month()).setValue("03");
       await $(DateOfBirthPage.year()).setValue("2000");
-      await $(DateOfBirthPage.submit()).click();
+      await click(DateOfBirthPage.submit());
 
       await $(ConfirmDateOfBirthPage.confirmDateOfBirthYesPersonNameIsAgeOld()).click();
-      await $(ConfirmDateOfBirthPage.submit()).click();
+      await click(ConfirmDateOfBirthPage.submit());
 
       await browser.url(HubPage.url());
 
@@ -123,20 +123,20 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
     it("When the user completes a repeating section, Then that section should be marked as 'Completed' on the Hub", async () => {
       await $(HubPage.summaryRowLink("personal-details-section-2")).click();
       await $(ProxyPage.yes()).click();
-      await $(ProxyPage.submit()).click();
+      await click(ProxyPage.submit());
 
       await $(DateOfBirthPage.day()).setValue("09");
       await $(DateOfBirthPage.month()).setValue("09");
       await $(DateOfBirthPage.year()).setValue("1995");
-      await $(DateOfBirthPage.submit()).click();
+      await click(DateOfBirthPage.submit());
 
       await $(ConfirmDateOfBirthPage.confirmDateOfBirthYesPersonNameIsAgeOld()).click();
-      await $(ConfirmDateOfBirthPage.submit()).click();
+      await click(ConfirmDateOfBirthPage.submit());
 
       await $(SexPage.female()).click();
-      await $(SexPage.submit()).click();
+      await click(SexPage.submit());
 
-      await $(PersonalDetailsSummaryPage.submit()).click();
+      await click(PersonalDetailsSummaryPage.submit());
 
       await expect(await browser.getUrl()).to.contain(HubPage.url());
       await expect(await $(HubPage.summaryRowState("personal-details-section-2")).getText()).to.equal("Completed");
@@ -164,21 +164,21 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       await $(SectionSummaryPage.visitorListAddLink()).click();
       await $(VisitorsListCollectorAddPage.firstName()).setValue("Joe");
       await $(VisitorsListCollectorAddPage.lastName()).setValue("Public");
-      await $(VisitorsListCollectorAddPage.submit()).click();
+      await click(VisitorsListCollectorAddPage.submit());
       await expect(await browser.getUrl()).to.contain("/questionnaire/visitors-block");
 
       // Add second visitor
       await $(VisitorsListCollectorPage.yes()).click();
-      await $(VisitorsListCollectorPage.submit()).click();
+      await click(VisitorsListCollectorPage.submit());
       await $(VisitorsListCollectorAddPage.firstName()).setValue("Yvonne");
       await $(VisitorsListCollectorAddPage.lastName()).setValue("Yoe");
-      await $(VisitorsListCollectorAddPage.submit()).click();
+      await click(VisitorsListCollectorAddPage.submit());
 
       // Exit the visitors list collector
       await $(VisitorsListCollectorPage.no()).click();
-      await $(VisitorsListCollectorPage.submit()).click();
+      await click(VisitorsListCollectorPage.submit());
 
-      await $(SectionSummaryPage.submit()).click();
+      await click(SectionSummaryPage.submit());
 
       await expect(await $(HubPage.summaryRowState("visitors-section-1")).getText()).to.equal("Not started");
       await expect(await $(HubPage.summaryRowTitle("visitors-section-1")).getText()).to.equal("Joe Public");
@@ -189,22 +189,22 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
     });
 
     it("When the user clicks 'Continue' from the Hub, Then they should progress to the first incomplete section", async () => {
-      await $(HubPage.submit()).click();
+      await click(HubPage.submit());
       await expect(await $(ConfirmDateOfBirthPage.questionText()).getText()).to.equal("What is Marcus Twin’s sex?");
     });
 
     it("When the user answers on their behalf, Then they are shown the non proxy question variant", async () => {
       await $(HubPage.summaryRowLink("personal-details-section-4")).click();
       await $(ProxyPage.noIMAnsweringForMyself()).click();
-      await $(ProxyPage.submit()).click();
+      await click(ProxyPage.submit());
 
       await $(DateOfBirthPage.day()).setValue("07");
       await $(DateOfBirthPage.month()).setValue("07");
       await $(DateOfBirthPage.year()).setValue("1970");
-      await $(DateOfBirthPage.submit()).click();
+      await click(DateOfBirthPage.submit());
 
       await $(ConfirmDateOfBirthPage.confirmDateOfBirthYesIAmAgeOld()).click();
-      await $(ConfirmDateOfBirthPage.submit()).click();
+      await click(ConfirmDateOfBirthPage.submit());
 
       await expect(await $(SexPage.questionText()).getText()).to.equal("What is your sex?");
     });
@@ -212,45 +212,45 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
     it("When the user answers on on behalf of someone else, Then they are shown the proxy question variant for the relevant repeating section", async () => {
       await $(HubPage.summaryRowLink("personal-details-section-3")).click();
       await $(ProxyPage.yes()).click();
-      await $(ProxyPage.submit()).click();
+      await click(ProxyPage.submit());
 
       await $(DateOfBirthPage.day()).setValue("11");
       await $(DateOfBirthPage.month()).setValue("11");
       await $(DateOfBirthPage.year()).setValue("1990");
-      await $(DateOfBirthPage.submit()).click();
+      await click(DateOfBirthPage.submit());
 
       await $(ConfirmDateOfBirthPage.confirmDateOfBirthYesPersonNameIsAgeOld()).click();
-      await $(ConfirmDateOfBirthPage.submit()).click();
+      await click(ConfirmDateOfBirthPage.submit());
       await expect(await $(SexPage.questionText()).getText()).to.equal("What is Samuel Clemens’ sex?");
     });
 
     it("When the user completes all sections, Then the Hub should be in the completed state", async () => {
       // Complete remaining sections
-      await $(HubPage.submit()).click();
+      await click(HubPage.submit());
       await $(SexPage.male()).click();
-      await $(SexPage.submit()).click();
-      await $(PersonalDetailsSummaryPage.submit()).click();
+      await click(SexPage.submit());
+      await click(PersonalDetailsSummaryPage.submit());
 
-      await $(HubPage.submit()).click();
-      await $(SexPage.submit()).click();
-      await $(PersonalDetailsSummaryPage.submit()).click();
+      await click(HubPage.submit());
+      await click(SexPage.submit());
+      await click(PersonalDetailsSummaryPage.submit());
 
-      await $(HubPage.submit()).click();
+      await click(HubPage.submit());
       await $(SexPage.female()).click();
-      await $(SexPage.submit()).click();
-      await $(PersonalDetailsSummaryPage.submit()).click();
+      await click(SexPage.submit());
+      await click(PersonalDetailsSummaryPage.submit());
 
-      await $(HubPage.submit()).click();
+      await click(HubPage.submit());
       await $(VisitorsDateOfBirthPage.day()).setValue("03");
       await $(VisitorsDateOfBirthPage.month()).setValue("09");
       await $(VisitorsDateOfBirthPage.year()).setValue("1975");
-      await $(VisitorsDateOfBirthPage.submit()).click();
+      await click(VisitorsDateOfBirthPage.submit());
 
-      await $(HubPage.submit()).click();
+      await click(HubPage.submit());
       await $(VisitorsDateOfBirthPage.day()).setValue("31");
       await $(VisitorsDateOfBirthPage.month()).setValue("07");
       await $(VisitorsDateOfBirthPage.year()).setValue("1999");
-      await $(VisitorsDateOfBirthPage.submit()).click();
+      await click(VisitorsDateOfBirthPage.submit());
 
       await expect(await $(HubPage.submit()).getText()).to.equal("Submit survey");
       await expect(await $(HubPage.heading()).getText()).to.equal("Submit survey");
@@ -263,12 +263,12 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       await $(SectionSummaryPage.visitorListAddLink()).click();
       await $(VisitorsListCollectorAddPage.firstName()).setValue("Anna");
       await $(VisitorsListCollectorAddPage.lastName()).setValue("Doe");
-      await $(VisitorsListCollectorAddPage.submit()).click();
+      await click(VisitorsListCollectorAddPage.submit());
 
       await $(VisitorsListCollectorPage.no()).click();
-      await $(VisitorsListCollectorPage.submit()).click();
+      await click(VisitorsListCollectorPage.submit());
 
-      await $(SectionSummaryPage.submit()).click();
+      await click(SectionSummaryPage.submit());
 
       // New visitor added to hub
       await expect(await $(HubPage.summaryRowState("visitors-section-3")).getText()).to.equal("Not started");
@@ -291,15 +291,15 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       await $(SectionSummaryPage.visitorListRemoveLink(3)).click();
 
       await $(VisitorsListCollectorRemovePage.yes()).click();
-      await $(VisitorsListCollectorPage.submit()).click();
-      await $(SectionSummaryPage.submit()).click();
+      await click(VisitorsListCollectorPage.submit());
+      await click(SectionSummaryPage.submit());
 
       // Ensure final householder no longer exists
       await expect(await $(HubPage.summaryRowState("visitors-section-3")).isExisting()).to.be.false;
     });
 
     it("When the user submits, it should show the thank you page", async () => {
-      await $(HubPage.submit()).click();
+      await click(HubPage.submit());
       await expect(await browser.getUrl()).to.contain("thank-you");
     });
   });

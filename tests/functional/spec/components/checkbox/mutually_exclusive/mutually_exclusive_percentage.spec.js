@@ -1,5 +1,6 @@
 import PercentagePage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-percentage.page";
 import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-percentage-section-summary.page";
+import { click } from "../../../../helpers";
 
 describe("Component: Mutually Exclusive Percentage With Single Checkbox Override", () => {
   beforeEach(async () => {
@@ -21,7 +22,7 @@ describe("Component: Mutually Exclusive Percentage With Single Checkbox Override
       await expect(await $(PercentagePage.percentageExclusiveIPreferNotToSay()).isSelected()).to.be.true;
       await expect(await $(PercentagePage.percentage()).getValue()).to.contain("");
 
-      await $(PercentagePage.submit()).click();
+      await click(PercentagePage.submit());
 
       await expect(await $(SummaryPage.percentageExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
       await expect(await $(SummaryPage.percentageExclusiveAnswer()).getText()).to.not.have.string("99");
@@ -42,7 +43,7 @@ describe("Component: Mutually Exclusive Percentage With Single Checkbox Override
       await expect(await $(PercentagePage.percentage()).getValue()).to.contain("99");
       await expect(await $(PercentagePage.percentageExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
-      await $(PercentagePage.submit()).click();
+      await click(PercentagePage.submit());
 
       await expect(await $(SummaryPage.percentageAnswer()).getText()).to.have.string("99");
       await expect(await $(SummaryPage.percentageAnswer()).getText()).to.not.have.string("I prefer not to say");
@@ -61,7 +62,7 @@ describe("Component: Mutually Exclusive Percentage With Single Checkbox Override
       await expect(await $(PercentagePage.percentage()).getValue()).to.contain("99");
       await expect(await $(PercentagePage.percentageExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
-      await $(PercentagePage.submit()).click();
+      await click(PercentagePage.submit());
 
       await expect(await $(SummaryPage.percentageAnswer()).getText()).to.have.string("99");
       await expect(await $(SummaryPage.percentageAnswer()).getText()).to.not.have.string("I prefer not to say");
@@ -78,7 +79,7 @@ describe("Component: Mutually Exclusive Percentage With Single Checkbox Override
       await expect(await $(PercentagePage.percentageExclusiveIPreferNotToSay()).isSelected()).to.be.true;
 
       // Then
-      await $(PercentagePage.submit()).click();
+      await click(PercentagePage.submit());
 
       await expect(await $(SummaryPage.percentageExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
       await expect(await $(SummaryPage.percentageExclusiveAnswer()).getText()).to.not.have.string("British\nIrish");
@@ -92,7 +93,7 @@ describe("Component: Mutually Exclusive Percentage With Single Checkbox Override
       await expect(await $(PercentagePage.percentageExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
       // When
-      await $(PercentagePage.submit()).click();
+      await click(PercentagePage.submit());
 
       // Then
       await expect(await $(SummaryPage.percentageAnswer()).getText()).to.contain("No answer provided");

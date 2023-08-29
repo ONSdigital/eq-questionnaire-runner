@@ -1,5 +1,6 @@
 import UnitPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-unit.page";
 import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-unit-section-summary.page";
+import { click } from "../../../../helpers";
 
 describe("Component: Mutually Exclusive Unit With Single Checkbox Override", () => {
   beforeEach(async () => {
@@ -21,7 +22,7 @@ describe("Component: Mutually Exclusive Unit With Single Checkbox Override", () 
       await expect(await $(UnitPage.unitExclusiveIPreferNotToSay()).isSelected()).to.be.true;
       await expect(await $(UnitPage.unit()).getValue()).to.contain("");
 
-      await $(UnitPage.submit()).click();
+      await click(UnitPage.submit());
 
       await expect(await $(SummaryPage.unitExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
       await expect(await $(SummaryPage.unitExclusiveAnswer()).getText()).to.not.have.string("10");
@@ -41,7 +42,7 @@ describe("Component: Mutually Exclusive Unit With Single Checkbox Override", () 
       await expect(await $(UnitPage.unit()).getValue()).to.contain("10");
       await expect(await $(UnitPage.unitExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
-      await $(UnitPage.submit()).click();
+      await click(UnitPage.submit());
 
       await expect(await $(SummaryPage.unitAnswer()).getText()).to.have.string("10");
       await expect(await $(SummaryPage.unitAnswer()).getText()).to.not.have.string("I prefer not to say");
@@ -60,7 +61,7 @@ describe("Component: Mutually Exclusive Unit With Single Checkbox Override", () 
       await expect(await $(UnitPage.unit()).getValue()).to.contain("10");
       await expect(await $(UnitPage.unitExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
-      await $(UnitPage.submit()).click();
+      await click(UnitPage.submit());
 
       await expect(await $(SummaryPage.unitAnswer()).getText()).to.have.string("10");
       await expect(await $(SummaryPage.unitAnswer()).getText()).to.not.have.string("I prefer not to say");
@@ -77,7 +78,7 @@ describe("Component: Mutually Exclusive Unit With Single Checkbox Override", () 
       await expect(await $(UnitPage.unitExclusiveIPreferNotToSay()).isSelected()).to.be.true;
 
       // Then
-      await $(UnitPage.submit()).click();
+      await click(UnitPage.submit());
 
       await expect(await $(SummaryPage.unitExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
       await expect(await $(SummaryPage.unitExclusiveAnswer()).getText()).to.not.have.string("10");
@@ -91,7 +92,7 @@ describe("Component: Mutually Exclusive Unit With Single Checkbox Override", () 
       await expect(await $(UnitPage.unitExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
       // When
-      await $(UnitPage.submit()).click();
+      await click(UnitPage.submit());
 
       // Then
       await expect(await $(SummaryPage.unitAnswer()).getText()).to.contain("No answer provided");

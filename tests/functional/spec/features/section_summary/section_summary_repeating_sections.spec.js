@@ -6,6 +6,7 @@ import PersonalSummaryPage from "../../../generated_pages/repeating_section_summ
 import ProxyPage from "../../../generated_pages/repeating_section_summaries/proxy.page";
 import DateOfBirthPage from "../../../generated_pages/repeating_section_summaries/date-of-birth.page";
 import HubPage from "../../../base_pages/hub.page.js";
+import { click } from "../../../helpers";
 
 describe("Feature: Repeating Section Summaries", () => {
   describe("Given the user has added some members to the household and is on the Hub", () => {
@@ -20,33 +21,33 @@ describe("Feature: Repeating Section Summaries", () => {
 
       // Add a primary person
       await $(PrimaryPersonPage.yes()).click();
-      await $(PrimaryPersonPage.submit()).click();
+      await click(PrimaryPersonPage.submit());
       await $(PrimaryPersonAddPage.firstName()).setValue("Mark");
       await $(PrimaryPersonAddPage.lastName()).setValue("Twain");
-      await $(PrimaryPersonPage.submit()).click();
+      await click(PrimaryPersonPage.submit());
 
       // Add other household members
 
       await $(FirstListCollectorPage.yes()).click();
-      await $(FirstListCollectorPage.submit()).click();
+      await click(FirstListCollectorPage.submit());
       await $(FirstListCollectorAddPage.firstName()).setValue("Jean");
       await $(FirstListCollectorAddPage.lastName()).setValue("Clemens");
-      await $(FirstListCollectorAddPage.submit()).click();
+      await click(FirstListCollectorAddPage.submit());
 
       await $(FirstListCollectorPage.no()).click();
-      await $(FirstListCollectorPage.submit()).click();
+      await click(FirstListCollectorPage.submit());
     });
 
     describe("When the user finishes a repeating section", () => {
       before("Enter information for a repeating section", async () => {
         await $(HubPage.summaryRowLink("personal-details-section-1")).click();
         await $(ProxyPage.yes()).click();
-        await $(ProxyPage.submit()).click();
+        await click(ProxyPage.submit());
 
         await $(DateOfBirthPage.day()).setValue("30");
         await $(DateOfBirthPage.month()).setValue("11");
         await $(DateOfBirthPage.year()).setValue("1835");
-        await $(DateOfBirthPage.submit()).click();
+        await click(DateOfBirthPage.submit());
       });
 
       beforeEach("Navigate to the Section Summary", async () => {

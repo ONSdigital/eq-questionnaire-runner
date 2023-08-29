@@ -1,5 +1,6 @@
 import CheckboxBlockPage from "../generated_pages/radio_checkbox_descriptions/checkbox-block.page";
 import RadioBlockPage from "../generated_pages/radio_checkbox_descriptions/radio-block.page";
+import { click } from "../helpers";
 
 describe("Checkbox and Radio item descriptions", () => {
   describe("Given the user is presented with radio or checkbox options", () => {
@@ -15,7 +16,7 @@ describe("Checkbox and Radio item descriptions", () => {
 
     it("When the schema defines a description for a radio option, then that description is displayed", async () => {
       await $(CheckboxBlockPage.newBusinessPracticesForOrganisingProcedures()).click();
-      await $(CheckboxBlockPage.submit()).click();
+      await click(CheckboxBlockPage.submit());
       await expect(
         await $(RadioBlockPage.newMethodsOfOrganisingExternalRelationshipsWithOtherFirmsOrPublicInstitutionsLabelDescription()).getText(),
       ).to.contain("For example first use of alliances, partnerships, outsourcing or sub-contracting");
