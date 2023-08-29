@@ -1,5 +1,6 @@
 import MandatoryCheckboxPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-checkbox.page";
 import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-checkbox-section-summary.page";
+import { click } from "../../../../helpers";
 
 describe("Component: Mutually Exclusive Checkbox With Single Checkbox Override", () => {
   beforeEach(async () => {
@@ -29,7 +30,7 @@ describe("Component: Mutually Exclusive Checkbox With Single Checkbox Override",
       await expect(await $(MandatoryCheckboxPage.checkboxOther()).isSelected()).to.be.false;
       await expect(await $(MandatoryCheckboxPage.checkboxOtherDetail()).getValue()).to.contain("");
 
-      await $(MandatoryCheckboxPage.submit()).click();
+      await click(MandatoryCheckboxPage.submit());
 
       await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
       await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).to.not.have.string("British\nIrish");
@@ -40,7 +41,7 @@ describe("Component: Mutually Exclusive Checkbox With Single Checkbox Override",
     it("When the user returns to the question, Then the mutually exclusive other option should remain checked.", async () => {
       // Given
       await $(MandatoryCheckboxPage.checkboxExclusiveIPreferNotToSay()).click();
-      await $(MandatoryCheckboxPage.submit()).click();
+      await click(MandatoryCheckboxPage.submit());
 
       // When
       await $(SummaryPage.previous()).click();
@@ -65,7 +66,7 @@ describe("Component: Mutually Exclusive Checkbox With Single Checkbox Override",
       await expect(await $(MandatoryCheckboxPage.checkboxBritish()).isSelected()).to.be.true;
       await expect(await $(MandatoryCheckboxPage.checkboxIrish()).isSelected()).to.be.true;
 
-      await $(MandatoryCheckboxPage.submit()).click();
+      await click(MandatoryCheckboxPage.submit());
 
       await expect(await $(SummaryPage.checkboxAnswer()).getText()).to.have.string("British\nIrish");
       await expect(await $(SummaryPage.checkboxAnswer()).getText()).to.not.have.string("I prefer not to say");
@@ -85,7 +86,7 @@ describe("Component: Mutually Exclusive Checkbox With Single Checkbox Override",
       await expect(await $(MandatoryCheckboxPage.checkboxBritish()).isSelected()).to.be.true;
       await expect(await $(MandatoryCheckboxPage.checkboxIrish()).isSelected()).to.be.true;
 
-      await $(MandatoryCheckboxPage.submit()).click();
+      await click(MandatoryCheckboxPage.submit());
 
       await expect(await $(SummaryPage.checkboxAnswer()).getText()).to.have.string("British\nIrish");
       await expect(await $(SummaryPage.checkboxAnswer()).getText()).to.not.have.string("I prefer not to say");
@@ -102,7 +103,7 @@ describe("Component: Mutually Exclusive Checkbox With Single Checkbox Override",
       // When
       await $(MandatoryCheckboxPage.checkboxExclusiveIPreferNotToSay()).click();
       await expect(await $(MandatoryCheckboxPage.checkboxExclusiveIPreferNotToSay()).isSelected()).to.be.true;
-      await $(MandatoryCheckboxPage.submit()).click();
+      await click(MandatoryCheckboxPage.submit());
 
       // Then
       await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
@@ -119,7 +120,7 @@ describe("Component: Mutually Exclusive Checkbox With Single Checkbox Override",
       await expect(await $(MandatoryCheckboxPage.checkboxExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
       // When
-      await $(MandatoryCheckboxPage.submit()).click();
+      await click(MandatoryCheckboxPage.submit());
 
       // Then
       await expect(await $(MandatoryCheckboxPage.errorHeader()).getText()).to.contain("There is a problem with your answer");

@@ -6,6 +6,7 @@ import ListCollectorEditPage from "../generated_pages/custom_page_titles/list-co
 import ListCollectorPage from "../generated_pages/custom_page_titles/list-collector.page.js";
 import ProxyPage from "../generated_pages/custom_page_titles/proxy.page.js";
 import RelationshipsPage from "../generated_pages/custom_page_titles/relationships.page.js";
+import { click } from "../helpers";
 
 describe("Feature: Custom Page Titles", () => {
   const schema = "test_custom_page_titles.json";
@@ -16,22 +17,22 @@ describe("Feature: Custom Page Titles", () => {
     });
 
     it("When I navigate to the list collector page, Then I should see the custom page title", async () => {
-      await $(HubPage.submit()).click();
+      await click(HubPage.submit());
       const expectedPageTitle = await browser.getTitle();
       await expect(expectedPageTitle).to.equal("Custom page title - Test Custom Page Titles");
     });
 
     it("When I navigate to the add person page, Then I should see the custom page title", async () => {
       await $(ListCollectorPage.yes()).click();
-      await $(ListCollectorPage.submit()).click();
+      await click(ListCollectorPage.submit());
       let expectedPageTitle = await browser.getTitle();
       await expect(expectedPageTitle).to.equal("Add person 1 - Test Custom Page Titles");
 
       await $(ListCollectorAddPage.firstName()).setValue("Marcus");
       await $(ListCollectorAddPage.lastName()).setValue("Twin");
-      await $(ListCollectorAddPage.submit()).click();
+      await click(ListCollectorAddPage.submit());
       await $(ListCollectorPage.yes()).click();
-      await $(ListCollectorPage.submit()).click();
+      await click(ListCollectorPage.submit());
       expectedPageTitle = await browser.getTitle();
       await expect(expectedPageTitle).to.equal("Add person 2 - Test Custom Page Titles");
     });
@@ -39,29 +40,29 @@ describe("Feature: Custom Page Titles", () => {
     it("When I navigate to relationship collector pages, Then I should see the custom page titles", async () => {
       await $(ListCollectorAddPage.firstName()).setValue("Samuel");
       await $(ListCollectorAddPage.lastName()).setValue("Clemens");
-      await $(ListCollectorAddPage.submit()).click();
+      await click(ListCollectorAddPage.submit());
       await $(ListCollectorPage.yes()).click();
-      await $(ListCollectorPage.submit()).click();
+      await click(ListCollectorPage.submit());
       await $(ListCollectorAddPage.firstName()).setValue("Olivia");
       await $(ListCollectorAddPage.lastName()).setValue("Clemens");
-      await $(ListCollectorAddPage.submit()).click();
+      await click(ListCollectorAddPage.submit());
       await $(ListCollectorPage.no()).click();
-      await $(ListCollectorPage.submit()).click();
+      await click(ListCollectorPage.submit());
       let expectedPageTitle = await browser.getTitle();
       await expect(await expectedPageTitle).to.equal("How Person 1 is related to Person 2 - Test Custom Page Titles");
 
       await $(RelationshipsPage.husbandOrWife()).click();
-      await $(RelationshipsPage.submit()).click();
+      await click(RelationshipsPage.submit());
       expectedPageTitle = browser.getTitle();
       await expect(await expectedPageTitle).to.equal("How Person 1 is related to Person 3 - Test Custom Page Titles");
 
       await $(RelationshipsPage.sonOrDaughter()).click();
-      await $(RelationshipsPage.submit()).click();
+      await click(RelationshipsPage.submit());
       expectedPageTitle = await browser.getTitle();
       await expect(await expectedPageTitle).to.equal("How Person 2 is related to Person 3 - Test Custom Page Titles");
 
       await $(RelationshipsPage.sonOrDaughter()).click();
-      await $(RelationshipsPage.submit()).click();
+      await click(RelationshipsPage.submit());
       expectedPageTitle = await browser.getTitle();
       await expect(await expectedPageTitle).to.equal("Custom section summary page title - Test Custom Page Titles");
     });
@@ -78,13 +79,13 @@ describe("Feature: Custom Page Titles", () => {
 
     it("When I navigate to a repeating section which has custom page title, Then all page titles in the section should have the correct prefix", async () => {
       await browser.url(HubPage.url());
-      await $(HubPage.submit()).click();
+      await click(HubPage.submit());
       await expect(await browser.getTitle()).to.equal("Individual interstitial: Person 1 - Test Custom Page Titles");
-      await $(IndividualInterstitialPage.submit()).click();
+      await click(IndividualInterstitialPage.submit());
       await expect(await browser.getTitle()).to.equal("Proxy question: Person 1 - Test Custom Page Titles");
-      await $(ProxyPage.submit()).click();
+      await click(ProxyPage.submit());
       await expect(await browser.getTitle()).to.equal("What is your date of birth?: Person 1 - Test Custom Page Titles");
-      await $(DateOfBirthPage.submit()).click();
+      await click(DateOfBirthPage.submit());
       await expect(await browser.getTitle()).to.equal("Summary: Person 1 - Test Custom Page Titles");
     });
   });

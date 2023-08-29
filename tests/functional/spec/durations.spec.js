@@ -1,5 +1,6 @@
 import DurationPage from "../generated_pages/durations/duration-block.page.js";
 import SubmitPage from "../generated_pages/durations/submit.page.js";
+import { click } from "../helpers";
 
 describe("Durations", () => {
   beforeEach("Load the survey", async () => {
@@ -20,11 +21,11 @@ describe("Durations", () => {
     await $(DurationPage.mandatoryYearMonthMonths()).setValue(2);
     await $(DurationPage.mandatoryYearYears()).setValue(1);
     await $(DurationPage.mandatoryMonthMonths()).setValue(1);
-    await $(DurationPage.submit()).click();
+    await click(DurationPage.submit());
 
     await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     await expect(await $(SubmitPage.yearMonthAnswer()).getText()).to.equal("1 year 2 months");
-    await $(SubmitPage.submit()).click();
+    await click(SubmitPage.submit());
   });
 
   it("Given the test_durations survey is selected when one of the units is 0 it is excluded from the summary", async () => {
@@ -34,11 +35,11 @@ describe("Durations", () => {
     await $(DurationPage.mandatoryYearMonthMonths()).setValue(2);
     await $(DurationPage.mandatoryYearYears()).setValue(1);
     await $(DurationPage.mandatoryMonthMonths()).setValue(1);
-    await $(DurationPage.submit()).click();
+    await click(DurationPage.submit());
 
     await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     await expect(await $(SubmitPage.yearMonthAnswer()).getText()).to.equal("2 months");
-    await $(SubmitPage.submit()).click();
+    await click(SubmitPage.submit());
   });
 
   it("Given the test_durations survey is selected when no duration is entered the summary shows no answer provided", async () => {
@@ -46,11 +47,11 @@ describe("Durations", () => {
     await $(DurationPage.mandatoryYearMonthMonths()).setValue(2);
     await $(DurationPage.mandatoryYearYears()).setValue(1);
     await $(DurationPage.mandatoryMonthMonths()).setValue(1);
-    await $(DurationPage.submit()).click();
+    await click(DurationPage.submit());
 
     await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     await expect(await $(SubmitPage.yearMonthAnswer()).getText()).to.equal("No answer provided");
-    await $(SubmitPage.submit()).click();
+    await click(SubmitPage.submit());
   });
 
   it("Given the test_durations survey is selected when one of the units is missing an error is shown", async () => {
@@ -58,7 +59,7 @@ describe("Durations", () => {
     await $(DurationPage.mandatoryYearMonthMonths()).setValue(2);
     await $(DurationPage.mandatoryYearYears()).setValue(1);
     await $(DurationPage.mandatoryMonthMonths()).setValue(1);
-    await $(DurationPage.submit()).click();
+    await click(DurationPage.submit());
 
     await expect(await $(DurationPage.errorNumber(1)).getText()).to.contain("Enter a valid duration");
     await expect(await $(DurationPage.errorNumber(2)).getText()).to.contain("Enter a valid duration");
@@ -71,7 +72,7 @@ describe("Durations", () => {
     await $(DurationPage.mandatoryYearMonthMonths()).setValue(2);
     await $(DurationPage.mandatoryYearYears()).setValue(1);
     await $(DurationPage.mandatoryMonthMonths()).setValue(1);
-    await $(DurationPage.submit()).click();
+    await click(DurationPage.submit());
 
     await expect(await $(DurationPage.errorNumber(1)).getText()).to.contain("Enter a valid duration");
     await expect(await $(DurationPage.errorNumber(2)).getText()).to.contain("Enter a valid duration");
@@ -84,7 +85,7 @@ describe("Durations", () => {
     await $(DurationPage.mandatoryYearMonthMonths()).setValue(12);
     await $(DurationPage.mandatoryYearYears()).setValue(1);
     await $(DurationPage.mandatoryMonthMonths()).setValue(1);
-    await $(DurationPage.submit()).click();
+    await click(DurationPage.submit());
 
     await expect(await $(DurationPage.errorNumber(1)).getText()).to.contain("Enter a valid duration");
     await expect(await $(DurationPage.errorNumber(2)).getText()).to.contain("Enter a valid duration");
@@ -93,7 +94,7 @@ describe("Durations", () => {
   it("Given the test_durations survey is selected when the mandatory duration is missing an error is shown", async () => {
     await $(DurationPage.mandatoryYearYears()).setValue(1);
     await $(DurationPage.mandatoryMonthMonths()).setValue(1);
-    await $(DurationPage.submit()).click();
+    await click(DurationPage.submit());
 
     await expect(await $(DurationPage.errorNumber(1)).getText()).to.contain("Enter a duration");
   });
