@@ -3,7 +3,7 @@ from collections import defaultdict
 from copy import deepcopy
 from dataclasses import dataclass
 from functools import cached_property
-from typing import Any, Generator, Iterable, Mapping, Sequence, TypeAlias
+from typing import Any, Generator, Iterable, Literal, Mapping, Sequence, TypeAlias
 
 from flask_babel import force_locale
 from ordered_set import OrderedSet
@@ -13,6 +13,7 @@ from app.data_models.answer import Answer
 from app.forms import error_messages
 from app.questionnaire.rules.operator import OPERATION_MAPPING
 from app.questionnaire.schema_utils import get_answers_from_question
+from app.settings import MAX_NUMBER
 from app.utilities.make_immutable import make_immutable
 from app.utilities.mappings import get_flattened_mapping_values, get_mappings_with_key
 
@@ -33,6 +34,14 @@ QuestionSchemaType = Mapping
 DependencyDictType: TypeAlias = dict[str, OrderedSet[str]]
 
 TRANSFORMS_REQUIRING_ROUTING_PATH = {"first_non_empty_item"}
+
+NUMERIC_ANSWER_TYPES = {
+    "Currency",
+    "Duration",
+    "Number",
+    "Percentage",
+    "Unit",
+}
 
 
 class InvalidSchemaConfigurationException(Exception):
@@ -90,6 +99,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         ] = defaultdict(lambda: defaultdict(set))
         self._language_code = language_code
         self._questionnaire_json = questionnaire_json
+        self._min_and_max_map: dict[str, dict[str, int]] = defaultdict(
+            lambda: defaultdict(int)
+        )
         self._list_names_by_list_repeating_block_id: dict[str, str] = {}
         self._repeating_block_answer_ids: set[str] = set()
         self.dynamic_answers_parent_block_ids: set[str] = set()
@@ -107,6 +119,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._populate_answer_dependencies()
         self._populate_when_rules_section_dependencies()
         self._populate_calculated_summary_section_dependencies()
+        self._populate_min_max_for_numeric_answers()
         self._populate_placeholder_transform_section_dependencies()
 
     @property
@@ -118,6 +131,47 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     @cached_property
     def answer_dependencies(self) -> ImmutableDict[str, set[AnswerDependent]]:
         return ImmutableDict(self._answer_dependencies_map)
+
+    @cached_property
+    # Type ignore: safe to assume _min_and_max_map return type
+    def min_and_max_map(self) -> ImmutableDict[str, ImmutableDict[str, int]]:
+        return make_immutable(self._min_and_max_map)  # type: ignore
+
+    def _create_min_max_map(
+        self,
+        min_max: Literal["minimum", "maximum"],
+        answer_id: str,
+        answers: Iterable[ImmutableDict],
+        default_min_max: int,
+    ) -> None:
+        longest_value_length = 0
+        for answer in answers:
+            value = answer.get(min_max, {}).get("value")
+
+            if isinstance(value, float | int):
+                value_length = len(str(value))
+
+                longest_value_length = max(longest_value_length, value_length)
+
+            elif isinstance(value, Mapping) and value:
+                if value.get("source") == "answers":
+                    longest_value_length = max(
+                        longest_value_length,
+                        self._min_and_max_map[value["identifier"]][min_max],
+                    )
+
+        self._min_and_max_map[answer_id][min_max] = (
+            longest_value_length or default_min_max
+        )
+
+    def _populate_min_max_for_numeric_answers(self) -> None:
+        for answer_id, answers in self._answers_by_id.items():
+            # validator ensures all answers will be of the same type so its sufficient to only check the first
+            if answers[0]["type"] in NUMERIC_ANSWER_TYPES:
+                self._create_min_max_map("minimum", answer_id, answers, 1)
+                self._create_min_max_map(
+                    "maximum", answer_id, answers, len(str(MAX_NUMBER))
+                )
 
     @cached_property
     def when_rules_section_dependencies_by_section(

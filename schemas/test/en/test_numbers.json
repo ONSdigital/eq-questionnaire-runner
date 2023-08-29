@@ -319,7 +319,7 @@
                                                     "maximum": {
                                                         "value": {
                                                             "source": "answers",
-                                                            "identifier": "set-maximum"
+                                                            "identifier": "test-range"
                                                         }
                                                     }
                                                 }
@@ -340,7 +340,7 @@
                                                     "arguments": {
                                                         "number": {
                                                             "source": "answers",
-                                                            "identifier": "set-maximum"
+                                                            "identifier": "test-range"
                                                         }
                                                     }
                                                 }
@@ -353,6 +353,193 @@
                         }
                     ],
                     "id": "test"
+                }
+            ]
+        },
+        {
+            "id": "currency-section",
+            "summary": { "show_on_completion": true },
+            "groups": [
+                {
+                    "id": "currency-group",
+                    "title": "Section Summary With Variants",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "currency-block",
+                            "question": {
+                                "id": "currency-question",
+                                "type": "General",
+                                "title": "What currency would you like",
+                                "answers": [
+                                    {
+                                        "id": "currency-answer",
+                                        "type": "Radio",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "US Dollars",
+                                                "value": "US Dollars"
+                                            },
+                                            {
+                                                "label": "Sterling",
+                                                "value": "Sterling"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "first-number-block",
+                            "question_variants": [
+                                {
+                                    "question": {
+                                        "id": "first-number-question",
+                                        "title": "First Number Question Title",
+                                        "type": "General",
+                                        "answers": [
+                                            {
+                                                "id": "first-number-answer",
+                                                "label": "First answer in GBP",
+                                                "mandatory": true,
+                                                "type": "Currency",
+                                                "currency": "GBP",
+                                                "decimal_places": 2,
+                                                "maximum": {
+                                                    "value": 1000
+                                                },
+                                                "minimum": {
+                                                    "value": 1
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "currency-answer"
+                                            },
+                                            "Sterling"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "question": {
+                                        "id": "first-number-question",
+                                        "title": "First Number Question Title",
+                                        "type": "General",
+                                        "answers": [
+                                            {
+                                                "id": "first-number-answer",
+                                                "label": "First answer in USD",
+                                                "mandatory": true,
+                                                "type": "Currency",
+                                                "currency": "USD",
+                                                "decimal_places": 2,
+                                                "maximum": {
+                                                    "value": 100
+                                                },
+                                                "minimum": {
+                                                    "value": 10
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "currency-answer"
+                                            },
+                                            "US Dollars"
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Question",
+                            "id": "second-number-block",
+                            "question_variants": [
+                                {
+                                    "question": {
+                                        "id": "second-number-question",
+                                        "title": "Second Number Question Title",
+                                        "type": "General",
+                                        "answers": [
+                                            {
+                                                "id": "second-number-answer",
+                                                "label": "Second answer in GBP",
+                                                "mandatory": true,
+                                                "type": "Currency",
+                                                "currency": "GBP",
+                                                "decimal_places": 2,
+                                                "maximum": {
+                                                    "value": {
+                                                        "source": "answers",
+                                                        "identifier": "first-number-answer"
+                                                    }
+                                                },
+                                                "minimum": {
+                                                    "value": {
+                                                        "source": "answers",
+                                                        "identifier": "first-number-answer"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "currency-answer"
+                                            },
+                                            "Sterling"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "question": {
+                                        "id": "second-number-question",
+                                        "title": "Second Number Question Title",
+                                        "type": "General",
+                                        "answers": [
+                                            {
+                                                "id": "second-number-answer",
+                                                "label": "Second answer in USD",
+                                                "mandatory": true,
+                                                "type": "Currency",
+                                                "currency": "USD",
+                                                "decimal_places": 2,
+                                                "maximum": {
+                                                    "value": {
+                                                        "source": "answers",
+                                                        "identifier": "set-maximum"
+                                                    }
+                                                },
+                                                "minimum": {
+                                                    "value": 100
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "currency-answer"
+                                            },
+                                            "US Dollars"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
         }

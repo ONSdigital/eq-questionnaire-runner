@@ -4,6 +4,8 @@ from decimal import Decimal
 
 import pytest
 import simplejson as json
+from flask import g
+from jinja2 import Undefined
 from mock import Mock
 
 from app.jinja_filters import (
@@ -24,6 +26,8 @@ from app.jinja_filters import (
     should_wrap_with_fieldset,
     strip_tags,
 )
+from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.utilities.schema import load_schema_from_name
 
 TEST_FORMAT_CURRENCY_PARAMS = (
     "value, currency, decimal_limit, formatted_currency",
@@ -325,7 +329,7 @@ def test_format_duration(duration, formatted_duration, app):
         ({"maximum": {"value": 123456}}, 6),
         ({"maximum": {"value": 12345678901}}, 15),
         ({"minimum": {"value": -123456}, "maximum": {"value": 1234}}, 7),
-        ({"decimal_places": 2, "maximum": {"value": 123456}}, 8),
+        ({"decimal_places": 6, "maximum": {"value": 123456}}, 15),
         ({"maximum": {"value": 999_999_999_999_999}}, 15),
         ({"decimal_places": 5, "maximum": {"value": 999_999_999_999_999}}, 20),
         ({"decimal_places": 6, "maximum": {"value": 999_999_999_999_999}}, 30),
@@ -338,8 +342,38 @@ def test_format_duration(duration, formatted_duration, app):
         ),
     ),
 )
-def test_get_width_for_number(answer, width):
-    assert get_width_for_number(answer) == width
+def test_get_width_for_number(answer, width, app):
+    with app.app_context():
+        schema = QuestionnaireSchema({})
+        g.schema = schema
+        assert get_width_for_number(answer) == width
+
+
+@pytest.mark.parametrize(
+    "answer, width",
+    (
+        ("set-minimum", 7),
+        ("set-maximum", 7),
+        ("test-range", 7),
+        ("test-range-exclusive", 7),
+        ("test-min", 15),
+        ("test-max", 4),
+        ("test-min-exclusive", 15),
+        ("test-max-exclusive", 4),
+        ("test-percent", 3),
+        ("test-decimal", 7),
+        ("other-answer", 5),
+        ("first-number-answer", 6),
+        ("second-number-answer", 6),
+        ("detail-answer", 15),
+    ),
+)
+def test_get_width_for_number_recursive(answer, width, app):
+    with app.test_request_context():
+        schema = load_schema_from_name("test_numbers")
+        g.schema = schema
+        answer_to_test = schema.get_answers_by_answer_id(answer)[0]
+        assert get_width_for_number(answer_to_test) == width
 
 
 @pytest.mark.parametrize(
@@ -388,6 +422,34 @@ def test_get_width_for_number(answer, width):
                 "answers": [{"type": "TextField"}, {"type": "TextField"}],
             },
             True,
+        ),
+        (
+            {
+                "type": "General",
+                "answers": [
+                    {
+                        "type": "Currency",
+                        "minimum": {
+                            "value": {"identifier": "set-minimum", "source": "answers"}
+                        },
+                    }
+                ],
+            },
+            False,
+        ),
+        (
+            {
+                "type": "General",
+                "answers": [
+                    {
+                        "type": "Currency",
+                        "maximum": {
+                            "value": {"identifier": "set-maximum", "source": "answers"}
+                        },
+                    }
+                ],
+            },
+            False,
         ),
     ),
 )

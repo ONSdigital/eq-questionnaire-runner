@@ -7,13 +7,16 @@ from typing import Any, Callable, Literal, Mapping, Optional, TypeAlias, Union
 
 import flask
 import flask_babel
-from babel import numbers
-from flask import current_app
+from babel import numbers, units
+from flask import current_app, g
 from jinja2 import nodes, pass_eval_context
 from markupsafe import Markup, escape
 from wtforms import SelectFieldBase
 
-from app.questionnaire.questionnaire_schema import is_summary_with_calculation
+from app.questionnaire.questionnaire_schema import (
+    QuestionnaireSchema,
+    is_summary_with_calculation,
+)
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import MAX_NUMBER
 from app.utilities.decimal_places import (
@@ -255,17 +258,34 @@ def should_wrap_with_fieldset_processor() -> dict[str, Callable]:
     return {"should_wrap_with_fieldset": should_wrap_with_fieldset}
 
 
+def get_min_max_value_width(
+    min_max: Literal["minimum", "maximum"], answer: AnswerType, default_value: int
+) -> int:
+    """
+    This function gets the minimum and maximum value accepted for a question.
+    Which then allows us to use that value to set the width of the textbox to suit that min and max.
+    """
+
+    if (
+        answer.get(min_max, {})
+        and isinstance(answer[min_max]["value"], Mapping)
+        and answer[min_max]["value"].get("source") == "answers"
+    ):
+        schema: QuestionnaireSchema = g.get("schema")
+        identifier = answer[min_max]["value"].get("identifier")
+        return schema.min_and_max_map[identifier][min_max]
+
+    return len(str(answer.get(min_max, {}).get("value", default_value)))
+
+
 @blueprint.app_template_filter()
 def get_width_for_number(answer: AnswerType) -> Optional[int]:
     allowable_widths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30, 40, 50]
 
-    min_value = answer.get("minimum", {}).get("value", 0)
-    max_value = answer.get("maximum", {}).get("value", MAX_NUMBER)
+    min_value_width = get_min_max_value_width("minimum", answer, 0)
+    max_value_width = get_min_max_value_width("maximum", answer, MAX_NUMBER)
 
-    min_value_width = len(str(min_value))
-    max_value_width = len(str(max_value))
-
-    width = min_value_width if min_value_width > max_value_width else max_value_width
+    width = max(min_value_width, max_value_width)
 
     width += answer.get("decimal_places", 0)
 
