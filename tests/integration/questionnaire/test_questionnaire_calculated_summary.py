@@ -66,6 +66,17 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
             "We calculate the total of currency values entered to be £80.00"
         )
 
+    def test_calculated_summary_total_playback(self):
+        self.launchSurvey("test_new_calculated_summary")
+        self._complete_calculated_summary_path_with_skip()
+        self.post()
+        self.post()
+        self.post()
+        self.post()
+        self.assertInBody(
+            "Total currency values: <em>£80.00</em>"
+        )
+
     def test_new_calculated_summary_no_skip(self):
         self.launchSurvey("test_new_calculated_summary")
         self._complete_calculated_summary_path_no_skip()

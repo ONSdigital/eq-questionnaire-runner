@@ -22,7 +22,10 @@ from app.questionnaire.dependencies import (
     get_routing_path_block_ids_by_section_for_dependent_sections,
 )
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
-from app.questionnaire.questionnaire_schema import TRANSFORMS_REQUIRING_ROUTING_PATH
+from app.questionnaire.questionnaire_schema import (
+    TRANSFORMS_REQUIRING_ROUTING_PATH,
+    get_calculated_summary_answer_ids,
+)
 from app.questionnaire.value_source_resolver import (
     ValueSourceEscapedTypes,
     ValueSourceResolver,
@@ -183,6 +186,15 @@ class PlaceholderParser:
                 ):
                     transform_args["decimal_limit"] = self._schema.get_decimal_limit(
                         [arg_value["identifier"]]
+                    )
+
+                if (
+                    transform["transform"] == "format_currency"
+                    and arg_value.get("source") == "calculated_summary"
+                ):
+                    answer_ids = get_calculated_summary_answer_ids(self._schema.get_block(arg_value["identifier"]))  # type: ignore
+                    transform_args["decimal_limit"] = self._schema.get_decimal_limit(
+                        answer_ids
                     )
 
             transformed_value = getattr(self._transformer, transform["transform"])(
