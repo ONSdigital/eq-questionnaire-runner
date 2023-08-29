@@ -46,8 +46,6 @@ describe("Section Summary", () => {
       await $(PropertyDetailsSummaryPage.insuranceTypeAnswerEdit()).click();
       await $(InsuranceTypePage.contents()).click();
       await $(InsuranceTypePage.submit()).click();
-      await expect(await browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
-      await $(InsuranceAddressPage.submit()).click();
       await expect(await browser.getUrl()).to.contain(AddressDurationPage.pageName);
       await $(AddressDurationPage.submit()).click();
       await expect(await browser.getUrl()).to.contain(PropertyDetailsSummaryPage.pageName);
@@ -57,8 +55,6 @@ describe("Section Summary", () => {
       await $(PropertyDetailsSummaryPage.insuranceTypeAnswerEdit()).click();
       await $(InsuranceTypePage.contents()).click();
       await $(InsuranceTypePage.submit()).click();
-      await expect(await browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
-      await $(InsuranceAddressPage.submit()).click();
       await expect(await browser.getUrl()).to.contain(AddressDurationPage.pageName);
       await $(AddressDurationPage.previous()).click();
       await expect(await browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
@@ -104,8 +100,6 @@ describe("Section Summary", () => {
       await $(SubmitPage.insuranceTypeAnswerEdit()).click();
       await $(InsuranceTypePage.contents()).click();
       await $(InsuranceTypePage.submit()).click();
-      await expect(await browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
-      await $(InsuranceAddressPage.submit()).click();
       await expect(await browser.getUrl()).to.contain(AddressDurationPage.pageName);
       await $(AddressDurationPage.submit()).click();
       await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
@@ -116,8 +110,6 @@ describe("Section Summary", () => {
       await $(SubmitPage.insuranceTypeAnswerEdit()).click();
       await $(InsuranceTypePage.contents()).click();
       await $(InsuranceTypePage.submit()).click();
-      await expect(await browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
-      await $(InsuranceAddressPage.submit()).click();
       await expect(await browser.getUrl()).to.contain(AddressDurationPage.pageName);
       await $(AddressDurationPage.previous()).click();
       await expect(await browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
@@ -125,14 +117,13 @@ describe("Section Summary", () => {
       await $(AddressDurationPage.submit()).click();
       await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
-
-    it("When I select edit from Final Summary and change an answer and then go to the next question and click previous, Then I should return to the question I originally edited", async () => {
+    it("When I select edit from Final Summary and change an answer and then go to the next question and click previous, Since I cannot return to the section summary yet I return to the previous block in the section", async () => {
       await $(SubmitPage.summaryShowAllButton()).click();
       await $(SubmitPage.insuranceTypeAnswerEdit()).click();
       await $(InsuranceTypePage.contents()).click();
       await $(InsuranceTypePage.submit()).click();
-      await $(InsuranceAddressPage.previous()).click();
-      await expect(await browser.getUrl()).to.contain(InsuranceTypePage.pageName);
+      await $(AddressDurationPage.previous()).click();
+      await expect(await browser.getUrl()).to.contain(InsuranceAddressPage.pageName);
     });
 
     it("When I change an answer, Then the final summary should display the updated value", async () => {

@@ -63,7 +63,7 @@ describe("Feature: Grand Calculated Summary", () => {
       await $(HubPage.submit()).click();
     });
 
-    it("Given I click on the change link for a calculated summary then press continue, I am taken back to the grand calculated summary", async () => {
+    it("Given I click on the change link for a calculated summary, When I press continue, Then I am taken back to the grand calculated summary", async () => {
       await expect(await $(GrandCalculatedSummary2Page.grandCalculatedSummaryTitle()).getText()).to.contain(
         "Grand Calculated Summary for shopping and entertainment is calculated to be £415.00. Is this correct?",
       );
@@ -71,6 +71,18 @@ describe("Feature: Grand Calculated Summary", () => {
       await expect(await browser.getUrl()).to.contain(CalculatedSummary1Page.pageName);
 
       await $(CalculatedSummary1Page.submit()).click();
+      await expect(await browser.getUrl()).to.contain(GrandCalculatedSummary2Page.pageName);
+    });
+
+    it("Given I click on the change link for a calculated summary then one for an answer, When I press previous twice, I am return to the calculated summary then grand calculated summary", async () => {
+      await $(GrandCalculatedSummary2Page.calculatedSummary1Edit()).click();
+      await $(CalculatedSummary1Page.q1A1Edit()).click();
+      await expect(await browser.getUrl()).to.contain(Block1Page.pageName);
+
+      await $(Block1Page.previous()).click();
+      await expect(await browser.getUrl()).to.contain(CalculatedSummary1Page.pageName);
+
+      await $(CalculatedSummary1Page.previous()).click();
       await expect(await browser.getUrl()).to.contain(GrandCalculatedSummary2Page.pageName);
     });
 

@@ -205,11 +205,47 @@ describe("List Collector Repeating Blocks", function () {
       checkListItemComplete(`dt[data-qa="list-item-4-label"]`);
     });
 
-    it("The list collector can now be submitted.", async () => {
+    it("Clicking a change link from the section summary and pressing previous or submit without changing an answer returns the user to the section summary anchored to the answer they clicked on", async () => {
       await $(AnyOtherCompaniesOrBranchesPage.no()).click();
       await $(AnyOtherCompaniesOrBranchesPage.submit()).click();
       await $(AnyOtherTradingDetailsPage.submit()).click();
+
+      await $(SectionCompaniesPage.anyOtherTradingDetailsAnswerEdit()).click();
+      await $(AnyOtherTradingDetailsPage.submit()).click();
+      await expect(await browser.getUrl()).to.contain("section-companies/#any-other-trading-details-answer");
+
+      await $(SectionCompaniesPage.anyOtherTradingDetailsAnswerEdit()).click();
+      await $(AnyOtherTradingDetailsPage.previous()).click();
+      await expect(await browser.getUrl()).to.contain("section-companies/#any-other-trading-details-answer");
+    });
+
+    it("Editing an answer from the section summary which does not affect progress and pressing continue returns the user to the section summary anchored to the answer they edited", async () => {
+      await $(SectionCompaniesPage.anyOtherTradingDetailsAnswerEdit()).click();
+      await $(AnyOtherTradingDetailsPage.answer()).setValue("No");
+      await $(AnyOtherTradingDetailsPage.submit()).click();
+      await expect(await browser.getUrl()).to.contain("section-companies/#any-other-trading-details-answer");
+    });
+
+    it("Clicking a change link from the final summary and pressing previous or submit without changing an answer returns the user to the final summary anchored to the answer they clicked on", async () => {
       await $(SectionCompaniesPage.submit()).click();
+
+      await $(SubmitPage.anyOtherTradingDetailsAnswerEdit()).click();
+      await $(AnyOtherTradingDetailsPage.submit()).click();
+      await expect(await browser.getUrl()).to.contain("submit/#any-other-trading-details-answer");
+
+      await $(SubmitPage.anyOtherTradingDetailsAnswerEdit()).click();
+      await $(AnyOtherTradingDetailsPage.previous()).click();
+      await expect(await browser.getUrl()).to.contain("submit/#any-other-trading-details-answer");
+    });
+
+    it("Editing an answer from the final summary which does not affect progress and pressing continue returns the user to the final summary anchored to the answer they edited", async () => {
+      await $(SectionCompaniesPage.anyOtherTradingDetailsAnswerEdit()).click();
+      await $(AnyOtherTradingDetailsPage.answer()).setValue("Yes");
+      await $(AnyOtherTradingDetailsPage.submit()).click();
+      await expect(await browser.getUrl()).to.contain("submit/#any-other-trading-details-answer");
+    });
+
+    it("The list collector can now be submitted.", async () => {
       await $(SubmitPage.submit()).click();
     });
   });

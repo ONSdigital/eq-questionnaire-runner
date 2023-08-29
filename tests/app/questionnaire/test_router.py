@@ -514,8 +514,8 @@ class TestRouterNextLocation(RouterTestCase):
     )
     def test_return_to_calculated_summary(self, schema):
         """
-        This tests that when you hit continue on an edited answer for a calculated summary
-        and all dependent answers for that calculated summary are complete, you are routed to the calculated summary
+        This tests that when you hit continue on an edited answer for a calculated summary and all other dependent answers are complete
+        you are routed to the calculated summary, anchored to the answer that you edited
         """
         self.schema = load_schema_from_name(schema)
         # for the purposes of this test, assume the routing path consists only of the first two blocks and the calculated summary
@@ -562,7 +562,6 @@ class TestRouterNextLocation(RouterTestCase):
             "questionnaire.block",
             list_item_id=expected_location.list_item_id,
             block_id=expected_location.block_id,
-            return_to="calculated-summary",
             _anchor="first-number-answer",
         )
 
@@ -903,6 +902,121 @@ class TestRouterNextLocation(RouterTestCase):
 
         assert expected_next_url == next_location_url
 
+    @pytest.mark.parametrize(
+        "schema,section,block_id,return_to,return_to_block_id,routing_path_block_ids,next_incomplete_block_id",
+        [
+            (
+                "test_list_collector_repeating_blocks_section_summary",
+                "section-companies",
+                "responsible-party",
+                "section-summary",
+                None,
+                [
+                    "responsible-party",
+                    "any-other-companies-or-branches",
+                    "any-companies-or-branches",
+                    "any-other-trading-details",
+                ],
+                "any-other-companies-or-branches",
+            ),
+            (
+                "test_list_collector_repeating_blocks_section_summary",
+                "section-companies",
+                "any-other-companies-or-branches",
+                "submit",
+                None,
+                [
+                    "responsible-party",
+                    "any-other-companies-or-branches",
+                    "any-companies-or-branches",
+                    "any-other-trading-details",
+                ],
+                "any-other-trading-details",
+            ),
+            (
+                "test_new_calculated_summary_repeating_and_static_answers",
+                "section-1",
+                "list-collector",
+                "section-1",
+                None,
+                [
+                    "any-supermarket",
+                    "list-collector",
+                    "dynamic-answer",
+                    "extra-spending-block",
+                    "extra-spending-method-block",
+                    "calculated-summary-spending",
+                    "calculated-summary-visits",
+                ],
+                "extra-spending-method-block",
+            ),
+            (
+                "test_new_calculated_summary_repeating_and_static_answers",
+                "section-1",
+                "dynamic-answer",
+                "section-1",
+                "calculated-summary-visits",
+                [
+                    "any-supermarket",
+                    "list-collector",
+                    "dynamic-answer",
+                    "extra-spending-block",
+                    "extra-spending-method-block",
+                    "calculated-summary-spending",
+                ],
+                "calculated-summary-spending",
+            ),
+        ],
+    )
+    @pytest.mark.usefixtures("app")
+    def test_return_to_inaccessible_summary_routes_to_next_incomplete_block(
+        self,
+        schema,
+        section,
+        block_id,
+        return_to,
+        return_to_block_id,
+        routing_path_block_ids,
+        next_incomplete_block_id,
+    ):
+        """
+        This tests that if you try to return to a section/final/calculated summary which is not yet accessible
+        then you route to the next incomplete block in the section with all return to parameters preserved
+        """
+        self.schema = load_schema_from_name(schema)
+        current_location = Location(section_id=section, block_id=block_id)
+        routing_path = RoutingPath(routing_path_block_ids, section_id=section)
+
+        # make a copy where next_incomplete_block_id is not yet completed
+        completed_block_ids = [*routing_path_block_ids]
+        completed_block_ids.remove(next_incomplete_block_id)
+
+        self.progress_store = ProgressStore(
+            [
+                {
+                    "section_id": section,
+                    "block_ids": completed_block_ids,
+                    "status": "IN_PROGRESS",
+                }
+            ]
+        )
+
+        next_location_url = self.router.get_next_location_url(
+            current_location,
+            routing_path,
+            return_to=return_to,
+            return_to_block_id=return_to_block_id,
+        )
+
+        expected_next_url = url_for(
+            "questionnaire.block",
+            return_to=return_to,
+            return_to_block_id=return_to_block_id,
+            block_id=next_incomplete_block_id,
+        )
+
+        assert expected_next_url == next_location_url
+
 
 class TestRouterNextLocationLinearFlow(RouterTestCase):
     @pytest.mark.usefixtures("app")
@@ -1061,7 +1175,6 @@ class TestRouterPreviousLocation(RouterTestCase):
         expected_location_url = url_for(
             "questionnaire.block",
             list_item_id=expected_location.list_item_id,
-            return_to="calculated-summary",
             block_id=expected_location.block_id,
             _anchor="first-number-answer",
         )

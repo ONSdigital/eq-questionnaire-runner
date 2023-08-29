@@ -301,6 +301,33 @@
                                 },
                                 "title": "Total monthly spending on internet and TV"
                             }
+                        },
+                        {
+                            "id": "tv-choice-block",
+                            "type": "Question",
+                            "question": {
+                                "id": "tv-choice-question",
+                                "title": "Do you prefer to watch films on a television or computer?",
+                                "type": "Radio",
+                                "answers": [
+                                    {
+                                        "id": "tv-choice-answer",
+                                        "label": "Preferred platform",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Television",
+                                                "value": "Television"
+                                            },
+                                            {
+                                                "label": "Computer",
+                                                "value": "Computer"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
                         }
                     ]
                 }

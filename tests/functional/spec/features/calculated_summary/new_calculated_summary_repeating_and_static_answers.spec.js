@@ -115,12 +115,6 @@ describe("Calculated summary with repeating answers", function () {
     await $$(DynamicAnswerPage.inputs())[8].setValue(7);
     await $(DynamicAnswerPage.submit()).click();
 
-    // Currently when a section is incomplete, you are taken to each block in the section in turn, if the return_to is inaccessible
-    // this has been changed for calculated summaries to go to the first incomplete block, but not yet in the general case
-    // so the expected behaviour is to revisit these two blocks before the calculated summary
-    await $(ExtraSpendingBlockPage.submit()).click();
-    await $(ExtraSpendingMethodBlockPage.submit()).click();
-
     // first calc summary
     await expect(await browser.getUrl()).to.contain(CalculatedSummarySpendingPage.pageName);
     await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).to.contain(
@@ -138,7 +132,7 @@ describe("Calculated summary with repeating answers", function () {
     await expect(await browser.getUrl()).to.contain(SummaryPage.pageName);
   });
 
-  it("Given I remove an item from the list which changes the calculated summaries, I return to each calculated summary to confirm new total with answers removed", async () => {
+  it("Given I remove an item from the list which changes the calculated summaries, I return to each incomplete block only to confirm new dynamic answers and totals with answers removed", async () => {
     await expect(await $(SummaryPage.supermarketsListLabel(1)).getText()).to.equal("Tesco");
     await expect(await $(SummaryPage.supermarketsListLabel(2)).getText()).to.equal("Lidl");
     await expect(await $(SummaryPage.supermarketsListLabel(3)).getText()).to.equal("Sainsburys");
@@ -149,11 +143,9 @@ describe("Calculated summary with repeating answers", function () {
     await $(ListCollectorRemovePage.yes()).click();
     await $(ListCollectorRemovePage.submit()).click();
 
-    // section is now incomplete so step through each block until calculated summary is re-confirmed
+    // section is now incomplete as dynamic answers and calculated summary depend on the removed item - step through each incomplete block only
     await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
     await $(DynamicAnswerPage.submit()).click();
-    await $(ExtraSpendingBlockPage.submit()).click();
-    await $(ExtraSpendingMethodBlockPage.submit()).click();
 
     // Tesco is now gone
     await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).to.contain(
@@ -204,9 +196,7 @@ describe("Calculated summary with repeating answers", function () {
     await dynamicAnswerChangeLink(8).click();
     await $$(DynamicAnswerPage.inputs())[5].setValue(1);
     await $(DynamicAnswerPage.submit()).click();
-    await $(ExtraSpendingBlockPage.submit()).click();
-    await $(ExtraSpendingMethodBlockPage.submit()).click();
-    await $(CalculatedSummarySpendingPage.submit()).click();
+    await expect(await browser.getUrl()).to.contain(CalculatedSummaryVisitsPage.pageName);
     await $(CalculatedSummaryVisitsPage.submit()).click();
     await $(SummaryPage.submit()).click();
     await expect(await $(HubPage.summaryRowState("section-1")).getText()).to.equal("Completed");

@@ -104,7 +104,6 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await $(ListCollectorEditPage.supermarketName()).setValue("Aldi");
       await $(ListCollectorEditPage.submit()).click();
       await $(DynamicAnswerPage.submit()).click();
-      await $(TotalBlockOtherPage.submit()).click();
       await $(DynamicAnswerOnlyPage.submit()).click();
       await expect(await browser.getUrl()).to.contain(SectionSummaryPage.pageName);
       await $(SectionSummaryPage.groupContent(2)).waitForExist({ timeout: 2000 });
