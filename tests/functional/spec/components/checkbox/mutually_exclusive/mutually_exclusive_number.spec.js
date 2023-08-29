@@ -1,5 +1,6 @@
 import NumberPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-number.page";
 import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-number-section-summary.page";
+import { click } from "../../../../helpers";
 
 describe("Component: Mutually Exclusive Number With Single Checkbox Override", () => {
   beforeEach(async () => {
@@ -21,7 +22,7 @@ describe("Component: Mutually Exclusive Number With Single Checkbox Override", (
       await expect(await $(NumberPage.numberExclusiveIPreferNotToSay()).isSelected()).to.be.true;
       await expect(await $(NumberPage.number()).getValue()).to.contain("");
 
-      await $(NumberPage.submit()).click();
+      await click(NumberPage.submit());
 
       await expect(await $(SummaryPage.numberExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
       await expect(await $(SummaryPage.numberExclusiveAnswer()).getText()).to.not.have.string("123");
@@ -41,7 +42,7 @@ describe("Component: Mutually Exclusive Number With Single Checkbox Override", (
       await expect(await $(NumberPage.number()).getValue()).to.contain("123");
       await expect(await $(NumberPage.numberExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
-      await $(NumberPage.submit()).click();
+      await click(NumberPage.submit());
 
       await expect(await $(SummaryPage.numberAnswer()).getText()).to.have.string("123");
       await expect(await $(SummaryPage.numberAnswer()).getText()).to.not.have.string("I prefer not to say");
@@ -60,7 +61,7 @@ describe("Component: Mutually Exclusive Number With Single Checkbox Override", (
       await expect(await $(NumberPage.number()).getValue()).to.contain("123");
       await expect(await $(NumberPage.numberExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
-      await $(NumberPage.submit()).click();
+      await click(NumberPage.submit());
 
       await expect(await $(SummaryPage.numberAnswer()).getText()).to.have.string("123");
       await expect(await $(SummaryPage.numberAnswer()).getText()).to.not.have.string("I prefer not to say");
@@ -77,7 +78,7 @@ describe("Component: Mutually Exclusive Number With Single Checkbox Override", (
       await expect(await $(NumberPage.numberExclusiveIPreferNotToSay()).isSelected()).to.be.true;
 
       // Then
-      await $(NumberPage.submit()).click();
+      await click(NumberPage.submit());
 
       await expect(await $(SummaryPage.numberExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
       await expect(await $(SummaryPage.numberExclusiveAnswer()).getText()).to.not.have.string("123");
@@ -91,7 +92,7 @@ describe("Component: Mutually Exclusive Number With Single Checkbox Override", (
       await expect(await $(NumberPage.numberExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
       // When
-      await $(NumberPage.submit()).click();
+      await click(NumberPage.submit());
 
       // Then
       await expect(await $(SummaryPage.numberAnswer()).getText()).to.contain("No answer provided");

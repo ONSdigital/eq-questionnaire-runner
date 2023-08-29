@@ -3,6 +3,7 @@ import ListCollectorAddPage from "../generated_pages/relationships_unrelated/lis
 import RelationshipsPage from "../generated_pages/relationships_unrelated/relationships.page.js";
 import RelatedToAnyoneElsePage from "../generated_pages/relationships_unrelated/related-to-anyone-else.page.js";
 import RelationshipsInterstitialPage from "../generated_pages/relationships_unrelated/relationship-interstitial.page.js";
+import { click } from "../helpers";
 
 describe("Unrelated Relationships", () => {
   const schema = "test_relationships_unrelated.json";
@@ -20,14 +21,14 @@ describe("Unrelated Relationships", () => {
         await addPerson("Daniel", "Davis");
         await addPerson("Eve", "Elliot");
         await $(ListCollectorPage.no()).click();
-        await $(ListCollectorPage.submit()).click();
+        await click(ListCollectorPage.submit());
       });
 
       it("When I answer 'Unrelated' twice, Then I will be asked if anyone else is related with a list of the remaining people", async () => {
         await $(RelationshipsPage.unrelated()).click();
-        await $(RelationshipsPage.submit()).click();
+        await click(RelationshipsPage.submit());
         await $(RelationshipsPage.unrelated()).click();
-        await $(RelationshipsPage.submit()).click();
+        await click(RelationshipsPage.submit());
         await expect(await $(RelatedToAnyoneElsePage.questionText()).getText()).to.contain("Are any of these people related to you?");
         await expect(await $(RelatedToAnyoneElsePage.listLabel(1)).getText()).to.equal("Daniel Davis");
         await expect(await $(RelatedToAnyoneElsePage.listLabel(2)).getText()).to.equal("Eve Elliot");
@@ -39,9 +40,9 @@ describe("Unrelated Relationships", () => {
       });
 
       it("When I return to the 'related to anyone else' question and select 'Yes', Then I will be taken to the next relationship for the first person", async () => {
-        await $(RelationshipsPage.submit()).click();
+        await click(RelationshipsPage.submit());
         await $(RelatedToAnyoneElsePage.yes()).click();
-        await $(RelatedToAnyoneElsePage.submit()).click();
+        await click(RelatedToAnyoneElsePage.submit());
         await expect(await $(RelationshipsPage.questionText()).getText()).to.contain("Thinking about Andrew Austin, Daniel Davis is their");
       });
 
@@ -53,7 +54,7 @@ describe("Unrelated Relationships", () => {
 
       it("When I select 'No' to the 'related to anyone else' question, Then I will be taken to the first relationship for the second person", async () => {
         await $(RelatedToAnyoneElsePage.noNoneOfThesePeopleAreRelatedToMe()).click();
-        await $(RelatedToAnyoneElsePage.submit()).click();
+        await click(RelatedToAnyoneElsePage.submit());
         await expect(await $(RelationshipsPage.questionText()).getText()).to.contain("Thinking about Betty Burns, Carla Clark is their");
       });
 
@@ -66,19 +67,19 @@ describe("Unrelated Relationships", () => {
       });
 
       it("When I click complete the remaining relationships, Then I will go to the relationships section complete page", async () => {
-        await $(RelatedToAnyoneElsePage.submit()).click();
+        await click(RelatedToAnyoneElsePage.submit());
         await $(RelationshipsPage.unrelated()).click();
-        await $(RelationshipsPage.submit()).click();
+        await click(RelationshipsPage.submit());
         await $(RelationshipsPage.unrelated()).click();
-        await $(RelationshipsPage.submit()).click();
+        await click(RelationshipsPage.submit());
         await $(RelationshipsPage.unrelated()).click();
-        await $(RelationshipsPage.submit()).click();
+        await click(RelationshipsPage.submit());
         await $(RelationshipsPage.unrelated()).click();
-        await $(RelationshipsPage.submit()).click();
+        await click(RelationshipsPage.submit());
         await $(RelationshipsPage.unrelated()).click();
-        await $(RelationshipsPage.submit()).click();
+        await click(RelationshipsPage.submit());
         await $(RelationshipsPage.unrelated()).click();
-        await $(RelationshipsPage.submit()).click();
+        await click(RelationshipsPage.submit());
         await expect(await browser.getUrl()).to.contain(RelationshipsInterstitialPage.pageName);
       });
     });
@@ -86,10 +87,10 @@ describe("Unrelated Relationships", () => {
     async function addPerson(firstName, lastName) {
       await $(ListCollectorPage.yes()).click();
       await $(ListCollectorPage.submit()).scrollIntoView();
-      await $(ListCollectorPage.submit()).click();
+      await click(ListCollectorPage.submit());
       await $(ListCollectorAddPage.firstName()).setValue(firstName);
       await $(ListCollectorAddPage.lastName()).setValue(lastName);
-      await $(ListCollectorAddPage.submit()).click();
+      await click(ListCollectorAddPage.submit());
     }
   });
 });

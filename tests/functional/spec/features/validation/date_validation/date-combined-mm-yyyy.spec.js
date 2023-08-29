@@ -1,6 +1,6 @@
 import DateRangePage from "../../../../generated_pages/date_validation_mm_yyyy_combined/date-range-block.page";
 import SubmitPage from "../../../../generated_pages/date_validation_mm_yyyy_combined/submit.page";
-
+import { click } from "../../../../helpers";
 describe("Feature: Combined question level and single validation for MM-YYYY dates", () => {
   before(async () => {
     await browser.openQuestionnaire("test_date_validation_mm_yyyy_combined.json");
@@ -13,7 +13,7 @@ describe("Feature: Combined question level and single validation for MM-YYYY dat
 
         await $(DateRangePage.dateRangeToMonth()).setValue(4);
         await $(DateRangePage.dateRangeToYear()).setValue(2017);
-        await $(DateRangePage.submit()).click();
+        await click(DateRangePage.submit());
         await expect(await $(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a valid date");
         await expect(await $(DateRangePage.errorNumber(2)).isExisting()).to.be.false;
       });
@@ -24,7 +24,7 @@ describe("Feature: Combined question level and single validation for MM-YYYY dat
 
         await $(DateRangePage.dateRangeToMonth()).setValue(4);
         await $(DateRangePage.dateRangeToYear()).setValue(2017);
-        await $(DateRangePage.submit()).click();
+        await click(DateRangePage.submit());
         await expect(await $(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a valid date");
         await expect(await $(DateRangePage.errorNumber(2)).isExisting()).to.be.false;
       });
@@ -35,7 +35,7 @@ describe("Feature: Combined question level and single validation for MM-YYYY dat
 
         await $(DateRangePage.dateRangeToMonth()).setValue(4);
         await $(DateRangePage.dateRangeToYear()).setValue(2017);
-        await $(DateRangePage.submit()).click();
+        await click(DateRangePage.submit());
         await expect(await $(DateRangePage.errorNumber(1)).getText()).to.contain("Enter the year in a valid format. For example, 2023.");
         await expect(await $(DateRangePage.errorNumber(2)).isExisting()).to.be.false;
       });
@@ -46,7 +46,7 @@ describe("Feature: Combined question level and single validation for MM-YYYY dat
 
         await $(DateRangePage.dateRangeToMonth()).setValue(6);
         await $(DateRangePage.dateRangeToYear()).setValue(2017);
-        await $(DateRangePage.submit()).click();
+        await click(DateRangePage.submit());
         await expect(await $(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a date after November 2016");
         await expect(await $(DateRangePage.errorNumber(2)).getText()).to.contain("Enter a date before June 2017");
       });
@@ -57,7 +57,7 @@ describe("Feature: Combined question level and single validation for MM-YYYY dat
 
         await $(DateRangePage.dateRangeToMonth()).setValue(5);
         await $(DateRangePage.dateRangeToYear()).setValue(2017);
-        await $(DateRangePage.submit()).click();
+        await click(DateRangePage.submit());
         await expect(await $(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period less than or equal to 3 months");
       });
 
@@ -67,7 +67,7 @@ describe("Feature: Combined question level and single validation for MM-YYYY dat
 
         await $(DateRangePage.dateRangeToMonth()).setValue(1);
         await $(DateRangePage.dateRangeToYear()).setValue(2017);
-        await $(DateRangePage.submit()).click();
+        await click(DateRangePage.submit());
         await expect(await $(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period greater than or equal to 2 months");
       });
 
@@ -78,14 +78,14 @@ describe("Feature: Combined question level and single validation for MM-YYYY dat
         // Min range
         await $(DateRangePage.dateRangeToMonth()).setValue(3);
         await $(DateRangePage.dateRangeToYear()).setValue(2017);
-        await $(DateRangePage.submit()).click();
+        await click(DateRangePage.submit());
         await expect(await $(SubmitPage.dateRangeFrom()).getText()).to.contain("January 2017 to March 2017");
 
         // Max range
         await $(SubmitPage.dateRangeFromEdit()).click();
         await $(DateRangePage.dateRangeToMonth()).setValue(4);
         await $(DateRangePage.dateRangeToYear()).setValue(2017);
-        await $(DateRangePage.submit()).click();
+        await click(DateRangePage.submit());
         await expect(await $(SubmitPage.dateRangeFrom()).getText()).to.contain("January 2017 to April 2017");
       });
     });

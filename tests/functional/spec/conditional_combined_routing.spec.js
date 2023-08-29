@@ -2,6 +2,7 @@ import ConditionalCombinedRoutingPage from "../generated_pages/conditional_combi
 import ResponseAny from "../generated_pages/conditional_combined_routing/response-any.page";
 import ResponseNotAny from "../generated_pages/conditional_combined_routing/response-not-any.page";
 import SubmitPage from "../generated_pages/conditional_combined_routing/submit.page";
+import { click } from "../helpers";
 
 describe("Conditional combined routing.", () => {
   beforeEach(async () => {
@@ -11,7 +12,7 @@ describe("Conditional combined routing.", () => {
   it('Given a list of radio options, when I choose the option "Yes" or the option "Sometimes" then I should be routed to the relevant page', async () => {
     // When
     await $(ConditionalCombinedRoutingPage.yes()).click();
-    await $(ConditionalCombinedRoutingPage.submit()).click();
+    await click(ConditionalCombinedRoutingPage.submit());
     // Then
     await expect(await browser.getUrl()).to.contain(ResponseAny.pageName);
 
@@ -20,7 +21,7 @@ describe("Conditional combined routing.", () => {
 
     // When
     await $(ConditionalCombinedRoutingPage.sometimes()).click();
-    await $(ConditionalCombinedRoutingPage.submit()).click();
+    await click(ConditionalCombinedRoutingPage.submit());
 
     // Then
     await expect(await browser.getUrl()).to.contain(ResponseAny.pageName);
@@ -29,7 +30,7 @@ describe("Conditional combined routing.", () => {
   it('Given a list of radio options, when I choose the option "No, I prefer tea" then I should be routed to the relevant page', async () => {
     // When
     await $(ConditionalCombinedRoutingPage.noIPreferTea()).click();
-    await $(ConditionalCombinedRoutingPage.submit()).click();
+    await click(ConditionalCombinedRoutingPage.submit());
     // Then
     await expect(await browser.getUrl()).to.contain(ResponseNotAny.pageName);
   });
@@ -37,7 +38,7 @@ describe("Conditional combined routing.", () => {
   it('Given a list of radio options, when I choose the option "No, I don\'t drink any hot drinks" then I should be routed to the submit page', async () => {
     // When
     await $(ConditionalCombinedRoutingPage.noIDonTDrinkAnyHotDrinks()).click();
-    await $(ConditionalCombinedRoutingPage.submit()).click();
+    await click(ConditionalCombinedRoutingPage.submit());
     // Then
     await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
   });
