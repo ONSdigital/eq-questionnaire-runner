@@ -5,7 +5,6 @@ from decimal import Decimal
 import pytest
 import simplejson as json
 from flask import g
-from jinja2 import Undefined
 from mock import Mock
 
 from app.jinja_filters import (
