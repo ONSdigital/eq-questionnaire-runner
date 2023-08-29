@@ -2,7 +2,7 @@ import AddressBlockPage from "../../../generated_pages/custom_question_summary/a
 import AgeBlock from "../../../generated_pages/custom_question_summary/age.page.js";
 import NameBlockPage from "../../../generated_pages/custom_question_summary/name.page.js";
 import SubmitPage from "../../../generated_pages/custom_question_summary/submit.page.js";
-
+import { click } from "../../../helpers";
 describe("Summary Screen", () => {
   beforeEach("Load the survey", async () => {
     await browser.openQuestionnaire("test_custom_question_summary.json");
@@ -16,9 +16,9 @@ describe("Summary Screen", () => {
   });
 
   it("Given no values are entered in a question with multiple answers and concatenation set, when on the summary screen then the correct response should be displayed", async () => {
-    await $(NameBlockPage.submit()).click();
-    await $(AddressBlockPage.submit()).click();
-    await $(AgeBlock.submit()).click();
+    await click(NameBlockPage.submit());
+    await click(AddressBlockPage.submit());
+    await click(AgeBlock.submit());
     await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     await expect(await $(SubmitPage.summaryRowState("name-question-concatenated-answer")).getText()).to.contain("No answer provided");
   });
@@ -26,13 +26,13 @@ describe("Summary Screen", () => {
   async function completeAllQuestions() {
     await $(NameBlockPage.first()).setValue("John");
     await $(NameBlockPage.last()).setValue("Smith");
-    await $(NameBlockPage.submit()).click();
+    await click(NameBlockPage.submit());
     await $(AddressBlockPage.line1()).setValue("Cardiff Road");
     await $(AddressBlockPage.townCity()).setValue("Newport");
     await $(AddressBlockPage.postcode()).setValue("NP10 8XG");
-    await $(AddressBlockPage.submit()).click();
+    await click(AddressBlockPage.submit());
     await $(AgeBlock.number()).setValue(7);
     await $(AgeBlock.singleCheckboxThisAgeIsAnEstimate()).click();
-    await $(AgeBlock.submit()).click();
+    await click(AgeBlock.submit());
   }
 });

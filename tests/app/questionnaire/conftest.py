@@ -123,6 +123,7 @@ def question_variant_schema():
                                                 {
                                                     "id": "answer1",
                                                     "label": "Answer 1 Variant 1",
+                                                    "type": "General",
                                                 }
                                             ],
                                         },
@@ -183,6 +184,7 @@ def single_question_schema():
                                         {
                                             "id": "answer1",
                                             "label": "Answer 1",
+                                            "type": "General",
                                             "default": "test",
                                         }
                                     ],
@@ -241,6 +243,7 @@ def list_collector_variant_schema():
                                                 {
                                                     "id": "answer1",
                                                     "label": "Collector Answer 1 Variant Yes",
+                                                    "type": "General",
                                                     "action": {
                                                         "type": "RedirectToListAddBlock"
                                                     },
@@ -816,7 +819,13 @@ def question_schema():
                                     "id": "question1",
                                     "title": "A Question",
                                     "type": "General",
-                                    "answers": [{"id": "answer1", "label": "Answer 1"}],
+                                    "answers": [
+                                        {
+                                            "id": "answer1",
+                                            "label": "Answer 1",
+                                            "type": "General",
+                                        }
+                                    ],
                                 },
                             }
                         ],

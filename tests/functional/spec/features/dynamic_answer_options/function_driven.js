@@ -4,7 +4,7 @@ import DynamicRadioPage from "../../../generated_pages/dynamic_answer_options_fu
 import DynamicDropdownPage from "../../../generated_pages/dynamic_answer_options_function_driven_with_static_options/dynamic-dropdown.page";
 import DynamicMutuallyExclusivePage from "../../../generated_pages/dynamic_answer_options_function_driven_with_static_options/dynamic-mutually-exclusive.page";
 import SubmitPage from "../../../generated_pages/dynamic_answer_options_function_driven_with_static_options/submit.page";
-
+import { click } from "../../../helpers";
 const dropdownOptionValues = ["2020-12-28", "2020-12-29", "2020-12-30", "2020-12-31", "2021-01-01", "2021-01-02", "2021-01-03"];
 const dropdownOptionValuesWithStaticOption = [...dropdownOptionValues, "I did not work"];
 
@@ -27,7 +27,7 @@ const openQuestionnaireAndSetUp = async (schema) => {
   await $(ReferenceDatePage.day()).setValue("1");
   await $(ReferenceDatePage.month()).setValue("1");
   await $(ReferenceDatePage.year()).setValue("2021");
-  await $(ReferenceDatePage.submit()).click();
+  await click(ReferenceDatePage.submit());
 };
 
 testCases.forEach(async (testCase) => {
@@ -53,7 +53,7 @@ testCases.forEach(async (testCase) => {
         });
 
         it("When I submit the page, then I should be taken to the next page", async () => {
-          await $(DynamicCheckboxPage.submit()).click();
+          await click(DynamicCheckboxPage.submit());
           await expect(await browser.getUrl()).to.contain(DynamicRadioPage.pageName);
         });
       });
@@ -67,7 +67,7 @@ testCases.forEach(async (testCase) => {
         });
 
         it("When I submit the page, then I should be taken to the next page", async () => {
-          await $(DynamicRadioPage.submit()).click();
+          await click(DynamicRadioPage.submit());
           await expect(await browser.getUrl()).to.contain(DynamicDropdownPage.pageName);
         });
       });
@@ -81,7 +81,7 @@ testCases.forEach(async (testCase) => {
         });
 
         it("When I submit the page, then I should be taken to the next page", async () => {
-          await $(DynamicDropdownPage.submit()).click();
+          await click(DynamicDropdownPage.submit());
           await expect(await browser.getUrl()).to.contain(DynamicMutuallyExclusivePage.pageName);
         });
       });
@@ -122,10 +122,10 @@ testCases.forEach(async (testCase) => {
 
       describe("Given a dynamic answer options questionnaire", () => {
         it("When I submit my questions without answering, then the summary should display `No answer provided` for each question", async () => {
-          await $(DynamicCheckboxPage.submit()).click();
-          await $(DynamicRadioPage.submit()).click();
-          await $(DynamicRadioPage.submit()).click();
-          await $(DynamicMutuallyExclusivePage.submit()).click();
+          await click(DynamicCheckboxPage.submit());
+          await click(DynamicRadioPage.submit());
+          await click(DynamicRadioPage.submit());
+          await click(DynamicMutuallyExclusivePage.submit());
 
           await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
           await expect(await $(SubmitPage.dynamicCheckboxAnswer()).getText()).to.equal("No answer provided");
@@ -138,20 +138,20 @@ testCases.forEach(async (testCase) => {
           // Answer Checkbox
           await $(DynamicCheckboxPage.answerByIndex(2)).click(); // Wednesday 30 December 2020
           await $(DynamicCheckboxPage.answerByIndex(3)).click(); // Thursday 30 December 2020
-          await $(DynamicCheckboxPage.submit()).click();
+          await click(DynamicCheckboxPage.submit());
 
           // Answer Radio
           await $(DynamicRadioPage.answerByIndex(1)).click(); // Tuesday 29 December 2020
-          await $(DynamicRadioPage.submit()).click();
+          await click(DynamicRadioPage.submit());
 
           // Answer Dropdown
           await $(DynamicDropdownPage.answer()).selectByAttribute("value", "2021-01-02"); // Saturday 2 January 2021
-          await $(DynamicDropdownPage.submit()).click();
+          await click(DynamicDropdownPage.submit());
 
           // Answer Mutually exclusive
           await $(DynamicMutuallyExclusivePage.answerByIndex(0)).click(); //  Monday 28 December 2020
           await $(DynamicMutuallyExclusivePage.answerByIndex(6)).click(); //  Sunday 3 January 2021
-          await $(DynamicMutuallyExclusivePage.submit()).click();
+          await click(DynamicMutuallyExclusivePage.submit());
 
           await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
           await expect(await $(SubmitPage.dynamicCheckboxAnswer()).getText()).to.equal("Wednesday 30 December 2020\nThursday 31 December 2020");
@@ -173,27 +173,27 @@ describe(`Feature: Dynamically generated answer options driven by a function wit
     it("When I select a static answer option for each question, then my selected answer(s) should be displayed on the summary", async () => {
       // Answer Checkbox
       await $(DynamicCheckboxPage.answerByIndex(7)).click();
-      await $(DynamicCheckboxPage.submit()).click();
+      await click(DynamicCheckboxPage.submit());
 
       // Answer Radio
       await $(DynamicRadioPage.answerByIndex(7)).click();
-      await $(DynamicRadioPage.submit()).click();
+      await click(DynamicRadioPage.submit());
 
       // Answer Dropdown
       await $(DynamicDropdownPage.answer()).selectByAttribute("value", "I did not work");
-      await $(DynamicDropdownPage.submit()).click();
+      await click(DynamicDropdownPage.submit());
 
       // Answer Mutually exclusive
 
       // Test static option for mutually exclusive from non exclusive choices
       await $(DynamicMutuallyExclusivePage.answerByIndex(7)).click();
-      await $(DynamicMutuallyExclusivePage.submit()).click();
+      await click(DynamicMutuallyExclusivePage.submit());
       await expect(await $(SubmitPage.dynamicMutuallyExclusiveDynamicAnswer()).getText()).to.equal("None of the above");
 
       // Test exclusive static choice
       await $(SubmitPage.previous()).click();
       await $(DynamicMutuallyExclusivePage.staticIDidNotWork()).click();
-      await $(DynamicMutuallyExclusivePage.submit()).click();
+      await click(DynamicMutuallyExclusivePage.submit());
 
       await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
       await expect(await $(SubmitPage.dynamicCheckboxAnswer()).getText()).to.equal("I did not work");
@@ -205,26 +205,26 @@ describe(`Feature: Dynamically generated answer options driven by a function wit
     it("When I edit and change the reference date which the other questions are dependent on, then all dependent answers are removed", async () => {
       await $(SubmitPage.referenceDateAnswerEdit()).click();
       await $(ReferenceDatePage.day()).setValue("2");
-      await $(ReferenceDatePage.submit()).click();
+      await click(ReferenceDatePage.submit());
 
       await expect(await $(DynamicCheckboxPage.answerByIndex(7)).isSelected()).to.be.false;
 
       await $(DynamicCheckboxPage.answerByIndex(7)).click();
-      await $(DynamicCheckboxPage.submit()).click();
+      await click(DynamicCheckboxPage.submit());
 
       await expect(await $(DynamicRadioPage.answerByIndex(7)).isSelected()).to.be.false;
 
       await $(DynamicRadioPage.answerByIndex(7)).click();
-      await $(DynamicRadioPage.submit()).click();
+      await click(DynamicRadioPage.submit());
 
       await expect(await $(DynamicDropdownPage.answer()).getText()).to.contain("Select an answer");
 
       await $(DynamicDropdownPage.answer()).selectByAttribute("value", "I did not work");
-      await $(DynamicDropdownPage.submit()).click();
+      await click(DynamicDropdownPage.submit());
 
       // The Mutually exclusive answer is not removed as it is a different answer_id to the dependent, however the block must be re-submitted
       await expect(await $(DynamicMutuallyExclusivePage.staticIDidNotWork()).isSelected()).to.be.true;
-      await $(DynamicMutuallyExclusivePage.submit()).click();
+      await click(DynamicMutuallyExclusivePage.submit());
 
       await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
