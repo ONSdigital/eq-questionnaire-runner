@@ -360,7 +360,7 @@ def test_get_width_for_number(answer, width, app):
         ("test-min-exclusive", 15),
         ("test-max-exclusive", 4),
         ("test-percent", 3),
-        ("test-decimal", 7),
+        ("test-decimal", 10),
         ("other-answer", 5),
         ("first-number-answer", 6),
         ("second-number-answer", 6),
