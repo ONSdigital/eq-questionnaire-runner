@@ -28,11 +28,11 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await $(FirstQuestionBlockPage.eggs()).setValue(25);
       await $(FirstQuestionBlockPage.bread()).setValue(25);
       await $(FirstQuestionBlockPage.cheese()).setValue(25);
-      await $(FirstQuestionBlockPage.submit()).click();
+      await click(FirstQuestionBlockPage.submit());
       await $(SkipQuestionPage.yes()).click();
-      await $(SkipQuestionPage.submit()).click();
-      await $(CurrencyTotalPlaybackPage.submit()).click();
-      await $(CalculatedSummarySectionSummaryPage.submit()).click();
+      await click(SkipQuestionPage.submit());
+      await click(CurrencyTotalPlaybackPage.submit());
+      await click(CalculatedSummarySectionSummaryPage.submit());
 
       await expect(await $(HubPage.summaryRowLink("calculated-summary-section")).isExisting()).to.be.true;
       await expect(await $(HubPage.summaryRowLink("dependent-question-section")).isExisting()).to.be.true;
@@ -45,11 +45,11 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await $(FirstQuestionBlockPage.eggs()).setValue(1);
       await $(FirstQuestionBlockPage.bread()).setValue(1);
       await $(FirstQuestionBlockPage.cheese()).setValue(1);
-      await $(FirstQuestionBlockPage.submit()).click();
+      await click(FirstQuestionBlockPage.submit());
       await $(SkipQuestionPage.yes()).click();
-      await $(SkipQuestionPage.submit()).click();
-      await $(CurrencyTotalPlaybackPage.submit()).click();
-      await $(CalculatedSummarySectionSummaryPage.submit()).click();
+      await click(SkipQuestionPage.submit());
+      await click(CurrencyTotalPlaybackPage.submit());
+      await click(CalculatedSummarySectionSummaryPage.submit());
 
       await $(HubPage.summaryRowLink("dependent-question-section")).click();
       await expect(await browser.getUrl()).to.contain(FruitPage.pageName);
@@ -61,11 +61,11 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await $(FirstQuestionBlockPage.eggs()).setValue(5);
       await $(FirstQuestionBlockPage.bread()).setValue(5);
       await $(FirstQuestionBlockPage.cheese()).setValue(5);
-      await $(FirstQuestionBlockPage.submit()).click();
+      await click(FirstQuestionBlockPage.submit());
       await $(SkipQuestionPage.yes()).click();
-      await $(SkipQuestionPage.submit()).click();
-      await $(CurrencyTotalPlaybackPage.submit()).click();
-      await $(CalculatedSummarySectionSummaryPage.submit()).click();
+      await click(SkipQuestionPage.submit());
+      await click(CurrencyTotalPlaybackPage.submit());
+      await click(CalculatedSummarySectionSummaryPage.submit());
 
       await $(HubPage.summaryRowLink("dependent-question-section")).click();
       await expect(await browser.getUrl()).to.contain(VegetablesPage.pageName);
@@ -77,15 +77,15 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await $(FirstQuestionBlockPage.eggs()).setValue(30);
       await $(FirstQuestionBlockPage.bread()).setValue(30);
       await $(FirstQuestionBlockPage.cheese()).setValue(30);
-      await $(FirstQuestionBlockPage.submit()).click();
+      await click(FirstQuestionBlockPage.submit());
       await $(SkipQuestionPage.yes()).click();
-      await $(SkipQuestionPage.submit()).click();
-      await $(CurrencyTotalPlaybackPage.submit()).click();
-      await $(CalculatedSummarySectionSummaryPage.submit()).click();
+      await click(SkipQuestionPage.submit());
+      await click(CurrencyTotalPlaybackPage.submit());
+      await click(CalculatedSummarySectionSummaryPage.submit());
 
       await $(HubPage.summaryRowLink("dependent-question-section")).click();
       await $(VegetablesPage.yes()).click();
-      await $(VegetablesPage.submit()).click();
+      await click(VegetablesPage.submit());
       await expect(await browser.getUrl()).to.contain(SecondQuestionBlockPage.pageName);
     });
 
@@ -95,15 +95,15 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await $(FirstQuestionBlockPage.eggs()).setValue(20);
       await $(FirstQuestionBlockPage.bread()).setValue(20);
       await $(FirstQuestionBlockPage.cheese()).setValue(20);
-      await $(FirstQuestionBlockPage.submit()).click();
+      await click(FirstQuestionBlockPage.submit());
       await $(SkipQuestionPage.yes()).click();
-      await $(SkipQuestionPage.submit()).click();
-      await $(CurrencyTotalPlaybackPage.submit()).click();
-      await $(CalculatedSummarySectionSummaryPage.submit()).click();
+      await click(SkipQuestionPage.submit());
+      await click(CurrencyTotalPlaybackPage.submit());
+      await click(CalculatedSummarySectionSummaryPage.submit());
 
       await $(HubPage.summaryRowLink("dependent-question-section")).click();
       await $(VegetablesPage.yes()).click();
-      await $(VegetablesPage.submit()).click();
+      await click(VegetablesPage.submit());
       await expect(await browser.getUrl()).to.contain(DependentQuestionSectionSummaryPage.pageName);
     });
 
@@ -113,25 +113,25 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await $(FirstQuestionBlockPage.eggs()).setValue(20);
       await $(FirstQuestionBlockPage.bread()).setValue(20);
       await $(FirstQuestionBlockPage.cheese()).setValue(20);
-      await $(FirstQuestionBlockPage.submit()).click();
+      await click(FirstQuestionBlockPage.submit());
       await $(SkipQuestionPage.yes()).click();
-      await $(SkipQuestionPage.submit()).click();
-      await $(CurrencyTotalPlaybackPage.submit()).click();
-      await $(CalculatedSummarySectionSummaryPage.submit()).click();
+      await click(SkipQuestionPage.submit());
+      await click(CurrencyTotalPlaybackPage.submit());
+      await click(CalculatedSummarySectionSummaryPage.submit());
 
       await $(HubPage.summaryRowLink("dependent-question-section")).click();
       await $(VegetablesPage.yes()).click();
-      await $(VegetablesPage.submit()).click();
-      await $(DependentQuestionSectionSummaryPage.submit()).click();
+      await click(VegetablesPage.submit());
+      await click(DependentQuestionSectionSummaryPage.submit());
       await expect(await $(HubPage.summaryRowState("dependent-question-section")).getText()).to.equal("Completed");
 
       await $(HubPage.summaryRowLink("calculated-summary-section")).click();
       await $(CurrencyTotalPlaybackPage.milkAnswerEdit()).click();
       await $(FirstQuestionBlockPage.milk()).setValue(100);
-      await $(FirstQuestionBlockPage.submit()).click();
+      await click(FirstQuestionBlockPage.submit());
       await expect(await browser.getUrl()).to.contain(CurrencyTotalPlaybackPage.pageName);
-      await $(CurrencyTotalPlaybackPage.submit()).click();
-      await $(CalculatedSummarySectionSummaryPage.submit()).click();
+      await click(CurrencyTotalPlaybackPage.submit());
+      await click(CalculatedSummarySectionSummaryPage.submit());
       await expect(await $(HubPage.summaryRowState("dependent-question-section")).getText()).to.equal("Partially completed");
     });
 
@@ -141,11 +141,11 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await $(FirstQuestionBlockPage.eggs()).setValue(10);
       await $(FirstQuestionBlockPage.bread()).setValue(10);
       await $(FirstQuestionBlockPage.cheese()).setValue(10);
-      await $(FirstQuestionBlockPage.submit()).click();
+      await click(FirstQuestionBlockPage.submit());
       await $(SkipQuestionPage.yes()).click();
-      await $(SkipQuestionPage.submit()).click();
-      await $(CurrencyTotalPlaybackPage.submit()).click();
-      await $(CalculatedSummarySectionSummaryPage.submit()).click();
+      await click(SkipQuestionPage.submit());
+      await click(CurrencyTotalPlaybackPage.submit());
+      await click(CalculatedSummarySectionSummaryPage.submit());
 
       await expect(await $(HubPage.summaryRowLink("calculated-summary-section")).isExisting()).to.be.true;
       await expect(await $(HubPage.summaryRowLink("dependent-question-section")).isExisting()).to.be.true;
@@ -154,11 +154,11 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await $(HubPage.summaryRowLink("calculated-summary-section")).click();
       await $(CalculatedSummarySectionSummaryPage.skipButterBlockAnswerEdit()).click();
       await $(SkipQuestionPage.no()).click();
-      await $(SkipQuestionPage.submit()).click();
+      await click(SkipQuestionPage.submit());
       await $(ButterPage.butter()).setValue(60);
-      await $(ButterPage.submit()).click();
-      await $(CurrencyTotalPlaybackPage.submit()).click();
-      await $(CalculatedSummarySectionSummaryPage.submit()).click();
+      await click(ButterPage.submit());
+      await click(CurrencyTotalPlaybackPage.submit());
+      await click(CalculatedSummarySectionSummaryPage.submit());
 
       await expect(await $(HubPage.summaryRowLink("calculated-summary-section")).isExisting()).to.be.true;
       await expect(await $(HubPage.summaryRowLink("dependent-question-section")).isExisting()).to.be.true;
@@ -171,13 +171,13 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await $(FirstQuestionBlockPage.eggs()).setValue(10);
       await $(FirstQuestionBlockPage.bread()).setValue(10);
       await $(FirstQuestionBlockPage.cheese()).setValue(10);
-      await $(FirstQuestionBlockPage.submit()).click();
+      await click(FirstQuestionBlockPage.submit());
       await $(SkipQuestionPage.no()).click();
-      await $(SkipQuestionPage.submit()).click();
+      await click(SkipQuestionPage.submit());
       await $(ButterPage.butter()).setValue(60);
-      await $(ButterPage.submit()).click();
-      await $(CurrencyTotalPlaybackPage.submit()).click();
-      await $(CalculatedSummarySectionSummaryPage.submit()).click();
+      await click(ButterPage.submit());
+      await click(CurrencyTotalPlaybackPage.submit());
+      await click(CalculatedSummarySectionSummaryPage.submit());
 
       await expect(await $(HubPage.summaryRowLink("calculated-summary-section")).isExisting()).to.be.true;
       await expect(await $(HubPage.summaryRowLink("dependent-question-section")).isExisting()).to.be.true;
@@ -186,8 +186,8 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await $(HubPage.summaryRowLink("calculated-summary-section")).click();
       await $(CalculatedSummarySectionSummaryPage.skipButterBlockAnswerEdit()).click();
       await $(SkipQuestionPage.yes()).click();
-      await $(SkipQuestionPage.submit()).click();
-      await $(CalculatedSummarySectionSummaryPage.submit()).click();
+      await click(SkipQuestionPage.submit());
+      await click(CalculatedSummarySectionSummaryPage.submit());
 
       await expect(await $(HubPage.summaryRowLink("calculated-summary-section")).isExisting()).to.be.true;
       await expect(await $(HubPage.summaryRowLink("dependent-question-section")).isExisting()).to.be.true;

@@ -29,7 +29,7 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await $$(DynamicAnswerPage.inputs())[0].setValue(33);
       await $$(DynamicAnswerPage.inputs())[1].setValue(33);
       await $(DynamicAnswerPage.percentageOfShoppingElsewhere()).setValue(33);
-      await $(DynamicAnswerPage.submit()).click();
+      await click(DynamicAnswerPage.submit());
       await expect(await $(DynamicAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 100");
     });
   });
@@ -41,7 +41,7 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await $$(DynamicAnswerPage.inputs())[0].setValue(34);
       await $$(DynamicAnswerPage.inputs())[1].setValue(33);
       await $(DynamicAnswerPage.percentageOfShoppingElsewhere()).setValue(33);
-      await $(DynamicAnswerPage.submit()).click();
+      await click(DynamicAnswerPage.submit());
       await expect(await browser.getUrl()).to.contain(TotalBlockOtherPage.pageName);
     });
   });
@@ -53,13 +53,13 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await $$(DynamicAnswerPage.inputs())[0].setValue(34);
       await $$(DynamicAnswerPage.inputs())[1].setValue(33);
       await $(DynamicAnswerPage.percentageOfShoppingElsewhere()).setValue(33);
-      await $(DynamicAnswerPage.submit()).click();
+      await click(DynamicAnswerPage.submit());
       await $(TotalBlockOtherPage.totalOther()).setValue(100);
-      await $(TotalBlockOtherPage.submit()).click();
+      await click(TotalBlockOtherPage.submit());
       await expect(await browser.getUrl()).to.contain(DynamicAnswerOnlyPage.pageName);
       await $$(DynamicAnswerOnlyPage.inputs())[0].setValue(50);
       await $$(DynamicAnswerOnlyPage.inputs())[1].setValue(0);
-      await $(DynamicAnswerOnlyPage.submit()).click();
+      await click(DynamicAnswerOnlyPage.submit());
       await expect(await $(DynamicAnswerOnlyPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to £100.00");
     });
   });
@@ -78,9 +78,9 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await fillDynamicAnswers();
       await $(SectionSummaryPage.supermarketsListAddLink()).click();
       await $(ListCollectorAddPage.supermarketName()).setValue("Morrisons");
-      await $(ListCollectorAddPage.submit()).click();
+      await click(ListCollectorAddPage.submit());
       await $(ListCollectorPage.no()).click();
-      await $(ListCollectorPage.submit()).click();
+      await click(ListCollectorPage.submit());
       await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
       await expect(await $$(DynamicAnswerPage.labels()).length).to.equal(4);
     });
@@ -91,7 +91,7 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await fillDynamicAnswers();
       await $(SectionSummaryPage.supermarketsListRemoveLink(1)).click();
       await $(ListCollectorRemovePage.yes()).click();
-      await $(ListCollectorRemovePage.submit()).click();
+      await click(ListCollectorRemovePage.submit());
       await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
       await expect(await $$(DynamicAnswerPage.labels()).length).to.equal(2);
     });
@@ -102,9 +102,9 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await fillDynamicAnswers();
       await $(SectionSummaryPage.supermarketsListEditLink(1)).click();
       await $(ListCollectorEditPage.supermarketName()).setValue("Aldi");
-      await $(ListCollectorEditPage.submit()).click();
-      await $(DynamicAnswerPage.submit()).click();
-      await $(DynamicAnswerOnlyPage.submit()).click();
+      await click(ListCollectorEditPage.submit());
+      await click(DynamicAnswerPage.submit());
+      await click(DynamicAnswerOnlyPage.submit());
       await expect(await browser.getUrl()).to.contain(SectionSummaryPage.pageName);
       await $(SectionSummaryPage.groupContent(2)).waitForExist({ timeout: 2000 });
       await expect(await $(SectionSummaryPage.groupContent(2)).$$(summaryTitles)[0].getText()).to.equal("Percentage of shopping at Aldi");
@@ -127,28 +127,28 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
 
 async function addTwoSupermarkets() {
   await $(TotalBlockPage.total()).setValue(100);
-  await $(TotalBlockPage.submit()).click();
+  await click(TotalBlockPage.submit());
   await $(HubPage.summaryRowLink("dynamic-answers-section")).click();
   await $(DriverPage.yes()).click();
-  await $(DriverPage.submit()).click();
+  await click(DriverPage.submit());
   await $(ListCollectorAddPage.supermarketName()).setValue("Tesco");
-  await $(ListCollectorAddPage.submit()).click();
+  await click(ListCollectorAddPage.submit());
   await $(ListCollectorPage.yes()).click();
-  await $(ListCollectorPage.submit()).click();
+  await click(ListCollectorPage.submit());
   await $(ListCollectorAddPage.supermarketName()).setValue("Asda");
-  await $(ListCollectorAddPage.submit()).click();
+  await click(ListCollectorAddPage.submit());
   await $(ListCollectorPage.no()).click();
-  await $(ListCollectorPage.submit()).click();
+  await click(ListCollectorPage.submit());
 }
 
 async function fillDynamicAnswers() {
   await $$(DynamicAnswerPage.inputs())[0].setValue(34);
   await $$(DynamicAnswerPage.inputs())[1].setValue(33);
   await $(DynamicAnswerPage.percentageOfShoppingElsewhere()).setValue(33);
-  await $(DynamicAnswerPage.submit()).click();
+  await click(DynamicAnswerPage.submit());
   await $(TotalBlockOtherPage.totalOther()).setValue(100);
-  await $(TotalBlockOtherPage.submit()).click();
+  await click(TotalBlockOtherPage.submit());
   await $$(DynamicAnswerOnlyPage.inputs())[0].setValue(50);
   await $$(DynamicAnswerOnlyPage.inputs())[1].setValue(50);
-  await $(DynamicAnswerOnlyPage.submit()).click();
+  await click(DynamicAnswerOnlyPage.submit());
 }
