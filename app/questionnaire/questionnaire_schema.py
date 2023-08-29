@@ -976,11 +976,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         decimal_limit = 0
         for answer_id in answer_ids:
             for answer in self.get_answers_by_answer_id(answer_id):
-                if (
-                    answer.get("decimal_places")
-                    and answer["decimal_places"] > decimal_limit
-                ):
-                    decimal_limit = answer["decimal_places"]
+                if decimal_places := answer.get("decimal_places"):
+                    if decimal_places > decimal_limit:
+                        decimal_limit = decimal_places
 
         return decimal_limit
 

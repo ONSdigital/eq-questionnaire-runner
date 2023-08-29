@@ -1,4 +1,4 @@
-from typing import Callable, Iterable, Literal, Mapping, MutableMapping, Tuple
+from typing import Callable, Iterable, Mapping, MutableMapping, Tuple
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -301,12 +301,7 @@ class CalculatedSummaryContext(Context):
                             "decimal_places": 0,
                         }
 
-                        if (
-                            answer.get("decimal_places")
-                            and answer["decimal_places"]
-                            > answer_format["decimal_places"]
-                        ):
-                            answer_format["decimal_places"] = answer["decimal_places"]
+                        self._set_decimal_places(answer, answer_format)
 
                     answer_value = answer.get("value") or 0
                     values_to_calculate.append(answer_value)
@@ -314,9 +309,15 @@ class CalculatedSummaryContext(Context):
         return answer_format, values_to_calculate
 
     @staticmethod
+    def _set_decimal_places(answer: Mapping, answer_format: dict) -> None:
+        if decimal_places := answer.get("decimal_places"):
+            if decimal_places > answer_format["decimal_places"]:
+                answer_format["decimal_places"] = decimal_places
+
+    @staticmethod
     def _format_total(
         *,
-        answer_format: Mapping[str, Literal["short", "long", "narrow"] | int],
+        answer_format: Mapping,
         total: NumericType,
     ) -> str:
         if answer_format["type"] == "currency":
