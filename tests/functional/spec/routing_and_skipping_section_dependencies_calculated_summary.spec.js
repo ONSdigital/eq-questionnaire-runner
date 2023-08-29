@@ -9,6 +9,7 @@ import SkipQuestionPage from "../generated_pages/routing_and_skipping_section_de
 import ButterPage from "../generated_pages/routing_and_skipping_section_dependencies_calculated_summary/butter-block.page";
 
 import HubPage from "../base_pages/hub.page";
+import { click } from "../helpers";
 
 describe("Routing and skipping section dependencies based on calculated summaries", () => {
   describe("Given the section dependencies based on a calculated summary questionnaire", () => {

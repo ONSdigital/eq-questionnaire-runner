@@ -27,6 +27,7 @@ import SectionSummarySectionOne from "../../../generated_pages/calculated_summar
 import SectionSummarySectionTwo from "../../../generated_pages/calculated_summary_cross_section_dependencies/calculated-summary-section-summary.page";
 import DependencyQuestionSectionTwo from "../../../generated_pages/calculated_summary_cross_section_dependencies/mutually-exclusive-checkbox.page";
 import MinMaxSectionTwo from "../../../generated_pages/calculated_summary_cross_section_dependencies/set-min-max-block.page";
+import { click } from "../../../helpers";
 
 class TestCase {
   testCase(schema) {

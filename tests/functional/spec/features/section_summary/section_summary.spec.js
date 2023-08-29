@@ -8,6 +8,7 @@ import ListedPage from "../../../generated_pages/section_summary/listed.page.js"
 import NumberOfPeoplePage from "../../../generated_pages/section_summary/number-of-people.page.js";
 import PropertyDetailsSummaryPage from "../../../generated_pages/section_summary/property-details-section-summary.page.js";
 import SubmitPage from "../../../generated_pages/section_summary/submit.page.js";
+import { click } from "../../../helpers";
 
 describe("Section Summary", () => {
   describe("Given I start a Test Section Summary survey and complete to Section Summary", () => {

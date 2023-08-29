@@ -11,6 +11,7 @@ import CurrencyAllPage from "../../../generated_pages/grand_calculated_summary_c
 import FirstNumberBlockPartAPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/first-number-block-part-a.page";
 import FourthNumberBlockPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/fourth-number-block.page";
 import tvChoiceBlockPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/tv-choice-block.page";
+import { click } from "../../../helpers";
 
 describe("Feature: Grand Calculated Summary", () => {
   describe("Given I have a Grand Calculated Summary", () => {

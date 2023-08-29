@@ -9,6 +9,7 @@ import ListCollectorRemovePage from "../../../../generated_pages/validation_sum_
 import ListCollectorEditPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers/list-collector-edit.page";
 import HubPage from "../../../../base_pages/hub.page";
 import TotalBlockOtherPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers/total-block-other.page";
+import { click } from "../../../../helpers";
 
 describe("Feature: Sum of dynamic answers based on list and optional static answers equal to validation against total ", function () {
   // These tests are flaky therefore we add a retry. The cause is unknown.

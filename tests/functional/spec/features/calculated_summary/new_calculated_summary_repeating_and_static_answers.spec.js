@@ -12,7 +12,7 @@ import ListCollectorRemovePage from "../../../generated_pages/new_calculated_sum
 import SupermarketTransportPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/supermarket-transport.page";
 import SupermarketTransportCostPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/supermarket-transport-cost.page";
 import CalculatedSummaryPipingPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/calculated-summary-piping.page";
-import { assertSummaryValues } from "../../../helpers";
+import { assertSummaryValues, click } from "../../../helpers";
 
 describe("Calculated summary with repeating answers", function () {
   // These tests are flaky therefore we add a retry. The cause is unknown.

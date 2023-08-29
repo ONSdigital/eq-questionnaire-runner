@@ -9,7 +9,7 @@ import AnyOtherCompaniesOrBranchesPage from "../../../generated_pages/list_colle
 import SectionCompaniesPage from "../../../generated_pages/list_collector_repeating_blocks_section_summary/section-companies-summary.page";
 import AnyOtherTradingDetailsPage from "../../../generated_pages/list_collector_repeating_blocks_section_summary/any-other-trading-details.page";
 import SubmitPage from "../../../generated_pages/list_collector_repeating_blocks_section_summary/submit.page";
-import { repeatingAnswerChangeLink, checkItemsInList, checkListItemComplete, checkListItemIncomplete } from "../../../helpers";
+import { repeatingAnswerChangeLink, checkItemsInList, checkListItemComplete, checkListItemIncomplete, click } from "../../../helpers";
 import HubPage from "../../../base_pages/hub.page";
 import ResponsiblePartyHubPage from "../../../generated_pages/list_collector_repeating_blocks_with_hub/responsible-party-business.page";
 

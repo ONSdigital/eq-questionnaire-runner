@@ -8,6 +8,7 @@ import SetMinimumPage from "../../generated_pages/dynamic_answers_list_source/mi
 import SectionSummaryPage from "../../generated_pages/dynamic_answers_list_source/list-collector-section-summary.page";
 import HubPage from "../../base_pages/hub.page";
 import OnlineShoppingPage from "../../generated_pages/dynamic_answers_list_source/dynamic-answer-separate-section.page";
+import { click } from "../../helpers";
 
 describe("Dynamic answers list value source", () => {
   const summaryTitles = ".ons-summary__item-title";

@@ -33,6 +33,7 @@ import SectionSummarySectionOne from "../../../generated_pages/new_calculated_su
 import SectionSummarySectionTwo from "../../../generated_pages/new_calculated_summary_cross_section_dependencies_repeating/calculated-summary-section-summary.page";
 import DependencyQuestionSectionTwo from "../../../generated_pages/new_calculated_summary_cross_section_dependencies_repeating/mutually-exclusive-checkbox.page";
 import MinMaxSectionTwo from "../../../generated_pages/new_calculated_summary_cross_section_dependencies_repeating/set-min-max-block.page";
+import { click } from "../../../helpers";
 
 describe("Feature: Calculated Summary Repeating Section", () => {
   describe("Given I have a Calculated Summary in a Repeating Section", () => {
