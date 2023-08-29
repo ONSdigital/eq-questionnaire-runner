@@ -5,6 +5,7 @@ import proxyQuestionPage from "../../../generated_pages/show_section_summary_on_
 import accommodationSectionSummary from "../../../generated_pages/show_section_summary_on_completion/accommodation-section-summary.page";
 
 import hubPage from "../../../base_pages/hub.page.js";
+import { click } from "../../../helpers";
 
 describe("Feature: Show section summary on completion", () => {
   before("Launch survey", async () => {
@@ -14,7 +15,7 @@ describe("Feature: Show section summary on completion", () => {
   describe("Given I am completing a section with the summary turned off for the forward journey", () => {
     it("When I reach the end of that section, Then I go straight to the hub", async () => {
       await $(employmentStatusBlockPage.workingAsAnEmployee()).click();
-      await $(employmentStatusBlockPage.submit()).click();
+      await click(employmentStatusBlockPage.submit());
 
       await expect(await browser.getUrl()).to.contain(hubPage.url());
     });
@@ -36,7 +37,7 @@ describe("Feature: Show section summary on completion", () => {
     it("When I reach the end of that section, Then I will be taken to the section summary to enable me to amend an answer", async () => {
       await $(hubPage.summaryRowLink("accommodation-section")).click();
       await $(proxyQuestionPage.noIMAnsweringForMyself()).click();
-      await $(proxyQuestionPage.submit()).click();
+      await click(proxyQuestionPage.submit());
 
       await expect(await browser.getUrl()).to.contain(accommodationSectionSummary.url());
     });

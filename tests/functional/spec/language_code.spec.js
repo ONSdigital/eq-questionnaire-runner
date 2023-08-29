@@ -3,6 +3,7 @@ import DobPage from "../generated_pages/language/dob-block.page";
 import NumberOfPeoplePage from "../generated_pages/language/number-of-people-block.page";
 import ConfirmNumberOfPeoplePage from "../generated_pages/language/confirm-number-of-people.page";
 import HubPage from "../base_pages/hub.page.js";
+import { click } from "../helpers";
 
 const PLURAL_TEST_DATA_SETS = [
   {
@@ -100,28 +101,28 @@ describe("Language Code", () => {
     await browser.openQuestionnaire("test_language.json", {
       language: "cy",
     });
-    await $(HubPage.submit()).click();
+    await click(HubPage.submit());
     await expect(await $(NamePage.questionText()).getText()).to.contain("Rhowch enw");
 
     await $(NamePage.firstName()).setValue("Catherine");
     await $(NamePage.lastName()).setValue("Zeta-Jones");
-    await $(NamePage.submit()).click();
+    await click(NamePage.submit());
 
     await $(DobPage.day()).setValue(25);
     await $(DobPage.month()).setValue(9);
     await $(DobPage.year()).setValue(1969);
-    await $(DobPage.submit()).click();
+    await click(DobPage.submit());
 
     await $(NumberOfPeoplePage.numberOfPeople()).setValue(0);
-    await $(NumberOfPeoplePage.submit()).click();
+    await click(NumberOfPeoplePage.submit());
     await $(ConfirmNumberOfPeoplePage.yes()).click();
-    await $(ConfirmNumberOfPeoplePage.submit()).click();
+    await click(ConfirmNumberOfPeoplePage.submit());
 
     await expect(await $(HubPage.heading()).getText()).to.contain("Teitl cyflwyno");
     await expect(await $(HubPage.warning()).getText()).to.contain("Rhybudd cyflwyno");
     await expect(await $(HubPage.guidance()).getText()).to.contain("Canllawiau cyflwyno");
     await expect(await $(HubPage.submit()).getText()).to.contain("Botwm cyflwyno");
-    await $(HubPage.submit()).click();
+    await click(HubPage.submit());
 
     await expect(await browser.getUrl()).to.contain("thank-you");
   });
@@ -131,27 +132,27 @@ describe("Language Code", () => {
       language: "en",
     });
 
-    await $(HubPage.submit()).click();
+    await click(HubPage.submit());
     await expect(await $(NamePage.questionText()).getText()).to.contain("Please enter a name");
     await $(NamePage.firstName()).setValue("Catherine");
     await $(NamePage.lastName()).setValue("Zeta-Jones");
-    await $(NamePage.submit()).click();
+    await click(NamePage.submit());
 
     await $(DobPage.day()).setValue(25);
     await $(DobPage.month()).setValue(9);
     await $(DobPage.year()).setValue(1969);
-    await $(DobPage.submit()).click();
+    await click(DobPage.submit());
 
     await $(NumberOfPeoplePage.numberOfPeople()).setValue(0);
-    await $(NumberOfPeoplePage.submit()).click();
+    await click(NumberOfPeoplePage.submit());
     await $(ConfirmNumberOfPeoplePage.yes()).click();
-    await $(ConfirmNumberOfPeoplePage.submit()).click();
+    await click(ConfirmNumberOfPeoplePage.submit());
 
     await expect(await $(HubPage.heading()).getText()).to.contain("Submission title");
     await expect(await $(HubPage.warning()).getText()).to.contain("Submission warning");
     await expect(await $(HubPage.guidance()).getText()).to.contain("Submission guidance");
     await expect(await $(HubPage.submit()).getText()).to.contain("Submission button");
-    await $(HubPage.submit()).click();
+    await click(HubPage.submit());
 
     await expect(await browser.getUrl()).to.contain("thank-you");
   });
@@ -161,7 +162,7 @@ describe("Language Code", () => {
       language: "en",
     });
 
-    await $(HubPage.submit()).click();
+    await click(HubPage.submit());
     await expect(await $(NamePage.questionText()).getText()).to.contain("Please enter a name");
     await expect(await $("header").getText()).to.contain("Test Language Survey");
     await $(NamePage.switchLanguage("cy")).click();
@@ -171,17 +172,17 @@ describe("Language Code", () => {
 
     await $(NamePage.firstName()).setValue("Catherine");
     await $(NamePage.lastName()).setValue("Zeta-Jones");
-    await $(NamePage.submit()).click();
+    await click(NamePage.submit());
 
     await $(DobPage.day()).setValue(25);
     await $(DobPage.month()).setValue(9);
     await $(DobPage.year()).setValue(1969);
-    await $(DobPage.submit()).click();
+    await click(DobPage.submit());
 
     await $(NumberOfPeoplePage.numberOfPeople()).setValue(0);
-    await $(NumberOfPeoplePage.submit()).click();
+    await click(NumberOfPeoplePage.submit());
     await $(ConfirmNumberOfPeoplePage.yes()).click();
-    await $(ConfirmNumberOfPeoplePage.submit()).click();
+    await click(ConfirmNumberOfPeoplePage.submit());
 
     await expect(await $(HubPage.heading()).getText()).to.contain("Submission title");
     await expect(await $(HubPage.warning()).getText()).to.contain("Submission warning");
@@ -192,7 +193,7 @@ describe("Language Code", () => {
     await expect(await $(HubPage.warning()).getText()).to.contain("Rhybudd cyflwyno");
     await expect(await $(HubPage.guidance()).getText()).to.contain("Canllawiau cyflwyno");
     await expect(await $(HubPage.submit()).getText()).to.contain("Botwm cyflwyno");
-    await $(HubPage.submit()).click();
+    await click(HubPage.submit());
 
     await expect(await browser.getUrl()).to.contain("thank-you");
   });
@@ -202,7 +203,7 @@ describe("Language Code", () => {
       language: "cy",
     });
 
-    await $(HubPage.submit()).click();
+    await click(HubPage.submit());
     await expect(await $(NamePage.questionText()).getText()).to.contain("Rhowch enw");
     await $(NamePage.switchLanguage("en")).click();
     await expect(await $(NamePage.questionText()).getText()).to.contain("Please enter a name");
@@ -217,19 +218,19 @@ describe("Language Code", () => {
           language: "en",
         });
 
-        await $(HubPage.submit()).click();
+        await click(HubPage.submit());
         await expect(await $(NamePage.questionText()).getText()).to.contain("Please enter a name");
         await $(NamePage.firstName()).setValue("Catherine");
         await $(NamePage.lastName()).setValue("Zeta-Jones");
-        await $(NamePage.submit()).click();
+        await click(NamePage.submit());
 
         await $(DobPage.day()).setValue(25);
         await $(DobPage.month()).setValue(9);
         await $(DobPage.year()).setValue(1969);
-        await $(DobPage.submit()).click();
+        await click(DobPage.submit());
 
         await $(NumberOfPeoplePage.numberOfPeople()).setValue(numberOfPeople);
-        await $(NumberOfPeoplePage.submit()).click();
+        await click(NumberOfPeoplePage.submit());
 
         await expect(await $(ConfirmNumberOfPeoplePage.questionText()).getText()).to.contain(dataSet.question_title.en);
         await expect(await $(ConfirmNumberOfPeoplePage.yesLabel()).getText()).to.contain(dataSet.answer.en);
@@ -240,7 +241,7 @@ describe("Language Code", () => {
         await expect(await $(ConfirmNumberOfPeoplePage.yesLabel()).getText()).to.contain(dataSet.answer.cy);
 
         await $(ConfirmNumberOfPeoplePage.yes()).click();
-        await $(ConfirmNumberOfPeoplePage.submit()).click();
+        await click(ConfirmNumberOfPeoplePage.submit());
       });
     }
   });

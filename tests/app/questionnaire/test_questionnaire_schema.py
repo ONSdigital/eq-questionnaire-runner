@@ -28,6 +28,25 @@ def test_schema_json_is_immutable_and_hashable(question_schema):
     assert_all_dict_values_are_hashable(json)
 
 
+def test_schema_min_max_populate():
+    schema = load_schema_from_name("test_numbers")
+    assert schema.min_and_max_map == {
+        "set-minimum": {"maximum": 4, "minimum": 5},
+        "set-maximum": {"maximum": 5, "minimum": 4},
+        "test-range": {"maximum": 5, "minimum": 5},
+        "test-range-exclusive": {"maximum": 5, "minimum": 5},
+        "test-min": {"maximum": 15, "minimum": 4},
+        "test-max": {"maximum": 4, "minimum": 1},
+        "test-min-exclusive": {"maximum": 15, "minimum": 3},
+        "test-max-exclusive": {"maximum": 4, "minimum": 1},
+        "test-percent": {"maximum": 3, "minimum": 1},
+        "test-decimal": {"maximum": 5, "minimum": 5},
+        "other-answer": {"maximum": 5, "minimum": 1},
+        "first-number-answer": {"maximum": 4, "minimum": 2},
+        "second-number-answer": {"maximum": 5, "minimum": 3},
+    }
+
+
 def test_schema_attributes_returns_hashable_values(question_schema):
     schema = QuestionnaireSchema(question_schema)
     for section in schema.get_sections():
@@ -635,8 +654,8 @@ def test_answer_dependencies_for_min_max(numbers_schema):
         },
         "set-maximum": {
             AnswerDependent(
-                section_id="default-section",
-                block_id="detail-answer-block",
+                section_id="currency-section",
+                block_id="second-number-block",
                 for_list=None,
                 answer_id=None,
             ),
@@ -646,6 +665,22 @@ def test_answer_dependencies_for_min_max(numbers_schema):
                 for_list=None,
                 answer_id=None,
             ),
+        },
+        "test-range": {
+            AnswerDependent(
+                section_id="default-section",
+                block_id="detail-answer-block",
+                for_list=None,
+                answer_id=None,
+            )
+        },
+        "first-number-answer": {
+            AnswerDependent(
+                section_id="currency-section",
+                block_id="second-number-block",
+                for_list=None,
+                answer_id=None,
+            )
         },
     }
 

@@ -1,7 +1,7 @@
 import DefaultInstructionPage from "../../../generated_pages/checkbox_instruction/default-instruction-checkbox.page";
 import NoInstructionPage from "../../../generated_pages/checkbox_instruction/no-instruction-checkbox.page";
 import CustomInstructionPage from "../../../generated_pages/checkbox_instruction/custom-instruction-checkbox.page";
-
+import { click } from "../../../helpers";
 describe("Given the checkbox label variants questionnaire,", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_checkbox_instruction.json");
@@ -11,23 +11,23 @@ describe("Given the checkbox label variants questionnaire,", () => {
   });
   it("Given an instruction has been set to null in the schema for a checkbox answer, When the checkbox answer is displayed, Then the instruction should not be visible", async () => {
     await $(DefaultInstructionPage.red()).click();
-    await $(DefaultInstructionPage.submit()).click();
+    await click(DefaultInstructionPage.submit());
     await expect(await $("body").getText()).to.not.have.string("Select all that apply");
   });
   it("Given a custom instruction has been set in the schema for a checkbox answer, When the checkbox answer is displayed, Then the custom instruction should be visible", async () => {
     await $(DefaultInstructionPage.red()).click();
-    await $(DefaultInstructionPage.submit()).click();
+    await click(DefaultInstructionPage.submit());
     await $(NoInstructionPage.rugby()).click();
-    await $(NoInstructionPage.submit()).click();
+    await click(NoInstructionPage.submit());
     await expect(await $("body").getText()).to.have.string("Select your answer");
   });
   it("Given a label and custom instruction have been set in the schema for a checkbox answer, When the checkbox answer is displayed, Then both the custom instruction and label should be visible", async () => {
     await $(DefaultInstructionPage.red()).click();
-    await $(DefaultInstructionPage.submit()).click();
+    await click(DefaultInstructionPage.submit());
     await $(NoInstructionPage.rugby()).click();
-    await $(NoInstructionPage.submit()).click();
+    await click(NoInstructionPage.submit());
     await $(CustomInstructionPage.monday()).click();
-    await $(CustomInstructionPage.submit()).click();
+    await click(CustomInstructionPage.submit());
     await expect(await $("body").getText()).to.have.string("Days of the Week");
     await expect(await $("body").getText()).to.have.string("Select your answer");
   });

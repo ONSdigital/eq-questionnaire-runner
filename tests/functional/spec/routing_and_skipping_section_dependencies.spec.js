@@ -19,6 +19,7 @@ import RepeatingIsDependentPage from "../generated_pages/routing_and_skipping_se
 import RepeatingIsSmokerPage from "../generated_pages/routing_and_skipping_section_dependencies/repeating-is-smoker.page";
 
 import HubPage from "../base_pages/hub.page";
+import { click } from "../helpers";
 
 describe("Routing and skipping section dependencies", () => {
   describe("Given the routing and skipping section dependencies questionnaire", () => {
@@ -87,25 +88,25 @@ describe("Routing and skipping section dependencies", () => {
 
       await $(HubPage.summaryRowLink("household-personal-details-section-1")).click();
       await $(RepeatingSexPage.female()).click();
-      await $(RepeatingSexPage.submit()).click();
+      await click(RepeatingSexPage.submit());
       await $(RepeatingAgePage.answer()).setValue("45");
-      await $(RepeatingAgePage.submit()).click();
+      await click(RepeatingAgePage.submit());
       await $(RepeatingIsDependentPage.no()).click();
-      await $(RepeatingIsDependentPage.submit()).click();
+      await click(RepeatingIsDependentPage.submit());
       await $(RepeatingIsSmokerPage.no()).click();
-      await $(RepeatingIsSmokerPage.submit()).click();
+      await click(RepeatingIsSmokerPage.submit());
 
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Female");
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).to.contain("45");
 
-      await $(HouseHoldPersonalDetailsSectionSummaryPage.submit()).click();
+      await click(HouseHoldPersonalDetailsSectionSummaryPage.submit());
       await $(HubPage.summaryRowLink("household-personal-details-section-2")).click();
       await $(RepeatingSexPage.male()).click();
-      await $(RepeatingSexPage.submit()).click();
+      await click(RepeatingSexPage.submit());
       await $(RepeatingAgePage.answer()).setValue("10");
-      await $(RepeatingAgePage.submit()).click();
+      await click(RepeatingAgePage.submit());
       await $(RepeatingIsDependentPage.yes()).click();
-      await $(RepeatingIsDependentPage.submit()).click();
+      await click(RepeatingIsDependentPage.submit());
 
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Male");
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).to.contain("10");
@@ -118,18 +119,18 @@ describe("Routing and skipping section dependencies", () => {
 
       await $(HubPage.summaryRowLink("household-personal-details-section-1")).click();
       await $(RepeatingSexPage.female()).click();
-      await $(RepeatingSexPage.submit()).click();
+      await click(RepeatingSexPage.submit());
       await $(RepeatingIsDependentPage.no()).click();
-      await $(RepeatingIsDependentPage.submit()).click();
+      await click(RepeatingIsDependentPage.submit());
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Female");
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).isExisting()).to.be.false;
 
-      await $(HouseHoldPersonalDetailsSectionSummaryPage.submit()).click();
+      await click(HouseHoldPersonalDetailsSectionSummaryPage.submit());
       await $(HubPage.summaryRowLink("household-personal-details-section-2")).click();
       await $(RepeatingSexPage.male()).click();
-      await $(RepeatingSexPage.submit()).click();
+      await click(RepeatingSexPage.submit());
       await $(RepeatingIsDependentPage.yes()).click();
-      await $(RepeatingIsDependentPage.submit()).click();
+      await click(RepeatingIsDependentPage.submit());
 
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Male");
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).isExisting()).to.be.false;
@@ -182,7 +183,7 @@ describe("Routing and skipping section dependencies", () => {
       await answerAndSubmitAgeQuestion();
 
       await $(ReasonNoConfirmationPage.iDidButItWasRemovedFromThePathAsIChangedMyAnswerToNoOnTheSkipQuestion()).click();
-      await $(ReasonNoConfirmationPage.submit()).click();
+      await click(ReasonNoConfirmationPage.submit());
 
       await expectPersonalDetailsName();
       await expectPersonalDetailsAge();
@@ -202,7 +203,7 @@ describe("Routing and skipping section dependencies", () => {
       await selectPrimaryPerson();
       await answerAndSubmitNameQuestion();
       await answerAndSubmitReasonForNoConfirmationQuestion();
-      await $(PrimaryPersonSummaryPage.submit()).click();
+      await click(PrimaryPersonSummaryPage.submit());
 
       await expect(await $(HubPage.summaryRowState("primary-person")).getText()).to.equal("Completed");
 
@@ -228,10 +229,10 @@ describe("Routing and skipping section dependencies", () => {
       await addHouseholdMembers();
       await $(HubPage.summaryRowLink("household-personal-details-section-1")).click();
       await $(RepeatingSexPage.female()).click();
-      await $(RepeatingSexPage.submit()).click();
+      await click(RepeatingSexPage.submit());
       await $(RepeatingIsDependentPage.no()).click();
-      await $(RepeatingIsDependentPage.submit()).click();
-      await $(HouseHoldPersonalDetailsSectionSummaryPage.submit()).click();
+      await click(RepeatingIsDependentPage.submit());
+      await click(HouseHoldPersonalDetailsSectionSummaryPage.submit());
 
       await editNoToSkipAgeQuestion();
 
@@ -259,28 +260,28 @@ describe("Routing and skipping section dependencies", () => {
 
       await $(HubPage.summaryRowLink("household-personal-details-section-1")).click();
       await $(RepeatingSexPage.female()).click();
-      await $(RepeatingSexPage.submit()).click();
+      await click(RepeatingSexPage.submit());
       await $(RepeatingAgePage.answer()).setValue("45");
-      await $(RepeatingAgePage.submit()).click();
+      await click(RepeatingAgePage.submit());
       await $(RepeatingIsDependentPage.no()).click();
-      await $(RepeatingIsDependentPage.submit()).click();
+      await click(RepeatingIsDependentPage.submit());
       await $(RepeatingIsSmokerPage.no()).click();
-      await $(RepeatingIsSmokerPage.submit()).click();
+      await click(RepeatingIsSmokerPage.submit());
 
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Female");
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).to.contain("45");
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).getText()).to.contain("No");
 
-      await $(HouseHoldPersonalDetailsSectionSummaryPage.submit()).click();
+      await click(HouseHoldPersonalDetailsSectionSummaryPage.submit());
       await $(HubPage.summaryRowLink("household-personal-details-section-2")).click();
       await $(RepeatingSexPage.male()).click();
-      await $(RepeatingSexPage.submit()).click();
+      await click(RepeatingSexPage.submit());
       await $(RepeatingAgePage.answer()).setValue("19");
-      await $(RepeatingAgePage.submit()).click();
+      await click(RepeatingAgePage.submit());
       await $(RepeatingIsDependentPage.yes()).click();
-      await $(RepeatingIsDependentPage.submit()).click();
+      await click(RepeatingIsDependentPage.submit());
       await $(RepeatingIsSmokerPage.no()).click();
-      await $(RepeatingIsSmokerPage.submit()).click();
+      await click(RepeatingIsSmokerPage.submit());
 
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Male");
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).to.contain("19");
@@ -294,24 +295,24 @@ describe("Routing and skipping section dependencies", () => {
 
       await $(HubPage.summaryRowLink("household-personal-details-section-1")).click();
       await $(RepeatingSexPage.female()).click();
-      await $(RepeatingSexPage.submit()).click();
+      await click(RepeatingSexPage.submit());
       await $(RepeatingAgePage.answer()).setValue("15");
-      await $(RepeatingAgePage.submit()).click();
+      await click(RepeatingAgePage.submit());
       await $(RepeatingIsDependentPage.yes()).click();
-      await $(RepeatingIsDependentPage.submit()).click();
+      await click(RepeatingIsDependentPage.submit());
 
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Female");
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).to.contain("15");
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).isExisting()).to.be.false;
 
-      await $(HouseHoldPersonalDetailsSectionSummaryPage.submit()).click();
+      await click(HouseHoldPersonalDetailsSectionSummaryPage.submit());
       await $(HubPage.summaryRowLink("household-personal-details-section-2")).click();
       await $(RepeatingSexPage.male()).click();
-      await $(RepeatingSexPage.submit()).click();
+      await click(RepeatingSexPage.submit());
       await $(RepeatingAgePage.answer()).setValue("10");
-      await $(RepeatingAgePage.submit()).click();
+      await click(RepeatingAgePage.submit());
       await $(RepeatingIsDependentPage.yes()).click();
-      await $(RepeatingIsDependentPage.submit()).click();
+      await click(RepeatingIsDependentPage.submit());
 
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Male");
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).to.contain("10");
@@ -325,19 +326,19 @@ describe("Routing and skipping section dependencies", () => {
 
       await $(HubPage.summaryRowLink("household-personal-details-section-1")).click();
       await $(RepeatingSexPage.female()).click();
-      await $(RepeatingSexPage.submit()).click();
+      await click(RepeatingSexPage.submit());
       await $(RepeatingIsDependentPage.no()).click();
-      await $(RepeatingIsDependentPage.submit()).click();
+      await click(RepeatingIsDependentPage.submit());
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Female");
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).isExisting()).to.be.false;
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).isExisting()).to.be.false;
 
-      await $(HouseHoldPersonalDetailsSectionSummaryPage.submit()).click();
+      await click(HouseHoldPersonalDetailsSectionSummaryPage.submit());
       await $(HubPage.summaryRowLink("household-personal-details-section-2")).click();
       await $(RepeatingSexPage.male()).click();
-      await $(RepeatingSexPage.submit()).click();
+      await click(RepeatingSexPage.submit());
       await $(RepeatingIsDependentPage.yes()).click();
-      await $(RepeatingIsDependentPage.submit()).click();
+      await click(RepeatingIsDependentPage.submit());
 
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Male");
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).isExisting()).to.be.false;
@@ -349,18 +350,18 @@ describe("Routing and skipping section dependencies", () => {
 const addHouseholdMembers = async () => {
   await $(HubPage.summaryRowLink("household-section")).click();
   await $(ListCollectorPage.yes()).click();
-  await $(ListCollectorPage.submit()).click();
+  await click(ListCollectorPage.submit());
   await $(ListCollectorAddPage.firstName()).setValue("Sarah");
   await $(ListCollectorAddPage.lastName()).setValue("Smith");
-  await $(ListCollectorAddPage.submit()).click();
+  await click(ListCollectorAddPage.submit());
   await $(ListCollectorPage.yes()).click();
-  await $(ListCollectorPage.submit()).click();
+  await click(ListCollectorPage.submit());
   await $(ListCollectorAddPage.firstName()).setValue("Marcus");
   await $(ListCollectorAddPage.lastName()).setValue("Smith");
-  await $(ListCollectorAddPage.submit()).click();
+  await click(ListCollectorAddPage.submit());
   await $(ListCollectorPage.no()).click();
-  await $(ListCollectorPage.submit()).click();
-  await $(HouseholdSectionSummaryPage.submit()).click();
+  await click(ListCollectorPage.submit());
+  await click(HouseholdSectionSummaryPage.submit());
 };
 
 const selectPrimaryPerson = async () => {
@@ -370,102 +371,102 @@ const selectPrimaryPerson = async () => {
 const selectConfirmationSectionAndAnswerSecurityQuestion = async () => {
   await $(HubPage.summaryRowLink("skip-confirmation-section")).click();
   await $(SecurityPage.yes()).click();
-  await $(SecurityPage.submit()).click();
+  await click(SecurityPage.submit());
 };
 
 const answerYesToSkipAgeQuestion = async () => {
   await $(HubPage.summaryRowLink("skip-section")).click();
   await $(SkipAgePage.yes()).click();
-  await $(SkipAgePage.submit()).click();
+  await click(SkipAgePage.submit());
   await $(SkipEnableSectionPage.no()).click();
-  await $(SkipEnableSectionPage.submit()).click();
+  await click(SkipEnableSectionPage.submit());
   await $(EnableSectionPage.yes()).click();
-  await $(EnableSectionPage.submit()).click();
-  await $(SkipSectionSummaryPage.submit()).click();
+  await click(EnableSectionPage.submit());
+  await click(SkipSectionSummaryPage.submit());
 };
 
 const editNoToSkipAgeQuestion = async () => {
   await $(HubPage.summaryRowLink("skip-section")).click();
   await $(SkipSectionSummaryPage.skipAgeAnswerEdit()).click();
   await $(SkipAgePage.no()).click();
-  await $(SkipAgePage.submit()).click();
-  await $(SkipSectionSummaryPage.submit()).click();
+  await click(SkipAgePage.submit());
+  await click(SkipSectionSummaryPage.submit());
 };
 
 const editYesToSkipAgeQuestion = async () => {
   await $(HubPage.summaryRowLink("skip-section")).click();
   await $(SkipSectionSummaryPage.skipAgeAnswerEdit()).click();
   await $(SkipAgePage.yes()).click();
-  await $(SkipAgePage.submit()).click();
-  await $(SkipSectionSummaryPage.submit()).click();
+  await click(SkipAgePage.submit());
+  await click(SkipSectionSummaryPage.submit());
 };
 
 const answerNoToSkipAgeQuestion = async () => {
   await $(HubPage.summaryRowLink("skip-section")).click();
   await $(SkipAgePage.no()).click();
-  await $(SkipAgePage.submit()).click();
+  await click(SkipAgePage.submit());
   await $(SkipEnableSectionPage.no()).click();
-  await $(SkipEnableSectionPage.submit()).click();
+  await click(SkipEnableSectionPage.submit());
   await $(EnableSectionPage.yes()).click();
-  await $(EnableSectionPage.submit()).click();
-  await $(SkipSectionSummaryPage.submit()).click();
+  await click(EnableSectionPage.submit());
+  await click(SkipSectionSummaryPage.submit());
 };
 
 const answerNoToSkipConfirmationQuestion = async () => {
   await $(SkipConfirmationPage.no()).click();
-  await $(SkipConfirmationPage.submit()).click();
-  await $(SkipConfirmationSectionSummaryPage.submit()).click();
+  await click(SkipConfirmationPage.submit());
+  await click(SkipConfirmationSectionSummaryPage.submit());
 };
 
 const answerYesToSkipConfirmationQuestion = async () => {
   await $(SkipConfirmationPage.yes()).click();
-  await $(SkipConfirmationPage.submit()).click();
-  await $(SkipConfirmationSectionSummaryPage.submit()).click();
+  await click(SkipConfirmationPage.submit());
+  await click(SkipConfirmationSectionSummaryPage.submit());
 };
 
 const answerNoToSkipEnableQuestionAndYesToEnableSection = async () => {
   await $(HubPage.summaryRowLink("skip-section")).click();
   await $(SkipAgePage.no()).click();
-  await $(SkipAgePage.submit()).click();
+  await click(SkipAgePage.submit());
   await $(SkipEnableSectionPage.no()).click();
-  await $(SkipEnableSectionPage.submit()).click();
+  await click(SkipEnableSectionPage.submit());
   await $(EnableSectionPage.yes()).click();
-  await $(EnableSectionPage.submit()).click();
-  await $(SkipSectionSummaryPage.submit()).click();
+  await click(EnableSectionPage.submit());
+  await click(SkipSectionSummaryPage.submit());
 };
 
 const answerNoToSkipEnableQuestionAndNoToEnableSection = async () => {
   await $(HubPage.summaryRowLink("skip-section")).click();
   await $(SkipAgePage.no()).click();
-  await $(SkipAgePage.submit()).click();
+  await click(SkipAgePage.submit());
   await $(SkipEnableSectionPage.no()).click();
-  await $(SkipEnableSectionPage.submit()).click();
+  await click(SkipEnableSectionPage.submit());
   await $(EnableSectionPage.no()).click();
-  await $(EnableSectionPage.submit()).click();
-  await $(SkipSectionSummaryPage.submit()).click();
+  await click(EnableSectionPage.submit());
+  await click(SkipSectionSummaryPage.submit());
 };
 
 const changeSkipEnableQuestionToYes = async () => {
   await $(HubPage.summaryRowLink("skip-section")).click();
   await $(SkipSectionSummaryPage.skipHouseholdSectionAnswerEdit()).click();
   await $(SkipEnableSectionPage.yes()).click();
-  await $(SkipEnableSectionPage.submit()).click();
-  await $(SkipSectionSummaryPage.submit()).click();
+  await click(SkipEnableSectionPage.submit());
+  await click(SkipSectionSummaryPage.submit());
 };
 
 const answerAndSubmitNameQuestion = async () => {
   await $(NamePage.name()).setValue("John Smith");
-  await $(NamePage.submit()).click();
+  await click(NamePage.submit());
 };
 
 const answerAndSubmitAgeQuestion = async () => {
   await $(AgePage.answer()).setValue("50");
-  await $(AgePage.submit()).click();
+  await click(AgePage.submit());
 };
 
 const answerAndSubmitReasonForNoConfirmationQuestion = async () => {
   await $(ReasonNoConfirmationPage.iDidNotVisitSection2SoConfirmationWasNotNeeded()).click();
-  await $(ReasonNoConfirmationPage.submit()).click();
+  await click(ReasonNoConfirmationPage.submit());
 };
 
 const expectPersonalDetailsName = async () => {

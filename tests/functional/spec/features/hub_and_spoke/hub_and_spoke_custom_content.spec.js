@@ -2,7 +2,7 @@ import HouseholdSummary from "../../../generated_pages/hub_and_spoke_custom_cont
 import HowManyPeopleLiveHere from "../../../generated_pages/hub_and_spoke_custom_content/how-many-people-live-here.page.js";
 import DoesAnyoneLiveHere from "../../../generated_pages/hub_and_spoke_custom_content/does-anyone-live-here.page.js";
 import HubPage from "../../../base_pages/hub.page.js";
-
+import { click } from "../../../helpers";
 describe("Feature: Hub and Spoke with custom content", () => {
   const hubAndSpokeSchema = "test_hub_and_spoke_custom_content.json";
 
@@ -18,10 +18,10 @@ describe("Feature: Hub and Spoke with custom content", () => {
     await browser.openQuestionnaire(hubAndSpokeSchema);
     await $(HubPage.summaryRowLink("household-section")).click();
     await $(DoesAnyoneLiveHere.yes()).click();
-    await $(DoesAnyoneLiveHere.submit()).click();
+    await click(DoesAnyoneLiveHere.submit());
     await $(HowManyPeopleLiveHere.answer1()).click();
-    await $(HowManyPeopleLiveHere.submit()).click();
-    await $(HouseholdSummary.submit()).click();
+    await click(HowManyPeopleLiveHere.submit());
+    await click(HouseholdSummary.submit());
     await expect(await $(HubPage.heading()).getText()).to.contain("Submission title");
     await expect(await $(HubPage.guidance()).getText()).to.contain("Submission guidance");
     await expect(await $(HubPage.submit()).getText()).to.contain("Submission button");

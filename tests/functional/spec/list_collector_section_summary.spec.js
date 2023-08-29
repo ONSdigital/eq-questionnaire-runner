@@ -10,7 +10,7 @@ import HouseholderCheckboxPage from "../generated_pages/list_collector_section_s
 import SubmitPage from "../generated_pages/list_collector_section_summary/submit.page";
 import ThankYouPage from "../base_pages/thank-you.page";
 import ViewSubmittedResponsePage from "../generated_pages/list_collector_section_summary/view-submitted-response.page";
-import { listItemIds } from "../helpers";
+import { click, listItemIds } from "../helpers";
 
 describe("List Collector Section Summary and Summary Items", () => {
   describe("Given I launch the test list collector section summary items survey", () => {
@@ -124,7 +124,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await expect(await $(companiesListRowItem(1, 1)).getText()).to.contain("Company A");
       await $(SectionSummaryPage.companiesListEditLink(1)).click();
       await $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).setValue("Changed Company");
-      await $(AnyCompaniesOrBranchesAddPage.submit()).click();
+      await click(AnyCompaniesOrBranchesAddPage.submit());
       await expect(await browser.getUrl()).to.contain(SectionSummaryPage.url());
       await expect(await $(companiesListRowItem(1, 1)).getText()).to.contain("Changed Company");
     });
@@ -251,12 +251,12 @@ describe("List Collector Section Summary and Summary Items", () => {
       await expect(await browser.getUrl()).to.contain(UkBasedPage.url());
       await answerUkBasedQuestion();
       await expect(await browser.getUrl()).to.contain(SectionSummaryPage.url());
-      await $(SectionSummaryPage.submit()).click();
+      await click(SectionSummaryPage.submit());
       await $(ListCollectorPage.no()).click();
-      await $(ListCollectorPage.submit()).click();
+      await click(ListCollectorPage.submit());
       await $(HouseholderCheckboxPage.no()).click();
-      await $(HouseholderCheckboxPage.submit()).click();
-      await $(SectionSummaryTwoPage.submit()).click();
+      await click(HouseholderCheckboxPage.submit());
+      await click(SectionSummaryTwoPage.submit());
 
       await expect(await browser.getUrl()).to.contain(SubmitPage.url());
       await expect(await $(companiesListRowItem(1, 1)).getText()).to.contain("Company A");
@@ -284,13 +284,13 @@ describe("List Collector Section Summary and Summary Items", () => {
       await expect(await browser.getUrl()).to.contain(UkBasedPage.url());
       await answerUkBasedQuestion();
       await expect(await browser.getUrl()).to.contain(SectionSummaryPage.url());
-      await $(SectionSummaryPage.submit()).click();
+      await click(SectionSummaryPage.submit());
       await $(ListCollectorPage.no()).click();
-      await $(ListCollectorPage.submit()).click();
+      await click(ListCollectorPage.submit());
       await $(HouseholderCheckboxPage.no()).click();
-      await $(HouseholderCheckboxPage.submit()).click();
-      await $(SectionSummaryTwoPage.submit()).click();
-      await $(SubmitPage.submit()).click();
+      await click(HouseholderCheckboxPage.submit());
+      await click(SectionSummaryTwoPage.submit());
+      await click(SubmitPage.submit());
       await expect(await $(ThankYouPage.title()).getHTML()).to.contain("Thank you for completing the Test");
       await $(ThankYouPage.savePrintAnswersLink()).click();
 
@@ -310,12 +310,12 @@ describe("List Collector Section Summary and Summary Items", () => {
 
 const drivingQuestionYes = async () => {
   await $(AnyCompaniesOrBranchesDrivingQuestionPage.yes()).click();
-  await $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
+  await click(AnyCompaniesOrBranchesDrivingQuestionPage.submit());
 };
 
 const drivingQuestionNo = async () => {
   await $(AnyCompaniesOrBranchesDrivingQuestionPage.no()).click();
-  await $(AnyCompaniesOrBranchesDrivingQuestionPage.submit()).click();
+  await click(AnyCompaniesOrBranchesDrivingQuestionPage.submit());
 };
 
 const addCompany = async (name, number, authorised) => {
@@ -326,28 +326,28 @@ const addCompany = async (name, number, authorised) => {
   } else {
     await $(AnyCompaniesOrBranchesAddPage.authorisedInsurerRadioNo()).click();
   }
-  await $(AnyCompaniesOrBranchesAddPage.submit()).click();
+  await click(AnyCompaniesOrBranchesAddPage.submit());
 };
 
 const anyMoreCompaniesYes = async () => {
   await $(AnyCompaniesOrBranchesPage.yes()).click();
-  await $(AnyCompaniesOrBranchesPage.submit()).click();
+  await click(AnyCompaniesOrBranchesPage.submit());
 };
 
 const anyMoreCompaniesNo = async () => {
   await $(AnyCompaniesOrBranchesPage.no()).click();
-  await $(AnyCompaniesOrBranchesPage.submit()).click();
+  await click(AnyCompaniesOrBranchesPage.submit());
 };
 
 const removeFirstCompany = async () => {
   await $(SectionSummaryPage.companiesListRemoveLink(1)).click();
   await $(AnyCompaniesOrBranchesRemovePage.yes()).click();
-  await $(AnyCompaniesOrBranchesRemovePage.submit()).click();
+  await click(AnyCompaniesOrBranchesRemovePage.submit());
 };
 
 const answerUkBasedQuestion = async () => {
   await $(UkBasedPage.yes()).click();
-  await $(UkBasedPage.submit()).click();
+  await click(UkBasedPage.submit());
 };
 
 const companiesListRowItem = (row, index) => {

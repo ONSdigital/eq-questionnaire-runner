@@ -1,5 +1,6 @@
 import AboutYou from "../generated_pages/multiple_answers/about-you-block.page";
 import BlockPage from "../generated_pages/percentage/block.page";
+import { click } from "../helpers";
 
 async function answerAllButOne() {
   await $(AboutYou.textfield()).setValue("John Doe");
@@ -44,7 +45,7 @@ describe("Error Messages", () => {
       14: "Enter an answer",
     };
 
-    await $(AboutYou.submit()).click();
+    await click(AboutYou.submit());
     await expect(await $(AboutYou.errorHeader()).getText()).to.equal("There are 14 problems with your answer");
 
     for (const [index, errorMessage] of Object.entries(errorMessageMap)) {
@@ -53,7 +54,7 @@ describe("Error Messages", () => {
   });
 
   it("Given a question has errors, When errors are displayed, Then the error message for each answer is correct", async () => {
-    await $(AboutYou.submit()).click();
+    await click(AboutYou.submit());
 
     await expect(await $(AboutYou.textfieldErrorItem()).getText()).to.equal("Enter an answer");
     await expect(await $(AboutYou.dateErrorItem()).getText()).to.equal("Enter a date");
@@ -72,26 +73,26 @@ describe("Error Messages", () => {
   });
 
   it("Given a question has multiple errors, When the errors are displayed, Then the error messages are in a numbered list", async () => {
-    await $(AboutYou.submit()).click();
+    await click(AboutYou.submit());
     await expect(await $(AboutYou.errorList()).isDisplayed()).to.be.true;
   });
 
   it("Given a question has 1 error, When the error is displayed, Then error message isn't in a numbered list", async () => {
     await answerAllButOne();
 
-    await $(AboutYou.submit()).click();
+    await click(AboutYou.submit());
     await expect(await $(AboutYou.singleErrorLink()).isDisplayed()).to.be.true;
   });
 
   it("Given a question has 1 error, When the error is displayed, Then error header is correct", async () => {
     await answerAllButOne();
 
-    await $(AboutYou.submit()).click();
+    await click(AboutYou.submit());
     await expect(await $(AboutYou.errorHeader()).getText()).to.equal("There is a problem with your answer");
   });
 
   it("Given a question has errors, When an error message is clicked, Then the correct answer is focused", async () => {
-    await $(AboutYou.submit()).click();
+    await click(AboutYou.submit());
 
     await $(AboutYou.errorNumber(1)).click();
     await expect(await $(AboutYou.textfield()).isFocused()).to.be.true;
@@ -142,13 +143,13 @@ describe("Error Message NaN value", () => {
   });
   it("Given a NaN value was entered on percentage question, When the error is displayed, Then the error message is correct", async () => {
     await $(BlockPage.answer()).setValue("NaN");
-    await $(BlockPage.submit()).click();
+    await click(BlockPage.submit());
     await expect(await $(BlockPage.errorHeader()).getText()).to.equal("There is a problem with your answer");
     await expect(await $(BlockPage.answerErrorItem()).getText()).to.equal("Enter a number");
   });
   it("Given a NaN value with separators was entered on percentage question, When the error is displayed, Then the error message is correct", async () => {
     await $(BlockPage.answer()).setValue(",NaN_");
-    await $(BlockPage.submit()).click();
+    await click(BlockPage.submit());
     await expect(await $(BlockPage.errorHeader()).getText()).to.equal("There is a problem with your answer");
     await expect(await $(BlockPage.answerErrorItem()).getText()).to.equal("Enter a number");
   });

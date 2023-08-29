@@ -1,5 +1,6 @@
 import DurationPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-duration.page";
 import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-duration-section-summary.page";
+import { click } from "../../../../helpers";
 
 describe("Component: Mutually Exclusive Duration With Single Checkbox Override", () => {
   beforeEach(async () => {
@@ -25,7 +26,7 @@ describe("Component: Mutually Exclusive Duration With Single Checkbox Override",
       await expect(await $(DurationPage.durationYears()).getValue()).to.contain("");
       await expect(await $(DurationPage.durationMonths()).getValue()).to.contain("");
 
-      await $(DurationPage.submit()).click();
+      await click(DurationPage.submit());
 
       await expect(await $(SummaryPage.durationExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
       await expect(await $(SummaryPage.durationExclusiveAnswer()).getText()).to.not.have.string("1 year 7 months");
@@ -47,7 +48,7 @@ describe("Component: Mutually Exclusive Duration With Single Checkbox Override",
       await expect(await $(DurationPage.durationMonths()).getValue()).to.contain("7");
       await expect(await $(DurationPage.durationExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
-      await $(DurationPage.submit()).click();
+      await click(DurationPage.submit());
 
       await expect(await $(SummaryPage.durationAnswer()).getText()).to.have.string("1 year 7 months");
       await expect(await $(SummaryPage.durationAnswer()).getText()).to.not.have.string("I prefer not to say");
@@ -68,7 +69,7 @@ describe("Component: Mutually Exclusive Duration With Single Checkbox Override",
       await expect(await $(DurationPage.durationMonths()).getValue()).to.contain("7");
       await expect(await $(DurationPage.durationExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
-      await $(DurationPage.submit()).click();
+      await click(DurationPage.submit());
 
       await expect(await $(SummaryPage.durationAnswer()).getText()).to.have.string("1 year 7 months");
       await expect(await $(SummaryPage.durationAnswer()).getText()).to.not.have.string("I prefer not to say");
@@ -87,7 +88,7 @@ describe("Component: Mutually Exclusive Duration With Single Checkbox Override",
       await expect(await $(DurationPage.durationExclusiveIPreferNotToSay()).isSelected()).to.be.true;
 
       // Then
-      await $(DurationPage.submit()).click();
+      await click(DurationPage.submit());
 
       await expect(await $(SummaryPage.durationExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
       await expect(await $(SummaryPage.durationExclusiveAnswer()).getText()).to.not.have.string("1 year 7 months");
@@ -103,7 +104,7 @@ describe("Component: Mutually Exclusive Duration With Single Checkbox Override",
       await expect(await $(DurationPage.durationExclusiveIPreferNotToSay()).isSelected()).to.be.false;
 
       // When
-      await $(DurationPage.submit()).click();
+      await click(DurationPage.submit());
 
       // Then
       await expect(await $(SummaryPage.durationAnswer()).getText()).to.contain("No answer provided");
