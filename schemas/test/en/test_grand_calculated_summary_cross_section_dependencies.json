@@ -308,7 +308,7 @@
                             "question": {
                                 "id": "tv-choice-question",
                                 "title": "Do you prefer to watch films on a television or computer?",
-                                "type": "Radio",
+                                "type": "General",
                                 "answers": [
                                     {
                                         "id": "tv-choice-answer",

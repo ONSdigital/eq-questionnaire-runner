@@ -262,7 +262,6 @@ class Router:
                 return_to_block_id=return_to_block_id,
                 location=location,
                 routing_path=routing_path,
-                is_for_previous=is_for_previous,
                 return_to_answer_id=return_to_answer_id,
             )
         ):
@@ -356,7 +355,6 @@ class Router:
         return_to_block_id: str | None,
         location: LocationType,
         routing_path: RoutingPath,
-        is_for_previous: bool,
         return_to_answer_id: str | None = None,
     ) -> str | None:
         """
