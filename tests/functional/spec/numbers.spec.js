@@ -2,6 +2,10 @@ import SetMinMax from "../generated_pages/numbers/set-min-max-block.page.js";
 import TestMinMax from "../generated_pages/numbers/test-min-max-block.page.js";
 import DetailAnswer from "../generated_pages/numbers/detail-answer-block.page";
 import SubmitPage from "../generated_pages/numbers/submit.page";
+import currencyBlock from "../generated_pages/variants_question/currency-block.page.js";
+import firstNumberBlock from "../generated_pages/variants_question/first-number-block.page.js";
+import secondNumberBlock from "../generated_pages/variants_question/second-number-block.page.js";
+import currencySectionSummary from "../generated_pages/variants_question/currency-section-summary.page.js";
 import { click } from "../helpers";
 
 describe("Number validation", () => {
@@ -40,14 +44,13 @@ describe("Number validation", () => {
     });
 
     it("When I enter values inside the set range but provide too many decimal places, Then the correct error messages are displayed", async () => {
-      await $(TestMinMax.testRange()).setValue("1020");
+      await $(TestMinMax.testRange()).setValue("12.344");
       await $(TestMinMax.testRangeExclusive()).setValue("11");
       await $(TestMinMax.testMin()).setValue("123");
       await $(TestMinMax.testMax()).setValue("1019");
       await $(TestMinMax.testMinExclusive()).setValue("124");
       await $(TestMinMax.testMaxExclusive()).setValue("1233");
       await $(TestMinMax.testPercent()).setValue("100");
-      await $(TestMinMax.testRange()).setValue("12.344");
       await $(TestMinMax.testDecimal()).setValue("11.234");
       await click(TestMinMax.submit());
 
@@ -56,28 +59,37 @@ describe("Number validation", () => {
     });
 
     it("When I enter values inside the set range, Then I should be able to submit the survey", async () => {
-      await $(TestMinMax.testRange()).setValue("12");
+      await $(TestMinMax.testRange()).setValue("1019");
       await $(TestMinMax.testDecimal()).setValue("11.23");
-      await $(TestMinMax.testPercent()).setValue("99");
       await click(TestMinMax.submit());
       await $(DetailAnswer.other()).click();
-      await $(DetailAnswer.otherDetail()).setValue("1020");
-      await click(DetailAnswer.submit());
+      await $(DetailAnswer.otherDetail()).setValue("1019");
+      await click(TestMinMax.submit());
+      await $(currencyBlock.usDollars()).click();
+      await click(currencyBlock.submit());
+      await $(firstNumberBlock.firstNumber()).setValue("50");
+      await click(firstNumberBlock.submit());
+      await $(secondNumberBlock.secondNumber()).setValue("321");
+      await click(secondNumberBlock.submit());
+      await click(currencySectionSummary.submit());
 
       await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
 
     it("When I edit and change the maximum value, Then I must re-validate and submit any dependent answers before I can return to the summary", async () => {
       await $(SubmitPage.setMaximumEdit()).click();
-      await $(SetMinMax.setMaximum()).setValue("1019");
+      await $(SetMinMax.setMaximum()).setValue("1018");
       await click(SetMinMax.submit());
+      await $(TestMinMax.testRange()).setValue("1018");
       await click(TestMinMax.submit());
       await click(DetailAnswer.submit());
 
-      await expect(await $(DetailAnswer.errorNumber(1)).getText()).to.contain("Enter an answer less than or equal to 1,019");
+      await expect(await $(DetailAnswer.errorNumber(1)).getText()).to.contain("Enter an answer less than or equal to 1,018");
 
-      await $(DetailAnswer.otherDetail()).setValue("1019");
+      await $(DetailAnswer.otherDetail()).setValue("1001");
       await click(DetailAnswer.submit());
+      await click(secondNumberBlock.submit());
+      await click(currencySectionSummary.submit());
 
       await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
