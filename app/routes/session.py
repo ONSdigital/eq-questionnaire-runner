@@ -73,6 +73,18 @@ def login() -> Response:
 
     validate_jti(decrypted_token)
 
+    ru_ref = (
+        decrypted_token.get("survey_metadata", {}).get("ru_ref")
+        if decrypted_token.get("survey_metadata")
+        else decrypted_token.get("ru_ref")
+    )
+
+    qid = (
+        decrypted_token.get("survey_metadata", {}).get("qid")
+        if decrypted_token.get("survey_metadata")
+        else decrypted_token.get("qid")
+    )
+
     logger_args = {
         key: value
         for key, value in {
@@ -80,8 +92,8 @@ def login() -> Response:
             "case_id": decrypted_token.get("case_id"),
             "schema_name": decrypted_token.get("schema_name"),
             "schema_url": decrypted_token.get("schema_url"),
-            "ru_ref": decrypted_token.get("ru_ref"),
-            "qid": decrypted_token.get("qid"),
+            "ru_ref": ru_ref,
+            "qid": qid,
         }.items()
         if value
     }
