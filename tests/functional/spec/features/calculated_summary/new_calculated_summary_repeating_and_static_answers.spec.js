@@ -62,6 +62,7 @@ describe("Calculated summary with repeating answers", function () {
 
   it("Given I click on a change link, when I use the previous button, I return to the calculated summary", async () => {
     await dynamicAnswerChangeLink(1).click();
+    await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
     await $(DynamicAnswerPage.previous()).click();
     await expect(await browser.getUrl()).to.contain(CalculatedSummaryVisitsPage.pageName);
   });
@@ -107,6 +108,7 @@ describe("Calculated summary with repeating answers", function () {
     await click(ListCollectorPage.submit());
 
     // return to dynamic answer
+    await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
     await $$(DynamicAnswerPage.inputs())[2].setValue(100);
     await $$(DynamicAnswerPage.inputs())[5].setValue(10);
     await $$(DynamicAnswerPage.inputs())[8].setValue(7);

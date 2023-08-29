@@ -92,6 +92,7 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await $(SectionSummaryPage.supermarketsListRemoveLink(1)).click();
       await $(ListCollectorRemovePage.yes()).click();
       await click(ListCollectorRemovePage.submit());
+      await expect(await browser.getUrl()).to.contain(DynamicAnswerPage.pageName);
       await expect(await $$(DynamicAnswerPage.labels()).length).to.equal(2);
     });
   });
