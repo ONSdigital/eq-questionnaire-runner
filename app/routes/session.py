@@ -74,13 +74,13 @@ def login() -> Response:
     validate_jti(decrypted_token)
 
     ru_ref = (
-        decrypted_token.get("survey_metadata", {}).get("ru_ref")
+        decrypted_token.get("survey_metadata", {}).get("data", {}).get("ru_ref")
         if decrypted_token.get("survey_metadata")
         else decrypted_token.get("ru_ref")
     )
 
     qid = (
-        decrypted_token.get("survey_metadata", {}).get("qid")
+        decrypted_token.get("survey_metadata", {}).get("data", {}).get("qid")
         if decrypted_token.get("survey_metadata")
         else decrypted_token.get("qid")
     )
