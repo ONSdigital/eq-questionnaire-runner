@@ -1,6 +1,6 @@
 import MandatoryRadioPage from "../../../generated_pages/radio_detail_answer_multiple/radio-mandatory.page";
 import SubmitPage from "../../../generated_pages/radio_detail_answer_multiple/submit.page";
-
+import { click } from "../../../helpers";
 describe('Radio with multiple "detail_answer" options', () => {
   const radioSchema = "test_radio_detail_answer_multiple.json";
 
@@ -17,7 +17,7 @@ describe('Radio with multiple "detail_answer" options', () => {
     await browser.openQuestionnaire(radioSchema);
     // When
     await $(MandatoryRadioPage.favouriteNotListed()).click();
-    await $(MandatoryRadioPage.submit()).click();
+    await click(MandatoryRadioPage.submit());
     // Then
     await expect(await $(MandatoryRadioPage.error()).isDisplayed()).to.be.true;
     await expect(await $(MandatoryRadioPage.errorNumber(1)).getText()).to.contain("Enter your favourite to continue");
@@ -27,12 +27,12 @@ describe('Radio with multiple "detail_answer" options', () => {
     // Given
     await browser.openQuestionnaire(radioSchema);
     await $(MandatoryRadioPage.favouriteNotListed()).click();
-    await $(MandatoryRadioPage.submit()).click();
+    await click(MandatoryRadioPage.submit());
     await expect(await $(MandatoryRadioPage.error()).isDisplayed()).to.be.true;
 
     // When
     await $(MandatoryRadioPage.favouriteNotListedDetail()).setValue("Bacon");
-    await $(MandatoryRadioPage.submit()).click();
+    await click(MandatoryRadioPage.submit());
     await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
   });
 
@@ -42,7 +42,7 @@ describe('Radio with multiple "detail_answer" options', () => {
     // When
     await $(MandatoryRadioPage.eggs()).click();
     await expect(await $(MandatoryRadioPage.eggsDetail()).isDisplayed()).to.be.true;
-    await $(MandatoryRadioPage.submit()).click();
+    await click(MandatoryRadioPage.submit());
     // Then
     await expect(await $(SubmitPage.radioMandatoryAnswer()).getText()).to.equal("Eggs");
   });
@@ -53,7 +53,7 @@ describe('Radio with multiple "detail_answer" options', () => {
     // When
     await $(MandatoryRadioPage.eggs()).click();
     await $(MandatoryRadioPage.eggsDetail()).setValue("Scrambled");
-    await $(MandatoryRadioPage.submit()).click();
+    await click(MandatoryRadioPage.submit());
     // Then
     await expect(await $(SubmitPage.radioMandatoryAnswer()).getText()).to.equal("Eggs\nScrambled");
   });
@@ -64,10 +64,10 @@ describe('Radio with multiple "detail_answer" options', () => {
     // When
     await $(MandatoryRadioPage.favouriteNotListed()).click();
     await $(MandatoryRadioPage.favouriteNotListedDetail()).setValue("Bacon");
-    await $(MandatoryRadioPage.submit()).click();
+    await click(MandatoryRadioPage.submit());
     await $(SubmitPage.previous()).click();
     await $(MandatoryRadioPage.eggs()).click();
-    await $(MandatoryRadioPage.submit()).click();
+    await click(MandatoryRadioPage.submit());
     await $(SubmitPage.previous()).click();
     // Then
     await $(MandatoryRadioPage.favouriteNotListed()).click();

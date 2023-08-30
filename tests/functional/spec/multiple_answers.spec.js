@@ -1,6 +1,7 @@
 import AboutYou from "../generated_pages/multiple_answers/about-you-block.page";
 import AgeBlock from "../generated_pages/multiple_answers/age-block.page";
 import SubmitPage from "../generated_pages/multiple_answers/submit.page.js";
+import { click } from "../helpers";
 
 async function answerAllQuestions() {
   await $(AboutYou.textfield()).setValue("John Doe");
@@ -21,11 +22,11 @@ async function answerAllQuestions() {
   await $(AboutYou.percentage()).setValue("3");
   await $(AboutYou.mobileNumber()).setValue("07700900111");
   await $(AboutYou.textarea()).setValue("Fuel type petrol");
-  await $(AboutYou.submit()).click();
+  await click(AboutYou.submit());
 
   await $(AgeBlock.age()).setValue("10");
   await $(AgeBlock.ageEstimateThisAgeIsAnEstimate()).click();
-  await $(AgeBlock.submit()).click();
+  await click(AgeBlock.submit());
 }
 
 describe("Multiple Answers", () => {

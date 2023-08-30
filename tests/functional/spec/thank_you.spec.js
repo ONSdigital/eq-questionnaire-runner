@@ -4,7 +4,7 @@ import CheckboxPage from "../generated_pages/title/single-title-block.page";
 import ThankYouPage from "../base_pages/thank-you.page";
 import DidYouKnowPage from "../generated_pages/thank_you/did-you-know.page";
 import ThankYouSubmitPage from "../generated_pages/thank_you/submit.page";
-
+import { click } from "../helpers";
 describe("Thank You Social", () => {
   describe("Given I launch a social themed questionnaire", () => {
     beforeEach(async () => {
@@ -12,8 +12,8 @@ describe("Thank You Social", () => {
     });
 
     it("When I navigate to the thank you page, Then I should see social theme content", async () => {
-      await $(SubmitPage.submit()).click();
-      await $(HubPage.submit()).click();
+      await click(SubmitPage.submit());
+      await click(HubPage.submit());
       await expect(await browser.getUrl()).to.contain(ThankYouPage.pageName);
       await expect(await $(ThankYouPage.title()).getHTML()).to.contain("Thank you for completing the Test Social Survey");
       await expect(await $(ThankYouPage.guidance()).getHTML()).to.contain("Your answers have been submitted");
@@ -31,8 +31,8 @@ describe("Thank You Default", () => {
 
     it("When I navigate to the thank you page, Then I should see default theme content", async () => {
       await $(CheckboxPage.good()).click();
-      await $(SubmitPage.submit()).click();
-      await $(HubPage.submit()).click();
+      await click(SubmitPage.submit());
+      await click(HubPage.submit());
       await expect(await browser.getUrl()).to.contain(ThankYouPage.pageName);
       await expect(await $(ThankYouPage.title()).getHTML()).to.contain("Thank you for completing the Question Title Test");
       await expect(await $(ThankYouPage.guidance()).getHTML()).to.contain("Your answers have been submitted for");
@@ -47,8 +47,8 @@ describe("Thank You Default View Response Enabled", () => {
     beforeEach(async () => {
       await browser.openQuestionnaire("test_thank_you.json");
       await $(DidYouKnowPage.yes()).click();
-      await $(DidYouKnowPage.submit()).click();
-      await $(ThankYouSubmitPage.submit()).click();
+      await click(DidYouKnowPage.submit());
+      await click(ThankYouSubmitPage.submit());
       await expect(await browser.getUrl()).to.contain(ThankYouPage.pageName);
     });
 

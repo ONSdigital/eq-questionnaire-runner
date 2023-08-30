@@ -2,7 +2,7 @@ import { getRandomString } from "../../../jwt_helper";
 import AddressConfirmationPage from "../../../generated_pages/last_viewed_question_guidance/address-confirmation.page";
 import HouseholdInterstitialPage from "../../../generated_pages/last_viewed_question_guidance/household-interstitial.page.js";
 import PrimaryPersonListCollectorPage from "../../../generated_pages/last_viewed_question_guidance/primary-person-list-collector.page.js";
-
+import { click } from "../../../helpers";
 describe("Last viewed question guidance", () => {
   const resumableLaunchParams = {
     responseId: getRandomString(16),
@@ -28,7 +28,7 @@ describe("Last viewed question guidance", () => {
     });
 
     it("When the respondent saves and resumes from a section which is in progress, then last question guidance is shown", async () => {
-      await $(HouseholdInterstitialPage.submit()).click();
+      await click(HouseholdInterstitialPage.submit());
       await $(AddressConfirmationPage.saveSignOut()).click();
       await browser.openQuestionnaire("test_last_viewed_question_guidance.json", resumableLaunchParams);
       await browser.pause(100);
@@ -39,13 +39,13 @@ describe("Last viewed question guidance", () => {
 
     it("When the respondent answers the question and saves and continues, then last question guidance is not shown on the next question", async () => {
       await $(AddressConfirmationPage.yes()).click();
-      await $(AddressConfirmationPage.submit()).click();
+      await click(AddressConfirmationPage.submit());
       await expect(await browser.getUrl()).to.contain(PrimaryPersonListCollectorPage.url());
       await expect(await $(HouseholdInterstitialPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
     });
 
     it("When the respondent uses the previous link from the next question, then last question guidance is not shown", async () => {
-      await $(AddressConfirmationPage.submit()).click();
+      await click(AddressConfirmationPage.submit());
       await $(PrimaryPersonListCollectorPage.previous()).click();
       await expect(await $(HouseholdInterstitialPage.lastViewedQuestionGuidance()).isExisting()).to.be.false;
     });
