@@ -9,12 +9,12 @@ from app.data_models import (
     ProgressStore,
     SupplementaryDataStore,
 )
-from app.questionnaire import QuestionnaireSchema
+from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire.questionnaire_schema import LIST_COLLECTORS_WITH_REPEATING_BLOCKS
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities import safe_content
 
 from ...data_models.metadata_proxy import MetadataProxy
-from ...utilities.types import LocationType
 from .context import Context
 from .summary import Group
 from .summary.list_collector_block import ListCollectorBlock
@@ -31,7 +31,7 @@ class SectionSummaryContext(Context):
         metadata: Optional[MetadataProxy],
         response_metadata: MutableMapping,
         routing_path: RoutingPath,
-        current_location: LocationType,
+        current_location: Location,
         supplementary_data_store: SupplementaryDataStore,
     ) -> None:
         super().__init__(
@@ -212,7 +212,7 @@ class SectionSummaryContext(Context):
             non_list_collector_blocks: list[dict[str, str]] = []
             list_collector_blocks: list[dict[str, str]] = []
             for block in group["blocks"]:
-                if block["type"] == "ListCollector":
+                if block["type"] in LIST_COLLECTORS_WITH_REPEATING_BLOCKS:
                     # if list collector block encountered, close the previously started non list collector blocks list if exists
                     if non_list_collector_blocks:
                         previously_started_group = {
