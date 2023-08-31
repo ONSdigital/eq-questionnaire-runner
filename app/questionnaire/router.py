@@ -532,9 +532,9 @@ class Router:
         self,
     ) -> Generator[SectionKey, None, None]:
         for section_id in self.enabled_section_ids:
-            repeating_list = self._schema.get_repeating_list_for_section(section_id)
-
-            if repeating_list:
+            if repeating_list := self._schema.get_repeating_list_for_section(
+                section_id
+            ):
                 for list_item_id in self._list_store[repeating_list]:
                     section_key = SectionKey(section_id, list_item_id)
                     yield section_key

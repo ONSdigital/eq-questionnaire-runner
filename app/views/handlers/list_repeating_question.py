@@ -1,5 +1,4 @@
 from flask import url_for
-from werkzeug.datastructures import ImmutableDict
 
 from app.views.handlers.list_edit_question import ListEditQuestion
 
@@ -43,15 +42,20 @@ class ListRepeatingQuestion(ListEditQuestion):
                 return_to_block_id=self._return_to_block_id,
             )
 
-        # Type ignore: edit_block will exist at this point
-        edit_block: ImmutableDict = self._schema.get_edit_block_for_list_collector(  # type: ignore
+        if edit_block := self._schema.get_edit_block_for_list_collector(
             self.parent_block["id"]
-        )
-        return url_for(
-            "questionnaire.block",
-            list_name=self.current_location.list_name,
-            list_item_id=self.current_location.list_item_id,
-            block_id=edit_block["id"],
+        ):
+            return url_for(
+                "questionnaire.block",
+                list_name=self.current_location.list_name,
+                list_item_id=self.current_location.list_item_id,
+                block_id=edit_block["id"],
+                return_to=self._return_to,
+                return_to_answer_id=self._return_to_answer_id,
+                return_to_block_id=self._return_to_block_id,
+            )
+
+        return self.parent_location.url(
             return_to=self._return_to,
             return_to_answer_id=self._return_to_answer_id,
             return_to_block_id=self._return_to_block_id,
