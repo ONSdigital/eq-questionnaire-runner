@@ -9,12 +9,7 @@ from app.data_models import (
     SupplementaryDataStore,
 )
 from app.data_models.metadata_proxy import MetadataProxy
-from app.jinja_filters import (
-    format_number,
-    format_percentage,
-    format_unit,
-    get_formatted_currency,
-)
+from app.jinja_filters import format_number, format_percentage, format_unit
 from app.questionnaire.questionnaire_schema import (
     QuestionnaireSchema,
     get_calculated_summary_answer_ids,
@@ -24,6 +19,7 @@ from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.schema_utils import get_answer_ids_in_block
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.questionnaire.variants import choose_question_to_display, transform_variants
+from app.utilities.decimal_places import get_formatted_currency
 from app.utilities.types import LocationType
 from app.views.contexts.context import Context
 from app.views.contexts.summary.calculated_summary_block import NumericType

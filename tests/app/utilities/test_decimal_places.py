@@ -4,9 +4,9 @@ from decimal import Decimal
 import pytest
 
 from app.utilities.decimal_places import (
-    custom_format_currency,
     custom_format_decimal,
     custom_format_unit,
+    get_formatted_currency,
 )
 
 
@@ -118,12 +118,17 @@ def test_custom_format_unit(
         (Decimal("1.10"), "GBP", "en_GB", 6, "£1.10"),
         (Decimal("1.100"), "GBP", "en_GB", 6, "£1.100"),
         (Decimal("1.1000"), "GBP", "en_GB", 6, "£1.1000"),
-        # (Decimal("3000.445"), "GBP", "en_GB", 6, "£3,000.445"),
+        (Decimal("3000.445"), "GBP", "en_GB", 6, "£3,000.445"),
     ),
 )
 def test_custom_format_currency(
     value, currency, locale_string, decimal_limit, expected_result
 ):
-    result = custom_format_currency(value, currency, locale_string, decimal_limit)
+    result = get_formatted_currency(
+        value=value,
+        currency=currency,
+        locale=locale_string,
+        decimal_limit=decimal_limit,
+    )
 
     assert unicodedata.normalize("NFKD", result) == expected_result

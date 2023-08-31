@@ -13,9 +13,9 @@ from app.questionnaire.rules.operations_helper import OperationHelper
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import DEFAULT_LOCALE
 from app.utilities.decimal_places import (
-    custom_format_currency,
     custom_format_decimal,
     custom_format_unit,
+    get_formatted_currency,
 )
 
 if TYPE_CHECKING:
@@ -50,7 +50,7 @@ class PlaceholderTransforms:
         currency: str = "GBP",
         decimal_limit: int | None = None,
     ) -> str:
-        formatted_currency: str = custom_format_currency(
+        formatted_currency: str = get_formatted_currency(
             value=number,
             currency=currency,
             locale=self.locale,

@@ -20,9 +20,9 @@ from app.questionnaire.questionnaire_schema import (
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import MAX_NUMBER
 from app.utilities.decimal_places import (
-    custom_format_currency,
     custom_format_decimal,
     custom_format_unit,
+    get_formatted_currency,
 )
 
 blueprint = flask.Blueprint("filters", __name__)
@@ -50,20 +50,6 @@ def format_number(value: int | Decimal | float) -> str:
 def get_formatted_address(address_fields: dict[str, str]) -> str:
     address_fields.pop("uprn", None)
     return "<br>".join(address_field for address_field in address_fields.values())
-
-
-def get_formatted_currency(
-    value: int | float | Decimal,
-    currency: str = "GBP",
-    decimal_limit: int | None = None,
-) -> str:
-    formatted_currency: str = custom_format_currency(
-        value=value,
-        currency=currency,
-        locale=flask_babel.get_locale(),
-        decimal_limit=decimal_limit,
-    )
-    return formatted_currency
 
 
 @blueprint.app_template_filter()
@@ -523,7 +509,11 @@ class SummaryRowItem:
             decimal_places = answer.get("decimal_places")
             self.valueList = [
                 SummaryRowItemValue(
-                    get_formatted_currency(value, answer["currency"], decimal_places)
+                    get_formatted_currency(
+                        value=value,
+                        currency=answer["currency"],
+                        decimal_limit=decimal_places,
+                    )
                 )
             ]
         elif answer_type in ["date", "monthyeardate", "yeardate"]:

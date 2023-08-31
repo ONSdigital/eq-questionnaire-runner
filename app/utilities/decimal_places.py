@@ -1,6 +1,7 @@
 from decimal import Decimal
 from typing import Literal, TypeAlias
 
+import flask_babel
 from babel import Locale, numbers, units
 
 UnitLengthType: TypeAlias = Literal["short", "long", "narrow"]
@@ -21,10 +22,11 @@ def custom_format_decimal(value: int | Decimal | float, locale: Locale | str) ->
     )
 
 
-def custom_format_currency(
+def get_formatted_currency(
+    *,
     value: float | Decimal,
-    currency: str,
-    locale: Locale | str,
+    currency: str = "GBP",
+    locale: str | None = None,
     decimal_limit: int | None = 0,
 ) -> str:
     """
@@ -34,6 +36,7 @@ def custom_format_currency(
     The number of decimals displayed is based on the value entered by the user, the decimal limit set in the schema
     and the locale.
     """
+    locale = locale or flask_babel.get_locale()
     decimal_places = len(str(value).split(".")[1]) if "." in str(value) else 0
 
     # get locale pattern

@@ -18,7 +18,6 @@ from app.jinja_filters import (
     format_unit_input_label,
     get_currency_symbol,
     get_formatted_address,
-    get_formatted_currency,
     get_width_for_number,
     map_list_collector_config,
     map_summary_item_config,
@@ -26,6 +25,7 @@ from app.jinja_filters import (
     strip_tags,
 )
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.utilities.decimal_places import get_formatted_currency
 from app.utilities.schema import load_schema_from_name
 
 TEST_FORMAT_CURRENCY_PARAMS = (

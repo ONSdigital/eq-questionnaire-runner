@@ -4,8 +4,9 @@ from decimal import Decimal
 import flask_babel
 from babel import numbers
 
-from app.jinja_filters import format_number, get_formatted_currency
+from app.jinja_filters import format_number
 from app.utilities import safe_content
+from app.utilities.decimal_places import get_formatted_currency
 
 
 def sanitise_number(number: str) -> str:
@@ -25,7 +26,9 @@ def format_playback_value(
     value: float | Decimal, currency: str | None = None, decimal_places: int | None = 0
 ) -> str:
     if currency:
-        return get_formatted_currency(value, currency, decimal_places)
+        return get_formatted_currency(
+            value=value, currency=currency, decimal_limit=decimal_places
+        )
 
     formatted_number: str = format_number(value)
     return formatted_number
