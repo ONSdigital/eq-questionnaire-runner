@@ -116,6 +116,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
                 headers["Strict-Transport-Security"],
             )
             self.assertEqual("DENY", headers["X-Frame-Options"])
+            self.assertEqual("1; mode=block", headers["X-Xss-Protection"])
             self.assertEqual("nosniff", headers["X-Content-Type-Options"])
 
     def test_csp_policy_headers(self):
