@@ -134,12 +134,12 @@ class NumberRange:
 
         if value is not None:
             if error_message := self.validate_minimum(
-                value, decimal_places
-            ) or self.validate_maximum(value, decimal_places):
+                value=value, decimal_places=decimal_places
+            ) or self.validate_maximum(value=value, decimal_places=decimal_places):
                 raise validators.ValidationError(error_message)
 
     def validate_minimum(
-        self, value: NumType, decimal_places: int | None
+        self, *, value: NumType, decimal_places: int | None
     ) -> Optional[str]:
         if self.minimum is None:
             return None
@@ -165,7 +165,7 @@ class NumberRange:
         return None
 
     def validate_maximum(
-        self, value: NumType, decimal_places: int | None
+        self, *, value: NumType, decimal_places: int | None
     ) -> Optional[str]:
         if self.maximum is None:
             return None

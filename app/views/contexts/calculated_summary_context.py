@@ -324,7 +324,7 @@ class CalculatedSummaryContext(Context):
             return get_formatted_currency(
                 value=total,
                 currency=answer_format["currency"],
-                decimal_limit=answer_format.get("decimal_places") or 0,
+                decimal_limit=answer_format.get("decimal_places"),
             )
 
         if answer_format["type"] == "unit":
