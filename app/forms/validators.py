@@ -128,15 +128,14 @@ class NumberRange:
         field: Union[DecimalFieldWithSeparator, IntegerFieldWithSeparator],
     ) -> None:
         value: Union[int, Decimal] = field.data
-        decimal_places = 0
+        decimal_places = None
         if field.type == "DecimalFieldWithSeparator":
             decimal_places = field.places
 
         if value is not None:
-            error_message = self.validate_minimum(
+            if error_message := self.validate_minimum(
                 value, decimal_places
-            ) or self.validate_maximum(value, decimal_places)
-            if error_message:
+            ) or self.validate_maximum(value, decimal_places):
                 raise validators.ValidationError(error_message)
 
     def validate_minimum(
