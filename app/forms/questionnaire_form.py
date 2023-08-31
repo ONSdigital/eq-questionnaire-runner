@@ -545,7 +545,7 @@ def get_answer_fields(
     question_title = question.get("title")
 
     value_source_resolved_for_location = _get_value_source_resolver(list_item_id)
-    for answer in question["answers"]:
+    for answer in question.get("answers", []):
         if "list_item_id" in answer:
             value_source_resolver = _get_value_source_resolver(answer["list_item_id"])
         else:

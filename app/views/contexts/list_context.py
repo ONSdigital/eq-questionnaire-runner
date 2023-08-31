@@ -42,7 +42,7 @@ class ListContext(Context):
             "list": {
                 "list_items": list_items,
                 "editable": any([edit_block_id, remove_block_id]),
-            }
+            },
         }
 
     # pylint: disable=too-many-locals

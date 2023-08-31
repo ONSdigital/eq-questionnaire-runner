@@ -68,7 +68,7 @@ class ListAction(Question):
             return url
 
         if self.router.is_block_complete(
-            # Type ignore: the parent_location property above is initialised with a block_id so it won't be None
+            # Type ignore: block_id would exist at this point
             block_id=self.parent_location.block_id,  # type: ignore
             section_id=self.parent_location.section_id,
             list_item_id=self.parent_location.list_item_id,
