@@ -302,3 +302,43 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         # should be absent from section summary too
         self.assertInUrl("/sections/section-1")
         self.assertNotInBody("Name of transport")
+
+    def test_calculated_summary_default_decimal_places(self):
+        # When multiple decimal limits are set in the schema but no decimals
+        # are entered then we should default to two decimal places on the calculated summary page
+        # and the playback page
+        self.launchSurvey("test_calculated_summary_decimals")
+        self.post({"first-number-answer": "10"})
+        self.post(
+            {
+                "second-number-answer": "20",
+                "second-number-answer-also-in-total": "20",
+            }
+        )
+        self.post({"third-number-answer": "30"})
+        self.post({"fourth-number-answer": "40"})
+        self.assertInBody(
+            "We calculate the total of currency values entered to be £120.00"
+        )
+        self.post()
+        self.assertInBody("Total currency values: <em>£120.00</em>")
+
+    def test_calculated_summary_with_varying_decimal_places(self):
+        # When multiple decimal limits are set in the schema and a mixture of decimal
+        # places are entered then we should use the largest number of decimal places that are below the decimal limit
+        # on the calculated summary page and the playback page
+        self.launchSurvey("test_calculated_summary_decimals")
+        self.post({"first-number-answer": "10.1"})
+        self.post(
+            {
+                "second-number-answer": "20.12",
+                "second-number-answer-also-in-total": "20.123",
+            }
+        )
+        self.post({"third-number-answer": "30.1234"})
+        self.post({"fourth-number-answer": "40.12345"})
+        self.assertInBody(
+            "We calculate the total of currency values entered to be £120.58985"
+        )
+        self.post()
+        self.assertInBody("Total currency values: <em>£120.58985</em>")

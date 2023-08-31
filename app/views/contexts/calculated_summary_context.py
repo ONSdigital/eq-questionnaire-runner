@@ -301,7 +301,7 @@ class CalculatedSummaryContext(Context):
                             "decimal_places": 0,
                         }
 
-                        self._set_decimal_places(answer, answer_format)
+                    self._set_decimal_places(answer, answer_format)
 
                     answer_value = answer.get("value") or 0
                     values_to_calculate.append(answer_value)
