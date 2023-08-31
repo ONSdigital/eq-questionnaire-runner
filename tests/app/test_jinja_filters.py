@@ -384,7 +384,7 @@ def test_map_list_collector_config_no_actions():
         {"item_title": "Joe Bloggs", "list_item_id": "two"},
     ]
 
-    output = map_list_collector_config(list_items, False)
+    output = map_list_collector_config(list_items, True, False)
 
     expected = [
         {
@@ -442,6 +442,7 @@ def test_map_list_collector_config():
 
     output = map_list_collector_config(
         list_items,
+        True,
         False,
         "edit_link_text",
         "edit_link_aria_label",
@@ -518,6 +519,7 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
 
     output = map_list_collector_config(
         list_items,
+        True,
         False,
         "edit_link_text",
         "edit_link_aria_label",
