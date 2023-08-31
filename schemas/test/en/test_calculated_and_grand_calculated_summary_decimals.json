@@ -245,7 +245,7 @@
                         },
                         {
                             "type": "GrandCalculatedSummary",
-                            "id": "grand-calculated-summary",
+                            "id": "currency-grand-summary",
                             "title": "We calculate the grand total to be %(total)s. Is this correct?",
                             "calculation": {
                                 "operation": {
