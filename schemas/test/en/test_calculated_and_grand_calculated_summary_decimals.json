@@ -184,6 +184,84 @@
                                     }
                                 ]
                             }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "fifth-number-block",
+                            "question": {
+                                "id": "fifth-number-question",
+                                "title": "Fifth Number Question Title",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "fifth-number-answer",
+                                        "label": "Fifth answer label (optional)",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "sixth-number-block",
+                            "question": {
+                                "id": "sixth-number-question",
+                                "title": "Sixth Number Question Title",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "sixth-number-answer",
+                                        "label": "Fifth answer label (optional)",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "currency-total-playback-2",
+                            "title": "We calculate the total of currency values entered to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "fifth-number-answer"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "sixth-number-answer"
+                                        }
+                                    ]
+                                },
+                                "title": "Grand total of previous values"
+                            }
+                        },
+                        {
+                            "type": "GrandCalculatedSummary",
+                            "id": "grand-calculated-summary",
+                            "title": "We calculate the grand total to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "currency-total-playback"
+                                        },
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "currency-total-playback-2"
+                                        }
+                                    ]
+                                },
+                                "title": "Grand calculated summary of journeys"
+                            }
                         }
                     ]
                 }
