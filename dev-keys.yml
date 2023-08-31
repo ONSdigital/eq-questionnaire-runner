@@ -106,7 +106,7 @@ keys:
   df88fdad2612ae1e80571120e6c6371f55896696:
     platform: sdc
     purpose: supplementary_data
-    service: sds
+    service: sdx
     type: private
     use: encryption
     value: |
