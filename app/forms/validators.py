@@ -129,7 +129,7 @@ class NumberRange:
     ) -> None:
         value: Union[int, Decimal] = field.data
         decimal_places = None
-        if field.type == "DecimalFieldWithSeparator":
+        if isinstance(field, DecimalFieldWithSeparator):
             decimal_places = field.places
 
         if value is not None:
