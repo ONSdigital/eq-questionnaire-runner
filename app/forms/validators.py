@@ -128,18 +128,18 @@ class NumberRange:
         field: Union[DecimalFieldWithSeparator, IntegerFieldWithSeparator],
     ) -> None:
         value: Union[int, Decimal] = field.data
-        decimal_places = None
+        decimal_limit = None
         if isinstance(field, DecimalFieldWithSeparator):
-            decimal_places = field.places
+            decimal_limit = field.places
 
         if value is not None:
             if error_message := self.validate_minimum(
-                value=value, decimal_places=decimal_places
-            ) or self.validate_maximum(value=value, decimal_places=decimal_places):
+                value=value, decimal_limit=decimal_limit
+            ) or self.validate_maximum(value=value, decimal_limit=decimal_limit):
                 raise validators.ValidationError(error_message)
 
     def validate_minimum(
-        self, *, value: NumType, decimal_places: int | None
+        self, *, value: NumType, decimal_limit: int | None
     ) -> Optional[str]:
         if self.minimum is None:
             return None
@@ -149,7 +149,7 @@ class NumberRange:
                 "min": format_playback_value(
                     value=self.minimum,
                     currency=self.currency,
-                    decimal_places=decimal_places,
+                    decimal_limit=decimal_limit,
                 )
             }
 
@@ -158,14 +158,14 @@ class NumberRange:
                 "min": format_playback_value(
                     value=self.minimum,
                     currency=self.currency,
-                    decimal_places=decimal_places,
+                    decimal_limit=decimal_limit,
                 )
             }
 
         return None
 
     def validate_maximum(
-        self, *, value: NumType, decimal_places: int | None
+        self, *, value: NumType, decimal_limit: int | None
     ) -> Optional[str]:
         if self.maximum is None:
             return None
@@ -175,7 +175,7 @@ class NumberRange:
                 "max": format_playback_value(
                     value=self.maximum,
                     currency=self.currency,
-                    decimal_places=decimal_places,
+                    decimal_limit=decimal_limit,
                 )
             }
         if value > self.maximum:
@@ -183,7 +183,7 @@ class NumberRange:
                 "max": format_playback_value(
                     value=self.maximum,
                     currency=self.currency,
-                    decimal_places=decimal_places,
+                    decimal_limit=decimal_limit,
                 )
             }
 
@@ -448,7 +448,7 @@ class SumCheck:
         is_valid, message = self._is_valid(condition, total, target_total)
 
         if not is_valid:
-            decimal_places = (
+            decimal_limit = (
                 None
                 if isinstance(target_total, int)
                 else str(target_total)[::-1].find(".")
@@ -459,7 +459,7 @@ class SumCheck:
                     "total": format_playback_value(
                         value=target_total,
                         currency=self.currency,
-                        decimal_places=decimal_places,
+                        decimal_limit=decimal_limit,
                     )
                 }
             )

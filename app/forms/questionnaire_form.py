@@ -163,9 +163,9 @@ class QuestionnaireForm(FlaskForm):
                 if self.answers_all_valid(
                     calculation["answers_to_calculate"]
                 ) and self._validate_calculated_question(
-                    calculation,
-                    question,
-                    result["target_total"],
+                    calculation=calculation,
+                    question=question,
+                    target_total=result["target_total"],
                     currency=result["currency"],
                     decimal_places=result["decimal_places"],
                 ):
@@ -205,17 +205,21 @@ class QuestionnaireForm(FlaskForm):
         calculation: Calculation,
         question: QuestionSchemaType,
     ) -> dict:
-        result = {}
+        result = {
+            "decimal_places": self.schema.get_decimal_limit(
+                calculation["answers_to_calculate"]
+            ),
+            "currency": None,
+        }
 
         if "value" in calculation:
             if isinstance(calculation["value"], dict):
                 result["target_total"] = self.value_source_resolver.resolve(calculation["value"])  # type: ignore
             else:
                 result["target_total"] = calculation["value"]
+
             result["currency"] = question.get("currency")
-            result["decimal_places"] = self.schema.get_decimal_limit(
-                calculation["answers_to_calculate"]
-            )
+
             return result
 
         target_answer = self.schema.get_answers_by_answer_id(calculation["answer_id"])[
@@ -224,10 +228,8 @@ class QuestionnaireForm(FlaskForm):
         result["target_total"] = self.answer_store.get_answer(
             calculation["answer_id"]
         ).value  # type: ignore # expect not None
+
         result["currency"] = target_answer.get("currency")
-        result["decimal_places"] = self.schema.get_decimal_limit(
-            calculation["answers_to_calculate"]
-        )
 
         return result
 

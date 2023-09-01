@@ -47,7 +47,7 @@ def test_currency_playback(mock_form):
 
     assert error_messages["TOTAL_SUM_NOT_EQUALS"] % {
         "total": format_playback_value(
-            value=target_total, currency="EUR", decimal_places=1
+            value=target_total, currency="EUR", decimal_limit=1
         ),
     } == str(exc.value)
 
