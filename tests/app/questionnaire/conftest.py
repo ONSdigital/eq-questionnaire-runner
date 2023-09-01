@@ -1047,8 +1047,8 @@ def default_placeholder_value_schema():
 
 
 @pytest.fixture
-def transformer(mock_renderer, mock_schema):
-    def _transform(language="en"):
+def transformer(mock_renderer, mock_schema, locale_string="en_GB"):
+    def _transform(language=locale_string):
         return PlaceholderTransforms(
             language=language, schema=mock_schema, renderer=mock_renderer
         )

@@ -1,3 +1,4 @@
+import unicodedata
 from decimal import Decimal
 
 import pytest
@@ -13,19 +14,26 @@ from tests.app.test_jinja_filters import (
 
 @pytest.mark.parametrize(*TEST_FORMAT_CURRENCY_PARAMS)
 def test_format_currency(
-    value, currency, decimal_limit, formatted_currency, transformer, app
+    transformer,
+    value,
+    currency,
+    locale_string,
+    decimal_limit,
+    expected_result,
+    app,
 ):
     with app.app_context():
-        assert (
-            transformer().format_currency(value, currency, decimal_limit)
-            == formatted_currency
+        result = transformer(language=locale_string).format_currency(
+            value, currency, decimal_limit
         )
+        assert unicodedata.normalize("NFKD", result) == expected_result
 
 
 @pytest.mark.parametrize(*TEST_FORMAT_NUMBER_PARAMS)
-def test_format_number(number, formatted_number, transformer, app):
+def test_format_number(value, locale_string, expected_result, transformer, app):
     with app.app_context():
-        assert transformer().format_number(number) == formatted_number
+        result = transformer(language=locale_string).format_number(value)
+        assert unicodedata.normalize("NFKD", result) == expected_result
 
 
 @pytest.mark.parametrize(
@@ -45,9 +53,22 @@ def test_format_percentage(value, expected, transformer):
 
 
 @pytest.mark.parametrize(*TEST_FORMAT_UNIT_PARAMS)
-def test_format_unit(unit, value, length, formatted_unit, transformer, app):
+def test_format_unit(
+    value,
+    measurement_unit,
+    locale_string,
+    length,
+    expected_result,
+    transformer,
+    app,
+):
     with app.app_context():
-        assert transformer().format_unit(unit, value, length) == formatted_unit
+        assert (
+            transformer(language=locale_string).format_unit(
+                measurement_unit, value, length
+            )
+            == expected_result
+        )
 
 
 def test_format_list(transformer):
@@ -83,7 +104,7 @@ def test_format_list_empty_or_none(transformer, list_to_format):
     ),
 )
 def test_format_possessive(name, expected, transformer):
-    assert transformer().format_possessive(name) == expected
+    assert transformer(language="en").format_possessive(name) == expected
 
 
 @pytest.mark.parametrize(
