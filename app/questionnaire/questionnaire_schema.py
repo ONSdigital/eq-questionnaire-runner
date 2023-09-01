@@ -34,6 +34,7 @@ QuestionSchemaType = Mapping
 DependencyDictType: TypeAlias = dict[str, OrderedSet[str]]
 
 TRANSFORMS_REQUIRING_ROUTING_PATH = {"first_non_empty_item"}
+TRANSFORMS_REQUIRING_UNRESOLVED_ARGUMENTS = ["format_currency"]
 
 NUMERIC_ANSWER_TYPES = {
     "Currency",

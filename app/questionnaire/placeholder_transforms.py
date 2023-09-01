@@ -1,13 +1,16 @@
 from datetime import date, datetime, timezone
 from decimal import Decimal
-from typing import TYPE_CHECKING, Literal, Sequence, Sized
+from typing import TYPE_CHECKING, Literal, Mapping, Sequence, Sized
 from urllib.parse import quote
 
 from babel.dates import format_datetime
 from dateutil.relativedelta import relativedelta
 from flask_babel import ngettext
 
-from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.questionnaire.questionnaire_schema import (
+    QuestionnaireSchema,
+    get_calculated_summary_answer_ids,
+)
 from app.questionnaire.rules.operations import DateOffset
 from app.questionnaire.rules.operations_helper import OperationHelper
 from app.questionnaire.rules.utils import parse_datetime
@@ -49,7 +52,18 @@ class PlaceholderTransforms:
         number: int | Decimal | float,
         currency: str = "GBP",
         decimal_limit: int | None = None,
+        raw_args: Mapping | None = None,
     ) -> str:
+        if raw_args:
+            if raw_args.get("source") == "answers":
+                decimal_limit = self.schema.get_decimal_limit([raw_args["identifier"]])
+
+            if raw_args.get("source") == "calculated_summary":
+                answer_ids = get_calculated_summary_answer_ids(
+                    self.schema.get_block(raw_args["identifier"])  # type: ignore
+                )
+                decimal_limit = self.schema.get_decimal_limit(answer_ids)
+
         formatted_currency: str = get_formatted_currency(
             value=number,
             currency=currency,
