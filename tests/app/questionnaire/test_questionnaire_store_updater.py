@@ -281,7 +281,7 @@ def test_remove_all_answers_with_list_item_id(
     mocker,
 ):
     mock_empty_answer_store = AnswerStore(
-        existing_answers=[
+        answers=[
             {"answer_id": "test1", "value": 1, "list_item_id": "abcdef"},
             {"answer_id": "test2", "value": 2, "list_item_id": "abcdef"},
             {"answer_id": "test3", "value": 3, "list_item_id": "uvwxyz"},
@@ -314,7 +314,7 @@ def test_remove_primary_person(
     mocker,
 ):
     mock_empty_answer_store = AnswerStore(
-        existing_answers=[
+        answers=[
             {"answer_id": "test1", "value": 1, "list_item_id": "abcdef"},
             {"answer_id": "test2", "value": 2, "list_item_id": "abcdef"},
             {"answer_id": "test3", "value": 3, "list_item_id": "xyzabc"},
@@ -475,7 +475,7 @@ def test_update_same_name_items(
     mocker,
 ):
     mock_empty_answer_store = AnswerStore(
-        existing_answers=[
+        answers=[
             {"answer_id": "first-name", "value": "Joe", "list_item_id": "abcdef"},
             {
                 "answer_id": "middle-name",

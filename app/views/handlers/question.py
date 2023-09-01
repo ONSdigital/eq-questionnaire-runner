@@ -304,13 +304,13 @@ class Question(BlockHandler):
         list_item_id: str,
         list_name: str,
     ) -> Location | None:
-        if self._questionnaire_store.progress_store.is_section_or_repeating_blocks_progress_complete(
+        if self._questionnaire_store.progress_store.is_section_complete(
             section_id=section_id, list_item_id=list_item_id
         ):
             return None
 
         for repeating_block_id in repeating_block_ids:
-            if not self.router.is_block_complete(
+            if not self._questionnaire_store.progress_store.is_block_complete(
                 block_id=repeating_block_id,
                 section_id=section_id,
                 list_item_id=list_item_id,

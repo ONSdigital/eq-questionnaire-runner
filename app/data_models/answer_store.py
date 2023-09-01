@@ -21,13 +21,13 @@ class AnswerStore:
     }
     """
 
-    def __init__(self, existing_answers: Optional[Iterable[AnswerDict]] = None):
+    def __init__(self, answers: Optional[Iterable[AnswerDict]] = None):
         """Instantiate an answer_store.
 
         Args:
-            existing_answers: If a list of answer dictionaries is provided, this will be used to initialise the store.
+            answers: If a list of answer dictionaries is provided, this will be used to initialise the store.
         """
-        self.answer_map = self._build_map(existing_answers or [])
+        self.answer_map = self._build_map(answers or [])
         self._is_dirty = False
 
     def __iter__(self) -> Iterator[Answer]:

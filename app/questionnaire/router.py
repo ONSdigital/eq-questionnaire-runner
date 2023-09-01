@@ -104,9 +104,7 @@ class Router:
 
     def can_access_hub(self) -> bool:
         return self._schema.is_flow_hub and all(
-            self._progress_store.is_section_or_repeating_blocks_progress_complete(
-                section_id
-            )
+            self._progress_store.is_section_complete(section_id)
             for section_id in self._schema.get_section_ids_required_for_hub()
             if section_id in self.enabled_section_ids
         )
@@ -116,9 +114,7 @@ class Router:
     ) -> bool:
         return bool(
             self._schema.get_summary_for_section(section_id)
-        ) and self._progress_store.is_section_or_repeating_blocks_progress_complete(
-            section_id, list_item_id
-        )
+        ) and self._progress_store.is_section_complete(section_id, list_item_id)
 
     def routing_path(
         self, section_id: str, list_item_id: str | None = None
@@ -137,10 +133,8 @@ class Router:
         Get the next location in the section. If the section is complete, determine where to go next,
         whether it be a summary, the hub or the next incomplete location.
         """
-        is_section_complete = (
-            self._progress_store.is_section_or_repeating_blocks_progress_complete(
-                location.section_id, location.list_item_id
-            )
+        is_section_complete = self._progress_store.is_section_complete(
+            location.section_id, location.list_item_id
         )
 
         if return_to_url := self.get_return_to_location_url(
@@ -269,10 +263,8 @@ class Router:
             return url
 
         if is_section_complete is None:
-            is_section_complete = (
-                self._progress_store.is_section_or_repeating_blocks_progress_complete(
-                    location.section_id, location.list_item_id
-                )
+            is_section_complete = self._progress_store.is_section_complete(
+                location.section_id, location.list_item_id
             )
 
         if not is_section_complete:
@@ -312,9 +304,7 @@ class Router:
             # the grand calculated summary is in a different section which will have a different routing path
             # but don't go to it unless the section is enabled and the current section is complete
             if (
-                not self._progress_store.is_section_or_repeating_blocks_progress_complete(
-                    location.section_id
-                )
+                not self._progress_store.is_section_complete(location.section_id)
                 or grand_calculated_summary_section not in self.enabled_section_ids
             ):
                 return self._get_return_url_for_inaccessible_location(
@@ -486,18 +476,11 @@ class Router:
                 )
         return full_routing_path
 
-    def is_block_complete(
-        self, *, block_id: str, section_id: str, list_item_id: str | None
-    ) -> bool:
-        return block_id in self._progress_store.get_completed_block_ids(
-            section_id=section_id, list_item_id=list_item_id
-        )
-
     def _get_first_incomplete_location_in_section(
         self, routing_path: RoutingPath
     ) -> Location | None:
         for block_id in routing_path:
-            if not self.is_block_complete(
+            if not self._progress_store.is_block_complete(
                 block_id=block_id,
                 section_id=routing_path.section_id,
                 list_item_id=routing_path.list_item_id,
@@ -519,7 +502,7 @@ class Router:
             for block_id in routing_path:
                 allowable_path.append(block_id)
 
-                if not self.is_block_complete(
+                if not self._progress_store.is_block_complete(
                     block_id=block_id,
                     section_id=routing_path.section_id,
                     list_item_id=routing_path.list_item_id,
@@ -544,16 +527,12 @@ class Router:
 
     def _get_first_incomplete_section_key(self) -> tuple[str, str | None] | None:
         for section_id, list_item_id in self._get_enabled_section_keys():
-            if not self._progress_store.is_section_or_repeating_blocks_progress_complete(
-                section_id, list_item_id
-            ):
+            if not self._progress_store.is_section_complete(section_id, list_item_id):
                 return section_id, list_item_id
 
     def _get_last_complete_section_key(self) -> tuple[str, str | None] | None:
         for section_id, list_item_id in list(self._get_enabled_section_keys())[::-1]:
-            if self._progress_store.is_section_or_repeating_blocks_progress_complete(
-                section_id, list_item_id
-            ):
+            if self._progress_store.is_section_complete(section_id, list_item_id):
                 return section_id, list_item_id
 
     def _is_section_enabled(self, section: Mapping) -> bool:

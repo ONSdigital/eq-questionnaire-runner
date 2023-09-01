@@ -452,15 +452,9 @@ def test_is_section_complete():
 
     store = ProgressStore(completed)
 
-    assert store.is_section_or_repeating_blocks_progress_complete(
-        section_id="s1", list_item_id=None
-    )
-    assert store.is_section_or_repeating_blocks_progress_complete(
-        section_id="s4", list_item_id="123abc"
-    )
-    assert store.is_section_or_repeating_blocks_progress_complete(
-        section_id="s5", list_item_id="456def"
-    )
+    assert store.is_section_complete(section_id="s1", list_item_id=None)
+    assert store.is_section_complete(section_id="s4", list_item_id="123abc")
+    assert store.is_section_complete(section_id="s5", list_item_id="456def")
 
 
 def test_remove_progress_for_list_item_id():
@@ -556,9 +550,7 @@ def test_in_progress_and_completed_section_ids(section_ids, expected_section_key
     store = ProgressStore(completed)
 
     statuses = {CompletionStatus.COMPLETED, CompletionStatus.IN_PROGRESS}
-    section_keys = store.section_and_repeating_blocks_progress_keys(
-        section_ids=section_ids, statuses=statuses
-    )
+    section_keys = store.section_keys(section_ids=section_ids, statuses=statuses)
 
     assert sorted(section_keys) == expected_section_keys
 
@@ -598,9 +590,7 @@ def test_section_keys():
     ]
 
     store = ProgressStore(completed)
-    section_keys = store.section_and_repeating_blocks_progress_keys(
-        section_ids={"s1", "s2", "s3"}
-    )
+    section_keys = store.section_keys(section_ids={"s1", "s2", "s3"})
     assert sorted(section_keys) == sorted(
         [("s1", None), ("s2", None), ("s3", "abc123")]
     )

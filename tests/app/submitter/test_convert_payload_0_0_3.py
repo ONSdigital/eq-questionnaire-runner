@@ -607,7 +607,7 @@ def test_primary_person_list_item_conversion(version):
     answers = AnswerStore(answer_objects)
 
     list_store = ListStore(
-        existing_items=[
+        items=[
             {
                 "name": "people",
                 "items": ["xJlKBy", "RfAGDc"],
@@ -668,9 +668,7 @@ def test_list_item_conversion(version):
 
     answers = AnswerStore(answer_objects)
 
-    list_store = ListStore(
-        existing_items=[{"name": "people", "items": ["xJlKBy", "RfAGDc"]}]
-    )
+    list_store = ListStore(items=[{"name": "people", "items": ["xJlKBy", "RfAGDc"]}])
 
     questionnaire_store.answer_store = answers
     questionnaire_store.list_store = list_store
@@ -820,7 +818,7 @@ def test_list_structure_in_payload_is_as_expected(version):
     answers = AnswerStore(answer_objects)
 
     list_store = ListStore(
-        existing_items=[
+        items=[
             {
                 "name": "people",
                 "items": ["xJlKBy", "RfAGDc"],
@@ -881,9 +879,7 @@ def test_primary_person_not_in_payload_when_not_answered(version):
 
     answers = AnswerStore(answer_objects)
 
-    list_store = ListStore(
-        existing_items=[{"name": "people", "items": ["xJlKBy", "RfAGDc"]}]
-    )
+    list_store = ListStore(items=[{"name": "people", "items": ["xJlKBy", "RfAGDc"]}])
 
     questionnaire_store.answer_store = answers
     questionnaire_store.list_store = list_store
@@ -951,7 +947,7 @@ def test_relationships_in_payload(version):
     answers = AnswerStore(answer_objects)
 
     list_store = ListStore(
-        existing_items=[
+        items=[
             {
                 "name": "people",
                 "items": [
@@ -1029,7 +1025,7 @@ def test_no_relationships_in_payload(version):
     answers = AnswerStore(answer_objects)
 
     list_store = ListStore(
-        existing_items=[
+        items=[
             {
                 "name": "people",
                 "items": [
@@ -1122,7 +1118,7 @@ def test_unrelated_block_answers_in_payload(version):
     answers = AnswerStore(answer_objects)
 
     list_store = ListStore(
-        existing_items=[
+        items=[
             {
                 "name": "people",
                 "items": [
@@ -1234,7 +1230,7 @@ def test_unrelated_block_answers_not_on_path_not_in_payload(version):
     answers = AnswerStore(answer_objects)
 
     list_store = ListStore(
-        existing_items=[
+        items=[
             {
                 "name": "people",
                 "items": [
@@ -1336,7 +1332,7 @@ def test_relationship_answers_not_on_path_in_payload(version):
     answers = AnswerStore(answer_objects)
 
     list_store = ListStore(
-        existing_items=[
+        items=[
             {
                 "name": "people",
                 "items": [
