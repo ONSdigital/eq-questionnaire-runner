@@ -449,7 +449,7 @@ class SumCheck:
 
         if not is_valid:
             decimal_places = (
-                2
+                None
                 if isinstance(target_total, int)
                 else str(target_total)[::-1].find(".")
             )

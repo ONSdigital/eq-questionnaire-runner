@@ -14,7 +14,6 @@ from wtforms import validators
 
 from app.data_models import (
     AnswerStore,
-    AnswerValueTypes,
     ListStore,
     ProgressStore,
     SupplementaryDataStore,
@@ -160,13 +159,15 @@ class QuestionnaireForm(FlaskForm):
 
     def validate_calculated_question(self, question: QuestionSchemaType) -> bool:
         for calculation in question["calculations"]:
-            result = self._get_target_total_and_currency(calculation, question)
-            if result:
-                target_total, currency = result
+            if result := self._get_target_total_and_currency(calculation, question):
                 if self.answers_all_valid(
                     calculation["answers_to_calculate"]
                 ) and self._validate_calculated_question(
-                    calculation, question, target_total, currency
+                    calculation,
+                    question,
+                    result["target_total"],
+                    currency=result["currency"],
+                    decimal_places=result["decimal_places"],
                 ):
                     # Remove any previous question errors if it passes this OR before returning True
                     if question["id"] in self.question_errors:
@@ -203,27 +204,32 @@ class QuestionnaireForm(FlaskForm):
         self,
         calculation: Calculation,
         question: QuestionSchemaType,
-    ) -> Optional[tuple[Union[Calculation, AnswerValueTypes], Optional[str]]]:
-        calculation_value: Union[Calculation, AnswerValueTypes]
-        currency: Optional[str]
+    ) -> dict:
+        result = {}
 
         if "value" in calculation:
             if isinstance(calculation["value"], dict):
-                calculation_value = self.value_source_resolver.resolve(calculation["value"])  # type: ignore
+                result["target_total"] = self.value_source_resolver.resolve(calculation["value"])  # type: ignore
             else:
-                calculation_value = calculation["value"]
-            currency = question.get("currency")
-            return calculation_value, currency
+                result["target_total"] = calculation["value"]
+            result["currency"] = question.get("currency")
+            result["decimal_places"] = self.schema.get_decimal_limit(
+                calculation["answers_to_calculate"]
+            )
+            return result
 
         target_answer = self.schema.get_answers_by_answer_id(calculation["answer_id"])[
             0
         ]
-        calculation_value = self.answer_store.get_answer(
+        result["target_total"] = self.answer_store.get_answer(
             calculation["answer_id"]
         ).value  # type: ignore # expect not None
-        currency = target_answer.get("currency")
+        result["currency"] = target_answer.get("currency")
+        result["decimal_places"] = self.schema.get_decimal_limit(
+            calculation["answers_to_calculate"]
+        )
 
-        return calculation_value, currency
+        return result
 
     def validate_date_range_with_period_limits_and_single_date_limits(
         self,
@@ -283,12 +289,18 @@ class QuestionnaireForm(FlaskForm):
         question: QuestionSchemaType,
         target_total: Any,
         currency: Optional[str],
+        decimal_places: int | None,
     ) -> bool:
         messages = None
         if "validation" in question:
             messages = question["validation"].get("messages")
 
         validator = SumCheck(messages=messages, currency=currency)
+
+        if decimal_places:
+            formatted_total = Decimal(format(target_total, f".{decimal_places}f"))
+        else:
+            formatted_total = target_total
 
         calculation_type = ValueSourceResolver.get_calculation_operator(
             calculation["calculation_type"]
@@ -304,7 +316,9 @@ class QuestionnaireForm(FlaskForm):
 
         # Validate grouped answers meet calculation_type criteria
         try:
-            validator(self, calculation["conditions"], calculation_total, target_total)
+            validator(
+                self, calculation["conditions"], calculation_total, formatted_total
+            )
         except validators.ValidationError as e:
             self.question_errors[question["id"]] = str(e)
             return False
