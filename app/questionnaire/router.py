@@ -10,11 +10,11 @@ from app.data_models import (
 )
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import QuestionnaireSchema
-from app.questionnaire.location import Location
+from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
-from app.utilities.types import LocationType, SectionKey
+from app.utilities.types import LocationType
 
 
 class Router:
@@ -149,7 +149,9 @@ class Router:
             return return_to_url
 
         if is_section_complete:
-            return self._get_next_location_url_for_complete_section(location)
+            return self._get_next_location_url_for_complete_section(
+                location.section_key
+            )
 
         # Due to backwards routing you can be on the last block of the path but with an in_progress section
         is_last_block_on_path = routing_path[-1] == location.block_id
@@ -167,10 +169,10 @@ class Router:
         )
 
     def _get_next_location_url_for_complete_section(
-        self, location: LocationType
+        self, section_key: SectionKey
     ) -> str:
-        if self._schema.show_summary_on_completion_for_section(location.section_id):
-            return self._get_section_url(location)
+        if self._schema.show_summary_on_completion_for_section(section_key.section_id):
+            return self._get_section_url(section_key)
 
         return self.get_next_location_url_for_end_of_section()
 
@@ -242,7 +244,7 @@ class Router:
             url := self._get_return_to_for_grand_calculated_summary(
                 return_to=return_to,
                 return_to_block_id=return_to_block_id,
-                location=location,
+                section_key=location.section_key,
                 routing_path=routing_path,
                 is_for_previous=is_for_previous,
                 return_to_answer_id=return_to_answer_id,
@@ -272,7 +274,7 @@ class Router:
 
         if return_to == "section-summary":
             return self._get_section_url(
-                location, return_to_answer_id=return_to_answer_id
+                location.section_key, return_to_answer_id=return_to_answer_id
             )
         if return_to == "final-summary" and self.is_questionnaire_complete:
             return url_for(
@@ -284,7 +286,7 @@ class Router:
         *,
         return_to: str | None,
         return_to_block_id: str | None,
-        location: LocationType,
+        section_key: SectionKey,
         routing_path: RoutingPath,
         is_for_previous: bool,
         return_to_answer_id: str | None = None,
@@ -300,11 +302,11 @@ class Router:
         grand_calculated_summary_section: str = (
             self._schema.get_section_id_for_block_id(return_to_block_id)  # type: ignore
         )
-        if grand_calculated_summary_section != location.section_id:
+        if grand_calculated_summary_section != section_key.section_id:
             # the grand calculated summary is in a different section which will have a different routing path
             # but don't go to it unless the section is enabled and the current section is complete
             if (
-                not self._progress_store.is_section_complete(location.section_id)
+                not self._progress_store.is_section_complete(section_key.section_id)
                 or grand_calculated_summary_section not in self.enabled_section_ids
             ):
                 return self._get_return_url_for_inaccessible_location(
@@ -579,12 +581,12 @@ class Router:
 
     @staticmethod
     def _get_section_url(
-        location: LocationType,
+        section_key: SectionKey,
         return_to_answer_id: str | None = None,
     ) -> str:
         return url_for(
             "questionnaire.get_section",
-            section_id=location.section_id,
-            list_item_id=location.list_item_id,
+            section_id=section_key.section_id,
+            list_item_id=section_key.list_item_id,
             _anchor=return_to_answer_id,
         )

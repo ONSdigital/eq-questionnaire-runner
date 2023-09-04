@@ -17,6 +17,7 @@ from app.questionnaire.questionnaire_store_updater import (
     QuestionnaireStoreUpdater,
 )
 from app.utilities.schema import load_schema_from_name
+from app.utilities.types import SectionKey
 
 
 # pylint: disable=too-many-locals, too-many-lines
@@ -921,7 +922,7 @@ def test_answer_id_section_dependents(
 
     assert (
         progress_store.get_section_or_repeating_blocks_progress_status(
-            section_id="section-2"
+            SectionKey(section_id="section-2", list_item_id=None)
         )
         is expected_status
     )
@@ -1059,13 +1060,13 @@ def test_answer_id_section_dependents_repeating(
 
     assert (
         progress_store.get_section_or_repeating_blocks_progress_status(
-            section_id="section-2", list_item_id="list-item-id-1"
+            SectionKey(section_id="section-2", list_item_id="list-item-id-1")
         )
         is expected_list_item_1_status
     )
     assert (
         progress_store.get_section_or_repeating_blocks_progress_status(
-            section_id="section-2", list_item_id="list-item-id-2"
+            SectionKey(section_id="section-2", list_item_id="list-item-id-2")
         )
         is expected_list_item_2_status
     )
@@ -1178,7 +1179,10 @@ def test_dependent_sections_completed_dependant_blocks_removed_and_status_update
     )
     assert (
         progress_store.get_section_or_repeating_blocks_progress_status(
-            section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
+            SectionKey(
+                section_id=dependent_section_key[0],
+                list_item_id=dependent_section_key[1],
+            )
         )
         == CompletionStatus.IN_PROGRESS
     )
@@ -1417,7 +1421,7 @@ def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_sta
         )
         assert (
             progress_store.get_section_or_repeating_blocks_progress_status(
-                section_id, list_item_id
+                SectionKey(section_id=section_id, list_item_id=list_item_id)
             )
             == CompletionStatus.IN_PROGRESS
         )

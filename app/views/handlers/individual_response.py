@@ -20,6 +20,7 @@ from app.helpers import url_safe_serializer
 from app.helpers.template_helpers import render_template
 from app.publisher.exceptions import PublicationFailed
 from app.questionnaire import QuestionnaireSchema
+from app.questionnaire.location import SectionKey
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.router import Router
 from app.views.contexts.question import build_question_context
@@ -325,8 +326,7 @@ class IndividualResponseHandler:
         self._questionnaire_store.progress_store.update_section_or_repeating_blocks_progress_completion_status(
             # Type ignore: Current usages of this method occur when Individual Section ID exists and is not None
             status,
-            self.individual_section_id,  # type: ignore
-            self._list_item_id,
+            SectionKey(self.individual_section_id, self._list_item_id),
         )
 
     @property

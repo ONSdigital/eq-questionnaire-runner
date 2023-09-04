@@ -71,9 +71,7 @@ class ListRepeatingQuestion(ListEditQuestion):
             list_name=self.current_location.list_name,  # type: ignore
         ):
             self.questionnaire_store_updater.update_section_or_repeating_blocks_progress_completion_status(
-                is_complete=True,
-                section_id=self.current_location.section_id,
-                list_item_id=self.current_location.list_item_id,
+                is_complete=True, section_key=self.current_location.section_key
             )
 
         super().handle_post()

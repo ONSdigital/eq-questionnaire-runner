@@ -10,10 +10,10 @@ from app.data_models.answer_store import Answer
 from app.data_models.progress_store import CompletionStatus
 from app.data_models.relationship_store import RelationshipDict, RelationshipStore
 from app.questionnaire import QuestionnaireSchema
-from app.questionnaire.location import Location
+from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.questionnaire_schema import AnswerDependent
 from app.questionnaire.router import Router
-from app.utilities.types import LocationType, SectionKey
+from app.utilities.types import LocationType
 
 DependentSection = namedtuple("DependentSection", "section_id list_item_id is_complete")
 
@@ -247,13 +247,13 @@ class QuestionnaireStoreUpdater:
         return self._progress_store.remove_completed_location(location)
 
     def update_section_or_repeating_blocks_progress_completion_status(
-        self, *, is_complete: bool, section_id: str, list_item_id: str | None = None
+        self, *, is_complete: bool, section_key: SectionKey
     ) -> bool:
         status = (
             CompletionStatus.COMPLETED if is_complete else CompletionStatus.IN_PROGRESS
         )
         return self._progress_store.update_section_or_repeating_blocks_progress_completion_status(
-            status, section_id, list_item_id
+            status, section_key
         )
 
     def _update_answer(
@@ -453,8 +453,9 @@ class QuestionnaireStoreUpdater:
 
         if self.update_section_or_repeating_blocks_progress_completion_status(
             is_complete=is_path_complete,
-            section_id=dependent_section.section_id,
-            list_item_id=dependent_section.list_item_id,
+            section_key=SectionKey(
+                dependent_section.section_id, dependent_section.list_item_id
+            ),
         ):
             dependents_of_dependent: OrderedSet = self._schema.when_rules_section_dependencies_by_section_for_progress_value_source.get(
                 dependent_section.section_id, OrderedSet()

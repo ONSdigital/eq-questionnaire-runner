@@ -15,7 +15,7 @@ from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListModel, ListStore
 from app.data_models.metadata_proxy import MetadataProxy, NoMetadataException
 from app.questionnaire import QuestionnaireSchema
-from app.questionnaire.location import InvalidLocationException
+from app.questionnaire.location import InvalidLocationException, SectionKey
 from app.questionnaire.rules import rule_evaluator
 from app.utilities.types import LocationType
 
@@ -199,7 +199,7 @@ class ValueSourceResolver:
             # List item id is set to None here as we do not support checking progress value sources for
             # repeating sections
             return self.progress_store.get_section_or_repeating_blocks_progress_status(
-                section_id=identifier, list_item_id=None
+                SectionKey(section_id=identifier, list_item_id=None)
             )
 
         if selector == "block":

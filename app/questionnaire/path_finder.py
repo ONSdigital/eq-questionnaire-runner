@@ -284,7 +284,7 @@ class PathFinder:
 
             self.progress_store.remove_location_for_backwards_routing(this_location)
             self.progress_store.update_section_or_repeating_blocks_progress_completion_status(
-                CompletionStatus.IN_PROGRESS, this_location.section_id
+                CompletionStatus.IN_PROGRESS, this_location.section_key
             )
 
     def _remove_block_answers_for_backward_routing_according_to_when_rule(

@@ -2,8 +2,8 @@ from dataclasses import astuple, dataclass
 from typing import Iterable, Iterator, MutableMapping
 
 from app.data_models.progress import Progress, ProgressDictType
-from app.questionnaire.location import Location
-from app.utilities.types import LocationType, SectionKey
+from app.questionnaire.location import Location, SectionKey
+from app.utilities.types import LocationType
 
 
 @dataclass
@@ -133,16 +133,12 @@ class ProgressStore:
         ]
 
     def update_section_or_repeating_blocks_progress_completion_status(
-        self,
-        completion_status: str,
-        section_id: str,
-        list_item_id: str | None = None,
+        self, completion_status: str, section_key: SectionKey
     ) -> bool:
         """
         Updates the completion status of the section or repeating blocks for a list item specified by the key based on the given section id and list item id.
         """
         updated = False
-        section_key = SectionKey(section_id, list_item_id)
         if section_key in self._progress:
             if self._progress[section_key].status != completion_status:
                 updated = True
@@ -151,8 +147,8 @@ class ProgressStore:
 
         elif completion_status == CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED:
             self._progress[section_key] = Progress(
-                section_id=section_id,
-                list_item_id=list_item_id,
+                section_id=section_key.section_id,
+                list_item_id=section_key.list_item_id,
                 block_ids=[],
                 status=completion_status,
             )
@@ -161,14 +157,14 @@ class ProgressStore:
         return updated
 
     def get_section_or_repeating_blocks_progress_status(
-        self, section_id: str, list_item_id: str | None = None
+        self, section_key: SectionKey
     ) -> str:
         """
         Return the CompletionStatus of the Section or Repeating Blocks for a list item,
         specified by the given section_id and list_item_id.
         Returns NOT_STARTED if the progress does not exist
         """
-        progress_key = SectionKey(section_id, list_item_id)
+        progress_key = section_key
         if progress_key in self._progress:
             return self._progress[progress_key].status
 

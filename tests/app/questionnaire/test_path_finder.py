@@ -6,6 +6,7 @@ from app.data_models.progress_store import CompletionStatus, ProgressStore
 from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
+from app.utilities.types import SectionKey
 from tests.app.questionnaire.conftest import get_metadata
 
 
@@ -582,7 +583,7 @@ def test_remove_answer_and_block_if_routing_backwards(
     assert not path_finder.answer_store.get_answer("confirm-zero-employees-answer")
     assert (
         path_finder.progress_store.get_section_or_repeating_blocks_progress_status(
-            section_id="default-section"
+            SectionKey(section_id="default-section", list_item_id=None)
         )
         == CompletionStatus.IN_PROGRESS
     )

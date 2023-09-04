@@ -6,6 +6,7 @@ from flask_babel import lazy_gettext
 from werkzeug.datastructures import ImmutableDict
 
 from app.data_models.progress_store import CompletionStatus
+from app.questionnaire.location import SectionKey
 from app.views.contexts import Context
 
 
@@ -159,7 +160,7 @@ class HubContext(Context):
 
         section_status = (
             self._progress_store.get_section_or_repeating_blocks_progress_status(
-                section_id, list_item_id
+                SectionKey(section_id, list_item_id)
             )
         )
 
