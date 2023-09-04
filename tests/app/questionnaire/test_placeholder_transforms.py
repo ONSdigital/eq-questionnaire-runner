@@ -14,6 +14,7 @@ from tests.app.test_jinja_filters import (
 
 @pytest.mark.parametrize(*TEST_FORMAT_CURRENCY_PARAMS)
 def test_format_currency(
+    mocker,
     transformer,
     value,
     currency,
@@ -23,8 +24,12 @@ def test_format_currency(
     app,
 ):
     with app.app_context():
+        mocker.patch(
+            "app.questionnaire.placeholder_transforms.PlaceholderTransforms.get_decimal_limit",
+            return_value=decimal_limit,
+        )
         result = transformer(language=locale_string).format_currency(
-            value, currency, decimal_limit
+            number=value, currency=currency, raw_args={}
         )
         assert unicodedata.normalize("NFKD", result) == expected_result
 

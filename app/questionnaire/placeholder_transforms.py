@@ -50,29 +50,31 @@ class PlaceholderTransforms:
     def format_currency(
         self,
         number: int | Decimal | float,
+        raw_args: Mapping,
         currency: str = "GBP",
-        decimal_limit: int | None = None,
-        raw_args: Mapping | None = None,
     ) -> str:
-        if raw_args:
-            source = raw_args["number"].get("source")
-            identifier = raw_args["number"].get("identifier")
-            if source == "answers":
-                decimal_limit = self.schema.get_decimal_limit([identifier])
-
-            if source == "calculated_summary":
-                answer_ids = get_calculated_summary_answer_ids(
-                    self.schema.get_block(identifier)  # type: ignore
-                )
-                decimal_limit = self.schema.get_decimal_limit(answer_ids)
-
         formatted_currency: str = get_formatted_currency(
             value=number,
             currency=currency,
             locale=self.locale,
-            decimal_limit=decimal_limit,
+            decimal_limit=self._get_decimal_limit(raw_args),
         )
         return formatted_currency
+
+    def _get_decimal_limit(self, raw_args: Mapping) -> int | None:
+        decimal_limit = None
+        source = raw_args["number"].get("source")
+        identifier = raw_args["number"].get("identifier")
+        if source == "answers":
+            decimal_limit = self.schema.get_decimal_limit([identifier])
+
+        if source == "calculated_summary":
+            answer_ids = get_calculated_summary_answer_ids(
+                self.schema.get_block(identifier)  # type: ignore
+            )
+            decimal_limit = self.schema.get_decimal_limit(answer_ids)
+
+        return decimal_limit
 
     def format_date(self, date_to_format: str, date_format: str) -> str:
         date_as_datetime = datetime.strptime(
