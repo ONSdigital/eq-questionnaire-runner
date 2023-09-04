@@ -10,6 +10,7 @@ import ListCollectorEditPage from "../../../../generated_pages/validation_sum_ag
 import HubPage from "../../../../base_pages/hub.page";
 import TotalBlockOtherPage from "../../../../generated_pages/validation_sum_against_total_dynamic_answers/total-block-other.page";
 import { click } from "../../../../helpers";
+
 describe("Feature: Sum of dynamic answers based on list and optional static answers equal to validation against total ", function () {
   // These tests are flaky therefore we add a retry. The cause is unknown.
   // :TODO: Revert this in future when we have a fix for this.
@@ -104,7 +105,6 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await $(ListCollectorEditPage.supermarketName()).setValue("Aldi");
       await click(ListCollectorEditPage.submit());
       await click(DynamicAnswerPage.submit());
-      await click(TotalBlockOtherPage.submit());
       await click(DynamicAnswerOnlyPage.submit());
       await expect(await browser.getUrl()).to.contain(SectionSummaryPage.pageName);
       await $(SectionSummaryPage.groupContent(2)).waitForExist({ timeout: 2000 });

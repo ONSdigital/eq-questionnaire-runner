@@ -262,7 +262,6 @@ class Router:
                 return_to_block_id=return_to_block_id,
                 location=location,
                 routing_path=routing_path,
-                is_for_previous=is_for_previous,
                 return_to_answer_id=return_to_answer_id,
             )
         ):
@@ -276,7 +275,13 @@ class Router:
             )
 
         if not is_section_complete:
-            return None
+            # go to the next incomplete item in the section whilst preserving return to parameters
+            return self._get_return_url_for_inaccessible_location(
+                is_for_previous=is_for_previous,
+                return_to_block_id=return_to_block_id,
+                return_to=return_to,
+                routing_path=routing_path,
+            )
 
         if return_to == "section-summary":
             return self._get_section_url(
@@ -317,13 +322,7 @@ class Router:
                 )
                 or grand_calculated_summary_section not in self.enabled_section_ids
             ):
-                return self._get_return_url_for_inaccessible_location(
-                    is_for_previous=is_for_previous,
-                    return_to_block_id=return_to_block_id,
-                    return_to=return_to,
-                    routing_path=routing_path,
-                )
-
+                return None
             routing_path = self._path_finder.routing_path(
                 section_id=grand_calculated_summary_section
             )
@@ -341,6 +340,7 @@ class Router:
                 return_to=return_to,
                 _anchor=return_to_answer_id,
             )
+        # the above may alter routing_path, so retrieval of the next incomplete block needs to be here instead of returning None and allowing default behaviour
         return self._get_return_url_for_inaccessible_location(
             is_for_previous=is_for_previous,
             return_to_block_id=return_to_block_id,
@@ -355,7 +355,6 @@ class Router:
         return_to_block_id: str | None,
         location: LocationType,
         routing_path: RoutingPath,
-        is_for_previous: bool,
         return_to_answer_id: str | None = None,
     ) -> str | None:
         """
@@ -382,25 +381,18 @@ class Router:
         ):
             # if the next location is valid, the new url is that location, and the new 'return to block id' is just what remains
             return_to_block_id = ",".join(remaining) if remaining else None
-            # if return_to is a list, return all but the first item, but if it's a single item then leave as is
-            return_to = return_to[return_to.find(",") + 1 :]
+            # remove first item and return the remaining ones
+            return_to_remaining = ",".join(return_to.split(",")[1:]) or None
 
             return url_for(
                 "questionnaire.block",
                 block_id=block_id,
                 list_name=location.list_name,
                 list_item_id=location.list_item_id,
-                return_to=return_to,
+                return_to=return_to_remaining,
                 return_to_block_id=return_to_block_id,
                 _anchor=return_to_answer_id,
             )
-
-        return self._get_return_url_for_inaccessible_location(
-            is_for_previous=is_for_previous,
-            return_to_block_id=return_to_block_id,
-            return_to=return_to,
-            routing_path=routing_path,
-        )
 
     def _get_return_url_for_inaccessible_location(
         self,
@@ -416,7 +408,7 @@ class Router:
         """
         if (
             not is_for_previous
-            and return_to_block_id
+            and return_to
             and (
                 next_incomplete_location := self._get_first_incomplete_location_in_section(
                     routing_path
@@ -532,9 +524,9 @@ class Router:
         self,
     ) -> Generator[SectionKey, None, None]:
         for section_id in self.enabled_section_ids:
-            repeating_list = self._schema.get_repeating_list_for_section(section_id)
-
-            if repeating_list:
+            if repeating_list := self._schema.get_repeating_list_for_section(
+                section_id
+            ):
                 for list_item_id in self._list_store[repeating_list]:
                     section_key = SectionKey(section_id, list_item_id)
                     yield section_key
