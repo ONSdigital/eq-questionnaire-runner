@@ -41,6 +41,8 @@ def get_formatted_currency(
 
     # get locale pattern
     parsed_locale = Locale.parse(locale)
+
+    # Use the default babel currency format "standard"
     number_format = parsed_locale.currency_formats["standard"]
 
     if not decimal_limit:
@@ -48,11 +50,11 @@ def get_formatted_currency(
 
     # The number of decimals displayed is limited based on the value of the `decimal_limit` parameter, if not set, defaults to 0.
     # If the number of decimal places entered by the user is less than the `decimal_limit` then we should display the
-    # number of decimals as entered by the user. Otherwise, we should display the number of decimals as entered by the user.
+    # number of decimals as entered by the user.
     number_format.frac_prec = (min(decimal_places, decimal_limit), decimal_limit)
 
     # Needed to stop trailing decimal `.00` being added when no decimal places have been entered by the user
-    #  and trailing decimals being cut off when two or more decimals have been entered by the user
+    # and trailing decimals being cut off when two or more decimals have been entered by the user
     currency_digits = False if decimal_limit < 2 else decimal_places < 2
 
     return numbers.format_currency(
@@ -97,6 +99,9 @@ def get_number_format(value: int | float | Decimal, locale: Locale | str) -> str
     Uses the decimal places set by the user with frac_prec to ensure that trailing zeroes
     are not dropped and that the correct number of decimal places as entered by the user are displayed
     after formatting.
+
+    We use '.' rather than the decimal separator based on the locale as the separator will always be
+    formatted so that it is '.' by the time it reaches this method.
     """
     decimal_places = len(str(value).split(".")[1]) if "." in str(value) else 0
     locale = Locale.parse(locale)
