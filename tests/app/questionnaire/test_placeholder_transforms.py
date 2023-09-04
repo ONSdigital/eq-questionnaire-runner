@@ -25,7 +25,7 @@ def test_format_currency(
 ):
     with app.app_context():
         mocker.patch(
-            "app.questionnaire.placeholder_transforms.PlaceholderTransforms.get_decimal_limit",
+            "app.questionnaire.placeholder_transforms.PlaceholderTransforms._get_decimal_limit",
             return_value=decimal_limit,
         )
         result = transformer(language=locale_string).format_currency(

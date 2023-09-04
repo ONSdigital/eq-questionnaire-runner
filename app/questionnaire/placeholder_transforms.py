@@ -53,6 +53,10 @@ class PlaceholderTransforms:
         raw_args: Mapping,
         currency: str = "GBP",
     ) -> str:
+        """
+        The raw arguments for the transform are required here, in addition to the formatted number, as custom logic is required
+        to calculate the correct number of decimals based on the source of the transform.
+        """
         formatted_currency: str = get_formatted_currency(
             value=number,
             currency=currency,
