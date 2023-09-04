@@ -256,6 +256,13 @@ def test_context_for_section_list_summary(
             "Is this UK company or branch an authorised insurer?",
         ),
         (
+            "test_list_collector_one_related_answer",
+            "companies_answer_store",
+            "Name of UK company or branch",
+            "Registration number",
+            None,
+        ),
+        (
             "test_list_collector_variants_section_summary",
             "companies_variants_answer_store_first_variant",
             "Name of UK or non-UK company or branch",
@@ -462,6 +469,15 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
             "title": "General insurance business",
         }
     }
+
+    # Delete keys to test scenario where there is only one related answer in the schema
+    if test_schema == "test_list_collector_one_related_answer":
+        del expected["summary"]["sections"][0]["groups"][1]["blocks"][0][
+            "related_answers"
+        ]["PlwgoG"][0]["question"]["answers"][1]
+        del expected["summary"]["sections"][0]["groups"][1]["blocks"][0][
+            "related_answers"
+        ]["UHPLbX"][0]["question"]["answers"][1]
 
     assert context == expected
 

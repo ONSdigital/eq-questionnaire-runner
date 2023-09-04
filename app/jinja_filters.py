@@ -476,21 +476,15 @@ class SummaryRowItem:
         edit_link_text: str,
         edit_link_aria_label: str,
         summary_type: str,
+        use_answer_label: bool = False,
     ) -> None:
-        if "type" in answer:
-            answer_type = answer["type"]
-        else:
-            answer_type = "calculated"
-
+        answer_type = answer["type"] if "type" in answer else "calculated"
         if (
-            (
-                multiple_answers
-                or answer_type == "relationship"
-                or is_summary_with_calculation(summary_type)
-            )
-            and "label" in answer
-            and answer["label"]
-        ):
+            multiple_answers
+            or answer_type == "relationship"
+            or is_summary_with_calculation(summary_type)
+            or use_answer_label
+        ) and answer.get("label"):
             self.rowTitle = answer["label"]
             self.rowTitleAttributes = {"data-qa": answer["id"] + "-label"}
         else:
@@ -563,8 +557,8 @@ class SummaryRow:
         no_answer_provided: str,
         edit_link_text: str,
         edit_link_aria_label: str,
+        use_answer_label: bool = False,
     ) -> None:
-        self.rowTitle = strip_tags(question["title"])
         self.id = question["id"]
         self.rowItems = []
 
@@ -584,6 +578,7 @@ class SummaryRow:
                     edit_link_text,
                     edit_link_aria_label,
                     summary_type,
+                    use_answer_label,
                 )
             )
 
@@ -735,6 +730,7 @@ def map_list_collector_config(
 
         if related_answers:
             for block in related_answers[list_item["list_item_id"]]:
+                use_answer_label = len(block["question"]["answers"]) == 1
                 summary_row = SummaryRow(
                     block["question"],
                     summary_type="SectionSummary",
@@ -742,6 +738,7 @@ def map_list_collector_config(
                     no_answer_provided=flask_babel.lazy_gettext("No answer provided"),
                     edit_link_text=edit_link_text,
                     edit_link_aria_label=edit_link_aria_label,
+                    use_answer_label=use_answer_label,
                 )
                 row_items.extend(summary_row.rowItems)
 
