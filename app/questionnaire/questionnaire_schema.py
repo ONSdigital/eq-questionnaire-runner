@@ -1038,14 +1038,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         }
 
     def get_decimal_limit(self, answer_ids: list[str]) -> int:
-        decimal_limit = 0
-        for answer_id in answer_ids:
-            for answer in self.get_answers_by_answer_id(answer_id):
-                if decimal_places := answer.get("decimal_places"):
-                    if decimal_places > decimal_limit:
-                        decimal_limit = decimal_places
-
-        return decimal_limit
+        decimal_limits: list[int] = [
+            answer.get("decimal_places", 0)
+            for answer_id in answer_ids
+            for answer in self.get_answers_by_answer_id(answer_id)
+        ]
+        return max(decimal_limits)
 
     def get_answer_ids_for_block(self, block_id: str) -> list[str]:
         if block := self.get_block(block_id):

@@ -209,7 +209,7 @@ class QuestionnaireForm(FlaskForm):
             "decimal_places": self.schema.get_decimal_limit(
                 calculation["answers_to_calculate"]
             ),
-            "currency": None,
+            "currency": question.get("currency"),
         }
 
         if "value" in calculation:
@@ -217,8 +217,6 @@ class QuestionnaireForm(FlaskForm):
                 result["target_total"] = self.value_source_resolver.resolve(calculation["value"])  # type: ignore
             else:
                 result["target_total"] = calculation["value"]
-
-            result["currency"] = question.get("currency")
 
             return result
 
