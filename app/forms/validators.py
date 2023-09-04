@@ -431,6 +431,7 @@ class SumCheck:
         conditions: List[str],
         total: Decimal | int,
         target_total: Decimal | float | int,
+        decimal_limit: int | None = None,
     ) -> None:
         if len(conditions) > 1:
             try:
@@ -448,7 +449,7 @@ class SumCheck:
         is_valid, message = self._is_valid(condition, total, target_total)
 
         if not is_valid:
-            decimal_limit = (
+            decimal_limit = decimal_limit or (
                 None
                 if isinstance(target_total, int)
                 else str(target_total)[::-1].find(".")

@@ -1180,7 +1180,7 @@ def test_bespoke_message_for_sum_validation(app, answer_store, list_store, mocke
         [
             "test_validation_sum_against_total_equal",
             "breakdown-block",
-            [Answer(answer_id="total-answer", value=10)],
+            [Answer(answer_id="total-answer", value=Decimal("10.00"))],
             {
                 "breakdown-1": "",
                 "breakdown-2": "5",
@@ -1238,7 +1238,7 @@ def test_bespoke_message_for_sum_validation(app, answer_store, list_store, mocke
             },
             "breakdown-question",
             ["TOTAL_SUM_NOT_EQUALS"],
-            {"total": "10.00"},
+            {"total": "10"},
         ],
         [
             "test_validation_sum_against_value_source",
@@ -1304,7 +1304,7 @@ def test_bespoke_message_for_sum_validation(app, answer_store, list_store, mocke
             },
             "breakdown-question",
             ["TOTAL_SUM_NOT_EQUALS"],
-            {"total": "10.00"},
+            {"total": "10"},
         ],
         [
             "test_validation_sum_against_value_source",
@@ -1328,7 +1328,7 @@ def test_bespoke_message_for_sum_validation(app, answer_store, list_store, mocke
             },
             "second-breakdown-question",
             ["TOTAL_SUM_NOT_EQUALS"],
-            {"total": "10.00"},
+            {"total": "10"},
         ],  # pylint: disable=too-many-locals
     ],
 )
@@ -1435,11 +1435,11 @@ def test_sum_calculated_field_value_source_calculated_summary_repeat_not_equal_v
         form.validate()
         assert form.question_errors[
             "second-spending-breakdown-question"
-        ] == schema.error_messages["TOTAL_SUM_NOT_EQUALS"] % {"total": "10.00"}
+        ] == schema.error_messages["TOTAL_SUM_NOT_EQUALS"] % {"total": "10"}
 
 
 def test_multi_calculation(app, answer_store, list_store):
-    answer_total = Answer(answer_id="total-answer", value=10)
+    answer_total = Answer(answer_id="total-answer", value=Decimal("10.00"))
 
     answer_store.add_or_update(answer_total)
 

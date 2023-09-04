@@ -297,11 +297,6 @@ class QuestionnaireForm(FlaskForm):
 
         validator = SumCheck(messages=messages, currency=currency)
 
-        if decimal_places:
-            formatted_total = Decimal(format(target_total, f".{decimal_places}f"))
-        else:
-            formatted_total = target_total
-
         calculation_type = ValueSourceResolver.get_calculation_operator(
             calculation["calculation_type"]
         )
@@ -317,7 +312,11 @@ class QuestionnaireForm(FlaskForm):
         # Validate grouped answers meet calculation_type criteria
         try:
             validator(
-                self, calculation["conditions"], calculation_total, formatted_total
+                self,
+                conditions=calculation["conditions"],
+                total=calculation_total,
+                target_total=target_total,
+                decimal_limit=decimal_places,
             )
         except validators.ValidationError as e:
             self.question_errors[question["id"]] = str(e)
