@@ -55,12 +55,14 @@ class PlaceholderTransforms:
         raw_args: Mapping | None = None,
     ) -> str:
         if raw_args:
-            if raw_args.get("source") == "answers":
-                decimal_limit = self.schema.get_decimal_limit([raw_args["identifier"]])
+            source = raw_args["number"].get("source")
+            identifier = raw_args["number"].get("identifier")
+            if source == "answers":
+                decimal_limit = self.schema.get_decimal_limit([identifier])
 
-            if raw_args.get("source") == "calculated_summary":
+            if source == "calculated_summary":
                 answer_ids = get_calculated_summary_answer_ids(
-                    self.schema.get_block(raw_args["identifier"])  # type: ignore
+                    self.schema.get_block(identifier)  # type: ignore
                 )
                 decimal_limit = self.schema.get_decimal_limit(answer_ids)
 

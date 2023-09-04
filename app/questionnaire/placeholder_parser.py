@@ -161,6 +161,10 @@ class PlaceholderParser:
             value_source_resolver = self._get_value_source_resolver_for_transform(
                 transform
             )
+
+            if transform["transform"] in TRANSFORMS_REQUIRING_UNRESOLVED_ARGUMENTS:
+                transform_args["raw_args"] = transform["arguments"]
+
             for arg_key, arg_value in transform["arguments"].items():
                 resolved_value: ValueSourceEscapedTypes | ValueSourceTypes | TransformedValueTypes
 
@@ -179,9 +183,6 @@ class PlaceholderParser:
                     resolved_value = arg_value
 
                 transform_args[arg_key] = resolved_value
-
-                if transform["transform"] in TRANSFORMS_REQUIRING_UNRESOLVED_ARGUMENTS:
-                    transform_args["raw_args"] = arg_value
 
             transformed_value = getattr(self._transformer, transform["transform"])(
                 **transform_args
