@@ -274,7 +274,7 @@ class ProgressStore:
         self._progress.clear()
         self._is_dirty = True
 
-    def started_section_and_repeating_blocks_progress_keys(
+    def started_section_keys(
         self, section_ids: Iterable[str] | None = None
     ) -> list[SectionKey]:
         return self.section_keys(

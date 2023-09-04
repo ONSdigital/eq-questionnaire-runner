@@ -537,9 +537,7 @@ class QuestionnaireStoreUpdater:
     def started_section_keys(
         self, section_ids: Iterable[str] | None = None
     ) -> list[SectionKey]:
-        return self._progress_store.started_section_and_repeating_blocks_progress_keys(
-            section_ids
-        )
+        return self._progress_store.started_section_keys(section_ids)
 
     def _get_chronological_section_dependents(self) -> list:
         sections = list(self._schema.get_section_ids())

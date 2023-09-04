@@ -48,10 +48,7 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
         }
         # find any sections involved in the grand calculated summary (but only if they have started, to avoid evaluating the path if not necessary)
         started_sections = [
-            key
-            for key, _ in self._progress_store.started_section_and_repeating_blocks_progress_keys(
-                section_ids
-            )
+            key for key, _ in self._progress_store.started_section_keys(section_ids)
         ]
         routing_path_block_ids: list[str] = []
 
