@@ -37,7 +37,7 @@ def get_formatted_currency(
     and the locale.
     """
     locale = locale or flask_babel.get_locale()
-    decimal_places = len(str(value).split(".")[1]) if "." in str(value) else 0
+    decimal_places = _get_decimal_places(value)
 
     # get locale pattern
     parsed_locale = Locale.parse(locale)
@@ -103,8 +103,12 @@ def get_number_format(value: int | float | Decimal, locale: Locale | str) -> str
     We use '.' rather than the decimal separator based on the locale as the separator will always be
     formatted so that it is '.' by the time it reaches this method.
     """
-    decimal_places = len(str(value).split(".")[1]) if "." in str(value) else 0
+    decimal_places = _get_decimal_places(value)
     locale = Locale.parse(locale)
     locale_decimal_format = locale.decimal_formats[None]
     locale_decimal_format.frac_prec = (decimal_places, decimal_places)
     return locale_decimal_format
+
+
+def _get_decimal_places(value: int | float | Decimal | None) -> int:
+    return len(str(value).split(".")[1]) if "." in str(value) else 0
