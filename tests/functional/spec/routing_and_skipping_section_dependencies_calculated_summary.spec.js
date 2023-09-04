@@ -130,8 +130,7 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await $(CurrencyTotalPlaybackPage.milkAnswerEdit()).click();
       await $(FirstQuestionBlockPage.milk()).setValue(100);
       await click(FirstQuestionBlockPage.submit());
-      await $(SkipQuestionPage.yes()).click();
-      await click(SkipQuestionPage.submit());
+      await expect(await browser.getUrl()).to.contain(CurrencyTotalPlaybackPage.pageName);
       await click(CurrencyTotalPlaybackPage.submit());
       await click(CalculatedSummarySectionSummaryPage.submit());
       await expect(await $(HubPage.summaryRowState("dependent-question-section")).getText()).to.equal("Partially completed");
