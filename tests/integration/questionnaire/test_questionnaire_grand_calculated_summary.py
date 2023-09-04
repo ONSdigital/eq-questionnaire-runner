@@ -79,8 +79,9 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
         self.launchSurvey("test_grand_calculated_summary_cross_section_dependencies")
         self._complete_upto_grand_calculated_summary_cross_section_dependencies()
 
-        # skip the calculated summary and go straight to section summary
+        # skip the calculated summary
         self.post({"skip-answer-2": "Yes"})
+        self.post({"tv-choice-answer": "Television"})
         self.post()
 
         # grand calculated summary which doesn't include skipped calculated summary
@@ -96,6 +97,7 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
         # don't skip calculated summary, confirm it, and go to section summary
         self.post({"skip-answer-2": "No"})
         self.post()
+        self.post({"tv-choice-answer": "Television"})
         self.post()
 
         # grand calculated summary will now include the previous calculated summary
@@ -116,6 +118,7 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
         self.post({"fourth-number-answer": "40"})
         self.post({"skip-answer-2": "No"})
         self.post()
+        self.post({"tv-choice-answer": "Television"})
         self.post()
 
         # grand calculated summary will now include the extra question answer

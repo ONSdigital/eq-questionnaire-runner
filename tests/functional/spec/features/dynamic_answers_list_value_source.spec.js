@@ -133,8 +133,6 @@ describe("Dynamic answers list value source", () => {
     await $(ListCollectorRemovePage.yes()).click();
     await click(ListCollectorRemovePage.submit());
     await click(DynamicAnswerPage.submit());
-    await $(SetMinimumPage.setMinimum()).setValue(2);
-    await click(SetMinimumPage.submit());
     await click(DynamicAnswerOnlyPage.submit());
     await expect(await browser.getUrl()).to.contain(SectionSummaryPage.pageName);
     await $(SectionSummaryPage.listCollectorGroupContent(2)).waitForExist({ timeout });
