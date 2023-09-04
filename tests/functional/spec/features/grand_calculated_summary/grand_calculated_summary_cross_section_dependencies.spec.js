@@ -10,7 +10,9 @@ import CurrencyQuestion3Page from "../../../generated_pages/grand_calculated_sum
 import CurrencyAllPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/currency-all.page";
 import FirstNumberBlockPartAPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/first-number-block-part-a.page";
 import FourthNumberBlockPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/fourth-number-block.page";
+import tvChoiceBlockPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/tv-choice-block.page";
 import { click } from "../../../helpers";
+
 describe("Feature: Grand Calculated Summary", () => {
   describe("Given I have a Grand Calculated Summary", () => {
     before("Getting to the second calculated summary", async () => {
@@ -35,6 +37,8 @@ describe("Feature: Grand Calculated Summary", () => {
       await $(SkipCalculatedSummaryPage.no()).click();
       await click(SkipCalculatedSummaryPage.submit());
       await click(CurrencyQuestion3Page.submit());
+      await $(tvChoiceBlockPage.television()).click();
+      await click(tvChoiceBlockPage.submit());
       await click(CalculatedSummarySectionSummaryPage.submit());
       await click(HubPage.submit());
       await expect(await $(CurrencyAllPage.currencySection1()).getText()).to.contain("£330.00");
@@ -74,18 +78,33 @@ describe("Feature: Grand Calculated Summary", () => {
       await expect(await $(CurrencyAllPage.currencyQuestion3()).isExisting()).to.be.false;
       await click(CurrencyAllPage.submit());
     });
-    it("Given I change my response to include the calculated summary, the grand calculated summary updates to re-include it", async () => {
+    it("Given I change my response to include the calculated summary, When I press continue, Then I am routed to the new block that opens up", async () => {
       await $(HubPage.summaryRowLink("calculated-summary-section")).click();
       await $(CalculatedSummarySectionSummaryPage.skipAnswer2Edit()).click();
       await $(SkipCalculatedSummaryPage.no()).click();
       await click(SkipCalculatedSummaryPage.submit());
+      await expect(await browser.getUrl()).to.contain(CurrencyQuestion3Page.pageName);
+    });
+    it("Given I confirm the calculated summary and the blocks following it are already complete, When I press submit, Then I am returned to the section summary anchored to the answer I edited initially", async () => {
+      await click(CurrencyQuestion3Page.submit());
+      await expect(await browser.getUrl()).to.contain("calculated-summary-section/#skip-answer-2");
+    });
+    it("Given I change an answer, When I press previous from the now incomplete calculated summary, Then I am routed to the block before the calculated summary", async () => {
+      await $(CalculatedSummarySectionSummaryPage.thirdNumberAnswerPartAEdit()).click();
+      await $(ThirdNumberBlockPage.thirdNumberPartA()).setValue(120);
+      await click(ThirdNumberBlockPage.submit());
+      await expect(await browser.getUrl()).to.contain(CurrencyQuestion3Page.pageName);
+      await $(CurrencyQuestion3Page.previous()).click();
+      await expect(await browser.getUrl()).to.contain(SkipCalculatedSummaryPage.pageName);
+    });
+    it("Given I complete the section, When I go back to the grand calculated summary, Then I see the new calculated summary included", async () => {
+      await click(SkipCalculatedSummaryPage.submit());
       await click(CurrencyQuestion3Page.submit());
       await click(CalculatedSummarySectionSummaryPage.submit());
-      // Currently, the grand calculated summary does not return to in-progress, because none of the answers it depends on have changed
-      await expect(await $(HubPage.summaryRowState("grand-calculated-summary-section")).getText()).to.equal("Completed");
+      await expect(await $(HubPage.summaryRowState("grand-calculated-summary-section")).getText()).to.equal("Partially completed");
       await $(HubPage.summaryRowLink("grand-calculated-summary-section")).click();
       await expect(await $(CurrencyAllPage.grandCalculatedSummaryTitle()).getText()).to.contain(
-        "The grand calculated summary is calculated to be £460.00. Is this correct?",
+        "The grand calculated summary is calculated to be £450.00. Is this correct?",
       );
     });
     it("Given I provide an answer to question 3b from the grand calculated summary, this opens up an additional question, and when I press continue I am taken to this question first, then the calculated summary, and then the grand calculated summary", async () => {
@@ -100,7 +119,7 @@ describe("Feature: Grand Calculated Summary", () => {
       await click(CurrencyQuestion3Page.submit());
       await expect(await browser.getUrl()).to.contain(CurrencyAllPage.pageName);
       await expect(await $(CurrencyAllPage.grandCalculatedSummaryTitle()).getText()).to.contain(
-        "The grand calculated summary is calculated to be £471.00. Is this correct?",
+        "The grand calculated summary is calculated to be £461.00. Is this correct?",
       );
       await click(CurrencyAllPage.submit());
     });
@@ -113,7 +132,7 @@ describe("Feature: Grand Calculated Summary", () => {
       await $(HubPage.summaryRowLink("grand-calculated-summary-section")).click();
       await expect(await $(CurrencyAllPage.currencySection1()).getText()).to.contain("£30.00");
       await expect(await $(CurrencyAllPage.grandCalculatedSummaryTitle()).getText()).to.contain(
-        "The grand calculated summary is calculated to be £171.00. Is this correct?",
+        "The grand calculated summary is calculated to be £161.00. Is this correct?",
       );
     });
   });
