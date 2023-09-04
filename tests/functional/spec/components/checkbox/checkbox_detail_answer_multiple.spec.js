@@ -1,6 +1,6 @@
 import MandatoryCheckboxPage from "../../../generated_pages/checkbox_detail_answer_multiple/mandatory-checkbox.page";
 import SubmitPage from "../../../generated_pages/checkbox_detail_answer_multiple/submit.page";
-
+import { click } from "../../../helpers";
 describe('Checkbox with multiple "detail_answer" options', () => {
   const checkboxSchema = "test_checkbox_detail_answer_multiple.json";
 
@@ -21,7 +21,7 @@ describe('Checkbox with multiple "detail_answer" options', () => {
     await $(MandatoryCheckboxPage.cheeseDetail()).setValue("Mozzarella");
     // Mandatory detail answer left blank
     await $(MandatoryCheckboxPage.yourChoice()).click();
-    await $(MandatoryCheckboxPage.submit()).click();
+    await click(MandatoryCheckboxPage.submit());
     // Then
     await expect(await $(MandatoryCheckboxPage.error()).isDisplayed()).to.be.true;
     await expect(await $(MandatoryCheckboxPage.errorNumber(1)).getText()).to.contain("Enter your topping choice to continue");
@@ -31,12 +31,12 @@ describe('Checkbox with multiple "detail_answer" options', () => {
     // Given
     await browser.openQuestionnaire(checkboxSchema);
     await $(MandatoryCheckboxPage.yourChoice()).click();
-    await $(MandatoryCheckboxPage.submit()).click();
+    await click(MandatoryCheckboxPage.submit());
     await expect(await $(MandatoryCheckboxPage.error()).isDisplayed()).to.be.true;
 
     // When
     await $(MandatoryCheckboxPage.yourChoiceDetail()).setValue("Bacon");
-    await $(MandatoryCheckboxPage.submit()).click();
+    await click(MandatoryCheckboxPage.submit());
     await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
   });
 
@@ -46,7 +46,7 @@ describe('Checkbox with multiple "detail_answer" options', () => {
     // When
     await $(MandatoryCheckboxPage.cheese()).click();
     await expect(await $(MandatoryCheckboxPage.cheeseDetail()).isDisplayed()).to.be.true;
-    await $(MandatoryCheckboxPage.submit()).click();
+    await click(MandatoryCheckboxPage.submit());
     // Then
     await expect(await $(SubmitPage.mandatoryCheckboxAnswer()).getText()).to.equal("Cheese");
   });
@@ -59,7 +59,7 @@ describe('Checkbox with multiple "detail_answer" options', () => {
     await $(MandatoryCheckboxPage.cheeseDetail()).setValue("Mozzarella");
     await $(MandatoryCheckboxPage.yourChoice()).click();
     await $(MandatoryCheckboxPage.yourChoiceDetail()).setValue("Bacon");
-    await $(MandatoryCheckboxPage.submit()).click();
+    await click(MandatoryCheckboxPage.submit());
     // Then
     await expect(await $(SubmitPage.mandatoryCheckboxAnswer()).getText()).to.equal("Cheese\nMozzarella\nYour choice\nBacon");
   });
@@ -70,7 +70,7 @@ describe('Checkbox with multiple "detail_answer" options', () => {
     // When
     await $(MandatoryCheckboxPage.yourChoice()).click();
     await $(MandatoryCheckboxPage.yourChoiceDetail()).setValue("Bacon");
-    await $(MandatoryCheckboxPage.submit()).click();
+    await click(MandatoryCheckboxPage.submit());
     // Then
     await expect(await $(SubmitPage.mandatoryCheckboxAnswer()).getText()).to.equal("Your choice\nBacon");
   });
@@ -81,11 +81,11 @@ describe('Checkbox with multiple "detail_answer" options', () => {
     // When
     await $(MandatoryCheckboxPage.cheese()).click();
     await $(MandatoryCheckboxPage.cheeseDetail()).setValue("Mozzarella");
-    await $(MandatoryCheckboxPage.submit()).click();
+    await click(MandatoryCheckboxPage.submit());
     await $(SubmitPage.previous()).click();
     await $(MandatoryCheckboxPage.cheese()).click();
     await $(MandatoryCheckboxPage.ham()).click();
-    await $(MandatoryCheckboxPage.submit()).click();
+    await click(MandatoryCheckboxPage.submit());
     await $(SubmitPage.previous()).click();
     // Then
     await $(MandatoryCheckboxPage.cheese()).click();

@@ -13,7 +13,7 @@ import BreakdownSectionSummary from "../../../../generated_pages/validation_sum_
 
 import HubPage from "../../../../base_pages/hub.page";
 import ThankYouPage from "../../../../base_pages/thank-you.page";
-
+import { click } from "../../../../helpers";
 const householderSectionId = "householders-section";
 const householdOverviewSectionId = "household-overview-section";
 const repeatingSectionId = (repeatIndex) => {
@@ -22,27 +22,27 @@ const repeatingSectionId = (repeatIndex) => {
 
 const addPersonToHousehold = async (firstName, lastName) => {
   await $(ListCollectorPage.yes()).click();
-  await $(ListCollectorPage.submit()).click();
+  await click(ListCollectorPage.submit());
   await $(ListCollectorAddPage.firstName()).setValue(firstName);
   await $(ListCollectorAddPage.lastName()).setValue(lastName);
-  await $(ListCollectorAddPage.submit()).click();
+  await click(ListCollectorAddPage.submit());
 };
 
 const answerAndSubmitTotalSpendingQuestion = async (total) => {
   await $(TotalSpendingPage.totalSpending()).setValue(total);
-  await $(TotalSpendingPage.submit()).click();
+  await click(TotalSpendingPage.submit());
 };
 
 const answerAndSubmitEntertainmentSpendingQuestion = async (total) => {
   await $(EntertainmentSpendingPage.entertainmentSpending()).setValue(total);
-  await $(EntertainmentSpendingPage.submit()).click();
+  await click(EntertainmentSpendingPage.submit());
 };
 
 const answerAndSubmitSpendingBreakdownQuestion = async (breakdown1, breakdown2, breakdown3) => {
   await $(SpendingBreakdownPage.spendingBreakdown1()).setValue(breakdown1);
   await $(SpendingBreakdownPage.spendingBreakdown2()).setValue(breakdown2);
   await $(SpendingBreakdownPage.spendingBreakdown3()).setValue(breakdown3);
-  await $(SpendingBreakdownPage.submit()).click();
+  await click(SpendingBreakdownPage.submit());
 };
 
 const assertSpendingBreakdownAnswer = async (breakdown1, breakdown2, breakdown3) => {
@@ -55,7 +55,7 @@ const answerAndSubmitEntertainmentBreakdownQuestion = async (breakdown1, breakdo
   await $(EntertainmentBreakdownPage.secondSpendingBreakdown1()).setValue(breakdown1);
   await $(EntertainmentBreakdownPage.secondSpendingBreakdown2()).setValue(breakdown2);
   await $(EntertainmentBreakdownPage.secondSpendingBreakdown3()).setValue(breakdown3);
-  await $(EntertainmentBreakdownPage.submit()).click();
+  await click(EntertainmentBreakdownPage.submit());
 };
 
 const assertRepeatingSectionOnChange = async (repeatIndex, currentBreakdown1, currentBreakdown2, currentBreakdown3, newTotal) => {
@@ -66,7 +66,7 @@ const assertRepeatingSectionOnChange = async (repeatIndex, currentBreakdown1, cu
   });
 
   it("When I submit the spending breakdown question with no changes, Then I should see a validation error", async () => {
-    await $(SpendingBreakdownPage.submit()).click();
+    await click(SpendingBreakdownPage.submit());
 
     await expect(await $(SpendingBreakdownPage.errorNumber(1)).getText()).to.contain(`Enter answers that add up to £${newTotal}`);
   });
@@ -75,7 +75,7 @@ const assertRepeatingSectionOnChange = async (repeatIndex, currentBreakdown1, cu
     await answerAndSubmitSpendingBreakdownQuestion(newTotal, 0, 0);
 
     await expect(await browser.getUrl()).to.contain(BreakdownSectionSummary.pageName);
-    await $(BreakdownSectionSummary.submit()).click();
+    await click(BreakdownSectionSummary.submit());
     await expect(await $(HubPage.summaryRowState(repeatingSectionId(repeatIndex))).getText()).to.equal("Completed");
   });
 };
@@ -90,13 +90,13 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
       await addPersonToHousehold("Jane", "Doe");
       await $(ListCollectorPage.no()).click();
       await $(ListCollectorPage.submit()).scrollIntoView();
-      await $(ListCollectorPage.submit()).click();
-      await $(ListCollectorSummaryPage.submit()).click();
+      await click(ListCollectorPage.submit());
+      await click(ListCollectorSummaryPage.submit());
 
       // Complete household overview section
       await answerAndSubmitTotalSpendingQuestion(1000);
       await answerAndSubmitEntertainmentSpendingQuestion(500);
-      await $(HouseholdOverviewSectionSummary.submit()).click();
+      await click(HouseholdOverviewSectionSummary.submit());
 
       await expect(await $(HubPage.summaryRowState(householderSectionId)).getText()).to.equal("Completed");
       await expect(await $(HubPage.summaryRowState(householdOverviewSectionId)).getText()).to.equal("Completed");
@@ -110,7 +110,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
     it("When I start a repeating section and don't skip the calculated question, and enter an answer that is not equal to the total for the spending question, Then I should see a validation error", async () => {
       await $(HubPage.summaryRowLink(repeatingSectionId(1))).click();
       await $(BreakdownDrivingPage.yes()).click();
-      await $(BreakdownDrivingPage.submit()).click();
+      await click(BreakdownDrivingPage.submit());
 
       await answerAndSubmitSpendingBreakdownQuestion(500, 500, 500);
 
@@ -122,7 +122,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
       await answerAndSubmitEntertainmentBreakdownQuestion(250, 150, 100);
 
       await expect(await browser.getUrl()).to.contain(BreakdownSectionSummary.pageName);
-      await $(BreakdownSectionSummary.submit()).click();
+      await click(BreakdownSectionSummary.submit());
 
       await expect(await $(HubPage.summaryRowState(repeatingSectionId(1))).getText()).to.equal("Completed");
     });
@@ -130,10 +130,10 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
     it("When I start another repeating section and answer 'No' to the driving question, Then I should not have to answer the breakdown question and the section is marked as 'Completed'", async () => {
       await $(HubPage.summaryRowLink(repeatingSectionId(2))).click();
       await $(BreakdownDrivingPage.no()).click();
-      await $(BreakdownDrivingPage.submit()).click();
+      await click(BreakdownDrivingPage.submit());
 
       await expect(await browser.getUrl()).to.contain(BreakdownSectionSummary.pageName);
-      await $(BreakdownSectionSummary.submit()).click();
+      await click(BreakdownSectionSummary.submit());
 
       await expect(await $(HubPage.summaryRowState(repeatingSectionId(2))).getText()).to.equal("Completed");
     });
@@ -143,7 +143,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
       await $(HouseholdOverviewSectionSummary.totalSpendingAnswerEdit()).click();
 
       await answerAndSubmitTotalSpendingQuestion(1500);
-      await $(HouseholdOverviewSectionSummary.submit()).click();
+      await click(HouseholdOverviewSectionSummary.submit());
       await expect(await $(HubPage.summaryRowState(repeatingSectionId(1))).getText()).to.equal("Partially completed");
 
       // The 2nd repeating section skipped the breakdown question, therefore progress should updated for sections that have
@@ -157,11 +157,11 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
       await $(HubPage.summaryRowLink(repeatingSectionId(2))).click();
       await $(BreakdownSectionSummary.breakdownDrivingAnswerEdit()).click();
       await $(BreakdownDrivingPage.yes()).click();
-      await $(BreakdownDrivingPage.submit()).click();
+      await click(BreakdownDrivingPage.submit());
 
       await answerAndSubmitSpendingBreakdownQuestion(1000, 500, 0);
       await answerAndSubmitEntertainmentBreakdownQuestion(250, 150, 100);
-      await $(BreakdownSectionSummary.submit()).click();
+      await click(BreakdownSectionSummary.submit());
       await expect(await $(HubPage.summaryRowState(repeatingSectionId(2))).getText()).to.equal("Completed");
     });
 
@@ -170,7 +170,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
       await $(HouseholdOverviewSectionSummary.totalSpendingAnswerEdit()).click();
 
       await answerAndSubmitTotalSpendingQuestion(2500);
-      await $(HouseholdOverviewSectionSummary.submit()).click();
+      await click(HouseholdOverviewSectionSummary.submit());
       await expect(await $(HubPage.summaryRowState(repeatingSectionId(1))).getText()).to.equal("Partially completed");
 
       // The 2nd repeating section is now on the path, therefore, its status should have been updated.
@@ -185,15 +185,15 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
       await $(HouseholdOverviewSectionSummary.totalSpendingAnswerEdit()).click();
 
       await expect(await $(TotalSpendingPage.totalSpending()).getValue()).to.equal("2500.00");
-      await $(TotalSpendingPage.submit()).click();
-      await $(HouseholdOverviewSectionSummary.submit()).click();
+      await click(TotalSpendingPage.submit());
+      await click(HouseholdOverviewSectionSummary.submit());
 
       await expect(await $(HubPage.summaryRowState(repeatingSectionId(1))).getText()).to.equal("Completed");
       await expect(await $(HubPage.summaryRowState(repeatingSectionId(2))).getText()).to.equal("Completed");
     });
 
     it("When I submit the questionnaire, Then I should see the thank you page", async () => {
-      await $(HubPage.submit()).click();
+      await click(HubPage.submit());
 
       await expect(await browser.getUrl()).to.contain(ThankYouPage.pageName);
     });

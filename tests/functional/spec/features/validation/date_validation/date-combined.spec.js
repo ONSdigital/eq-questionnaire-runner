@@ -1,5 +1,6 @@
 import DateRangePage from "../../../../generated_pages/date_validation_combined/date-range-block.page";
 import SubmitPage from "../../../../generated_pages/date_validation_combined/submit.page";
+import { click } from "../../../../helpers";
 
 describe("Feature: Combined question level and single validation for dates", () => {
   before(async () => {
@@ -16,7 +17,7 @@ describe("Feature: Combined question level and single validation for dates", () 
         await $(DateRangePage.dateRangeToday()).setValue(22);
         await $(DateRangePage.dateRangeTomonth()).setValue(2);
         await $(DateRangePage.dateRangeToyear()).setValue(2017);
-        await $(DateRangePage.submit()).click();
+        await click(DateRangePage.submit());
         await expect(await $(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a date after 12 December 2016");
         await expect(await $(DateRangePage.errorNumber(2)).getText()).to.contain("Enter a date before 22 February 2017");
       });
@@ -29,7 +30,7 @@ describe("Feature: Combined question level and single validation for dates", () 
         await $(DateRangePage.dateRangeToday()).setValue(21);
         await $(DateRangePage.dateRangeTomonth()).setValue(2);
         await $(DateRangePage.dateRangeToyear()).setValue(2017);
-        await $(DateRangePage.submit()).click();
+        await click(DateRangePage.submit());
         await expect(await $(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period less than or equal to 50 days");
       });
 
@@ -41,7 +42,7 @@ describe("Feature: Combined question level and single validation for dates", () 
         await $(DateRangePage.dateRangeToday()).setValue(10);
         await $(DateRangePage.dateRangeTomonth()).setValue(1);
         await $(DateRangePage.dateRangeToyear()).setValue(2017);
-        await $(DateRangePage.submit()).click();
+        await click(DateRangePage.submit());
         await expect(await $(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period greater than or equal to 10 days");
       });
 
@@ -54,7 +55,7 @@ describe("Feature: Combined question level and single validation for dates", () 
         await $(DateRangePage.dateRangeToday()).setValue(11);
         await $(DateRangePage.dateRangeTomonth()).setValue(1);
         await $(DateRangePage.dateRangeToyear()).setValue(2017);
-        await $(DateRangePage.submit()).click();
+        await click(DateRangePage.submit());
         await expect(await $(SubmitPage.dateRangeFrom()).getText()).to.contain("1 January 2017 to 11 January 2017");
 
         // Max range
@@ -62,7 +63,7 @@ describe("Feature: Combined question level and single validation for dates", () 
         await $(DateRangePage.dateRangeToday()).setValue(20);
         await $(DateRangePage.dateRangeTomonth()).setValue(2);
         await $(DateRangePage.dateRangeToyear()).setValue(2017);
-        await $(DateRangePage.submit()).click();
+        await click(DateRangePage.submit());
         await expect(await $(SubmitPage.dateRangeFrom()).getText()).to.contain("1 January 2017 to 20 February 2017");
       });
     });

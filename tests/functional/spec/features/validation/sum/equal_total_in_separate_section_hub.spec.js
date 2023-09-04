@@ -8,7 +8,7 @@ import BreakdownSectionSummary from "../../../../generated_pages/validation_sum_
 
 import HubPage from "../../../../base_pages/hub.page";
 import ThankYouPage from "../../../../base_pages/thank-you.page";
-
+import { click } from "../../../../helpers";
 const companyOverviewSectionID = "company-overview-section";
 const breakdownSectionId = "breakdown-section";
 
@@ -16,23 +16,23 @@ const answerAndSubmitTurnoverBreakdownQuestion = async (breakdown1, breakdown2, 
   await $(TurnoverBreakdownPage.turnoverBreakdown1()).setValue(breakdown1);
   await $(TurnoverBreakdownPage.turnoverBreakdown2()).setValue(breakdown2);
   await $(TurnoverBreakdownPage.turnoverBreakdown3()).setValue(breakdown3);
-  await $(TurnoverBreakdownPage.submit()).click();
+  await click(TurnoverBreakdownPage.submit());
 };
 
 const answerAndSubmitEmployeeBreakdownQuestion = async (breakdown1, breakdown2) => {
   await $(EmployeesBreakdownPage.employeesBreakdown1()).setValue(breakdown1);
   await $(EmployeesBreakdownPage.employeesBreakdown2()).setValue(breakdown2);
-  await $(EmployeesBreakdownPage.submit()).click();
+  await click(EmployeesBreakdownPage.submit());
 };
 
 const answerAndSubmitTotalTurnoverQuestion = async (total) => {
   await $(TotalTurnoverPage.totalTurnover()).setValue(total);
-  await $(TotalTurnoverPage.submit()).click();
+  await click(TotalTurnoverPage.submit());
 };
 
 const answerAndSubmitTotalEmployeesQuestion = async (total) => {
   await $(TotalEmployeesPage.totalEmployees()).setValue(total);
-  await $(TotalEmployeesPage.submit()).click();
+  await click(TotalEmployeesPage.submit());
 };
 
 describe("Feature: Validation - Sum of grouped answers to equal total (Total in separate section)", () => {
@@ -41,7 +41,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Total in 
       await browser.openQuestionnaire("test_validation_sum_against_total_hub_with_dependent_section.json");
       await answerAndSubmitTotalTurnoverQuestion(1000);
       await answerAndSubmitTotalEmployeesQuestion(10);
-      await $(CompanySectionSummary.submit()).click();
+      await click(CompanySectionSummary.submit());
 
       await expect(await $(HubPage.summaryRowState(companyOverviewSectionID)).getText()).to.equal("Completed");
     });
@@ -51,7 +51,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Total in 
     });
 
     it("When I start the breakdown section and enter an answer that is not equal to the total for the turnover question, Then I should see a validation error", async () => {
-      await $(HubPage.submit()).click();
+      await click(HubPage.submit());
       await answerAndSubmitTurnoverBreakdownQuestion(1000, 250, 250);
 
       await expect(await $(TurnoverBreakdownPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to £1,000.00");
@@ -62,7 +62,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Total in 
       await answerAndSubmitEmployeeBreakdownQuestion(5, 5);
 
       await expect(await browser.getUrl()).to.contain(BreakdownSectionSummary.pageName);
-      await $(BreakdownSectionSummary.submit()).click();
+      await click(BreakdownSectionSummary.submit());
 
       await expect(await $(HubPage.summaryRowState(breakdownSectionId)).getText()).to.equal("Completed");
     });
@@ -75,13 +75,13 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Total in 
       // Complete overview section
       await answerAndSubmitTotalTurnoverQuestion(1000);
       await answerAndSubmitTotalEmployeesQuestion(10);
-      await $(CompanySectionSummary.submit()).click();
+      await click(CompanySectionSummary.submit());
 
       // Complete breakdown section
-      await $(HubPage.submit()).click();
+      await click(HubPage.submit());
       await answerAndSubmitTurnoverBreakdownQuestion(500, 250, 250);
       await answerAndSubmitEmployeeBreakdownQuestion(5, 5);
-      await $(BreakdownSectionSummary.submit()).click();
+      await click(BreakdownSectionSummary.submit());
 
       await expect(await $(HubPage.summaryRowState(breakdownSectionId)).getText()).to.equal("Completed");
     });
@@ -91,7 +91,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Total in 
       await $(CompanySectionSummary.totalTurnoverAnswerEdit()).click();
 
       await answerAndSubmitTotalTurnoverQuestion(1500);
-      await $(CompanySectionSummary.submit()).click();
+      await click(CompanySectionSummary.submit());
       await expect(await $(HubPage.summaryRowState(breakdownSectionId)).getText()).to.equal("Partially completed");
     });
 
@@ -104,7 +104,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Total in 
     });
 
     it("When I submit the turnover breakdown question with no changes, Then I should see a validation error", async () => {
-      await $(TurnoverBreakdownPage.submit()).click();
+      await click(TurnoverBreakdownPage.submit());
 
       await expect(await $(TurnoverBreakdownPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to £1,500.00");
     });
@@ -113,13 +113,13 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Total in 
       await answerAndSubmitTurnoverBreakdownQuestion(500, 500, 500);
 
       await expect(await browser.getUrl()).to.contain(BreakdownSectionSummary.pageName);
-      await $(BreakdownSectionSummary.submit()).click();
+      await click(BreakdownSectionSummary.submit());
       await expect(await $(HubPage.summaryRowState(breakdownSectionId)).getText()).to.equal("Completed");
     });
 
     it("When I submit the questionnaire, Then I should see the thank you page", async () => {
       await $(HubPage.submit()).scrollIntoView();
-      await $(HubPage.submit()).click();
+      await click(HubPage.submit());
       await expect(await browser.getUrl()).to.contain(ThankYouPage.pageName);
     });
   });

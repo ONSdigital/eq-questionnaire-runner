@@ -3,7 +3,7 @@ import DessertConfirmationPage from "../../../generated_pages/submit_with_summar
 import NumbersPage from "../../../generated_pages/submit_with_summary/numbers.page.js";
 import RadioPage from "../../../generated_pages/submit_with_summary/radio.page.js";
 import SubmitPage from "../../../generated_pages/submit_with_summary/submit.page.js";
-
+import { click } from "../../../helpers";
 describe("Submit Page with Summary", () => {
   beforeEach("Load the questionnaire", async () => {
     await browser.openQuestionnaire("test_submit_with_summary.json");
@@ -24,7 +24,7 @@ describe("Submit Page with Summary", () => {
   it("Given a questionnaire with a summary has been completed when the submit page is displayed then I should be able to submit the answers", async () => {
     await completeAllQuestions();
 
-    await $(SubmitPage.submit()).click();
+    await click(SubmitPage.submit());
     await expect(await browser.getUrl()).to.contain("thank-you");
   });
 
@@ -50,7 +50,7 @@ describe("Submit Page with Summary", () => {
 
     await $(SubmitPage.radioAnswerEdit()).click();
     await $(RadioPage.sausage()).click();
-    await $(RadioPage.submit()).click();
+    await click(RadioPage.submit());
     await expect(await $(SubmitPage.radioAnswer()).getText()).to.contain("Sausage");
   });
 
@@ -60,28 +60,28 @@ describe("Submit Page with Summary", () => {
     await $(SubmitPage.numbersUnitAnswerEdit()).click();
     await expect(await $(NumbersPage.unit()).isFocused()).to.be.true;
     await $(NumbersPage.unit()).setValue("654321");
-    await $(NumbersPage.submit()).click();
+    await click(NumbersPage.submit());
     await expect(await $(SubmitPage.numbersUnitAnswer()).getText()).to.contain("654,321 km²");
   });
 
   it("Given a number value of zero is entered when on the submit page then formatted 0 should be displayed on the summary", async () => {
-    await $(RadioPage.submit()).click();
+    await click(RadioPage.submit());
     await $(DessertPage.answer()).setValue("Cake");
-    await $(DessertPage.submit()).click();
+    await click(DessertPage.submit());
     await $(DessertConfirmationPage.yes()).click();
-    await $(DessertConfirmationPage.submit()).click();
+    await click(DessertConfirmationPage.submit());
     await $(NumbersPage.currency()).setValue("0");
-    await $(NumbersPage.submit()).click();
+    await click(NumbersPage.submit());
     await expect(await $(SubmitPage.numbersCurrencyAnswer()).getText()).to.contain("£0.00");
   });
 
   it("Given no value is entered when on the submit page summary then the correct response should be displayed", async () => {
-    await $(RadioPage.submit()).click();
+    await click(RadioPage.submit());
     await $(DessertPage.answer()).setValue("Cake");
-    await $(DessertPage.submit()).click();
+    await click(DessertPage.submit());
     await $(DessertConfirmationPage.yes()).click();
-    await $(DessertConfirmationPage.submit()).click();
-    await $(NumbersPage.submit()).click();
+    await click(DessertConfirmationPage.submit());
+    await click(NumbersPage.submit());
     await expect(await $(SubmitPage.numbersCurrencyAnswer()).getText()).to.contain("No answer provided");
   });
 
@@ -94,15 +94,15 @@ describe("Submit Page with Summary", () => {
 
   async function completeAllQuestions() {
     await $(RadioPage.bacon()).click();
-    await $(RadioPage.submit()).click();
+    await click(RadioPage.submit());
     await $(DessertPage.answer()).setValue("Crème Brûlée");
-    await $(DessertPage.submit()).click();
+    await click(DessertPage.submit());
     await $(DessertConfirmationPage.yes()).click();
-    await $(DessertConfirmationPage.submit()).click();
+    await click(DessertConfirmationPage.submit());
     await $(NumbersPage.currency()).setValue("1234");
     await $(NumbersPage.unit()).setValue("123456");
     await $(NumbersPage.decimal()).setValue("123456.78");
-    await $(NumbersPage.submit()).click();
+    await click(NumbersPage.submit());
 
     await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
   }

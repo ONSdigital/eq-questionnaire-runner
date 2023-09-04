@@ -4,6 +4,7 @@ import DateSinglePage from "../generated_pages/dates/date-single-block.page";
 import DateNonMandatoryPage from "../generated_pages/dates/date-non-mandatory-block.page";
 import DateYearDatePage from "../generated_pages/dates/date-year-date-block.page";
 import SubmitPage from "../generated_pages/dates/submit.page";
+import { click } from "../helpers";
 
 describe("Date checks", () => {
   beforeEach("Load the survey", async () => {
@@ -23,7 +24,7 @@ describe("Date checks", () => {
     await $(DateRangePage.dateRangeTomonth()).setValue(5);
     await $(DateRangePage.dateRangeToyear()).setValue(2017);
 
-    await $(DateRangePage.submit()).click();
+    await click(DateRangePage.submit());
 
     await expect(await $(DateMonthYearPage.legend()).getText()).to.contain("Date with month and year");
   });
@@ -38,24 +39,24 @@ describe("Date checks", () => {
     await $(DateRangePage.dateRangeTomonth()).setValue(5);
     await $(DateRangePage.dateRangeToyear()).setValue(2017);
 
-    await $(DateRangePage.submit()).click();
+    await click(DateRangePage.submit());
 
     await $(DateMonthYearPage.Month()).setValue(4);
     await $(DateMonthYearPage.Year()).setValue(2018);
 
-    await $(DateMonthYearPage.submit()).click();
+    await click(DateMonthYearPage.submit());
 
     await $(DateSinglePage.day()).setValue(4);
     await $(DateSinglePage.month()).setValue(1);
     await $(DateSinglePage.year()).setValue(1999);
 
-    await $(DateSinglePage.submit()).click();
+    await click(DateSinglePage.submit());
 
-    await $(DateNonMandatoryPage.submit()).click();
+    await click(DateNonMandatoryPage.submit());
 
     await $(DateYearDatePage.Year()).setValue(2005);
 
-    await $(DateYearDatePage.submit()).click();
+    await click(DateYearDatePage.submit());
 
     await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
 
@@ -77,7 +78,7 @@ describe("Date checks", () => {
     await $(DateRangePage.dateRangeTomonth()).setValue(1);
     await $(DateRangePage.dateRangeToyear()).setValue(2015);
 
-    await $(DateRangePage.submit()).click();
+    await click(DateRangePage.submit());
 
     // Then an error message is shown and the question panel is highlighted
     await expect(await $(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a 'period to' date later than the 'period from' date");
@@ -98,7 +99,7 @@ describe("Date checks", () => {
     await $(DateRangePage.dateRangeTomonth()).setValue(1);
     await $(DateRangePage.dateRangeToyear()).setValue(2016);
 
-    await $(DateRangePage.submit()).click();
+    await click(DateRangePage.submit());
 
     // Then an error message is shown and the question panel is highlighted
     await expect(await $(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a 'period to' date later than the 'period from' date");
@@ -115,7 +116,7 @@ describe("Date checks", () => {
     await $(DateRangePage.dateRangeTomonth()).setValue(1);
     await $(DateRangePage.dateRangeToyear()).setValue("");
 
-    await $(DateRangePage.submit()).click();
+    await click(DateRangePage.submit());
 
     // Then an error message is shown
     await expect(await $(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a valid date");
@@ -128,13 +129,13 @@ describe("Date checks", () => {
     await $(DateRangePage.dateRangeToday()).setValue(1);
     await $(DateRangePage.dateRangeTomonth()).setValue(1);
     await $(DateRangePage.dateRangeToyear()).setValue(2017);
-    await $(DateRangePage.submit()).click();
+    await click(DateRangePage.submit());
 
     // When the year (month year type) is left empty
     await $(DateMonthYearPage.Month()).setValue(4);
     await $(DateMonthYearPage.Year()).setValue("");
 
-    await $(DateMonthYearPage.submit()).click();
+    await click(DateMonthYearPage.submit());
 
     // Then an error message is shown
     await expect(await $(DateMonthYearPage.errorNumber(1)).getText()).to.contain("Enter a valid date");
@@ -147,18 +148,18 @@ describe("Date checks", () => {
     await $(DateRangePage.dateRangeToday()).setValue(1);
     await $(DateRangePage.dateRangeTomonth()).setValue(1);
     await $(DateRangePage.dateRangeToyear()).setValue(2017);
-    await $(DateRangePage.submit()).click();
+    await click(DateRangePage.submit());
 
     // When an error message is shown
     await $(DateMonthYearPage.Month()).setValue(4);
     await $(DateMonthYearPage.Year()).setValue("");
-    await $(DateMonthYearPage.submit()).click();
+    await click(DateMonthYearPage.submit());
 
     await expect(await $(DateMonthYearPage.error()).getText()).to.contain("Enter a valid date");
 
     // Then when it is corrected, it goes to the next question
     await $(DateMonthYearPage.Year()).setValue(2018);
-    await $(DateMonthYearPage.submit()).click();
+    await click(DateMonthYearPage.submit());
 
     await expect(await browser.getUrl()).to.contain(DateSinglePage.url());
   });
@@ -170,21 +171,21 @@ describe("Date checks", () => {
     await $(DateRangePage.dateRangeToday()).setValue(1);
     await $(DateRangePage.dateRangeTomonth()).setValue(1);
     await $(DateRangePage.dateRangeToyear()).setValue(2017);
-    await $(DateRangePage.submit()).click();
+    await click(DateRangePage.submit());
 
     await $(DateMonthYearPage.Month()).setValue(1);
     await $(DateMonthYearPage.Year()).setValue(2016);
-    await $(DateMonthYearPage.submit()).click();
+    await click(DateMonthYearPage.submit());
 
     await $(DateSinglePage.day()).setValue(1);
     await $(DateSinglePage.month()).setValue(1);
     await $(DateSinglePage.year()).setValue(2016);
-    await $(DateMonthYearPage.submit()).click();
+    await click(DateMonthYearPage.submit());
 
     // When non-mandatory is partially completed
     await $(DateNonMandatoryPage.day()).setValue(4);
     await $(DateNonMandatoryPage.month()).setValue(1);
-    await $(DateNonMandatoryPage.submit()).click();
+    await click(DateNonMandatoryPage.submit());
 
     // Then an error message is shown
     await expect(await $(DateNonMandatoryPage.errorNumber(1)).getText()).to.contain("Enter a valid date");
@@ -197,11 +198,11 @@ describe("Date checks", () => {
     await $(DateRangePage.dateRangeToday()).setValue(1);
     await $(DateRangePage.dateRangeTomonth()).setValue(1);
     await $(DateRangePage.dateRangeToyear()).setValue(2017);
-    await $(DateRangePage.submit()).click();
+    await click(DateRangePage.submit());
 
     await $(DateMonthYearPage.Month()).setValue(1);
     await $(DateMonthYearPage.Year()).setValue(2016);
-    await $(DateMonthYearPage.submit()).click();
+    await click(DateMonthYearPage.submit());
 
     // When a user clicks the day label
     await $(DateSinglePage.dayLabel()).click();

@@ -5,6 +5,7 @@ import ListCollectorPage from "../generated_pages/list_collector_variants_primar
 import EditPersonPage from "../generated_pages/list_collector_variants_primary_person/list-collector-edit.page";
 import SubmitPage from "../generated_pages/list_collector_variants_primary_person/submit.page";
 import ThankYouPage from "../base_pages/thank-you.page.js";
+import { click } from "../helpers";
 
 describe("List collector with variants primary person", () => {
   describe("Given that person lives in house", () => {
@@ -12,7 +13,7 @@ describe("List collector with variants primary person", () => {
       await browser.openQuestionnaire("test_list_collector_variants_primary_person.json");
       it("When the user is asked questions about whether they like variant, Then they are routed to section asking if they live in the house", async () => {
         await $(VariantBlockPage.yes()).click();
-        await $(VariantBlockPage.submit()).click();
+        await click(VariantBlockPage.submit());
         await expect(await $(PrimaryPersonListCollectorPage.legend()).getText()).to.contain("Do you live here? (variant)");
       });
     });
@@ -23,44 +24,44 @@ describe("List collector with variants primary person", () => {
     });
     it("When the user says that they do live there, Then they are shown as the primary person", async () => {
       await $(VariantBlockPage.yes()).click();
-      await $(VariantBlockPage.submit()).click();
+      await click(VariantBlockPage.submit());
       await $(PrimaryPersonListCollectorPage.youLiveHereYes()).click();
-      await $(PrimaryPersonListCollectorPage.submit()).click();
+      await click(PrimaryPersonListCollectorPage.submit());
       await $(ListCollectorAddPage.firstName()).setValue("John");
       await $(ListCollectorAddPage.lastName()).setValue("Doe");
-      await $(ListCollectorAddPage.submit()).click();
+      await click(ListCollectorAddPage.submit());
       await expect(await $(ListCollectorPage.listLabel(1)).getText()).to.equal("John Doe (You)");
     });
     it("When the user adds another person, Then they are shown in the list collector summary", async () => {
       await $(ListCollectorPage.yesLabel()).click();
-      await $(ListCollectorPage.submit()).click();
+      await click(ListCollectorPage.submit());
       await $(ListCollectorAddPage.firstName()).setValue("Samuel");
       await $(ListCollectorAddPage.lastName()).setValue("Clemens");
-      await $(ListCollectorAddPage.submit()).click();
+      await click(ListCollectorAddPage.submit());
       await expect(await $(ListCollectorPage.listLabel(2)).getText()).to.equal("Samuel Clemens");
     });
     it("When the user goes back and answers 'No' for 'Do you live here' question, Then the primary person is not shown", async () => {
       await $(ListCollectorPage.previous()).click();
       await $(PrimaryPersonListCollectorPage.youLiveHereNo()).click();
-      await $(PrimaryPersonListCollectorPage.submit()).click();
+      await click(PrimaryPersonListCollectorPage.submit());
       await expect(await $(ListCollectorPage.listLabel(1)).getText()).to.equal("Samuel Clemens");
     });
 
     it("When the user adds another person, Then the user is able to add members of the household", async () => {
       await $(ListCollectorPage.yes()).click();
-      await $(ListCollectorPage.submit()).click();
+      await click(ListCollectorPage.submit());
       await expect(await $(ListCollectorAddPage.questionText()).getText()).to.equal("What is the name of the person?");
       await $(ListCollectorAddPage.firstName()).setValue("Samuel");
       await $(ListCollectorAddPage.lastName()).setValue("Clemens");
-      await $(ListCollectorAddPage.submit()).click();
+      await click(ListCollectorAddPage.submit());
     });
     it("When the user adds the primary person again, Then the primary person is first in the list", async () => {
       await $(ListCollectorPage.previous()).click();
       await $(PrimaryPersonListCollectorPage.youLiveHereYes()).click();
-      await $(PrimaryPersonListCollectorPage.submit()).click();
+      await click(PrimaryPersonListCollectorPage.submit());
       await $(ListCollectorAddPage.firstName()).setValue("Mark");
       await $(ListCollectorAddPage.lastName()).setValue("Twin");
-      await $(ListCollectorAddPage.submit()).click();
+      await click(ListCollectorAddPage.submit());
       await expect(await $(ListCollectorPage.listLabel(1)).getText()).to.equal("Mark Twin (You)");
     });
     it("When the user views the summary, Then it does not show the remove link for the primary person", async () => {
@@ -71,14 +72,14 @@ describe("List collector with variants primary person", () => {
       await $(ListCollectorPage.listEditLink(1)).click();
       await $(EditPersonPage.firstName()).setValue("John");
       await $(EditPersonPage.lastName()).setValue("Doe");
-      await $(EditPersonPage.submit()).click();
+      await click(EditPersonPage.submit());
       await expect(await $(ListCollectorPage.listLabel(1)).getText()).to.equal("John Doe (You)");
       await expect(await $(ListCollectorPage.listLabel(2)).getText()).to.equal("Samuel Clemens");
     });
 
     it("When the user answers 'no' to add any person, Then the questionnaire shows the confirmation page", async () => {
       await $(ListCollectorPage.no()).click();
-      await $(ListCollectorPage.submit()).click();
+      await click(ListCollectorPage.submit());
       await expect(await browser.getUrl()).to.contain(SubmitPage.url());
     });
 
@@ -89,12 +90,12 @@ describe("List collector with variants primary person", () => {
     it("When user updates the variant answer, Then it should come back to summary screen with updated answer", async () => {
       await $(SubmitPage.variantAnswerEdit()).click();
       await $(VariantBlockPage.no()).click();
-      await $(VariantBlockPage.submit()).click();
+      await click(VariantBlockPage.submit());
       await expect(await $(SubmitPage.variantAnswer()).getText()).to.equal("No");
     });
 
     it("When the user submits, Then they are allowed to submit the survey", async () => {
-      await $(SubmitPage.submit()).click();
+      await click(SubmitPage.submit());
       await expect(await browser.getUrl()).to.contain(ThankYouPage.pageName);
     });
   });
@@ -106,15 +107,15 @@ describe("Given the user starts on the 'Do you like variant' question", () => {
   });
   it("When the user answers 'No' for variant question, Then they are routed to section asking if they live in the house", async () => {
     await $(VariantBlockPage.no()).click();
-    await $(VariantBlockPage.submit()).click();
+    await click(VariantBlockPage.submit());
     await expect(await $(PrimaryPersonListCollectorPage.legend()).getText()).to.contain("Do you live here?");
   });
 
   it("When the user says they do not live there and anyone else, Then confirmation screen is displayed", async () => {
     await $(PrimaryPersonListCollectorPage.youLiveHereNo()).click();
-    await $(PrimaryPersonListCollectorPage.submit()).click();
+    await click(PrimaryPersonListCollectorPage.submit());
     await $(ListCollectorPage.no()).click();
-    await $(ListCollectorPage.submit()).click();
+    await click(ListCollectorPage.submit());
 
     await expect(await $(SubmitPage.guidance()).getText()).to.contain("Please submit this survey to complete it");
   });
