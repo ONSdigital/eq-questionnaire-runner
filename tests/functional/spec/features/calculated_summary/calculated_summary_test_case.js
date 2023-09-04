@@ -28,6 +28,7 @@ import SectionSummarySectionTwo from "../../../generated_pages/calculated_summar
 import DependencyQuestionSectionTwo from "../../../generated_pages/calculated_summary_cross_section_dependencies/mutually-exclusive-checkbox.page";
 import MinMaxSectionTwo from "../../../generated_pages/calculated_summary_cross_section_dependencies/set-min-max-block.page";
 import { click } from "../../../helpers";
+
 class TestCase {
   testCase(schema) {
     before("Get to Calculated Summary", async () => {
@@ -113,13 +114,13 @@ class TestCase {
     it("Given I edit an answer from the calculated summary page and click the Previous button, Then I am taken to the calculated summary page that I clicked the change link from and the browser url should contain an anchor referencing the answer id of the answer I am changing", async () => {
       await $(CurrencyTotalPlaybackPage.thirdNumberAnswerEdit()).click();
       await $(ThirdNumberBlockPage.previous()).click();
-      await expect(await browser.getUrl()).to.contain("/questionnaire/currency-total-playback/?return_to=calculated-summary#third-number-answer");
+      await expect(await browser.getUrl()).to.contain("currency-total-playback/#third-number-answer");
     });
 
     it("Given I edit an answer from the calculated summary page and click the Submit button, Then I am taken to the calculated summary page that I clicked the change link from and the browser url should contain an anchor referencing the answer id of the answer I am changing", async () => {
       await $(CurrencyTotalPlaybackPage.thirdNumberAnswerEdit()).click();
       await click(ThirdNumberBlockPage.submit());
-      await expect(await browser.getUrl()).to.contain("/questionnaire/currency-total-playback/?return_to=calculated-summary#third-number-answer");
+      await expect(await browser.getUrl()).to.contain("currency-total-playback/#third-number-answer");
     });
 
     it("Given I change an answer, When I get to the currency summary, Then I should see the new total", async () => {
@@ -263,24 +264,21 @@ class TestCase {
       await $(SubmitPage.thirdNumberAnswerEdit()).click();
       await $(ThirdNumberBlockPage.thirdNumber()).setValue(3.5);
       await click(ThirdNumberBlockPage.submit());
-      await click(ThirdAndAHalfNumberBlockPage.submit());
-      await click(SkipFourthBlockPage.submit());
-      await click(FifthNumberBlockPage.submit());
-      await click(SixthNumberBlockPage.submit());
 
+      // first incomplete block
+      await expect(await browser.getUrl()).to.contain(CurrencyTotalPlaybackPage.pageName);
       await expect(await $(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £9.41. Is this correct?",
       );
-
       await click(CurrencyTotalPlaybackPage.submit());
-      await click(UnitTotalPlaybackPage.submit());
-      await click(PercentageTotalPlaybackPage.submit());
-      await click(NumberTotalPlaybackPage.submit());
-      await click(CalculatedSummaryTotalConfirmation.submit());
+
+      // second incomplete block
       await expect(await browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
       await $(SetMinMaxBlockPage.setMinimum()).setValue(10.0);
       await $(SetMinMaxBlockPage.setMaximum()).setValue(9.0);
       await click(SetMinMaxBlockPage.submit());
+
+      // back to summary
       await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
     });
 
@@ -289,20 +287,11 @@ class TestCase {
       await $(SubmitPage.thirdNumberAnswerEdit()).click();
       await $(ThirdNumberBlockPage.thirdNumber()).setValue(10.0);
       await click(ThirdNumberBlockPage.submit());
-      await click(ThirdAndAHalfNumberBlockPage.submit());
-      await click(SkipFourthBlockPage.submit());
-      await click(FifthNumberBlockPage.submit());
-      await click(SixthNumberBlockPage.submit());
-
+      await expect(await browser.getUrl()).to.contain(CurrencyTotalPlaybackPage.pageName);
       await expect(await $(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £15.91. Is this correct?",
       );
-
       await click(CurrencyTotalPlaybackPage.submit());
-      await click(UnitTotalPlaybackPage.submit());
-      await click(PercentageTotalPlaybackPage.submit());
-      await click(NumberTotalPlaybackPage.submit());
-      await click(CalculatedSummaryTotalConfirmation.submit());
       await expect(await browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
       await click(SetMinMaxBlockPage.submit());
       await expect(await $(SetMinMaxBlockPage.errorNumber(1)).getText()).to.contain("Enter an answer more than or equal to £15.91");
@@ -316,20 +305,11 @@ class TestCase {
       await $(SubmitPage.thirdNumberAnswerEdit()).click();
       await $(ThirdNumberBlockPage.thirdNumber()).setValue(1.0);
       await click(ThirdNumberBlockPage.submit());
-      await click(ThirdAndAHalfNumberBlockPage.submit());
-      await click(SkipFourthBlockPage.submit());
-      await click(FifthNumberBlockPage.submit());
-      await click(SixthNumberBlockPage.submit());
-
+      await expect(await browser.getUrl()).to.contain(CurrencyTotalPlaybackPage.pageName);
       await expect(await $(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
         "We calculate the total of currency values entered to be £6.91. Is this correct?",
       );
-
       await click(CurrencyTotalPlaybackPage.submit());
-      await click(UnitTotalPlaybackPage.submit());
-      await click(PercentageTotalPlaybackPage.submit());
-      await click(NumberTotalPlaybackPage.submit());
-      await click(CalculatedSummaryTotalConfirmation.submit());
       await expect(await browser.getUrl()).to.contain(SetMinMaxBlockPage.pageName);
       await click(SetMinMaxBlockPage.submit());
       await expect(await $(SetMinMaxBlockPage.errorNumber(1)).getText()).to.contain("Enter an answer less than or equal to £6.91");
