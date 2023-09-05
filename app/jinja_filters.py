@@ -561,6 +561,7 @@ class SummaryRow:
     ) -> None:
         self.id = question["id"]
         self.rowItems = []
+        self.rowTitle = strip_tags(question["title"])
 
         multiple_answers = len(question["answers"]) > 1
 
