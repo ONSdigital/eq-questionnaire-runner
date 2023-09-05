@@ -44,7 +44,7 @@ def test_get_not_started_row_for_section(
                 "actions": [
                     {
                         "text": "Start section",
-                        "ariaLabel": "Start Breakfast section",
+                        "visuallyHiddenText": "Start Breakfast section",
                         "url": "http://some/url",
                         "attributes": {"data-qa": "hub-row-section-1-link"},
                     }
@@ -92,7 +92,7 @@ def test_get_completed_row_for_section(
                 "actions": [
                     {
                         "text": "View answers",
-                        "ariaLabel": "View answers for Breakfast",
+                        "visuallyHiddenText": "View answers for Breakfast",
                         "url": "http://some/url",
                         "attributes": {"data-qa": "hub-row-section-1-link"},
                     }
