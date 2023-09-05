@@ -47,7 +47,7 @@
                                 "answers": [
                                     {
                                         "id": "first-number-answer",
-                                        "label": "First answer label",
+                                        "label": "First answer label (Decimal limit: 1)",
                                         "mandatory": true,
                                         "type": "Currency",
                                         "currency": "GBP",
@@ -66,7 +66,7 @@
                                 "answers": [
                                     {
                                         "id": "second-number-answer",
-                                        "label": "Second answer in currency label",
+                                        "label": "Second answer in currency label (Decimal limit: 2)",
                                         "mandatory": true,
                                         "type": "Currency",
                                         "currency": "GBP",
@@ -74,7 +74,7 @@
                                     },
                                     {
                                         "id": "second-number-answer-also-in-total",
-                                        "label": "Second answer label also in currency total (optional)",
+                                        "label": "Second answer label also in currency total (Decimal limit: 3)",
                                         "mandatory": false,
                                         "type": "Currency",
                                         "currency": "GBP",
@@ -93,7 +93,7 @@
                                 "answers": [
                                     {
                                         "id": "third-number-answer",
-                                        "label": "Third answer label",
+                                        "label": "Third answer label (Decimal limit: 4)",
                                         "mandatory": true,
                                         "type": "Currency",
                                         "currency": "GBP",
@@ -112,7 +112,7 @@
                                 "answers": [
                                     {
                                         "id": "fourth-number-answer",
-                                        "label": "Fourth answer label (optional)",
+                                        "label": "Fourth answer label (Decimal limit: 5)",
                                         "mandatory": false,
                                         "type": "Currency",
                                         "currency": "GBP",
