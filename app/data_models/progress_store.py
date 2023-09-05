@@ -89,17 +89,12 @@ class ProgressStore:
     def is_routing_backwards(self) -> bool:
         return self._is_routing_backwards
 
-    def is_section_complete(
-        self, section_id: str, list_item_id: str | None = None
-    ) -> bool:
+    def is_section_complete(self, section_key: SectionKey) -> bool:
         """
         Return True if the CompletionStatus of the Section or List Item specified by the given section_id and
          list_item_id is COMPLETED or INDIVIDUAL_RESPONSE_REQUESTED, else False.
         """
-        return (
-            section_id,
-            list_item_id,
-        ) in self.section_keys(
+        return section_key in self.section_keys(
             statuses={
                 CompletionStatus.COMPLETED,
                 CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED,
@@ -170,30 +165,24 @@ class ProgressStore:
 
         return CompletionStatus.NOT_STARTED
 
-    def get_block_status(
-        self, *, block_id: str, section_id: str, list_item_id: str | None = None
-    ) -> str:
+    def get_block_status(self, *, block_id: str, section_key: SectionKey) -> str:
         """
         Return the completion status of the block specified by the given block_id,
         if it is part of the progress of the given Section or Repeating Blocks for list item
         specified by the given section_id or list_item_id
         """
-        blocks = self.get_completed_block_ids(
-            section_id=section_id, list_item_id=list_item_id
-        )
+        blocks = self.get_completed_block_ids(section_key)
         if block_id in blocks:
             return CompletionStatus.COMPLETED
 
         return CompletionStatus.NOT_STARTED
 
-    def get_completed_block_ids(
-        self, *, section_id: str, list_item_id: str | None = None
-    ) -> list[str]:
+    def get_completed_block_ids(self, section_key: SectionKey) -> list[str]:
         """
         Return the block ids recorded as part of the progress for the Section or Repeating Blocks
         for list item specified by the given section_id and list_item_id
         """
-        progress_key = SectionKey(section_id, list_item_id)
+        progress_key = section_key
         if progress_key in self._progress:
             return self._progress[progress_key].block_ids
 
@@ -208,7 +197,7 @@ class ProgressStore:
         list_item_id = location.list_item_id
 
         completed_block_ids = self.get_completed_block_ids(
-            section_id=section_id, list_item_id=list_item_id
+            SectionKey(section_id=section_id, list_item_id=list_item_id)
         )
 
         if location.block_id not in completed_block_ids:
@@ -286,5 +275,5 @@ class ProgressStore:
         self, *, block_id: str, section_id: str, list_item_id: str | None
     ) -> bool:
         return block_id in self.get_completed_block_ids(
-            section_id=section_id, list_item_id=list_item_id
+            SectionKey(section_id=section_id, list_item_id=list_item_id)
         )

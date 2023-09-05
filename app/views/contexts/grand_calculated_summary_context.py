@@ -2,6 +2,7 @@ from typing import Iterable, Mapping
 
 from werkzeug.datastructures import ImmutableDict
 
+from app.questionnaire.location import SectionKey
 from app.questionnaire.questionnaire_schema import (
     get_calculation_block_ids_for_grand_calculated_summary,
 )
@@ -58,7 +59,9 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
             else:
                 routing_path_block_ids.extend(
                     # repeating calculated summaries are not supported at the moment, so no list item is needed
-                    self._router.routing_path(section_id).block_ids
+                    self._router.routing_path(
+                        SectionKey(section_id=section_id, list_item_id=None)
+                    ).block_ids
                 )
 
         return routing_path_block_ids

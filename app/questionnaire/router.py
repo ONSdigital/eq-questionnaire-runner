@@ -66,7 +66,7 @@ class Router:
             section_id, list_item_id = first_incomplete_section_key
 
             section_routing_path = self._path_finder.routing_path(
-                section_id=section_id, list_item_id=list_item_id
+                SectionKey(section_id=section_id, list_item_id=list_item_id)
             )
             return self.get_section_resume_url(section_routing_path)
 
@@ -75,7 +75,7 @@ class Router:
     def get_last_location_in_questionnaire_url(self) -> str | None:
         section_key = self._get_last_complete_section_key()
         if section_key:
-            routing_path = self.routing_path(*section_key)
+            routing_path = self.routing_path(section_key)
             return self.get_last_location_in_section(routing_path).url()
 
     def _is_list_item_in_list_store(self, list_item_id: str, list_name: str) -> bool:
@@ -104,22 +104,20 @@ class Router:
 
     def can_access_hub(self) -> bool:
         return self._schema.is_flow_hub and all(
-            self._progress_store.is_section_complete(section_id)
+            self._progress_store.is_section_complete(
+                SectionKey(section_id=section_id, list_item_id=None)
+            )
             for section_id in self._schema.get_section_ids_required_for_hub()
             if section_id in self.enabled_section_ids
         )
 
-    def can_display_section_summary(
-        self, section_id: str, list_item_id: str | None = None
-    ) -> bool:
+    def can_display_section_summary(self, section_key: SectionKey) -> bool:
         return bool(
-            self._schema.get_summary_for_section(section_id)
-        ) and self._progress_store.is_section_complete(section_id, list_item_id)
+            self._schema.get_summary_for_section(section_key.section_id)
+        ) and self._progress_store.is_section_complete(section_key)
 
-    def routing_path(
-        self, section_id: str, list_item_id: str | None = None
-    ) -> RoutingPath:
-        return self._path_finder.routing_path(section_id, list_item_id)
+    def routing_path(self, section_key: SectionKey) -> RoutingPath:
+        return self._path_finder.routing_path(section_key)
 
     def get_next_location_url(
         self,
@@ -134,7 +132,9 @@ class Router:
         whether it be a summary, the hub or the next incomplete location.
         """
         is_section_complete = self._progress_store.is_section_complete(
-            location.section_id, location.list_item_id
+            SectionKey(
+                section_id=location.section_id, list_item_id=location.list_item_id
+            )
         )
 
         if return_to_url := self.get_return_to_location_url(
@@ -265,7 +265,9 @@ class Router:
 
         if is_section_complete is None:
             is_section_complete = self._progress_store.is_section_complete(
-                location.section_id, location.list_item_id
+                SectionKey(
+                    section_id=location.section_id, list_item_id=location.list_item_id
+                )
             )
 
         if not is_section_complete:
@@ -311,12 +313,16 @@ class Router:
             # the grand calculated summary is in a different section which will have a different routing path
             # but don't go to it unless the section is enabled and the current section is complete
             if (
-                not self._progress_store.is_section_complete(section_key.section_id)
+                not self._progress_store.is_section_complete(
+                    SectionKey(section_id=section_key.section_id, list_item_id=None)
+                )
                 or grand_calculated_summary_section not in self.enabled_section_ids
             ):
                 return None
             routing_path = self._path_finder.routing_path(
-                section_id=grand_calculated_summary_section
+                SectionKey(
+                    section_id=grand_calculated_summary_section, list_item_id=None
+                )
             )
         if self.can_access_location(
             # grand calculated summaries do not yet support repeating sections, when they do, this will need to make use of list item id as well
@@ -461,12 +467,14 @@ class Router:
                 for list_item_id in self._list_store[repeating_list]:
                     full_routing_path.append(
                         self._path_finder.routing_path(
-                            section_id=section_id, list_item_id=list_item_id
+                            SectionKey(section_id=section_id, list_item_id=list_item_id)
                         )
                     )
             else:
                 full_routing_path.append(
-                    self._path_finder.routing_path(section_id=section_id)
+                    self._path_finder.routing_path(
+                        SectionKey(section_id=section_id, list_item_id=None)
+                    )
                 )
         return full_routing_path
 
@@ -513,21 +521,23 @@ class Router:
                 section_id
             ):
                 for list_item_id in self._list_store[repeating_list]:
-                    section_key = SectionKey(section_id, list_item_id)
-                    yield section_key
+                    yield SectionKey(section_id, list_item_id)
             else:
-                section_key = SectionKey(section_id, None)
-                yield section_key
+                yield SectionKey(section_id, None)
 
     def _get_first_incomplete_section_key(self) -> tuple[str, str | None] | None:
         for section_id, list_item_id in self._get_enabled_section_keys():
-            if not self._progress_store.is_section_complete(section_id, list_item_id):
-                return section_id, list_item_id
+            if not self._progress_store.is_section_complete(
+                SectionKey(section_id=section_id, list_item_id=list_item_id)
+            ):
+                return SectionKey(section_id=section_id, list_item_id=list_item_id)
 
-    def _get_last_complete_section_key(self) -> tuple[str, str | None] | None:
+    def _get_last_complete_section_key(self) -> SectionKey | None:
         for section_id, list_item_id in list(self._get_enabled_section_keys())[::-1]:
-            if self._progress_store.is_section_complete(section_id, list_item_id):
-                return section_id, list_item_id
+            if self._progress_store.is_section_complete(
+                SectionKey(section_id=section_id, list_item_id=list_item_id)
+            ):
+                return SectionKey(section_id=section_id, list_item_id=list_item_id)
 
     def _is_section_enabled(self, section: Mapping) -> bool:
         if "enabled" not in section:

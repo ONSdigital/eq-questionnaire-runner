@@ -446,8 +446,10 @@ class QuestionnaireStoreUpdater:
         if is_path_complete is None:
             is_path_complete = self._router.is_path_complete(
                 self._router.routing_path(
-                    dependent_section.section_id,
-                    list_item_id=dependent_section.list_item_id,
+                    SectionKey(
+                        section_id=dependent_section.section_id,
+                        list_item_id=dependent_section.list_item_id,
+                    ),
                 )
             )
 

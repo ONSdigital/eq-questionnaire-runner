@@ -9,7 +9,7 @@ from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.progress_store import CompletionStatus, ProgressStore
 from app.data_models.supplementary_data_store import SupplementaryDataStore
-from app.questionnaire.location import Location
+from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.router import Router
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
@@ -135,7 +135,9 @@ class TestRouterPathCompletion(RouterTestCase):
             ]
         )
 
-        routing_path = self.router.routing_path(section_id="default-section")
+        routing_path = self.router.routing_path(
+            SectionKey(section_id="default-section", list_item_id=None)
+        )
         is_path_complete = self.router.is_path_complete(routing_path)
 
         assert is_path_complete
@@ -143,7 +145,9 @@ class TestRouterPathCompletion(RouterTestCase):
     def test_is_not_complete(self):
         self.schema = load_schema_from_name("test_textfield")
 
-        routing_path = self.router.routing_path(section_id="default-section")
+        routing_path = self.router.routing_path(
+            SectionKey(section_id="default-section", list_item_id=None)
+        )
         is_path_complete = self.router.is_path_complete(routing_path)
 
         assert not is_path_complete
@@ -1658,7 +1662,7 @@ class TestRouterLastLocationLinearFlow(RouterTestCase):
 
         last_completed_block_in_progress_store = (
             self.progress_store.get_completed_block_ids(
-                section_id=section_id, list_item_id=None
+                SectionKey(section_id=section_id, list_item_id=None)
             )[-1]
         )
 

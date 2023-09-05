@@ -6,7 +6,7 @@ from flask_babel import gettext
 
 from app.forms.questionnaire_form import QuestionnaireForm, generate_form
 from app.helpers import get_address_lookup_api_auth_token
-from app.questionnaire.location import Location
+from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.questionnaire_store_updater import (
     DependentSection,
     QuestionnaireStoreUpdater,
@@ -234,8 +234,10 @@ class Question(BlockHandler):
             # In order to support progress value source references of the previous block
             self.questionnaire_store_updater.add_completed_location()
             self._routing_path = self.router.routing_path(
-                section_id=self._current_location.section_id,
-                list_item_id=self._current_location.list_item_id,
+                SectionKey(
+                    section_id=self._current_location.section_id,
+                    list_item_id=self._current_location.list_item_id,
+                )
             )
         super().handle_post()
 
@@ -305,7 +307,7 @@ class Question(BlockHandler):
         list_name: str,
     ) -> Location | None:
         if self._questionnaire_store.progress_store.is_section_complete(
-            section_id=section_id, list_item_id=list_item_id
+            SectionKey(section_id=section_id, list_item_id=list_item_id)
         ):
             return None
 

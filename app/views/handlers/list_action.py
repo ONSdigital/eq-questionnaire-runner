@@ -1,7 +1,7 @@
 from flask import url_for
 from werkzeug.datastructures import ImmutableDict
 
-from app.questionnaire.location import Location
+from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.routing_path import RoutingPath
 from app.views.handlers.question import Question
 
@@ -22,7 +22,9 @@ class ListAction(Question):
 
     def _get_routing_path(self) -> RoutingPath:
         """Only the section id is required, as list collectors won't be in a repeating section"""
-        return self.router.routing_path(section_id=self.parent_location.section_id)
+        return self.router.routing_path(
+            SectionKey(section_id=self.parent_location.section_id, list_item_id=None)
+        )
 
     def is_location_valid(self) -> bool:
         can_access_parent_location = self.router.can_access_location(
@@ -50,7 +52,9 @@ class ListAction(Question):
         if (
             self._return_to == "section-summary"
             and self.router.can_display_section_summary(
-                self.parent_location.section_id, self.parent_location.list_item_id
+                SectionKey(
+                    self.parent_location.section_id, self.parent_location.list_item_id
+                )
             )
         ):
             return url_for(

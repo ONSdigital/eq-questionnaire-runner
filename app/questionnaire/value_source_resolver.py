@@ -214,10 +214,12 @@ class ValueSourceResolver:
 
             return self.progress_store.get_block_status(
                 block_id=identifier,
-                section_id=section_id_for_block,
-                list_item_id=self.location.list_item_id
-                if self.location.section_id == section_id_for_block
-                else None,
+                section_key=SectionKey(
+                    section_id=section_id_for_block,
+                    list_item_id=self.location.list_item_id
+                    if self.location.section_id == section_id_for_block
+                    else None,
+                ),
             )
 
     def _resolve_list_value_source(self, value_source: Mapping) -> int | str | list:

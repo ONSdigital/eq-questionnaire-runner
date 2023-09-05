@@ -1158,7 +1158,9 @@ def test_dependent_sections_completed_dependant_blocks_removed_and_status_update
     }
 
     assert dependent_block_id in progress_store.get_completed_block_ids(
-        section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
+        section_key=SectionKey(
+            section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
+        )
     )
 
     mocker.patch(
@@ -1175,7 +1177,9 @@ def test_dependent_sections_completed_dependant_blocks_removed_and_status_update
 
     # Then
     assert dependent_block_id not in progress_store.get_completed_block_ids(
-        section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
+        SectionKey(
+            section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
+        )
     )
     assert (
         progress_store.get_section_or_repeating_blocks_progress_status(
@@ -1219,7 +1223,9 @@ def test_dependent_sections_current_section_status_not_updated(mocker):
         mocker.Mock()
     )
     assert dependent_block_id in progress_store.get_completed_block_ids(
-        section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
+        SectionKey(
+            section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
+        )
     )
 
     # When
@@ -1228,7 +1234,9 @@ def test_dependent_sections_current_section_status_not_updated(mocker):
 
     # Then
     assert dependent_block_id not in progress_store.get_completed_block_ids(
-        section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
+        SectionKey(
+            section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
+        )
     )
     # Status for current section is handled separately by handle post.
     assert (
@@ -1323,7 +1331,9 @@ def test_dependent_sections_started_but_blocks_incomplete(mock_router, mocker):
     )
 
     assert dependent_block_id not in progress_store.get_completed_block_ids(
-        section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
+        SectionKey(
+            section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
+        )
     )
 
     # When
@@ -1417,7 +1427,7 @@ def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_sta
     for list_item in list_store["some-list"]:
         section_id, list_item_id = "breakdown-section", list_item
         assert "turnover-breakdown-block" not in progress_store.get_completed_block_ids(
-            section_id=section_id, list_item_id=list_item_id
+            SectionKey(section_id=section_id, list_item_id=list_item_id)
         )
         assert (
             progress_store.get_section_or_repeating_blocks_progress_status(
@@ -1475,7 +1485,9 @@ def test_dependent_sections_added_dependant_block_removed(
     }
 
     assert dependent_block_id in progress_store.get_completed_block_ids(
-        section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
+        SectionKey(
+            section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
+        )
     )
     assert questionnaire_store_updater.dependent_sections == set()
 
@@ -1484,7 +1496,9 @@ def test_dependent_sections_added_dependant_block_removed(
 
     # Then
     assert dependent_block_id not in progress_store.get_completed_block_ids(
-        section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
+        SectionKey(
+            section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
+        )
     )
     assert questionnaire_store_updater.dependent_sections == {
         DependentSection(
@@ -1500,37 +1514,37 @@ def test_dependent_sections_added_dependant_block_removed(
             # s1.s1 -> s1.s2 -> s2.s3 -> s3.s4 -> s3.s5 -> s3.s7 -> s2.s6
             [],
             [
-                call("section-1", list_item_id=None),
-                call("section-2", list_item_id=None),
-                call("section-3", list_item_id=None),
-                call("section-4", list_item_id=None),
-                call("section-5", list_item_id=None),
-                call("section-7", list_item_id=None),
-                call("section-6", list_item_id=None),
+                call(SectionKey("section-1", list_item_id=None)),
+                call(SectionKey("section-2", list_item_id=None)),
+                call(SectionKey("section-3", list_item_id=None)),
+                call(SectionKey("section-4", list_item_id=None)),
+                call(SectionKey("section-5", list_item_id=None)),
+                call(SectionKey("section-7", list_item_id=None)),
+                call(SectionKey("section-6", list_item_id=None)),
             ],
         ),
         (
             # s1 -> s1.s2 -> s1.s3 -> s3.s4 -> s3.s5 -> s3.s7
             ["section-2"],
             [
-                call("section-1", list_item_id=None),
-                call("section-2", list_item_id=None),
-                call("section-3", list_item_id=None),
-                call("section-4", list_item_id=None),
-                call("section-5", list_item_id=None),
-                call("section-7", list_item_id=None),
+                call(SectionKey("section-1", list_item_id=None)),
+                call(SectionKey("section-2", list_item_id=None)),
+                call(SectionKey("section-3", list_item_id=None)),
+                call(SectionKey("section-4", list_item_id=None)),
+                call(SectionKey("section-5", list_item_id=None)),
+                call(SectionKey("section-7", list_item_id=None)),
             ],
         ),
         (
             # s1 -> s1.s2 -> s2.s3 -> s2.s4 -> s2.s5 -> s2.s6
             ["section-3"],
             [
-                call("section-1", list_item_id=None),
-                call("section-2", list_item_id=None),
-                call("section-3", list_item_id=None),
-                call("section-4", list_item_id=None),
-                call("section-5", list_item_id=None),
-                call("section-6", list_item_id=None),
+                call(SectionKey("section-1", list_item_id=None)),
+                call(SectionKey("section-2", list_item_id=None)),
+                call(SectionKey("section-3", list_item_id=None)),
+                call(SectionKey("section-4", list_item_id=None)),
+                call(SectionKey("section-5", list_item_id=None)),
+                call(SectionKey("section-6", list_item_id=None)),
             ],
         ),
     ],
