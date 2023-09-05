@@ -128,11 +128,12 @@ class NumberRange:
         field: Union[DecimalFieldWithSeparator, IntegerFieldWithSeparator],
     ) -> None:
         value: Union[int, Decimal] = field.data
-        decimal_limit = None
-        if isinstance(field, DecimalFieldWithSeparator):
-            decimal_limit = field.places
 
         if value is not None:
+            decimal_limit = (
+                field.places if isinstance(field, DecimalFieldWithSeparator) else None
+            )
+
             if error_message := self.validate_minimum(
                 value=value, decimal_limit=decimal_limit
             ) or self.validate_maximum(value=value, decimal_limit=decimal_limit):
@@ -144,23 +145,17 @@ class NumberRange:
         if self.minimum is None:
             return None
 
+        minimum_value = format_playback_value(
+            value=self.minimum,
+            currency=self.currency,
+            decimal_limit=decimal_limit,
+        )
+
         if self.minimum_exclusive and value <= self.minimum:
-            return self.messages["NUMBER_TOO_SMALL_EXCLUSIVE"] % {
-                "min": format_playback_value(
-                    value=self.minimum,
-                    currency=self.currency,
-                    decimal_limit=decimal_limit,
-                )
-            }
+            return self.messages["NUMBER_TOO_SMALL_EXCLUSIVE"] % {"min": minimum_value}
 
         if value < self.minimum:
-            return self.messages["NUMBER_TOO_SMALL"] % {
-                "min": format_playback_value(
-                    value=self.minimum,
-                    currency=self.currency,
-                    decimal_limit=decimal_limit,
-                )
-            }
+            return self.messages["NUMBER_TOO_SMALL"] % {"min": minimum_value}
 
         return None
 
@@ -170,22 +165,16 @@ class NumberRange:
         if self.maximum is None:
             return None
 
+        maximum_value = format_playback_value(
+            value=self.maximum,
+            currency=self.currency,
+            decimal_limit=decimal_limit,
+        )
+
         if self.maximum_exclusive and value >= self.maximum:
-            return self.messages["NUMBER_TOO_LARGE_EXCLUSIVE"] % {
-                "max": format_playback_value(
-                    value=self.maximum,
-                    currency=self.currency,
-                    decimal_limit=decimal_limit,
-                )
-            }
+            return self.messages["NUMBER_TOO_LARGE_EXCLUSIVE"] % {"max": maximum_value}
         if value > self.maximum:
-            return self.messages["NUMBER_TOO_LARGE"] % {
-                "max": format_playback_value(
-                    value=self.maximum,
-                    currency=self.currency,
-                    decimal_limit=decimal_limit,
-                )
-            }
+            return self.messages["NUMBER_TOO_LARGE"] % {"max": maximum_value}
 
         return None
 

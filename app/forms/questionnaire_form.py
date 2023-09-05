@@ -205,31 +205,31 @@ class QuestionnaireForm(FlaskForm):
         calculation: Calculation,
         question: QuestionSchemaType,
     ) -> dict:
-        result = {
-            "decimal_places": self.schema.get_decimal_limit(
-                calculation["answers_to_calculate"]
-            ),
-            "currency": question.get("currency"),
-        }
+        decimal_places = self.schema.get_decimal_limit(
+            calculation["answers_to_calculate"]
+        )
+        currency = question.get("currency")
 
         if "value" in calculation:
             if isinstance(calculation["value"], dict):
-                result["target_total"] = self.value_source_resolver.resolve(calculation["value"])  # type: ignore
+                target_total = self.value_source_resolver.resolve(calculation["value"])  # type: ignore
             else:
-                result["target_total"] = calculation["value"]
+                target_total = calculation["value"]
+        else:
+            target_answer = self.schema.get_answers_by_answer_id(
+                calculation["answer_id"]
+            )[0]
+            target_total = self.answer_store.get_answer(
+                calculation["answer_id"]
+            ).value  # type: ignore # expect not None
 
-            return result
+            currency = target_answer.get("currency")
 
-        target_answer = self.schema.get_answers_by_answer_id(calculation["answer_id"])[
-            0
-        ]
-        result["target_total"] = self.answer_store.get_answer(
-            calculation["answer_id"]
-        ).value  # type: ignore # expect not None
-
-        result["currency"] = target_answer.get("currency")
-
-        return result
+        return {
+            "currency": currency,
+            "target_total": target_total,
+            "decimal_places": decimal_places,
+        }
 
     def validate_date_range_with_period_limits_and_single_date_limits(
         self,
