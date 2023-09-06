@@ -470,7 +470,6 @@ class SummaryRowItem:
         self,
         question: SelectFieldBase._Option,
         answer: SelectFieldBase._Option,
-        multiple_answers: bool,
         answers_are_editable: bool,
         no_answer_provided: str,
         edit_link_text: str,
@@ -480,8 +479,7 @@ class SummaryRowItem:
     ) -> None:
         answer_type = answer.get("type", "calculated")
         if (
-            multiple_answers
-            or answer_type == "relationship"
+            answer_type == "relationship"
             or is_summary_with_calculation(summary_type)
             or use_answer_label
         ) and answer.get("label"):
@@ -561,9 +559,7 @@ class SummaryRow:
     ) -> None:
         self.id = question["id"]
         self.rowItems = []
-        self.rowTitle = strip_tags(question["title"])
-
-        multiple_answers = len(question["answers"]) > 1
+        use_answer_label = use_answer_label or len(question["answers"]) > 1
 
         if is_summary_with_calculation(summary_type) and not answers_are_editable:
             self.total = True
@@ -573,7 +569,6 @@ class SummaryRow:
                 SummaryRowItem(
                     question,
                     answer,
-                    multiple_answers,
                     answers_are_editable,
                     no_answer_provided,
                     edit_link_text,
@@ -730,7 +725,6 @@ def map_list_collector_config(
         row_items: list = [row_item]
 
         if related_answers:
-            use_answer_label = True
             for block in related_answers[list_item["list_item_id"]]:
                 summary_row = SummaryRow(
                     block["question"],
@@ -739,7 +733,7 @@ def map_list_collector_config(
                     no_answer_provided=flask_babel.lazy_gettext("No answer provided"),
                     edit_link_text=edit_link_text,
                     edit_link_aria_label=edit_link_aria_label,
-                    use_answer_label=use_answer_label,
+                    use_answer_label=True,
                 )
                 row_items.extend(summary_row.rowItems)
 
