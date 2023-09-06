@@ -156,12 +156,11 @@ class ProgressStore:
     ) -> str:
         """
         Return the CompletionStatus of the Section or Repeating Blocks for a list item,
-        specified by the given section_id and list_item_id.
+        specified by the given section_id and list_item_id in SectionKey tuple.
         Returns NOT_STARTED if the progress does not exist
         """
-        progress_key = section_key
-        if progress_key in self._progress:
-            return self._progress[progress_key].status
+        if section_key in self._progress:
+            return self._progress[section_key].status
 
         return CompletionStatus.NOT_STARTED
 
@@ -180,11 +179,10 @@ class ProgressStore:
     def get_completed_block_ids(self, section_key: SectionKey) -> list[str]:
         """
         Return the block ids recorded as part of the progress for the Section or Repeating Blocks
-        for list item specified by the given section_id and list_item_id
+        for list item specified by the given section_id and list_item_id in SectionKey tuple
         """
-        progress_key = section_key
-        if progress_key in self._progress:
-            return self._progress[progress_key].block_ids
+        if section_key in self._progress:
+            return self._progress[section_key].block_ids
 
         return []
 
