@@ -10,7 +10,6 @@ from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.services.supplementary_data import SupplementaryDataRequestFailed
 from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.utilities.json import json_loads
-from app.utilities.schema import load_schema_from_name
 from tests.app.services.test_request_supplementary_data import TEST_SDS_URL
 from tests.integration.integration_test_case import (
     EQ_SUBMISSION_SDX_PRIVATE_KEY,
