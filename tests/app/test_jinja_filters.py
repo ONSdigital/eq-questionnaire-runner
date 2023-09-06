@@ -1078,7 +1078,7 @@ def test_summary_item_config_with_list_collector_and_one_related_answer():
                                 "question": {
                                     "id": "add-question",
                                     "type": "General",
-                                    "title": " ",
+                                    "title": "Give details about the company or branch that undertakes general insurance business",
                                     "number": None,
                                     "answers": [
                                         {

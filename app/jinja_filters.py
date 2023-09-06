@@ -478,7 +478,7 @@ class SummaryRowItem:
         summary_type: str,
         use_answer_label: bool = False,
     ) -> None:
-        answer_type = answer["type"] if "type" in answer else "calculated"
+        answer_type = answer.get("type", "calculated")
         if (
             multiple_answers
             or answer_type == "relationship"
@@ -730,8 +730,8 @@ def map_list_collector_config(
         row_items: list = [row_item]
 
         if related_answers:
+            use_answer_label = True
             for block in related_answers[list_item["list_item_id"]]:
-                use_answer_label = len(block["question"]["answers"]) == 1
                 summary_row = SummaryRow(
                     block["question"],
                     summary_type="SectionSummary",
