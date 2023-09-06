@@ -80,18 +80,11 @@ class TestQuestionnaireProgressValueSourceBlocks(IntegrationTestCase):
         self.assertInBody("Section 1 Question 2")
         self.post({"s1-b2-q1-a1": 1})
 
-        self.assertInBody("Section 1 Question 3")
-        self.post({"s1-b3-q1-a1": 1})
-
-        # bBock 4 is not skipped because answer to block 1 is now 1
+        # Routes to block 4 as it is the next incomplete block and no longer skipped because answer to block 1 is now 1.
         self.assertInBody("Section 1 Question 4")
         self.post({"s1-b4-q1-a1": 1})
 
-        # Routes to block 5 because answer to block 1 is now 1
-        self.assertInBody("Section 1 Question 5")
-        self.post({"s1-b5-q1-a1": 1})
-
-        # Routes to block 6 because answer to block 1 is now 1
+        # Routes to block 6 as its the next incomplete block and no longer skipped because block 4 is answered
         self.assertInBody("Section 1 Question 6")
         self.post({"s1-b6-q1-a1": 1})
 

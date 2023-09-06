@@ -73,6 +73,27 @@ def login() -> Response:
 
     validate_jti(decrypted_token)
 
+    _data = (
+        survey_metadata.get("data", {})
+        if (survey_metadata := decrypted_token.get("survey_metadata"))
+        else decrypted_token
+    )
+    ru_ref, qid = _data.get("ru_ref"), _data.get("qid")
+
+    logger_args = {
+        key: value
+        for key, value in {
+            "tx_id": decrypted_token.get("tx_id"),
+            "case_id": decrypted_token.get("case_id"),
+            "schema_name": decrypted_token.get("schema_name"),
+            "schema_url": decrypted_token.get("schema_url"),
+            "ru_ref": ru_ref,
+            "qid": qid,
+        }.items()
+        if value
+    }
+    contextvars.bind_contextvars(**logger_args)
+
     runner_claims = get_runner_claims(decrypted_token)
 
     metadata = MetadataProxy.from_dict(runner_claims)
@@ -91,30 +112,9 @@ def login() -> Response:
         if questionnaire_claims:
             runner_claims["survey_metadata"]["data"] = questionnaire_claims
 
-        ru_ref = questionnaire_claims.get("ru_ref")
-        qid = questionnaire_claims.get("qid")
         claims = runner_claims
     else:
-        ru_ref = runner_claims["ru_ref"]
-        qid = None
         claims = {**runner_claims, **questionnaire_claims}
-
-    tx_id = claims["tx_id"]
-    case_id = claims["case_id"]
-
-    logger_args = {
-        key: value
-        for key, value in {
-            "tx_id": tx_id,
-            "case_id": case_id,
-            "schema_name": metadata.schema_name,
-            "schema_url": metadata.schema_url,
-            "ru_ref": ru_ref,
-            "qid": qid,
-        }.items()
-        if value
-    }
-    contextvars.bind_contextvars(**logger_args)
 
     logger.info("decrypted token and parsed metadata")
 
