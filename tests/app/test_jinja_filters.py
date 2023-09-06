@@ -32,8 +32,10 @@ from app.utilities.schema import load_schema_from_name
 TEST_FORMAT_CURRENCY_PARAMS = (
     "value, currency, locale_string, decimal_limit, expected_result",
     [
-        (Decimal("2.1"), "GBP", "en_GB", None, "£2"),
-        (Decimal("3000.44545"), "GBP", "en_GB", None, "£3,000"),
+        (Decimal("2.1"), "GBP", "en_GB", None, "£2.10"),
+        (Decimal("3000.44545"), "GBP", "en_GB", None, "£3,000.44545"),
+        (Decimal("2.1"), "GBP", "en_GB", None, "£2.10"),
+        (Decimal("2.123"), "GBP", "en_GB", None, "£2.123"),
         (Decimal("123.1234"), "GBP", "en_GB", 0, "£123"),
         (Decimal("3000"), "GBP", "en_GB", 0, "£3,000"),
         (Decimal("3000"), "JPY", "en_GB", 0, "JP¥3,000"),
@@ -46,6 +48,7 @@ TEST_FORMAT_CURRENCY_PARAMS = (
         (11000, "USD", "en_GB", 2, "US$11,000.00"),
         (11000, "USD", "en_GB", 2, "US$11,000.00"),
         (11000, "PLN", "pl_PL", 2, "11 000,00 zł"),
+        (Decimal("2.1"), "GBP", "en_GB", 2, "£2.10"),
         (Decimal("11.99"), "GBP", "en_GB", 2, "£11.99"),
         (Decimal("2.1"), "GBP", "en_GB", 4, "£2.10"),
         (Decimal("2.1"), "GBP", "en_GB", 5, "£2.10"),

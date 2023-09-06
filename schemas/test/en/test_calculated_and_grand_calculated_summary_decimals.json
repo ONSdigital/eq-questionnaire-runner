@@ -195,7 +195,7 @@
                                 "answers": [
                                     {
                                         "id": "fifth-number-answer",
-                                        "label": "Fifth answer label (optional)",
+                                        "label": "Fifth answer label (Decimal limit: 2)",
                                         "mandatory": false,
                                         "type": "Currency",
                                         "currency": "GBP",
@@ -214,7 +214,7 @@
                                 "answers": [
                                     {
                                         "id": "sixth-number-answer",
-                                        "label": "Fifth answer label (optional)",
+                                        "label": "Fifth answer label (Decimal limit: 2)",
                                         "mandatory": false,
                                         "type": "Currency",
                                         "currency": "GBP",

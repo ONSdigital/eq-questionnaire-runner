@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from mock import Mock
 
 from app.data_models import ProgressStore, SupplementaryDataStore
@@ -1279,3 +1281,45 @@ def test_placeholder_dependencies_cache(mocker, mock_renderer):
     placeholder_2 = placeholder_parser(placeholder_list=placeholder_list_2)
     assert placeholder_2["date_entry_answer_to"] == "28 April 2016"
     assert path_finder.called == 1
+
+
+def test_multiple_metadata_transform_format_currency_placeholder(
+    mock_renderer, mock_schema, mock_location
+):
+    placeholder_list = [
+        {
+            "placeholder": "total",
+            "transforms": [
+                {
+                    "transform": "add",
+                    "arguments": {
+                        "lhs": Decimal("1.23"),
+                        "rhs": Decimal("1"),
+                    },
+                },
+                {
+                    "transform": "format_currency",
+                    "arguments": {"number": {"source": "previous_transform"}},
+                },
+            ],
+        }
+    ]
+
+    metadata = get_metadata()
+
+    parser = PlaceholderParser(
+        language="en",
+        answer_store=AnswerStore(),
+        list_store=ListStore(),
+        metadata=metadata,
+        response_metadata={},
+        schema=mock_schema,
+        renderer=mock_renderer,
+        progress_store=ProgressStore(),
+        location=mock_location,
+        supplementary_data_store=SupplementaryDataStore(),
+    )
+
+    placeholders = parser(placeholder_list)
+
+    assert placeholders["total"] == "£2.23"

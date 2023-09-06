@@ -29,7 +29,7 @@ def test_format_currency(
             return_value=decimal_limit,
         )
         result = transformer(language=locale_string).format_currency(
-            number=value, currency=currency, raw_args={}
+            number=value, currency=currency, unresolved_arguments={}
         )
         assert unicodedata.normalize("NFKD", result) == expected_result
 

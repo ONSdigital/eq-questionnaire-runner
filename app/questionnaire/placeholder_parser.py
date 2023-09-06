@@ -163,7 +163,7 @@ class PlaceholderParser:
             )
 
             if transform["transform"] in TRANSFORMS_REQUIRING_UNRESOLVED_ARGUMENTS:
-                transform_args["raw_args"] = transform["arguments"]
+                transform_args["unresolved_arguments"] = transform["arguments"]
 
             for arg_key, arg_value in transform["arguments"].items():
                 resolved_value: ValueSourceEscapedTypes | ValueSourceTypes | TransformedValueTypes

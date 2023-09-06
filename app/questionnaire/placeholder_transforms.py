@@ -50,7 +50,7 @@ class PlaceholderTransforms:
     def format_currency(
         self,
         number: int | Decimal | float,
-        raw_args: Mapping,
+        unresolved_arguments: Mapping,
         currency: str = "GBP",
     ) -> str:
         """
@@ -62,14 +62,14 @@ class PlaceholderTransforms:
             value=number,
             currency=currency,
             locale=self.locale,
-            decimal_limit=self._get_decimal_limit(raw_args),
+            decimal_limit=self._get_decimal_limit(unresolved_arguments),
         )
         return formatted_currency
 
-    def _get_decimal_limit(self, raw_args: Mapping) -> int | None:
+    def _get_decimal_limit(self, unresolved_arguments: Mapping) -> int | None:
         decimal_limit = None
-        source = raw_args["number"].get("source")
-        identifier = raw_args["number"].get("identifier")
+        source = unresolved_arguments["number"].get("source")
+        identifier = unresolved_arguments["number"].get("identifier")
         if source == "answers":
             decimal_limit = self.schema.get_decimal_limit([identifier])
 

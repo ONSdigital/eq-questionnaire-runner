@@ -3,6 +3,7 @@ from typing import Literal, TypeAlias
 
 import flask_babel
 from babel import Locale, numbers, units
+from babel.numbers import get_currency_precision
 
 UnitLengthType: TypeAlias = Literal["short", "long", "narrow"]
 
@@ -45,8 +46,12 @@ def get_formatted_currency(
     # Use the default babel currency format "standard"
     number_format = parsed_locale.currency_formats["standard"]
 
-    if not decimal_limit:
-        decimal_limit = 0
+    currency_precision = get_currency_precision(currency)
+
+    # If there is no decimal limit then use the currency precision value if the number of decimals entered
+    # is less than the value returned by babel's currency precision method.
+    if decimal_limit is None:
+        decimal_limit = max(decimal_places, currency_precision)
 
     # The number of decimals displayed is limited based on the value of the `decimal_limit` parameter, if not set, defaults to 0.
     # If the number of decimal places entered by the user is less than the `decimal_limit` then we should display the
@@ -99,9 +104,6 @@ def get_number_format(value: int | float | Decimal, locale: Locale | str) -> str
     Uses the decimal places set by the user with frac_prec to ensure that trailing zeroes
     are not dropped and that the correct number of decimal places as entered by the user are displayed
     after formatting.
-
-    We use '.' rather than the decimal separator based on the locale as the separator will always be
-    formatted so that it is '.' by the time it reaches this method.
     """
     decimal_places = _get_decimal_places(value)
     locale = Locale.parse(locale)
@@ -111,4 +113,8 @@ def get_number_format(value: int | float | Decimal, locale: Locale | str) -> str
 
 
 def _get_decimal_places(value: int | float | Decimal | None) -> int:
+    """
+    We use '.' rather than the decimal separator based on the locale as the separator will always be
+    formatted so that it is '.' by the time it reaches this method.
+    """
     return len(str(value).split(".")[1]) if "." in str(value) else 0
