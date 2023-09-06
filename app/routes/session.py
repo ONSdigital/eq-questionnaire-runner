@@ -119,7 +119,9 @@ def login() -> Response:
     logger.info("decrypted token and parsed metadata")
 
     with create_session_questionnaire_store(claims) as questionnaire_store:
-        _set_questionnaire_supplementary_data(questionnaire_store, metadata)
+        _set_questionnaire_supplementary_data(
+            questionnaire_store=questionnaire_store, metadata=metadata, schema=g.schema
+        )
 
     cookie_session["expires_in"] = get_session_timeout_in_seconds(g.schema)
 
@@ -139,11 +141,15 @@ def login() -> Response:
 
 
 def _set_questionnaire_supplementary_data(
-    questionnaire_store: QuestionnaireStore, metadata: MetadataProxy
+    *,
+    questionnaire_store: QuestionnaireStore,
+    metadata: MetadataProxy,
+    schema: QuestionnaireSchema,
 ) -> None:
     """
     If the survey metadata has an sds dataset id, and it either doesn't match what it stored, or there is no stored supplementary data
     then fetch it and add it to the store
+    This includes verification that the supplementary data lists cover any schema dependent lists which aren't populated by a list collector
     """
     if not (new_sds_dataset_id := metadata["sds_dataset_id"]):
         return
@@ -169,7 +175,27 @@ def _set_questionnaire_supplementary_data(
         survey_id=metadata["survey_id"],
         sds_dataset_id=new_sds_dataset_id,
     )
+    # ensure any required lists for the schema are included in the supplementary data
+    _validate_supplementary_data_lists(
+        supplementary_data=supplementary_data, schema=schema
+    )
     questionnaire_store.set_supplementary_data(supplementary_data["data"])
+
+
+def _validate_supplementary_data_lists(
+    *, supplementary_data: dict, schema: QuestionnaireSchema
+) -> None:
+    """
+    Validates that any lists the schema requires (dynamic answers, list collector content blocks, repeating sections etc.) are covered:
+    either by a supplementary data list, or a list populated by a list collector
+    """
+    supplementary_lists = set(supplementary_data["data"].get("items", {}).keys())
+    populated_lists = supplementary_lists | schema.lists_populated_by_list_collector
+    if not schema.schema_dependent_lists <= populated_lists:
+        missing = schema.schema_dependent_lists - populated_lists
+        raise ValidationError(
+            f"Supplementary data does not include the following lists required for the schema: {', '.join(missing)}"
+        )
 
 
 def validate_jti(decrypted_token: dict[str, str | list | int]) -> None:

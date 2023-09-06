@@ -10,6 +10,7 @@ from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.services.supplementary_data import SupplementaryDataRequestFailed
 from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.utilities.json import json_loads
+from app.utilities.schema import load_schema_from_name
 from tests.app.services.test_request_supplementary_data import TEST_SDS_URL
 from tests.integration.integration_test_case import (
     EQ_SUBMISSION_SDX_PRIVATE_KEY,
@@ -119,54 +120,65 @@ class TestSession(IntegrationTestCase):
             self.assertEqual(parsed_json["expires_at"], expected_expires_at)
 
     @patch("app.routes.session.get_supplementary_data_v1")
+    @patch("app.routes.session._validate_supplementary_data_lists")
     @patch(
         "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data"
     )
     def test_supplementary_data_is_loaded_when_new_sds_dataset_id_in_metadata(
         self,
         mock_set,
+        mock_validate,
         mock_get,
     ):
         self.launchSupplementaryDataSurvey()
         self.assertStatusOK()
         mock_get.assert_called_once()
         mock_set.assert_called_once()
+        mock_validate.assert_called_once()
 
     @patch("app.routes.session.get_supplementary_data_v1")
+    @patch("app.routes.session._validate_supplementary_data_lists")
     @patch(
         "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data"
     )
     def test_supplementary_data_is_reloaded_when_changed_sds_dataset_id_in_metadata(
         self,
         mock_set,
+        mock_validate,
         mock_get,
     ):
         self.launchSupplementaryDataSurvey(response_id="1", sds_dataset_id="first")
         self.assertStatusOK()
         mock_set.assert_called_once()
         mock_get.assert_called_once()
+        mock_validate.assert_called_once()
         self.launchSupplementaryDataSurvey(response_id="1", sds_dataset_id="second")
         self.assertStatusOK()
         self.assertEqual(mock_get.call_count, 2)
         self.assertEqual(mock_set.call_count, 2)
+        self.assertEqual(mock_validate.call_count, 2)
 
     @patch("app.routes.session.get_supplementary_data_v1")
+    @patch("app.routes.session._validate_supplementary_data_lists")
     @patch(
         "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data"
     )
     def test_supplementary_data_is_not_reloaded_when_same_sds_dataset_id_in_metadata(
         self,
         mock_set,
+        mock_validate,
         mock_get,
     ):
         self.launchSupplementaryDataSurvey(response_id="1", sds_dataset_id="same")
         self.assertStatusOK()
         mock_set.assert_called_once()
         mock_get.assert_called_once()
+        mock_validate.assert_called_once()
         self.launchSupplementaryDataSurvey(response_id="1", sds_dataset_id="same")
         self.assertStatusOK()
         mock_get.assert_called_once()
         mock_set.assert_called_once()
+        mock_validate.assert_called_once()
 
     def test_supplementary_data_raises_500_error_when_sds_api_request_fails(self):
         with patch(
@@ -215,6 +227,32 @@ class TestSession(IntegrationTestCase):
         )
 
         self.assert_supplementary_data_500_page()
+
+    @patch("app.routes.session.get_supplementary_data_v1")
+    @patch(
+        "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data",
+    )
+    def test_supplementary_data_raises_500_error_when_missing_required_lists(
+        self, mock_set, mock_get
+    ):
+        """Tests that if the supplementary data being loaded does not cover all the dependent lists for the schema
+        that a validation error is raised"""
+        mock_get.return_value = {"data": {"items": {"products": []}}}
+        self.launchSupplementaryDataSurvey(schema_name="test_supplementary_data")
+        self.assert_supplementary_data_500_page()
+        mock_set.assert_not_called()
+
+    @patch("app.routes.session.get_supplementary_data_v1")
+    @patch(
+        "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data",
+    )
+    def test_supplementary_data_is_loaded_when_all_required_lists_present(
+        self, mock_set, mock_get
+    ):
+        mock_get.return_value = {"data": {"items": {"employees": [], "products": []}}}
+        self.launchSupplementaryDataSurvey(schema_name="test_supplementary_data")
+        self.assertStatusOK()
+        mock_set.assert_called_once()
 
 
 class TestCensusSession(IntegrationTestCase):
