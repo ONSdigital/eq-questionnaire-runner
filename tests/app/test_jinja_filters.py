@@ -577,7 +577,7 @@ def test_map_list_collector_config():
                 {
                     "actions": [
                         {
-                            "ariaLabel": "edit_link_aria_label",
+                            "visuallyHiddenText": "edit_link_aria_label",
                             "attributes": {"data-qa": "list-item-change-1-link"},
                             "text": "edit_link_text",
                             "url": "/primary/change",
@@ -598,13 +598,13 @@ def test_map_list_collector_config():
                 {
                     "actions": [
                         {
-                            "ariaLabel": "edit_link_aria_label",
+                            "visuallyHiddenText": "edit_link_aria_label",
                             "attributes": {"data-qa": "list-item-change-2-link"},
                             "text": "edit_link_text",
                             "url": "/nonprimary/change",
                         },
                         {
-                            "ariaLabel": "remove_link_aria_label",
+                            "visuallyHiddenText": "remove_link_aria_label",
                             "attributes": {"data-qa": "list-item-remove-2-link"},
                             "text": "remove_link_text",
                             "url": "/nonprimary/remove",
@@ -693,13 +693,13 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                 {
                     "actions": [
                         {
-                            "ariaLabel": "edit_link_aria_label",
+                            "visuallyHiddenText": "edit_link_aria_label",
                             "attributes": {"data-qa": "list-item-change-1-link"},
                             "text": "edit_link_text",
                             "url": "/nonprimary/change",
                         },
                         {
-                            "ariaLabel": "remove_link_aria_label",
+                            "visuallyHiddenText": "remove_link_aria_label",
                             "attributes": {"data-qa": "list-item-remove-1-link"},
                             "text": "remove_link_text",
                             "url": "/nonprimary/remove",
@@ -717,7 +717,7 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                 {
                     "actions": [
                         {
-                            "ariaLabel": "edit_link_aria_label Registration number",
+                            "visuallyHiddenText": "edit_link_aria_label Registration number",
                             "attributes": {
                                 "data-ga": "click",
                                 "data-ga-action": "Edit click",
@@ -737,7 +737,7 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                 {
                     "actions": [
                         {
-                            "ariaLabel": "edit_link_aria_label Is this UK "
+                            "visuallyHiddenText": "edit_link_aria_label Is this UK "
                             "company or branch an authorised "
                             "insurer?",
                             "attributes": {
@@ -984,13 +984,13 @@ def test_summary_item_config_with_list_collector():
                 {
                     "actions": [
                         {
-                            "ariaLabel": "Change your answer for:",
+                            "visuallyHiddenText": "Change your answer for:",
                             "attributes": {"data-qa": "list-item-change-1-link"},
                             "text": "Change",
                             "url": "change_link_url",
                         },
                         {
-                            "ariaLabel": "Remove Company A",
+                            "visuallyHiddenText": "Remove Company A",
                             "attributes": {"data-qa": "list-item-remove-1-link"},
                             "text": "Remove",
                             "url": "remove_link_url",
@@ -1007,7 +1007,7 @@ def test_summary_item_config_with_list_collector():
                 {
                     "actions": [
                         {
-                            "ariaLabel": "Change your answer for: "
+                            "visuallyHiddenText": "Change your answer for: "
                             "Registration number",
                             "attributes": {
                                 "data-ga": "click",
@@ -1028,7 +1028,7 @@ def test_summary_item_config_with_list_collector():
                 {
                     "actions": [
                         {
-                            "ariaLabel": "Change your answer for: Is this UK "
+                            "visuallyHiddenText": "Change your answer for: Is this UK "
                             "company or branch an authorised "
                             "insurer?",
                             "attributes": {

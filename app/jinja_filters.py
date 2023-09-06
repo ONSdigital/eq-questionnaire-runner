@@ -438,7 +438,7 @@ class SummaryAction:
         edit_link_aria_label: str,
     ) -> None:
         self.text = edit_link_text
-        self.ariaLabel = edit_link_aria_label + " " + item_title
+        self.visuallyHiddenText = edit_link_aria_label + " " + item_title
         self.url = answer["link"]
 
         self.attributes = {
@@ -670,8 +670,8 @@ def map_list_collector_config(
         item_name = list_item.get("item_title")
 
         actions = []
-        edit_link_aria_label_text = None
-        remove_link_aria_label_text = None
+        edit_link_hidden_text = None
+        remove_link_hidden_text = None
 
         if edit_link_text and editable:
             url = (
@@ -682,29 +682,27 @@ def map_list_collector_config(
 
             edit_link = {
                 "text": edit_link_text,
-                "ariaLabel": edit_link_aria_label_text,
+                "visuallyHiddenText": edit_link_hidden_text,
                 "url": url,
                 "attributes": {"data-qa": f"list-item-change-{index}-link"},
             }
 
             if edit_link_aria_label:
-                edit_link_aria_label_text = edit_link_aria_label.format(
-                    item_name=item_name
-                )
-            edit_link["ariaLabel"] = edit_link_aria_label_text
+                edit_link_hidden_text = edit_link_aria_label.format(item_name=item_name)
+            edit_link["visuallyHiddenText"] = edit_link_hidden_text
 
             actions.append(edit_link)
 
         if not list_item.get("primary_person") and remove_link_text and editable:
             if remove_link_aria_label:
-                remove_link_aria_label_text = remove_link_aria_label.format(
+                remove_link_hidden_text = remove_link_aria_label.format(
                     item_name=item_name
                 )
 
             actions.append(
                 {
                     "text": remove_link_text,
-                    "ariaLabel": remove_link_aria_label_text,
+                    "visuallyHiddenText": remove_link_hidden_text,
                     "url": list_item.get("remove_link"),
                     "attributes": {"data-qa": f"list-item-remove-{index}-link"},
                 }
