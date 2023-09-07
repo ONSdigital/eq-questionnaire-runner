@@ -80,9 +80,7 @@ class PathFinder:
         return [
             block_id
             for dependent_section in dependencies_for_section
-            for block_id in self.routing_path(
-                SectionKey(section_id=dependent_section, list_item_id=None)
-            )
+            for block_id in self.routing_path(SectionKey(dependent_section))
             if (dependent_section, None) in self.progress_store.started_section_keys()
         ]
 

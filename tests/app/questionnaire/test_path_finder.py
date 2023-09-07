@@ -33,9 +33,7 @@ def test_simple_path(answer_store, list_store, supplementary_data_store):
     )
 
     section_id = schema.get_section_id_for_block_id("name-block")
-    routing_path = path_finder.routing_path(
-        SectionKey(section_id=section_id, list_item_id=None)
-    )
+    routing_path = path_finder.routing_path(SectionKey(section_id))
 
     assumed_routing_path = RoutingPath(
         block_ids=["name-block"], section_id="default-section"
@@ -63,9 +61,7 @@ def test_introduction_in_path_when_in_schema(
         supplementary_data_store=supplementary_data_store,
     )
 
-    routing_path = path_finder.routing_path(
-        SectionKey(section_id=current_section["id"], list_item_id=None)
-    )
+    routing_path = path_finder.routing_path(SectionKey(current_section["id"]))
     assert "introduction" in routing_path
 
 
@@ -87,9 +83,7 @@ def test_introduction_not_in_path_when_not_in_schema(
         supplementary_data_store=supplementary_data_store,
     )
 
-    routing_path = path_finder.routing_path(
-        SectionKey(section_id=current_section["id"], list_item_id=None)
-    )
+    routing_path = path_finder.routing_path(SectionKey(current_section["id"]))
 
     assert "introduction" not in routing_path
 
@@ -122,9 +116,7 @@ def test_routing_basic_and_conditional_path(
         {},
         supplementary_data_store=supplementary_data_store,
     )
-    routing_path = path_finder.routing_path(
-        SectionKey(section_id=section_id, list_item_id=None)
-    )
+    routing_path = path_finder.routing_path(SectionKey(section_id))
 
     # Then
     assert routing_path == expected_path
@@ -169,9 +161,7 @@ def test_routing_path_with_complete_introduction(
         {},
         supplementary_data_store=supplementary_data_store,
     )
-    routing_path = path_finder.routing_path(
-        SectionKey(section_id=section_id, list_item_id=None)
-    )
+    routing_path = path_finder.routing_path(SectionKey(section_id))
 
     assert routing_path == expected_routing_path
 
@@ -208,9 +198,7 @@ def test_routing_path(answer_store, list_store, supplementary_data_store):
         {},
         supplementary_data_store=supplementary_data_store,
     )
-    routing_path = path_finder.routing_path(
-        SectionKey(section_id=section_id, list_item_id=None)
-    )
+    routing_path = path_finder.routing_path(SectionKey(section_id))
 
     assert routing_path == expected_path
 
@@ -245,9 +233,7 @@ def test_routing_path_with_repeating_sections(
     )
 
     repeating_section_id = "personal-details-section"
-    routing_path = path_finder.routing_path(
-        SectionKey(section_id=repeating_section_id, list_item_id="abc123")
-    )
+    routing_path = path_finder.routing_path(SectionKey(repeating_section_id, "abc123"))
 
     expected_path = RoutingPath(
         block_ids=["proxy", "date-of-birth", "confirm-dob", "sex"],
@@ -297,9 +283,7 @@ def test_routing_path_empty_routing_rules(
         {},
         supplementary_data_store=supplementary_data_store,
     )
-    routing_path = path_finder.routing_path(
-        SectionKey(section_id=section_id, list_item_id=None)
-    )
+    routing_path = path_finder.routing_path(SectionKey(section_id))
 
     assert routing_path == expected_path
 
@@ -334,9 +318,7 @@ def test_routing_path_with_conditional_value_not_in_metadata(
         supplementary_data_store=supplementary_data_store,
     )
 
-    routing_path = path_finder.routing_path(
-        SectionKey(section_id=section_id, list_item_id=None)
-    )
+    routing_path = path_finder.routing_path(SectionKey(section_id))
 
     assert routing_path == expected_path
 
@@ -372,9 +354,7 @@ def test_routing_path_should_skip_block(
         {},
         supplementary_data_store=supplementary_data_store,
     )
-    routing_path = path_finder.routing_path(
-        SectionKey(section_id=section_id, list_item_id=None)
-    )
+    routing_path = path_finder.routing_path(SectionKey(section_id))
 
     # Then
     expected_routing_path_ids = ["do-you-want-to-skip"]
@@ -417,9 +397,7 @@ def test_routing_path_should_skip_group(
         {},
         supplementary_data_store=supplementary_data_store,
     )
-    routing_path = path_finder.routing_path(
-        SectionKey(section_id=section_id, list_item_id=None)
-    )
+    routing_path = path_finder.routing_path(SectionKey(section_id))
 
     # Then
     expected_routing_path = RoutingPath(
@@ -461,9 +439,7 @@ def test_routing_path_should_not_skip_group(
         {},
         supplementary_data_store=supplementary_data_store,
     )
-    routing_path = path_finder.routing_path(
-        SectionKey(section_id=section_id, list_item_id=None)
-    )
+    routing_path = path_finder.routing_path(SectionKey(section_id))
 
     # Then
     expected_routing_path = RoutingPath(
@@ -503,9 +479,7 @@ def test_get_routing_path_when_first_block_in_group_skipped(
         block_ids=["do-you-want-to-skip"],
     )
 
-    assert expected_route == path_finder.routing_path(
-        SectionKey(section_id="default-section", list_item_id=None)
-    )
+    assert expected_route == path_finder.routing_path(SectionKey("default-section"))
 
 
 def test_build_path_with_group_routing(
@@ -530,9 +504,7 @@ def test_build_path_with_group_routing(
         {},
         supplementary_data_store=supplementary_data_store,
     )
-    path = path_finder.routing_path(
-        SectionKey(section_id=section_id, list_item_id=None)
-    )
+    path = path_finder.routing_path(SectionKey(section_id))
 
     # Then it should route me straight to Group2 and not Group1
     assert "group1-block" not in path
@@ -584,16 +556,14 @@ def test_remove_answer_and_block_if_routing_backwards(
     assert (
         len(
             path_finder.progress_store.get_completed_block_ids(
-                SectionKey(section_id="default-section", list_item_id=None)
+                SectionKey("default-section")
             )
         )
         == 3
     )
     assert len(path_finder.answer_store) == 3
 
-    routing_path = path_finder.routing_path(
-        SectionKey(section_id=section_id, list_item_id=None)
-    )
+    routing_path = path_finder.routing_path(SectionKey(section_id))
 
     expected_path = RoutingPath(
         block_ids=[
@@ -606,16 +576,14 @@ def test_remove_answer_and_block_if_routing_backwards(
     )
     assert routing_path == expected_path
     assert path_finder.progress_store.get_completed_block_ids(
-        SectionKey(section_id="default-section", list_item_id=None)
-    ) == progress_store.get_completed_block_ids(
-        SectionKey(section_id="default-section", list_item_id=None)
-    )
+        SectionKey("default-section")
+    ) == progress_store.get_completed_block_ids(SectionKey("default-section"))
 
     assert len(path_finder.answer_store) == 2
     assert not path_finder.answer_store.get_answer("confirm-zero-employees-answer")
     assert (
         path_finder.progress_store.get_section_progress_status(
-            SectionKey(section_id="default-section", list_item_id=None)
+            SectionKey("default-section")
         )
         == CompletionStatus.IN_PROGRESS
     )
@@ -733,9 +701,7 @@ def test_routing_path_block_ids_dependent_on_other_sections_when_rules(
         response_metadata={},
         supplementary_data_store=supplementary_data_store,
     )
-    routing_path = path_finder.routing_path(
-        SectionKey(section_id=section_id, list_item_id=None)
-    )
+    routing_path = path_finder.routing_path(SectionKey(section_id))
 
     # Then the path is built correctly
     expected_routing_path = RoutingPath(

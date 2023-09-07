@@ -304,7 +304,7 @@ class Question(BlockHandler):
         list_name: str,
     ) -> Location | None:
         if self._questionnaire_store.progress_store.is_section_complete(
-            SectionKey(section_id=section_id, list_item_id=list_item_id)
+            SectionKey(section_id, list_item_id)
         ):
             return None
 

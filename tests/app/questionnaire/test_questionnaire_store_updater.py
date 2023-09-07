@@ -921,9 +921,7 @@ def test_answer_id_section_dependents(
     questionnaire_store_updater.update_progress_for_dependent_sections()
 
     assert (
-        progress_store.get_section_progress_status(
-            SectionKey(section_id="section-2", list_item_id=None)
-        )
+        progress_store.get_section_progress_status(SectionKey("section-2"))
         is expected_status
     )
 
@@ -1060,13 +1058,13 @@ def test_answer_id_section_dependents_repeating(
 
     assert (
         progress_store.get_section_progress_status(
-            SectionKey(section_id="section-2", list_item_id="list-item-id-1")
+            SectionKey("section-2", "list-item-id-1")
         )
         is expected_list_item_1_status
     )
     assert (
         progress_store.get_section_progress_status(
-            SectionKey(section_id="section-2", list_item_id="list-item-id-2")
+            SectionKey("section-2", "list-item-id-2")
         )
         is expected_list_item_2_status
     )
@@ -1427,11 +1425,11 @@ def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_sta
     for list_item in list_store["some-list"]:
         section_id, list_item_id = "breakdown-section", list_item
         assert "turnover-breakdown-block" not in progress_store.get_completed_block_ids(
-            SectionKey(section_id=section_id, list_item_id=list_item_id)
+            SectionKey(section_id, list_item_id)
         )
         assert (
             progress_store.get_section_progress_status(
-                SectionKey(section_id=section_id, list_item_id=list_item_id)
+                SectionKey(section_id, list_item_id)
             )
             == CompletionStatus.IN_PROGRESS
         )

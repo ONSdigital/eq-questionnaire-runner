@@ -87,7 +87,7 @@ class ListContext(Context):
                 "primary_person": is_primary,
                 "list_item_id": list_item_id,
                 "is_complete": self._progress_store.is_section_complete(
-                    SectionKey(section_id=section_id, list_item_id=list_item_id)
+                    SectionKey(section_id, list_item_id)
                 ),
                 "repeating_blocks": has_repeating_blocks,
             }

@@ -66,7 +66,7 @@ class Router:
             section_id, list_item_id = first_incomplete_section_key
 
             section_routing_path = self._path_finder.routing_path(
-                SectionKey(section_id=section_id, list_item_id=list_item_id)
+                SectionKey(section_id, list_item_id)
             )
             return self.get_section_resume_url(section_routing_path)
 
@@ -104,9 +104,7 @@ class Router:
 
     def can_access_hub(self) -> bool:
         return self._schema.is_flow_hub and all(
-            self._progress_store.is_section_complete(
-                SectionKey(section_id=section_id, list_item_id=None)
-            )
+            self._progress_store.is_section_complete(SectionKey(section_id))
             for section_id in self._schema.get_section_ids_required_for_hub()
             if section_id in self.enabled_section_ids
         )
@@ -310,7 +308,7 @@ class Router:
             # but don't go to it unless the section is enabled and the current section is complete
             if (
                 not self._progress_store.is_section_complete(
-                    SectionKey(section_id=section_key.section_id, list_item_id=None)
+                    SectionKey(section_key.section_id)
                 )
                 or grand_calculated_summary_section not in self.enabled_section_ids
             ):
@@ -463,14 +461,12 @@ class Router:
                 for list_item_id in self._list_store[repeating_list]:
                     full_routing_path.append(
                         self._path_finder.routing_path(
-                            SectionKey(section_id=section_id, list_item_id=list_item_id)
+                            SectionKey(section_id, list_item_id)
                         )
                     )
             else:
                 full_routing_path.append(
-                    self._path_finder.routing_path(
-                        SectionKey(section_id=section_id, list_item_id=None)
-                    )
+                    self._path_finder.routing_path(SectionKey(section_id))
                 )
         return full_routing_path
 
@@ -521,7 +517,7 @@ class Router:
                 for list_item_id in self._list_store[repeating_list]:
                     yield SectionKey(section_id, list_item_id)
             else:
-                yield SectionKey(section_id, None)
+                yield SectionKey(section_id)
 
     def _get_first_incomplete_section_key(self) -> tuple[str, str | None] | None:
         for section_key in self._get_enabled_section_keys():

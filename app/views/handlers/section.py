@@ -40,7 +40,7 @@ class SectionHandler:
         )
 
         self._routing_path = self._router.routing_path(
-            SectionKey(section_id=self._section_id, list_item_id=self._list_item_id)
+            SectionKey(self._section_id, self._list_item_id)
         )
 
     def get_context(self) -> Mapping:

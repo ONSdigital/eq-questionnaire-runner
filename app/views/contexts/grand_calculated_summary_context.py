@@ -59,9 +59,7 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
             else:
                 routing_path_block_ids.extend(
                     # repeating calculated summaries are not supported at the moment, so no list item is needed
-                    self._router.routing_path(
-                        SectionKey(section_id=section_id, list_item_id=None)
-                    ).block_ids
+                    self._router.routing_path(SectionKey(section_id)).block_ids
                 )
 
         return routing_path_block_ids

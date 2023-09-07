@@ -20,9 +20,7 @@ class PrimaryPersonQuestion(Question):
         )
 
     def _get_routing_path(self) -> RoutingPath:
-        return self.router.routing_path(
-            SectionKey(section_id=self._current_location.section_id, list_item_id=None)
-        )
+        return self.router.routing_path(SectionKey(self._current_location.section_id))
 
     def is_location_valid(self) -> bool:
         primary_person_list_item_id = self._questionnaire_store.list_store[

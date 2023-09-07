@@ -133,9 +133,7 @@ class TestRouterPathCompletion(RouterTestCase):
             ]
         )
 
-        routing_path = self.router.routing_path(
-            SectionKey(section_id="default-section", list_item_id=None)
-        )
+        routing_path = self.router.routing_path(SectionKey("default-section"))
         is_path_complete = self.router.is_path_complete(routing_path)
 
         assert is_path_complete
@@ -143,9 +141,7 @@ class TestRouterPathCompletion(RouterTestCase):
     def test_is_not_complete(self):
         self.schema = load_schema_from_name("test_textfield")
 
-        routing_path = self.router.routing_path(
-            SectionKey(section_id="default-section", list_item_id=None)
-        )
+        routing_path = self.router.routing_path(SectionKey("default-section"))
         is_path_complete = self.router.is_path_complete(routing_path)
 
         assert not is_path_complete
@@ -1682,9 +1678,7 @@ class TestRouterLastLocationLinearFlow(RouterTestCase):
         ).url()
 
         last_completed_block_in_progress_store = (
-            self.progress_store.get_completed_block_ids(
-                SectionKey(section_id=section_id, list_item_id=None)
-            )[-1]
+            self.progress_store.get_completed_block_ids(SectionKey(section_id))[-1]
         )
 
         last_location_url = self.router.get_last_location_in_questionnaire_url()

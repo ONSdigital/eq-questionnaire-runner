@@ -8,4 +8,4 @@ LocationType: TypeAlias = Location | RelationshipLocation
 
 class SectionKey(NamedTuple):
     section_id: str
-    list_item_id: str | None
+    list_item_id: str | None = None
