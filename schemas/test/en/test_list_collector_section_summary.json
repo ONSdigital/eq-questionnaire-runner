@@ -21,6 +21,17 @@
             "type": "string"
         }
     ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "post_submission": {
+        "view_response": true
+    },
     "answer_codes": [
         {
             "answer_id": "any-companies-or-branches-answer",
