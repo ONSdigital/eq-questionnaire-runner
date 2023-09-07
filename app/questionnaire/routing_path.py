@@ -6,6 +6,7 @@ class RoutingPath:
 
     def __init__(
         self,
+        *,
         block_ids: list[str],
         section_id: str,
         list_item_id: str | None = None,

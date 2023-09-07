@@ -31,7 +31,9 @@ def test_convert_answers_v2_to_payload_0_0_3(version):
     questionnaire_store = get_questionnaire_store(version)
 
     full_routing_path = [
-        RoutingPath(["about you", "where you live"], section_id="household-section")
+        RoutingPath(
+            block_ids=["about you", "where you live"], section_id="household-section"
+        )
     ]
 
     questionnaire_store.answer_store = AnswerStore(
@@ -111,7 +113,7 @@ def test_convert_answers_v2_to_payload_0_0_3(version):
 def test_convert_payload_0_0_3_multiple_answers(version):
     questionnaire_store = get_questionnaire_store(version)
 
-    full_routing_path = [RoutingPath(["crisps"], section_id="section-1")]
+    full_routing_path = [RoutingPath(block_ids=["crisps"], section_id="section-1")]
     answers = AnswerStore(
         [Answer("crisps-answer", ["Ready salted", "Sweet chilli"]).to_dict()]
     )
@@ -168,7 +170,7 @@ def test_convert_payload_0_0_3_multiple_answers(version):
 def test_radio_answer(version):
     questionnaire_store = get_questionnaire_store(version)
 
-    full_routing_path = [RoutingPath(["radio-block"], section_id="section-1")]
+    full_routing_path = [RoutingPath(block_ids=["radio-block"], section_id="section-1")]
     answers = AnswerStore([Answer("radio-answer", "Coffee").to_dict()])
     questionnaire_store.answer_store = answers
 
@@ -220,7 +222,9 @@ def test_radio_answer(version):
 def test_number_answer(version):
     questionnaire_store = get_questionnaire_store(version)
 
-    full_routing_path = [RoutingPath(["number-block"], section_id="section-1")]
+    full_routing_path = [
+        RoutingPath(block_ids=["number-block"], section_id="section-1")
+    ]
     answers = AnswerStore([Answer("number-answer", 1.755).to_dict()])
     questionnaire_store.answer_store = answers
 
@@ -263,7 +267,9 @@ def test_number_answer(version):
 def test_percentage_answer(version):
     questionnaire_store = get_questionnaire_store(version)
 
-    full_routing_path = [RoutingPath(["percentage-block"], section_id="section-1")]
+    full_routing_path = [
+        RoutingPath(block_ids=["percentage-block"], section_id="section-1")
+    ]
     answers = AnswerStore([Answer("percentage-answer", 99).to_dict()])
     questionnaire_store.answer_store = answers
 
@@ -306,7 +312,9 @@ def test_percentage_answer(version):
 def test_textarea_answer(version):
     questionnaire_store = get_questionnaire_store(version)
 
-    full_routing_path = [RoutingPath(["textarea-block"], section_id="section-1")]
+    full_routing_path = [
+        RoutingPath(block_ids=["textarea-block"], section_id="section-1")
+    ]
     answers = AnswerStore(
         [Answer("textarea-answer", "This is an example text!").to_dict()]
     )
@@ -351,7 +359,9 @@ def test_textarea_answer(version):
 def test_currency_answer(version):
     questionnaire_store = get_questionnaire_store(version)
 
-    full_routing_path = [RoutingPath(["currency-block"], section_id="section-1")]
+    full_routing_path = [
+        RoutingPath(block_ids=["currency-block"], section_id="section-1")
+    ]
     answers = AnswerStore([Answer("currency-answer", 100).to_dict()])
     questionnaire_store.answer_store = answers
 
@@ -394,7 +404,9 @@ def test_currency_answer(version):
 def test_dropdown_answer(version):
     questionnaire_store = get_questionnaire_store(version)
 
-    full_routing_path = [RoutingPath(["dropdown-block"], section_id="section-1")]
+    full_routing_path = [
+        RoutingPath(block_ids=["dropdown-block"], section_id="section-1")
+    ]
     answers = AnswerStore([Answer("dropdown-answer", "Rugby is better!").to_dict()])
     questionnaire_store.answer_store = answers
 
@@ -448,7 +460,7 @@ def test_dropdown_answer(version):
 def test_date_answer(version):
     questionnaire_store = get_questionnaire_store(version)
 
-    full_routing_path = [RoutingPath(["date-block"], section_id="section-1")]
+    full_routing_path = [RoutingPath(block_ids=["date-block"], section_id="section-1")]
     answers = AnswerStore(
         [
             Answer("single-date-answer", "01-01-1990").to_dict(),
@@ -497,7 +509,7 @@ def test_date_answer(version):
 def test_month_year_date_answer(version):
     questionnaire_store = get_questionnaire_store(version)
 
-    full_routing_path = [RoutingPath(["date-block"], section_id="section-1")]
+    full_routing_path = [RoutingPath(block_ids=["date-block"], section_id="section-1")]
     answers = AnswerStore(
         [
             Answer("single-date-answer", "01-01-1990").to_dict(),
@@ -546,7 +558,7 @@ def test_month_year_date_answer(version):
 def test_unit_answer(version):
     questionnaire_store = get_questionnaire_store(version)
 
-    full_routing_path = [RoutingPath(["unit-block"], section_id="section-1")]
+    full_routing_path = [RoutingPath(block_ids=["unit-block"], section_id="section-1")]
     answers = AnswerStore([Answer("unit-answer", 10).to_dict()])
     questionnaire_store.answer_store = answers
 
@@ -591,7 +603,8 @@ def test_primary_person_list_item_conversion(version):
 
     routing_path = [
         RoutingPath(
-            ["primary-person-list-collector", "list-collector"], section_id="section-1"
+            block_ids=["primary-person-list-collector", "list-collector"],
+            section_id="section-1",
         )
     ]
 
@@ -651,7 +664,11 @@ def test_list_item_conversion(version):
 
     routing_path = [
         RoutingPath(
-            ["list-collector", "next-interstitial", "another-list-collector-block"],
+            block_ids=[
+                "list-collector",
+                "next-interstitial",
+                "another-list-collector-block",
+            ],
             section_id="section-1",
         )
     ]
@@ -709,7 +726,11 @@ def test_list_item_conversion_empty_list(version):
 
     routing_path = [
         RoutingPath(
-            ["list-collector", "next-interstitial", "another-list-collector-block"],
+            block_ids=[
+                "list-collector",
+                "next-interstitial",
+                "another-list-collector-block",
+            ],
             section_id="section-1",
         )
     ]
@@ -769,7 +790,8 @@ def test_default_answers_not_present_when_not_answered(version):
 
     routing_path = [
         RoutingPath(
-            ["number-question-one", "number-question-two"], section_id="default-section"
+            block_ids=["number-question-one", "number-question-two"],
+            section_id="default-section",
         )
     ]
 
@@ -802,7 +824,8 @@ def test_list_structure_in_payload_is_as_expected(version):
 
     routing_path = [
         RoutingPath(
-            ["primary-person-list-collector", "list-collector"], section_id="section-1"
+            block_ids=["primary-person-list-collector", "list-collector"],
+            section_id="section-1",
         )
     ]
 
@@ -862,7 +885,11 @@ def test_primary_person_not_in_payload_when_not_answered(version):
 
     routing_path = [
         RoutingPath(
-            ["list-collector", "next-interstitial", "another-list-collector-block"],
+            block_ids=[
+                "list-collector",
+                "next-interstitial",
+                "another-list-collector-block",
+            ],
             section_id="section-1",
         )
     ]
@@ -914,7 +941,7 @@ def test_relationships_in_payload(version):
 
     routing_path = [
         RoutingPath(
-            ["list-collector", "relationships"],
+            block_ids=["list-collector", "relationships"],
             section_id="section",
         )
     ]
@@ -1007,7 +1034,7 @@ def test_no_relationships_in_payload(version):
 
     routing_path = [
         RoutingPath(
-            ["list-collector", "relationships"],
+            block_ids=["list-collector", "relationships"],
             section_id="section",
         )
     ]
@@ -1071,7 +1098,7 @@ def test_unrelated_block_answers_in_payload(version):
 
     routing_path = [
         RoutingPath(
-            ["list-collector", "relationships"],
+            block_ids=["list-collector", "relationships"],
             section_id="section",
         )
     ]
@@ -1188,7 +1215,7 @@ def test_unrelated_block_answers_not_on_path_not_in_payload(version):
 
     routing_path = [
         RoutingPath(
-            ["list-collector", "relationships"],
+            block_ids=["list-collector", "relationships"],
             section_id="section",
         )
     ]
@@ -1280,7 +1307,7 @@ def test_relationship_answers_not_on_path_in_payload(version):
 
     routing_path = [
         RoutingPath(
-            ["list-collector", "relationships"],
+            block_ids=["list-collector", "relationships"],
             section_id="section",
         )
     ]
@@ -1406,7 +1433,9 @@ def test_answers_codes_only_present_for_answered_questions(version):
     questionnaire_store = get_questionnaire_store(version)
 
     full_routing_path = [
-        RoutingPath(["mandatory-checkbox", "name-block"], section_id="default-section")
+        RoutingPath(
+            block_ids=["mandatory-checkbox", "name-block"], section_id="default-section"
+        )
     ]
 
     questionnaire_store.answer_store = AnswerStore(
@@ -1445,7 +1474,7 @@ def test_all_answers_codes_for_answer_options_in_payload_when_one_is_answered(ve
     questionnaire_store = get_questionnaire_store(version)
 
     full_routing_path = [
-        RoutingPath(["mandatory-checkbox"], section_id="default-section")
+        RoutingPath(block_ids=["mandatory-checkbox"], section_id="default-section")
     ]
 
     questionnaire_store.answer_store = AnswerStore(
@@ -1486,7 +1515,7 @@ def test_no_answers_codes_in_payload_when_no_questions_answered(version):
     questionnaire_store = get_questionnaire_store(version)
 
     full_routing_path = [
-        RoutingPath(["mandatory-checkbox"], section_id="default-section")
+        RoutingPath(block_ids=["mandatory-checkbox"], section_id="default-section")
     ]
 
     questionnaire_store.answer_store = AnswerStore()
@@ -1517,7 +1546,7 @@ def test_payload_dynamic_answers(version):
 
     full_routing_path = [
         RoutingPath(
-            ["any-supermarket", "list-collector", "dynamic-answer"],
+            block_ids=["any-supermarket", "list-collector", "dynamic-answer"],
             section_id="section",
         )
     ]
@@ -1575,7 +1604,7 @@ def test_repeating_block_answers_present(
 
     full_routing_path = [
         RoutingPath(
-            [
+            block_ids=[
                 "responsible-party",
                 "any-companies-or-branches",
                 "any-other-companies-or-branches",
@@ -1680,7 +1709,7 @@ def test_payload_supplementary_data():
 
     full_routing_path = [
         RoutingPath(
-            ["dynamic-answer"],
+            block_ids=["dynamic-answer"],
             section_id="section",
         )
     ]

@@ -63,10 +63,10 @@ class PathFinder:
                 )
 
         return RoutingPath(
-            routing_path_block_ids,
-            section_key.section_id,
-            section_key.list_item_id,
-            list_name,
+            block_ids=routing_path_block_ids,
+            section_id=section_key.section_id,
+            list_item_id=section_key.list_item_id,
+            list_name=list_name,
         )
 
     def get_when_rules_block_dependencies(self, section_id: str) -> list[str]:

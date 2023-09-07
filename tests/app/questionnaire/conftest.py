@@ -1211,7 +1211,7 @@ def block_ids():
 @pytest.fixture
 def routing_path(block_ids):
     return RoutingPath(
-        block_ids,
+        block_ids=block_ids,
         section_id="section-1",
         list_item_id="list_item_id",
         list_name="list_name",
