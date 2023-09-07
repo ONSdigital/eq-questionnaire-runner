@@ -190,7 +190,7 @@ def _validate_supplementary_data_lists(
     are included in the supplementary data
     """
     supplementary_lists = set(supplementary_data["data"].get("items", {}).keys())
-    if missing := (schema.supplementary_lists - supplementary_lists):
+    if missing := schema.supplementary_lists - supplementary_lists:
         raise ValidationError(
             f"Supplementary data does not include the following lists required for the schema: {', '.join(missing)}"
         )
