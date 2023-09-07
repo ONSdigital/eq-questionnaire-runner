@@ -148,8 +148,7 @@ def _set_questionnaire_supplementary_data(
 ) -> None:
     """
     If the survey metadata has an sds dataset id, and it either doesn't match what it stored, or there is no stored supplementary data
-    then fetch it and add it to the store
-    This includes verification that the supplementary data lists cover any schema dependent lists which aren't populated by a list collector
+    then fetch it, verify any schema supplementary lists are included in the fetched data, and add it to the questionnaire store
     """
     if not (new_sds_dataset_id := metadata["sds_dataset_id"]):
         return
