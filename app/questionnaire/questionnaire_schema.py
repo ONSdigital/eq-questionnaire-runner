@@ -145,7 +145,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return ImmutableDict(self._answer_dependencies_map)
 
     @cached_property
-    # Type ignore: make_immutable uses generic types so return type is manually specified, same for properties below.
+    # Type ignore: make_immutable uses generic types so return type is manually specified
     def min_and_max_map(self) -> ImmutableDict[str, ImmutableDict[str, int]]:
         return make_immutable(self._min_and_max_map)  # type: ignore
 
