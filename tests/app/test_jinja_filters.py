@@ -32,18 +32,36 @@ from app.utilities.schema import load_schema_from_name
 TEST_FORMAT_CURRENCY_PARAMS = (
     "value, currency, locale_string, decimal_limit, expected_result",
     [
+        # This test case assumes that the number of decimal places entered by the
+        # user has already been validated before reaching the get_formatted_currency method.
+        # When there is no decimal limit set, providing the user has entered a decimal, then the currency local
+        # currency precision will take precedence if the number of decimal places entered by the user is less than the
+        # currency precision value. If the number of decimal places entered by the user is greater than the currency
+        # precision value then we will display the number of decimal places as entered by the user
+        # The Jordanian Dinar is used as an example in this test case as the currency precision is set to .000
+        (Decimal("2"), "GBP", "en_GB", None, "£2"),
+        (Decimal("2"), "JOD", "en_GB", None, "JOD2"),
         (Decimal("2.1"), "GBP", "en_GB", None, "£2.10"),
-        (Decimal("3000.44545"), "GBP", "en_GB", None, "£3,000.44545"),
-        (Decimal("2.1"), "GBP", "en_GB", None, "£2.10"),
+        (Decimal("2.1"), "JOD", "en_GB", None, "JOD2.100"),
+        (Decimal("2"), "GBP", "en_GB", 1, "£2"),
+        (Decimal("2"), "GBP", "en_GB", 2, "£2.00"),
+        (Decimal("2"), "GBP", "en_GB", 0, "£2"),
+        (Decimal("2"), "GBP", "en_GB", 2, "£2.00"),
+        (Decimal("2"), "GBP", "en_GB", 6, "£2.00"),
+        (Decimal("2.1"), "GBP", "en_GB", 0, "£2.10"),
+        (Decimal("2.12"), "GBP", "en_GB", None, "£2.12"),
+        (Decimal("2.12"), "JOD", "en_GB", None, "JOD2.120"),
+        (Decimal("2.12"), "GBP", "en_GB", 0, "£2.12"),
         (Decimal("2.123"), "GBP", "en_GB", None, "£2.123"),
-        (Decimal("123.1234"), "GBP", "en_GB", 0, "£123"),
+        (Decimal("2.123"), "JOD", "en_GB", None, "JOD2.123"),
+        (Decimal("123.1234"), "GBP", "en_GB", 0, "£123.1234"),
+        (Decimal("3000.44545"), "GBP", "en_GB", None, "£3,000.44545"),
         (Decimal("3000"), "GBP", "en_GB", 0, "£3,000"),
         (Decimal("3000"), "JPY", "en_GB", 0, "JP¥3,000"),
         (Decimal("3000"), "JPY", "ja_JP", 0, "¥3,000"),
         (123, "GBP", "en_GB", 1, "£123"),
         (Decimal("2.1"), "GBP", "en_GB", 1, "£2.1"),
-        (Decimal("123.45"), "GBP", "en_GB", 1, "£123.4"),
-        (Decimal("123.45"), "HUF", "hu_HU", 1, "123,4 Ft"),
+        (Decimal("123.4"), "HUF", "hu_HU", 1, "123,4 Ft"),
         (11, "GBP", "en_GB", 2, "£11.00"),
         (11000, "USD", "en_GB", 2, "US$11,000.00"),
         (11000, "USD", "en_GB", 2, "US$11,000.00"),

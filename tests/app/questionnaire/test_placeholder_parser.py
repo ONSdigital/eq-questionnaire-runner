@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+import pytest
 from mock import Mock
 
 from app.data_models import ProgressStore, SupplementaryDataStore
@@ -1283,8 +1284,21 @@ def test_placeholder_dependencies_cache(mocker, mock_renderer):
     assert path_finder.called == 1
 
 
-def test_multiple_metadata_transform_format_currency_placeholder(
-    mock_renderer, mock_schema, mock_location
+@pytest.mark.parametrize(
+    "first_number, second_number, expected_result",
+    (
+        ("1.2", "1", "£2.20"),
+        ("1", "2", "£3"),
+        ("1.123", "1.2", "£2.323"),
+    ),
+)
+def test_format_currency_placeholder_total_with_previous_transform(
+    mock_renderer,
+    mock_schema,
+    mock_location,
+    first_number,
+    second_number,
+    expected_result,
 ):
     placeholder_list = [
         {
@@ -1293,8 +1307,8 @@ def test_multiple_metadata_transform_format_currency_placeholder(
                 {
                     "transform": "add",
                     "arguments": {
-                        "lhs": Decimal("1.23"),
-                        "rhs": Decimal("1"),
+                        "lhs": Decimal(first_number),
+                        "rhs": Decimal(second_number),
                     },
                 },
                 {
@@ -1322,4 +1336,4 @@ def test_multiple_metadata_transform_format_currency_placeholder(
 
     placeholders = parser(placeholder_list)
 
-    assert placeholders["total"] == "£2.23"
+    assert placeholders["total"] == expected_result
