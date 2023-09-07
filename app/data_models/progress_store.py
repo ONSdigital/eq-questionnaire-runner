@@ -151,12 +151,10 @@ class ProgressStore:
 
         return updated
 
-    def get_section_or_repeating_blocks_progress_status(
-        self, section_key: SectionKey
-    ) -> str:
+    def get_section_progress_status(self, section_key: SectionKey) -> str:
         """
         Return the CompletionStatus of the Section or Repeating Blocks for a list item,
-        specified by the given section_id and list_item_id in SectionKey tuple.
+        specified by the given section_id and list_item_id in SectionKey.
         Returns NOT_STARTED if the progress does not exist
         """
         if section_key in self._progress:
@@ -179,7 +177,7 @@ class ProgressStore:
     def get_completed_block_ids(self, section_key: SectionKey) -> list[str]:
         """
         Return the block ids recorded as part of the progress for the Section or Repeating Blocks
-        for list item specified by the given section_id and list_item_id in SectionKey tuple
+        for list item specified by the given section_id and list_item_id in SectionKey
         """
         if section_key in self._progress:
             return self._progress[section_key].block_ids
@@ -218,7 +216,7 @@ class ProgressStore:
         Removes the block in the given Location, from the progress specified by the
         section id and list item id within the Location if it exists in the store.
         """
-        progress_key = SectionKey(location.section_id, location.list_item_id)
+        progress_key = location.section_key
         if (
             progress_key in self._progress
             and location.block_id in self._progress[progress_key].block_ids
@@ -269,9 +267,5 @@ class ProgressStore:
             section_ids=section_ids,
         )
 
-    def is_block_complete(
-        self, *, block_id: str, section_id: str, list_item_id: str | None
-    ) -> bool:
-        return block_id in self.get_completed_block_ids(
-            SectionKey(section_id=section_id, list_item_id=list_item_id)
-        )
+    def is_block_complete(self, *, block_id: str, section_key: SectionKey) -> bool:
+        return block_id in self.get_completed_block_ids(section_key)

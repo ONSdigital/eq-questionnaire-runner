@@ -68,7 +68,7 @@ def test_deserialisation():
     store = ProgressStore(in_progress_sections)
 
     assert (
-        store.get_section_or_repeating_blocks_progress_status(
+        store.get_section_progress_status(
             SectionKey(section_id="s1", list_item_id=None)
         )
         == CompletionStatus.IN_PROGRESS
@@ -78,7 +78,7 @@ def test_deserialisation():
     ) == ["one", "two"]
 
     assert (
-        store.get_section_or_repeating_blocks_progress_status(
+        store.get_section_progress_status(
             SectionKey(section_id="s2", list_item_id="abc123")
         )
         == CompletionStatus.COMPLETED
@@ -164,13 +164,13 @@ def test_add_completed_location_existing():
     store.add_completed_location(repeating_location)
 
     assert (
-        store.get_section_or_repeating_blocks_progress_status(
+        store.get_section_progress_status(
             SectionKey(section_id="s1", list_item_id=None)
         )
         == CompletionStatus.COMPLETED
     )
     assert (
-        store.get_section_or_repeating_blocks_progress_status(
+        store.get_section_progress_status(
             SectionKey(section_id="s2", list_item_id="abc123")
         )
         == CompletionStatus.COMPLETED
@@ -222,13 +222,13 @@ def test_add_completed_location_new():
     store.add_completed_location(repeating_location)
 
     assert (
-        store.get_section_or_repeating_blocks_progress_status(
+        store.get_section_progress_status(
             SectionKey(section_id="s1", list_item_id=None)
         )
         == CompletionStatus.COMPLETED
     )
     assert (
-        store.get_section_or_repeating_blocks_progress_status(
+        store.get_section_progress_status(
             SectionKey(section_id="s2", list_item_id="abc123")
         )
         == CompletionStatus.COMPLETED
@@ -299,19 +299,19 @@ def test_remove_completed_location():
     )
 
     assert (
-        store.get_section_or_repeating_blocks_progress_status(
+        store.get_section_progress_status(
             SectionKey(section_id="s1", list_item_id=None)
         )
         == CompletionStatus.COMPLETED
     )
     assert (
-        store.get_section_or_repeating_blocks_progress_status(
+        store.get_section_progress_status(
             SectionKey(section_id="s2", list_item_id="abc123")
         )
         == CompletionStatus.COMPLETED
     )
     assert (
-        store.get_section_or_repeating_blocks_progress_status(
+        store.get_section_progress_status(
             SectionKey(section_id="s3", list_item_id=None)
         )
         == CompletionStatus.IN_PROGRESS
@@ -377,13 +377,13 @@ def test_update_section_status():
     )
 
     assert (
-        store.get_section_or_repeating_blocks_progress_status(
+        store.get_section_progress_status(
             SectionKey(section_id="s1", list_item_id=None)
         )
         == CompletionStatus.IN_PROGRESS
     )
     assert (
-        store.get_section_or_repeating_blocks_progress_status(
+        store.get_section_progress_status(
             SectionKey(section_id="s2", list_item_id="abc123")
         )
         == CompletionStatus.IN_PROGRESS
@@ -408,7 +408,7 @@ def test_update_non_existing_section_status():
     )
 
     assert (
-        store.get_section_or_repeating_blocks_progress_status(
+        store.get_section_progress_status(
             SectionKey(section_id="s1", list_item_id=None)
         )
         == CompletionStatus.COMPLETED
@@ -441,13 +441,13 @@ def test_get_section_status():
     store = ProgressStore(existing_progress)
 
     assert (
-        store.get_section_or_repeating_blocks_progress_status(
+        store.get_section_progress_status(
             SectionKey(section_id="s1", list_item_id=None)
         )
         == CompletionStatus.COMPLETED
     )
     assert (
-        store.get_section_or_repeating_blocks_progress_status(
+        store.get_section_progress_status(
             SectionKey(section_id="s2", list_item_id="abc123")
         )
         == CompletionStatus.IN_PROGRESS

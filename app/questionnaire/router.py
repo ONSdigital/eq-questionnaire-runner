@@ -132,9 +132,7 @@ class Router:
         whether it be a summary, the hub or the next incomplete location.
         """
         is_section_complete = self._progress_store.is_section_complete(
-            SectionKey(
-                section_id=location.section_id, list_item_id=location.list_item_id
-            )
+            location.section_key
         )
 
         if return_to_url := self.get_return_to_location_url(
@@ -265,9 +263,7 @@ class Router:
 
         if is_section_complete is None:
             is_section_complete = self._progress_store.is_section_complete(
-                SectionKey(
-                    section_id=location.section_id, list_item_id=location.list_item_id
-                )
+                location.section_key
             )
 
         if not is_section_complete:
@@ -484,8 +480,9 @@ class Router:
         for block_id in routing_path:
             if not self._progress_store.is_block_complete(
                 block_id=block_id,
-                section_id=routing_path.section_id,
-                list_item_id=routing_path.list_item_id,
+                section_key=SectionKey(
+                    routing_path.section_id, routing_path.list_item_id
+                ),
             ):
                 return Location(
                     block_id=block_id,
@@ -506,8 +503,9 @@ class Router:
 
                 if not self._progress_store.is_block_complete(
                     block_id=block_id,
-                    section_id=routing_path.section_id,
-                    list_item_id=routing_path.list_item_id,
+                    section_key=SectionKey(
+                        routing_path.section_id, routing_path.list_item_id
+                    ),
                 ):
                     return allowable_path
 
@@ -526,18 +524,14 @@ class Router:
                 yield SectionKey(section_id, None)
 
     def _get_first_incomplete_section_key(self) -> tuple[str, str | None] | None:
-        for section_id, list_item_id in self._get_enabled_section_keys():
-            if not self._progress_store.is_section_complete(
-                SectionKey(section_id=section_id, list_item_id=list_item_id)
-            ):
-                return SectionKey(section_id=section_id, list_item_id=list_item_id)
+        for section_key in self._get_enabled_section_keys():
+            if not self._progress_store.is_section_complete(section_key):
+                return section_key
 
     def _get_last_complete_section_key(self) -> SectionKey | None:
-        for section_id, list_item_id in list(self._get_enabled_section_keys())[::-1]:
-            if self._progress_store.is_section_complete(
-                SectionKey(section_id=section_id, list_item_id=list_item_id)
-            ):
-                return SectionKey(section_id=section_id, list_item_id=list_item_id)
+        for section_key in list(self._get_enabled_section_keys())[::-1]:
+            if self._progress_store.is_section_complete(section_key):
+                return section_key
 
     def _is_section_enabled(self, section: Mapping) -> bool:
         if "enabled" not in section:

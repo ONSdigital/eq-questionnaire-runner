@@ -158,10 +158,8 @@ class HubContext(Context):
     ) -> dict[str, Union[str, list]]:
         row_id = f"{section_id}-{list_item_index}" if list_item_index else section_id
 
-        section_status = (
-            self._progress_store.get_section_or_repeating_blocks_progress_status(
-                SectionKey(section_id, list_item_id)
-            )
+        section_status = self._progress_store.get_section_progress_status(
+            SectionKey(section_id, list_item_id)
         )
 
         return self.get_row_context_for_section(

@@ -314,8 +314,9 @@ class Question(BlockHandler):
         for repeating_block_id in repeating_block_ids:
             if not self._questionnaire_store.progress_store.is_block_complete(
                 block_id=repeating_block_id,
-                section_id=section_id,
-                list_item_id=list_item_id,
+                section_key=SectionKey(
+                    section_id=section_id, list_item_id=list_item_id
+                ),
             ):
                 return Location(
                     section_id=section_id,

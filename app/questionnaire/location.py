@@ -8,7 +8,7 @@ from flask import url_for
 
 class SectionKey(NamedTuple):
     section_id: str
-    list_item_id: str | None
+    list_item_id: str | None = None
 
 
 class InvalidLocationException(Exception):
