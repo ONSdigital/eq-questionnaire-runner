@@ -186,13 +186,11 @@ def _validate_supplementary_data_lists(
     *, supplementary_data: dict, schema: QuestionnaireSchema
 ) -> None:
     """
-    Validates that any lists the schema requires (dynamic answers, list collector content blocks, repeating sections etc.) are covered:
-    either by a supplementary data list, or a list populated by a list collector
+    Validates that any lists the schema requires (which are those in the supplementary_data.lists property)
+    are included in the supplementary data
     """
     supplementary_lists = set(supplementary_data["data"].get("items", {}).keys())
-    populated_lists = supplementary_lists | schema.lists_populated_by_list_collector
-    if not schema.schema_dependent_lists <= populated_lists:
-        missing = schema.schema_dependent_lists - populated_lists
+    if missing := (schema.supplementary_lists - supplementary_lists):
         raise ValidationError(
             f"Supplementary data does not include the following lists required for the schema: {', '.join(missing)}"
         )

@@ -116,8 +116,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         )
         self._list_names_by_list_repeating_block_id: dict[str, str] = {}
         self._repeating_block_answer_ids: set[str] = set()
-        self._lists_populated_by_list_collector: set[str] = set()
-        self._schema_dependent_lists: set[str] = set()
         self.dynamic_answers_parent_block_ids: set[str] = set()
 
         # The ordering here is required as they depend on each other.
@@ -150,14 +148,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     # Type ignore: make_immutable uses generic types so return type is manually specified, same for properties below.
     def min_and_max_map(self) -> ImmutableDict[str, ImmutableDict[str, int]]:
         return make_immutable(self._min_and_max_map)  # type: ignore
-
-    @cached_property
-    def lists_populated_by_list_collector(self) -> frozenset[str]:
-        return make_immutable(self._lists_populated_by_list_collector)  # type: ignore
-
-    @cached_property
-    def schema_dependent_lists(self) -> frozenset[str]:
-        return make_immutable(self._schema_dependent_lists)  # type: ignore
 
     def _create_min_max_map(
         self,
@@ -291,6 +281,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def parent_id_map(self) -> Any:
         return self.serialize(self._parent_id_map)
 
+    @cached_property
+    def supplementary_lists(self) -> frozenset[str]:
+        return frozenset(self.json.get("supplementary_data", {}).get("lists", []))
+
     @classmethod
     def serialize(cls, data: Any) -> Any:
         return make_immutable(data)
@@ -360,8 +354,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         groups_by_id: dict[str, ImmutableDict] = {}
 
         for section in self._sections_by_id.values():
-            if repeat := section.get("repeat"):
-                self._schema_dependent_lists.add(repeat["for_list"])
             for group in section["groups"]:
                 group_id = group["id"]
                 groups_by_id[group_id] = group
@@ -378,9 +370,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 self._parent_id_map[block_id] = group["id"]
                 blocks[block_id] = block
                 if block["type"] in LIST_COLLECTOR_BLOCKS:
-                    self._schema_dependent_lists.add(block["for_list"])
-                    if block["type"] in LIST_COLLECTORS_WITH_ADD_BLOCK:
-                        self._lists_populated_by_list_collector.add(block["for_list"])
                     self._list_collector_section_ids_by_list_name[
                         block["for_list"]
                     ].append(self._parent_id_map[group["id"]])
