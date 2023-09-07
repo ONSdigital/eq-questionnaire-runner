@@ -10,7 +10,7 @@ def test_serialisation():
 
     store.add_completed_location(Location(section_id="s1", block_id="one"))
     store.add_completed_location(Location(section_id="s1", block_id="two"))
-    store.update_section_or_repeating_blocks_progress_completion_status(
+    store.update_section_completion_status(
         completion_status=CompletionStatus.COMPLETED,
         section_key=SectionKey(section_id="s1", list_item_id=None),
     )
@@ -23,7 +23,7 @@ def test_serialisation():
             list_item_id="abc123",
         )
     )
-    store.update_section_or_repeating_blocks_progress_completion_status(
+    store.update_section_completion_status(
         completion_status=CompletionStatus.IN_PROGRESS,
         section_key=SectionKey(section_id="s2", list_item_id="abc123"),
     )
@@ -367,11 +367,11 @@ def test_update_section_status():
     ]
     store = ProgressStore(completed)
 
-    store.update_section_or_repeating_blocks_progress_completion_status(
+    store.update_section_completion_status(
         completion_status=CompletionStatus.IN_PROGRESS,
         section_key=SectionKey(section_id="s1", list_item_id=None),
     )
-    store.update_section_or_repeating_blocks_progress_completion_status(
+    store.update_section_completion_status(
         completion_status=CompletionStatus.IN_PROGRESS,
         section_key=SectionKey(section_id="s2", list_item_id="abc123"),
     )
@@ -402,7 +402,7 @@ def test_update_non_existing_section_status():
     ]
     store = ProgressStore(completed)
 
-    store.update_section_or_repeating_blocks_progress_completion_status(
+    store.update_section_completion_status(
         completion_status=CompletionStatus.IN_PROGRESS,
         section_key=SectionKey(section_id="s2", list_item_id=None),
     )

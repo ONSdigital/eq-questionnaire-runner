@@ -252,7 +252,7 @@ class QuestionnaireStoreUpdater:
         status = (
             CompletionStatus.COMPLETED if is_complete else CompletionStatus.IN_PROGRESS
         )
-        return self._progress_store.update_section_or_repeating_blocks_progress_completion_status(
+        return self._progress_store.update_section_completion_status(
             status, section_key
         )
 

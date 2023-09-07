@@ -3,7 +3,7 @@ from functools import cached_property
 from werkzeug.datastructures import ImmutableDict
 
 from app.data_models.relationship_store import RelationshipDict, RelationshipStore
-from app.questionnaire.location import Location, SectionKey
+from app.questionnaire.location import Location
 from app.questionnaire.relationship_router import RelationshipRouter
 from app.questionnaire.router import RoutingPath
 from app.views.handlers.question import Question
@@ -79,9 +79,7 @@ class RelationshipQuestion(Question):
         )
 
     def _get_routing_path(self) -> RoutingPath:
-        return self.router.routing_path(
-            SectionKey(section_id=self.parent_location.section_id, list_item_id=None)
-        )
+        return self.router.routing_path(self.parent_location.section_key)
 
     def is_location_valid(self) -> bool:
         can_access_parent_location = self.router.can_access_location(

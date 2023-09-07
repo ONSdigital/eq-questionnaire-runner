@@ -47,14 +47,12 @@ class ProgressStore:
             progress or []
         )
 
-    def __contains__(
-        self, section_and_repeating_blocks_progress_key: SectionKey
-    ) -> bool:
-        return section_and_repeating_blocks_progress_key in self._progress
+    def __contains__(self, section_key: SectionKey) -> bool:
+        return section_key in self._progress
 
     @staticmethod
     def _build_map(
-        section_and_repeating_blocks_progress_list: Iterable[ProgressDictType],
+        section_list: Iterable[ProgressDictType],
     ) -> MutableMapping:
         """
         Builds the ProgressStore's data structure from a list of progress dictionaries.
@@ -78,7 +76,7 @@ class ProgressStore:
                 progress["section_id"],
                 progress.get("list_item_id"),
             ): Progress.from_dict(progress)
-            for progress in section_and_repeating_blocks_progress_list
+            for progress in section_list
         }
 
     @property
@@ -127,7 +125,7 @@ class ProgressStore:
             if any(section_id in progress_key for section_id in section_ids)
         ]
 
-    def update_section_or_repeating_blocks_progress_completion_status(
+    def update_section_completion_status(
         self, completion_status: str, section_key: SectionKey
     ) -> bool:
         """
@@ -189,22 +187,17 @@ class ProgressStore:
         Adds the block from the given Location, to the progress specified by the
         section id and list item id within the Location.
         """
-        section_id = location.section_id
-        list_item_id = location.list_item_id
-
-        completed_block_ids = self.get_completed_block_ids(
-            SectionKey(section_id=section_id, list_item_id=list_item_id)
-        )
+        completed_block_ids = self.get_completed_block_ids(location.section_key)
 
         if location.block_id not in completed_block_ids:
             completed_block_ids.append(location.block_id)  # type: ignore
-            progress_key = SectionKey(section_id, list_item_id)
+            progress_key = location.section_key
             if progress_key in self._progress:
                 self._progress[progress_key].block_ids = completed_block_ids
             else:
                 self._progress[progress_key] = Progress(
-                    section_id=section_id,
-                    list_item_id=list_item_id,
+                    section_id=location.section_id,
+                    list_item_id=location.list_item_id,
                     block_ids=completed_block_ids,
                     status=CompletionStatus.IN_PROGRESS,
                 )

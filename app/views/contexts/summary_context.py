@@ -1,6 +1,6 @@
 from typing import MutableMapping
 
-from app.questionnaire.location import Location, SectionKey
+from app.questionnaire.location import Location
 
 from ...data_models import AnswerStore, ListStore, ProgressStore, SupplementaryDataStore
 from ...data_models.metadata_proxy import MetadataProxy
@@ -86,9 +86,7 @@ class SummaryContext(Context):
             metadata=self._metadata,
             response_metadata=self._response_metadata,
             current_location=location,
-            routing_path=self._router.routing_path(
-                SectionKey(section_id=section_id, list_item_id=list_item_id)
-            ),
+            routing_path=self._router.routing_path(location.section_key),
             supplementary_data_store=self._supplementary_data_store,
         )
 

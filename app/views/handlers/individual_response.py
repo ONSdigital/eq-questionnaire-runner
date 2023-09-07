@@ -323,7 +323,7 @@ class IndividualResponseHandler:
         )
 
     def _update_section_status(self, status: str) -> None:
-        self._questionnaire_store.progress_store.update_section_or_repeating_blocks_progress_completion_status(
+        self._questionnaire_store.progress_store.update_section_completion_status(
             # Type ignore: Current usages of this method occur when Individual Section ID exists and is not None
             status,
             SectionKey(self.individual_section_id, self._list_item_id),

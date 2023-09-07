@@ -6,7 +6,7 @@ from structlog import get_logger
 from werkzeug.datastructures import ImmutableDict, ImmutableMultiDict
 
 from app.data_models import QuestionnaireStore
-from app.questionnaire.location import InvalidLocationException, Location, SectionKey
+from app.questionnaire.location import InvalidLocationException, Location
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
@@ -131,12 +131,7 @@ class BlockHandler:
         self.questionnaire_store_updater.save()
 
     def _get_routing_path(self) -> RoutingPath:
-        return self.router.routing_path(
-            SectionKey(
-                section_id=self._current_location.section_id,
-                list_item_id=self._current_location.list_item_id,
-            )
-        )
+        return self.router.routing_path(self._current_location.section_key)
 
     def _update_section_completeness(
         self, location: Optional[Union[Location, RelationshipLocation]] = None

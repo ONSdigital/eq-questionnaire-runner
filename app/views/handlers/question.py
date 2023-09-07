@@ -234,10 +234,7 @@ class Question(BlockHandler):
             # In order to support progress value source references of the previous block
             self.questionnaire_store_updater.add_completed_location()
             self._routing_path = self.router.routing_path(
-                SectionKey(
-                    section_id=self._current_location.section_id,
-                    list_item_id=self._current_location.list_item_id,
-                )
+                self._current_location.section_key
             )
         super().handle_post()
 
