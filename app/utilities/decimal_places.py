@@ -58,9 +58,8 @@ def get_formatted_currency(
     else:
         currency_digits = decimal_places < currency_precision
 
-    # The number of decimals displayed is limited based on the value of the `decimal_limit` parameter, if not set, defaults to 0.
-    # If the number of decimal places entered by the user is less than the `decimal_limit` then we should display the
-    # number of decimals as entered by the user.
+    # The decimal limit is set to either the number of decimal places entered by the user, or the currency precision
+    # value for the given currency, whichever is larger.
     decimal_limit = max(decimal_places, currency_precision)
 
     # Formats the number based on the number of decimal places and the decimal limit that have been calcualted
