@@ -7,7 +7,7 @@
     "form_type": "0070",
     "theme": "business",
     "legal_basis": "Notice is given under section 1 of the Statistics of Trade Act 1947.",
-    "title": "Quarterly Stocks Survey",
+    "title": "Benchmark-Survey",
     "questionnaire_flow": {
         "type": "Linear",
         "options": {
@@ -519,6 +519,792 @@
                                         "max_length": 2000
                                     }
                                 ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-list-collector",
+            "title": "List Collector Summary",
+            "summary": {
+                "show_on_completion": true,
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "people",
+                        "title": "Household members",
+                        "add_link_text": "Add someone to this household",
+                        "empty_list_text": "There are no householders"
+                    }
+                ]
+            },
+            "groups": [
+                {
+                    "id": "list-collector-group",
+                    "title": "List",
+                    "blocks": [
+                        {
+                            "id": "list-collector",
+                            "type": "ListCollector",
+                            "for_list": "people",
+                            "question": {
+                                "id": "confirmation-question",
+                                "type": "General",
+                                "title": "Does anyone else live here?",
+                                "answers": [
+                                    {
+                                        "id": "anyone-else",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "add_block": {
+                                "id": "add-person",
+                                "type": "ListAddQuestion",
+                                "cancel_text": "Don’t need to add anyone else?",
+                                "question": {
+                                    "id": "add-question",
+                                    "type": "General",
+                                    "title": "What is the name of the person?",
+                                    "answers": [
+                                        {
+                                            "id": "first-name",
+                                            "label": "First name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "last-name",
+                                            "label": "Last name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "edit_block": {
+                                "id": "edit-person",
+                                "type": "ListEditQuestion",
+                                "cancel_text": "Don’t need to change anything?",
+                                "question": {
+                                    "id": "edit-question",
+                                    "type": "General",
+                                    "title": "What is the name of the person?",
+                                    "answers": [
+                                        {
+                                            "id": "first-name",
+                                            "label": "First name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "last-name",
+                                            "label": "Last name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "remove_block": {
+                                "id": "remove-person",
+                                "type": "ListRemoveQuestion",
+                                "cancel_text": "Don’t need to remove this person?",
+                                "question": {
+                                    "id": "remove-question",
+                                    "type": "General",
+                                    "title": "Are you sure you want to remove this person?",
+                                    "warning": "All of the information about this person will be deleted",
+                                    "answers": [
+                                        {
+                                            "id": "remove-confirmation",
+                                            "mandatory": true,
+                                            "type": "Radio",
+                                            "options": [
+                                                {
+                                                    "label": "Yes",
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
+                                                },
+                                                {
+                                                    "label": "No",
+                                                    "value": "No"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "summary": {
+                                "title": "Household members",
+                                "item_title": {
+                                    "text": "{person_name}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "person_name",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "last-name"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "extra-list-group",
+                    "title": "Another List",
+                    "blocks": [
+                        {
+                            "id": "next-interstitial",
+                            "content": {
+                                "title": "Another list",
+                                "contents": [
+                                    {
+                                        "description": "You have added some people to the ‘people’ list. Next we’ll test another list collector adding to the same list. This should still have the same list of people."
+                                    }
+                                ]
+                            },
+                            "type": "Interstitial"
+                        },
+                        {
+                            "id": "another-list-collector-block",
+                            "type": "ListCollector",
+                            "for_list": "people",
+                            "question": {
+                                "id": "another-confirmation-question",
+                                "type": "General",
+                                "title": "This list collector will add to the same ‘people’ list. Add someone else?",
+                                "answers": [
+                                    {
+                                        "id": "another-anyone-else",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "add_block": {
+                                "id": "another-add-person",
+                                "type": "ListAddQuestion",
+                                "question": {
+                                    "id": "another-add-question",
+                                    "type": "General",
+                                    "title": "What is the name of the person?",
+                                    "answers": [
+                                        {
+                                            "id": "first-name",
+                                            "label": "First name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "last-name",
+                                            "label": "Last name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "edit_block": {
+                                "id": "another-edit-person",
+                                "type": "ListEditQuestion",
+                                "question": {
+                                    "id": "another-edit-question",
+                                    "type": "General",
+                                    "title": "What is the name of the person?",
+                                    "answers": [
+                                        {
+                                            "id": "first-name",
+                                            "label": "First name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "last-name",
+                                            "label": "Last name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "remove_block": {
+                                "id": "another-remove-person",
+                                "type": "ListRemoveQuestion",
+                                "question": {
+                                    "id": "another-remove-question",
+                                    "type": "General",
+                                    "title": "Are you sure you want to remove this person?",
+                                    "answers": [
+                                        {
+                                            "id": "another-remove-confirmation",
+                                            "mandatory": true,
+                                            "type": "Radio",
+                                            "options": [
+                                                {
+                                                    "label": "Yes",
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
+                                                },
+                                                {
+                                                    "label": "No",
+                                                    "value": "No"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "summary": {
+                                "title": "Household members",
+                                "item_title": {
+                                    "text": "{person_name}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "person_name",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "last-name"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "calculated-summary-section",
+            "groups": [
+                {
+                    "id": "calculated-summary-group",
+                    "title": "Total a range of values",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "first-number-block",
+                            "question": {
+                                "id": "first-number-question",
+                                "title": "First Number Question Title",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "first-number-answer",
+                                        "label": "First answer label",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "second-number-block",
+                            "question": {
+                                "id": "second-number-question",
+                                "title": "Second Number Question Title",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "second-number-answer",
+                                        "label": "Second answer in currency label",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "second-number-answer-unit-total",
+                                        "label": "Second answer label in unit total",
+                                        "mandatory": true,
+                                        "type": "Unit",
+                                        "unit_length": "short",
+                                        "unit": "length-centimeter"
+                                    },
+                                    {
+                                        "id": "second-number-answer-also-in-total",
+                                        "label": "Second answer label also in currency total (optional)",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "third-number-block",
+                            "question": {
+                                "id": "third-number-question",
+                                "title": "Third Number Question Title",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "third-number-answer",
+                                        "label": "Third answer label",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "third-and-a-half-number-block",
+                            "question": {
+                                "id": "third-and-a-half-number-question-unit-total",
+                                "title": "Third Number Question Title Unit Total",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "third-and-a-half-number-answer-unit-total",
+                                        "label": "Third answer label in unit total",
+                                        "mandatory": true,
+                                        "type": "Unit",
+                                        "unit_length": "short",
+                                        "unit": "length-centimeter"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "skip-fourth-block",
+                            "question": {
+                                "type": "General",
+                                "id": "skip-fourth-block-question",
+                                "title": "Skip Fourth Block so it doesn’t appear in Total?",
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "skip-fourth-block-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
+                                        {
+                                            "identifier": "skip-fourth-block-answer",
+                                            "source": "answers"
+                                        },
+                                        "Yes"
+                                    ]
+                                }
+                            },
+                            "type": "Question",
+                            "id": "fourth-number-block",
+                            "question": {
+                                "id": "fourth-number-question",
+                                "title": "Fourth Number Question Title",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "fourth-number-answer",
+                                        "label": "Fourth answer label (optional)",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
+                                        {
+                                            "identifier": "skip-fourth-block-answer",
+                                            "source": "answers"
+                                        },
+                                        "Yes"
+                                    ]
+                                }
+                            },
+                            "type": "Question",
+                            "id": "fourth-and-a-half-number-block",
+                            "question": {
+                                "id": "fourth-and-a-half-number-question-also-in-total",
+                                "title": "Fourth Number Additional Question Title",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "fourth-and-a-half-number-answer-also-in-total",
+                                        "label": "Fourth answer label also in total (optional)",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "fifth-number-block",
+                            "question": {
+                                "id": "fifth-number-question",
+                                "title": "Fifth Number Question Title Percentage",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "fifth-percent-answer",
+                                        "label": "Fifth answer label percentage total",
+                                        "mandatory": true,
+                                        "type": "Percentage",
+                                        "maximum": {
+                                            "value": 100
+                                        }
+                                    },
+                                    {
+                                        "id": "fifth-number-answer",
+                                        "label": "Fifth answer label number total",
+                                        "mandatory": false,
+                                        "type": "Number",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "sixth-number-block",
+                            "question": {
+                                "id": "sixth-number-question",
+                                "title": "Sixth Number Question Title Percentage",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "sixth-percent-answer",
+                                        "label": "Sixth answer label percentage total",
+                                        "mandatory": true,
+                                        "type": "Percentage",
+                                        "maximum": {
+                                            "value": 100
+                                        }
+                                    },
+                                    {
+                                        "id": "sixth-number-answer",
+                                        "label": "Sixth answer label number total",
+                                        "mandatory": false,
+                                        "type": "Number",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "currency-total-playback",
+                            "title": "We calculate the total of currency values entered to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "calculation_type": "sum",
+                                "answers_to_calculate": [
+                                    "first-number-answer",
+                                    "second-number-answer",
+                                    "second-number-answer-also-in-total",
+                                    "third-number-answer",
+                                    "fourth-number-answer",
+                                    "fourth-and-a-half-number-answer-also-in-total"
+                                ],
+                                "title": "Grand total of previous values"
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "unit-total-playback",
+                            "title": "We calculate the total of unit values entered to be %(total)s. Is this correct?",
+                            "page_title": "Total Unit Values",
+                            "calculation": {
+                                "calculation_type": "sum",
+                                "answers_to_calculate": ["second-number-answer-unit-total", "third-and-a-half-number-answer-unit-total"],
+                                "title": "Grand total of previous values"
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "percentage-total-playback",
+                            "title": "We calculate the total of percentage values entered to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "calculation_type": "sum",
+                                "answers_to_calculate": ["fifth-percent-answer", "sixth-percent-answer"],
+                                "title": "Grand total of previous values"
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "number-total-playback",
+                            "title": "We calculate the total of number values entered to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "calculation_type": "sum",
+                                "answers_to_calculate": ["fifth-number-answer", "sixth-number-answer"],
+                                "title": "Grand total of previous values"
+                            }
+                        },
+                        {
+                            "type": "Interstitial",
+                            "id": "calculated-summary-total-confirmation",
+                            "content": {
+                                "title": "You have provided the following grand totals.",
+                                "contents": [
+                                    {
+                                        "list": [
+                                            {
+                                                "text": "Total currency values: <em>{currency_total}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "currency_total",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_currency",
+                                                                "arguments": {
+                                                                    "number": {
+                                                                        "source": "calculated_summary",
+                                                                        "identifier": "currency-total-playback"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "Total unformatted unit values: <em>{unit_total}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "unit_total",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_number",
+                                                                "arguments": {
+                                                                    "number": {
+                                                                        "source": "calculated_summary",
+                                                                        "identifier": "unit-total-playback"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "Total formatted unit values: <em>{unit_total}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "unit_total",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_unit",
+                                                                "arguments": {
+                                                                    "value": {
+                                                                        "source": "calculated_summary",
+                                                                        "identifier": "unit-total-playback"
+                                                                    },
+                                                                    "unit": "length-centimeter",
+                                                                    "unit_length": "short"
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "Total unformatted percentage values: <em>{percentage_total}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "percentage_total",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_number",
+                                                                "arguments": {
+                                                                    "number": {
+                                                                        "source": "calculated_summary",
+                                                                        "identifier": "percentage-total-playback"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "Total formatted percentage values: <em>{percentage_total}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "percentage_total",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_percentage",
+                                                                "arguments": {
+                                                                    "value": {
+                                                                        "source": "calculated_summary",
+                                                                        "identifier": "percentage-total-playback"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "Total number values: <em>{number_total}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "number_total",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_number",
+                                                                "arguments": {
+                                                                    "number": {
+                                                                        "source": "calculated_summary",
+                                                                        "identifier": "number-total-playback"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "set-min-max-block",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "set-minimum-answer",
+                                        "label": "Set a value greater than the total above",
+                                        "mandatory": true,
+                                        "description": "This is a description of the minimum value",
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2,
+                                        "minimum": {
+                                            "value": {
+                                                "source": "calculated_summary",
+                                                "identifier": "currency-total-playback"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "set-maximum-answer",
+                                        "description": "This is a description of the maximum value",
+                                        "label": "Set a value less than the total above",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2,
+                                        "maximum": {
+                                            "value": {
+                                                "source": "calculated_summary",
+                                                "identifier": "currency-total-playback"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "id": "set-min-question",
+                                "title": {
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "calculated_summary_answer",
+                                            "value": {
+                                                "identifier": "currency-total-playback",
+                                                "source": "calculated_summary"
+                                            }
+                                        }
+                                    ],
+                                    "text": "Set minimum and maximum values based on your calculated summary total of £{calculated_summary_answer}"
+                                },
+                                "type": "General"
                             }
                         }
                     ]
