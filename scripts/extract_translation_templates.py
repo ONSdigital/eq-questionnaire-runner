@@ -22,8 +22,8 @@ def get_template_content(filename, ignore_context=False):
     with open(filename, encoding="UTF-8") as file:
         return list(
             filter(
-                lambda l: all(
-                    not l.startswith(param) for param in line_beginnings_to_ignore
+                lambda line: all(
+                    not line.startswith(param) for param in line_beginnings_to_ignore
                 ),
                 file.readlines(),
             )
