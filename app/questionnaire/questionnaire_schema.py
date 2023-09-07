@@ -20,10 +20,6 @@ from app.utilities.mappings import get_flattened_mapping_values, get_mappings_wi
 DEFAULT_LANGUAGE_CODE = "en"
 
 LIST_COLLECTORS_WITH_REPEATING_BLOCKS = {"ListCollector", "ListCollectorContent"}
-LIST_COLLECTORS_WITH_ADD_BLOCK = {
-    "ListCollector",
-    "PrimaryPersonListCollector",
-}
 LIST_COLLECTOR_BLOCKS = {
     "ListCollector",
     "ListCollectorContent",

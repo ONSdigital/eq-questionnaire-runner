@@ -7,10 +7,7 @@ from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
 from app.data_models.supplementary_data_store import SupplementaryDataStore
-from app.questionnaire.questionnaire_schema import (
-    LIST_COLLECTORS_WITH_ADD_BLOCK,
-    QuestionnaireSchema,
-)
+from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.utilities.types import LocationType
 
@@ -149,7 +146,7 @@ def transform_variants(
 
         output_block["content"] = content
 
-    if block["type"] in LIST_COLLECTORS_WITH_ADD_BLOCK:
+    if block["type"] in {"ListCollector", "PrimaryPersonListCollector"}:
         list_operations = ["add_block", "edit_block", "remove_block"]
         for list_operation in list_operations:
             if block.get(list_operation):
