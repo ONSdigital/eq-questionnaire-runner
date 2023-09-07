@@ -24,9 +24,11 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pipenv'
       - name: Install Pipenv
-        run: pip install pipenv==2022.11.30
+        run: pip install pipenv==2023.8.22
       - name: Install virtual environment
-        run: pipenv install --dev
+        run: |
+          sudo apt-get install libsnappy-dev
+          pipenv install --dev
   node-dependencies:
     runs-on: ubuntu-22.04
     steps:
@@ -63,7 +65,7 @@ jobs:
       - name: Write app version
         run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
       - name: Install pipenv
-        run: pip install pipenv==2022.11.30
+        run: pip install pipenv==2023.8.22
       - name: Install virtual environment
         run: pipenv install --dev
       - name: Compile translations
@@ -109,7 +111,7 @@ jobs:
       - name: Write app version
         run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
       - name: Install pipenv
-        run: pip install pipenv==2022.11.30
+        run: pip install pipenv==2023.8.22
       - name: Install virtual environment
         run: pipenv install --dev
       - name: Load templates
@@ -150,7 +152,7 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pipenv'
       - name: Install pipenv
-        run: pip install pipenv==2022.11.30
+        run: pip install pipenv==2023.8.22
       - name: Install virtual environment
         run: pipenv install --dev
       - name: Get yarn cache
