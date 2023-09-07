@@ -13,7 +13,7 @@ pylint-mccabe = "*"
 pylint-quotes = "*"
 "beautifulsoup4" = "*"
 httmock = "*"
-"flake8" = "==4.0.1"
+"flake8" = "*"
 "flake8-debugger" = "*"
 "flake8-mock" = "*"
 "flake8-print" = "*"
@@ -40,7 +40,7 @@ types-pytz = "*"
 
 [packages]
 colorama = "*"
-flask = "==2.2.2"
+flask = "*"
 flask-babel = "*"
 flask-login = "*"
 flask-wtf = "*"
@@ -78,7 +78,7 @@ ordered-set = "*"
 cachetools = "*"
 
 [requires]
-python_version = "3.10"
+python_version = "3.11"
 
 [pipenv]
 allow_prereleases = false

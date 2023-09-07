@@ -1,4 +1,4 @@
-FROM python:3.10-slim-bullseye
+FROM python:3.11-slim-bullseye
 
 EXPOSE 5000
 
@@ -18,7 +18,7 @@ COPY Pipfile Pipfile
 COPY Pipfile.lock Pipfile.lock
 
 RUN groupadd -r appuser && useradd -r -g appuser -u 9000 appuser && chown -R appuser:appuser .
-RUN pip install pipenv==2022.11.30 && pipenv install --deploy --system && make build
+RUN pip install pipenv==2023.8.22 && pipenv install --deploy --system && make build
 
 USER appuser
 
