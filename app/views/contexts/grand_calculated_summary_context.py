@@ -122,6 +122,11 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
         answer_format = self._schema.get_answer_format_for_calculated_summary(
             calculated_summary_ids[0]
         )
+        answer_format[
+            "decimal_places"
+        ] = self._schema.get_grand_calculated_summary_decimal_limit(
+            calculated_summary_ids
+        )
         formatted_total = self._format_total(answer_format=answer_format, total=total)
 
         return self._build_formatted_summary(
