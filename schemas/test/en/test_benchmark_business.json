@@ -840,115 +840,25 @@
             ]
         },
         {
-            "id": "calculated-summary-section",
+            "id": "questions-section",
+            "title": "Questions",
+            "summary": { "show_on_completion": true },
             "groups": [
                 {
-                    "id": "calculated-summary-group",
-                    "title": "Total a range of values",
+                    "id": "radio",
+                    "title": "Questions",
                     "blocks": [
                         {
                             "type": "Question",
-                            "id": "first-number-block",
-                            "question": {
-                                "id": "first-number-question",
-                                "title": "First Number Question Title",
-                                "type": "General",
-                                "answers": [
-                                    {
-                                        "id": "first-number-answer",
-                                        "label": "First answer label",
-                                        "mandatory": true,
-                                        "type": "Currency",
-                                        "currency": "GBP",
-                                        "decimal_places": 2
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            "type": "Question",
-                            "id": "second-number-block",
-                            "question": {
-                                "id": "second-number-question",
-                                "title": "Second Number Question Title",
-                                "type": "General",
-                                "answers": [
-                                    {
-                                        "id": "second-number-answer",
-                                        "label": "Second answer in currency label",
-                                        "mandatory": true,
-                                        "type": "Currency",
-                                        "currency": "GBP",
-                                        "decimal_places": 2
-                                    },
-                                    {
-                                        "id": "second-number-answer-unit-total",
-                                        "label": "Second answer label in unit total",
-                                        "mandatory": true,
-                                        "type": "Unit",
-                                        "unit_length": "short",
-                                        "unit": "length-centimeter"
-                                    },
-                                    {
-                                        "id": "second-number-answer-also-in-total",
-                                        "label": "Second answer label also in currency total (optional)",
-                                        "mandatory": false,
-                                        "type": "Currency",
-                                        "currency": "GBP",
-                                        "decimal_places": 2
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            "type": "Question",
-                            "id": "third-number-block",
-                            "question": {
-                                "id": "third-number-question",
-                                "title": "Third Number Question Title",
-                                "type": "General",
-                                "answers": [
-                                    {
-                                        "id": "third-number-answer",
-                                        "label": "Third answer label",
-                                        "mandatory": true,
-                                        "type": "Currency",
-                                        "currency": "GBP",
-                                        "decimal_places": 2
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            "type": "Question",
-                            "id": "third-and-a-half-number-block",
-                            "question": {
-                                "id": "third-and-a-half-number-question-unit-total",
-                                "title": "Third Number Question Title Unit Total",
-                                "type": "General",
-                                "answers": [
-                                    {
-                                        "id": "third-and-a-half-number-answer-unit-total",
-                                        "label": "Third answer label in unit total",
-                                        "mandatory": true,
-                                        "type": "Unit",
-                                        "unit_length": "short",
-                                        "unit": "length-centimeter"
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            "type": "Question",
-                            "id": "skip-fourth-block",
+                            "id": "skip-first-block",
                             "question": {
                                 "type": "General",
-                                "id": "skip-fourth-block-question",
-                                "title": "Skip Fourth Block so it doesn’t appear in Total?",
+                                "id": "skip-first-block-question",
+                                "title": "Skip First Block so it doesn’t appear in Total?",
                                 "answers": [
                                     {
                                         "type": "Radio",
-                                        "id": "skip-fourth-block-answer",
+                                        "id": "skip-first-block-answer",
                                         "mandatory": false,
                                         "options": [
                                             {
@@ -969,7 +879,7 @@
                                 "when": {
                                     "==": [
                                         {
-                                            "identifier": "skip-fourth-block-answer",
+                                            "identifier": "skip-first-block-answer",
                                             "source": "answers"
                                         },
                                         "Yes"
@@ -977,15 +887,15 @@
                                 }
                             },
                             "type": "Question",
-                            "id": "fourth-number-block",
+                            "id": "first-number-block",
                             "question": {
-                                "id": "fourth-number-question",
-                                "title": "Fourth Number Question Title",
+                                "id": "first-number-question",
+                                "title": "First Number Question Title",
                                 "type": "General",
                                 "answers": [
                                     {
-                                        "id": "fourth-number-answer",
-                                        "label": "Fourth answer label (optional)",
+                                        "id": "first-number-answer",
+                                        "label": "First answer label (optional)",
                                         "mandatory": false,
                                         "type": "Currency",
                                         "currency": "GBP",
@@ -999,7 +909,7 @@
                                 "when": {
                                     "==": [
                                         {
-                                            "identifier": "skip-fourth-block-answer",
+                                            "identifier": "skip-first-block-answer",
                                             "source": "answers"
                                         },
                                         "Yes"
@@ -1007,15 +917,15 @@
                                 }
                             },
                             "type": "Question",
-                            "id": "fourth-and-a-half-number-block",
+                            "id": "first-and-a-half-number-block",
                             "question": {
-                                "id": "fourth-and-a-half-number-question-also-in-total",
-                                "title": "Fourth Number Additional Question Title",
+                                "id": "first-and-a-half-number-question-also-in-total",
+                                "title": "First Number Additional Question Title",
                                 "type": "General",
                                 "answers": [
                                     {
-                                        "id": "fourth-and-a-half-number-answer-also-in-total",
-                                        "label": "Fourth answer label also in total (optional)",
+                                        "id": "first-and-a-half-number-answer-also-in-total",
+                                        "label": "First answer label also in total (optional)",
                                         "mandatory": false,
                                         "type": "Currency",
                                         "currency": "GBP",
@@ -1026,53 +936,18 @@
                         },
                         {
                             "type": "Question",
-                            "id": "fifth-number-block",
+                            "id": "second-number-block",
                             "question": {
-                                "id": "fifth-number-question",
-                                "title": "Fifth Number Question Title Percentage",
+                                "id": "second-number-question-also-in-total",
+                                "title": "Second Number Additional Question Title",
                                 "type": "General",
                                 "answers": [
                                     {
-                                        "id": "fifth-percent-answer",
-                                        "label": "Fifth answer label percentage total",
-                                        "mandatory": true,
-                                        "type": "Percentage",
-                                        "maximum": {
-                                            "value": 100
-                                        }
-                                    },
-                                    {
-                                        "id": "fifth-number-answer",
-                                        "label": "Fifth answer label number total",
+                                        "id": "second-number-answer-also-in-total",
+                                        "label": "Second answer label also in total (optional)",
                                         "mandatory": false,
-                                        "type": "Number",
-                                        "decimal_places": 2
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            "type": "Question",
-                            "id": "sixth-number-block",
-                            "question": {
-                                "id": "sixth-number-question",
-                                "title": "Sixth Number Question Title Percentage",
-                                "type": "General",
-                                "answers": [
-                                    {
-                                        "id": "sixth-percent-answer",
-                                        "label": "Sixth answer label percentage total",
-                                        "mandatory": true,
-                                        "type": "Percentage",
-                                        "maximum": {
-                                            "value": 100
-                                        }
-                                    },
-                                    {
-                                        "id": "sixth-number-answer",
-                                        "label": "Sixth answer label number total",
-                                        "mandatory": false,
-                                        "type": "Number",
+                                        "type": "Currency",
+                                        "currency": "GBP",
                                         "decimal_places": 2
                                     }
                                 ]
@@ -1080,175 +955,152 @@
                         },
                         {
                             "type": "CalculatedSummary",
-                            "id": "currency-total-playback",
+                            "id": "currency-total-playback-1",
                             "title": "We calculate the total of currency values entered to be %(total)s. Is this correct?",
                             "calculation": {
                                 "calculation_type": "sum",
                                 "answers_to_calculate": [
                                     "first-number-answer",
-                                    "second-number-answer",
-                                    "second-number-answer-also-in-total",
-                                    "third-number-answer",
-                                    "fourth-number-answer",
-                                    "fourth-and-a-half-number-answer-also-in-total"
+                                    "first-and-a-half-number-answer-also-in-total",
+                                    "second-number-answer-also-in-total"
                                 ],
                                 "title": "Grand total of previous values"
                             }
-                        },
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "calculated-summary-section",
+            "title": "Calculated Summary",
+            "summary": { "show_on_completion": true },
+            "groups": [
+                {
+                    "blocks": [
                         {
-                            "type": "CalculatedSummary",
-                            "id": "unit-total-playback",
-                            "title": "We calculate the total of unit values entered to be %(total)s. Is this correct?",
-                            "page_title": "Total Unit Values",
-                            "calculation": {
-                                "calculation_type": "sum",
-                                "answers_to_calculate": ["second-number-answer-unit-total", "third-and-a-half-number-answer-unit-total"],
-                                "title": "Grand total of previous values"
-                            }
-                        },
-                        {
-                            "type": "CalculatedSummary",
-                            "id": "percentage-total-playback",
-                            "title": "We calculate the total of percentage values entered to be %(total)s. Is this correct?",
-                            "calculation": {
-                                "calculation_type": "sum",
-                                "answers_to_calculate": ["fifth-percent-answer", "sixth-percent-answer"],
-                                "title": "Grand total of previous values"
-                            }
-                        },
-                        {
-                            "type": "CalculatedSummary",
-                            "id": "number-total-playback",
-                            "title": "We calculate the total of number values entered to be %(total)s. Is this correct?",
-                            "calculation": {
-                                "calculation_type": "sum",
-                                "answers_to_calculate": ["fifth-number-answer", "sixth-number-answer"],
-                                "title": "Grand total of previous values"
-                            }
-                        },
-                        {
-                            "type": "Interstitial",
-                            "id": "calculated-summary-total-confirmation",
-                            "content": {
-                                "title": "You have provided the following grand totals.",
-                                "contents": [
+                            "type": "Question",
+                            "id": "third-number-block",
+                            "question": {
+                                "id": "third-number-question",
+                                "title": "Third Number Question Title",
+                                "type": "General",
+                                "answers": [
                                     {
-                                        "list": [
+                                        "id": "third-number-answer",
+                                        "label": "Third answer in currency label",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "third-number-answer-also-in-total",
+                                        "label": "Third answer label also in currency total (optional)",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "currency-total-playback-2",
+                            "title": "We calculate the total of currency values entered to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "calculation_type": "sum",
+                                "answers_to_calculate": ["third-number-answer", "third-number-answer-also-in-total"],
+                                "title": "Grand total of previous values"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "mutually-exclusive-checkbox",
+                            "question": {
+                                "id": "mutually-exclusive-checkbox-question",
+                                "type": "MutuallyExclusive",
+                                "title": "Which answer did you give to question 4 and a half?",
+                                "mandatory": false,
+                                "answers": [
+                                    {
+                                        "id": "checkbox-answer",
+                                        "instruction": "Select an answer",
+                                        "type": "Checkbox",
+                                        "mandatory": false,
+                                        "options": [
                                             {
-                                                "text": "Total currency values: <em>{currency_total}</em>",
-                                                "placeholders": [
-                                                    {
-                                                        "placeholder": "currency_total",
-                                                        "transforms": [
-                                                            {
-                                                                "transform": "format_currency",
-                                                                "arguments": {
-                                                                    "number": {
-                                                                        "source": "calculated_summary",
-                                                                        "identifier": "currency-total-playback"
-                                                                    }
-                                                                }
+                                                "label": {
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "answer_value_1",
+                                                            "value": {
+                                                                "identifier": "first-and-a-half-number-answer-also-in-total",
+                                                                "source": "answers"
                                                             }
-                                                        ]
-                                                    }
-                                                ]
+                                                        }
+                                                    ],
+                                                    "text": "{answer_value_1} - first and a half answer"
+                                                },
+                                                "value": "{answer_value_1}"
                                             },
                                             {
-                                                "text": "Total unformatted unit values: <em>{unit_total}</em>",
-                                                "placeholders": [
-                                                    {
-                                                        "placeholder": "unit_total",
-                                                        "transforms": [
-                                                            {
-                                                                "transform": "format_number",
-                                                                "arguments": {
-                                                                    "number": {
-                                                                        "source": "calculated_summary",
-                                                                        "identifier": "unit-total-playback"
-                                                                    }
-                                                                }
+                                                "label": {
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "calc_value_1",
+                                                            "value": {
+                                                                "identifier": "currency-total-playback-1",
+                                                                "source": "calculated_summary"
                                                             }
-                                                        ]
-                                                    }
-                                                ]
+                                                        }
+                                                    ],
+                                                    "text": "{calc_value_1} - calculated summary answer (previous section)"
+                                                },
+                                                "value": "{calc_value_1}"
                                             },
                                             {
-                                                "text": "Total formatted unit values: <em>{unit_total}</em>",
-                                                "placeholders": [
-                                                    {
-                                                        "placeholder": "unit_total",
-                                                        "transforms": [
-                                                            {
-                                                                "transform": "format_unit",
-                                                                "arguments": {
-                                                                    "value": {
-                                                                        "source": "calculated_summary",
-                                                                        "identifier": "unit-total-playback"
-                                                                    },
-                                                                    "unit": "length-centimeter",
-                                                                    "unit_length": "short"
-                                                                }
+                                                "label": {
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "calc_value_2",
+                                                            "value": {
+                                                                "identifier": "currency-total-playback-2",
+                                                                "source": "calculated_summary"
                                                             }
-                                                        ]
-                                                    }
-                                                ]
+                                                        }
+                                                    ],
+                                                    "text": "{calc_value_2} - calculated summary answer (current section)"
+                                                },
+                                                "value": "{calc_value_2}"
                                             },
                                             {
-                                                "text": "Total unformatted percentage values: <em>{percentage_total}</em>",
-                                                "placeholders": [
-                                                    {
-                                                        "placeholder": "percentage_total",
-                                                        "transforms": [
-                                                            {
-                                                                "transform": "format_number",
-                                                                "arguments": {
-                                                                    "number": {
-                                                                        "source": "calculated_summary",
-                                                                        "identifier": "percentage-total-playback"
-                                                                    }
-                                                                }
+                                                "label": {
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "third_answer_value",
+                                                            "value": {
+                                                                "identifier": "third-number-answer",
+                                                                "source": "answers"
                                                             }
-                                                        ]
-                                                    }
-                                                ]
-                                            },
+                                                        }
+                                                    ],
+                                                    "text": "{third_answer_value} - third answer"
+                                                },
+                                                "value": "{third_answer_value}"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "id": "checkbox-exclusive-answer",
+                                        "mandatory": false,
+                                        "type": "Checkbox",
+                                        "options": [
                                             {
-                                                "text": "Total formatted percentage values: <em>{percentage_total}</em>",
-                                                "placeholders": [
-                                                    {
-                                                        "placeholder": "percentage_total",
-                                                        "transforms": [
-                                                            {
-                                                                "transform": "format_percentage",
-                                                                "arguments": {
-                                                                    "value": {
-                                                                        "source": "calculated_summary",
-                                                                        "identifier": "percentage-total-playback"
-                                                                    }
-                                                                }
-                                                            }
-                                                        ]
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                "text": "Total number values: <em>{number_total}</em>",
-                                                "placeholders": [
-                                                    {
-                                                        "placeholder": "number_total",
-                                                        "transforms": [
-                                                            {
-                                                                "transform": "format_number",
-                                                                "arguments": {
-                                                                    "number": {
-                                                                        "source": "calculated_summary",
-                                                                        "identifier": "number-total-playback"
-                                                                    }
-                                                                }
-                                                            }
-                                                        ]
-                                                    }
-                                                ]
+                                                "label": "I prefer not to say",
+                                                "description": "Some description",
+                                                "value": "I prefer not to say"
                                             }
                                         ]
                                     }
@@ -1271,7 +1123,7 @@
                                         "minimum": {
                                             "value": {
                                                 "source": "calculated_summary",
-                                                "identifier": "currency-total-playback"
+                                                "identifier": "currency-total-playback-1"
                                             }
                                         }
                                     },
@@ -1286,7 +1138,7 @@
                                         "maximum": {
                                             "value": {
                                                 "source": "calculated_summary",
-                                                "identifier": "currency-total-playback"
+                                                "identifier": "currency-total-playback-1"
                                             }
                                         }
                                     }
@@ -1297,7 +1149,7 @@
                                         {
                                             "placeholder": "calculated_summary_answer",
                                             "value": {
-                                                "identifier": "currency-total-playback",
+                                                "identifier": "currency-total-playback-1",
                                                 "source": "calculated_summary"
                                             }
                                         }
@@ -1307,7 +1159,8 @@
                                 "type": "General"
                             }
                         }
-                    ]
+                    ],
+                    "id": "calculated-summary"
                 }
             ]
         }
