@@ -226,10 +226,11 @@ class TestCase {
 
       const content = await $("h1 + ul").getText();
       const textsToAssert = [
-        "Total currency values (if Q4 not skipped): £28.37",
-        "Total currency values (if Q4 skipped)): £9.36",
-        "Total unit values: 1,467",
-        "Total percentage values: 79",
+        "Total currency values: £9.36",
+        "Total unformatted unit values: 1,467",
+        "Total formatted unit values: 1,467 cm",
+        "Total unformatted percentage values: 79",
+        "Total formatted percentage values: 79%",
         "Total number values: 124.58",
       ];
 
