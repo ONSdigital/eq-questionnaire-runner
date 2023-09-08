@@ -25,7 +25,7 @@ echo "Generating functional test pages"
 yarn generate_pages
 
 echo "Running front end functional tests"
-yarn test_functional $1
+yarn test_functional --spec $1 --multi-run 50
 
 display_result $? 5 "Front end functional tests"
 
