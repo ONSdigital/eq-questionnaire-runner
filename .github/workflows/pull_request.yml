@@ -1,7 +1,7 @@
 name: PR
 
 on:
-  pull_request:
+  push:
     branches:
       - "main"
       - "branch-v*"
@@ -134,7 +134,18 @@ jobs:
     needs: [python-dependencies, node-dependencies]
     strategy:
       matrix:
-        suite: [ timeout_modal_expired, timeout_modal_extended, timeout_modal_extended_new_window, features, general, components ]
+        suite: [
+            tests/functional/spec/features/calculated_summary/calculated_summary.spec.js
+            tests/functional/spec/features/calculated_summary/new_calculated_summary_repeating_and_static_answers.spec.js
+            tests/functional/spec/features/calculated_summary/new_calculated_summary_repeating_blocks.spec.js
+            tests/functional/spec/features/calculated_summary/new_calculated_summary_repeating_section.spec.js
+            tests/functional/spec/features/dynamic_answers_list_value_source.spec.js
+            tests/functional/spec/features/grand_calculated_summary/grand_calculated_summary_cross_section_dependencies.spec.js
+            tests/functional/spec/features/grand_calculated_summary/grand_calculated_summary_overlapping_answers.spec.js
+            tests/functional/spec/features/grand_calculated_summary/grand_calculated_summary_repeating_answers.spec.js
+            tests/functional/spec/features/repeating_blocks/list_collector_repeating_blocks.spec.js
+            tests/functional/spec/features/supplementary_data/supplementary_data.spec.js
+        ]
     runs-on: ubuntu-22.04
     env:
       EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
