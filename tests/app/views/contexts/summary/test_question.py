@@ -1,6 +1,5 @@
 # pylint: disable=too-many-lines
 import pytest
-from mock import MagicMock
 
 from app.data_models import Answer, ListStore, ProgressStore, SupplementaryDataStore
 from app.data_models.answer_store import AnswerStore
@@ -163,7 +162,12 @@ def address_question(
 @pytest.mark.parametrize(
     "question_title, answers, expected_title, expected_len",
     (
-        ("Question title", [MagicMock()], "Question title", 1),
+        (
+            "Question title",
+            [{"type": "Number", "id": "age-answer", "mandatory": True, "label": "Age"}],
+            "Question title",
+            1,
+        ),
         ("Question title", [], "Question title", 0),
         (
             "",
@@ -1074,7 +1078,7 @@ def test_dynamic_answer_options(
     mock_schema,
 ):
     # Given
-    answer_id = (f"dynamic-{answer_type.lower()}-answer",)
+    answer_id = f"dynamic-{answer_type.lower()}-answer"
     answer_schema = {
         "id": answer_id,
         "label": "Some label",
