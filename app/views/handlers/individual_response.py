@@ -589,18 +589,13 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
 
     def _update_section_completeness(self) -> None:
         if not self._questionnaire_store.progress_store.get_completed_block_ids(
-            section_key=SectionKey(
+            section_key := SectionKey(
                 section_id=self.individual_section_id, list_item_id=self._list_item_id
             )
         ):
             status = CompletionStatus.NOT_STARTED
         else:
-            routing_path = self.router.routing_path(
-                SectionKey(
-                    section_id=self.individual_section_id,
-                    list_item_id=self._list_item_id,
-                )
-            )
+            routing_path = self.router.routing_path(section_key)
             status = (
                 CompletionStatus.COMPLETED
                 if self.router.is_path_complete(routing_path)

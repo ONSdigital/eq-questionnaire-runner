@@ -314,9 +314,7 @@ class Router:
             ):
                 return None
             routing_path = self._path_finder.routing_path(
-                SectionKey(
-                    section_id=grand_calculated_summary_section, list_item_id=None
-                )
+                SectionKey(section_id=grand_calculated_summary_section)
             )
         if self.can_access_location(
             # grand calculated summaries do not yet support repeating sections, when they do, this will need to make use of list item id as well

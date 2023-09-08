@@ -304,16 +304,14 @@ class Question(BlockHandler):
         list_name: str,
     ) -> Location | None:
         if self._questionnaire_store.progress_store.is_section_complete(
-            SectionKey(section_id, list_item_id)
+            section_key := SectionKey(section_id, list_item_id)
         ):
             return None
 
         for repeating_block_id in repeating_block_ids:
             if not self._questionnaire_store.progress_store.is_block_complete(
                 block_id=repeating_block_id,
-                section_key=SectionKey(
-                    section_id=section_id, list_item_id=list_item_id
-                ),
+                section_key=section_key,
             ):
                 return Location(
                     section_id=section_id,
