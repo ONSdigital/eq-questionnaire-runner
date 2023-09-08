@@ -55,10 +55,10 @@ class ProgressStore:
         section_list: Iterable[ProgressDictType],
     ) -> MutableMapping:
         """
-        Builds the ProgressStore's data structure from a list of progress dictionaries.
+        Builds the ProgressStore's data structure from a list of section dictionaries.
 
-        The `progress_key` is tuple consisting of `section_id` and the `list_item_id`.
-        The `progress` is a mutableMapping created from the Progress object.
+        The `section_key` is tuple consisting of `section_id` and the `list_item_id`.
+        The `section` is a mutableMapping created from the Progress object.
 
         Example structure:
         {
@@ -72,11 +72,10 @@ class ProgressStore:
         """
 
         return {
-            (
-                progress["section_id"],
-                progress.get("list_item_id"),
-            ): Progress.from_dict(progress)
-            for progress in section_list
+            SectionKey(
+                section["section_id"], section.get("list_item_id")
+            ): Progress.from_dict(section)
+            for section in section_list
         }
 
     @property
