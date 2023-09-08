@@ -1046,8 +1046,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             "decimal_places": decimal_limit,
         }
 
-    def get_decimal_limit_from_sources(
-        self, *calculated_summary_block_ids: str
+    def get_decimal_limit_from_calculated_summaries(
+        self, calculated_summary_block_ids: list[str]
     ) -> int | None:
         """
         Get the max number of decimal places from the calculated summary block(s) passed in

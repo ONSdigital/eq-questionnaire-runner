@@ -70,7 +70,9 @@ class PlaceholderTransforms:
         if source == "answers":
             decimal_limit = self.schema.get_decimal_limit([identifier])
         elif source == "calculated_summary":
-            decimal_limit = self.schema.get_decimal_limit_from_sources(identifier)
+            decimal_limit = self.schema.get_decimal_limit_from_calculated_summaries(
+                [identifier]
+            )
 
         return decimal_limit
 

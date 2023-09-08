@@ -28,7 +28,7 @@ def get_formatted_currency(
     value: float | Decimal,
     currency: str = "GBP",
     locale: str | None = None,
-    decimal_limit: int | None = 0,
+    decimal_limit: int | None = None,
 ) -> str:
     """
     This function provides a wrapper for the numbers `format_currency` method, generating the
