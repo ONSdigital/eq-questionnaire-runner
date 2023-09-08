@@ -199,6 +199,7 @@ export const config = {
 
     global.expect = chai.expect;
 
+    await browser.setTimeout({ implicit: 1000 });
     await browser.addCommand(
       "openQuestionnaire",
       async function (
