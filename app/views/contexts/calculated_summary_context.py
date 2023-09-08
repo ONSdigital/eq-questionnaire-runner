@@ -274,6 +274,7 @@ class CalculatedSummaryContext(Context):
     def _get_answer_format(self, groups: Iterable[Mapping]) -> Tuple[dict, list]:
         values_to_calculate: list = []
         answer_format: dict = {"type": None}
+        decimal_limits: list[int] = []
         for group in groups:
             for block in group["blocks"]:
                 question = choose_question_to_display(
@@ -294,21 +295,15 @@ class CalculatedSummaryContext(Context):
                             "unit": answer.get("unit"),
                             "unit_length": answer.get("unit_length"),
                             "currency": answer.get("currency"),
-                            "decimal_places": 0,
                         }
 
-                    self._set_decimal_places(answer, answer_format)
+                    if (decimal_places := answer.get("decimal_places")) is not None:
+                        decimal_limits.append(decimal_places)
 
                     answer_value = answer.get("value") or 0
                     values_to_calculate.append(answer_value)
-
+        answer_format["decimal_places"] = max(decimal_limits, default=None)
         return answer_format, values_to_calculate
-
-    @staticmethod
-    def _set_decimal_places(answer: Mapping, answer_format: dict) -> None:
-        if decimal_places := answer.get("decimal_places"):
-            if decimal_places > answer_format["decimal_places"]:
-                answer_format["decimal_places"] = decimal_places
 
     @staticmethod
     def _format_total(

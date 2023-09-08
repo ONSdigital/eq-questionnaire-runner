@@ -72,12 +72,8 @@ class PlaceholderTransforms:
         identifier = unresolved_arguments["number"].get("identifier")
         if source == "answers":
             decimal_limit = self.schema.get_decimal_limit([identifier])
-
-        if source == "calculated_summary":
-            answer_ids = get_calculated_summary_answer_ids(
-                self.schema.get_block(identifier)  # type: ignore
-            )
-            decimal_limit = self.schema.get_decimal_limit(answer_ids)
+        elif source == "calculated_summary":
+            decimal_limit = self.schema.get_decimal_limit_from_sources(identifier)
 
         return decimal_limit
 

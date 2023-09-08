@@ -1046,23 +1046,28 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             "decimal_places": decimal_limit,
         }
 
-    def get_grand_calculated_summary_decimal_limit(
-        self, calculated_summary_ids: list[str]
-    ) -> int:
-        decimal_limits = []
-        # Type ignore: the block will exist for any valid calculated summary id
-        for calculated_summary_id in calculated_summary_ids:
+    def get_decimal_limit_from_sources(
+        self, *calculated_summary_block_ids: str
+    ) -> int | None:
+        """
+        Get the max number of decimal places from the calculated summary block(s) passed in
+        """
+        decimal_limits: list[int] = []
+        for calculated_summary_id in calculated_summary_block_ids:
+            # Type ignore: the block will exist for any valid calculated summary id
             answer_ids = get_calculated_summary_answer_ids(self.get_block(calculated_summary_id))  # type: ignore
-            decimal_limits.append(self.get_decimal_limit(answer_ids))
-        return max(decimal_limits)
+            if (decimal_limit := self.get_decimal_limit(answer_ids)) is not None:
+                decimal_limits.append(decimal_limit)
+        return max(decimal_limits, default=None)
 
-    def get_decimal_limit(self, answer_ids: list[str]) -> int:
+    def get_decimal_limit(self, answer_ids: list[str]) -> int | None:
         decimal_limits: list[int] = [
-            answer.get("decimal_places", 0)
+            decimal_places
             for answer_id in answer_ids
             for answer in self.get_answers_by_answer_id(answer_id)
+            if (decimal_places := answer.get("decimal_places")) is not None
         ]
-        return max(decimal_limits)
+        return max(decimal_limits, default=None)
 
     def get_answer_ids_for_block(self, block_id: str) -> list[str]:
         if block := self.get_block(block_id):
