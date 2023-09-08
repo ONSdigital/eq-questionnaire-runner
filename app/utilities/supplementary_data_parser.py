@@ -67,6 +67,7 @@ def validate_supplementary_data_v1(
     dataset_id: str,
     identifier: str,
     survey_id: str,
+    schema_supplementary_lists: frozenset[str],
 ) -> dict:
     """Validate claims required for supplementary data"""
     supplementary_data_metadata_schema = SupplementaryDataMetadataSchema(
@@ -80,6 +81,12 @@ def validate_supplementary_data_v1(
     validated_supplementary_data = supplementary_data_metadata_schema.load(
         supplementary_data
     )
+
+    supplementary_data_lists = set(supplementary_data["data"].get("items", {}).keys())
+    if missing := schema_supplementary_lists - supplementary_data_lists:
+        raise ValidationError(
+            f"Supplementary data does not include the following lists required for the schema: {', '.join(sorted(missing))}"
+        )
 
     if supplementary_data_items := supplementary_data.get("data", {}).get("items"):
         for key, values in supplementary_data_items.items():

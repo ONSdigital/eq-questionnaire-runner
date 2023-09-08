@@ -44,7 +44,11 @@ class InvalidSupplementaryData(Exception):
 
 
 def get_supplementary_data_v1(
-    *, dataset_id: str, identifier: str, survey_id: str
+    *,
+    dataset_id: str,
+    identifier: str,
+    survey_id: str,
+    schema_supplementary_lists: frozenset[str],
 ) -> dict:
     # Type ignore: current_app is a singleton in this application and has the key_store key in its eq attribute.
     key_store = current_app.eq["key_store"]  # type: ignore
@@ -53,9 +57,7 @@ def get_supplementary_data_v1(
 
     supplementary_data_url = f"{current_app.config['SDS_API_BASE_URL']}/v1/unit_data"
 
-    parameters = {"dataset_id": dataset_id, "identifier": identifier}
-
-    encoded_parameters = urlencode(parameters)
+    encoded_parameters = urlencode({"dataset_id": dataset_id, "identifier": identifier})
     constructed_supplementary_data_url = (
         f"{supplementary_data_url}?{encoded_parameters}"
     )
@@ -98,6 +100,7 @@ def get_supplementary_data_v1(
             dataset_id=dataset_id,
             identifier=identifier,
             survey_id=survey_id,
+            schema_supplementary_lists=schema_supplementary_lists,
         )
 
     logger.error(
@@ -126,7 +129,11 @@ def decrypt_supplementary_data(
 
 
 def validate_supplementary_data(
-    supplementary_data: Mapping, dataset_id: str, identifier: str, survey_id: str
+    supplementary_data: Mapping,
+    dataset_id: str,
+    identifier: str,
+    survey_id: str,
+    schema_supplementary_lists: frozenset[str],
 ) -> dict:
     try:
         return validate_supplementary_data_v1(
@@ -134,6 +141,7 @@ def validate_supplementary_data(
             dataset_id=dataset_id,
             identifier=identifier,
             survey_id=survey_id,
+            schema_supplementary_lists=schema_supplementary_lists,
         )
     except ValidationError as e:
         raise ValidationError("Invalid supplementary data") from e
