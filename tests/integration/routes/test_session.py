@@ -3,6 +3,7 @@ from datetime import datetime, timedelta, timezone
 
 import responses
 from freezegun import freeze_time
+from marshmallow import ValidationError
 from mock.mock import patch
 from sdc.crypto.key_store import KeyStore
 
@@ -177,7 +178,8 @@ class TestSession(IntegrationTestCase):
         self.assertStatusOK()
         mock_get.assert_called_once()
         mock_set.assert_called_once()
-        mock_validate.assert_called_once()
+        # validation should happen twice regardless
+        self.assertEqual(mock_validate.call_count, 2)
 
     def test_supplementary_data_raises_500_error_when_sds_api_request_fails(self):
         with patch(
@@ -238,7 +240,7 @@ class TestSession(IntegrationTestCase):
         that a validation error is raised"""
         mock_get.return_value = {"data": {"items": {"products": []}}}
         self.launchSupplementaryDataSurvey(schema_name="test_supplementary_data")
-        self.assert_supplementary_data_500_page()
+        self.assertStatusCode(500)
         mock_set.assert_not_called()
 
     @patch("app.routes.session.get_supplementary_data_v1")
@@ -252,6 +254,38 @@ class TestSession(IntegrationTestCase):
         self.launchSupplementaryDataSurvey(schema_name="test_supplementary_data")
         self.assertStatusOK()
         mock_set.assert_called_once()
+
+    @patch("app.routes.session.get_supplementary_data_v1")
+    @patch(
+        "app.routes.session._validate_supplementary_data_lists",
+        side_effect=[
+            None,
+            ValidationError(
+                "Supplementary data does not include the following lists required for the schema: missing"
+            ),
+        ],
+    )
+    @patch(
+        "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data"
+    )
+    def test_supplementary_data_raises_500_error_when_survey_becomes_invalid_for_same_dataset(
+        self,
+        mock_set,
+        mock_validate,
+        mock_get,
+    ):
+        """
+        This checks the edge case in which a survey changes to have different lists, but the supplementary dataset id
+        remains the same, so the supplementary data is not fetched again, but is no longer valid for the survey
+        """
+        self.launchSupplementaryDataSurvey(response_id="1", sds_dataset_id="same")
+        self.assertStatusOK()
+        mock_set.assert_called_once()
+        mock_get.assert_called_once()
+        mock_validate.assert_called_once()
+        self.launchSupplementaryDataSurvey(response_id="1", sds_dataset_id="same")
+        self.assertStatusCode(500)
+        self.assertEqual(mock_validate.call_count, 2)
 
 
 class TestCensusSession(IntegrationTestCase):

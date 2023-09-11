@@ -149,18 +149,25 @@ def _set_questionnaire_supplementary_data(
     """
     If the survey metadata has an sds dataset id, and it either doesn't match what it stored, or there is no stored supplementary data
     then fetch it, verify any schema supplementary lists are included in the fetched data, and add it to the questionnaire store
-    """
-    if not (new_sds_dataset_id := metadata["sds_dataset_id"]):
-        return
 
+    Validation of the supplementary lists must be performed every time a survey launches, not just when the supplementary data is fetched
+    as it is possible that the survey has changed but the dataset hasn't so the validity could have changed.
+    """
     existing_sds_dataset_id = (
         questionnaire_store.metadata.survey_metadata["sds_dataset_id"]
         if questionnaire_store.metadata and questionnaire_store.metadata.survey_metadata
         else None
     )
 
-    if existing_sds_dataset_id == new_sds_dataset_id:
-        # no need to fetch again
+    if (
+        not (new_sds_dataset_id := metadata["sds_dataset_id"])
+        or existing_sds_dataset_id == new_sds_dataset_id
+    ):
+        # no need to fetch: either no supplementary data or it hasn't changed, just validate lists
+        _validate_supplementary_data_lists(
+            supplementary_data=questionnaire_store.supplementary_data_store.raw_data,
+            schema=schema,
+        )
         return
 
     supplementary_data = get_supplementary_data_v1(
@@ -174,9 +181,8 @@ def _set_questionnaire_supplementary_data(
         survey_id=metadata["survey_id"],
         sds_dataset_id=new_sds_dataset_id,
     )
-    # ensure any required lists for the schema are included in the supplementary data
     _validate_supplementary_data_lists(
-        supplementary_data=supplementary_data, schema=schema
+        supplementary_data=supplementary_data["data"], schema=schema
     )
     questionnaire_store.set_supplementary_data(supplementary_data["data"])
 
@@ -188,7 +194,7 @@ def _validate_supplementary_data_lists(
     Validates that any lists the schema requires (which are those in the supplementary_data.lists property)
     are included in the supplementary data
     """
-    supplementary_lists = set(supplementary_data["data"].get("items", {}).keys())
+    supplementary_lists = set(supplementary_data.get("items", {}).keys())
     if missing := schema.supplementary_lists - supplementary_lists:
         raise ValidationError(
             f"Supplementary data does not include the following lists required for the schema: {', '.join(missing)}"
