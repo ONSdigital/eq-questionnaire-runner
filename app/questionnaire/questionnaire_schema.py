@@ -20,6 +20,12 @@ from app.utilities.mappings import get_flattened_mapping_values, get_mappings_wi
 DEFAULT_LANGUAGE_CODE = "en"
 
 LIST_COLLECTORS_WITH_REPEATING_BLOCKS = {"ListCollector", "ListCollectorContent"}
+LIST_COLLECTOR_BLOCKS = {
+    "ListCollector",
+    "ListCollectorContent",
+    "PrimaryPersonListCollector",
+    "RelationshipCollector",
+}
 
 LIST_COLLECTOR_CHILDREN = [
     "ListAddQuestion",
@@ -135,7 +141,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return ImmutableDict(self._answer_dependencies_map)
 
     @cached_property
-    # Type ignore: safe to assume _min_and_max_map return type
+    # Type ignore: make_immutable uses generic types so return type is manually specified
     def min_and_max_map(self) -> ImmutableDict[str, ImmutableDict[str, int]]:
         return make_immutable(self._min_and_max_map)  # type: ignore
 
@@ -271,6 +277,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def parent_id_map(self) -> Any:
         return self.serialize(self._parent_id_map)
 
+    @cached_property
+    def supplementary_lists(self) -> frozenset[str]:
+        return frozenset(self.json.get("supplementary_data", {}).get("lists", []))
+
     @classmethod
     def serialize(cls, data: Any) -> Any:
         return make_immutable(data)
@@ -354,14 +364,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             for block in group["blocks"]:
                 block_id = block["id"]
                 self._parent_id_map[block_id] = group["id"]
-
                 blocks[block_id] = block
-                if block["type"] in {
-                    "ListCollector",
-                    "ListCollectorContent",
-                    "PrimaryPersonListCollector",
-                    "RelationshipCollector",
-                }:
+                if block["type"] in LIST_COLLECTOR_BLOCKS:
                     self._list_collector_section_ids_by_list_name[
                         block["for_list"]
                     ].append(self._parent_id_map[group["id"]])
@@ -933,9 +937,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 "ListCollector": "add_block",
                 "PrimaryPersonListCollector": "add_or_edit_block",
             }
-            add_block: ImmutableDict = list_collector[
-                add_block_map[list_collector["type"]]
-            ]
+            add_block: ImmutableDict | None = list_collector.get(
+                add_block_map.get(list_collector["type"])
+            )
             return add_block
 
     def get_edit_block_for_list_collector(

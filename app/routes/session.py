@@ -119,7 +119,9 @@ def login() -> Response:
     logger.info("decrypted token and parsed metadata")
 
     with create_session_questionnaire_store(claims) as questionnaire_store:
-        _set_questionnaire_supplementary_data(questionnaire_store, metadata)
+        _set_questionnaire_supplementary_data(
+            questionnaire_store=questionnaire_store, metadata=metadata, schema=g.schema
+        )
 
     cookie_session["expires_in"] = get_session_timeout_in_seconds(g.schema)
 
@@ -139,23 +141,33 @@ def login() -> Response:
 
 
 def _set_questionnaire_supplementary_data(
-    questionnaire_store: QuestionnaireStore, metadata: MetadataProxy
+    *,
+    questionnaire_store: QuestionnaireStore,
+    metadata: MetadataProxy,
+    schema: QuestionnaireSchema,
 ) -> None:
     """
     If the survey metadata has an sds dataset id, and it either doesn't match what it stored, or there is no stored supplementary data
-    then fetch it and add it to the store
-    """
-    if not (new_sds_dataset_id := metadata["sds_dataset_id"]):
-        return
+    then fetch it, verify any schema supplementary lists are included in the fetched data, and add it to the questionnaire store
 
+    Validation of the supplementary lists must be performed every time a survey launches, not just when the supplementary data is fetched
+    as it is possible that the survey has changed but the dataset hasn't so the validity could have changed.
+    """
     existing_sds_dataset_id = (
         questionnaire_store.metadata.survey_metadata["sds_dataset_id"]
         if questionnaire_store.metadata and questionnaire_store.metadata.survey_metadata
         else None
     )
 
-    if existing_sds_dataset_id == new_sds_dataset_id:
-        # no need to fetch again
+    if (
+        not (new_sds_dataset_id := metadata["sds_dataset_id"])
+        or existing_sds_dataset_id == new_sds_dataset_id
+    ):
+        # no need to fetch: either no supplementary data or it hasn't changed, just validate lists
+        _validate_supplementary_data_lists(
+            supplementary_data=questionnaire_store.supplementary_data_store.raw_data,
+            schema=schema,
+        )
         return
 
     supplementary_data = get_supplementary_data_v1(
@@ -169,7 +181,24 @@ def _set_questionnaire_supplementary_data(
         survey_id=metadata["survey_id"],
         sds_dataset_id=new_sds_dataset_id,
     )
+    _validate_supplementary_data_lists(
+        supplementary_data=supplementary_data["data"], schema=schema
+    )
     questionnaire_store.set_supplementary_data(supplementary_data["data"])
+
+
+def _validate_supplementary_data_lists(
+    *, supplementary_data: dict, schema: QuestionnaireSchema
+) -> None:
+    """
+    Validates that any lists the schema requires (which are those in the supplementary_data.lists property)
+    are included in the supplementary data
+    """
+    supplementary_lists = supplementary_data.get("items", {}).keys()
+    if missing := schema.supplementary_lists - supplementary_lists:
+        raise ValidationError(
+            f"Supplementary data does not include the following lists required for the schema: {', '.join(missing)}"
+        )
 
 
 def validate_jti(decrypted_token: dict[str, str | list | int]) -> None:
