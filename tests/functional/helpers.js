@@ -46,4 +46,7 @@ export const click = async (selector) => {
   // they fail, as we never navigated to that page.
   await $(selector).scrollIntoView({ block: "center", inline: "center" });
   await $(selector).click();
+
+  // Allow time in case the click loads a new page.
+  await browser.pause(100);
 };
