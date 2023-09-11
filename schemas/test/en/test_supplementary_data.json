@@ -29,6 +29,9 @@
             "type": "string"
         }
     ],
+    "supplementary_data": {
+        "lists": ["employees", "products"]
+    },
     "questionnaire_flow": {
         "type": "Hub",
         "options": {
@@ -631,138 +634,32 @@
         {
             "id": "section-2",
             "title": "Employees",
-            "summary": {
-                "show_on_completion": true,
-                "items": [
-                    {
-                        "type": "List",
-                        "for_list": "employees",
-                        "title": "Employees",
-                        "empty_list_text": "There are no employees",
-                        "add_link_text": "DO NOT use this link to add another employee, this will be replaced with list collector content"
-                    }
-                ],
-                "show_non_item_answers": true
-            },
             "groups": [
                 {
                     "id": "employee-reporting",
                     "blocks": [
                         {
                             "id": "list-collector-employees",
-                            "type": "ListCollector",
+                            "type": "ListCollectorContent",
+                            "page_title": "Employees",
                             "for_list": "employees",
-                            "question": {
-                                "id": "confirmation-employee-question",
-                                "type": "General",
-                                "title": "Do you need to add any more employees?",
-                                "guidance": {
-                                    "contents": [
-                                        {
-                                            "title": "Important guidance",
-                                            "description": "This list collector is a placeholder until it can be replaced with a list collector content block - <strong>do not add any people to this list because it won’t work correctly</strong>"
-                                        }
-                                    ]
-                                },
-                                "answers": [
+                            "content": {
+                                "title": "Employees",
+                                "contents": [
                                     {
-                                        "id": "list-collector-employees-answer",
-                                        "mandatory": true,
-                                        "type": "Radio",
-                                        "options": [
-                                            {
-                                                "label": "Yes",
-                                                "value": "Yes",
-                                                "action": {
-                                                    "type": "RedirectToListAddBlock"
-                                                }
-                                            },
-                                            {
-                                                "label": "No",
-                                                "value": "No"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            "add_block": {
-                                "id": "add-employee",
-                                "type": "ListAddQuestion",
-                                "cancel_text": "Don’t need to add any other employees?",
-                                "question": {
-                                    "id": "add-employee-question",
-                                    "type": "General",
-                                    "title": "What is the name of the employee?",
-                                    "answers": [
-                                        {
-                                            "id": "employee-first-name",
-                                            "label": "First name",
-                                            "mandatory": true,
-                                            "type": "TextField"
-                                        },
-                                        {
-                                            "id": "employee-last-name",
-                                            "label": "Last name",
-                                            "mandatory": true,
-                                            "type": "TextField"
-                                        }
-                                    ]
-                                }
-                            },
-                            "edit_block": {
-                                "id": "edit-employee",
-                                "type": "ListEditQuestion",
-                                "cancel_text": "Don’t need to change anything?",
-                                "question": {
-                                    "id": "edit-employee-question",
-                                    "type": "General",
-                                    "title": "What is the name of the employee?",
-                                    "answers": [
-                                        {
-                                            "id": "employee-first-name",
-                                            "label": "First name",
-                                            "mandatory": true,
-                                            "type": "TextField"
-                                        },
-                                        {
-                                            "id": "employee-last-name",
-                                            "label": "Last name",
-                                            "mandatory": true,
-                                            "type": "TextField"
-                                        }
-                                    ]
-                                }
-                            },
-                            "remove_block": {
-                                "id": "remove-employee",
-                                "type": "ListRemoveQuestion",
-                                "cancel_text": "Don’t need to remove this employee?",
-                                "question": {
-                                    "id": "remove-employee-question",
-                                    "type": "General",
-                                    "title": "Are you sure you want to remove this employee?",
-                                    "warning": "All of the information about this employee will be deleted",
-                                    "answers": [
-                                        {
-                                            "id": "remove-confirmation",
-                                            "mandatory": true,
-                                            "type": "Radio",
-                                            "options": [
+                                        "definition": {
+                                            "title": "Company employees",
+                                            "contents": [
                                                 {
-                                                    "label": "Yes",
-                                                    "value": "Yes",
-                                                    "action": {
-                                                        "type": "RemoveListItemAndAnswers"
-                                                    }
-                                                },
-                                                {
-                                                    "label": "No",
-                                                    "value": "No"
+                                                    "description": "List of previously reported employees."
                                                 }
                                             ]
                                         }
-                                    ]
-                                }
+                                    },
+                                    {
+                                        "description": "You have previously reported on the above employees. Press continue to proceed to the next section where you can add any additional employees."
+                                    }
+                                ]
                             },
                             "summary": {
                                 "title": "employees",
@@ -1310,7 +1207,6 @@
                         "type": "List",
                         "for_list": "products",
                         "title": "Products",
-                        "add_link_text": "DO NOT use this link to add another product, this will be replaced with list collector content",
                         "empty_list_text": "There are no products"
                     }
                 ],
@@ -1322,117 +1218,16 @@
                     "blocks": [
                         {
                             "id": "list-collector-products",
-                            "type": "ListCollector",
+                            "type": "ListCollectorContent",
                             "for_list": "products",
-                            "question": {
-                                "id": "confirmation-product-question",
-                                "type": "General",
-                                "title": "Do you need to add any more products?",
-                                "guidance": {
-                                    "contents": [
-                                        {
-                                            "title": "Important guidance",
-                                            "description": "This list collector is a placeholder until it can be replaced with a list collector content block - <strong>do not add any products to this list because it won’t work correctly</strong>"
-                                        },
-                                        {
-                                            "description": "Until this can be replaced with a list collector content block, keep clicking no and pressing save and continue to complete the repeating blocks"
-                                        }
-                                    ]
-                                },
-                                "answers": [
+                            "page_title": "Products",
+                            "content": {
+                                "title": "Products",
+                                "contents": [
                                     {
-                                        "id": "list-collector-products-answer",
-                                        "mandatory": true,
-                                        "type": "Radio",
-                                        "options": [
-                                            {
-                                                "label": "Yes",
-                                                "value": "Yes",
-                                                "action": {
-                                                    "type": "RedirectToListAddBlock"
-                                                }
-                                            },
-                                            {
-                                                "label": "No",
-                                                "value": "No"
-                                            }
-                                        ]
+                                        "description": "You have previously provided information for the above products. Please press continue to proceed to questions on value and volume of sales."
                                     }
                                 ]
-                            },
-                            "add_block": {
-                                "id": "add-product",
-                                "type": "ListAddQuestion",
-                                "cancel_text": "Don’t need to add any other products?",
-                                "question": {
-                                    "id": "add-product-question",
-                                    "type": "General",
-                                    "title": "What is the name of the product?",
-                                    "guidance": {
-                                        "contents": [
-                                            {
-                                                "description": "This uses a different employees list, and the items from this list and the supplementary list will then be used in repeating sections"
-                                            }
-                                        ]
-                                    },
-                                    "answers": [
-                                        {
-                                            "id": "product-name",
-                                            "label": "Product name",
-                                            "mandatory": true,
-                                            "type": "TextField"
-                                        }
-                                    ]
-                                }
-                            },
-                            "edit_block": {
-                                "id": "edit-product",
-                                "type": "ListEditQuestion",
-                                "cancel_text": "Don’t need to change anything?",
-                                "question": {
-                                    "id": "edit-product-question",
-                                    "type": "General",
-                                    "title": "What is the name of the product?",
-                                    "answers": [
-                                        {
-                                            "id": "product-name",
-                                            "label": "Product name",
-                                            "mandatory": true,
-                                            "type": "TextField"
-                                        }
-                                    ]
-                                }
-                            },
-                            "remove_block": {
-                                "id": "remove-product",
-                                "type": "ListRemoveQuestion",
-                                "cancel_text": "Don’t need to remove this product?",
-                                "question": {
-                                    "id": "remove-product-question",
-                                    "type": "General",
-                                    "title": "Are you sure you want to remove this product?",
-                                    "warning": "All of the information about this product will be deleted",
-                                    "answers": [
-                                        {
-                                            "id": "remove-confirmation",
-                                            "mandatory": true,
-                                            "type": "Radio",
-                                            "options": [
-                                                {
-                                                    "label": "Yes",
-                                                    "value": "Yes",
-                                                    "action": {
-                                                        "type": "RemoveListItemAndAnswers"
-                                                    }
-                                                },
-                                                {
-                                                    "label": "No",
-                                                    "value": "No"
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
                             },
                             "repeating_blocks": [
                                 {
