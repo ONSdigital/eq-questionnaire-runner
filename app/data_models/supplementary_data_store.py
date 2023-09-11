@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import Iterable, Mapping, MutableMapping, TypeAlias
+from typing import Iterable, Mapping, MutableMapping, TypeAlias, TypedDict
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -9,6 +9,11 @@ from app.utilities.make_immutable import make_immutable
 
 SupplementaryDataKeyType: TypeAlias = tuple[str, str | None]
 SupplementaryDataValueType: TypeAlias = dict | str | list | None
+
+
+class SupplementaryDataListMapping(TypedDict):
+    identifier: str | int
+    list_item_id: str
 
 
 class InvalidSupplementaryDataSelector(Exception):
@@ -23,14 +28,27 @@ class SupplementaryDataStore:
     def __init__(
         self,
         supplementary_data: MutableMapping | None = None,
-        list_mappings: Mapping[str, Mapping] | None = None,
+        list_mappings: Mapping[str, list[SupplementaryDataListMapping]] | None = None,
     ):
         """
         Initialised with the "data" value from the sds api response
-        and list mappings of the form { list_name: { identifier : list_item_id }}
+        and list mappings of the form
+        {
+            list_name: [
+                {"identifier": identifier-1, "list_item_id": list_item_id-1 },
+                {"identifier": identifier-2, "list_item_id": list_item_id-2 }
+            ]
+        }
         """
         self._raw_data = supplementary_data or {}
         self._list_mappings = list_mappings or {}
+        # create a lookup for easily finding the list_item_id for a given identifier
+        self._list_lookup = {
+            list_name: {
+                mapping["identifier"]: mapping["list_item_id"] for mapping in list_data
+            }
+            for list_name, list_data in self._list_mappings.items()
+        }
         # use shallow copy of the data, as items will be popped off
         self._data_map = self._build_map({**self._raw_data})
 
@@ -40,9 +58,16 @@ class SupplementaryDataStore:
         return data
 
     @cached_property
-    def list_mappings(self) -> ImmutableDict:
-        mappings: ImmutableDict = make_immutable(self._list_mappings)
+    def list_mappings(self) -> ImmutableDict[str, list[ImmutableDict]]:
+        mappings: ImmutableDict[str, list[ImmutableDict]] = make_immutable(
+            self._list_mappings
+        )
         return mappings
+
+    @cached_property
+    def list_lookup(self) -> ImmutableDict[str, ImmutableDict]:
+        lookup: ImmutableDict[str, ImmutableDict] = make_immutable(self._list_lookup)
+        return lookup
 
     def _build_map(
         self, data: MutableMapping
@@ -58,7 +83,7 @@ class SupplementaryDataStore:
             ]
           }
         }
-        each list item has an identifier which will link to a list-item-id in self.list_mappings
+        each list item has an identifier which will link to a list-item-id in self.list_lookup
         for example: {"some_list": {identifier-1: list_item_id-1, identifier-2: list_item_id-2 }}
 
         resulting map based off list mappings has the form
@@ -75,7 +100,7 @@ class SupplementaryDataStore:
         for list_name, list_data in list_items.items():
             for item in list_data:
                 identifier = item["identifier"]
-                list_item_id = self._list_mappings[list_name][identifier]
+                list_item_id = self.list_lookup[list_name][identifier]
                 resulting_map[(list_name, list_item_id)] = item
         return resulting_map
 

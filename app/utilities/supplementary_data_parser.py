@@ -6,6 +6,7 @@ from marshmallow import (
     ValidationError,
     fields,
     validate,
+    validates,
     validates_schema,
 )
 
@@ -14,7 +15,17 @@ from app.utilities.metadata_parser_v2 import VALIDATORS, StripWhitespaceMixin
 
 
 class ItemsSchema(Schema):
-    identifier = VALIDATORS["string"](validate=validate.Length(min=1))
+    identifier = fields.Field(required=True)
+
+    @validates("identifier")
+    def validate_identifier(self, identifier):
+        # pylint: disable=no-self-use
+        if not (isinstance(identifier, str) and identifier.strip()) and not (
+            isinstance(identifier, int) and identifier >= 0
+        ):
+            raise ValidationError(
+                "Item identifier must be a non-empty string or non-negative integer"
+            )
 
 
 class ItemsData(Schema, StripWhitespaceMixin):

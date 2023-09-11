@@ -7,7 +7,10 @@ from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
-from app.data_models.supplementary_data_store import SupplementaryDataStore
+from app.data_models.supplementary_data_store import (
+    SupplementaryDataListMapping,
+    SupplementaryDataStore,
+)
 from app.questionnaire.rules.utils import parse_iso_8601_datetime
 from app.utilities.json import json_dumps, json_loads
 
@@ -87,23 +90,27 @@ class QuestionnaireStore:
 
     def _create_supplementary_list(
         self, *, list_name: str, list_data: list[dict]
-    ) -> dict[str, str]:
+    ) -> list[SupplementaryDataListMapping]:
         """
         Creates or updates a list in ListStore based off supplementary data
         returns the identifier -> list_item_id mappings used
         """
-        list_mapping: dict[str, str] = {}
+        list_mapping: list[SupplementaryDataListMapping] = []
         for list_item in list_data:
             identifier = list_item["identifier"]
             # if any pre-existing supplementary data already has a mapping for this list item
             # then its already in the list store and doesn't require adding
             if not (
-                list_item_id := self.supplementary_data_store.list_mappings.get(
+                list_item_id := self.supplementary_data_store.list_lookup.get(
                     list_name, {}
                 ).get(identifier)
             ):
                 list_item_id = self.list_store.add_list_item(list_name)
-            list_mapping[identifier] = list_item_id
+            list_mapping.append(
+                SupplementaryDataListMapping(
+                    identifier=identifier, list_item_id=list_item_id
+                )
+            )
         return list_mapping
 
     def _remove_old_supplementary_lists_and_answers(
@@ -115,7 +122,7 @@ class QuestionnaireStore:
         :param new_data - the new supplementary data for comparison
         """
         deleted_list_item_ids: set[str] = set()
-        for list_name, mappings in self.supplementary_data_store.list_mappings.items():
+        for list_name, mappings in self.supplementary_data_store.list_lookup.items():
             if list_name in new_data.get("items", {}):
                 new_identifiers = [
                     item["identifier"] for item in new_data["items"][list_name]

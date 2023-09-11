@@ -6,6 +6,7 @@ from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
 from app.data_models.supplementary_data_store import SupplementaryDataStore
 from app.utilities.json import json_dumps, json_loads
+from app.utilities.make_immutable import make_immutable
 
 
 @pytest.mark.parametrize(
@@ -135,9 +136,9 @@ class TestQuestionnaireStoreWithSupplementaryData:
         """
         self.store = QuestionnaireStore(questionnaire_store.storage)
         self.store.set_supplementary_data(supplementary_data)
-        assert "products" in self.store.supplementary_data_store.list_mappings
+        assert "products" in self.store.supplementary_data_store.list_lookup
         supplementary_list_item_ids = list(
-            self.store.supplementary_data_store.list_mappings["products"].values()
+            self.store.supplementary_data_store.list_lookup["products"].values()
         )
         # check list mapping ids match list store ids
         self.assert_list_store_data("products", supplementary_list_item_ids)
@@ -153,14 +154,18 @@ class TestQuestionnaireStoreWithSupplementaryData:
         supplementary_data["items"]["products"].append({"identifier": "12345"})
         self.store.set_supplementary_data(supplementary_data)
 
-        assert self.store.supplementary_data_store.list_mappings == {
-            "products": {
-                "89929001": "item-1",
-                "201630601": "item-2",
-                "12345": "item-3",
-            },
-            "supermarkets": {"54321": "item-4"},
-        }
+        assert self.store.supplementary_data_store.list_mappings == make_immutable(
+            {
+                "products": [
+                    {"identifier": 89929001, "list_item_id": "item-1"},
+                    {"identifier": "201630601", "list_item_id": "item-2"},
+                    {"identifier": "12345", "list_item_id": "item-3"},
+                ],
+                "supermarkets": [
+                    {"identifier": "54321", "list_item_id": "item-4"},
+                ],
+            }
+        )
 
         self.assert_list_store_data("products", ["item-1", "item-2", "item-3"])
         self.assert_list_store_data("supermarkets", ["item-4"])
