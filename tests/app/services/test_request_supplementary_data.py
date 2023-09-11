@@ -40,7 +40,6 @@ def test_get_supplementary_data_v1_200(
             dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
             identifier="12346789012A",
             survey_id="123",
-            schema_supplementary_lists=frozenset(),
         )
 
     assert loaded_supplementary_data == decrypted_mock_supplementary_data_payload
@@ -69,7 +68,6 @@ def test_get_supplementary_data_v1_non_200(
                 dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
                 identifier="12346789012A",
                 survey_id="123",
-                schema_supplementary_lists=frozenset(),
             )
 
     assert str(exc.value) == "Supplementary Data request failed"
@@ -86,7 +84,6 @@ def test_get_supplementary_data_v1_request_failed(app: Flask):
                 dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
                 identifier="12346789012A",
                 survey_id="123",
-                schema_supplementary_lists=frozenset(),
             )
 
     assert str(exc.value) == "Supplementary Data request failed"
@@ -110,7 +107,6 @@ def test_get_supplementary_data_v1_retries_timeout_error(
                 dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
                 identifier="12346789012A",
                 survey_id="123",
-                schema_supplementary_lists=frozenset(),
             )
         except SupplementaryDataRequestFailed:
             return pytest.fail("Supplementary data request unexpectedly failed")
@@ -143,7 +139,6 @@ def test_get_supplementary_data_v1_retries_transient_error(
                 dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
                 identifier="12346789012A",
                 survey_id="123",
-                schema_supplementary_lists=frozenset(),
             )
         except SupplementaryDataRequestFailed:
             return pytest.fail("Supplementary data request unexpectedly failed")
@@ -170,7 +165,6 @@ def test_get_supplementary_data_v1_max_retries(app: Flask, mocker):
                 dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
                 identifier="12346789012A",
                 survey_id="123",
-                schema_supplementary_lists=frozenset(),
             )
 
     assert str(exc.value) == "Supplementary Data request failed"
@@ -227,7 +221,6 @@ def test_get_supplementary_data_v1_raises_missing_supplementary_data_key_error_w
                 dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
                 identifier="12346789012A",
                 survey_id="123",
-                schema_supplementary_lists=frozenset(),
             )
 
 
@@ -255,7 +248,6 @@ def test_get_supplementary_data_v1_with_gcp_authentication(
             dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
             identifier="12346789012A",
             survey_id="123",
-            schema_supplementary_lists=frozenset(),
         )
         mock_oidc_service.get_credentials.assert_called_once_with(
             iap_client_id=current_app.config["SDS_OAUTH2_CLIENT_ID"]

@@ -49,7 +49,6 @@ def test_invalid_supplementary_data_payload_raises_error():
             dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
             identifier="12346789012A",
             survey_id="123",
-            schema_supplementary_lists=frozenset(),
         )
 
     assert str(error.value) == "Invalid supplementary data"
@@ -61,7 +60,6 @@ def test_validate_supplementary_data_payload():
         dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
         identifier="12346789012A",
         survey_id="123",
-        schema_supplementary_lists=frozenset({"local_units"}),
     )
 
     assert validated_payload == SUPPLEMENTARY_DATA_PAYLOAD
@@ -74,7 +72,6 @@ def test_validate_supplementary_data_payload_incorrect_dataset_id():
             dataset_id="331507ca-1039-4624-a342-7cbc3630e217",
             identifier="12346789012A",
             survey_id="123",
-            schema_supplementary_lists=frozenset(),
         )
 
     assert (
@@ -90,7 +87,6 @@ def test_validate_supplementary_data_payload_incorrect_survey_id():
             dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
             identifier="12346789012A",
             survey_id="234",
-            schema_supplementary_lists=frozenset(),
         )
 
     assert (
@@ -106,7 +102,6 @@ def test_validate_supplementary_data_payload_incorrect_identifier():
             dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
             identifier="000000000001",
             survey_id="123",
-            schema_supplementary_lists=frozenset(),
         )
 
     assert (
@@ -130,7 +125,6 @@ def test_supplementary_data_payload_with_no_items_is_validated():
         dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
         identifier="12346789012A",
         survey_id="123",
-        schema_supplementary_lists=frozenset(),
     )
 
     assert validated_payload == payload
@@ -151,7 +145,6 @@ def test_validate_supplementary_data_payload_missing_survey_id():
             dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
             identifier="12346789012A",
             survey_id="123",
-            schema_supplementary_lists=frozenset(),
         )
 
     assert str(error.value) == "{'survey_id': ['Missing data for required field.']}"
@@ -173,7 +166,6 @@ def test_validate_supplementary_data_payload_with_unknown_field():
         dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
         identifier="12346789012A",
         survey_id="123",
-        schema_supplementary_lists=frozenset(),
     )
 
     assert validated_payload == payload
@@ -196,7 +188,6 @@ def test_validate_supplementary_data_invalid_schema_version():
             dataset_id="001",
             identifier="12346789012A",
             survey_id="123",
-            schema_supplementary_lists=frozenset(),
         )
 
     assert str(error.value) == "{'data': {'schema_version': ['Must be one of: v1.']}}"
@@ -212,25 +203,6 @@ def test_validate_supplementary_data_payload_missing_identifier_in_items():
             dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
             identifier="12346789012A",
             survey_id="123",
-            schema_supplementary_lists=frozenset(),
         )
 
     assert str(error.value) == "{'identifier': ['Missing data for required field.']}"
-
-
-def test_validate_supplementary_data_missing_schema_lists():
-    with pytest.raises(ValidationError) as error:
-        validate_supplementary_data_v1(
-            supplementary_data=SUPPLEMENTARY_DATA_PAYLOAD,
-            dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
-            identifier="12346789012A",
-            survey_id="123",
-            schema_supplementary_lists=frozenset(
-                {"local_units", "people", "employees"}
-            ),
-        )
-
-    assert (
-        str(error.value)
-        == "Supplementary data does not include the following lists required for the schema: employees, people"
-    )

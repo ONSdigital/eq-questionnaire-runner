@@ -168,14 +168,31 @@ def _set_questionnaire_supplementary_data(
         dataset_id=new_sds_dataset_id,
         identifier=metadata["ru_ref"] or metadata["qid"],  # type: ignore
         survey_id=metadata["survey_id"],  # type: ignore
-        schema_supplementary_lists=schema.supplementary_lists,
     )
     logger.info(
         "fetched supplementary data",
         survey_id=metadata["survey_id"],
         sds_dataset_id=new_sds_dataset_id,
     )
+    # ensure any required lists for the schema are included in the supplementary data
+    _validate_supplementary_data_lists(
+        supplementary_data=supplementary_data, schema=schema
+    )
     questionnaire_store.set_supplementary_data(supplementary_data["data"])
+
+
+def _validate_supplementary_data_lists(
+    *, supplementary_data: dict, schema: QuestionnaireSchema
+) -> None:
+    """
+    Validates that any lists the schema requires (which are those in the supplementary_data.lists property)
+    are included in the supplementary data
+    """
+    supplementary_lists = set(supplementary_data["data"].get("items", {}).keys())
+    if missing := schema.supplementary_lists - supplementary_lists:
+        raise ValidationError(
+            f"Supplementary data does not include the following lists required for the schema: {', '.join(missing)}"
+        )
 
 
 def validate_jti(decrypted_token: dict[str, str | list | int]) -> None:
