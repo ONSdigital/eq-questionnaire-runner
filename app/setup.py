@@ -293,6 +293,7 @@ def setup_secure_headers(application):
         strict_transport_security=True,
         strict_transport_security_max_age=31536000,
         frame_options="DENY",
+        x_xss_protection=True,
     )
 
 
