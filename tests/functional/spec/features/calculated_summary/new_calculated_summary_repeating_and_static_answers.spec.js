@@ -14,11 +14,7 @@ import SupermarketTransportCostPage from "../../../generated_pages/new_calculate
 import CalculatedSummaryPipingPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/calculated-summary-piping.page";
 import { assertSummaryValues, click } from "../../../helpers";
 
-describe("Calculated summary with repeating answers", function () {
-  // These tests are flaky therefore we add a retry. The cause is unknown.
-  // :TODO: Revert this in future when we have a fix for this.
-  this.retries(5);
-
+describe("Calculated summary with repeating answers", () => {
   const summaryActions = 'dd[class="ons-summary__actions"]';
   const dynamicAnswerChangeLink = (answerIndex) => $$(summaryActions)[answerIndex].$("a");
 
