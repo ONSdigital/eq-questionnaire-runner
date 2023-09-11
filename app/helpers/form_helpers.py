@@ -27,8 +27,10 @@ def format_playback_value(
     currency: str | None = None,
     decimal_limit: int | None = None,
 ) -> str:
-    # For playback of values we set the decimal limit based on the number of decimal places
-    # in the given value rather than any limit that has been set in the schema as we do for other methods
+    """
+    For playback of values we set the decimal limit based on the number of decimal places
+    in the given value rather than any limit that has been set in the schema as we do for other methods
+    """
     if currency:
         return get_formatted_currency(
             value=value, currency=currency, decimal_limit=decimal_limit

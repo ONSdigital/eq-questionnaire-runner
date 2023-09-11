@@ -169,8 +169,10 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
         )
 
     def test_grand_calculated_summary_default_decimal_places(self):
-        # When multiple decimal limits are set in the schema but no decimals
-        # are entered then we should default to two decimal places on the grand calculated summary page
+        """
+        When multiple decimal limits are set in the schema but no decimals
+        are entered then we should default to two decimal places on the grand calculated summary page
+        """
         self.launchSurvey("test_calculated_and_grand_calculated_summary_decimals")
         self.post({"first-number-answer": "10"})
         self.post(
@@ -190,9 +192,11 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
         )
 
     def test_grand_calculated_summary_with_varying_decimal_places(self):
-        # When multiple decimal limits are set in the schema and a mixture of decimal
-        # places are entered then we should use the largest number of decimal places that are below the decimal limit
-        # on the grand calculated summary page
+        """
+        When multiple decimal limits are set in the schema and a mixture of decimal
+        places are entered then we should use the largest number of decimal places that are below the decimal limit
+        on the grand calculated summary page
+        """
         self.launchSurvey("test_calculated_and_grand_calculated_summary_decimals")
         self.post({"first-number-answer": "10.1"})
         self.post(

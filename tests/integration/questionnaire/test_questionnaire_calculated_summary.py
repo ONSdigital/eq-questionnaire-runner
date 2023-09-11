@@ -304,9 +304,11 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         self.assertNotInBody("Name of transport")
 
     def test_calculated_summary_default_decimal_places(self):
-        # When multiple decimal limits are set in the schema but no decimals
-        # are entered then we should default to two decimal places on the calculated summary page
-        # and the playback page
+        """
+        When multiple decimal limits are set in the schema but no decimals
+        are entered then we should default to two decimal places on the calculated summary page
+        and the playback page
+        """
         self.launchSurvey("test_calculated_and_grand_calculated_summary_decimals")
         self.post({"first-number-answer": "10"})
         self.post(
@@ -324,9 +326,11 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         self.assertInBody("Total currency values: <em>£120.00</em>")
 
     def test_calculated_summary_with_varying_decimal_places(self):
-        # When multiple decimal limits are set in the schema and a mixture of decimal
-        # places are entered then we should use the largest number of decimal places that are below the decimal limit
-        # on the calculated summary page and the playback page
+        """
+        When multiple decimal limits are set in the schema and a mixture of decimal
+        places are entered then we should use the largest number of decimal places that are below the decimal limit
+        on the calculated summary page and the playback page
+        """
         self.launchSurvey("test_calculated_and_grand_calculated_summary_decimals")
         self.post({"first-number-answer": "10.1"})
         self.post(
