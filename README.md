@@ -71,7 +71,7 @@ pip install --upgrade pip setuptools pipenv
 pipenv install --dev
 ```
 
-###### NOTE: You may encounter an issue with the `python-snappy` install with the `pipenv` install above on Mac OSX. If so, install with the recommended [workaround command](https://github.com/andrix/python-snappy#frequently-asked-questions) instead:
+###### NOTE: You may encounter an issue with the `python-snappy` installation with `pipenv` above on Mac OSX. If so, install with the recommended [workaround command](https://github.com/andrix/python-snappy#frequently-asked-questions) instead:
 ``` shell
 CPPFLAGS="-I/usr/local/include -L/usr/local/lib" pipenv install --dev
 ```
