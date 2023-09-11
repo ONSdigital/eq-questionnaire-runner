@@ -557,6 +557,7 @@ class SummaryRow:
         edit_link_aria_label: str,
         use_answer_label: bool = False,
     ) -> None:
+        self.rowTitle = strip_tags(question["title"])
         self.id = question["id"]
         self.rowItems = []
         use_answer_label = use_answer_label or len(question["answers"]) > 1
