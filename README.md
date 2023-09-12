@@ -71,6 +71,11 @@ pip install --upgrade pip setuptools pipenv
 pipenv install --dev
 ```
 
+###### NOTE: You may encounter an issue with the `python-snappy` installation with `pipenv` above on Mac OSX. If so, install with the recommended [workaround command](https://github.com/andrix/python-snappy#frequently-asked-questions) instead:
+``` shell
+CPPFLAGS="-I/usr/local/include -L/usr/local/lib" pipenv install --dev
+```
+
 To update the design system templates run:
 
 ``` shell
