@@ -1,4 +1,4 @@
-from collections import defaultdict, namedtuple
+from collections import defaultdict
 from itertools import combinations
 from typing import Iterable, Mapping
 
@@ -13,9 +13,7 @@ from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.questionnaire_schema import AnswerDependent
 from app.questionnaire.router import Router
-from app.utilities.types import LocationType
-
-DependentSection = namedtuple("DependentSection", "section_id list_item_id is_complete")
+from app.utilities.types import DependentSection, LocationType
 
 
 class QuestionnaireStoreUpdater:
@@ -443,19 +441,11 @@ class QuestionnaireStoreUpdater:
         is_path_complete = dependent_section.is_complete
         if is_path_complete is None:
             is_path_complete = self._router.is_path_complete(
-                self._router.routing_path(
-                    SectionKey(
-                        section_id=dependent_section.section_id,
-                        list_item_id=dependent_section.list_item_id,
-                    ),
-                )
+                self._router.routing_path(dependent_section.section_key)
             )
 
         if self.update_section_status(
-            is_complete=is_path_complete,
-            section_key=SectionKey(
-                dependent_section.section_id, dependent_section.list_item_id
-            ),
+            is_complete=is_path_complete, section_key=dependent_section.section_key
         ):
             dependents_of_dependent: OrderedSet = self._schema.when_rules_section_dependencies_by_section_for_progress_value_source.get(
                 dependent_section.section_id, OrderedSet()

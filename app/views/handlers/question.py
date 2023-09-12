@@ -7,11 +7,9 @@ from flask_babel import gettext
 from app.forms.questionnaire_form import QuestionnaireForm, generate_form
 from app.helpers import get_address_lookup_api_auth_token
 from app.questionnaire.location import Location, SectionKey
-from app.questionnaire.questionnaire_store_updater import (
-    DependentSection,
-    QuestionnaireStoreUpdater,
-)
+from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.questionnaire.variants import transform_variants
+from app.utilities.types import DependentSection
 from app.views.contexts import ListContext
 from app.views.contexts.question import build_question_context
 from app.views.handlers.block import BlockHandler

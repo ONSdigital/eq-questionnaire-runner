@@ -12,12 +12,9 @@ from app.data_models.list_store import ListStore
 from app.data_models.progress_store import CompletionStatus, ProgressStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import AnswerDependent, QuestionnaireSchema
-from app.questionnaire.questionnaire_store_updater import (
-    DependentSection,
-    QuestionnaireStoreUpdater,
-)
+from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.utilities.schema import load_schema_from_name
-from app.utilities.types import SectionKey
+from app.utilities.types import DependentSection, SectionKey
 
 
 # pylint: disable=too-many-locals, too-many-lines
