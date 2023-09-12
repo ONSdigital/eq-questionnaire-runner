@@ -49,8 +49,7 @@ def get_routing_path_block_ids_by_section_for_dependent_sections(
             continue
 
         if key in progress_store.started_section_keys():
-            # Type ignore: SectionKey from location should be used here, but cannot as the types SectionKey type is used throughout this module
-            routing_path = path_finder.routing_path(key)  # type: ignore
+            routing_path = path_finder.routing_path(key)
             block_ids_by_section[key] = routing_path.block_ids
 
     return block_ids_by_section
