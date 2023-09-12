@@ -124,31 +124,29 @@ class ProgressStore:
             if any(section_id in progress_key for section_id in section_ids)
         ]
 
-    def update_section_completion_status(
-        self, completion_status: str, section_key: SectionKey
-    ) -> bool:
+    def update_section_status(self, status: str, section_key: SectionKey) -> bool:
         """
-        Updates the completion status of the section or repeating blocks for a list item specified by the key based on the given section id and list item id.
+        Updates the status of the Section or Repeating Blocks for a list item specified by the key based on the given section id and list item id.
         """
         updated = False
         if section_key in self._progress:
-            if self._progress[section_key].status != completion_status:
+            if self._progress[section_key].status != status:
                 updated = True
-                self._progress[section_key].status = completion_status
+                self._progress[section_key].status = status
                 self._is_dirty = True
 
-        elif completion_status == CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED:
+        elif status == CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED:
             self._progress[section_key] = Progress(
                 section_id=section_key.section_id,
                 list_item_id=section_key.list_item_id,
                 block_ids=[],
-                status=completion_status,
+                status=status,
             )
             self._is_dirty = True
 
         return updated
 
-    def get_section_progress_status(self, section_key: SectionKey) -> str:
+    def get_section_status(self, section_key: SectionKey) -> str:
         """
         Return the CompletionStatus of the Section or Repeating Blocks for a list item,
         specified by the given section_id and list_item_id in SectionKey.

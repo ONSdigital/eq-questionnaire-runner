@@ -246,15 +246,13 @@ class QuestionnaireStoreUpdater:
         location = location or self._current_location
         return self._progress_store.remove_completed_location(location)
 
-    def update_section_or_repeating_blocks_progress_completion_status(
+    def update_section_status(
         self, *, is_complete: bool, section_key: SectionKey
     ) -> bool:
         status = (
             CompletionStatus.COMPLETED if is_complete else CompletionStatus.IN_PROGRESS
         )
-        return self._progress_store.update_section_completion_status(
-            status, section_key
-        )
+        return self._progress_store.update_section_status(status, section_key)
 
     def _update_answer(
         self,
@@ -453,7 +451,7 @@ class QuestionnaireStoreUpdater:
                 )
             )
 
-        if self.update_section_or_repeating_blocks_progress_completion_status(
+        if self.update_section_status(
             is_complete=is_path_complete,
             section_key=SectionKey(
                 dependent_section.section_id, dependent_section.list_item_id

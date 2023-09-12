@@ -287,7 +287,7 @@ class PathFinder:
                 )
 
             self.progress_store.remove_location_for_backwards_routing(this_location)
-            self.progress_store.update_section_completion_status(
+            self.progress_store.update_section_status(
                 CompletionStatus.IN_PROGRESS, this_location.section_key
             )
 
