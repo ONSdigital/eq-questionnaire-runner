@@ -1,8 +1,10 @@
 from typing import TYPE_CHECKING, NamedTuple, TypeAlias, Union
 
 if TYPE_CHECKING:
-    from app.questionnaire.location import Location
-    from app.questionnaire.relationship_location import RelationshipLocation
+    from app.questionnaire.location import Location  # pragma: no cover
+    from app.questionnaire.relationship_location import (
+        RelationshipLocation,  # pragma: no cover
+    )
 
 LocationType: TypeAlias = Union["Location", "RelationshipLocation"]
 
