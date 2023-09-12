@@ -1,9 +1,10 @@
-from typing import NamedTuple, TypeAlias
+from typing import TYPE_CHECKING, NamedTuple, TypeAlias, Union
 
-from app.questionnaire.location import Location
-from app.questionnaire.relationship_location import RelationshipLocation
+if TYPE_CHECKING:
+    from app.questionnaire.location import Location
+    from app.questionnaire.relationship_location import RelationshipLocation
 
-LocationType: TypeAlias = Location | RelationshipLocation
+LocationType: TypeAlias = Union["Location", "RelationshipLocation"]
 
 
 class SectionKey(NamedTuple):

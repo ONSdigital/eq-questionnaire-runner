@@ -1,14 +1,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Mapping, NamedTuple
+from typing import Any, Mapping
 
 from flask import url_for
 
-
-class SectionKey(NamedTuple):
-    section_id: str
-    list_item_id: str | None = None
+from app.utilities.types import SectionKey
 
 
 class InvalidLocationException(Exception):
