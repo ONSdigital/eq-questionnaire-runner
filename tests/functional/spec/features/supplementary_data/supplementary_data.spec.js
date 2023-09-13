@@ -19,7 +19,6 @@ import ProductRepeatingBlock1Page from "../../../generated_pages/supplementary_d
 import SalesBreakdownBlockPage from "../../../generated_pages/supplementary_data/sales-breakdown-block.page.js";
 import Section1InterstitialPage from "../../../generated_pages/supplementary_data/section-1-interstitial.page.js";
 import Section1Page from "../../../generated_pages/supplementary_data/section-1-summary.page.js";
-import Section2Page from "../../../generated_pages/supplementary_data/section-2-summary.page.js";
 import Section3Page from "../../../generated_pages/supplementary_data/section-3-summary.page.js";
 import Section4Page from "../../../generated_pages/supplementary_data/section-4-summary.page.js";
 import Section5Page from "../../../generated_pages/supplementary_data/section-5-summary.page.js";
@@ -129,18 +128,9 @@ describe("Using supplementary data", () => {
 
   it("Given I have a list collector block using a supplementary list, When I start the section, I see the supplementary list items in the list", async () => {
     await click(HubPage.submit());
-    // TODO once list collector content block is merged in update this test accordingly
     await expect(await $(ListCollectorEmployeesPage.listLabel(1)).getText()).toContain("Harry Potter");
     await expect(await $(ListCollectorEmployeesPage.listLabel(2)).getText()).toContain("Clark Kent");
-    await $(ListCollectorEmployeesPage.no()).click();
     await click(ListCollectorEmployeesPage.submit());
-  });
-
-  it("Given I have a list collector block using a supplementary list, When I reach the section summary, I see the supplementary list items in the list", async () => {
-    // TODO once list collector content block is merged in update this test accordingly
-    await expect(await $(Section2Page.employeesListLabel(1)).getText()).toContain("Harry Potter");
-    await expect(await $(Section2Page.employeesListLabel(2)).getText()).toContain("Clark Kent");
-    await click(Section2Page.submit());
   });
 
   it("Given I add some additional employees via a list collector, When I return to the Hub, Then I see new enabled sections for the supplementary list items, and my added ones", async () => {
@@ -226,7 +216,6 @@ describe("Using supplementary data", () => {
     await click(HubPage.submit());
     await expect(await $(ListCollectorProductsPage.listLabel(1)).getText()).toContain("Articles and equipment for sports or outdoor games");
     await expect(await $(ListCollectorProductsPage.listLabel(2)).getText()).toContain("Kitchen Equipment");
-    await $(ListCollectorProductsPage.no()).click();
     await click(ListCollectorProductsPage.submit());
   });
 
@@ -253,8 +242,6 @@ describe("Using supplementary data", () => {
 
   it("Given I have repeating blocks with supplementary data, When I start the second repeating block, Then I see the supplementary data for the second list item", async () => {
     await click(ProductRepeatingBlock1Page.submit());
-    // TODO once using list collector content, shouldn't need these two lines
-    await $(ListCollectorProductsPage.no()).click();
     await click(ListCollectorProductsPage.submit());
     await expect(await $("body").getText()).toContain("Include");
     await expect(await $("body").getText()).toContain("pots and pans");
@@ -267,8 +254,8 @@ describe("Using supplementary data", () => {
   });
 
   it("Given I have a calculated summary using the repeating blocks, When I reach the Calculated Summary, Then I see the correct total and supplementary data labels", async () => {
-    await $(ListCollectorProductsPage.no()).click();
     await click(ListCollectorProductsPage.submit());
+    await expect(await browser.getUrl()).toContain(CalculatedSummaryVolumeSalesPage.pageName);
     await expect(await $(CalculatedSummaryVolumeSalesPage.calculatedSummaryTitle()).getText()).toContain(
       "We calculate the total volume of sales over the previous quarter to be 150 kg. Is this correct?",
     );
@@ -370,10 +357,6 @@ describe("Using supplementary data", () => {
     await expect(await $$(summaryRowTitles)[0].getText()).toContain("How much of the £555,000.00 total UK sales was from Bristol and London?");
     await expect(await $(ViewSubmittedResponsePage.salesBristolAnswer()).getText()).toContain("£333,000.00");
     await expect(await $(ViewSubmittedResponsePage.salesLondonAnswer()).getText()).toContain("£111,000.00");
-
-    // Employees
-    await expect(await $(ViewSubmittedResponsePage.employeeReportingContent(0)).$$(summaryItems)[0].getText()).toBe("Harry Potter");
-    await expect(await $(ViewSubmittedResponsePage.employeeReportingContent(0)).$$(summaryItems)[1].getText()).toBe("Bruce Wayne");
 
     // Additional Employees
     await expect(await $(ViewSubmittedResponsePage.anyAdditionalEmployeeQuestion()).getText()).toContain("Do you have any additional employees to report on?");
