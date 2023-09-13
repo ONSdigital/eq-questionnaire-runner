@@ -2,7 +2,7 @@ from typing import Mapping
 
 from app.data_models import QuestionnaireStore
 from app.questionnaire import QuestionnaireSchema
-from app.questionnaire.location import InvalidLocationException, Location, SectionKey
+from app.questionnaire.location import InvalidLocationException, Location
 from app.questionnaire.router import Router
 from app.views.contexts import SectionSummaryContext
 
@@ -40,7 +40,7 @@ class SectionHandler:
         )
 
         self._routing_path = self._router.routing_path(
-            SectionKey(self._section_id, self._list_item_id)
+            self.current_location.section_key
         )
 
     def get_context(self) -> Mapping:
@@ -69,7 +69,7 @@ class SectionHandler:
 
     def can_display_summary(self) -> bool:
         return self._router.can_display_section_summary(
-            SectionKey(self._section_id, self._list_item_id)
+            self.current_location.section_key
         )
 
     def _is_valid_location(self) -> bool:

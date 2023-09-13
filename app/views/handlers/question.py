@@ -287,8 +287,7 @@ class Question(BlockHandler):
         for list_item_id in list_model.items:
             if incomplete_location := self.get_first_incomplete_list_repeating_block_location_for_list_item(
                 repeating_block_ids=repeating_block_ids,
-                section_id=section_id,
-                list_item_id=list_item_id,
+                section_key=SectionKey(section_id, list_item_id),
                 list_name=list_name,
             ):
                 return incomplete_location
@@ -297,13 +296,10 @@ class Question(BlockHandler):
         self,
         *,
         repeating_block_ids: Sequence[str],
-        section_id: str,
-        list_item_id: str,
+        section_key: SectionKey,
         list_name: str,
     ) -> Location | None:
-        if self._questionnaire_store.progress_store.is_section_complete(
-            section_key := SectionKey(section_id, list_item_id)
-        ):
+        if self._questionnaire_store.progress_store.is_section_complete(section_key):
             return None
 
         for repeating_block_id in repeating_block_ids:
@@ -312,8 +308,8 @@ class Question(BlockHandler):
                 section_key=section_key,
             ):
                 return Location(
-                    section_id=section_id,
+                    section_id=section_key.section_id,
                     block_id=repeating_block_id,
                     list_name=list_name,
-                    list_item_id=list_item_id,
+                    list_item_id=section_key.list_item_id,
                 )

@@ -60,13 +60,9 @@ class Router:
         return not first_incomplete_section_key
 
     def get_first_incomplete_location_in_questionnaire_url(self) -> str:
-        first_incomplete_section_key = self._get_first_incomplete_section_key()
-
-        if first_incomplete_section_key:
-            section_id, list_item_id = first_incomplete_section_key
-
+        if first_incomplete_section_key := self._get_first_incomplete_section_key():
             section_routing_path = self._path_finder.routing_path(
-                SectionKey(section_id, list_item_id)
+                first_incomplete_section_key
             )
             return self.get_section_resume_url(section_routing_path)
 
@@ -420,9 +416,7 @@ class Router:
         return self.get_first_incomplete_location_in_questionnaire_url()
 
     def get_section_resume_url(self, routing_path: RoutingPath) -> str:
-        section_key = SectionKey(routing_path.section_id, routing_path.list_item_id)
-
-        if section_key in self._progress_store:
+        if routing_path.section_key in self._progress_store:
             location = self._get_first_incomplete_location_in_section(routing_path)
             if location:
                 return location.url(resume=True)
@@ -474,9 +468,7 @@ class Router:
         for block_id in routing_path:
             if not self._progress_store.is_block_complete(
                 block_id=block_id,
-                section_key=SectionKey(
-                    routing_path.section_id, routing_path.list_item_id
-                ),
+                section_key=routing_path.section_key,
             ):
                 return Location(
                     block_id=block_id,
@@ -497,9 +489,7 @@ class Router:
 
                 if not self._progress_store.is_block_complete(
                     block_id=block_id,
-                    section_key=SectionKey(
-                        routing_path.section_id, routing_path.list_item_id
-                    ),
+                    section_key=routing_path.section_key,
                 ):
                     return allowable_path
 
@@ -517,7 +507,7 @@ class Router:
             else:
                 yield SectionKey(section_id)
 
-    def _get_first_incomplete_section_key(self) -> tuple[str, str | None] | None:
+    def _get_first_incomplete_section_key(self) -> SectionKey | None:
         for section_key in self._get_enabled_section_keys():
             if not self._progress_store.is_section_complete(section_key):
                 return section_key

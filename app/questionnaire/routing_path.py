@@ -1,5 +1,7 @@
 from typing import Iterator, SupportsIndex
 
+from app.utilities.types import SectionKey
+
 
 class RoutingPath:
     """Holds a list of block_ids and has section_id, list_item_id and list_name attributes"""
@@ -45,3 +47,7 @@ class RoutingPath:
 
     def index(self, value: str, *args: SupportsIndex) -> int:
         return self.block_ids.index(value, *args)
+
+    @property
+    def section_key(self) -> SectionKey:
+        return SectionKey(self.section_id, self.list_item_id)

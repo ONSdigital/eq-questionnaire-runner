@@ -1,6 +1,6 @@
 from werkzeug.datastructures import ImmutableDict
 
-from app.questionnaire.location import Location, SectionKey
+from app.questionnaire.location import Location
 from app.questionnaire.routing_path import RoutingPath
 from app.views.handlers.question import Question
 
@@ -14,13 +14,13 @@ class PrimaryPersonQuestion(Question):
 
     @property
     def parent_location(self) -> Location:
-        parent_id = self._schema.parent_id_map[self.rendered_block["id"]]
+        parent_id = self._schema.parent_id_map[self.block["id"]]
         return Location(
             section_id=self._current_location.section_id, block_id=parent_id
         )
 
     def _get_routing_path(self) -> RoutingPath:
-        return self.router.routing_path(SectionKey(self._current_location.section_id))
+        return self.router.routing_path(self.parent_location.section_key)
 
     def is_location_valid(self) -> bool:
         primary_person_list_item_id = self._questionnaire_store.list_store[
