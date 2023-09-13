@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, NamedTuple, TypeAlias, Union
+from typing import TYPE_CHECKING, NamedTuple, TypeAlias, TypedDict, Union
 
 if TYPE_CHECKING:
     from app.questionnaire.location import Location  # pragma: no cover
@@ -9,9 +9,19 @@ if TYPE_CHECKING:
 LocationType: TypeAlias = Union["Location", "RelationshipLocation"]
 
 
+class SectionKeyDict(TypedDict):
+    section_id: str
+    list_item_id: str | None
+
+
 class SectionKey(NamedTuple):
     section_id: str
     list_item_id: str | None = None
+
+    def to_dict(self) -> SectionKeyDict:
+        return SectionKeyDict(
+            section_id=self.section_id, list_item_id=self.list_item_id
+        )
 
 
 class DependentSection(NamedTuple):

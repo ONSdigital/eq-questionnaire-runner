@@ -38,9 +38,7 @@ class PathFinder:
         Visits all the blocks in a section and returns a path given a list of answers.
         """
         routing_path_block_ids: list[str] = []
-        current_location = Location(
-            section_id=section_key.section_id, list_item_id=section_key.list_item_id
-        )
+        current_location = Location(**section_key.to_dict())
         section = self.schema.get_section(section_key.section_id)
         list_name = self.schema.get_repeating_list_for_section(
             current_location.section_id
@@ -64,9 +62,8 @@ class PathFinder:
 
         return RoutingPath(
             block_ids=routing_path_block_ids,
-            section_id=section_key.section_id,
-            list_item_id=section_key.list_item_id,
             list_name=list_name,
+            **section_key.to_dict(),
         )
 
     def get_when_rules_block_dependencies(self, section_id: str) -> list[str]:

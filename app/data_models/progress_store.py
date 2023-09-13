@@ -137,10 +137,7 @@ class ProgressStore:
 
         elif status == CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED:
             self._progress[section_key] = Progress(
-                section_id=section_key.section_id,
-                list_item_id=section_key.list_item_id,
-                block_ids=[],
-                status=status,
+                block_ids=[], status=status, **section_key.to_dict()
             )
             self._is_dirty = True
 

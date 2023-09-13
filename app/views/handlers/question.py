@@ -308,8 +308,7 @@ class Question(BlockHandler):
                 section_key=section_key,
             ):
                 return Location(
-                    section_id=section_key.section_id,
                     block_id=repeating_block_id,
                     list_name=list_name,
-                    list_item_id=section_key.list_item_id,
+                    **section_key.to_dict(),
                 )

@@ -566,7 +566,6 @@ class Router:
     ) -> str:
         return url_for(
             "questionnaire.get_section",
-            section_id=section_key.section_id,
-            list_item_id=section_key.list_item_id,
             _anchor=return_to_answer_id,
+            **section_key.to_dict(),
         )
