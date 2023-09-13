@@ -2,7 +2,7 @@
     "language": "en",
     "mime_type": "application/json/ons/eq",
     "schema_version": "0.0.1",
-    "data_version": "0.0.1",
+    "data_version": "0.0.3",
     "survey_id": "0",
     "theme": "default",
     "legal_basis": "Notice is given under section 1 of the Statistics of Trade Act 1947.",
@@ -21,7 +21,7 @@
     },
     "sections": [
         {
-            "id": "section91",
+            "id": "stock-section",
             "title": "Quarterly Stocks Survey",
             "groups": [
                 {
@@ -122,13 +122,13 @@
                     ]
                 },
                 {
-                    "id": "group91",
+                    "id": "group-91",
                     "blocks": [
                         {
-                            "id": "block379",
+                            "id": "block-379",
                             "type": "Question",
                             "question": {
-                                "id": "question379",
+                                "id": "question-379",
                                 "title": {
                                     "text": "Are you able to report for the period {ref_p_start_date} to {ref_p_end_date}?",
                                     "placeholders": [
@@ -167,8 +167,7 @@
                                 "type": "General",
                                 "answers": [
                                     {
-                                        "id": "answer434",
-                                        "q_code": "123",
+                                        "id": "answer-434",
                                         "mandatory": true,
                                         "type": "Radio",
                                         "options": [
@@ -186,30 +185,29 @@
                             },
                             "routing_rules": [
                                 {
-                                    "block": "block381",
+                                    "block": "block-381",
                                     "when": {
-                                        "==": [{ "identifier": "answer434", "source": "answers" }, "Yes"]
+                                        "==": [{ "identifier": "answer-434", "source": "answers" }, "Yes"]
                                     }
                                 },
                                 {
-                                    "block": "block380"
+                                    "block": "block-380"
                                 }
                             ]
                         },
                         {
-                            "id": "block380",
+                            "id": "block-380",
                             "type": "Question",
                             "question": {
-                                "id": "question380",
+                                "id": "question-380",
                                 "title": "For which period are you able to report?",
                                 "type": "DateRange",
                                 "answers": [
                                     {
-                                        "id": "answerfrom",
+                                        "id": "answer-from",
                                         "type": "Date",
                                         "mandatory": true,
                                         "label": "Period from",
-                                        "q_code": "11",
                                         "minimum": {
                                             "value": {
                                                 "source": "metadata",
@@ -221,11 +219,10 @@
                                         }
                                     },
                                     {
-                                        "id": "answerto",
+                                        "id": "answer-to",
                                         "type": "Date",
                                         "mandatory": true,
                                         "label": "Period to",
-                                        "q_code": "12",
                                         "maximum": {
                                             "value": {
                                                 "source": "metadata",
@@ -248,10 +245,10 @@
                             }
                         },
                         {
-                            "id": "block381",
+                            "id": "block-381",
                             "type": "Question",
                             "question": {
-                                "id": "question381",
+                                "id": "question-381",
                                 "title": "What was the <em>total value</em> of stocks held (net of progress payments on long-term contracts)?",
                                 "guidance": {
                                     "contents": [
@@ -285,22 +282,20 @@
                                 "type": "General",
                                 "answers": [
                                     {
-                                        "id": "answer436",
+                                        "id": "answer-436",
                                         "mandatory": true,
                                         "type": "Currency",
                                         "label": "Total value of stocks held at start of period",
                                         "description": "Enter the full value (e.g. 56,234.33) or a value to the nearest £thousand (e.g. 56,000). Do not enter ‘56’ for £56,000.",
-                                        "q_code": "598",
                                         "decimal_places": 2,
                                         "currency": "GBP"
                                     },
                                     {
-                                        "id": "answer437",
+                                        "id": "answer-437",
                                         "mandatory": true,
                                         "type": "Currency",
                                         "label": "Total value of stocks held at end of period",
                                         "description": "Enter the full value (e.g. 56,234.33) or a value to the nearest £thousand (e.g. 56,000). Do not enter ‘56’ for £56,000.",
-                                        "q_code": "599",
                                         "decimal_places": 2,
                                         "currency": "GBP"
                                     }
@@ -308,18 +303,17 @@
                             }
                         },
                         {
-                            "id": "block4616",
+                            "id": "block-4616",
                             "type": "Question",
                             "question": {
-                                "id": "question4616",
+                                "id": "question-4616",
                                 "title": "Are the end of period figures you have provided estimated?",
                                 "type": "General",
                                 "answers": [
                                     {
-                                        "id": "answer5873",
+                                        "id": "answer-5873",
                                         "mandatory": true,
                                         "type": "Radio",
-                                        "q_code": "15",
                                         "options": [
                                             {
                                                 "label": "Yes",
@@ -335,10 +329,10 @@
                             }
                         },
                         {
-                            "id": "block4952",
+                            "id": "block-4952",
                             "type": "Question",
                             "question": {
-                                "id": "question4952",
+                                "id": "question-4952",
                                 "title": {
                                     "text": "Did any significant changes occur to the total value of stocks for {trad_as}?",
                                     "placeholders": [
@@ -394,10 +388,9 @@
                                 "type": "General",
                                 "answers": [
                                     {
-                                        "id": "answer6287",
+                                        "id": "answer-6287",
                                         "mandatory": true,
                                         "type": "Radio",
-                                        "q_code": "146a",
                                         "options": [
                                             {
                                                 "label": "Yes",
@@ -413,9 +406,9 @@
                             },
                             "routing_rules": [
                                 {
-                                    "block": "block4953",
+                                    "block": "block-4953",
                                     "when": {
-                                        "==": [{ "identifier": "answer6287", "source": "answers" }, "Yes"]
+                                        "==": [{ "identifier": "answer-6287", "source": "answers" }, "Yes"]
                                     }
                                 },
                                 {
@@ -424,10 +417,10 @@
                             ]
                         },
                         {
-                            "id": "block4953",
+                            "id": "block-4953",
                             "type": "Question",
                             "question": {
-                                "id": "question4953",
+                                "id": "question-4953",
                                 "title": {
                                     "text": "Please indicate the reasons for any changes in the total value of stocks for {trad_as}",
                                     "placeholders": [
@@ -456,44 +449,37 @@
                                 "type": "General",
                                 "answers": [
                                     {
-                                        "id": "answer6288",
+                                        "id": "answer-6288",
                                         "mandatory": true,
                                         "type": "Checkbox",
                                         "options": [
                                             {
                                                 "label": "Change of business structure, merger or takeover",
-                                                "value": "Change of business structure, merger or takeover",
-                                                "q_code": "146e"
+                                                "value": "Change of business structure, merger or takeover"
                                             },
                                             {
                                                 "label": "End of accounting period or financial year",
-                                                "value": "End of accounting period or financial year",
-                                                "q_code": "146c"
+                                                "value": "End of accounting period or financial year"
                                             },
                                             {
                                                 "label": "Introduction or removal of new legislation or incentive",
-                                                "value": "Introduction or removal of new legislation or incentive",
-                                                "q_code": "146g"
+                                                "value": "Introduction or removal of new legislation or incentive"
                                             },
                                             {
                                                 "label": "Normal movement for the time of year",
-                                                "value": "Normal movement for the time of year",
-                                                "q_code": "146d"
+                                                "value": "Normal movement for the time of year"
                                             },
                                             {
                                                 "label": "One-off increase in stocks",
-                                                "value": "One-off increase in stocks",
-                                                "q_code": "146f"
+                                                "value": "One-off increase in stocks"
                                             },
                                             {
                                                 "label": "Start or end of long term project",
-                                                "value": "Start or end of long term project",
-                                                "q_code": "146b"
+                                                "value": "Start or end of long term project"
                                             },
                                             {
                                                 "label": "Other (for example, end of the EU transition period, leaving the EU or other global economic conditions.",
-                                                "value": "Other (for example, end of the EU transition period, leaving the EU or other global economic conditions.",
-                                                "q_code": "146h"
+                                                "value": "Other (for example, end of the EU transition period, leaving the EU or other global economic conditions."
                                             }
                                         ]
                                     }
@@ -501,20 +487,19 @@
                             }
                         },
                         {
-                            "id": "block383",
+                            "id": "block-383",
                             "type": "Question",
                             "question": {
-                                "id": "question383",
+                                "id": "question-383",
                                 "title": "Explain any differences between this quarter&apos;s opening value and the previously returned closing value",
                                 "description": ["<p>Include any unusual fluctuations in figures</p>"],
                                 "type": "General",
                                 "answers": [
                                     {
-                                        "id": "answer439",
+                                        "id": "answer-439",
                                         "mandatory": false,
                                         "type": "TextArea",
                                         "label": "Comments",
-                                        "q_code": "146",
                                         "max_length": 2000
                                     }
                                 ]
