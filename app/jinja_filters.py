@@ -446,7 +446,7 @@ class SummaryAction:
         edit_link_aria_label: str,
     ) -> None:
         self.text = edit_link_text
-        self.ariaLabel = edit_link_aria_label + " " + item_title
+        self.visuallyHiddenText = edit_link_aria_label + " " + item_title
         self.url = answer["link"]
 
         self.attributes = {
@@ -470,27 +470,19 @@ class SummaryRowItem:
         self,
         question: SelectFieldBase._Option,
         answer: SelectFieldBase._Option,
-        multiple_answers: bool,
         answers_are_editable: bool,
         no_answer_provided: str,
         edit_link_text: str,
         edit_link_aria_label: str,
         summary_type: str,
+        use_answer_label: bool = False,
     ) -> None:
-        if "type" in answer:
-            answer_type = answer["type"]
-        else:
-            answer_type = "calculated"
-
+        answer_type = answer.get("type", "calculated")
         if (
-            (
-                multiple_answers
-                or answer_type == "relationship"
-                or is_summary_with_calculation(summary_type)
-            )
-            and "label" in answer
-            and answer["label"]
-        ):
+            answer_type == "relationship"
+            or is_summary_with_calculation(summary_type)
+            or use_answer_label
+        ) and answer.get("label"):
             self.rowTitle = answer["label"]
             self.rowTitleAttributes = {"data-qa": answer["id"] + "-label"}
         else:
@@ -563,12 +555,12 @@ class SummaryRow:
         no_answer_provided: str,
         edit_link_text: str,
         edit_link_aria_label: str,
+        use_answer_label: bool = False,
     ) -> None:
         self.rowTitle = strip_tags(question["title"])
         self.id = question["id"]
         self.rowItems = []
-
-        multiple_answers = len(question["answers"]) > 1
+        use_answer_label = use_answer_label or len(question["answers"]) > 1
 
         if is_summary_with_calculation(summary_type) and not answers_are_editable:
             self.total = True
@@ -578,12 +570,12 @@ class SummaryRow:
                 SummaryRowItem(
                     question,
                     answer,
-                    multiple_answers,
                     answers_are_editable,
                     no_answer_provided,
                     edit_link_text,
                     edit_link_aria_label,
                     summary_type,
+                    use_answer_label,
                 )
             )
 
@@ -671,8 +663,8 @@ def map_list_collector_config(
         item_name = list_item.get("item_title")
 
         actions = []
-        edit_link_aria_label_text = None
-        remove_link_aria_label_text = None
+        edit_link_hidden_text = None
+        remove_link_hidden_text = None
 
         if edit_link_text and editable:
             url = (
@@ -683,29 +675,27 @@ def map_list_collector_config(
 
             edit_link = {
                 "text": edit_link_text,
-                "ariaLabel": edit_link_aria_label_text,
+                "visuallyHiddenText": edit_link_hidden_text,
                 "url": url,
                 "attributes": {"data-qa": f"list-item-change-{index}-link"},
             }
 
             if edit_link_aria_label:
-                edit_link_aria_label_text = edit_link_aria_label.format(
-                    item_name=item_name
-                )
-            edit_link["ariaLabel"] = edit_link_aria_label_text
+                edit_link_hidden_text = edit_link_aria_label.format(item_name=item_name)
+            edit_link["visuallyHiddenText"] = edit_link_hidden_text
 
             actions.append(edit_link)
 
         if not list_item.get("primary_person") and remove_link_text and editable:
             if remove_link_aria_label:
-                remove_link_aria_label_text = remove_link_aria_label.format(
+                remove_link_hidden_text = remove_link_aria_label.format(
                     item_name=item_name
                 )
 
             actions.append(
                 {
                     "text": remove_link_text,
-                    "ariaLabel": remove_link_aria_label_text,
+                    "visuallyHiddenText": remove_link_hidden_text,
                     "url": list_item.get("remove_link"),
                     "attributes": {"data-qa": f"list-item-remove-{index}-link"},
                 }
@@ -744,6 +734,7 @@ def map_list_collector_config(
                     no_answer_provided=flask_babel.lazy_gettext("No answer provided"),
                     edit_link_text=edit_link_text,
                     edit_link_aria_label=edit_link_aria_label,
+                    use_answer_label=True,
                 )
                 row_items.extend(summary_row.rowItems)
 
