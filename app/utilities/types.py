@@ -15,6 +15,11 @@ class SectionKey(NamedTuple):
 
 
 class DependentSection(NamedTuple):
+    """
+    The 'is_complete' property is used when updating the progress of the section. If the value is 'None'
+    then the routing path for this section will be re-evaluated to determine if it is complete.
+    """
+
     section_id: str
     list_item_id: str | None = None
     is_complete: bool | None = None
