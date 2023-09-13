@@ -305,7 +305,7 @@ class Router:
         )
         if grand_calculated_summary_section != section_key.section_id:
             # the grand calculated summary is in a different section which will have a different routing path
-            # but don't go to it unless the section is enabled and the current section is complete
+            # but does not go to it unless the section is enabled and the current section is complete
             if (
                 not self._progress_store.is_section_complete(
                     SectionKey(section_key.section_id)
