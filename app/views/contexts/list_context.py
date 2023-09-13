@@ -4,6 +4,7 @@ from typing import Any, Generator, Mapping, Sequence
 from flask import url_for
 from flask_babel import lazy_gettext
 
+from app.questionnaire.location import SectionKey
 from app.views.contexts.context import Context
 
 
@@ -85,8 +86,8 @@ class ListContext(Context):
                 ),
                 "primary_person": is_primary,
                 "list_item_id": list_item_id,
-                "is_complete": self._progress_store.is_section_or_repeating_blocks_progress_complete(
-                    section_id=section_id, list_item_id=list_item_id
+                "is_complete": self._progress_store.is_section_complete(
+                    SectionKey(section_id, list_item_id)
                 ),
                 "repeating_blocks": has_repeating_blocks,
             }

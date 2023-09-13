@@ -7,7 +7,7 @@ from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import CompletionStatus, ProgressStore
 from app.data_models.supplementary_data_store import SupplementaryDataStore
-from app.questionnaire.location import Location
+from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator, RuleEvaluatorTypes
@@ -33,22 +33,20 @@ class PathFinder:
         self.list_store = list_store
         self.supplementary_data_store = supplementary_data_store
 
-    def routing_path(
-        self, section_id: str, list_item_id: str | None = None
-    ) -> RoutingPath:
+    def routing_path(self, section_key: SectionKey) -> RoutingPath:
         """
         Visits all the blocks in a section and returns a path given a list of answers.
         """
         routing_path_block_ids: list[str] = []
-        current_location = Location(section_id=section_id, list_item_id=list_item_id)
-        section = self.schema.get_section(section_id)
+        current_location = Location(**section_key.to_dict())
+        section = self.schema.get_section(section_key.section_id)
         list_name = self.schema.get_repeating_list_for_section(
             current_location.section_id
         )
 
         if section:
             when_rules_block_dependencies = self.get_when_rules_block_dependencies(
-                section_id
+                section_key.section_id
             )
             blocks = self._get_not_skipped_blocks_in_section(
                 current_location,
@@ -62,7 +60,11 @@ class PathFinder:
                     blocks, current_location, when_rules_block_dependencies
                 )
 
-        return RoutingPath(routing_path_block_ids, section_id, list_item_id, list_name)
+        return RoutingPath(
+            block_ids=routing_path_block_ids,
+            list_name=list_name,
+            **section_key.to_dict(),
+        )
 
     def get_when_rules_block_dependencies(self, section_id: str) -> list[str]:
         """NB: At present when rules block dependencies does not fully support repeating sections.
@@ -75,9 +77,9 @@ class PathFinder:
         return [
             block_id
             for dependent_section in dependencies_for_section
-            for block_id in self.routing_path(dependent_section)
-            if (dependent_section, None)
-            in self.progress_store.started_section_and_repeating_blocks_progress_keys()
+            for block_id in self.routing_path(SectionKey(dependent_section))
+            if SectionKey(dependent_section)
+            in self.progress_store.started_section_keys()
         ]
 
     def _get_not_skipped_blocks_in_section(
@@ -283,8 +285,8 @@ class PathFinder:
                 )
 
             self.progress_store.remove_location_for_backwards_routing(this_location)
-            self.progress_store.update_section_or_repeating_blocks_progress_completion_status(
-                CompletionStatus.IN_PROGRESS, this_location.section_id
+            self.progress_store.update_section_status(
+                CompletionStatus.IN_PROGRESS, this_location.section_key
             )
 
     def _remove_block_answers_for_backward_routing_according_to_when_rule(

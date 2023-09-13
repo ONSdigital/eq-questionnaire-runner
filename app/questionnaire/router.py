@@ -10,11 +10,11 @@ from app.data_models import (
 )
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import QuestionnaireSchema
-from app.questionnaire.location import Location
+from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
-from app.utilities.types import LocationType, SectionKey
+from app.utilities.types import LocationType
 
 
 class Router:
@@ -60,13 +60,9 @@ class Router:
         return not first_incomplete_section_key
 
     def get_first_incomplete_location_in_questionnaire_url(self) -> str:
-        first_incomplete_section_key = self._get_first_incomplete_section_key()
-
-        if first_incomplete_section_key:
-            section_id, list_item_id = first_incomplete_section_key
-
+        if first_incomplete_section_key := self._get_first_incomplete_section_key():
             section_routing_path = self._path_finder.routing_path(
-                section_id=section_id, list_item_id=list_item_id
+                first_incomplete_section_key
             )
             return self.get_section_resume_url(section_routing_path)
 
@@ -75,7 +71,7 @@ class Router:
     def get_last_location_in_questionnaire_url(self) -> str | None:
         section_key = self._get_last_complete_section_key()
         if section_key:
-            routing_path = self.routing_path(*section_key)
+            routing_path = self.routing_path(section_key)
             return self.get_last_location_in_section(routing_path).url()
 
     def _is_list_item_in_list_store(self, list_item_id: str, list_name: str) -> bool:
@@ -104,26 +100,18 @@ class Router:
 
     def can_access_hub(self) -> bool:
         return self._schema.is_flow_hub and all(
-            self._progress_store.is_section_or_repeating_blocks_progress_complete(
-                section_id
-            )
+            self._progress_store.is_section_complete(SectionKey(section_id))
             for section_id in self._schema.get_section_ids_required_for_hub()
             if section_id in self.enabled_section_ids
         )
 
-    def can_display_section_summary(
-        self, section_id: str, list_item_id: str | None = None
-    ) -> bool:
+    def can_display_section_summary(self, section_key: SectionKey) -> bool:
         return bool(
-            self._schema.get_summary_for_section(section_id)
-        ) and self._progress_store.is_section_or_repeating_blocks_progress_complete(
-            section_id, list_item_id
-        )
+            self._schema.get_summary_for_section(section_key.section_id)
+        ) and self._progress_store.is_section_complete(section_key)
 
-    def routing_path(
-        self, section_id: str, list_item_id: str | None = None
-    ) -> RoutingPath:
-        return self._path_finder.routing_path(section_id, list_item_id)
+    def routing_path(self, section_key: SectionKey) -> RoutingPath:
+        return self._path_finder.routing_path(section_key)
 
     def get_next_location_url(
         self,
@@ -137,10 +125,8 @@ class Router:
         Get the next location in the section. If the section is complete, determine where to go next,
         whether it be a summary, the hub or the next incomplete location.
         """
-        is_section_complete = (
-            self._progress_store.is_section_or_repeating_blocks_progress_complete(
-                location.section_id, location.list_item_id
-            )
+        is_section_complete = self._progress_store.is_section_complete(
+            location.section_key
         )
 
         if return_to_url := self.get_return_to_location_url(
@@ -155,7 +141,9 @@ class Router:
             return return_to_url
 
         if is_section_complete:
-            return self._get_next_location_url_for_complete_section(location)
+            return self._get_next_location_url_for_complete_section(
+                location.section_key
+            )
 
         # Due to backwards routing you can be on the last block of the path but with an in_progress section
         is_last_block_on_path = routing_path[-1] == location.block_id
@@ -173,10 +161,10 @@ class Router:
         )
 
     def _get_next_location_url_for_complete_section(
-        self, location: LocationType
+        self, section_key: SectionKey
     ) -> str:
-        if self._schema.show_summary_on_completion_for_section(location.section_id):
-            return self._get_section_url(location)
+        if self._schema.show_summary_on_completion_for_section(section_key.section_id):
+            return self._get_section_url(section_key)
 
         return self.get_next_location_url_for_end_of_section()
 
@@ -248,7 +236,7 @@ class Router:
             url := self._get_return_to_for_grand_calculated_summary(
                 return_to=return_to,
                 return_to_block_id=return_to_block_id,
-                location=location,
+                section_key=location.section_key,
                 routing_path=routing_path,
                 is_for_previous=is_for_previous,
                 return_to_answer_id=return_to_answer_id,
@@ -268,10 +256,8 @@ class Router:
             return url
 
         if is_section_complete is None:
-            is_section_complete = (
-                self._progress_store.is_section_or_repeating_blocks_progress_complete(
-                    location.section_id, location.list_item_id
-                )
+            is_section_complete = self._progress_store.is_section_complete(
+                location.section_key
             )
 
         if not is_section_complete:
@@ -285,7 +271,7 @@ class Router:
 
         if return_to == "section-summary":
             return self._get_section_url(
-                location, return_to_answer_id=return_to_answer_id
+                location.section_key, return_to_answer_id=return_to_answer_id
             )
         if return_to == "final-summary" and self.is_questionnaire_complete:
             return url_for(
@@ -297,7 +283,7 @@ class Router:
         *,
         return_to: str | None,
         return_to_block_id: str | None,
-        location: LocationType,
+        section_key: SectionKey,
         routing_path: RoutingPath,
         is_for_previous: bool,
         return_to_answer_id: str | None = None,
@@ -313,18 +299,18 @@ class Router:
         grand_calculated_summary_section: str = (
             self._schema.get_section_id_for_block_id(return_to_block_id)  # type: ignore
         )
-        if grand_calculated_summary_section != location.section_id:
+        if grand_calculated_summary_section != section_key.section_id:
             # the grand calculated summary is in a different section which will have a different routing path
-            # but don't go to it unless the section is enabled and the current section is complete
+            # but does not go to it unless the section is enabled and the current section is complete
             if (
-                not self._progress_store.is_section_or_repeating_blocks_progress_complete(
-                    location.section_id
+                not self._progress_store.is_section_complete(
+                    SectionKey(section_key.section_id)
                 )
                 or grand_calculated_summary_section not in self.enabled_section_ids
             ):
                 return None
             routing_path = self._path_finder.routing_path(
-                section_id=grand_calculated_summary_section
+                SectionKey(section_id=grand_calculated_summary_section)
             )
         if self.can_access_location(
             # grand calculated summaries do not yet support repeating sections, when they do, this will need to make use of list item id as well
@@ -430,9 +416,7 @@ class Router:
         return self.get_first_incomplete_location_in_questionnaire_url()
 
     def get_section_resume_url(self, routing_path: RoutingPath) -> str:
-        section_key = SectionKey(routing_path.section_id, routing_path.list_item_id)
-
-        if section_key in self._progress_store:
+        if routing_path.section_key in self._progress_store:
             location = self._get_first_incomplete_location_in_section(routing_path)
             if location:
                 return location.url(resume=True)
@@ -469,30 +453,22 @@ class Router:
                 for list_item_id in self._list_store[repeating_list]:
                     full_routing_path.append(
                         self._path_finder.routing_path(
-                            section_id=section_id, list_item_id=list_item_id
+                            SectionKey(section_id, list_item_id)
                         )
                     )
             else:
                 full_routing_path.append(
-                    self._path_finder.routing_path(section_id=section_id)
+                    self._path_finder.routing_path(SectionKey(section_id))
                 )
         return full_routing_path
-
-    def is_block_complete(
-        self, *, block_id: str, section_id: str, list_item_id: str | None
-    ) -> bool:
-        return block_id in self._progress_store.get_completed_block_ids(
-            section_id=section_id, list_item_id=list_item_id
-        )
 
     def _get_first_incomplete_location_in_section(
         self, routing_path: RoutingPath
     ) -> Location | None:
         for block_id in routing_path:
-            if not self.is_block_complete(
+            if not self._progress_store.is_block_complete(
                 block_id=block_id,
-                section_id=routing_path.section_id,
-                list_item_id=routing_path.list_item_id,
+                section_key=routing_path.section_key,
             ):
                 return Location(
                     block_id=block_id,
@@ -511,10 +487,9 @@ class Router:
             for block_id in routing_path:
                 allowable_path.append(block_id)
 
-                if not self.is_block_complete(
+                if not self._progress_store.is_block_complete(
                     block_id=block_id,
-                    section_id=routing_path.section_id,
-                    list_item_id=routing_path.list_item_id,
+                    section_key=routing_path.section_key,
                 ):
                     return allowable_path
 
@@ -528,25 +503,19 @@ class Router:
                 section_id
             ):
                 for list_item_id in self._list_store[repeating_list]:
-                    section_key = SectionKey(section_id, list_item_id)
-                    yield section_key
+                    yield SectionKey(section_id, list_item_id)
             else:
-                section_key = SectionKey(section_id, None)
-                yield section_key
+                yield SectionKey(section_id)
 
-    def _get_first_incomplete_section_key(self) -> tuple[str, str | None] | None:
-        for section_id, list_item_id in self._get_enabled_section_keys():
-            if not self._progress_store.is_section_or_repeating_blocks_progress_complete(
-                section_id, list_item_id
-            ):
-                return section_id, list_item_id
+    def _get_first_incomplete_section_key(self) -> SectionKey | None:
+        for section_key in self._get_enabled_section_keys():
+            if not self._progress_store.is_section_complete(section_key):
+                return section_key
 
-    def _get_last_complete_section_key(self) -> tuple[str, str | None] | None:
-        for section_id, list_item_id in list(self._get_enabled_section_keys())[::-1]:
-            if self._progress_store.is_section_or_repeating_blocks_progress_complete(
-                section_id, list_item_id
-            ):
-                return section_id, list_item_id
+    def _get_last_complete_section_key(self) -> SectionKey | None:
+        for section_key in list(self._get_enabled_section_keys())[::-1]:
+            if self._progress_store.is_section_complete(section_key):
+                return section_key
 
     def _is_section_enabled(self, section: Mapping) -> bool:
         if "enabled" not in section:
@@ -592,12 +561,11 @@ class Router:
 
     @staticmethod
     def _get_section_url(
-        location: LocationType,
+        section_key: SectionKey,
         return_to_answer_id: str | None = None,
     ) -> str:
         return url_for(
             "questionnaire.get_section",
-            section_id=location.section_id,
-            list_item_id=location.list_item_id,
             _anchor=return_to_answer_id,
+            **section_key.to_dict(),
         )

@@ -9,7 +9,7 @@ from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.progress_store import CompletionStatus, ProgressStore
 from app.data_models.supplementary_data_store import SupplementaryDataStore
-from app.questionnaire.location import Location
+from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.router import Router
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
@@ -64,7 +64,7 @@ class TestRouter(RouterTestCase):
 
         expected_path = [
             RoutingPath(
-                [
+                block_ids=[
                     "mandatory-checkbox",
                     "non-mandatory-checkbox",
                     "single-checkbox",
@@ -93,7 +93,7 @@ class TestRouter(RouterTestCase):
 
         expected_path = [
             RoutingPath(
-                [
+                block_ids=[
                     "primary-person-list-collector",
                     "list-collector",
                     "next-interstitial",
@@ -101,17 +101,15 @@ class TestRouter(RouterTestCase):
                     "visitors-block",
                 ],
                 section_id="section",
-                list_name=None,
-                list_item_id=None,
             ),
             RoutingPath(
-                ["proxy", "date-of-birth", "confirm-dob", "sex"],
+                block_ids=["proxy", "date-of-birth", "confirm-dob", "sex"],
                 section_id="personal-details-section",
                 list_name="people",
                 list_item_id="abc123",
             ),
             RoutingPath(
-                ["proxy", "date-of-birth", "confirm-dob", "sex"],
+                block_ids=["proxy", "date-of-birth", "confirm-dob", "sex"],
                 section_id="personal-details-section",
                 list_name="people",
                 list_item_id="123abc",
@@ -135,7 +133,7 @@ class TestRouterPathCompletion(RouterTestCase):
             ]
         )
 
-        routing_path = self.router.routing_path(section_id="default-section")
+        routing_path = self.router.routing_path(SectionKey("default-section"))
         is_path_complete = self.router.is_path_complete(routing_path)
 
         assert is_path_complete
@@ -143,7 +141,7 @@ class TestRouterPathCompletion(RouterTestCase):
     def test_is_not_complete(self):
         self.schema = load_schema_from_name("test_textfield")
 
-        routing_path = self.router.routing_path(section_id="default-section")
+        routing_path = self.router.routing_path(SectionKey("default-section"))
         is_path_complete = self.router.is_path_complete(routing_path)
 
         assert not is_path_complete
@@ -239,7 +237,9 @@ class TestRouterLocationValidity(RouterTestCase):
         self.schema = load_schema_from_name("test_textfield")
 
         current_location = Location(section_id="default-section", block_id="name-block")
-        routing_path = RoutingPath(["name-block"], section_id="default-section")
+        routing_path = RoutingPath(
+            block_ids=["name-block"], section_id="default-section"
+        )
         can_access_location = self.router.can_access_location(
             current_location, routing_path
         )
@@ -255,7 +255,9 @@ class TestRouterLocationValidity(RouterTestCase):
             list_name="default-list",
             list_item_id="default-list-id",
         )
-        routing_path = RoutingPath(["name-block"], section_id="default-section")
+        routing_path = RoutingPath(
+            block_ids=["name-block"], section_id="default-section"
+        )
         can_access_location = self.router.can_access_location(
             current_location, routing_path
         )
@@ -317,7 +319,7 @@ class TestRouterLocationValidity(RouterTestCase):
             section_id="default-section", block_id="set-duration-units-block"
         )
         routing_path = RoutingPath(
-            [
+            block_ids=[
                 "set-length-units-block",
                 "set-duration-units-block",
                 "set-area-units-block",
@@ -351,7 +353,11 @@ class TestRouterNextLocation(RouterTestCase):
             section_id="default-section", block_id="mandatory-checkbox"
         )
         routing_path = RoutingPath(
-            ["mandatory-checkbox", "non-mandatory-checkbox", "single-checkbox"],
+            block_ids=[
+                "mandatory-checkbox",
+                "non-mandatory-checkbox",
+                "single-checkbox",
+            ],
             section_id="default-section",
         )
         next_location = self.router.get_next_location_url(
@@ -383,7 +389,7 @@ class TestRouterNextLocation(RouterTestCase):
         current_location = Location(section_id="section-1", block_id="block-1")
         # Simulates routing backwards. Last block in section does not mean section is complete.
         routing_path = RoutingPath(
-            ["block-1", "block-2", "block-1"], section_id="section-1"
+            block_ids=["block-1", "block-2", "block-1"], section_id="section-1"
         )
         next_location = self.router.get_next_location_url(
             current_location, routing_path
@@ -413,7 +419,7 @@ class TestRouterNextLocation(RouterTestCase):
             section_id="property-details-section", block_id="insurance-type"
         )
         routing_path = RoutingPath(
-            ["insurance-type", "insurance-address", "listed"],
+            block_ids=["insurance-type", "insurance-address", "listed"],
             section_id="property-details-section",
         )
         next_location = self.router.get_next_location_url(
@@ -446,7 +452,12 @@ class TestRouterNextLocation(RouterTestCase):
             section_id="property-details-section", block_id="insurance-address"
         )
         routing_path = RoutingPath(
-            ["insurance-type", "insurance-address", "address-duration", "listed"],
+            block_ids=[
+                "insurance-type",
+                "insurance-address",
+                "address-duration",
+                "listed",
+            ],
             section_id="property-details-section",
         )
         next_location = self.router.get_next_location_url(
@@ -474,7 +485,7 @@ class TestRouterNextLocation(RouterTestCase):
         current_location = Location(
             section_id="accommodation-section", block_id="proxy"
         )
-        routing_path = RoutingPath(["proxy"], section_id="default-section")
+        routing_path = RoutingPath(block_ids=["proxy"], section_id="default-section")
         next_location = self.router.get_next_location_url(
             current_location, routing_path
         )
@@ -498,7 +509,8 @@ class TestRouterNextLocation(RouterTestCase):
             section_id="employment-section", block_id="employment-type"
         )
         routing_path = RoutingPath(
-            ["employment-status", "employment-type"], section_id="employment-section"
+            block_ids=["employment-status", "employment-type"],
+            section_id="employment-section",
         )
         next_location = self.router.get_next_location_url(
             current_location, routing_path
@@ -538,7 +550,7 @@ class TestRouterNextLocation(RouterTestCase):
         )
 
         routing_path = RoutingPath(
-            [
+            block_ids=[
                 "first-number-block",
                 "second-number-block",
                 "currency-total-playback",
@@ -595,7 +607,7 @@ class TestRouterNextLocation(RouterTestCase):
 
         # block 3 is complete, and block 4 is not, so block 4 should be routed to before the calculated summary
         routing_path = RoutingPath(
-            [
+            block_ids=[
                 "block-3",
                 "block-4",
                 "calculated-summary-block",
@@ -661,7 +673,7 @@ class TestRouterNextLocation(RouterTestCase):
         )
 
         routing_path = RoutingPath(
-            ["fifth-number-block", "sixth-number-block"],
+            block_ids=["fifth-number-block", "sixth-number-block"],
             section_id="default-section",
         )
         next_location_url = self.router.get_next_location_url(
@@ -695,7 +707,7 @@ class TestRouterNextLocation(RouterTestCase):
         )
 
         routing_path = RoutingPath(
-            ["fifth-number-block", "sixth-number-block"],
+            block_ids=["fifth-number-block", "sixth-number-block"],
             section_id="default-section",
         )
         next_location_url = self.router.get_next_location_url(
@@ -727,7 +739,7 @@ class TestRouterNextLocation(RouterTestCase):
         )
 
         routing_path = RoutingPath(
-            ["distance-calculated-summary-1"],
+            block_ids=["distance-calculated-summary-1"],
             section_id="section-1",
         )
         next_location_url = self.router.get_next_location_url(
@@ -763,7 +775,7 @@ class TestRouterNextLocation(RouterTestCase):
         )
 
         routing_path = RoutingPath(
-            ["distance-calculated-summary-1"],
+            block_ids=["distance-calculated-summary-1"],
             section_id="section-1",
         )
         next_location_url = self.router.get_next_location_url(
@@ -818,7 +830,7 @@ class TestRouterNextLocation(RouterTestCase):
 
         current_location = Location(section_id="section-1", block_id="block-2")
         routing_path = RoutingPath(
-            [
+            block_ids=[
                 "block-1",
                 "block-2",
                 "calculated-summary-1",
@@ -875,7 +887,7 @@ class TestRouterNextLocation(RouterTestCase):
             section_id="section-1", block_id="first-number-block"
         )
         routing_path = RoutingPath(
-            [
+            block_ids=[
                 "first-number-block",
                 "second-number-block",
                 "distance-calculated-summary-1",
@@ -985,7 +997,7 @@ class TestRouterNextLocation(RouterTestCase):
         """
         self.schema = load_schema_from_name(schema)
         current_location = Location(section_id=section, block_id=block_id)
-        routing_path = RoutingPath(routing_path_block_ids, section_id=section)
+        routing_path = RoutingPath(block_ids=routing_path_block_ids, section_id=section)
 
         # make a copy where next_incomplete_block_id is not yet completed
         completed_block_ids = [*routing_path_block_ids]
@@ -1036,7 +1048,9 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
         )
 
         current_location = Location(section_id="default-section", block_id="name-block")
-        routing_path = RoutingPath(["name-block"], section_id="default-section")
+        routing_path = RoutingPath(
+            block_ids=["name-block"], section_id="default-section"
+        )
         next_location = self.router.get_next_location_url(
             current_location, routing_path
         )
@@ -1059,7 +1073,7 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
             ]
         )
         current_location = Location(section_id="test-section", block_id="test-forced")
-        routing_path = RoutingPath(["test-forced"], section_id="test-section")
+        routing_path = RoutingPath(block_ids=["test-forced"], section_id="test-section")
         next_location = self.router.get_next_location_url(
             current_location, routing_path, return_to="final-summary"
         )
@@ -1083,7 +1097,7 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
             section_id="default-section", block_id="dessert-confirmation"
         )
         routing_path = RoutingPath(
-            ["radio", "dessert", "dessert-confirmation", "numbers"],
+            block_ids=["radio", "dessert", "dessert-confirmation", "numbers"],
             section_id="default-section",
         )
         next_location = self.router.get_next_location_url(
@@ -1110,7 +1124,7 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
         )
 
         current_location = Location(section_id="test-section", block_id="test-forced")
-        routing_path = RoutingPath(["test-forced"], section_id="test-section")
+        routing_path = RoutingPath(block_ids=["test-forced"], section_id="test-section")
         next_location = self.router.get_next_location_url(
             current_location, routing_path, return_to="final-summary"
         )
@@ -1133,7 +1147,7 @@ class TestRouterPreviousLocation(RouterTestCase):
         )
 
         routing_path = RoutingPath(
-            ["mandatory-checkbox", "non-mandatory-checkbox"],
+            block_ids=["mandatory-checkbox", "non-mandatory-checkbox"],
             section_id="default-section",
         )
         previous_location_url = self.router.get_previous_location_url(
@@ -1154,7 +1168,7 @@ class TestRouterPreviousLocation(RouterTestCase):
         )
 
         routing_path = RoutingPath(
-            [
+            block_ids=[
                 "currency-total-playback-skipped-fourth",
             ],
             section_id="default-section",
@@ -1211,7 +1225,7 @@ class TestRouterPreviousLocation(RouterTestCase):
         )
 
         routing_path = RoutingPath(
-            [
+            block_ids=[
                 "first-number-block",
                 "second-number-block",
                 "distance-calculated-summary-1",
@@ -1267,7 +1281,7 @@ class TestRouterPreviousLocation(RouterTestCase):
         )
 
         routing_path = RoutingPath(
-            [
+            block_ids=[
                 "first-number-block",
                 "second-number-block",
                 "distance-calculated-summary-1",
@@ -1330,7 +1344,7 @@ class TestRouterPreviousLocation(RouterTestCase):
         current_location = Location(section_id="section-1", block_id=current_block)
 
         routing_path = RoutingPath(
-            [
+            block_ids=[
                 "first-number-block",
                 "second-number-block",
                 "distance-calculated-summary-1",
@@ -1366,7 +1380,7 @@ class TestRouterPreviousLocation(RouterTestCase):
         )
 
         routing_path = RoutingPath(
-            ["calculated-summary-6"],
+            block_ids=["calculated-summary-6"],
             section_id="section-5",
         )
         next_location_url = self.router.get_previous_location_url(
@@ -1405,7 +1419,7 @@ class TestRouterPreviousLocation(RouterTestCase):
             section_id="property-details-section", block_id="insurance-type"
         )
         routing_path = RoutingPath(
-            ["insurance-type", "insurance-address", "listed"],
+            block_ids=["insurance-type", "insurance-address", "listed"],
             section_id="default-section",
         )
         previous_location_url = self.router.get_previous_location_url(
@@ -1438,7 +1452,7 @@ class TestRouterPreviousLocation(RouterTestCase):
             section_id="property-details-section", block_id="insurance-address"
         )
         routing_path = RoutingPath(
-            ["insurance-type", "insurance-address", "listed"],
+            block_ids=["insurance-type", "insurance-address", "listed"],
             section_id="default-section",
         )
         previous_location_url = self.router.get_previous_location_url(
@@ -1474,7 +1488,7 @@ class TestRouterPreviousLocation(RouterTestCase):
 
         current_location = Location(section_id="default-section", block_id="radio")
         routing_path = RoutingPath(
-            ["radio", "dessert", "dessert-confirmation", "numbers"],
+            block_ids=["radio", "dessert", "dessert-confirmation", "numbers"],
             section_id="default-section",
         )
         previous_location = self.router.get_previous_location_url(
@@ -1507,7 +1521,7 @@ class TestRouterPreviousLocation(RouterTestCase):
 
         current_location = Location(section_id="default-section", block_id="dessert")
         routing_path = RoutingPath(
-            ["radio", "dessert", "dessert-confirmation", "numbers"],
+            block_ids=["radio", "dessert", "dessert-confirmation", "numbers"],
             section_id="default-section",
         )
         previous_location = self.router.get_previous_location_url(
@@ -1538,7 +1552,11 @@ class TestRouterPreviousLocationLinearFlow(RouterTestCase):
             ]
         )
         routing_path = RoutingPath(
-            ["mandatory-checkbox", "non-mandatory-checkbox", "single-checkbox"],
+            block_ids=[
+                "mandatory-checkbox",
+                "non-mandatory-checkbox",
+                "single-checkbox",
+            ],
             section_id="default-section",
         )
 
@@ -1572,7 +1590,9 @@ class TestRouterPreviousLocationLinearFlow(RouterTestCase):
         current_location = Location(
             section_id="house-details-section", block_id="house-type"
         )
-        routing_path = RoutingPath(["house-type"], section_id="house-details-section")
+        routing_path = RoutingPath(
+            block_ids=["house-type"], section_id="house-details-section"
+        )
         previous_location_url = self.router.get_previous_location_url(
             current_location, routing_path
         )
@@ -1590,7 +1610,8 @@ class TestRouterPreviousLocationHubFlow(RouterTestCase):
         )
 
         routing_path = RoutingPath(
-            ["employment-status", "employment-type"], section_id="employment-section"
+            block_ids=["employment-status", "employment-type"],
+            section_id="employment-section",
         )
         previous_location_url = self.router.get_previous_location_url(
             current_location, routing_path
@@ -1657,9 +1678,7 @@ class TestRouterLastLocationLinearFlow(RouterTestCase):
         ).url()
 
         last_completed_block_in_progress_store = (
-            self.progress_store.get_completed_block_ids(
-                section_id=section_id, list_item_id=None
-            )[-1]
+            self.progress_store.get_completed_block_ids(SectionKey(section_id))[-1]
         )
 
         last_location_url = self.router.get_last_location_in_questionnaire_url()
@@ -1685,7 +1704,7 @@ class TestRouterSectionResume(RouterTestCase):
         )
 
         section_routing_path = RoutingPath(
-            ["insurance-type", "insurance-address"],
+            block_ids=["insurance-type", "insurance-address"],
             section_id="property-details-section",
         )
 
@@ -1711,7 +1730,8 @@ class TestRouterSectionResume(RouterTestCase):
         )
 
         routing_path = RoutingPath(
-            ["employment-status", "employment-type"], section_id="employment-section"
+            block_ids=["employment-status", "employment-type"],
+            section_id="employment-section",
         )
 
         section_resume_url = self.router.get_section_resume_url(

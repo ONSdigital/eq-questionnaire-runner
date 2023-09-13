@@ -20,6 +20,7 @@ from app.helpers import url_safe_serializer
 from app.helpers.template_helpers import render_template
 from app.publisher.exceptions import PublicationFailed
 from app.questionnaire import QuestionnaireSchema
+from app.questionnaire.location import SectionKey
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.router import Router
 from app.views.contexts.question import build_question_context
@@ -322,11 +323,9 @@ class IndividualResponseHandler:
         )
 
     def _update_section_status(self, status: str) -> None:
-        self._questionnaire_store.progress_store.update_section_or_repeating_blocks_progress_completion_status(
-            # Type ignore: Current usages of this method occur when Individual Section ID exists and is not None
+        self._questionnaire_store.progress_store.update_section_status(
             status,
-            self.individual_section_id,  # type: ignore
-            self._list_item_id,
+            SectionKey(self.individual_section_id, self._list_item_id),
         )
 
     @property
@@ -589,13 +588,13 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
 
     def _update_section_completeness(self) -> None:
         if not self._questionnaire_store.progress_store.get_completed_block_ids(
-            section_id=self.individual_section_id, list_item_id=self._list_item_id
+            section_key := SectionKey(
+                section_id=self.individual_section_id, list_item_id=self._list_item_id
+            )
         ):
             status = CompletionStatus.NOT_STARTED
         else:
-            routing_path = self.router.routing_path(
-                self.individual_section_id, self._list_item_id
-            )
+            routing_path = self.router.routing_path(section_key)
             status = (
                 CompletionStatus.COMPLETED
                 if self.router.is_path_complete(routing_path)

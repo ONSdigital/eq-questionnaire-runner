@@ -1,4 +1,4 @@
-from collections import defaultdict, namedtuple
+from collections import defaultdict
 from itertools import combinations
 from typing import Iterable, Mapping
 
@@ -10,12 +10,10 @@ from app.data_models.answer_store import Answer
 from app.data_models.progress_store import CompletionStatus
 from app.data_models.relationship_store import RelationshipDict, RelationshipStore
 from app.questionnaire import QuestionnaireSchema
-from app.questionnaire.location import Location
+from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.questionnaire_schema import AnswerDependent
 from app.questionnaire.router import Router
-from app.utilities.types import LocationType, SectionKey
-
-DependentSection = namedtuple("DependentSection", "section_id list_item_id is_complete")
+from app.utilities.types import DependentSection, LocationType
 
 
 class QuestionnaireStoreUpdater:
@@ -246,15 +244,13 @@ class QuestionnaireStoreUpdater:
         location = location or self._current_location
         return self._progress_store.remove_completed_location(location)
 
-    def update_section_or_repeating_blocks_progress_completion_status(
-        self, *, is_complete: bool, section_id: str, list_item_id: str | None = None
+    def update_section_status(
+        self, *, is_complete: bool, section_key: SectionKey
     ) -> bool:
         status = (
             CompletionStatus.COMPLETED if is_complete else CompletionStatus.IN_PROGRESS
         )
-        return self._progress_store.update_section_or_repeating_blocks_progress_completion_status(
-            status, section_id, list_item_id
-        )
+        return self._progress_store.update_section_status(status, section_key)
 
     def _update_answer(
         self,
@@ -344,10 +340,10 @@ class QuestionnaireStoreUpdater:
             ):
                 for list_item_id in self._list_store[repeating_list].items:
                     self.dependent_sections.add(
-                        DependentSection(section_id, list_item_id, None)
+                        DependentSection(section_id, list_item_id)
                     )
             else:
-                self.dependent_sections.add(DependentSection(section_id, None, None))
+                self.dependent_sections.add(DependentSection(section_id))
 
     def _capture_section_dependencies_progress_value_source_for_current_section(
         self,
@@ -382,10 +378,10 @@ class QuestionnaireStoreUpdater:
             ):
                 for list_item_id in self._list_store[repeating_list].items:
                     self.dependent_sections.add(
-                        DependentSection(section_id, list_item_id, None)
+                        DependentSection(section_id, list_item_id)
                     )
             else:
-                self.dependent_sections.add(DependentSection(section_id, None, None))
+                self.dependent_sections.add(DependentSection(section_id))
 
     def update_answers(
         self, form_data: Mapping, list_item_id: str | None = None
@@ -445,16 +441,11 @@ class QuestionnaireStoreUpdater:
         is_path_complete = dependent_section.is_complete
         if is_path_complete is None:
             is_path_complete = self._router.is_path_complete(
-                self._router.routing_path(
-                    dependent_section.section_id,
-                    list_item_id=dependent_section.list_item_id,
-                )
+                self._router.routing_path(dependent_section.section_key)
             )
 
-        if self.update_section_or_repeating_blocks_progress_completion_status(
-            is_complete=is_path_complete,
-            section_id=dependent_section.section_id,
-            list_item_id=dependent_section.list_item_id,
+        if self.update_section_status(
+            is_complete=is_path_complete, section_key=dependent_section.section_key
         ):
             dependents_of_dependent: OrderedSet = self._schema.when_rules_section_dependencies_by_section_for_progress_value_source.get(
                 dependent_section.section_id, OrderedSet()
@@ -492,7 +483,6 @@ class QuestionnaireStoreUpdater:
             dependent_section=DependentSection(
                 section_id=dependent_section_id,
                 list_item_id=list_item_id,
-                is_complete=None,
             ),
             evaluated_dependents=evaluated_dependents,
         )
@@ -525,20 +515,18 @@ class QuestionnaireStoreUpdater:
             ):
                 # Since this section key will be marked as incomplete, any `DependentSection` with is_complete as `None`
                 # can be removed as we do not need to re-evaluate progress as we already know the section would be incomplete.
-                dependent = DependentSection(section_id, list_item_id, None)
+                dependent = DependentSection(section_id, list_item_id)
                 if dependent in self.dependent_sections:
                     self.dependent_sections.remove(dependent)
 
                 self.dependent_sections.add(
-                    DependentSection(section_id, list_item_id, False)
+                    DependentSection(section_id, list_item_id, is_complete=False)
                 )
 
     def started_section_keys(
         self, section_ids: Iterable[str] | None = None
     ) -> list[SectionKey]:
-        return self._progress_store.started_section_and_repeating_blocks_progress_keys(
-            section_ids
-        )
+        return self._progress_store.started_section_keys(section_ids)
 
     def _get_chronological_section_dependents(self) -> list:
         sections = list(self._schema.get_section_ids())

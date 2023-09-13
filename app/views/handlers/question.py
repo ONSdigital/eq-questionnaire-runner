@@ -6,12 +6,10 @@ from flask_babel import gettext
 
 from app.forms.questionnaire_form import QuestionnaireForm, generate_form
 from app.helpers import get_address_lookup_api_auth_token
-from app.questionnaire.location import Location
-from app.questionnaire.questionnaire_store_updater import (
-    DependentSection,
-    QuestionnaireStoreUpdater,
-)
+from app.questionnaire.location import Location, SectionKey
+from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.questionnaire.variants import transform_variants
+from app.utilities.types import DependentSection
 from app.views.contexts import ListContext
 from app.views.contexts.question import build_question_context
 from app.views.handlers.block import BlockHandler
@@ -234,8 +232,7 @@ class Question(BlockHandler):
             # In order to support progress value source references of the previous block
             self.questionnaire_store_updater.add_completed_location()
             self._routing_path = self.router.routing_path(
-                section_id=self._current_location.section_id,
-                list_item_id=self._current_location.list_item_id,
+                self._current_location.section_key
             )
         super().handle_post()
 
@@ -262,9 +259,8 @@ class Question(BlockHandler):
                 continue
             self.questionnaire_store_updater.dependent_sections.add(
                 DependentSection(
-                    section_id=section_id,
-                    list_item_id=list_item_id,
-                    is_complete=None,
+                    section_id,
+                    list_item_id,
                 )
             )
 
@@ -290,8 +286,7 @@ class Question(BlockHandler):
         for list_item_id in list_model.items:
             if incomplete_location := self.get_first_incomplete_list_repeating_block_location_for_list_item(
                 repeating_block_ids=repeating_block_ids,
-                section_id=section_id,
-                list_item_id=list_item_id,
+                section_key=SectionKey(section_id, list_item_id),
                 list_name=list_name,
             ):
                 return incomplete_location
@@ -300,24 +295,19 @@ class Question(BlockHandler):
         self,
         *,
         repeating_block_ids: Sequence[str],
-        section_id: str,
-        list_item_id: str,
+        section_key: SectionKey,
         list_name: str,
     ) -> Location | None:
-        if self._questionnaire_store.progress_store.is_section_or_repeating_blocks_progress_complete(
-            section_id=section_id, list_item_id=list_item_id
-        ):
+        if self._questionnaire_store.progress_store.is_section_complete(section_key):
             return None
 
         for repeating_block_id in repeating_block_ids:
-            if not self.router.is_block_complete(
+            if not self._questionnaire_store.progress_store.is_block_complete(
                 block_id=repeating_block_id,
-                section_id=section_id,
-                list_item_id=list_item_id,
+                section_key=section_key,
             ):
                 return Location(
-                    section_id=section_id,
                     block_id=repeating_block_id,
                     list_name=list_name,
-                    list_item_id=list_item_id,
+                    **section_key.to_dict(),
                 )
