@@ -4,9 +4,8 @@ from datetime import datetime, timedelta, timezone
 import pytest
 from mock.mock import Mock
 
-from app.data_models import ListStore, QuestionnaireStore
+from app.data_models import CompletionStatus, ListStore, QuestionnaireStore
 from app.data_models.answer_store import Answer
-from app.data_models.progress_store import CompletionStatus
 from app.data_models.session_store import SessionStore
 from app.storage import storage_encryption
 from tests.app.parser.conftest import get_response_expires_at

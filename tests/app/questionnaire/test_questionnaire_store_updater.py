@@ -6,10 +6,10 @@ from mock.mock import call
 from ordered_set import OrderedSet
 from werkzeug.datastructures import MultiDict
 
-from app.data_models import QuestionnaireStore, SupplementaryDataStore
+from app.data_models import CompletionStatus, QuestionnaireStore, SupplementaryDataStore
 from app.data_models.answer_store import AnswerDict, AnswerStore
 from app.data_models.list_store import ListStore
-from app.data_models.progress_store import CompletionStatus, ProgressStore
+from app.data_models.progress_store import ProgressStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import AnswerDependent, QuestionnaireSchema
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
@@ -839,29 +839,29 @@ def test_update_repeating_answers_with_answer_dependents(
     [
         (
             # When an answer is changed which causes the path of a dependent section to be incomplete, Then that sections is update to IN_PROGRESS
-            "COMPLETED",
+            CompletionStatus.COMPLETED,
             "answer updated",
             False,
-            "IN_PROGRESS",
+            CompletionStatus.IN_PROGRESS,
         ),
         (
             # When an answer is changed which causes the path of a dependent section to be complete, Then that sections is update to COMPLETED
-            "IN_PROGRESS",
+            CompletionStatus.IN_PROGRESS,
             "answer updated",
             True,
-            "COMPLETED",
+            CompletionStatus.COMPLETED,
         ),
         (  # When an answer is not changed, Then a dependent section status should not change
-            "IN_PROGRESS",
+            CompletionStatus.IN_PROGRESS,
             "original answer",
             False,
-            "IN_PROGRESS",
+            CompletionStatus.IN_PROGRESS,
         ),
         (  # When an answer is not changed, Then a dependent section status should not change
-            "COMPLETED",
+            CompletionStatus.COMPLETED,
             "original answer",
             True,
-            "COMPLETED",
+            CompletionStatus.COMPLETED,
         ),
     ],
 )
@@ -926,42 +926,42 @@ def test_answer_id_section_dependents(
     [
         (
             # When an answer is changed which causes repeating dependent section to be incomplete, Then those repeating sections are updated to IN_PROGRESS
-            "COMPLETED",
-            "COMPLETED",
+            CompletionStatus.COMPLETED,
+            CompletionStatus.COMPLETED,
             "answer updated",
             False,
             False,
-            "IN_PROGRESS",
-            "IN_PROGRESS",
+            CompletionStatus.IN_PROGRESS,
+            CompletionStatus.IN_PROGRESS,
         ),
         (
             # When an answer is changed which causes repeating dependent section to be complete, Then those repeating sections are updated to COMPLETED
-            "IN_PROGRESS",
-            "IN_PROGRESS",
+            CompletionStatus.IN_PROGRESS,
+            CompletionStatus.IN_PROGRESS,
             "answer updated",
             True,
             True,
-            "COMPLETED",
-            "COMPLETED",
+            CompletionStatus.COMPLETED,
+            CompletionStatus.COMPLETED,
         ),
         (
             # When an answer is changed which causes repeating section paths to change, Then those repeating sections statuses are updated correctly
-            "COMPLETED",
-            "IN_PROGRESS",
+            CompletionStatus.COMPLETED,
+            CompletionStatus.IN_PROGRESS,
             "answer updated",
             False,
             True,
-            "IN_PROGRESS",
-            "COMPLETED",
+            CompletionStatus.IN_PROGRESS,
+            CompletionStatus.COMPLETED,
         ),
         (  # When an answer is not changed, Then a repeating dependent section status should not change
-            "COMPLETED",
-            "IN_PROGRESS",
+            CompletionStatus.COMPLETED,
+            CompletionStatus.IN_PROGRESS,
             "original answer",
             True,
             False,
-            "COMPLETED",
-            "IN_PROGRESS",
+            CompletionStatus.COMPLETED,
+            CompletionStatus.IN_PROGRESS,
         ),
     ],
 )
@@ -1121,7 +1121,7 @@ def test_dependent_sections_completed_dependant_blocks_removed_and_status_update
             {
                 "section_id": "company-summary-section",
                 "block_ids": ["total-turnover-block", "total-employees-block"],
-                "status": "COMPLETED",
+                "status": CompletionStatus.COMPLETED,
             },
             {
                 "section_id": "breakdown-section",
@@ -1230,7 +1230,7 @@ def test_dependent_sections_not_started_skipped(mock_router, mocker):
             {
                 "section_id": "company-summary-section",
                 "block_ids": ["total-turnover-block", "total-employees-block"],
-                "status": "COMPLETED",
+                "status": CompletionStatus.COMPLETED,
             }
         ],
     )
@@ -1270,14 +1270,14 @@ def test_dependent_sections_started_but_blocks_incomplete(mock_router, mocker):
             {
                 "section_id": "company-summary-section",
                 "block_ids": ["total-turnover-block", "total-employees-block"],
-                "status": "COMPLETED",
+                "status": CompletionStatus.COMPLETED,
             },
             {
                 "section_id": "breakdown-section",
                 "block_ids": [
                     "turnover-breakdown-block",
                 ],
-                "status": "IN_PROGRESS",
+                "status": CompletionStatus.IN_PROGRESS,
             },
         ],
     )
@@ -1333,7 +1333,7 @@ def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_sta
             {
                 "section_id": "company-summary-section",
                 "block_ids": ["total-turnover-block", "total-employees-block"],
-                "status": "COMPLETED",
+                "status": CompletionStatus.COMPLETED,
             },
             {
                 "section_id": "breakdown-section",
@@ -1419,7 +1419,7 @@ def test_dependent_sections_added_dependant_block_removed(
             {
                 "section_id": "company-summary-section",
                 "block_ids": ["total-turnover-block", "total-employees-block"],
-                "status": "COMPLETED",
+                "status": CompletionStatus.COMPLETED,
             },
             {
                 "section_id": "breakdown-section",

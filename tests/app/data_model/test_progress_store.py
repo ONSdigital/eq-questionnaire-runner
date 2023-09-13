@@ -1,7 +1,8 @@
 import pytest
 
+from app.data_models import CompletionStatus
 from app.data_models.progress import Progress
-from app.data_models.progress_store import CompletionStatus, ProgressStore
+from app.data_models.progress_store import ProgressStore
 from app.questionnaire.location import Location, SectionKey
 
 

@@ -2,10 +2,11 @@ from typing import Iterable, Mapping, MutableMapping, Sequence
 
 from werkzeug.datastructures import ImmutableDict
 
+from app.data_models import CompletionStatus
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
-from app.data_models.progress_store import CompletionStatus, ProgressStore
+from app.data_models.progress_store import ProgressStore
 from app.data_models.supplementary_data_store import SupplementaryDataStore
 from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
