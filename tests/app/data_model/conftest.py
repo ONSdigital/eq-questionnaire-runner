@@ -6,6 +6,7 @@ from mock.mock import Mock
 
 from app.data_models import CompletionStatus, ListStore, QuestionnaireStore
 from app.data_models.answer_store import Answer
+from app.data_models.progress import ProgressDict
 from app.data_models.session_store import SessionStore
 from app.storage import storage_encryption
 from tests.app.parser.conftest import get_response_expires_at
@@ -91,12 +92,12 @@ def basic_input():
         "ANSWERS": [{"answer_id": "test", "value": "test"}],
         "LISTS": [],
         "PROGRESS": [
-            {
-                "section_id": "a-test-section",
-                "list_item_id": "abc123",
-                "status": CompletionStatus.COMPLETED,
-                "block_ids": ["a-test-block"],
-            }
+            ProgressDict(
+                section_id="a-test-section",
+                list_item_id="abc123",
+                status=CompletionStatus.COMPLETED,
+                block_ids=["a-test-block"],
+            )
         ],
         "SUPPLEMENTARY_DATA": {"data": {}, "list_mappings": {}},
         "RESPONSE_METADATA": {"test-meta": "test"},

@@ -12,11 +12,11 @@ class CompletionStatus(StrEnum):
     INDIVIDUAL_RESPONSE_REQUESTED: str = "INDIVIDUAL_RESPONSE_REQUESTED"
 
 
-class ProgressDictType(TypedDict, total=False):
+class ProgressDict(TypedDict, total=False):
     section_id: str
     block_ids: list[str]
     status: CompletionStatus
-    list_item_id: str
+    list_item_id: str | None
 
 
 @dataclass
@@ -27,7 +27,7 @@ class Progress:
     list_item_id: Optional[str] = None
 
     @classmethod
-    def from_dict(cls, progress_dict: ProgressDictType) -> Progress:
+    def from_dict(cls, progress_dict: ProgressDict) -> Progress:
         return cls(
             section_id=progress_dict["section_id"],
             block_ids=progress_dict["block_ids"],

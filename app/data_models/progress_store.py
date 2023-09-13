@@ -1,7 +1,7 @@
 from typing import Iterable, MutableMapping
 
 from app.data_models import CompletionStatus
-from app.data_models.progress import Progress, ProgressDictType
+from app.data_models.progress import Progress, ProgressDict
 from app.questionnaire.location import Location, SectionKey
 from app.utilities.types import LocationType
 
@@ -14,7 +14,7 @@ class ProgressStore:
 
     def __init__(
         self,
-        progress: Iterable[ProgressDictType] | None = None,
+        progress: Iterable[ProgressDict] | None = None,
     ) -> None:
         """
         Instantiate a ProgressStore object that tracks the progress status of Sections & Repeating Sections,
@@ -41,7 +41,7 @@ class ProgressStore:
 
     @staticmethod
     def _build_map(
-        section_list: Iterable[ProgressDictType],
+        section_list: Iterable[ProgressDict],
     ) -> MutableMapping:
         """
         Builds the ProgressStore's data structure from a list of section dictionaries.

@@ -2,6 +2,7 @@ import pytest
 
 from app.data_models import CompletionStatus, ListStore
 from app.data_models.answer_store import Answer, AnswerStore
+from app.data_models.progress import ProgressDict
 from app.data_models.progress_store import ProgressStore
 from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.routing_path import RoutingPath
@@ -14,12 +15,12 @@ def test_simple_path(answer_store, list_store, supplementary_data_store):
     schema = load_schema_from_name("test_textfield")
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "default-section",
-                "list_item_id": None,
-                "status": CompletionStatus.COMPLETED,
-                "block_ids": ["name-block"],
-            }
+            ProgressDict(
+                section_id="default-section",
+                list_item_id=None,
+                status=CompletionStatus.COMPLETED,
+                block_ids=["name-block"],
+            )
         ]
     )
     path_finder = PathFinder(
@@ -129,12 +130,12 @@ def test_routing_path_with_complete_introduction(
     section_id = schema.get_section_id_for_block_id("introduction")
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "introduction-section",
-                "list_item_id": None,
-                "status": CompletionStatus.COMPLETED,
-                "block_ids": ["introduction"],
-            }
+            ProgressDict(
+                section_id="introduction-section",
+                list_item_id=None,
+                status=CompletionStatus.COMPLETED,
+                block_ids=["introduction"],
+            )
         ]
     )
     expected_routing_path = RoutingPath(
@@ -265,12 +266,12 @@ def test_routing_path_empty_routing_rules(
 
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "default-section",
-                "list_item_id": None,
-                "status": CompletionStatus.COMPLETED,
-                "block_ids": ["mandatory-checkbox"],
-            }
+            ProgressDict(
+                section_id="default-section",
+                list_item_id=None,
+                status=CompletionStatus.COMPLETED,
+                block_ids=["mandatory-checkbox"],
+            )
         ]
     )
 
@@ -299,12 +300,12 @@ def test_routing_path_with_conditional_value_not_in_metadata(
 
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "default-section",
-                "list_item_id": None,
-                "status": CompletionStatus.COMPLETED,
-                "block_ids": ["block1"],
-            }
+            ProgressDict(
+                section_id="default-section",
+                list_item_id=None,
+                status=CompletionStatus.COMPLETED,
+                block_ids=["block1"],
+            )
         ]
     )
 
@@ -335,12 +336,12 @@ def test_routing_path_should_skip_block(
 
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "introduction-section",
-                "list_item_id": None,
-                "status": CompletionStatus.COMPLETED,
-                "block_ids": ["do-you-want-to-skip"],
-            }
+            ProgressDict(
+                section_id="introduction-section",
+                list_item_id=None,
+                status=CompletionStatus.COMPLETED,
+                block_ids=["do-you-want-to-skip"],
+            )
         ]
     )
 
@@ -378,12 +379,12 @@ def test_routing_path_should_skip_group(
     )
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "default-section",
-                "list_item_id": None,
-                "status": CompletionStatus.COMPLETED,
-                "block_ids": ["do-you-want-to-skip"],
-            }
+            ProgressDict(
+                section_id="default-section",
+                list_item_id=None,
+                status=CompletionStatus.COMPLETED,
+                block_ids=["do-you-want-to-skip"],
+            )
         ]
     )
 
@@ -420,12 +421,12 @@ def test_routing_path_should_not_skip_group(
     )
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "default-section",
-                "list_item_id": None,
-                "status": CompletionStatus.COMPLETED,
-                "block_ids": ["do-you-want-to-skip"],
-            }
+            ProgressDict(
+                section_id="default-section",
+                list_item_id=None,
+                status=CompletionStatus.COMPLETED,
+                block_ids=["do-you-want-to-skip"],
+            )
         ]
     )
 
@@ -664,12 +665,12 @@ def test_routing_path_block_ids_dependent_on_other_sections_when_rules(
     )
 
     progress = [
-        {
-            "section_id": "skip-section",
-            "list_item_id": None,
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["skip-age"],
-        }
+        ProgressDict(
+            section_id="skip-section",
+            list_item_id=None,
+            status=CompletionStatus.COMPLETED,
+            block_ids=["skip-age"],
+        )
     ]
 
     if skip_confirmation_answer:
@@ -679,12 +680,12 @@ def test_routing_path_block_ids_dependent_on_other_sections_when_rules(
         answer_store.add_or_update(Answer(answer_id="security-answer", value="Yes"))
 
         progress.append(
-            {
-                "section_id": "skip-confirmation-section",
-                "list_item_id": None,
-                "status": CompletionStatus.COMPLETED,
-                "block_ids": ["security", "skip-confirmation"],
-            }
+            ProgressDict(
+                section_id="skip-confirmation-section",
+                list_item_id=None,
+                status=CompletionStatus.COMPLETED,
+                block_ids=["security", "skip-confirmation"],
+            )
         )
 
     progress_store = ProgressStore(progress)
@@ -752,18 +753,18 @@ def test_routing_path_block_ids_dependent_on_other_sections_when_rules_repeating
 
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "skip-section",
-                "list_item_id": None,
-                "status": CompletionStatus.COMPLETED,
-                "block_ids": ["skip-age"],
-            },
-            {
-                "section_id": "household-section",
-                "list_item_id": None,
-                "status": CompletionStatus.COMPLETED,
-                "block_ids": ["list-collector"],
-            },
+            ProgressDict(
+                section_id="skip-section",
+                list_item_id=None,
+                status=CompletionStatus.COMPLETED,
+                block_ids=["skip-age"],
+            ),
+            ProgressDict(
+                section_id="household-section",
+                list_item_id=None,
+                status=CompletionStatus.COMPLETED,
+                block_ids=["list-collector"],
+            ),
         ]
     )
 

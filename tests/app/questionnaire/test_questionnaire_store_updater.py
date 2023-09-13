@@ -9,6 +9,7 @@ from werkzeug.datastructures import MultiDict
 from app.data_models import CompletionStatus, QuestionnaireStore, SupplementaryDataStore
 from app.data_models.answer_store import AnswerDict, AnswerStore
 from app.data_models.list_store import ListStore
+from app.data_models.progress import ProgressDict
 from app.data_models.progress_store import ProgressStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import AnswerDependent, QuestionnaireSchema
@@ -898,11 +899,11 @@ def test_answer_id_section_dependents(
     )
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "section-2",
-                "block_ids": ["second-block"],
-                "status": section_status,
-            }
+            ProgressDict(
+                section_id="section-2",
+                block_ids=["second-block"],
+                status=section_status,
+            )
         ],
     )
     current_question = mock_schema.get_block(location.block_id)["question"]
@@ -1013,18 +1014,18 @@ def test_answer_id_section_dependents_repeating(
 
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "section-2",
-                "block_ids": ["second-block"],
-                "status": list_item_1_section_status,
-                "list_item_id": "list-item-id-1",
-            },
-            {
-                "section_id": "section-2",
-                "block_ids": ["second-block"],
-                "status": list_item_2_section_status,
-                "list_item_id": "list-item-id-2",
-            },
+            ProgressDict(
+                section_id="section-2",
+                block_ids=["second-block"],
+                status=list_item_1_section_status,
+                list_item_id="list-item-id-1",
+            ),
+            ProgressDict(
+                section_id="section-2",
+                block_ids=["second-block"],
+                status=list_item_2_section_status,
+                list_item_id="list-item-id-2",
+            ),
         ],
     )
     current_question = mock_schema.get_block(location.block_id)["question"]
@@ -1118,18 +1119,18 @@ def test_dependent_sections_completed_dependant_blocks_removed_and_status_update
     )
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "company-summary-section",
-                "block_ids": ["total-turnover-block", "total-employees-block"],
-                "status": CompletionStatus.COMPLETED,
-            },
-            {
-                "section_id": "breakdown-section",
-                "block_ids": [
+            ProgressDict(
+                section_id="company-summary-section",
+                block_ids=["total-turnover-block", "total-employees-block"],
+                status=CompletionStatus.COMPLETED,
+            ),
+            ProgressDict(
+                section_id="breakdown-section",
+                block_ids=[
                     "turnover-breakdown-block",
                 ],
-                "status": dependent_section_status,
-            },
+                status=dependent_section_status,
+            ),
         ],
     )
 
@@ -1180,14 +1181,14 @@ def test_dependent_sections_current_section_status_not_updated(mocker):
     )
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "breakdown-section",
-                "block_ids": [
+            ProgressDict(
+                section_id="breakdown-section",
+                block_ids=[
                     "total-turnover-block",
                     "turnover-breakdown-block",
                 ],
-                "status": CompletionStatus.COMPLETED,
-            },
+                status=CompletionStatus.COMPLETED,
+            ),
         ],
     )
     questionnaire_store_updater = get_questionnaire_store_updater(
@@ -1227,11 +1228,11 @@ def test_dependent_sections_not_started_skipped(mock_router, mocker):
     )
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "company-summary-section",
-                "block_ids": ["total-turnover-block", "total-employees-block"],
-                "status": CompletionStatus.COMPLETED,
-            }
+            ProgressDict(
+                section_id="company-summary-section",
+                block_ids=["total-turnover-block", "total-employees-block"],
+                status=CompletionStatus.COMPLETED,
+            )
         ],
     )
     questionnaire_store_updater = get_questionnaire_store_updater(
@@ -1267,18 +1268,18 @@ def test_dependent_sections_started_but_blocks_incomplete(mock_router, mocker):
     )
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "company-summary-section",
-                "block_ids": ["total-turnover-block", "total-employees-block"],
-                "status": CompletionStatus.COMPLETED,
-            },
-            {
-                "section_id": "breakdown-section",
-                "block_ids": [
+            ProgressDict(
+                section_id="company-summary-section",
+                block_ids=["total-turnover-block", "total-employees-block"],
+                status=CompletionStatus.COMPLETED,
+            ),
+            ProgressDict(
+                section_id="breakdown-section",
+                block_ids=[
                     "turnover-breakdown-block",
                 ],
-                "status": CompletionStatus.IN_PROGRESS,
-            },
+                status=CompletionStatus.IN_PROGRESS,
+            ),
         ],
     )
     questionnaire_store_updater = get_questionnaire_store_updater(
@@ -1330,11 +1331,11 @@ def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_sta
     )
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "company-summary-section",
-                "block_ids": ["total-turnover-block", "total-employees-block"],
-                "status": CompletionStatus.COMPLETED,
-            },
+            ProgressDict(
+                section_id="company-summary-section",
+                block_ids=["total-turnover-block", "total-employees-block"],
+                status=CompletionStatus.COMPLETED,
+            ),
             {
                 "section_id": "breakdown-section",
                 "list_item_id": "item-1",
@@ -1416,18 +1417,18 @@ def test_dependent_sections_added_dependant_block_removed(
     )
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "company-summary-section",
-                "block_ids": ["total-turnover-block", "total-employees-block"],
-                "status": CompletionStatus.COMPLETED,
-            },
-            {
-                "section_id": "breakdown-section",
-                "block_ids": [
+            ProgressDict(
+                section_id="company-summary-section",
+                block_ids=["total-turnover-block", "total-employees-block"],
+                status=CompletionStatus.COMPLETED,
+            ),
+            ProgressDict(
+                section_id="breakdown-section",
+                block_ids=[
                     "turnover-breakdown-block",
                 ],
-                "status": dependent_section_status,
-            },
+                status=dependent_section_status,
+            ),
         ],
     )
     questionnaire_store_updater = get_questionnaire_store_updater(
