@@ -16,8 +16,8 @@ class SectionKey(NamedTuple):
 
 class DependentSection(NamedTuple):
     section_id: str
-    list_item_id: str | None
-    is_complete: bool | None
+    list_item_id: str | None = None
+    is_complete: bool | None = None
 
     @property
     def section_key(self) -> SectionKey:

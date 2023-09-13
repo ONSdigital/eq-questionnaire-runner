@@ -340,10 +340,10 @@ class QuestionnaireStoreUpdater:
             ):
                 for list_item_id in self._list_store[repeating_list].items:
                     self.dependent_sections.add(
-                        DependentSection(section_id, list_item_id, None)
+                        DependentSection(section_id, list_item_id)
                     )
             else:
-                self.dependent_sections.add(DependentSection(section_id, None, None))
+                self.dependent_sections.add(DependentSection(section_id))
 
     def _capture_section_dependencies_progress_value_source_for_current_section(
         self,
@@ -378,10 +378,10 @@ class QuestionnaireStoreUpdater:
             ):
                 for list_item_id in self._list_store[repeating_list].items:
                     self.dependent_sections.add(
-                        DependentSection(section_id, list_item_id, None)
+                        DependentSection(section_id, list_item_id)
                     )
             else:
-                self.dependent_sections.add(DependentSection(section_id, None, None))
+                self.dependent_sections.add(DependentSection(section_id))
 
     def update_answers(
         self, form_data: Mapping, list_item_id: str | None = None
@@ -483,7 +483,6 @@ class QuestionnaireStoreUpdater:
             dependent_section=DependentSection(
                 section_id=dependent_section_id,
                 list_item_id=list_item_id,
-                is_complete=None,
             ),
             evaluated_dependents=evaluated_dependents,
         )
@@ -516,12 +515,12 @@ class QuestionnaireStoreUpdater:
             ):
                 # Since this section key will be marked as incomplete, any `DependentSection` with is_complete as `None`
                 # can be removed as we do not need to re-evaluate progress as we already know the section would be incomplete.
-                dependent = DependentSection(section_id, list_item_id, None)
+                dependent = DependentSection(section_id, list_item_id)
                 if dependent in self.dependent_sections:
                     self.dependent_sections.remove(dependent)
 
                 self.dependent_sections.add(
-                    DependentSection(section_id, list_item_id, False)
+                    DependentSection(section_id, list_item_id, is_complete=False)
                 )
 
     def started_section_keys(

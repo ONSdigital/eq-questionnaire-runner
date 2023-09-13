@@ -259,8 +259,8 @@ class Question(BlockHandler):
                 continue
             self.questionnaire_store_updater.dependent_sections.add(
                 DependentSection(
-                    section_id=section_id,
-                    list_item_id=list_item_id,
+                    section_id,
+                    list_item_id,
                     is_complete=None,
                 )
             )
