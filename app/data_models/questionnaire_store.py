@@ -7,12 +7,10 @@ from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
-from app.data_models.supplementary_data_store import (
-    SupplementaryDataListMapping,
-    SupplementaryDataStore,
-)
+from app.data_models.supplementary_data_store import SupplementaryDataStore
 from app.questionnaire.rules.utils import parse_iso_8601_datetime
 from app.utilities.json import json_dumps, json_loads
+from app.utilities.types import SupplementaryDataListMapping
 
 if TYPE_CHECKING:
     from app.storage.encrypted_questionnaire_storage import (  # pragma: no cover
@@ -95,7 +93,7 @@ class QuestionnaireStore:
         Creates or updates a list in ListStore based off supplementary data
         returns the identifier -> list_item_id mappings used
         """
-        list_mapping: list[SupplementaryDataListMapping] = []
+        list_mappings: list[SupplementaryDataListMapping] = []
         for list_item in list_data:
             identifier = list_item["identifier"]
             # if any pre-existing supplementary data already has a mapping for this list item
@@ -106,12 +104,12 @@ class QuestionnaireStore:
                 ).get(identifier)
             ):
                 list_item_id = self.list_store.add_list_item(list_name)
-            list_mapping.append(
+            list_mappings.append(
                 SupplementaryDataListMapping(
                     identifier=identifier, list_item_id=list_item_id
                 )
             )
-        return list_mapping
+        return list_mappings
 
     def _remove_old_supplementary_lists_and_answers(
         self, new_data: MutableMapping

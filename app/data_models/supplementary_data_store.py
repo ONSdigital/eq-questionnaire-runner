@@ -1,19 +1,16 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import Iterable, Mapping, MutableMapping, TypeAlias, TypedDict
+from typing import Iterable, Mapping, MutableMapping
 
 from werkzeug.datastructures import ImmutableDict
 
 from app.utilities.make_immutable import make_immutable
-
-SupplementaryDataKeyType: TypeAlias = tuple[str, str | None]
-SupplementaryDataValueType: TypeAlias = dict | str | list | None
-
-
-class SupplementaryDataListMapping(TypedDict):
-    identifier: str | int
-    list_item_id: str
+from app.utilities.types import (
+    SupplementaryDataKeyType,
+    SupplementaryDataListMapping,
+    SupplementaryDataValueType,
+)
 
 
 class InvalidSupplementaryDataSelector(Exception):
@@ -42,13 +39,6 @@ class SupplementaryDataStore:
         """
         self._raw_data = supplementary_data or {}
         self._list_mappings = list_mappings or {}
-        # create a lookup for easily finding the list_item_id for a given identifier
-        self._list_lookup = {
-            list_name: {
-                mapping["identifier"]: mapping["list_item_id"] for mapping in list_data
-            }
-            for list_name, list_data in self._list_mappings.items()
-        }
         # use shallow copy of the data, as items will be popped off
         self._data_map = self._build_map({**self._raw_data})
 
@@ -65,9 +55,14 @@ class SupplementaryDataStore:
         return mappings
 
     @cached_property
-    def list_lookup(self) -> ImmutableDict[str, ImmutableDict]:
-        lookup: ImmutableDict[str, ImmutableDict] = make_immutable(self._list_lookup)
-        return lookup
+    def list_lookup(self) -> dict[str, dict[str | int, str]]:
+        """Create a lookup for easily finding the list_item_id for a given identifier"""
+        return {
+            list_name: {
+                mapping["identifier"]: mapping["list_item_id"] for mapping in list_data
+            }
+            for list_name, list_data in self._list_mappings.items()
+        }
 
     def _build_map(
         self, data: MutableMapping
