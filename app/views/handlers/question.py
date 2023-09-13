@@ -261,7 +261,6 @@ class Question(BlockHandler):
                 DependentSection(
                     section_id,
                     list_item_id,
-                    is_complete=None,
                 )
             )
 
