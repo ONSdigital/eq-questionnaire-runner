@@ -1,7 +1,7 @@
 import pytest
 
 from app.data_models import CompletionStatus, ProgressStore
-from app.data_models.progress import ProgressDictType
+from app.data_models.progress import ProgressDict
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts import ListContext
@@ -223,13 +223,13 @@ def test_list_context_items_complete_without_repeating_blocks(
 
     progress_store = ProgressStore(
         [
-            ProgressDictType(
+            ProgressDict(
                 section_id="section-id",
                 list_item_id="PlwgoG",
                 status=CompletionStatus.COMPLETED,
                 block_ids=[],
             ),
-            ProgressDictType(
+            ProgressDict(
                 section_id="section-id",
                 list_item_id="UHPLbX",
                 status=CompletionStatus.COMPLETED,
@@ -347,13 +347,13 @@ def test_list_context_items_complete_with_repeating_blocks(
 
     progress_store = ProgressStore(
         [
-            ProgressDictType(
+            ProgressDict(
                 section_id="section-companies",
                 list_item_id="PlwgoG",
                 status=CompletionStatus.COMPLETED,
                 block_ids=[],
             ),
-            ProgressDictType(
+            ProgressDict(
                 section_id="section-companies",
                 list_item_id="UHPLbX",
                 status=CompletionStatus.COMPLETED,

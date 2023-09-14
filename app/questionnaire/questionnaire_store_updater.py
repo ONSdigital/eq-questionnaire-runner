@@ -5,9 +5,8 @@ from typing import Iterable, Mapping
 from ordered_set import OrderedSet
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import AnswerValueTypes, QuestionnaireStore
+from app.data_models import AnswerValueTypes, CompletionStatus, QuestionnaireStore
 from app.data_models.answer_store import Answer
-from app.data_models.progress_store import CompletionStatus
 from app.data_models.relationship_store import RelationshipDict, RelationshipStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location, SectionKey

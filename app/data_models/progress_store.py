@@ -1,20 +1,9 @@
-from dataclasses import astuple, dataclass
-from typing import Iterable, Iterator, MutableMapping
+from typing import Iterable, MutableMapping
 
-from app.data_models.progress import Progress, ProgressDictType
+from app.data_models import CompletionStatus
+from app.data_models.progress import Progress, ProgressDict
 from app.questionnaire.location import Location, SectionKey
 from app.utilities.types import LocationType
-
-
-@dataclass
-class CompletionStatus:
-    COMPLETED: str = "COMPLETED"
-    IN_PROGRESS: str = "IN_PROGRESS"
-    NOT_STARTED: str = "NOT_STARTED"
-    INDIVIDUAL_RESPONSE_REQUESTED: str = "INDIVIDUAL_RESPONSE_REQUESTED"
-
-    def __iter__(self) -> Iterator[tuple[str]]:
-        return iter(astuple(self))
 
 
 class ProgressStore:
@@ -25,7 +14,7 @@ class ProgressStore:
 
     def __init__(
         self,
-        progress: Iterable[ProgressDictType] | None = None,
+        progress: Iterable[ProgressDict] | None = None,
     ) -> None:
         """
         Instantiate a ProgressStore object that tracks the progress status of Sections & Repeating Sections,
@@ -52,7 +41,7 @@ class ProgressStore:
 
     @staticmethod
     def _build_map(
-        section_list: Iterable[ProgressDictType],
+        section_list: Iterable[ProgressDict],
     ) -> MutableMapping:
         """
         Builds the ProgressStore's data structure from a list of section dictionaries.
@@ -100,14 +89,14 @@ class ProgressStore:
 
     def section_keys(
         self,
-        statuses: Iterable[str] | None = None,
+        statuses: Iterable[CompletionStatus] | None = None,
         section_ids: Iterable[str] | None = None,
     ) -> list[SectionKey]:
         """
         Return the Keys of the Section and Repeating Blocks progresses stored in this ProgressStore.
         """
         if not statuses:
-            statuses = {*CompletionStatus()}
+            statuses = CompletionStatus
 
         section_keys = [
             section_key
@@ -124,7 +113,9 @@ class ProgressStore:
             if any(section_id in progress_key for section_id in section_ids)
         ]
 
-    def update_section_status(self, status: str, section_key: SectionKey) -> bool:
+    def update_section_status(
+        self, status: CompletionStatus, section_key: SectionKey
+    ) -> bool:
         """
         Updates the status of the Section or Repeating Blocks for a list item specified by the key based on the given section id and list item id.
         """
@@ -143,7 +134,7 @@ class ProgressStore:
 
         return updated
 
-    def get_section_status(self, section_key: SectionKey) -> str:
+    def get_section_status(self, section_key: SectionKey) -> CompletionStatus:
         """
         Return the CompletionStatus of the Section or Repeating Blocks for a list item,
         specified by the given section_id and list_item_id in SectionKey.
@@ -154,7 +145,9 @@ class ProgressStore:
 
         return CompletionStatus.NOT_STARTED
 
-    def get_block_status(self, *, block_id: str, section_key: SectionKey) -> str:
+    def get_block_status(
+        self, *, block_id: str, section_key: SectionKey
+    ) -> CompletionStatus:
         """
         Return the completion status of the block specified by the given block_id,
         if it is part of the progress of the given Section or Repeating Blocks for list item

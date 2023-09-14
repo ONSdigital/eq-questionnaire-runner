@@ -322,7 +322,7 @@ class IndividualResponseHandler:
             data_to_render=self.block_definition, list_item_id=self._list_item_id
         )
 
-    def _update_section_status(self, status: str) -> None:
+    def _update_section_status(self, status: CompletionStatus) -> None:
         self._questionnaire_store.progress_store.update_section_status(
             status,
             SectionKey(self.individual_section_id, self._list_item_id),

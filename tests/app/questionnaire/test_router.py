@@ -5,9 +5,11 @@ import pytest
 from flask import url_for
 from mock import Mock
 
+from app.data_models import CompletionStatus
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
-from app.data_models.progress_store import CompletionStatus, ProgressStore
+from app.data_models.progress import ProgressDict
+from app.data_models.progress_store import ProgressStore
 from app.data_models.supplementary_data_store import SupplementaryDataStore
 from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.router import Router
@@ -43,11 +45,11 @@ class TestRouter(RouterTestCase):
         self.schema = load_schema_from_name("test_section_enabled_checkbox")
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": "section-1",
-                    "block_ids": ["section-1-block"],
-                    "status": CompletionStatus.COMPLETED,
-                }
+                ProgressDict(
+                    section_id="section-1",
+                    block_ids=["section-1-block"],
+                    status=CompletionStatus.COMPLETED,
+                )
             ]
         )
         self.answer_store = AnswerStore(
@@ -124,12 +126,12 @@ class TestRouterPathCompletion(RouterTestCase):
         self.schema = load_schema_from_name("test_textfield")
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": "default-section",
-                    "list_item_id": None,
-                    "status": CompletionStatus.IN_PROGRESS,
-                    "block_ids": ["name-block"],
-                }
+                ProgressDict(
+                    section_id="default-section",
+                    list_item_id=None,
+                    status=CompletionStatus.IN_PROGRESS,
+                    block_ids=["name-block"],
+                )
             ]
         )
 
@@ -152,12 +154,12 @@ class TestRouterQuestionnaireCompletion(RouterTestCase):
         self.schema = load_schema_from_name("test_textfield")
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": "default-section",
-                    "list_item_id": None,
-                    "status": CompletionStatus.COMPLETED,
-                    "block_ids": ["name-block"],
-                }
+                ProgressDict(
+                    section_id="default-section",
+                    list_item_id=None,
+                    status=CompletionStatus.COMPLETED,
+                    block_ids=["name-block"],
+                )
             ]
         )
 
@@ -340,12 +342,12 @@ class TestRouterNextLocation(RouterTestCase):
         self.schema = load_schema_from_name("test_checkbox")
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": "default-section",
-                    "list_item_id": None,
-                    "status": CompletionStatus.IN_PROGRESS,
-                    "block_ids": ["mandatory-checkbox"],
-                }
+                ProgressDict(
+                    section_id="default-section",
+                    list_item_id=None,
+                    status=CompletionStatus.IN_PROGRESS,
+                    block_ids=["mandatory-checkbox"],
+                )
             ]
         )
 
@@ -378,12 +380,12 @@ class TestRouterNextLocation(RouterTestCase):
         self.schema.get_block.return_value = {"type": "Question"}
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": "section-1",
-                    "list_item_id": None,
-                    "status": CompletionStatus.IN_PROGRESS,
-                    "block_ids": ["block-1"],
-                }
+                ProgressDict(
+                    section_id="section-1",
+                    list_item_id=None,
+                    status=CompletionStatus.IN_PROGRESS,
+                    block_ids=["block-1"],
+                )
             ]
         )
         current_location = Location(section_id="section-1", block_id="block-1")
@@ -440,12 +442,12 @@ class TestRouterNextLocation(RouterTestCase):
         )
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": "property-details-section",
-                    "list_item_id": None,
-                    "status": CompletionStatus.IN_PROGRESS,
-                    "block_ids": ["insurance-type", "insurance-address", "listed"],
-                }
+                ProgressDict(
+                    section_id="property-details-section",
+                    list_item_id=None,
+                    status=CompletionStatus.IN_PROGRESS,
+                    block_ids=["insurance-type", "insurance-address", "listed"],
+                )
             ]
         )
         current_location = Location(
@@ -474,12 +476,12 @@ class TestRouterNextLocation(RouterTestCase):
         self.schema = load_schema_from_name("test_show_section_summary_on_completion")
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": "accommodation-section",
-                    "list_item_id": None,
-                    "status": CompletionStatus.COMPLETED,
-                    "block_ids": ["proxy"],
-                }
+                ProgressDict(
+                    section_id="accommodation-section",
+                    list_item_id=None,
+                    status=CompletionStatus.COMPLETED,
+                    block_ids=["proxy"],
+                )
             ]
         )
         current_location = Location(
@@ -497,12 +499,12 @@ class TestRouterNextLocation(RouterTestCase):
         self.schema = load_schema_from_name("test_show_section_summary_on_completion")
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": "employment-section",
-                    "list_item_id": None,
-                    "status": CompletionStatus.COMPLETED,
-                    "block_ids": ["employment-status"],
-                }
+                ProgressDict(
+                    section_id="employment-section",
+                    list_item_id=None,
+                    status=CompletionStatus.COMPLETED,
+                    block_ids=["employment-status"],
+                )
             ]
         )
         current_location = Location(
@@ -534,14 +536,14 @@ class TestRouterNextLocation(RouterTestCase):
         # and that those two blocks are complete - this will be a sufficient condition to return to the calculated summary
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": "default-section",
-                    "block_ids": [
+                ProgressDict(
+                    section_id="default-section",
+                    block_ids=[
                         "first-number-block",
                         "second-number-block",
                     ],
-                    "status": CompletionStatus.IN_PROGRESS,
-                }
+                    status=CompletionStatus.IN_PROGRESS,
+                )
             ]
         )
 
@@ -595,11 +597,11 @@ class TestRouterNextLocation(RouterTestCase):
         self.schema = load_schema_from_name(schema)
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": "default-section",
-                    "block_ids": ["block-3"],
-                    "status": CompletionStatus.IN_PROGRESS,
-                }
+                ProgressDict(
+                    section_id="default-section",
+                    block_ids=["block-3"],
+                    status=CompletionStatus.IN_PROGRESS,
+                )
             ]
         )
 
@@ -660,11 +662,11 @@ class TestRouterNextLocation(RouterTestCase):
         self.schema = load_schema_from_name(schema)
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": "default-section",
-                    "block_ids": ["fifth-number-block"],
-                    "status": CompletionStatus.IN_PROGRESS,
-                }
+                ProgressDict(
+                    section_id="default-section",
+                    block_ids=["fifth-number-block"],
+                    status=CompletionStatus.IN_PROGRESS,
+                )
             ]
         )
 
@@ -694,11 +696,11 @@ class TestRouterNextLocation(RouterTestCase):
         self.schema = load_schema_from_name(schema)
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": "default-section",
-                    "block_ids": ["fifth-number-block"],
-                    "status": CompletionStatus.IN_PROGRESS,
-                }
+                ProgressDict(
+                    section_id="default-section",
+                    block_ids=["fifth-number-block"],
+                    status=CompletionStatus.IN_PROGRESS,
+                )
             ]
         )
 
@@ -814,17 +816,17 @@ class TestRouterNextLocation(RouterTestCase):
         # calculated summary 3 is not complete yet
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": "section-1",
-                    "block_ids": [
+                ProgressDict(
+                    section_id="section-1",
+                    block_ids=[
                         "block-1",
                         "block-2",
                         "calculated-summary-1",
                         "block-3",
                         "calculated-summary-2",
                     ],
-                    "status": "IN_PROGRESS",
-                }
+                    status="IN_PROGRESS",
+                )
             ]
         )
 
@@ -872,14 +874,14 @@ class TestRouterNextLocation(RouterTestCase):
         # second-number block not complete yet
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": "section-1",
-                    "block_ids": [
+                ProgressDict(
+                    section_id="section-1",
+                    block_ids=[
                         "first-number-block",
                         "distance-calculated-summary-1",
                     ],
-                    "status": CompletionStatus.IN_PROGRESS,
-                }
+                    status=CompletionStatus.IN_PROGRESS,
+                )
             ]
         )
 
@@ -1005,11 +1007,11 @@ class TestRouterNextLocation(RouterTestCase):
 
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": section,
-                    "block_ids": completed_block_ids,
-                    "status": "IN_PROGRESS",
-                }
+                ProgressDict(
+                    section_id=section,
+                    block_ids=completed_block_ids,
+                    status=CompletionStatus.IN_PROGRESS,
+                )
             ]
         )
 
@@ -1038,12 +1040,12 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
         self.schema = load_schema_from_name("test_textfield")
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": "default-section",
-                    "list_item_id": None,
-                    "status": CompletionStatus.COMPLETED,
-                    "block_ids": ["name-block"],
-                }
+                ProgressDict(
+                    section_id="default-section",
+                    list_item_id=None,
+                    status=CompletionStatus.COMPLETED,
+                    block_ids=["name-block"],
+                )
             ]
         )
 
@@ -1064,12 +1066,12 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
         )
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": "test-section",
-                    "list_item_id": None,
-                    "status": CompletionStatus.COMPLETED,
-                    "block_ids": ["test-forced"],
-                }
+                ProgressDict(
+                    section_id="test-section",
+                    list_item_id=None,
+                    status=CompletionStatus.COMPLETED,
+                    block_ids=["test-forced"],
+                )
             ]
         )
         current_location = Location(section_id="test-section", block_id="test-forced")
@@ -1085,12 +1087,12 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
         self.schema = load_schema_from_name("test_submit_with_summary")
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": "default-section",
-                    "list_item_id": None,
-                    "status": CompletionStatus.IN_PROGRESS,
-                    "block_ids": ["radio", "dessert", "dessert-confirmation"],
-                }
+                ProgressDict(
+                    section_id="default-section",
+                    list_item_id=None,
+                    status=CompletionStatus.IN_PROGRESS,
+                    block_ids=["radio", "dessert", "dessert-confirmation"],
+                )
             ]
         )
         current_location = Location(
@@ -1114,12 +1116,12 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
         self.answer_store = AnswerStore([{"answer_id": "test-answer", "value": "Yes"}])
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": "test-section",
-                    "list_item_id": None,
-                    "status": CompletionStatus.COMPLETED,
-                    "block_ids": ["test-forced"],
-                }
+                ProgressDict(
+                    section_id="test-section",
+                    list_item_id=None,
+                    status=CompletionStatus.COMPLETED,
+                    block_ids=["test-forced"],
+                )
             ]
         )
 
@@ -1208,15 +1210,15 @@ class TestRouterPreviousLocation(RouterTestCase):
         # trying to go to number-calculated-summary-1 but distance-calculated-summary-1 which comes before is not complete yet
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": "section-1",
-                    "block_ids": [
+                ProgressDict(
+                    section_id="section-1",
+                    block_ids=[
                         "first-number-block",
                         "second-number-block",
                         "number-calculated-summary-1",
                     ],
-                    "status": CompletionStatus.IN_PROGRESS,
-                }
+                    status=CompletionStatus.IN_PROGRESS,
+                )
             ]
         )
 
@@ -1264,15 +1266,15 @@ class TestRouterPreviousLocation(RouterTestCase):
         # number calculated summary is not complete, so the section is not complete
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": "section-1",
-                    "block_ids": [
+                ProgressDict(
+                    section_id="section-1",
+                    block_ids=[
                         "first-number-block",
                         "second-number-block",
                         "distance-calculated-summary-1",
                     ],
-                    "status": CompletionStatus.IN_PROGRESS,
-                }
+                    status=CompletionStatus.IN_PROGRESS,
+                )
             ]
         )
 
@@ -1406,12 +1408,12 @@ class TestRouterPreviousLocation(RouterTestCase):
         self.schema = load_schema_from_name("test_section_summary")
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": "property-details-section",
-                    "list_item_id": None,
-                    "status": CompletionStatus.COMPLETED,
-                    "block_ids": ["insurance-type", "insurance-address", "listed"],
-                }
+                ProgressDict(
+                    section_id="property-details-section",
+                    list_item_id=None,
+                    status=CompletionStatus.COMPLETED,
+                    block_ids=["insurance-type", "insurance-address", "listed"],
+                )
             ]
         )
 
@@ -1439,12 +1441,12 @@ class TestRouterPreviousLocation(RouterTestCase):
         self.schema = load_schema_from_name("test_section_summary")
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": "property-details-section",
-                    "list_item_id": None,
-                    "status": CompletionStatus.IN_PROGRESS,
-                    "block_ids": ["insurance-type", "insurance-address", "listed"],
-                }
+                ProgressDict(
+                    section_id="property-details-section",
+                    list_item_id=None,
+                    status=CompletionStatus.IN_PROGRESS,
+                    block_ids=["insurance-type", "insurance-address", "listed"],
+                )
             ]
         )
 
@@ -1543,12 +1545,12 @@ class TestRouterPreviousLocationLinearFlow(RouterTestCase):
         self.schema = load_schema_from_name("test_checkbox")
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": "default-section",
-                    "list_item_id": None,
-                    "status": CompletionStatus.IN_PROGRESS,
-                    "block_ids": ["mandatory-checkbox"],
-                }
+                ProgressDict(
+                    section_id="default-section",
+                    list_item_id=None,
+                    status=CompletionStatus.IN_PROGRESS,
+                    block_ids=["mandatory-checkbox"],
+                )
             ]
         )
         routing_path = RoutingPath(
@@ -1626,15 +1628,15 @@ class TestRouterLastLocationLinearFlow(RouterTestCase):
         self.schema = load_schema_from_name("test_checkbox")
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": "default-section",
-                    "block_ids": [
+                ProgressDict(
+                    section_id="default-section",
+                    block_ids=[
                         "mandatory-checkbox",
                         "non-mandatory-checkbox",
                         "single-checkbox",
                     ],
-                    "status": CompletionStatus.COMPLETED,
-                }
+                    status=CompletionStatus.COMPLETED,
+                )
             ]
         )
         last_location_url = self.router.get_last_location_in_questionnaire_url()
@@ -1663,11 +1665,11 @@ class TestRouterLastLocationLinearFlow(RouterTestCase):
         completed_block_not_on_path = "test-optional"
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": section_id,
-                    "block_ids": [last_block_on_path, completed_block_not_on_path],
-                    "status": CompletionStatus.COMPLETED,
-                }
+                ProgressDict(
+                    section_id=section_id,
+                    block_ids=[last_block_on_path, completed_block_not_on_path],
+                    status=CompletionStatus.COMPLETED,
+                )
             ]
         )
 
@@ -1694,12 +1696,12 @@ class TestRouterSectionResume(RouterTestCase):
 
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": "property-details-section",
-                    "list_item_id": None,
-                    "status": CompletionStatus.IN_PROGRESS,
-                    "block_ids": ["insurance-type"],
-                }
+                ProgressDict(
+                    section_id="property-details-section",
+                    list_item_id=None,
+                    status=CompletionStatus.IN_PROGRESS,
+                    block_ids=["insurance-type"],
+                )
             ]
         )
 
@@ -1721,11 +1723,11 @@ class TestRouterSectionResume(RouterTestCase):
         self.schema = load_schema_from_name("test_hub_complete_sections")
         self.progress_store = ProgressStore(
             [
-                {
-                    "section_id": "employment-section",
-                    "block_ids": ["employment-status", "employment-type"],
-                    "status": CompletionStatus.COMPLETED,
-                }
+                ProgressDict(
+                    section_id="employment-section",
+                    block_ids=["employment-status", "employment-type"],
+                    status=CompletionStatus.COMPLETED,
+                )
             ],
         )
 
