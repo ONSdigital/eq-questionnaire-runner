@@ -1,6 +1,6 @@
 from .answer import Answer, AnswerValueTypes
 from .fulfilment_request import FulfilmentRequest
-from .progress_store import CompletionStatus
+from .progress import CompletionStatus
 from .questionnaire_store import (
     AnswerStore,
     ListStore,

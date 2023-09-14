@@ -1,11 +1,13 @@
 import pytest
 
-from app.data_models import ListStore
+from app.data_models import CompletionStatus, ListStore
 from app.data_models.answer_store import Answer, AnswerStore
-from app.data_models.progress_store import CompletionStatus, ProgressStore
+from app.data_models.progress import ProgressDict
+from app.data_models.progress_store import ProgressStore
 from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
+from app.utilities.types import SectionKey
 from tests.app.questionnaire.conftest import get_metadata
 
 
@@ -13,12 +15,12 @@ def test_simple_path(answer_store, list_store, supplementary_data_store):
     schema = load_schema_from_name("test_textfield")
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "default-section",
-                "list_item_id": None,
-                "status": CompletionStatus.COMPLETED,
-                "block_ids": ["name-block"],
-            }
+            ProgressDict(
+                section_id="default-section",
+                list_item_id=None,
+                status=CompletionStatus.COMPLETED,
+                block_ids=["name-block"],
+            )
         ]
     )
     path_finder = PathFinder(
@@ -32,9 +34,11 @@ def test_simple_path(answer_store, list_store, supplementary_data_store):
     )
 
     section_id = schema.get_section_id_for_block_id("name-block")
-    routing_path = path_finder.routing_path(section_id=section_id)
+    routing_path = path_finder.routing_path(SectionKey(section_id))
 
-    assumed_routing_path = RoutingPath(["name-block"], section_id="default-section")
+    assumed_routing_path = RoutingPath(
+        block_ids=["name-block"], section_id="default-section"
+    )
 
     assert routing_path == assumed_routing_path
 
@@ -58,7 +62,7 @@ def test_introduction_in_path_when_in_schema(
         supplementary_data_store=supplementary_data_store,
     )
 
-    routing_path = path_finder.routing_path(section_id=current_section["id"])
+    routing_path = path_finder.routing_path(SectionKey(current_section["id"]))
     assert "introduction" in routing_path
 
 
@@ -80,7 +84,7 @@ def test_introduction_not_in_path_when_not_in_schema(
         supplementary_data_store=supplementary_data_store,
     )
 
-    routing_path = path_finder.routing_path(section_id=current_section["id"])
+    routing_path = path_finder.routing_path(SectionKey(current_section["id"]))
 
     assert "introduction" not in routing_path
 
@@ -95,7 +99,7 @@ def test_routing_basic_and_conditional_path(
     schema = load_schema_from_name("test_routing_number_equals")
     section_id = schema.get_section_id_for_block_id("number-question")
     expected_path = RoutingPath(
-        ["number-question", "correct-answer"],
+        block_ids=["number-question", "correct-answer"],
         section_id="default-section",
     )
 
@@ -113,7 +117,7 @@ def test_routing_basic_and_conditional_path(
         {},
         supplementary_data_store=supplementary_data_store,
     )
-    routing_path = path_finder.routing_path(section_id=section_id)
+    routing_path = path_finder.routing_path(SectionKey(section_id))
 
     # Then
     assert routing_path == expected_path
@@ -126,16 +130,16 @@ def test_routing_path_with_complete_introduction(
     section_id = schema.get_section_id_for_block_id("introduction")
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "introduction-section",
-                "list_item_id": None,
-                "status": CompletionStatus.COMPLETED,
-                "block_ids": ["introduction"],
-            }
+            ProgressDict(
+                section_id="introduction-section",
+                list_item_id=None,
+                status=CompletionStatus.COMPLETED,
+                block_ids=["introduction"],
+            )
         ]
     )
     expected_routing_path = RoutingPath(
-        [
+        block_ids=[
             "introduction",
             "report-radio",
             "reporting-date",
@@ -158,7 +162,7 @@ def test_routing_path_with_complete_introduction(
         {},
         supplementary_data_store=supplementary_data_store,
     )
-    routing_path = path_finder.routing_path(section_id=section_id)
+    routing_path = path_finder.routing_path(SectionKey(section_id))
 
     assert routing_path == expected_routing_path
 
@@ -167,7 +171,7 @@ def test_routing_path(answer_store, list_store, supplementary_data_store):
     schema = load_schema_from_name("test_submit_with_summary")
     section_id = schema.get_section_id_for_block_id("dessert")
     expected_path = RoutingPath(
-        ["radio", "dessert", "dessert-confirmation", "numbers"],
+        block_ids=["radio", "dessert", "dessert-confirmation", "numbers"],
         section_id="default-section",
     )
 
@@ -195,7 +199,7 @@ def test_routing_path(answer_store, list_store, supplementary_data_store):
         {},
         supplementary_data_store=supplementary_data_store,
     )
-    routing_path = path_finder.routing_path(section_id=section_id)
+    routing_path = path_finder.routing_path(SectionKey(section_id))
 
     assert routing_path == expected_path
 
@@ -230,12 +234,10 @@ def test_routing_path_with_repeating_sections(
     )
 
     repeating_section_id = "personal-details-section"
-    routing_path = path_finder.routing_path(
-        section_id=repeating_section_id, list_item_id="abc123"
-    )
+    routing_path = path_finder.routing_path(SectionKey(repeating_section_id, "abc123"))
 
     expected_path = RoutingPath(
-        ["proxy", "date-of-birth", "confirm-dob", "sex"],
+        block_ids=["proxy", "date-of-birth", "confirm-dob", "sex"],
         section_id="personal-details-section",
         list_name="people",
         list_item_id="abc123",
@@ -250,7 +252,7 @@ def test_routing_path_empty_routing_rules(
     schema = load_schema_from_name("test_checkbox")
     section_id = schema.get_section_id_for_block_id("mandatory-checkbox")
     expected_path = RoutingPath(
-        ["mandatory-checkbox", "non-mandatory-checkbox", "single-checkbox"],
+        block_ids=["mandatory-checkbox", "non-mandatory-checkbox", "single-checkbox"],
         section_id="default-section",
     )
 
@@ -264,12 +266,12 @@ def test_routing_path_empty_routing_rules(
 
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "default-section",
-                "list_item_id": None,
-                "status": CompletionStatus.COMPLETED,
-                "block_ids": ["mandatory-checkbox"],
-            }
+            ProgressDict(
+                section_id="default-section",
+                list_item_id=None,
+                status=CompletionStatus.COMPLETED,
+                block_ids=["mandatory-checkbox"],
+            )
         ]
     )
 
@@ -282,7 +284,7 @@ def test_routing_path_empty_routing_rules(
         {},
         supplementary_data_store=supplementary_data_store,
     )
-    routing_path = path_finder.routing_path(section_id=section_id)
+    routing_path = path_finder.routing_path(SectionKey(section_id))
 
     assert routing_path == expected_path
 
@@ -293,17 +295,17 @@ def test_routing_path_with_conditional_value_not_in_metadata(
     schema = load_schema_from_name("test_metadata_routing")
     section_id = schema.get_section_id_for_block_id("block1")
     expected_path = RoutingPath(
-        ["block1", "block2", "block3"], section_id="default-section"
+        block_ids=["block1", "block2", "block3"], section_id="default-section"
     )
 
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "default-section",
-                "list_item_id": None,
-                "status": CompletionStatus.COMPLETED,
-                "block_ids": ["block1"],
-            }
+            ProgressDict(
+                section_id="default-section",
+                list_item_id=None,
+                status=CompletionStatus.COMPLETED,
+                block_ids=["block1"],
+            )
         ]
     )
 
@@ -317,7 +319,7 @@ def test_routing_path_with_conditional_value_not_in_metadata(
         supplementary_data_store=supplementary_data_store,
     )
 
-    routing_path = path_finder.routing_path(section_id=section_id)
+    routing_path = path_finder.routing_path(SectionKey(section_id))
 
     assert routing_path == expected_path
 
@@ -334,12 +336,12 @@ def test_routing_path_should_skip_block(
 
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "introduction-section",
-                "list_item_id": None,
-                "status": CompletionStatus.COMPLETED,
-                "block_ids": ["do-you-want-to-skip"],
-            }
+            ProgressDict(
+                section_id="introduction-section",
+                list_item_id=None,
+                status=CompletionStatus.COMPLETED,
+                block_ids=["do-you-want-to-skip"],
+            )
         ]
     )
 
@@ -353,12 +355,12 @@ def test_routing_path_should_skip_block(
         {},
         supplementary_data_store=supplementary_data_store,
     )
-    routing_path = path_finder.routing_path(section_id=section_id)
+    routing_path = path_finder.routing_path(SectionKey(section_id))
 
     # Then
     expected_routing_path_ids = ["do-you-want-to-skip"]
     expected_routing_path = RoutingPath(
-        expected_routing_path_ids,
+        block_ids=expected_routing_path_ids,
         section_id="default-section",
     )
 
@@ -377,12 +379,12 @@ def test_routing_path_should_skip_group(
     )
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "default-section",
-                "list_item_id": None,
-                "status": CompletionStatus.COMPLETED,
-                "block_ids": ["do-you-want-to-skip"],
-            }
+            ProgressDict(
+                section_id="default-section",
+                list_item_id=None,
+                status=CompletionStatus.COMPLETED,
+                block_ids=["do-you-want-to-skip"],
+            )
         ]
     )
 
@@ -396,11 +398,11 @@ def test_routing_path_should_skip_group(
         {},
         supplementary_data_store=supplementary_data_store,
     )
-    routing_path = path_finder.routing_path(section_id=section_id)
+    routing_path = path_finder.routing_path(SectionKey(section_id))
 
     # Then
     expected_routing_path = RoutingPath(
-        ["do-you-want-to-skip"],
+        block_ids=["do-you-want-to-skip"],
         section_id="default-section",
     )
 
@@ -419,12 +421,12 @@ def test_routing_path_should_not_skip_group(
     )
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "default-section",
-                "list_item_id": None,
-                "status": CompletionStatus.COMPLETED,
-                "block_ids": ["do-you-want-to-skip"],
-            }
+            ProgressDict(
+                section_id="default-section",
+                list_item_id=None,
+                status=CompletionStatus.COMPLETED,
+                block_ids=["do-you-want-to-skip"],
+            )
         ]
     )
 
@@ -438,11 +440,11 @@ def test_routing_path_should_not_skip_group(
         {},
         supplementary_data_store=supplementary_data_store,
     )
-    routing_path = path_finder.routing_path(section_id=section_id)
+    routing_path = path_finder.routing_path(SectionKey(section_id))
 
     # Then
     expected_routing_path = RoutingPath(
-        ["do-you-want-to-skip", "should-skip"],
+        block_ids=["do-you-want-to-skip", "should-skip"],
         section_id="default-section",
     )
 
@@ -478,7 +480,7 @@ def test_get_routing_path_when_first_block_in_group_skipped(
         block_ids=["do-you-want-to-skip"],
     )
 
-    assert expected_route == path_finder.routing_path(section_id="default-section")
+    assert expected_route == path_finder.routing_path(SectionKey("default-section"))
 
 
 def test_build_path_with_group_routing(
@@ -503,7 +505,7 @@ def test_build_path_with_group_routing(
         {},
         supplementary_data_store=supplementary_data_store,
     )
-    path = path_finder.routing_path(section_id=section_id)
+    path = path_finder.routing_path(SectionKey(section_id))
 
     # Then it should route me straight to Group2 and not Group1
     assert "group1-block" not in path
@@ -555,17 +557,17 @@ def test_remove_answer_and_block_if_routing_backwards(
     assert (
         len(
             path_finder.progress_store.get_completed_block_ids(
-                section_id="default-section"
+                SectionKey("default-section")
             )
         )
         == 3
     )
     assert len(path_finder.answer_store) == 3
 
-    routing_path = path_finder.routing_path(section_id=section_id)
+    routing_path = path_finder.routing_path(SectionKey(section_id))
 
     expected_path = RoutingPath(
-        [
+        block_ids=[
             "route-backwards-block",
             "number-of-employees-total-block",
             "confirm-zero-employees-block",
@@ -575,15 +577,13 @@ def test_remove_answer_and_block_if_routing_backwards(
     )
     assert routing_path == expected_path
     assert path_finder.progress_store.get_completed_block_ids(
-        section_id="default-section"
-    ) == progress_store.get_completed_block_ids(section_id="default-section")
+        SectionKey("default-section")
+    ) == progress_store.get_completed_block_ids(SectionKey("default-section"))
 
     assert len(path_finder.answer_store) == 2
     assert not path_finder.answer_store.get_answer("confirm-zero-employees-answer")
     assert (
-        path_finder.progress_store.get_section_or_repeating_blocks_progress_status(
-            section_id="default-section"
-        )
+        path_finder.progress_store.get_section_status(SectionKey("default-section"))
         == CompletionStatus.IN_PROGRESS
     )
 
@@ -665,12 +665,12 @@ def test_routing_path_block_ids_dependent_on_other_sections_when_rules(
     )
 
     progress = [
-        {
-            "section_id": "skip-section",
-            "list_item_id": None,
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["skip-age"],
-        }
+        ProgressDict(
+            section_id="skip-section",
+            list_item_id=None,
+            status=CompletionStatus.COMPLETED,
+            block_ids=["skip-age"],
+        )
     ]
 
     if skip_confirmation_answer:
@@ -680,12 +680,12 @@ def test_routing_path_block_ids_dependent_on_other_sections_when_rules(
         answer_store.add_or_update(Answer(answer_id="security-answer", value="Yes"))
 
         progress.append(
-            {
-                "section_id": "skip-confirmation-section",
-                "list_item_id": None,
-                "status": CompletionStatus.COMPLETED,
-                "block_ids": ["security", "skip-confirmation"],
-            }
+            ProgressDict(
+                section_id="skip-confirmation-section",
+                list_item_id=None,
+                status=CompletionStatus.COMPLETED,
+                block_ids=["security", "skip-confirmation"],
+            )
         )
 
     progress_store = ProgressStore(progress)
@@ -700,11 +700,11 @@ def test_routing_path_block_ids_dependent_on_other_sections_when_rules(
         response_metadata={},
         supplementary_data_store=supplementary_data_store,
     )
-    routing_path = path_finder.routing_path(section_id=section_id)
+    routing_path = path_finder.routing_path(SectionKey(section_id))
 
     # Then the path is built correctly
     expected_routing_path = RoutingPath(
-        expected_route,
+        block_ids=expected_route,
         section_id=section_id,
     )
     assert routing_path == expected_routing_path
@@ -753,18 +753,18 @@ def test_routing_path_block_ids_dependent_on_other_sections_when_rules_repeating
 
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "skip-section",
-                "list_item_id": None,
-                "status": CompletionStatus.COMPLETED,
-                "block_ids": ["skip-age"],
-            },
-            {
-                "section_id": "household-section",
-                "list_item_id": None,
-                "status": CompletionStatus.COMPLETED,
-                "block_ids": ["list-collector"],
-            },
+            ProgressDict(
+                section_id="skip-section",
+                list_item_id=None,
+                status=CompletionStatus.COMPLETED,
+                block_ids=["skip-age"],
+            ),
+            ProgressDict(
+                section_id="household-section",
+                list_item_id=None,
+                status=CompletionStatus.COMPLETED,
+                block_ids=["list-collector"],
+            ),
         ]
     )
 
@@ -779,12 +779,14 @@ def test_routing_path_block_ids_dependent_on_other_sections_when_rules_repeating
         supplementary_data_store=supplementary_data_store,
     )
     routing_path = path_finder.routing_path(
-        section_id="household-personal-details-section", list_item_id="lCIZsS"
+        SectionKey(
+            section_id="household-personal-details-section", list_item_id="lCIZsS"
+        )
     )
 
     # Then the path is built correctly
     expected_routing_path = RoutingPath(
-        expected_route,
+        block_ids=expected_route,
         section_id="household-personal-details-section",
         list_item_id="lCIZsS",
         list_name="people",

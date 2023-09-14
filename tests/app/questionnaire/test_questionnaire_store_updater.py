@@ -6,17 +6,16 @@ from mock.mock import call
 from ordered_set import OrderedSet
 from werkzeug.datastructures import MultiDict
 
-from app.data_models import QuestionnaireStore, SupplementaryDataStore
+from app.data_models import CompletionStatus, QuestionnaireStore, SupplementaryDataStore
 from app.data_models.answer_store import AnswerDict, AnswerStore
 from app.data_models.list_store import ListStore
-from app.data_models.progress_store import CompletionStatus, ProgressStore
+from app.data_models.progress import ProgressDict
+from app.data_models.progress_store import ProgressStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import AnswerDependent, QuestionnaireSchema
-from app.questionnaire.questionnaire_store_updater import (
-    DependentSection,
-    QuestionnaireStoreUpdater,
-)
+from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.utilities.schema import load_schema_from_name
+from app.utilities.types import DependentSection, SectionKey
 
 
 # pylint: disable=too-many-locals, too-many-lines
@@ -281,7 +280,7 @@ def test_remove_all_answers_with_list_item_id(
     mocker,
 ):
     mock_empty_answer_store = AnswerStore(
-        existing_answers=[
+        answers=[
             {"answer_id": "test1", "value": 1, "list_item_id": "abcdef"},
             {"answer_id": "test2", "value": 2, "list_item_id": "abcdef"},
             {"answer_id": "test3", "value": 3, "list_item_id": "uvwxyz"},
@@ -314,7 +313,7 @@ def test_remove_primary_person(
     mocker,
 ):
     mock_empty_answer_store = AnswerStore(
-        existing_answers=[
+        answers=[
             {"answer_id": "test1", "value": 1, "list_item_id": "abcdef"},
             {"answer_id": "test2", "value": 2, "list_item_id": "abcdef"},
             {"answer_id": "test3", "value": 3, "list_item_id": "xyzabc"},
@@ -475,7 +474,7 @@ def test_update_same_name_items(
     mocker,
 ):
     mock_empty_answer_store = AnswerStore(
-        existing_answers=[
+        answers=[
             {"answer_id": "first-name", "value": "Joe", "list_item_id": "abcdef"},
             {
                 "answer_id": "middle-name",
@@ -841,29 +840,29 @@ def test_update_repeating_answers_with_answer_dependents(
     [
         (
             # When an answer is changed which causes the path of a dependent section to be incomplete, Then that sections is update to IN_PROGRESS
-            "COMPLETED",
+            CompletionStatus.COMPLETED,
             "answer updated",
             False,
-            "IN_PROGRESS",
+            CompletionStatus.IN_PROGRESS,
         ),
         (
             # When an answer is changed which causes the path of a dependent section to be complete, Then that sections is update to COMPLETED
-            "IN_PROGRESS",
+            CompletionStatus.IN_PROGRESS,
             "answer updated",
             True,
-            "COMPLETED",
+            CompletionStatus.COMPLETED,
         ),
         (  # When an answer is not changed, Then a dependent section status should not change
-            "IN_PROGRESS",
+            CompletionStatus.IN_PROGRESS,
             "original answer",
             False,
-            "IN_PROGRESS",
+            CompletionStatus.IN_PROGRESS,
         ),
         (  # When an answer is not changed, Then a dependent section status should not change
-            "COMPLETED",
+            CompletionStatus.COMPLETED,
             "original answer",
             True,
-            "COMPLETED",
+            CompletionStatus.COMPLETED,
         ),
     ],
 )
@@ -900,11 +899,11 @@ def test_answer_id_section_dependents(
     )
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "section-2",
-                "block_ids": ["second-block"],
-                "status": section_status,
-            }
+            ProgressDict(
+                section_id="section-2",
+                block_ids=["second-block"],
+                status=section_status,
+            )
         ],
     )
     current_question = mock_schema.get_block(location.block_id)["question"]
@@ -919,12 +918,7 @@ def test_answer_id_section_dependents(
     questionnaire_store_updater.update_answers(form_data)
     questionnaire_store_updater.update_progress_for_dependent_sections()
 
-    assert (
-        progress_store.get_section_or_repeating_blocks_progress_status(
-            section_id="section-2"
-        )
-        is expected_status
-    )
+    assert progress_store.get_section_status(SectionKey("section-2")) is expected_status
 
 
 @pytest.mark.parametrize(
@@ -933,42 +927,42 @@ def test_answer_id_section_dependents(
     [
         (
             # When an answer is changed which causes repeating dependent section to be incomplete, Then those repeating sections are updated to IN_PROGRESS
-            "COMPLETED",
-            "COMPLETED",
+            CompletionStatus.COMPLETED,
+            CompletionStatus.COMPLETED,
             "answer updated",
             False,
             False,
-            "IN_PROGRESS",
-            "IN_PROGRESS",
+            CompletionStatus.IN_PROGRESS,
+            CompletionStatus.IN_PROGRESS,
         ),
         (
             # When an answer is changed which causes repeating dependent section to be complete, Then those repeating sections are updated to COMPLETED
-            "IN_PROGRESS",
-            "IN_PROGRESS",
+            CompletionStatus.IN_PROGRESS,
+            CompletionStatus.IN_PROGRESS,
             "answer updated",
             True,
             True,
-            "COMPLETED",
-            "COMPLETED",
+            CompletionStatus.COMPLETED,
+            CompletionStatus.COMPLETED,
         ),
         (
             # When an answer is changed which causes repeating section paths to change, Then those repeating sections statuses are updated correctly
-            "COMPLETED",
-            "IN_PROGRESS",
+            CompletionStatus.COMPLETED,
+            CompletionStatus.IN_PROGRESS,
             "answer updated",
             False,
             True,
-            "IN_PROGRESS",
-            "COMPLETED",
+            CompletionStatus.IN_PROGRESS,
+            CompletionStatus.COMPLETED,
         ),
         (  # When an answer is not changed, Then a repeating dependent section status should not change
-            "COMPLETED",
-            "IN_PROGRESS",
+            CompletionStatus.COMPLETED,
+            CompletionStatus.IN_PROGRESS,
             "original answer",
             True,
             False,
-            "COMPLETED",
-            "IN_PROGRESS",
+            CompletionStatus.COMPLETED,
+            CompletionStatus.IN_PROGRESS,
         ),
     ],
 )
@@ -1020,18 +1014,18 @@ def test_answer_id_section_dependents_repeating(
 
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "section-2",
-                "block_ids": ["second-block"],
-                "status": list_item_1_section_status,
-                "list_item_id": "list-item-id-1",
-            },
-            {
-                "section_id": "section-2",
-                "block_ids": ["second-block"],
-                "status": list_item_2_section_status,
-                "list_item_id": "list-item-id-2",
-            },
+            ProgressDict(
+                section_id="section-2",
+                block_ids=["second-block"],
+                status=list_item_1_section_status,
+                list_item_id="list-item-id-1",
+            ),
+            ProgressDict(
+                section_id="section-2",
+                block_ids=["second-block"],
+                status=list_item_2_section_status,
+                list_item_id="list-item-id-2",
+            ),
         ],
     )
     current_question = mock_schema.get_block(location.block_id)["question"]
@@ -1058,15 +1052,11 @@ def test_answer_id_section_dependents_repeating(
     questionnaire_store_updater.update_progress_for_dependent_sections()
 
     assert (
-        progress_store.get_section_or_repeating_blocks_progress_status(
-            section_id="section-2", list_item_id="list-item-id-1"
-        )
+        progress_store.get_section_status(SectionKey("section-2", "list-item-id-1"))
         is expected_list_item_1_status
     )
     assert (
-        progress_store.get_section_or_repeating_blocks_progress_status(
-            section_id="section-2", list_item_id="list-item-id-2"
-        )
+        progress_store.get_section_status(SectionKey("section-2", "list-item-id-2"))
         is expected_list_item_2_status
     )
 
@@ -1129,18 +1119,18 @@ def test_dependent_sections_completed_dependant_blocks_removed_and_status_update
     )
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "company-summary-section",
-                "block_ids": ["total-turnover-block", "total-employees-block"],
-                "status": "COMPLETED",
-            },
-            {
-                "section_id": "breakdown-section",
-                "block_ids": [
+            ProgressDict(
+                section_id="company-summary-section",
+                block_ids=["total-turnover-block", "total-employees-block"],
+                status=CompletionStatus.COMPLETED,
+            ),
+            ProgressDict(
+                section_id="breakdown-section",
+                block_ids=[
                     "turnover-breakdown-block",
                 ],
-                "status": dependent_section_status,
-            },
+                status=dependent_section_status,
+            ),
         ],
     )
 
@@ -1157,7 +1147,7 @@ def test_dependent_sections_completed_dependant_blocks_removed_and_status_update
     }
 
     assert dependent_block_id in progress_store.get_completed_block_ids(
-        section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
+        section_key=SectionKey(*dependent_section_key)
     )
 
     mocker.patch(
@@ -1174,11 +1164,11 @@ def test_dependent_sections_completed_dependant_blocks_removed_and_status_update
 
     # Then
     assert dependent_block_id not in progress_store.get_completed_block_ids(
-        section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
+        section_key=SectionKey(*dependent_section_key)
     )
     assert (
-        progress_store.get_section_or_repeating_blocks_progress_status(
-            section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
+        progress_store.get_section_status(
+            section_key=SectionKey(*dependent_section_key)
         )
         == CompletionStatus.IN_PROGRESS
     )
@@ -1191,14 +1181,14 @@ def test_dependent_sections_current_section_status_not_updated(mocker):
     )
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "breakdown-section",
-                "block_ids": [
+            ProgressDict(
+                section_id="breakdown-section",
+                block_ids=[
                     "total-turnover-block",
                     "turnover-breakdown-block",
                 ],
-                "status": CompletionStatus.COMPLETED,
-            },
+                status=CompletionStatus.COMPLETED,
+            ),
         ],
     )
     questionnaire_store_updater = get_questionnaire_store_updater(
@@ -1211,11 +1201,9 @@ def test_dependent_sections_current_section_status_not_updated(mocker):
         dependent_section_key: {dependent_block_id}
     }
 
-    questionnaire_store_updater.update_section_or_repeating_blocks_progress_completion_status = (
-        mocker.Mock()
-    )
+    questionnaire_store_updater.update_section_status = mocker.Mock()
     assert dependent_block_id in progress_store.get_completed_block_ids(
-        section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
+        section_key=SectionKey(*dependent_section_key)
     )
 
     # When
@@ -1224,13 +1212,10 @@ def test_dependent_sections_current_section_status_not_updated(mocker):
 
     # Then
     assert dependent_block_id not in progress_store.get_completed_block_ids(
-        section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
+        section_key=SectionKey(*dependent_section_key)
     )
     # Status for current section is handled separately by handle post.
-    assert (
-        questionnaire_store_updater.update_section_or_repeating_blocks_progress_completion_status.call_count
-        == 0
-    )
+    assert questionnaire_store_updater.update_section_status.call_count == 0
 
 
 def test_dependent_sections_not_started_skipped(mock_router, mocker):
@@ -1243,11 +1228,11 @@ def test_dependent_sections_not_started_skipped(mock_router, mocker):
     )
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "company-summary-section",
-                "block_ids": ["total-turnover-block", "total-employees-block"],
-                "status": "COMPLETED",
-            }
+            ProgressDict(
+                section_id="company-summary-section",
+                block_ids=["total-turnover-block", "total-employees-block"],
+                status=CompletionStatus.COMPLETED,
+            )
         ],
     )
     questionnaire_store_updater = get_questionnaire_store_updater(
@@ -1265,9 +1250,7 @@ def test_dependent_sections_not_started_skipped(mock_router, mocker):
     }
 
     questionnaire_store_updater.remove_completed_location = mocker.Mock()
-    questionnaire_store_updater.update_section_or_repeating_blocks_progress_completion_status = (
-        mocker.Mock()
-    )
+    questionnaire_store_updater.update_section_status = mocker.Mock()
 
     # When
     questionnaire_store_updater.remove_dependent_blocks_and_capture_dependent_sections()
@@ -1275,10 +1258,7 @@ def test_dependent_sections_not_started_skipped(mock_router, mocker):
 
     # Then
     assert questionnaire_store_updater.remove_completed_location.call_count == 0
-    assert (
-        questionnaire_store_updater.update_section_or_repeating_blocks_progress_completion_status.call_count
-        == 0
-    )
+    assert questionnaire_store_updater.update_section_status.call_count == 0
 
 
 def test_dependent_sections_started_but_blocks_incomplete(mock_router, mocker):
@@ -1288,18 +1268,18 @@ def test_dependent_sections_started_but_blocks_incomplete(mock_router, mocker):
     )
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "company-summary-section",
-                "block_ids": ["total-turnover-block", "total-employees-block"],
-                "status": "COMPLETED",
-            },
-            {
-                "section_id": "breakdown-section",
-                "block_ids": [
+            ProgressDict(
+                section_id="company-summary-section",
+                block_ids=["total-turnover-block", "total-employees-block"],
+                status=CompletionStatus.COMPLETED,
+            ),
+            ProgressDict(
+                section_id="breakdown-section",
+                block_ids=[
                     "turnover-breakdown-block",
                 ],
-                "status": "IN_PROGRESS",
-            },
+                status=CompletionStatus.IN_PROGRESS,
+            ),
         ],
     )
     questionnaire_store_updater = get_questionnaire_store_updater(
@@ -1314,12 +1294,10 @@ def test_dependent_sections_started_but_blocks_incomplete(mock_router, mocker):
     questionnaire_store_updater.dependent_block_id_by_section_key = {
         dependent_section_key: {dependent_block_id}
     }
-    questionnaire_store_updater.update_section_or_repeating_blocks_progress_completion_status = (
-        mocker.Mock()
-    )
+    questionnaire_store_updater.update_section_status = mocker.Mock()
 
     assert dependent_block_id not in progress_store.get_completed_block_ids(
-        section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
+        section_key=SectionKey(*dependent_section_key)
     )
 
     # When
@@ -1327,10 +1305,7 @@ def test_dependent_sections_started_but_blocks_incomplete(mock_router, mocker):
     questionnaire_store_updater.update_progress_for_dependent_sections()
 
     # Then
-    assert (
-        questionnaire_store_updater.update_section_or_repeating_blocks_progress_completion_status.call_count
-        == 0
-    )
+    assert questionnaire_store_updater.update_section_status.call_count == 0
 
 
 @pytest.mark.parametrize(
@@ -1356,11 +1331,11 @@ def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_sta
     )
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "company-summary-section",
-                "block_ids": ["total-turnover-block", "total-employees-block"],
-                "status": "COMPLETED",
-            },
+            ProgressDict(
+                section_id="company-summary-section",
+                block_ids=["total-turnover-block", "total-employees-block"],
+                status=CompletionStatus.COMPLETED,
+            ),
             {
                 "section_id": "breakdown-section",
                 "list_item_id": "item-1",
@@ -1413,12 +1388,10 @@ def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_sta
     for list_item in list_store["some-list"]:
         section_id, list_item_id = "breakdown-section", list_item
         assert "turnover-breakdown-block" not in progress_store.get_completed_block_ids(
-            section_id=section_id, list_item_id=list_item_id
+            SectionKey(section_id, list_item_id)
         )
         assert (
-            progress_store.get_section_or_repeating_blocks_progress_status(
-                section_id, list_item_id
-            )
+            progress_store.get_section_status(SectionKey(section_id, list_item_id))
             == CompletionStatus.IN_PROGRESS
         )
         assert questionnaire_store_updater.dependent_sections == {
@@ -1444,18 +1417,18 @@ def test_dependent_sections_added_dependant_block_removed(
     )
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "company-summary-section",
-                "block_ids": ["total-turnover-block", "total-employees-block"],
-                "status": "COMPLETED",
-            },
-            {
-                "section_id": "breakdown-section",
-                "block_ids": [
+            ProgressDict(
+                section_id="company-summary-section",
+                block_ids=["total-turnover-block", "total-employees-block"],
+                status=CompletionStatus.COMPLETED,
+            ),
+            ProgressDict(
+                section_id="breakdown-section",
+                block_ids=[
                     "turnover-breakdown-block",
                 ],
-                "status": dependent_section_status,
-            },
+                status=dependent_section_status,
+            ),
         ],
     )
     questionnaire_store_updater = get_questionnaire_store_updater(
@@ -1471,7 +1444,7 @@ def test_dependent_sections_added_dependant_block_removed(
     }
 
     assert dependent_block_id in progress_store.get_completed_block_ids(
-        section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
+        section_key=SectionKey(*dependent_section_key)
     )
     assert questionnaire_store_updater.dependent_sections == set()
 
@@ -1480,7 +1453,7 @@ def test_dependent_sections_added_dependant_block_removed(
 
     # Then
     assert dependent_block_id not in progress_store.get_completed_block_ids(
-        section_id=dependent_section_key[0], list_item_id=dependent_section_key[1]
+        section_key=SectionKey(*dependent_section_key)
     )
     assert questionnaire_store_updater.dependent_sections == {
         DependentSection(
@@ -1496,37 +1469,37 @@ def test_dependent_sections_added_dependant_block_removed(
             # s1.s1 -> s1.s2 -> s2.s3 -> s3.s4 -> s3.s5 -> s3.s7 -> s2.s6
             [],
             [
-                call("section-1", list_item_id=None),
-                call("section-2", list_item_id=None),
-                call("section-3", list_item_id=None),
-                call("section-4", list_item_id=None),
-                call("section-5", list_item_id=None),
-                call("section-7", list_item_id=None),
-                call("section-6", list_item_id=None),
+                call(SectionKey("section-1")),
+                call(SectionKey("section-2")),
+                call(SectionKey("section-3")),
+                call(SectionKey("section-4")),
+                call(SectionKey("section-5")),
+                call(SectionKey("section-7")),
+                call(SectionKey("section-6")),
             ],
         ),
         (
             # s1 -> s1.s2 -> s1.s3 -> s3.s4 -> s3.s5 -> s3.s7
             ["section-2"],
             [
-                call("section-1", list_item_id=None),
-                call("section-2", list_item_id=None),
-                call("section-3", list_item_id=None),
-                call("section-4", list_item_id=None),
-                call("section-5", list_item_id=None),
-                call("section-7", list_item_id=None),
+                call(SectionKey("section-1")),
+                call(SectionKey("section-2")),
+                call(SectionKey("section-3")),
+                call(SectionKey("section-4")),
+                call(SectionKey("section-5")),
+                call(SectionKey("section-7")),
             ],
         ),
         (
             # s1 -> s1.s2 -> s2.s3 -> s2.s4 -> s2.s5 -> s2.s6
             ["section-3"],
             [
-                call("section-1", list_item_id=None),
-                call("section-2", list_item_id=None),
-                call("section-3", list_item_id=None),
-                call("section-4", list_item_id=None),
-                call("section-5", list_item_id=None),
-                call("section-6", list_item_id=None),
+                call(SectionKey("section-1")),
+                call(SectionKey("section-2")),
+                call(SectionKey("section-3")),
+                call(SectionKey("section-4")),
+                call(SectionKey("section-5")),
+                call(SectionKey("section-6")),
             ],
         ),
     ],

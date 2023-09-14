@@ -9,7 +9,6 @@ class ListCollectorContent(ListCollector):
     def handle_post(self) -> None:
         if self._is_list_collector_complete():
             self._routing_path = self.router.routing_path(
-                section_id=self._current_location.section_id,
-                list_item_id=self._current_location.list_item_id,
+                self._current_location.section_key
             )
             return super(Question, self).handle_post()

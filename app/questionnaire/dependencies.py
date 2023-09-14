@@ -48,8 +48,8 @@ def get_routing_path_block_ids_by_section_for_dependent_sections(
         if key in sections_to_ignore:
             continue
 
-        if key in progress_store.started_section_and_repeating_blocks_progress_keys():
-            routing_path = path_finder.routing_path(*key)
+        if key in progress_store.started_section_keys():
+            routing_path = path_finder.routing_path(key)
             block_ids_by_section[key] = routing_path.block_ids
 
     return block_ids_by_section

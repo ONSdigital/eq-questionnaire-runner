@@ -3,6 +3,8 @@ from typing import Any, Mapping
 
 from flask import url_for
 
+from app.questionnaire.location import SectionKey
+
 
 @dataclass
 class RelationshipLocation:
@@ -32,3 +34,7 @@ class RelationshipLocation:
             block_id=self.block_id,
             **kwargs,
         )
+
+    @property
+    def section_key(self) -> SectionKey:
+        return SectionKey(self.section_id, self.list_item_id)
