@@ -117,7 +117,7 @@ class HubContext(Context):
 
     @staticmethod
     def get_section_url(
-        section_id: str, list_item_id: Optional[str], section_status: str
+        section_id: str, list_item_id: Optional[str], section_status: CompletionStatus
     ) -> str:
         if section_status == CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED:
             return url_for(
