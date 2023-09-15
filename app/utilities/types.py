@@ -7,6 +7,8 @@ if TYPE_CHECKING:
     )
 
 LocationType: TypeAlias = Union["Location", "RelationshipLocation"]
+SupplementaryDataKeyType: TypeAlias = tuple[str, str | None]
+SupplementaryDataValueType: TypeAlias = dict | str | list | None
 
 
 class SectionKeyDict(TypedDict):
@@ -37,3 +39,8 @@ class DependentSection(NamedTuple):
     @property
     def section_key(self) -> SectionKey:
         return SectionKey(self.section_id, self.list_item_id)
+
+
+class SupplementaryDataListMapping(TypedDict):
+    identifier: str | int
+    list_item_id: str

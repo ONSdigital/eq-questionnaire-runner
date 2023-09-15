@@ -146,7 +146,7 @@ def get_payload_data(
         for list_ in lists:
             # for any lists that were populated by supplementary data, provide the identifier -> list_item_id mappings
             if mapping := supplementary_data_store.list_mappings.get(list_["name"]):
-                list_["supplementary_data_mapping"] = mapping
+                list_["supplementary_data_mappings"] = mapping
 
         data: dict[str, list | dict] = {"answers": answers, "lists": lists}
 
