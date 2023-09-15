@@ -1,6 +1,7 @@
 import pytest
 
-from app.data_models.progress_store import CompletionStatus, ProgressStore
+from app.data_models import CompletionStatus
+from app.data_models.progress_store import ProgressStore
 from app.questionnaire import Location
 from app.questionnaire.routing_path import RoutingPath
 from app.views.contexts.grand_calculated_summary_context import (
@@ -60,7 +61,7 @@ def test_build_view_context_for_grand_calculated_summary(
         answer_store=test_grand_calculated_summary_answers,
         list_store=list_store,
         progress_store=ProgressStore(
-            in_progress_sections_and_repeating_blocks=[
+            progress=[
                 {
                     "section_id": "section-1",
                     "status": CompletionStatus.COMPLETED,

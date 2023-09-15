@@ -2,6 +2,7 @@ from typing import Iterable, Mapping
 
 from werkzeug.datastructures import ImmutableDict
 
+from app.questionnaire.location import SectionKey
 from app.questionnaire.questionnaire_schema import (
     get_calculation_block_ids_for_grand_calculated_summary,
 )
@@ -48,10 +49,7 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
         }
         # find any sections involved in the grand calculated summary (but only if they have started, to avoid evaluating the path if not necessary)
         started_sections = [
-            key
-            for key, _ in self._progress_store.started_section_and_repeating_blocks_progress_keys(
-                section_ids
-            )
+            key for key, _ in self._progress_store.started_section_keys(section_ids)
         ]
         routing_path_block_ids: list[str] = []
 
@@ -61,7 +59,7 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
             else:
                 routing_path_block_ids.extend(
                     # repeating calculated summaries are not supported at the moment, so no list item is needed
-                    self._router.routing_path(section_id).block_ids
+                    self._router.routing_path(SectionKey(section_id)).block_ids
                 )
 
         return routing_path_block_ids

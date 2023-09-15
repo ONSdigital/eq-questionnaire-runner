@@ -79,7 +79,7 @@ class RelationshipQuestion(Question):
         )
 
     def _get_routing_path(self) -> RoutingPath:
-        return self.router.routing_path(section_id=self.parent_location.section_id)
+        return self.router.routing_path(self.parent_location.section_key)
 
     def is_location_valid(self) -> bool:
         can_access_parent_location = self.router.can_access_location(

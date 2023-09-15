@@ -5,6 +5,8 @@ from typing import Any, Mapping
 
 from flask import url_for
 
+from app.utilities.types import SectionKey
+
 
 class InvalidLocationException(Exception):
     def __init__(self, value: str):
@@ -57,3 +59,7 @@ class Location:
             list_item_id=self.list_item_id,
             **kwargs,
         )
+
+    @property
+    def section_key(self) -> SectionKey:
+        return SectionKey(self.section_id, self.list_item_id)

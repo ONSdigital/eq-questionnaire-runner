@@ -129,10 +129,10 @@ class ListStore:
     ```
     """
 
-    def __init__(self, existing_items: Optional[Iterable[ListModelDictType]] = None):
-        existing_items = existing_items or []
+    def __init__(self, items: Optional[Iterable[ListModelDictType]] = None):
+        items = items or []
 
-        self._lists = self._build_map(existing_items)
+        self._lists = self._build_map(items)
 
         self._is_dirty = False
 
@@ -235,4 +235,4 @@ class ListStore:
         if not serialized:
             return cls()
 
-        return cls(existing_items=serialized)
+        return cls(items=serialized)

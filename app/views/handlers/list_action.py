@@ -21,8 +21,7 @@ class ListAction(Question):
         )
 
     def _get_routing_path(self) -> RoutingPath:
-        """Only the section id is required, as list collectors won't be in a repeating section"""
-        return self.router.routing_path(section_id=self.parent_location.section_id)
+        return self.router.routing_path(self.parent_location.section_key)
 
     def is_location_valid(self) -> bool:
         can_access_parent_location = self.router.can_access_location(
@@ -50,7 +49,7 @@ class ListAction(Question):
         if (
             self._return_to == "section-summary"
             and self.router.can_display_section_summary(
-                self.parent_location.section_id, self.parent_location.list_item_id
+                self.parent_location.section_key
             )
         ):
             return url_for(
@@ -67,11 +66,10 @@ class ListAction(Question):
         if url := self.get_section_or_final_summary_url():
             return url
 
-        if self.router.is_block_complete(
+        if self._questionnaire_store.progress_store.is_block_complete(
             # Type ignore: block_id would exist at this point
             block_id=self.parent_location.block_id,  # type: ignore
-            section_id=self.parent_location.section_id,
-            list_item_id=self.parent_location.list_item_id,
+            section_key=self.parent_location.section_key,
         ):
             return self.router.get_next_location_url(
                 self.parent_location,

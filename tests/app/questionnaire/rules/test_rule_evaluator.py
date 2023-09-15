@@ -13,6 +13,7 @@ from app.data_models import (
 )
 from app.data_models.answer import Answer
 from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.progress import CompletionStatus, ProgressDict
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.operator import Operator
@@ -275,12 +276,12 @@ def test_metadata_source(metadata_value, expected_result):
 def test_progress_source(identifier, selector, expected_result):
     schema = load_schema_from_name("test_progress_value_source_blocks")
     in_progress_sections = [
-        {
-            "section_id": "section-1",
-            "list_item_id": None,
-            "status": "COMPLETED",
-            "block_ids": ["s1-b1", "s1-b2"],
-        },
+        ProgressDict(
+            section_id="section-1",
+            list_item_id=None,
+            status=CompletionStatus.COMPLETED,
+            block_ids=["s1-b1", "s1-b2"],
+        ),
     ]
 
     rule_evaluator = get_rule_evaluator(

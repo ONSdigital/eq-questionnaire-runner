@@ -5,6 +5,7 @@ from app.data_models.answer_store import AnswerStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
 from app.data_models.supplementary_data_store import SupplementaryDataStore
+from app.questionnaire.location import SectionKey
 from app.utilities.json import json_dumps, json_loads
 from app.utilities.make_immutable import make_immutable
 
@@ -33,14 +34,14 @@ def test_questionnaire_store_json_loads(
     assert (
         len(
             store.progress_store.get_completed_block_ids(
-                section_id="a-test-section", list_item_id="abc123"
+                SectionKey("a-test-section", "abc123")
             )
         )
         == 1
     )
     assert (
         store.progress_store.get_completed_block_ids(
-            section_id="a-test-section", list_item_id="abc123"
+            SectionKey("a-test-section", "abc123")
         )[0]
         == expected_completed_block_ids
     )
