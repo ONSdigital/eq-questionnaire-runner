@@ -1,9 +1,10 @@
 from app.questionnaire.routing_path import RoutingPath
+from app.utilities.types import SectionKey
 
 
 def test_eq_to_routing_path(block_ids, routing_path):
     assert routing_path == RoutingPath(
-        block_ids,
+        block_ids=block_ids,
         section_id="section-1",
         list_item_id="list_item_id",
         list_name="list_name",
@@ -40,3 +41,4 @@ def test_properties(block_ids, routing_path):
     assert "section-1" == routing_path.section_id
     assert "list_item_id" == routing_path.list_item_id
     assert "list_name" == routing_path.list_name
+    assert SectionKey("section-1", "list_item_id") == routing_path.section_key

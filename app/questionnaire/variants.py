@@ -146,7 +146,7 @@ def transform_variants(
 
         output_block["content"] = content
 
-    if block["type"] in ("ListCollector", "PrimaryPersonListCollector"):
+    if block["type"] in {"ListCollector", "PrimaryPersonListCollector"}:
         list_operations = ["add_block", "edit_block", "remove_block"]
         for list_operation in list_operations:
             if block.get(list_operation):

@@ -7,6 +7,7 @@ from app.data_models import (
     ProgressStore,
     SupplementaryDataStore,
 )
+from app.data_models.progress import CompletionStatus, ProgressDict
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts.summary_context import SummaryContext
@@ -59,45 +60,45 @@ def test_context_for_summary():
 
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "name-section",
-                "block_ids": ["name", "address"],
-                "status": "COMPLETED",
-            },
-            {
-                "section_id": "section",
-                "block_ids": ["primary-person-list-collector", "list-collector"],
-                "status": "COMPLETED",
-            },
-            {
-                "section_id": "questions-section",
-                "block_ids": [
+            ProgressDict(
+                section_id="name-section",
+                block_ids=["name", "address"],
+                status=CompletionStatus.COMPLETED,
+            ),
+            ProgressDict(
+                section_id="section",
+                block_ids=["primary-person-list-collector", "list-collector"],
+                status=CompletionStatus.COMPLETED,
+            ),
+            ProgressDict(
+                section_id="questions-section",
+                block_ids=[
                     "skip-first-block",
                     "second-number-block",
                     "currency-total-playback-1",
                 ],
-                "status": "COMPLETED",
-            },
-            {
-                "section_id": "calculated-summary-section",
-                "block_ids": [
+                status=CompletionStatus.COMPLETED,
+            ),
+            ProgressDict(
+                section_id="calculated-summary-section",
+                block_ids=[
                     "third-number-block",
                     "currency-total-playback-2",
                     "mutually-exclusive-checkbox",
                 ],
-                "status": "COMPLETED",
-                "list_item_id": "jufPpX",
-            },
-            {
-                "section_id": "calculated-summary-section",
-                "block_ids": [
+                status=CompletionStatus.COMPLETED,
+                list_item_id="jufPpX",
+            ),
+            ProgressDict(
+                section_id="calculated-summary-section",
+                block_ids=[
                     "third-number-block",
                     "currency-total-playback-2",
                     "mutually-exclusive-checkbox",
                 ],
-                "status": "COMPLETED",
-                "list_item_id": "fjWZET",
-            },
+                status=CompletionStatus.COMPLETED,
+                list_item_id="fjWZET",
+            ),
         ]
     )
 

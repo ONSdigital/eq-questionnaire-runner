@@ -40,7 +40,7 @@ class SectionHandler:
         )
 
         self._routing_path = self._router.routing_path(
-            section_id=self._section_id, list_item_id=self._list_item_id
+            self.current_location.section_key
         )
 
     def get_context(self) -> Mapping:
@@ -69,7 +69,7 @@ class SectionHandler:
 
     def can_display_summary(self) -> bool:
         return self._router.can_display_section_summary(
-            self._section_id, self._list_item_id
+            self.current_location.section_key
         )
 
     def _is_valid_location(self) -> bool:

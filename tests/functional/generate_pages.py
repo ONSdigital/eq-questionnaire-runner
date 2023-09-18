@@ -988,9 +988,11 @@ def process_block(
                 process_question(question, page_spec, num_questions, page_name)
 
         if block["type"] == "ListCollector":
-            page_spec.write(LIST_SUMMARY_LABEL_GETTER)
             page_spec.write(LIST_SUMMARY_EDIT_LINK_GETTER)
             page_spec.write(LIST_SUMMARY_REMOVE_LINK_GETTER)
+
+        if block["type"] in {"ListCollector", "ListCollectorContent"}:
+            page_spec.write(LIST_SUMMARY_LABEL_GETTER)
             page_spec.write(LIST_SUMMARY_LIST_GETTER)
 
         if block["type"] == "UnrelatedQuestion":

@@ -1152,5 +1152,124 @@ def test_summary_item_config_with_list_collector():
     assert to_dict(expected) == to_dict(result)
 
 
+@pytest.mark.usefixtures("gb_locale")
+def test_summary_item_config_with_list_collector_and_one_related_answer():
+    expected = [
+        {
+            "rowItems": [
+                {
+                    "actions": [
+                        {
+                            "visuallyHiddenText": "Change your answer for:",
+                            "attributes": {"data-qa": "list-item-change-1-link"},
+                            "text": "Change",
+                            "url": "change_link_url",
+                        },
+                        {
+                            "visuallyHiddenText": "Remove Company A",
+                            "attributes": {"data-qa": "list-item-remove-1-link"},
+                            "text": "Remove",
+                            "url": "remove_link_url",
+                        },
+                    ],
+                    "iconType": None,
+                    "id": "vmmPmD",
+                    "rowTitle": "Company A",
+                    "rowTitleAttributes": {
+                        "data-list-item-id": "vmmPmD",
+                        "data-qa": "list-item-1-label",
+                    },
+                },
+                {
+                    "actions": [
+                        {
+                            "visuallyHiddenText": "Change your answer for: "
+                            "Registration number",
+                            "attributes": {
+                                "data-ga": "click",
+                                "data-ga-action": "Edit click",
+                                "data-ga-category": "Summary",
+                                "data-qa": "registration-number-edit",
+                            },
+                            "text": "Change",
+                            "url": "edit_link_url",
+                        }
+                    ],
+                    "attributes": {"data-qa": "registration-number"},
+                    "id": "registration-number",
+                    "rowTitle": "Registration number",
+                    "rowTitleAttributes": {"data-qa": "registration-number-label"},
+                    "valueList": [{"text": "123"}],
+                },
+            ]
+        }
+    ]
+
+    result = map_summary_item_config(
+        group={
+            "blocks": [
+                {
+                    "title": "Companies or UK branches",
+                    "type": "List",
+                    "add_link": "/questionnaire/companies/add-company/?return_to=section-summary",
+                    "add_link_text": "Add another UK company or branch",
+                    "empty_list_text": "No UK company or branch added",
+                    "list_name": "companies",
+                    "related_answers": {
+                        "vmmPmD": [
+                            {
+                                "id": "edit-company",
+                                "title": None,
+                                "number": None,
+                                "question": {
+                                    "id": "add-question",
+                                    "type": "General",
+                                    "title": "Give details about the company or branch that undertakes general insurance business",
+                                    "number": None,
+                                    "answers": [
+                                        {
+                                            "id": "registration-number",
+                                            "label": "Registration number",
+                                            "value": 123,
+                                            "type": "number",
+                                            "unit": None,
+                                            "unit_length": None,
+                                            "currency": None,
+                                            "link": "edit_link_url",
+                                        }
+                                    ],
+                                },
+                            }
+                        ]
+                    },
+                    "answer_title": "Name of UK company or branch",
+                    "list": {
+                        "list_items": [
+                            {
+                                "item_title": "Company A",
+                                "primary_person": False,
+                                "list_item_id": "vmmPmD",
+                                "edit_link": "change_link_url",
+                                "remove_link": "remove_link_url",
+                            }
+                        ],
+                        "editable": True,
+                    },
+                }
+            ],
+        },
+        summary_type="SectionSummary",
+        answers_are_editable=True,
+        no_answer_provided="No answer Provided",
+        remove_link_aria_label="Remove Company A",
+        remove_link_text="Remove",
+        edit_link_text="Change",
+        edit_link_aria_label="Change your answer for:",
+        calculated_question={},
+    )
+
+    assert to_dict(expected) == to_dict(result)
+
+
 def to_dict(obj):
     return json.loads(json.dumps(obj, default=lambda o: o.__dict__))

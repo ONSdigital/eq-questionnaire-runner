@@ -159,7 +159,7 @@ def test_context_for_section_list_summary(
         response_metadata={},
         current_location=Location(section_id="section"),
         routing_path=RoutingPath(
-            [
+            block_ids=[
                 "primary-person-list-collector",
                 "list-collector",
                 "visitor-list-collector",
@@ -298,7 +298,7 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
         response_metadata={},
         current_location=Location(section_id="section-companies"),
         routing_path=RoutingPath(
-            [
+            block_ids=[
                 "any-other-companies-or-branches",
             ],
             section_id="section-companies",
@@ -483,7 +483,9 @@ def test_context_for_driving_question_summary_empty_list():
         metadata=None,
         response_metadata={},
         current_location=Location(section_id="section"),
-        routing_path=RoutingPath(["anyone-usually-live-at"], section_id="section"),
+        routing_path=RoutingPath(
+            block_ids=["anyone-usually-live-at"], section_id="section"
+        ),
         supplementary_data_store=SupplementaryDataStore(),
     )
 
@@ -538,7 +540,8 @@ def test_context_for_driving_question_summary(progress_store):
         response_metadata={},
         current_location=Location(section_id="section"),
         routing_path=RoutingPath(
-            ["anyone-usually-live-at", "anyone-else-live-at"], section_id="section"
+            block_ids=["anyone-usually-live-at", "anyone-else-live-at"],
+            section_id="section",
         ),
         supplementary_data_store=SupplementaryDataStore(),
     )
@@ -657,7 +660,7 @@ def test_primary_only_links_for_section_summary(people_answer_store):
         response_metadata={},
         current_location=Location(section_id="section"),
         routing_path=RoutingPath(
-            [
+            block_ids=[
                 "primary-person-list-collector",
                 "list-collector",
                 "visitor-list-collector",
@@ -696,7 +699,7 @@ def test_primary_links_for_section_summary(people_answer_store):
         response_metadata={},
         current_location=Location(section_id="section"),
         routing_path=RoutingPath(
-            [
+            block_ids=[
                 "primary-person-list-collector",
                 "list-collector",
                 "visitor-list-collector",

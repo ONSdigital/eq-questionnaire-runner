@@ -5,7 +5,8 @@ from flask import url_for
 from flask_babel import lazy_gettext
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models.progress_store import CompletionStatus
+from app.data_models import CompletionStatus
+from app.questionnaire.location import SectionKey
 from app.views.contexts import Context
 
 
@@ -80,7 +81,7 @@ class HubContext(Context):
     def get_row_context_for_section(
         self,
         section_name: Optional[str],
-        section_status: str,
+        section_status: CompletionStatus,
         section_url: str,
         row_id: str,
     ) -> dict[str, Union[str, list]]:
@@ -116,7 +117,7 @@ class HubContext(Context):
 
     @staticmethod
     def get_section_url(
-        section_id: str, list_item_id: Optional[str], section_status: str
+        section_id: str, list_item_id: Optional[str], section_status: CompletionStatus
     ) -> str:
         if section_status == CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED:
             return url_for(
@@ -157,10 +158,8 @@ class HubContext(Context):
     ) -> dict[str, Union[str, list]]:
         row_id = f"{section_id}-{list_item_index}" if list_item_index else section_id
 
-        section_status = (
-            self._progress_store.get_section_or_repeating_blocks_progress_status(
-                section_id, list_item_id
-            )
+        section_status = self._progress_store.get_section_status(
+            SectionKey(section_id, list_item_id)
         )
 
         return self.get_row_context_for_section(

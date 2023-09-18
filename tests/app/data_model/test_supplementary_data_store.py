@@ -25,12 +25,17 @@ def test_supplementary_data_deserialisation():
         "identifier": "12346789012A",
         "items": {
             "products": [
-                {"identifier": "89929001"},
+                {"identifier": 89929001},
                 {"identifier": "201630601"},
             ]
         },
     }
-    list_mappings = {"products": {"89929001": "item-1", "201630601": "item-2"}}
+    list_mappings = {
+        "products": [
+            {"identifier": 89929001, "list_item_id": "item-1"},
+            {"identifier": "201630601", "list_item_id": "item-2"},
+        ]
+    }
 
     serialized = {
         "data": raw_data,
@@ -43,7 +48,7 @@ def test_supplementary_data_deserialisation():
     assert deserialized.list_mappings == make_immutable(list_mappings)
     assert deserialized._data_map == {  # pylint: disable=protected-access
         ("identifier", None): "12346789012A",
-        ("products", "item-1"): {"identifier": "89929001"},
+        ("products", "item-1"): {"identifier": 89929001},
         ("products", "item-2"): {"identifier": "201630601"},
     }
 

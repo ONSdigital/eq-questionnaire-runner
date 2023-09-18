@@ -65,15 +65,12 @@ class ListRepeatingQuestion(ListEditQuestion):
         self.questionnaire_store_updater.add_completed_location(self.current_location)
         if not self.get_first_incomplete_list_repeating_block_location_for_list_item(
             repeating_block_ids=self.repeating_block_ids,
-            section_id=self.current_location.section_id,
-            # Type ignore: list_name and list_item_id will always exist at this point
-            list_item_id=self.current_location.list_item_id,  # type: ignore
+            section_key=self.current_location.section_key,
+            # Type ignore: list_name will always exist at this point
             list_name=self.current_location.list_name,  # type: ignore
         ):
-            self.questionnaire_store_updater.update_section_or_repeating_blocks_progress_completion_status(
-                is_complete=True,
-                section_id=self.current_location.section_id,
-                list_item_id=self.current_location.list_item_id,
+            self.questionnaire_store_updater.update_section_status(
+                is_complete=True, section_key=self.current_location.section_key
             )
 
         super().handle_post()

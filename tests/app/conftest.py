@@ -17,7 +17,10 @@ from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
-from app.data_models.supplementary_data_store import SupplementaryDataStore
+from app.data_models.supplementary_data_store import (
+    SupplementaryDataListMapping,
+    SupplementaryDataStore,
+)
 from app.publisher import PubSubPublisher
 from app.questionnaire.location import Location
 from app.setup import create_app
@@ -252,7 +255,7 @@ def supplementary_data():
         "items": {
             "products": [
                 {
-                    "identifier": "89929001",
+                    "identifier": 89929001,
                     "name": "Articles and equipment for sports or outdoor games",
                     "cn_codes": "2504 + 250610 + 2512 + 2519 + 2524",
                     "guidance": {"title": "Include", "description": "sportswear"},
@@ -278,10 +281,10 @@ def supplementary_data():
 @pytest.fixture
 def supplementary_data_list_mappings():
     return {
-        "products": {
-            "89929001": "item-1",
-            "201630601": "item-2",
-        },
+        "products": [
+            SupplementaryDataListMapping(identifier=89929001, list_item_id="item-1"),
+            SupplementaryDataListMapping(identifier="201630601", list_item_id="item-2"),
+        ],
     }
 
 

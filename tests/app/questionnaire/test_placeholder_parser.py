@@ -6,6 +6,7 @@ from mock import Mock
 from app.data_models import ProgressStore, SupplementaryDataStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
+from app.data_models.progress import CompletionStatus, ProgressDict
 from app.questionnaire import Location
 from app.questionnaire.placeholder_parser import PlaceholderParser
 from app.utilities.schema import load_schema_from_name
@@ -1125,9 +1126,9 @@ def test_placeholder_parser_calculated_summary_dependencies_cache(
 
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "default-section",
-                "block_ids": [
+            ProgressDict(
+                section_id="default-section",
+                block_ids=[
                     "second-number-answer-unit-total",
                     "third-and-a-half-number-answer-unit-total",
                     "unit-total-playback",
@@ -1135,8 +1136,8 @@ def test_placeholder_parser_calculated_summary_dependencies_cache(
                     "sixth-percent-answer",
                     "percentage-total-playback",
                 ],
-                "status": "COMPLETED",
-            },
+                status="COMPLETED",
+            ),
         ]
     )
 
@@ -1249,11 +1250,11 @@ def test_placeholder_dependencies_cache(mocker, mock_renderer):
 
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "default-section",
-                "block_ids": ["date-question-block", "date-entry-block"],
-                "status": "COMPLETED",
-            }
+            ProgressDict(
+                section_id="default-section",
+                block_ids=["date-question-block", "date-entry-block"],
+                status=CompletionStatus.COMPLETED,
+            )
         ]
     )
     answer_store = AnswerStore(

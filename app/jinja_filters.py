@@ -462,27 +462,19 @@ class SummaryRowItem:
         self,
         question: SelectFieldBase._Option,
         answer: SelectFieldBase._Option,
-        multiple_answers: bool,
         answers_are_editable: bool,
         no_answer_provided: str,
         edit_link_text: str,
         edit_link_aria_label: str,
         summary_type: str,
+        use_answer_label: bool = False,
     ) -> None:
-        if "type" in answer:
-            answer_type = answer["type"]
-        else:
-            answer_type = "calculated"
-
+        answer_type = answer.get("type", "calculated")
         if (
-            (
-                multiple_answers
-                or answer_type == "relationship"
-                or is_summary_with_calculation(summary_type)
-            )
-            and "label" in answer
-            and answer["label"]
-        ):
+            answer_type == "relationship"
+            or is_summary_with_calculation(summary_type)
+            or use_answer_label
+        ) and answer.get("label"):
             self.rowTitle = answer["label"]
             self.rowTitleAttributes = {"data-qa": answer["id"] + "-label"}
         else:
@@ -562,12 +554,12 @@ class SummaryRow:
         no_answer_provided: str,
         edit_link_text: str,
         edit_link_aria_label: str,
+        use_answer_label: bool = False,
     ) -> None:
         self.rowTitle = strip_tags(question["title"])
         self.id = question["id"]
         self.rowItems = []
-
-        multiple_answers = len(question["answers"]) > 1
+        use_answer_label = use_answer_label or len(question["answers"]) > 1
 
         if is_summary_with_calculation(summary_type) and not answers_are_editable:
             self.total = True
@@ -577,12 +569,12 @@ class SummaryRow:
                 SummaryRowItem(
                     question,
                     answer,
-                    multiple_answers,
                     answers_are_editable,
                     no_answer_provided,
                     edit_link_text,
                     edit_link_aria_label,
                     summary_type,
+                    use_answer_label,
                 )
             )
 
@@ -741,6 +733,7 @@ def map_list_collector_config(
                     no_answer_provided=flask_babel.lazy_gettext("No answer provided"),
                     edit_link_text=edit_link_text,
                     edit_link_aria_label=edit_link_aria_label,
+                    use_answer_label=True,
                 )
                 row_items.extend(summary_row.rowItems)
 
