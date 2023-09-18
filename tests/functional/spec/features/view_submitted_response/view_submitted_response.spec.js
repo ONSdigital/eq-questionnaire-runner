@@ -145,7 +145,7 @@ describe("View Submitted Response Summary Page With Repeating Sections", () => {
     await expect(await $(firstGroup).$$(groupTitle)[0].getText()).to.equal("Calculated Summary Group");
     await expect(await $(firstGroup).$$(repeatingSectionAnswer)[0].getText()).to.equal("40 - calculated summary answer (current section)");
     await expect(await $("body").getHTML()).to.contain("How much did Marcus Twin spend on fruit?");
-    await expect(await $(firstGroup).$$(skippableRepeatingSectionAnswer)[0].getText()).to.equal("£100.00");
+    await expect(await $(firstGroup).$$(skippableRepeatingSectionAnswer)[0].getText()).to.equal("£100");
     await expect(await $("body").getHTML()).to.contain("John Doe");
     await expect(await $(secondGroup).$$(groupTitle)[0].getText()).to.equal("Calculated Summary Group");
     await expect(await $(secondGroup).$$(repeatingSectionAnswer)[0].getText()).to.equal("80 - calculated summary answer (current section)");

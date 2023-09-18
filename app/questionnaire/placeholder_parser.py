@@ -22,7 +22,10 @@ from app.questionnaire.dependencies import (
     get_routing_path_block_ids_by_section_for_dependent_sections,
 )
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
-from app.questionnaire.questionnaire_schema import TRANSFORMS_REQUIRING_ROUTING_PATH
+from app.questionnaire.questionnaire_schema import (
+    TRANSFORMS_REQUIRING_ROUTING_PATH,
+    TRANSFORMS_REQUIRING_UNRESOLVED_ARGUMENTS,
+)
 from app.questionnaire.value_source_resolver import (
     ValueSourceEscapedTypes,
     ValueSourceResolver,
@@ -153,12 +156,15 @@ class PlaceholderParser:
         self, transform_list: Sequence[Mapping]
     ) -> TransformedValueTypes:
         transformed_value: TransformedValueTypes = None
-
         for transform in transform_list:
             transform_args: MutableMapping = {}
             value_source_resolver = self._get_value_source_resolver_for_transform(
                 transform
             )
+
+            if transform["transform"] in TRANSFORMS_REQUIRING_UNRESOLVED_ARGUMENTS:
+                transform_args["unresolved_arguments"] = transform["arguments"]
+
             for arg_key, arg_value in transform["arguments"].items():
                 resolved_value: ValueSourceEscapedTypes | ValueSourceTypes | TransformedValueTypes
 

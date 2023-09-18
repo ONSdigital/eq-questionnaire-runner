@@ -50,14 +50,16 @@
                                         "label": "Money spent on fruit",
                                         "type": "Currency",
                                         "currency": "GBP",
-                                        "mandatory": false
+                                        "mandatory": false,
+                                        "decimal_places": 2
                                     },
                                     {
                                         "id": "q1-a2",
                                         "label": "Money spent on veg",
                                         "type": "Currency",
                                         "currency": "GBP",
-                                        "mandatory": false
+                                        "mandatory": false,
+                                        "decimal_places": 2
                                     }
                                 ]
                             }
@@ -75,14 +77,16 @@
                                         "label": "Money spent on bread",
                                         "type": "Currency",
                                         "currency": "GBP",
-                                        "mandatory": false
+                                        "mandatory": false,
+                                        "decimal_places": 2
                                     },
                                     {
                                         "id": "q2-a2",
                                         "label": "Money spent on not bread",
                                         "type": "Currency",
                                         "currency": "GBP",
-                                        "mandatory": false
+                                        "mandatory": false,
+                                        "decimal_places": 2
                                     }
                                 ]
                             }
@@ -134,14 +138,16 @@
                                         "label": "Money spent on jumpers",
                                         "type": "Currency",
                                         "currency": "GBP",
-                                        "mandatory": false
+                                        "mandatory": false,
+                                        "decimal_places": 2
                                     },
                                     {
                                         "id": "q3-a2",
                                         "label": "Money spent on hats",
                                         "type": "Currency",
                                         "currency": "GBP",
-                                        "mandatory": false
+                                        "mandatory": false,
+                                        "decimal_places": 2
                                     }
                                 ]
                             }
@@ -261,14 +267,16 @@
                                         "label": "Video games",
                                         "type": "Currency",
                                         "currency": "GBP",
-                                        "mandatory": false
+                                        "mandatory": false,
+                                        "decimal_places": 2
                                     },
                                     {
                                         "id": "q4-a2",
                                         "label": "Board games",
                                         "type": "Currency",
                                         "currency": "GBP",
-                                        "mandatory": false
+                                        "mandatory": false,
+                                        "decimal_places": 2
                                     }
                                 ]
                             }

@@ -167,3 +167,51 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
         self.assertInBody(
             "Grand Calculated Summary of purchases this week comes to £330.00. Is this correct?"
         )
+
+    def test_grand_calculated_summary_default_decimal_places(self):
+        """
+        When multiple decimal limits are set in the schema but no decimals
+        are entered then we should default to two decimal places on the grand calculated summary page
+        """
+        self.launchSurvey("test_calculated_and_grand_calculated_summary_decimals")
+        self.post({"first-number-answer": "10"})
+        self.post(
+            {
+                "second-number-answer": "20",
+                "second-number-answer-also-in-total": "20",
+            }
+        )
+        self.post({"third-number-answer": "30"})
+        self.post({"fourth-number-answer": "40"})
+        self.post()
+        self.post()
+        self.post({"fifth-number-answer": "50"})
+        self.post({"sixth-number-answer": "60"})
+        self.assertInBody(
+            "We calculate the total of currency values entered to be £110.00. Is this correct?"
+        )
+
+    def test_grand_calculated_summary_with_varying_decimal_places(self):
+        """
+        When multiple decimal limits are set in the schema and a mixture of decimal
+        places are entered then we should use the largest number of decimal places that are below the decimal limit
+        on the grand calculated summary page
+        """
+        self.launchSurvey("test_calculated_and_grand_calculated_summary_decimals")
+        self.post({"first-number-answer": "10.1"})
+        self.post(
+            {
+                "second-number-answer": "20.12",
+                "second-number-answer-also-in-total": "20.123",
+            }
+        )
+        self.post({"third-number-answer": "30.1234"})
+        self.post({"fourth-number-answer": "40.12345"})
+        self.post()
+        self.post()
+        self.post({"fifth-number-answer": "50"})
+        self.post({"sixth-number-answer": "60"})
+        self.post()
+        self.assertInBody(
+            "We calculate the grand total to be £230.58985. Is this correct?"
+        )
