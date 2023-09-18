@@ -1,4 +1,5 @@
 # coding: utf-8
+# pylint: disable=too-many-lines
 import unicodedata
 from datetime import datetime, timezone
 from decimal import Decimal
