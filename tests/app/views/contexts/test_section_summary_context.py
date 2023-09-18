@@ -368,6 +368,7 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
                                                             "unit": None,
                                                             "unit_length": None,
                                                             "value": 123,
+                                                            "decimal_places": None,
                                                         },
                                                         {
                                                             "currency": None,
@@ -381,6 +382,7 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
                                                                 "detail_answer_value": None,
                                                                 "label": "Yes",
                                                             },
+                                                            "decimal_places": None,
                                                         },
                                                     ],
                                                     "id": "edit-question-companies-PlwgoG",
@@ -406,6 +408,7 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
                                                             "unit": None,
                                                             "unit_length": None,
                                                             "value": 456,
+                                                            "decimal_places": None,
                                                         },
                                                         {
                                                             "currency": None,
@@ -419,6 +422,7 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
                                                                 "detail_answer_value": None,
                                                                 "label": "No",
                                                             },
+                                                            "decimal_places": None,
                                                         },
                                                     ],
                                                     "id": "edit-question-companies-UHPLbX",

@@ -1,11 +1,9 @@
 from datetime import date, datetime, timezone
 from decimal import Decimal
-from typing import TYPE_CHECKING, Literal, Sequence, Sized
+from typing import TYPE_CHECKING, Literal, Mapping, Sequence, Sized
 from urllib.parse import quote
 
-from babel import units
 from babel.dates import format_datetime
-from babel.numbers import format_currency, format_decimal
 from dateutil.relativedelta import relativedelta
 from flask_babel import ngettext
 
@@ -14,6 +12,11 @@ from app.questionnaire.rules.operations import DateOffset
 from app.questionnaire.rules.operations_helper import OperationHelper
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import DEFAULT_LOCALE
+from app.utilities.decimal_places import (
+    custom_format_decimal,
+    custom_format_unit,
+    get_formatted_currency,
+)
 
 if TYPE_CHECKING:
     from app.questionnaire.placeholder_renderer import (
@@ -41,9 +44,37 @@ class PlaceholderTransforms:
 
     input_date_format = "%Y-%m-%d"
 
-    def format_currency(self, number: Decimal | float, currency: str = "GBP") -> str:
-        formatted_currency: str = format_currency(number, currency, locale=self.locale)
+    def format_currency(
+        self,
+        number: int | Decimal | float,
+        unresolved_arguments: Mapping,
+        currency: str = "GBP",
+    ) -> str:
+        """
+        The raw arguments for the transform are required here, in addition to the formatted number, as custom logic is required
+        to calculate the correct number of decimals based on the source of the transform. The decimal only takes into account if the source is
+        an answer or a calculated summary without any previous transform.
+        """
+        formatted_currency: str = get_formatted_currency(
+            value=number,
+            currency=currency,
+            locale=self.locale,
+            decimal_limit=self._get_decimal_limit(unresolved_arguments),
+        )
         return formatted_currency
+
+    def _get_decimal_limit(self, unresolved_arguments: Mapping) -> int | None:
+        decimal_limit = None
+        source = unresolved_arguments["number"].get("source")
+        identifier = unresolved_arguments["number"].get("identifier")
+        if source == "answers":
+            decimal_limit = self.schema.get_decimal_limit([identifier])
+        elif source == "calculated_summary":
+            decimal_limit = self.schema.get_decimal_limit_from_calculated_summaries(
+                [identifier]
+            )
+
+        return decimal_limit
 
     def format_date(self, date_to_format: str, date_format: str) -> str:
         date_as_datetime = datetime.strptime(
@@ -124,12 +155,8 @@ class PlaceholderTransforms:
 
         return string_to_format
 
-    def format_number(self, number: int | Decimal | str) -> str:
-        if number or number == 0:
-            formatted_decimal: str = format_decimal(number, locale=self.locale)
-            return formatted_decimal
-
-        return ""
+    def format_number(self, number: int | Decimal | float) -> str:
+        return custom_format_decimal(number, self.locale)
 
     @staticmethod
     def format_percentage(value: int | Decimal | str) -> str:
@@ -142,12 +169,14 @@ class PlaceholderTransforms:
         unit_length: Literal["short", "long", "narrow"] | None = None,
     ) -> str:
         length = unit_length or "short"
-        formatted_unit: str = units.format_unit(
+
+        formatted_unit: str = custom_format_unit(
             value=value,
             measurement_unit=unit,
             length=length,
             locale=self.locale,
         )
+
         return formatted_unit
 
     @staticmethod

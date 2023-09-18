@@ -21,7 +21,7 @@ class TestCurrencySingleCheckboxOverride(IntegrationTestCase):
 
         # Then
         self.assertInUrl("/sections/mutually-exclusive-currency-section/")
-        self.assertInBody("£10.00")
+        self.assertInBody("£10")
 
     def test_exclusive_answer(self):
         # When

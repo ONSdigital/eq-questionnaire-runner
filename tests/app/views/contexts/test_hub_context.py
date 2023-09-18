@@ -1,7 +1,7 @@
 # pylint: disable=redefined-outer-name
 import pytest
 
-from app.data_models.progress_store import CompletionStatus
+from app.data_models import CompletionStatus
 from app.questionnaire.router import Router
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts import HubContext

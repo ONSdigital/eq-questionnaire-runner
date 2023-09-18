@@ -1,7 +1,8 @@
 import pytest
 
-from app.data_models.progress import Progress
-from app.data_models.progress_store import CompletionStatus, ProgressStore
+from app.data_models import CompletionStatus
+from app.data_models.progress import Progress, ProgressDict
+from app.data_models.progress_store import ProgressStore
 from app.questionnaire.location import Location, SectionKey
 
 
@@ -32,38 +33,38 @@ def test_serialisation():
 
     assert serialized == [
         Progress.from_dict(
-            {
-                "section_id": "s1",
-                "list_item_id": None,
-                "status": CompletionStatus.COMPLETED,
-                "block_ids": ["one", "two"],
-            }
+            ProgressDict(
+                section_id="s1",
+                list_item_id=None,
+                status=CompletionStatus.COMPLETED,
+                block_ids=["one", "two"],
+            )
         ),
         Progress.from_dict(
-            {
-                "section_id": "s2",
-                "list_item_id": "abc123",
-                "status": CompletionStatus.IN_PROGRESS,
-                "block_ids": ["another-one"],
-            }
+            ProgressDict(
+                section_id="s2",
+                list_item_id="abc123",
+                status=CompletionStatus.IN_PROGRESS,
+                block_ids=["another-one"],
+            )
         ),
     ]
 
 
 def test_deserialisation():
     in_progress_sections = [
-        {
-            "section_id": "s1",
-            "list_item_id": None,
-            "status": CompletionStatus.IN_PROGRESS,
-            "block_ids": ["one", "two"],
-        },
-        {
-            "section_id": "s2",
-            "list_item_id": "abc123",
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["three", "four"],
-        },
+        ProgressDict(
+            section_id="s1",
+            list_item_id=None,
+            status=CompletionStatus.IN_PROGRESS,
+            block_ids=["one", "two"],
+        ),
+        ProgressDict(
+            section_id="s2",
+            list_item_id="abc123",
+            status=CompletionStatus.COMPLETED,
+            block_ids=["three", "four"],
+        ),
     ]
     store = ProgressStore(in_progress_sections)
 
@@ -85,18 +86,18 @@ def test_deserialisation():
 
 def test_clear():
     in_progress_sections = [
-        {
-            "section_id": "s1",
-            "list_item_id": None,
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["one", "two"],
-        },
-        {
-            "section_id": "s2",
-            "list_item_id": "abc123",
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["three", "four"],
-        },
+        ProgressDict(
+            section_id="s1",
+            list_item_id=None,
+            status=CompletionStatus.COMPLETED,
+            block_ids=["one", "two"],
+        ),
+        ProgressDict(
+            section_id="s2",
+            list_item_id="abc123",
+            status=CompletionStatus.COMPLETED,
+            block_ids=["three", "four"],
+        ),
     ]
     store = ProgressStore(in_progress_sections)
 
@@ -132,18 +133,18 @@ def test_add_completed_location():
 
 def test_add_completed_location_existing():
     completed = [
-        {
-            "section_id": "s1",
-            "list_item_id": None,
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["one"],
-        },
-        {
-            "section_id": "s2",
-            "list_item_id": "abc123",
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["three", "four"],
-        },
+        ProgressDict(
+            section_id="s1",
+            list_item_id=None,
+            status=CompletionStatus.COMPLETED,
+            block_ids=["one"],
+        ),
+        ProgressDict(
+            section_id="s2",
+            list_item_id="abc123",
+            status=CompletionStatus.COMPLETED,
+            block_ids=["three", "four"],
+        ),
     ]
     store = ProgressStore(completed)
 
@@ -174,18 +175,18 @@ def test_add_completed_location_existing():
 
 def test_add_completed_location_new():
     completed = [
-        {
-            "section_id": "s1",
-            "list_item_id": None,
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["one"],
-        },
-        {
-            "section_id": "s2",
-            "list_item_id": "abc123",
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["three", "four"],
-        },
+        ProgressDict(
+            section_id="s1",
+            list_item_id=None,
+            status=CompletionStatus.COMPLETED,
+            block_ids=["one"],
+        ),
+        ProgressDict(
+            section_id="s2",
+            list_item_id="abc123",
+            status=CompletionStatus.COMPLETED,
+            block_ids=["three", "four"],
+        ),
     ]
     store = ProgressStore(completed)
 
@@ -216,24 +217,24 @@ def test_add_completed_location_new():
 
 def test_remove_completed_location():
     completed = [
-        {
-            "section_id": "s1",
-            "list_item_id": None,
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["one", "two"],
-        },
-        {
-            "section_id": "s2",
-            "list_item_id": "abc123",
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["three", "four"],
-        },
-        {
-            "section_id": "s3",
-            "list_item_id": None,
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["one"],
-        },
+        ProgressDict(
+            section_id="s1",
+            list_item_id=None,
+            status=CompletionStatus.COMPLETED,
+            block_ids=["one", "two"],
+        ),
+        ProgressDict(
+            section_id="s2",
+            list_item_id="abc123",
+            status=CompletionStatus.COMPLETED,
+            block_ids=["three", "four"],
+        ),
+        ProgressDict(
+            section_id="s3",
+            list_item_id=None,
+            status=CompletionStatus.COMPLETED,
+            block_ids=["one"],
+        ),
     ]
     store = ProgressStore(completed)
 
@@ -271,12 +272,12 @@ def test_remove_completed_location():
 
 def test_remove_non_existent_completed_location():
     completed = [
-        {
-            "section_id": "s1",
-            "list_item_id": None,
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["one"],
-        }
+        ProgressDict(
+            section_id="s1",
+            list_item_id=None,
+            status=CompletionStatus.COMPLETED,
+            block_ids=["one"],
+        )
     ]
     store = ProgressStore(completed)
 
@@ -294,18 +295,18 @@ def test_remove_non_existent_completed_location():
 
 def test_update_section_status():
     completed = [
-        {
-            "section_id": "s1",
-            "list_item_id": None,
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["one"],
-        },
-        {
-            "section_id": "s2",
-            "list_item_id": "abc123",
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["three"],
-        },
+        ProgressDict(
+            section_id="s1",
+            list_item_id=None,
+            status=CompletionStatus.COMPLETED,
+            block_ids=["one"],
+        ),
+        ProgressDict(
+            section_id="s2",
+            list_item_id="abc123",
+            status=CompletionStatus.COMPLETED,
+            block_ids=["three"],
+        ),
     ]
     store = ProgressStore(completed)
 
@@ -331,12 +332,12 @@ def test_update_section_status():
 
 def test_update_non_existing_section_status():
     completed = [
-        {
-            "section_id": "s1",
-            "list_item_id": None,
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["one"],
-        }
+        ProgressDict(
+            section_id="s1",
+            list_item_id=None,
+            status=CompletionStatus.COMPLETED,
+            block_ids=["one"],
+        )
     ]
     store = ProgressStore(completed)
 
@@ -358,18 +359,18 @@ def test_update_non_existing_section_status():
 
 def test_get_section_status():
     existing_progress = [
-        {
-            "section_id": "s1",
-            "list_item_id": None,
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["one"],
-        },
-        {
-            "section_id": "s2",
-            "list_item_id": "abc123",
-            "status": CompletionStatus.IN_PROGRESS,
-            "block_ids": ["three"],
-        },
+        ProgressDict(
+            section_id="s1",
+            list_item_id=None,
+            status=CompletionStatus.COMPLETED,
+            block_ids=["one"],
+        ),
+        ProgressDict(
+            section_id="s2",
+            list_item_id="abc123",
+            status=CompletionStatus.IN_PROGRESS,
+            block_ids=["three"],
+        ),
     ]
     store = ProgressStore(existing_progress)
 
@@ -385,18 +386,18 @@ def test_get_section_status():
 
 def test_get_section_locations():
     completed = [
-        {
-            "section_id": "s1",
-            "list_item_id": None,
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["one"],
-        },
-        {
-            "section_id": "s2",
-            "list_item_id": "abc123",
-            "status": CompletionStatus.IN_PROGRESS,
-            "block_ids": ["three"],
-        },
+        ProgressDict(
+            section_id="s1",
+            list_item_id=None,
+            status=CompletionStatus.COMPLETED,
+            block_ids=["one"],
+        ),
+        ProgressDict(
+            section_id="s2",
+            list_item_id="abc123",
+            status=CompletionStatus.IN_PROGRESS,
+            block_ids=["three"],
+        ),
     ]
     store = ProgressStore(completed)
 
@@ -409,36 +410,36 @@ def test_get_section_locations():
 
 def test_is_section_complete():
     completed = [
-        {
-            "section_id": "s1",
-            "list_item_id": None,
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["one", "two"],
-        },
-        {
-            "section_id": "s2",
-            "list_item_id": None,
-            "status": CompletionStatus.IN_PROGRESS,
-            "block_ids": ["three"],
-        },
-        {
-            "section_id": "s3",
-            "list_item_id": "abc123",
-            "status": CompletionStatus.IN_PROGRESS,
-            "block_ids": ["three"],
-        },
-        {
-            "section_id": "s4",
-            "list_item_id": "123abc",
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["not-three"],
-        },
-        {
-            "section_id": "s5",
-            "list_item_id": "456def",
-            "status": CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED,
-            "block_ids": ["not-three"],
-        },
+        ProgressDict(
+            section_id="s1",
+            list_item_id=None,
+            status=CompletionStatus.COMPLETED,
+            block_ids=["one", "two"],
+        ),
+        ProgressDict(
+            section_id="s2",
+            list_item_id=None,
+            status=CompletionStatus.IN_PROGRESS,
+            block_ids=["three"],
+        ),
+        ProgressDict(
+            section_id="s3",
+            list_item_id="abc123",
+            status=CompletionStatus.IN_PROGRESS,
+            block_ids=["three"],
+        ),
+        ProgressDict(
+            section_id="s4",
+            list_item_id="123abc",
+            status=CompletionStatus.COMPLETED,
+            block_ids=["not-three"],
+        ),
+        ProgressDict(
+            section_id="s5",
+            list_item_id="456def",
+            status=CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED,
+            block_ids=["not-three"],
+        ),
     ]
 
     store = ProgressStore(completed)
@@ -450,30 +451,30 @@ def test_is_section_complete():
 
 def test_remove_progress_for_list_item_id():
     completed = [
-        {
-            "section_id": "s1",
-            "list_item_id": None,
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["one", "two"],
-        },
-        {
-            "section_id": "s2",
-            "list_item_id": None,
-            "status": CompletionStatus.IN_PROGRESS,
-            "block_ids": ["three"],
-        },
-        {
-            "section_id": "s3",
-            "list_item_id": "abc123",
-            "status": CompletionStatus.IN_PROGRESS,
-            "block_ids": ["three"],
-        },
-        {
-            "section_id": "s4",
-            "list_item_id": "123abc",
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["not-three"],
-        },
+        ProgressDict(
+            section_id="s1",
+            list_item_id=None,
+            status=CompletionStatus.COMPLETED,
+            block_ids=["one", "two"],
+        ),
+        ProgressDict(
+            section_id="s2",
+            list_item_id=None,
+            status=CompletionStatus.IN_PROGRESS,
+            block_ids=["three"],
+        ),
+        ProgressDict(
+            section_id="s3",
+            list_item_id="abc123",
+            status=CompletionStatus.IN_PROGRESS,
+            block_ids=["three"],
+        ),
+        ProgressDict(
+            section_id="s4",
+            list_item_id="123abc",
+            status=CompletionStatus.COMPLETED,
+            block_ids=["not-three"],
+        ),
     ]
 
     store = ProgressStore(completed)
@@ -506,36 +507,36 @@ def test_remove_progress_for_list_item_id():
 )
 def test_in_progress_and_completed_section_ids(section_ids, expected_section_keys):
     completed = [
-        {
-            "section_id": "s1",
-            "list_item_id": None,
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["one", "two"],
-        },
-        {
-            "section_id": "s2",
-            "list_item_id": None,
-            "status": CompletionStatus.IN_PROGRESS,
-            "block_ids": ["three"],
-        },
-        {
-            "section_id": "s3",
-            "list_item_id": "abc123",
-            "status": CompletionStatus.NOT_STARTED,
-            "block_ids": ["three"],
-        },
-        {
-            "section_id": "s4",
-            "list_item_id": "123abc",
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["not-three"],
-        },
-        {
-            "section_id": "s5",
-            "list_item_id": "456def",
-            "status": CompletionStatus.IN_PROGRESS,
-            "block_ids": ["not-three"],
-        },
+        ProgressDict(
+            section_id="s1",
+            list_item_id=None,
+            status=CompletionStatus.COMPLETED,
+            block_ids=["one", "two"],
+        ),
+        ProgressDict(
+            section_id="s2",
+            list_item_id=None,
+            status=CompletionStatus.IN_PROGRESS,
+            block_ids=["three"],
+        ),
+        ProgressDict(
+            section_id="s3",
+            list_item_id="abc123",
+            status=CompletionStatus.NOT_STARTED,
+            block_ids=["three"],
+        ),
+        ProgressDict(
+            section_id="s4",
+            list_item_id="123abc",
+            status=CompletionStatus.COMPLETED,
+            block_ids=["not-three"],
+        ),
+        ProgressDict(
+            section_id="s5",
+            list_item_id="456def",
+            status=CompletionStatus.IN_PROGRESS,
+            block_ids=["not-three"],
+        ),
     ]
 
     store = ProgressStore(completed)
@@ -548,36 +549,36 @@ def test_in_progress_and_completed_section_ids(section_ids, expected_section_key
 
 def test_section_keys():
     completed = [
-        {
-            "section_id": "s1",
-            "list_item_id": None,
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["one", "two"],
-        },
-        {
-            "section_id": "s2",
-            "list_item_id": None,
-            "status": CompletionStatus.IN_PROGRESS,
-            "block_ids": ["three"],
-        },
-        {
-            "section_id": "s3",
-            "list_item_id": "abc123",
-            "status": CompletionStatus.NOT_STARTED,
-            "block_ids": ["three"],
-        },
-        {
-            "section_id": "s4",
-            "list_item_id": "123abc",
-            "status": CompletionStatus.COMPLETED,
-            "block_ids": ["not-three"],
-        },
-        {
-            "section_id": "s5",
-            "list_item_id": "456def",
-            "status": CompletionStatus.IN_PROGRESS,
-            "block_ids": ["not-three"],
-        },
+        ProgressDict(
+            section_id="s1",
+            list_item_id=None,
+            status=CompletionStatus.COMPLETED,
+            block_ids=["one", "two"],
+        ),
+        ProgressDict(
+            section_id="s2",
+            list_item_id=None,
+            status=CompletionStatus.IN_PROGRESS,
+            block_ids=["three"],
+        ),
+        ProgressDict(
+            section_id="s3",
+            list_item_id="abc123",
+            status=CompletionStatus.NOT_STARTED,
+            block_ids=["three"],
+        ),
+        ProgressDict(
+            section_id="s4",
+            list_item_id="123abc",
+            status=CompletionStatus.COMPLETED,
+            block_ids=["not-three"],
+        ),
+        ProgressDict(
+            section_id="s5",
+            list_item_id="456def",
+            status=CompletionStatus.IN_PROGRESS,
+            block_ids=["not-three"],
+        ),
     ]
 
     store = ProgressStore(completed)

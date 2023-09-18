@@ -534,7 +534,8 @@
                                         "label": "Weekly spending on parking",
                                         "mandatory": true,
                                         "type": "Currency",
-                                        "currency": "GBP"
+                                        "currency": "GBP",
+                                        "decimal_places": 2
                                     }
                                 ]
                             }

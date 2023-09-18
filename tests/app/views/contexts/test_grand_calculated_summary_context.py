@@ -1,6 +1,7 @@
 import pytest
 
-from app.data_models.progress_store import CompletionStatus, ProgressStore
+from app.data_models import CompletionStatus
+from app.data_models.progress_store import ProgressStore
 from app.questionnaire import Location
 from app.questionnaire.routing_path import RoutingPath
 from app.views.contexts.grand_calculated_summary_context import (

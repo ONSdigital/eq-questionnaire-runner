@@ -1725,12 +1725,15 @@ def test_payload_supplementary_data():
             ]
         },
     }
-    supermarkets_list_map = {"123": "tUJzGV", "456": "vhECeh"}
+    supermarkets_list_mappings = [
+        {"identifier": "123", "list_item_id": "tUJzGV"},
+        {"identifier": "456", "list_item_id": "vhECeh"},
+    ]
 
-    list_item_ids = list(supermarkets_list_map.values())
+    list_item_ids = ["tUJzGV", "vhECeh"]
     questionnaire_store.supplementary_data_store = SupplementaryDataStore(
         supplementary_data=supplementary_data,
-        list_mappings={"supermarkets": supermarkets_list_map},
+        list_mappings={"supermarkets": supermarkets_list_mappings},
     )
     questionnaire_store.list_store = ListStore(
         [{"items": list_item_ids, "name": "supermarkets"}]
@@ -1762,5 +1765,5 @@ def test_payload_supplementary_data():
     assert data_payload["lists"][0] == {
         "items": list_item_ids,
         "name": "supermarkets",
-        "supplementary_data_mapping": make_immutable(supermarkets_list_map),
+        "supplementary_data_mappings": make_immutable(supermarkets_list_mappings),
     }

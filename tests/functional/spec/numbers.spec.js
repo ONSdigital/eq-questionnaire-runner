@@ -51,16 +51,18 @@ describe("Number validation", () => {
       await $(TestMinMax.testMinExclusive()).setValue("124");
       await $(TestMinMax.testMaxExclusive()).setValue("1233");
       await $(TestMinMax.testPercent()).setValue("100");
-      await $(TestMinMax.testDecimal()).setValue("11.234");
+      await $(TestMinMax.testRange()).setValue("12.123456");
+      await $(TestMinMax.testDecimal()).setValue("11.123456");
       await click(TestMinMax.submit());
 
       await expect(await $(TestMinMax.errorNumber(1)).getText()).to.contain("Enter a number rounded to 2 decimal places");
-      await expect(await $(TestMinMax.errorNumber(2)).getText()).to.contain("Enter a number rounded to 2 decimal places");
+      await expect(await $(TestMinMax.errorNumber(2)).getText()).to.contain("Enter a number rounded to 5 decimal places");
     });
 
     it("When I enter values inside the set range, Then I should be able to submit the survey", async () => {
       await $(TestMinMax.testRange()).setValue("1019");
-      await $(TestMinMax.testDecimal()).setValue("11.23");
+      await $(TestMinMax.testDecimal()).setValue("11.10000");
+      await $(TestMinMax.testPercent()).setValue("99");
       await click(TestMinMax.submit());
       await $(DetailAnswer.other()).click();
       await $(DetailAnswer.otherDetail()).setValue("1019");
@@ -106,6 +108,10 @@ describe("Number validation", () => {
       await click(TestMinMax.submit());
 
       await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
+    });
+
+    it("When a number with more than 3 decimal places has been entered, Then it should be displayed correctly on the summary", async () => {
+      await expect(await $(SubmitPage.testDecimal()).getText()).to.equal("£11.10000");
     });
   });
 });

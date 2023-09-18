@@ -54,4 +54,23 @@ describe("Units", () => {
     await click(SetVolumeUnitsBlockPage.submit());
     await expect(await $("body").getText()).to.have.string("tonnes");
   });
+
+  it("Given we open a questionnaire with unit inputs, when the unit allows a maximum of 6 decimal places, then the correct number of decimal places should be displayed on the summary.", async () => {
+    await browser.openQuestionnaire("test_unit_patterns.json", { language: "en" });
+    await $(SetLengthUnitsBlockPage.submit()).click();
+    await $(SetDurationUnitsBlockPage.submit()).click();
+    await $(SetAreaUnitsBlockPage.submit()).click();
+    await $(SetVolumeUnitsBlockPage.cubicCentimetres()).setValue(1.1);
+    await $(SetVolumeUnitsBlockPage.cubicMetres()).setValue(1.12);
+    await $(SetVolumeUnitsBlockPage.litres()).setValue(1.123);
+    await $(SetVolumeUnitsBlockPage.hectolitres()).setValue(1.1234);
+    await $(SetVolumeUnitsBlockPage.megalitres()).setValue("1.10000");
+    await $(SetVolumeUnitsBlockPage.submit()).click();
+    await $(SetWeightUnitsBlockPage.submit()).click();
+    await expect(await $(SubmitPage.cubicCentimetres()).getText()).to.equal("1.1 cm³");
+    await expect(await $(SubmitPage.cubicMetres()).getText()).to.equal("1.12 m³");
+    await expect(await $(SubmitPage.litres()).getText()).to.equal("1.123 l");
+    await expect(await $(SubmitPage.hectolitres()).getText()).to.equal("1.1234 hl");
+    await expect(await $(SubmitPage.megalitres()).getText()).to.equal("1.10000 Ml");
+  });
 });

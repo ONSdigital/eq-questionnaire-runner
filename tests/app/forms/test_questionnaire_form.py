@@ -1180,7 +1180,7 @@ def test_bespoke_message_for_sum_validation(app, answer_store, list_store, mocke
         [
             "test_validation_sum_against_total_equal",
             "breakdown-block",
-            [Answer(answer_id="total-answer", value=10)],
+            [Answer(answer_id="total-answer", value=Decimal("10.00"))],
             {
                 "breakdown-1": "",
                 "breakdown-2": "5",
@@ -1196,7 +1196,7 @@ def test_bespoke_message_for_sum_validation(app, answer_store, list_store, mocke
             },
             "breakdown-question",
             ["TOTAL_SUM_NOT_EQUALS"],
-            {"total": "10"},
+            {"total": "10.00"},
         ],
         [
             "test_validation_sum_against_total_equal",
@@ -1439,7 +1439,7 @@ def test_sum_calculated_field_value_source_calculated_summary_repeat_not_equal_v
 
 
 def test_multi_calculation(app, answer_store, list_store):
-    answer_total = Answer(answer_id="total-answer", value=10)
+    answer_total = Answer(answer_id="total-answer", value=Decimal("10.00"))
 
     answer_store.add_or_update(answer_total)
 
@@ -1509,7 +1509,7 @@ def test_multi_calculation(app, answer_store, list_store):
 
         assert form.question_errors["breakdown-question"] == schema.error_messages[
             "TOTAL_SUM_NOT_EQUALS"
-        ] % {"total": "10"}
+        ] % {"total": "10.00"}
 
 
 def test_generate_form_with_title_and_no_answer_label(app, answer_store, list_store):

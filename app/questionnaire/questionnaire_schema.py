@@ -42,6 +42,7 @@ QuestionSchemaType = Mapping
 DependencyDictType: TypeAlias = dict[str, OrderedSet[str]]
 
 TRANSFORMS_REQUIRING_ROUTING_PATH = {"first_non_empty_item"}
+TRANSFORMS_REQUIRING_UNRESOLVED_ARGUMENTS = ["format_currency"]
 
 NUMERIC_ANSWER_TYPES = {
     "Currency",
@@ -1037,14 +1038,40 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         """
         # Type ignore: the block will exist for any valid calculated summary id
         calculated_summary_block: ImmutableDict = self.get_block(calculated_summary_block_id)  # type: ignore
-        first_answer_id = get_calculated_summary_answer_ids(calculated_summary_block)[0]
+        answer_ids = get_calculated_summary_answer_ids(calculated_summary_block)
+        decimal_limit = self.get_decimal_limit(answer_ids)
+        first_answer_id = answer_ids[0]
         first_answer = self.get_answers_by_answer_id(first_answer_id)[0]
         return {
             "type": first_answer["type"].lower(),
             "unit": first_answer.get("unit"),
             "unit_length": first_answer.get("unit_length"),
             "currency": first_answer.get("currency"),
+            "decimal_places": decimal_limit,
         }
+
+    def get_decimal_limit_from_calculated_summaries(
+        self, calculated_summary_block_ids: list[str]
+    ) -> int | None:
+        """
+        Get the max number of decimal places from the calculated summary block(s) passed in
+        """
+        decimal_limits: list[int] = []
+        for calculated_summary_id in calculated_summary_block_ids:
+            # Type ignore: the block will exist for any valid calculated summary id
+            answer_ids = get_calculated_summary_answer_ids(self.get_block(calculated_summary_id))  # type: ignore
+            if (decimal_limit := self.get_decimal_limit(answer_ids)) is not None:
+                decimal_limits.append(decimal_limit)
+        return max(decimal_limits, default=None)
+
+    def get_decimal_limit(self, answer_ids: list[str]) -> int | None:
+        decimal_limits: list[int] = [
+            decimal_places
+            for answer_id in answer_ids
+            for answer in self.get_answers_by_answer_id(answer_id)
+            if (decimal_places := answer.get("decimal_places")) is not None
+        ]
+        return max(decimal_limits, default=None)
 
     def get_answer_ids_for_block(self, block_id: str) -> list[str]:
         if block := self.get_block(block_id):

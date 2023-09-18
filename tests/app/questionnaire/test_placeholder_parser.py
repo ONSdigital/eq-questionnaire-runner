@@ -1,8 +1,12 @@
+from decimal import Decimal
+
+import pytest
 from mock import Mock
 
 from app.data_models import ProgressStore, SupplementaryDataStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
+from app.data_models.progress import CompletionStatus, ProgressDict
 from app.questionnaire import Location
 from app.questionnaire.placeholder_parser import PlaceholderParser
 from app.utilities.schema import load_schema_from_name
@@ -50,9 +54,9 @@ def test_metadata_placeholder(mock_renderer, mock_schema, mock_location):
     assert period_str == placeholders["period"]
 
 
-def test_previous_answer_transform_placeholder(
-    mock_renderer, mock_schema, mock_location
-):
+def test_previous_answer_transform_placeholder(mock_renderer, mock_location):
+    schema = load_schema_from_name("test_placeholder_transform")
+
     placeholder_list = [
         {
             "placeholder": "total_turnover",
@@ -63,7 +67,7 @@ def test_previous_answer_transform_placeholder(
                         "number": {
                             "source": "answers",
                             "identifier": "total-retail-turnover-answer",
-                        }
+                        },
                     },
                 }
             ],
@@ -82,7 +86,7 @@ def test_previous_answer_transform_placeholder(
         list_store=ListStore(),
         metadata=get_metadata(),
         response_metadata={},
-        schema=mock_schema,
+        schema=schema,
         renderer=mock_renderer,
         progress_store=ProgressStore(),
         location=mock_location,
@@ -1122,9 +1126,9 @@ def test_placeholder_parser_calculated_summary_dependencies_cache(
 
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "default-section",
-                "block_ids": [
+            ProgressDict(
+                section_id="default-section",
+                block_ids=[
                     "second-number-answer-unit-total",
                     "third-and-a-half-number-answer-unit-total",
                     "unit-total-playback",
@@ -1132,8 +1136,8 @@ def test_placeholder_parser_calculated_summary_dependencies_cache(
                     "sixth-percent-answer",
                     "percentage-total-playback",
                 ],
-                "status": "COMPLETED",
-            },
+                status="COMPLETED",
+            ),
         ]
     )
 
@@ -1246,11 +1250,11 @@ def test_placeholder_dependencies_cache(mocker, mock_renderer):
 
     progress_store = ProgressStore(
         [
-            {
-                "section_id": "default-section",
-                "block_ids": ["date-question-block", "date-entry-block"],
-                "status": "COMPLETED",
-            }
+            ProgressDict(
+                section_id="default-section",
+                block_ids=["date-question-block", "date-entry-block"],
+                status=CompletionStatus.COMPLETED,
+            )
         ]
     )
     answer_store = AnswerStore(
@@ -1279,3 +1283,58 @@ def test_placeholder_dependencies_cache(mocker, mock_renderer):
     placeholder_2 = placeholder_parser(placeholder_list=placeholder_list_2)
     assert placeholder_2["date_entry_answer_to"] == "28 April 2016"
     assert path_finder.called == 1
+
+
+@pytest.mark.parametrize(
+    "first_number, second_number, expected_result",
+    (
+        ("1.2", "1", "£2.20"),
+        ("1", "2", "£3"),
+        ("1.123", "1.2", "£2.323"),
+    ),
+)
+def test_format_currency_placeholder_total_with_previous_transform(
+    mock_renderer,
+    mock_schema,
+    mock_location,
+    first_number,
+    second_number,
+    expected_result,
+):
+    placeholder_list = [
+        {
+            "placeholder": "total",
+            "transforms": [
+                {
+                    "transform": "add",
+                    "arguments": {
+                        "lhs": Decimal(first_number),
+                        "rhs": Decimal(second_number),
+                    },
+                },
+                {
+                    "transform": "format_currency",
+                    "arguments": {"number": {"source": "previous_transform"}},
+                },
+            ],
+        }
+    ]
+
+    metadata = get_metadata()
+
+    parser = PlaceholderParser(
+        language="en",
+        answer_store=AnswerStore(),
+        list_store=ListStore(),
+        metadata=metadata,
+        response_metadata={},
+        schema=mock_schema,
+        renderer=mock_renderer,
+        progress_store=ProgressStore(),
+        location=mock_location,
+        supplementary_data_store=SupplementaryDataStore(),
+    )
+
+    placeholders = parser(placeholder_list)
+
+    assert placeholders["total"] == expected_result

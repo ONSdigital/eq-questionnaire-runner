@@ -157,7 +157,8 @@
                                         "label": "Currency",
                                         "mandatory": false,
                                         "type": "Currency",
-                                        "currency": "GBP"
+                                        "currency": "GBP",
+                                        "decimal_places": 2
                                     },
                                     {
                                         "id": "numbers-unit-answer",

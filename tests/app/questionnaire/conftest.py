@@ -2,11 +2,12 @@
 
 import pytest
 
-from app.data_models import QuestionnaireStore, SupplementaryDataStore
+from app.data_models import CompletionStatus, QuestionnaireStore, SupplementaryDataStore
 from app.data_models.answer_store import Answer, AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
-from app.data_models.progress_store import CompletionStatus, ProgressStore
+from app.data_models.progress import ProgressDict
+from app.data_models.progress_store import ProgressStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.placeholder_parser import PlaceholderParser
@@ -1047,8 +1048,8 @@ def default_placeholder_value_schema():
 
 
 @pytest.fixture
-def transformer(mock_renderer, mock_schema):
-    def _transform(language="en"):
+def transformer(mock_renderer, mock_schema, locale_string="en_GB"):
+    def _transform(language=locale_string):
         return PlaceholderTransforms(
             language=language, schema=mock_schema, renderer=mock_renderer
         )
@@ -1342,16 +1343,16 @@ def grand_calculated_summary_schema():
 def grand_calculated_summary_progress_store():
     return ProgressStore(
         [
-            {
-                "section_id": "section-1",
-                "block_ids": [
+            ProgressDict(
+                section_id="section-1",
+                block_ids=[
                     "first-number-block",
                     "second-number-block",
                     "distance-calculated-summary-1",
                     "number-calculated-summary-1",
                 ],
-                "status": CompletionStatus.COMPLETED,
-            }
+                status=CompletionStatus.COMPLETED,
+            )
         ]
     )
 
@@ -1365,9 +1366,9 @@ def grand_calculated_summary_repeating_answers_schema():
 def grand_calculated_summary_repeating_answers_progress_store():
     return ProgressStore(
         [
-            {
-                "section_id": "section-5",
-                "block_ids": [
+            ProgressDict(
+                section_id="section-5",
+                block_ids=[
                     "any-streaming-services",
                     "any-other-streaming-services",
                     "calculated-summary-6",
@@ -1375,39 +1376,39 @@ def grand_calculated_summary_repeating_answers_progress_store():
                     "other-internet-usage",
                     "calculated-summary-8",
                 ],
-                "status": "COMPLETED",
-            },
-            {
-                "section_id": "section-5",
-                "block_ids": [
+                status=CompletionStatus.COMPLETED,
+            ),
+            ProgressDict(
+                section_id="section-5",
+                block_ids=[
                     "streaming-service-repeating-block-1",
                     "streaming-service-repeating-block-2",
                 ],
-                "status": "COMPLETED",
-                "list_item_id": "item-1",
-            },
-            {
-                "section_id": "section-5",
-                "block_ids": [
+                status=CompletionStatus.COMPLETED,
+                list_item_id="item-1",
+            ),
+            ProgressDict(
+                section_id="section-5",
+                block_ids=[
                     "streaming-service-repeating-block-1",
                     "streaming-service-repeating-block-2",
                 ],
-                "status": "COMPLETED",
-                "list_item_id": "item-2",
-            },
-            {
-                "section_id": "section-4",
-                "block_ids": [
+                status=CompletionStatus.COMPLETED,
+                list_item_id="item-2",
+            ),
+            ProgressDict(
+                section_id="section-4",
+                block_ids=[
                     "any-utility-bills",
                     "any-other-utility-bills",
                     "dynamic-answer",
                     "calculated-summary-5",
                 ],
-                "status": "COMPLETED",
-            },
-            {
-                "section_id": "section-1",
-                "block_ids": [
+                status=CompletionStatus.COMPLETED,
+            ),
+            ProgressDict(
+                section_id="section-1",
+                block_ids=[
                     "block-1",
                     "block-2",
                     "calculated-summary-1",
@@ -1416,13 +1417,13 @@ def grand_calculated_summary_repeating_answers_progress_store():
                     "calculated-summary-3",
                     "grand-calculated-summary-1",
                 ],
-                "status": "COMPLETED",
-            },
-            {
-                "section_id": "section-2",
-                "block_ids": ["block-4", "calculated-summary-4"],
-                "status": "COMPLETED",
-            },
+                status=CompletionStatus.COMPLETED,
+            ),
+            ProgressDict(
+                section_id="section-2",
+                block_ids=["block-4", "calculated-summary-4"],
+                status=CompletionStatus.COMPLETED,
+            ),
         ]
     )
 

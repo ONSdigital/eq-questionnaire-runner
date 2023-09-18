@@ -15,7 +15,7 @@ SUPPLEMENTARY_DATA_PAYLOAD = {
         "items": {
             "local_units": [
                 {
-                    "identifier": "0001",
+                    "identifier": 1,
                     "lu_name": "TEST NAME. 1",
                     "lu_address": [
                         "FIRST ADDRESS 1",
@@ -206,3 +206,22 @@ def test_validate_supplementary_data_payload_missing_identifier_in_items():
         )
 
     assert str(error.value) == "{'identifier': ['Missing data for required field.']}"
+
+
+@pytest.mark.parametrize("invalid_identifier", ["", ["invalid"], -1, {}])
+def test_validate_supplementary_data_payload_invalid_identifier(invalid_identifier):
+    payload = deepcopy(SUPPLEMENTARY_DATA_PAYLOAD)
+    payload["data"]["items"]["local_units"][0]["identifier"] = invalid_identifier
+
+    with pytest.raises(ValidationError) as error:
+        validate_supplementary_data_v1(
+            supplementary_data=payload,
+            dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
+            identifier="12346789012A",
+            survey_id="123",
+        )
+
+    assert (
+        str(error.value)
+        == "{'identifier': ['Item identifier must be a non-empty string or non-negative integer']}"
+    )
