@@ -1,6 +1,5 @@
 from app.utilities.json import json_loads
-
-from . import QuestionnaireTestCase
+from tests.integration.questionnaire import QuestionnaireTestCase
 
 
 class TestQuestionnaireSameNameItems(QuestionnaireTestCase):

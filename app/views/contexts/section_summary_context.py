@@ -9,15 +9,14 @@ from app.data_models import (
     ProgressStore,
     SupplementaryDataStore,
 )
+from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.questionnaire_schema import LIST_COLLECTORS_WITH_REPEATING_BLOCKS
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities import safe_content
-
-from ...data_models.metadata_proxy import MetadataProxy
-from .context import Context
-from .summary import Group
-from .summary.list_collector_block import ListCollectorBlock
+from app.views.contexts.context import Context
+from app.views.contexts.summary.group import Group
+from app.views.contexts.summary.list_collector_block import ListCollectorBlock
 
 
 class SectionSummaryContext(Context):

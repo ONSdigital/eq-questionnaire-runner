@@ -2,8 +2,7 @@ from freezegun import freeze_time
 
 from app.utilities.json import json_loads
 from app.views.handlers.confirm_email import ConfirmationEmailFulfilmentRequest
-
-from .conftest import time_to_freeze
+from tests.app.views.handlers.conftest import time_to_freeze
 
 
 @freeze_time(time_to_freeze)

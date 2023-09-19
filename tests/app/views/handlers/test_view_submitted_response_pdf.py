@@ -6,8 +6,7 @@ from freezegun import freeze_time
 from app.data_models import QuestionnaireStore
 from app.views.handlers.view_submitted_response import ViewSubmittedResponseExpired
 from app.views.handlers.view_submitted_response_pdf import ViewSubmittedResponsePDF
-
-from .conftest import set_storage_data
+from tests.app.views.handlers.conftest import set_storage_data
 
 
 @pytest.mark.usefixtures("app")

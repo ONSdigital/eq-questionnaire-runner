@@ -1,4 +1,4 @@
-from . import SUBMIT_URL_PATH, QuestionnaireTestCase
+from tests.integration.questionnaire import SUBMIT_URL_PATH, QuestionnaireTestCase
 
 # pylint: disable=too-many-public-methods
 

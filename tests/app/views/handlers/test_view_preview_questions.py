@@ -8,8 +8,7 @@ from app.questionnaire import QuestionnaireSchema
 from app.views.contexts.preview_context import PreviewNotEnabledException
 from app.views.handlers.preview_questions_pdf import PreviewQuestionsPDF
 from app.views.handlers.view_preview_questions import ViewPreviewQuestions
-
-from .conftest import set_storage_data
+from tests.app.views.handlers.conftest import set_storage_data
 
 
 @pytest.mark.usefixtures("app")
