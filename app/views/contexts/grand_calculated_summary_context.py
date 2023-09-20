@@ -12,7 +12,7 @@ from app.views.contexts.summary.group import Group
 
 class GrandCalculatedSummaryContext(CalculatedSummaryContext):
     def _build_grand_calculated_summary_section(
-        self, rendered_block: ImmutableDict
+        self, rendered_block: Mapping
     ) -> dict[str, str | list]:
         """
         Build list of calculated summary blocks that the grand calculated summary will be adding up
@@ -99,14 +99,19 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
         """
         # Type ignore: Block will exist at this point
         block: ImmutableDict = self._schema.get_block(self.current_location.block_id)  # type: ignore
+        rendered_block = self._placeholder_renderer.render(
+            data_to_render=block, list_item_id=self.current_location.list_item_id
+        )
 
-        calculation = block["calculation"]
+        calculation = rendered_block["calculation"]
         calculated_summary_ids = get_calculation_block_ids_for_grand_calculated_summary(
-            block
+            rendered_block
         )
         routing_path_block_ids = self._blocks_on_routing_path(calculated_summary_ids)
 
-        calculated_section = self._build_grand_calculated_summary_section(block)
+        calculated_section = self._build_grand_calculated_summary_section(
+            rendered_block
+        )
 
         groups = self.build_groups_for_section(
             section=calculated_section,
@@ -130,9 +135,24 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
         formatted_total = self._format_total(answer_format=answer_format, total=total)
 
         return self._build_formatted_summary(
-            block=block,
+            rendered_block=rendered_block,
             groups=groups,
             calculation=calculation,
             formatted_total=formatted_total,
             summary_type="GrandCalculatedSummary",
         )
+
+    @staticmethod
+    def _get_calculated_question(
+        calculation_question: Mapping,
+        formatted_total: str,
+    ) -> dict:
+        calculation_title = calculation_question["title"]
+
+        return {
+            "title": calculation_title,
+            "id": "grand-calculated-summary-question",
+            "answers": [
+                {"id": "grand-calculated-summary-answer", "value": formatted_total}
+            ],
+        }

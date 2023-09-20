@@ -103,8 +103,14 @@ class CalculatedSummaryContext(Context):
         block_id: str = self.current_location.block_id  # type: ignore
         block: ImmutableDict = self._schema.get_block(block_id)  # type: ignore
 
-        calculated_section: dict = self._build_calculated_summary_section(block)
-        calculation = block["calculation"]
+        rendered_block = self._placeholder_renderer.render(
+            data_to_render=block, list_item_id=self.current_location.list_item_id
+        )
+
+        calculated_section: dict = self._build_calculated_summary_section(
+            rendered_block
+        )
+        calculation = rendered_block["calculation"]
 
         groups = self.build_groups_for_section(
             section=calculated_section,
@@ -122,7 +128,7 @@ class CalculatedSummaryContext(Context):
         )
 
         return self._build_formatted_summary(
-            block=block,
+            rendered_block=rendered_block,
             groups=groups,
             calculation=calculation,
             formatted_total=formatted_total,
@@ -132,14 +138,14 @@ class CalculatedSummaryContext(Context):
     def _build_formatted_summary(
         self,
         *,
-        block: ImmutableDict,
+        rendered_block: Mapping,
         groups: Iterable[Mapping],
-        calculation: ImmutableDict,
+        calculation: Mapping,
         formatted_total: str,
         summary_type: str,
     ) -> dict[str, dict]:
-        collapsible = block.get("collapsible") or False
-        block_title = block["title"]
+        collapsible = rendered_block.get("collapsible") or False
+        block_title = rendered_block["title"]
 
         sections = [{"id": self.current_location.section_id, "groups": groups}]
 
@@ -156,7 +162,7 @@ class CalculatedSummaryContext(Context):
             }
         }
 
-    def _build_calculated_summary_section(self, rendered_block: ImmutableDict) -> dict:
+    def _build_calculated_summary_section(self, rendered_block: Mapping) -> dict:
         """Build up the list of blocks only including blocks / questions / answers which are relevant to the summary"""
         # type ignores added as block will exist at this point
         block_id: str = self.current_location.block_id  # type: ignore
@@ -241,7 +247,7 @@ class CalculatedSummaryContext(Context):
     def _get_evaluated_total(
         self,
         *,
-        calculation: ImmutableDict,
+        calculation: Mapping,
         routing_path_block_ids: Iterable[str],
     ) -> NumericType:
         """
@@ -267,7 +273,7 @@ class CalculatedSummaryContext(Context):
     ) -> str:
         answer_format, values_to_calculate = self._get_answer_format(groups)
 
-        if isinstance(calculation, ImmutableDict):
+        if isinstance(calculation, Mapping):
             calculated_total = self._get_evaluated_total(
                 calculation=calculation,
                 routing_path_block_ids=self.routing_path_block_ids,
@@ -338,7 +344,7 @@ class CalculatedSummaryContext(Context):
 
     @staticmethod
     def _get_calculated_question(
-        calculation_question: ImmutableDict,
+        calculation_question: Mapping,
         formatted_total: str,
     ) -> dict:
         calculation_title = calculation_question["title"]
