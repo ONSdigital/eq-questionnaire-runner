@@ -23,6 +23,8 @@ class Answer:
         list_item_id: str | None,
         return_to: str | None,
         return_to_block_id: str | None,
+        return_to_list_name: str | None,
+        return_to_list_item_id: str | None,
         is_in_repeating_section: bool,
     ) -> None:
         self.id = answer_schema["id"]
@@ -40,6 +42,8 @@ class Answer:
             list_item_id=list_item_id,
             return_to=return_to,
             return_to_block_id=return_to_block_id,
+            return_to_list_name=return_to_list_name,
+            return_to_list_item_id=return_to_list_item_id,
             is_in_repeating_section=is_in_repeating_section,
         )
 
@@ -64,6 +68,8 @@ class Answer:
         list_item_id: str | None,
         return_to: str | None,
         return_to_block_id: str | None,
+        return_to_list_name: str | None,
+        return_to_list_item_id: str | None,
         is_in_repeating_section: bool,
     ) -> str:
         return url_for(
@@ -78,6 +84,8 @@ class Answer:
                 is_in_repeating_section=is_in_repeating_section,
             ),
             return_to_block_id=return_to_block_id,
+            return_to_list_name=return_to_list_name,
+            return_to_list_item_id=return_to_list_item_id,
             _anchor=self.id,
         )
 
