@@ -50,7 +50,7 @@ This same ruling applies for key-val types such as Mapping.
 If the key type and value types are known, they may be specified:
 
 ```python
-known_types_dict: dict[str, str] = {"name" = "demo"}
+known_types_dict: dict[str, str] = {"name": "demo"}
 ```
 
 If the key type is known, and the value types are deterministic, use TypedDict:
