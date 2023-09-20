@@ -215,3 +215,43 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
         self.assertInBody(
             "We calculate the grand total to be £230.58985. Is this correct?"
         )
+
+    def test_grand_calculated_summary_inside_repeating_section(self):
+        """
+        Happy path for a grand calculated summary inside a repeating section
+        """
+        self.launchSurvey("test_grand_calculated_summary_inside_repeating_section")
+        self.post()
+        self.post({"any-cost-answer": "No"})
+        self.post({"finance-cost-answer": "150"})
+        self.post()
+        self.post()
+        self.post()
+        self.post({"any-vehicle-answer": "Yes"})
+        self.post({"vehicle-name": "Car"})
+        self.post({"list-collector-answer": "Yes"})
+        self.post({"vehicle-name": "Motorbike"})
+        self.post({"list-collector-answer": "No"})
+        self.post()
+        self.post()
+        self.post({"vehicle-maintenance-cost": "100"})
+        self.post({"vehicle-fuel-cost": "80"})
+        self.assertInBody(
+            "We calculate the monthly running costs of your Car to be £180.00. Is this correct?"
+        )
+        self.post()
+        self.assertInBody(
+            "The total cost of owning and running your Car is calculated to be £330.00. Is this correct?"
+        )
+        self.post()
+        self.post()
+        self.post()
+        self.post({"vehicle-maintenance-cost": "40"})
+        self.post({"vehicle-fuel-cost": "35"})
+        self.assertInBody(
+            "We calculate the monthly running costs of your Motorbike to be £75.00. Is this correct?"
+        )
+        self.post()
+        self.assertInBody(
+            "The total cost of owning and running your Motorbike is calculated to be £225.00. Is this correct?"
+        )

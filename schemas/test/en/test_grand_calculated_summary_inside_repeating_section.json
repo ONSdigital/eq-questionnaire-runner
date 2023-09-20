@@ -50,7 +50,7 @@
                                             "title": "Notes for testing"
                                         },
                                         {
-                                            "description": "For the first iteration, calculated summaries of repeating answers don't work in a grand calculated summary in a separate repeating section"
+                                            "description": "For the first iteration, calculated summaries of repeating answers don’t work in a grand calculated summary in a separate repeating section"
                                         },
                                         {
                                             "description": "<b>So you should answer no to this question</b> and remove this guidance once separate repeating answer calculated summaries are supported"
