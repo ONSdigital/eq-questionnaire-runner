@@ -39,7 +39,7 @@ def get_objects_matching(ids: Sequence[str]) -> dict[int, dict]
 
 If the typing used for a generic type would be Any or indeterministic, do not specify it:
 
-```
+```python
 items: list[Any] = ["demo", 2, true]  # Incorrect
 items: list[str | int | bool] = ["demo", 2, true]  # Incorrect
 items: list = ["demo", 2, true]  # Correct
@@ -49,13 +49,13 @@ This same ruling applies for key-val types such as Mapping.
 
 If the key type and value types are known, they may be specified:
 
-```
-known_types_dict: dict[str, str] = {"name" = "demo"}
+```python
+known_types_dict: dict[str, str] = {"name": "demo"}
 ```
 
 If the key type is known, and the value types are deterministic, use TypedDict:
 
-```
+```python
 from typing import TypedDict
 
 class Movie(TypedDict):
@@ -65,7 +65,7 @@ class Movie(TypedDict):
 
 If the key type is known but the value types are indeterministic or the key type is not known, do not declare the types:
 
-```
+```python
 json_data: dict = json.loads(stringified_json)
 ```
 
@@ -89,10 +89,8 @@ def test(self, var: None | int | str) -> None:
 - Make return types as specific as possible (to be predictable to callers)
 
 ```python
-    def increment_values(self, values: Sequence[int]) -> list[int]:
-
-
-return [value + 1 for value in values]
+def increment_values(self, values: Sequence[int]) -> list[int]:
+    return [value + 1 for value in values]
 ```
 
 ## Self Type
