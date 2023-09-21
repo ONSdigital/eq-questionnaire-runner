@@ -330,7 +330,6 @@ class Router:
                 )
             )
         if self.can_access_location(
-            # grand calculated summaries do not yet support repeating sections, when they do, this will need to make use of list item id as well
             Location(
                 block_id=return_to_block_id,
                 section_id=grand_calculated_summary_section,
@@ -346,7 +345,8 @@ class Router:
                 list_item_id=return_to_list_item_id,
                 _anchor=return_to_answer_id,
             )
-        # the above may alter routing_path, so retrieval of the next incomplete block needs to be here instead of returning None and allowing default behaviour
+        # since the above may define a different routing_path,
+        # retrieval of the next incomplete block needs to be here instead of returning None and allowing default behaviour
         return self._get_return_url_for_inaccessible_location(
             is_for_previous=is_for_previous,
             return_to_block_id=return_to_block_id,

@@ -39,6 +39,10 @@ class CalculatedSummaryBlock:
     ) -> None:
         """
         A Calculated summary block that is rendered as part of a grand calculated summary
+
+        If the GCS is in a repeating section, and the calculated summary also is
+        then the list name and item id need to be used to build the calculated summary change link
+        but if the GCS is repeating and the CS is not, the list parameters in the change link should be set to None
         """
 
         self.id = block_schema["id"]
