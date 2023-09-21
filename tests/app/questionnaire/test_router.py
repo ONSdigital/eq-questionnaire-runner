@@ -796,19 +796,46 @@ class TestRouterNextLocation(RouterTestCase):
 
         assert expected_previous_url == next_location_url
 
+    @pytest.mark.parametrize(
+        "section_id,block_id,list_name,list_item_id",
+        [
+            ("base-costs-section", "calculated-summary-base-cost", None, None),
+            (
+                "vehicle-details-section",
+                "calculated-summary-running-costs",
+                "vehicles",
+                "ZIrggR",
+            ),
+        ],
+    )
     @pytest.mark.usefixtures("app")
-    def test_return_to_repeating_grand_calculated_summary_from_repeating_calculated_summary(
-        self, grand_calculated_summary_in_repeating_section_schema
+    def test_return_to_repeating_grand_calculated_summary_from_calculated_summary(
+        self,
+        section_id,
+        block_id,
+        list_name,
+        list_item_id,
+        grand_calculated_summary_in_repeating_section_schema,
     ):
         """
-        This tests that if you use a change link from a repeating GCS to return to a repeating CS
-        the continue button for the repeating CS has a nex location url of the origin repeating GCS.
+        This tests that if you use a change link from a repeating GCS to return to:
+        either a non-repeating CS in another section or a repeating CS in the same section,
+        the continue button for the CS has a next location url of the original repeating GCS.
         """
         self.schema = grand_calculated_summary_in_repeating_section_schema
         self.list_store = ListStore([{"items": ["ZIrqqR"], "name": "vehicles"}])
 
         self.progress_store = ProgressStore(
             [
+                ProgressDict(
+                    section_id="base-costs-section",
+                    block_ids=[
+                        "any-cost",
+                        "finance-cost",
+                        "calculated-summary-base-cost",
+                    ],
+                    status=CompletionStatus.COMPLETED,
+                ),
                 ProgressDict(
                     section_id="vehicle-details-section",
                     block_ids=[
@@ -823,10 +850,10 @@ class TestRouterNextLocation(RouterTestCase):
             ]
         )
         current_location = Location(
-            section_id="vehicle-details-section",
-            block_id="calculated-summary-running-cost",
-            list_name="vehicles",
-            list_item_id="ZIrqqR",
+            section_id=section_id,
+            block_id=block_id,
+            list_name=list_name,
+            list_item_id=list_item_id,
         )
         routing_path = RoutingPath(
             block_ids=[
