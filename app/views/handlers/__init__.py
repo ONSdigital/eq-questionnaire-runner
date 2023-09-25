@@ -1,8 +1,7 @@
 from flask import url_for
 
 from app.data_models import QuestionnaireStore
-
-from .individual_response import (
+from app.views.handlers.individual_response import (
     IndividualResponseHandler,
     IndividualResponseHowHandler,
     IndividualResponsePostAddressConfirmHandler,

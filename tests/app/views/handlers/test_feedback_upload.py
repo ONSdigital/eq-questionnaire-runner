@@ -9,8 +9,7 @@ from app.views.handlers.feedback import (
     FeedbackPayload,
     FeedbackPayloadV2,
 )
-
-from .conftest import (
+from tests.app.views.handlers.conftest import (
     case_id,
     case_ref,
     case_type,

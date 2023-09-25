@@ -1,12 +1,16 @@
 from typing import MutableMapping
 
+from app.data_models import (
+    AnswerStore,
+    ListStore,
+    ProgressStore,
+    SupplementaryDataStore,
+)
+from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire.location import Location
-
-from ...data_models import AnswerStore, ListStore, ProgressStore, SupplementaryDataStore
-from ...data_models.metadata_proxy import MetadataProxy
-from ...questionnaire import QuestionnaireSchema
-from .context import Context
-from .section_summary_context import SectionSummaryContext
+from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.views.contexts.context import Context
+from app.views.contexts.section_summary_context import SectionSummaryContext
 
 
 class SummaryContext(Context):
