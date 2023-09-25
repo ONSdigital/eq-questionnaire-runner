@@ -8,7 +8,7 @@ from wtforms.validators import ValidationError
 if TYPE_CHECKING:
     from app.forms.field_handlers.select_handlers import ChoiceType
 
-ChoiceWidgetRenderType: TypeAlias = tuple[str | None, str | None, bool, str | None]
+ChoiceWidgetRenderType: TypeAlias = tuple[str, str, bool, str | None]
 
 
 class SelectFieldWithDetailAnswer(SelectField):
