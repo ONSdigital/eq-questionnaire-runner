@@ -1,7 +1,8 @@
-from typing import Sequence, Callable, Any, Iterator, TYPE_CHECKING, TypeAlias, Generator
+from __future__ import annotations
+
+from typing import Sequence, Callable, Any, TYPE_CHECKING, TypeAlias, Generator
 
 from wtforms import SelectMultipleField, SelectFieldBase
-
 
 if TYPE_CHECKING:
     from app.forms.field_handlers.select_handlers import ChoiceType
