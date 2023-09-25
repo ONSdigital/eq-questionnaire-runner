@@ -53,7 +53,7 @@ class CalculatedSummaryBlock:
         self._return_to_list_item_id = return_to_list_item_id
         self._block_schema = block_schema
         self._schema = schema
-        if location and self._schema.is_block_in_repeating_section(self.id):
+        if self._schema.is_block_in_repeating_section(self.id):
             self._list_item_id = location.list_item_id
             self._list_name = location.list_name
         else:
