@@ -1,4 +1,4 @@
-from .submitter import (
+from app.submitter.submitter import (
     GCSFeedbackSubmitter,
     GCSSubmitter,
     LogFeedbackSubmitter,
