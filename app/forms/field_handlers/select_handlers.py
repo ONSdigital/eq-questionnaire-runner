@@ -1,5 +1,4 @@
-from collections import namedtuple
-from typing import Any, Optional, Sequence, Union
+from typing import Any, Optional, Sequence, TypeAlias
 
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.fields import (
@@ -8,13 +7,10 @@ from app.forms.fields import (
 )
 from app.questionnaire.dynamic_answer_options import DynamicAnswerOptions
 from app.questionnaire.questionnaire_schema import InvalidSchemaConfigurationException
+from app.utilities.types import Choice, ChoiceWithDetailAnswer
 
-Choice = namedtuple("Choice", "value label")
-ChoiceWithDetailAnswer = namedtuple(
-    "ChoiceWithDetailAnswer", "value label detail_answer_id"
-)
 
-ChoiceType = Union[Choice, ChoiceWithDetailAnswer]
+ChoiceType: TypeAlias = Choice | ChoiceWithDetailAnswer
 
 
 class SelectHandlerBase(FieldHandler):

@@ -44,3 +44,14 @@ class DependentSection(NamedTuple):
 class SupplementaryDataListMapping(TypedDict):
     identifier: str | int
     list_item_id: str
+
+
+class Choice(NamedTuple):
+    value: str
+    label: str
+
+
+class ChoiceWithDetailAnswer(NamedTuple):
+    value: str
+    label: str
+    detail_answer_id: str | None
