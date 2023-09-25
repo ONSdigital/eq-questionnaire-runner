@@ -1,5 +1,14 @@
-from wtforms import SelectField
+from __future__ import annotations
+
+from typing import Any, Callable, Sequence, Generator, TypeAlias, TYPE_CHECKING
+
+from wtforms import SelectField, SelectFieldBase
 from wtforms.validators import ValidationError
+
+if TYPE_CHECKING:
+    from app.forms.field_handlers.select_handlers import ChoiceType
+
+ChoiceWidgetRenderType: TypeAlias = tuple[str | None, str | None, bool, str | None]
 
 
 class SelectFieldWithDetailAnswer(SelectField):
@@ -7,11 +16,26 @@ class SelectFieldWithDetailAnswer(SelectField):
     This custom field allows us to add the additional detail_answer_id to choices/options.
     This saves us having to later map options with their detail_answer.
     """
+    def __init__(
+        self,
+        *,
+        description: str,
+        label: str | None = None,
+        choices: Sequence[ChoiceType],
+        coerce: Callable[[str | None], str | None],
+        validators: Sequence[Callable],
+        **kwargs: Any
+    ) -> None:
+        super().__init__(
+            description=description,
+            label=label,
+            choices=choices,
+            coerce=coerce,
+            validators=validators,
+            **kwargs
+        )
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
-    def __iter__(self):
+    def __iter__(self) -> Generator[SelectFieldBase._Option, None, None]:
         opts = {
             "widget": self.option_widget,
             "name": self.name,
@@ -27,11 +51,11 @@ class SelectFieldWithDetailAnswer(SelectField):
             opt.checked = checked
             yield opt
 
-    def iter_choices(self):
+    def iter_choices(self) -> Generator[ChoiceWidgetRenderType, None, None]:
         for value, label, detail_answer_id in self.choices:
             yield value, label, self.coerce(value) == self.data, detail_answer_id
 
-    def pre_validate(self, _):
+    def pre_validate(self, _: Any) -> None:
         for _, _, match, _ in self.iter_choices():
             if match:
                 break
