@@ -1,4 +1,4 @@
-from . import QuestionnaireTestCase
+from tests.integration.questionnaire import QuestionnaireTestCase
 
 
 class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
