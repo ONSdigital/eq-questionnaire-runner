@@ -138,7 +138,7 @@ of a file, it silences all errors in the file:
 # type: ignore
 ```
 
-`# type: ignore` should only be used when unavoidable. Ensure that a comment is added to explain why it has been used and have a prefix of `Type ignore:`
+`# type: ignore` should only be used when unavoidable (or in the return `Any` case detailed below). Ensure that a comment is added to explain why it has been used and have a prefix of `Type ignore:`
 
 ```python
 def format_number(number: int) -> str:
