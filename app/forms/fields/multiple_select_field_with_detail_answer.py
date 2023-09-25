@@ -1,4 +1,12 @@
-from wtforms import SelectMultipleField
+from typing import Sequence, Callable, Any, Iterator, TYPE_CHECKING, TypeAlias, Generator
+
+from wtforms import SelectMultipleField, SelectFieldBase
+
+
+if TYPE_CHECKING:
+    from app.forms.field_handlers.select_handlers import ChoiceType
+
+ChoiceWidgetRenderType: TypeAlias = tuple[str, str, bool, str | None]
 
 
 class MultipleSelectFieldWithDetailAnswer(SelectMultipleField):
@@ -7,10 +15,24 @@ class MultipleSelectFieldWithDetailAnswer(SelectMultipleField):
     This saves us having to later map options with their detail_answer.
     """
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(
+        self,
+        *,
+        description: str,
+        label: str | None = None,
+        choices: Sequence[ChoiceType],
+        validators: Sequence[Callable],
+        **kwargs: Any,
+    ) -> None:
+        super().__init__(
+            description=description,
+            label=label,
+            choices=choices,
+            validators=validators,
+            **kwargs
+        )
 
-    def __iter__(self):
+    def __iter__(self) -> Generator[SelectFieldBase._Option, None, None]:
         opts = {
             "widget": self.option_widget,
             "name": self.name,
@@ -26,7 +48,7 @@ class MultipleSelectFieldWithDetailAnswer(SelectMultipleField):
             opt.checked = checked
             yield opt
 
-    def iter_choices(self):
+    def iter_choices(self) -> Generator[ChoiceWidgetRenderType, None, None]:
         for value, label, detail_answer_id in self.choices:
             selected = self.data is not None and self.coerce(value) in self.data
             yield value, label, selected, detail_answer_id
