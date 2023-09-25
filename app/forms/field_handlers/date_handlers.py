@@ -53,7 +53,7 @@ class DateHandler(FieldHandler):
         return validate_with
 
     def get_field(self) -> DateField:
-        return DateField(self.validators, label=self.label, description=self.guidance)
+        return DateField(validators=self.validators, label=self.label, description=self.guidance)
 
     def get_min_max_validator(
         self, minimum_date: Optional[datetime], maximum_date: Optional[datetime]
