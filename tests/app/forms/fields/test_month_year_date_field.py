@@ -21,7 +21,9 @@ def test_month_year_date_form_format_data():
     data = {"field": "2000-01"}
 
     class TestForm(Form):
-        field = month_year_date_field.MonthYearDateField([validators.Optional()])
+        field = month_year_date_field.MonthYearDateField(
+            validators=[validators.Optional()], description=""
+        )
 
     test_form = TestForm(data=data)
 
