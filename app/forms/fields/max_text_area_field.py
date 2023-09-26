@@ -1,8 +1,24 @@
+from typing import Sequence, Callable, Any
+
 from wtforms import TextAreaField
 
 
 class MaxTextAreaField(TextAreaField):
-    def __init__(self, label="", validators=None, rows=None, maxlength=None, **kwargs):
-        super().__init__(label, validators, **kwargs)
+    def __init__(
+        self,
+        *,
+        description: str,
+        rows: int,
+        maxlength: int,
+        validators: Sequence[Callable],
+        label: str | None = None,
+        **kwargs: Any,
+    ) -> None:
+        super().__init__(
+            label=label,
+            validators=validators,
+            description=description,
+            **kwargs
+        )
         self.rows = rows
         self.maxlength = maxlength
