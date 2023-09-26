@@ -751,6 +751,253 @@
                                     ]
                                 }
                             }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "gcs-breakdown-block",
+                            "question": {
+                                "id": "gcs-breakdown-question",
+                                "title": {
+                                    "text": "How do you pay for the monthly fees of {vehicle_cost}?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "vehicle_cost",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_currency",
+                                                    "arguments": {
+                                                        "number": {
+                                                            "identifier": "grand-calculated-summary-vehicle",
+                                                            "source": "grand_calculated_summary"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "Calculated",
+                                "warning": "These answers must add up to the total owning and running cost",
+                                "calculations": [
+                                    {
+                                        "calculation_type": "sum",
+                                        "value": {
+                                            "identifier": "grand-calculated-summary-vehicle",
+                                            "source": "grand_calculated_summary"
+                                        },
+                                        "answers_to_calculate": [
+                                            "pay-debit",
+                                            "pay-credit",
+                                            "pay-other"
+                                        ],
+                                        "conditions": [
+                                            "equals"
+                                        ]
+                                    }
+                                ],
+                                "answers": [
+                                    {
+                                        "id": "pay-debit",
+                                        "label": "Amount paid by debit card",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "pay-credit",
+                                        "label": "Amount paid by credit card",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "pay-other",
+                                        "label": "Amount paid by other means",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Interstitial",
+                            "id": "gcs-piping",
+                            "content": {
+                                "title": {
+                                    "text": "You have provided the following information about monthly expenditure for your {vehicle_name}.",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "vehicle_name",
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "vehicle-name"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "contents": [
+                                    {
+                                        "list": [
+                                            {
+                                                "text": "Monthly maintenance cost: <em>{total_maintenance}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "total_maintenance",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_currency",
+                                                                "arguments": {
+                                                                    "number": {
+                                                                        "identifier": "vehicle-maintenance-cost",
+                                                                        "source": "answers"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "Monthly fuel cost: <em>{total_fuel}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "total_fuel",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_currency",
+                                                                "arguments": {
+                                                                    "number": {
+                                                                        "identifier": "vehicle-fuel-cost",
+                                                                        "source": "answers"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "Total base cost: <em>{total_base}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "total_base",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_currency",
+                                                                "arguments": {
+                                                                    "number": {
+                                                                        "identifier": "calculated-summary-base-cost",
+                                                                        "source": "calculated_summary"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "Total running cost: <em>{total_running}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "total_running",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_currency",
+                                                                "arguments": {
+                                                                    "number": {
+                                                                        "identifier": "calculated-summary-running-cost",
+                                                                        "source": "calculated_summary"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "Total owning and running cost: <em>{total}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "total",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_currency",
+                                                                "arguments": {
+                                                                    "number": {
+                                                                        "identifier": "grand-calculated-summary-vehicle",
+                                                                        "source": "grand_calculated_summary"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "Paid by debit card: <em>{debit}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "debit",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_currency",
+                                                                "arguments": {
+                                                                    "number": {
+                                                                        "identifier": "pay-debit",
+                                                                        "source": "answers"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "Paid by credit card: <em>{credit}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "credit",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_currency",
+                                                                "arguments": {
+                                                                    "number": {
+                                                                        "identifier": "pay-credit",
+                                                                        "source": "answers"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "Paid by other means: <em>{other}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "other",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_currency",
+                                                                "arguments": {
+                                                                    "number": {
+                                                                        "identifier": "pay-other",
+                                                                        "source": "answers"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
                         }
                     ]
                 }

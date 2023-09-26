@@ -230,22 +230,22 @@ class ValueSourceResolver:
 
         return list(list_model)
 
-    def _resolve_calculated_summary_value_source(
+    def _resolve_summary_with_calculation(
         self, value_source: Mapping, *, assess_routing_path: bool
     ) -> IntOrDecimal | None:
-        """Calculates the value for the 'calculation' used by the provided Calculated Summary.
+        """Calculates the value for the 'calculation' used by the provided Calculated or Grand Calculated Summary.
 
-        The caller is responsible for ensuring the provided Calculated Summary and its answers are on the path,
+        The caller is responsible for ensuring the provided Summary and its components are on the path
         or providing routing_path_block_ids when initialising the value source resolver.
         """
-        calculated_summary_block: ImmutableDict = self.schema.get_block(value_source["identifier"])  # type: ignore
-
-        if not self._is_block_on_path(calculated_summary_block["id"]):
+        summary_block: ImmutableDict = self.schema.get_block(value_source["identifier"])  # type: ignore
+        if not self._is_block_on_path(summary_block["id"]):
             return None
 
-        calculation = calculated_summary_block["calculation"]
-        if calculation.get("answers_to_calculate"):
-            operator = self.get_calculation_operator(calculation["calculation_type"])
+        calculation = summary_block["calculation"]
+        # old calculated summary blocks may have answers_to_calculate instead of calculation
+        if summary_block.get("answers_to_calculate"):
+            operator = self.get_calculation_operator(summary_block["calculation_type"])
             list_item_id = self._resolve_list_item_id_for_value_source(value_source)
             values = [
                 self._get_answer_value(
@@ -319,8 +319,8 @@ class ValueSourceResolver:
     ) -> ValueSourceEscapedTypes | ValueSourceTypes:
         source = value_source["source"]
 
-        if source == "calculated_summary":
-            return self._resolve_calculated_summary_value_source(
+        if source in {"calculated_summary", "grand_calculated_summary"}:
+            return self._resolve_summary_with_calculation(
                 value_source=value_source, assess_routing_path=True
             )
         resolve_method_mapping = {

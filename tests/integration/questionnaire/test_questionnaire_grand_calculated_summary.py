@@ -244,6 +244,16 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
             "The total cost of owning and running your Car is calculated to be £330.00. Is this correct?"
         )
         self.post()
+        self.post({"pay-debit": "110", "pay-credit": "120", "pay-other": "100"})
+        self.assertInBody("Monthly maintenance cost: <em>£100.00</em>")
+        self.assertInBody("Monthly fuel cost: <em>£80.00</em>")
+        self.assertInBody("Total base cost: <em>£150.00</em>")
+        self.assertInBody("Total running cost: <em>£180.00</em>")
+        self.assertInBody("Total owning and running cost: <em>£330.00</em>")
+        self.assertInBody("Paid by debit card: <em>£110.00</em>")
+        self.assertInBody("Paid by credit card: <em>£120.00</em>")
+        self.assertInBody("Paid by other means: <em>£100.00</em>")
+        self.post()
         self.post()
         self.post()
         self.post({"vehicle-maintenance-cost": "40"})
@@ -255,3 +265,5 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
         self.assertInBody(
             "The total cost of owning and running your Motorbike is calculated to be £225.00. Is this correct?"
         )
+        self.post()
+        self.post({"pay-debit": "25", "pay-credit": "120", "pay-other": "80"})

@@ -32,8 +32,14 @@ import Section4SummaryPage from "../../../generated_pages/grand_calculated_summa
 import Section5SummaryPage from "../../../generated_pages/grand_calculated_summary_repeating_answers/section-5-summary.page";
 import { assertSummaryItems, assertSummaryValues, repeatingAnswerChangeLink, click } from "../../../helpers";
 import { expect } from "@wdio/globals";
+import InternetBreakdownBlockPage from "../../../generated_pages/grand_calculated_summary_repeating_answers/internet-breakdown-block.page";
+import Section6SummaryPage from "../../../generated_pages/grand_calculated_summary_repeating_answers/section-6-summary.page";
+import PersonalExpenditureBlockPage from "../../../generated_pages/grand_calculated_summary_repeating_answers/personal-expenditure-block.page";
+import GrandCalculatedSummaryPipingPage from "../../../generated_pages/grand_calculated_summary_repeating_answers/grand-calculated-summary-piping.page";
 
 describe("Feature: Grand Calculated Summary", () => {
+  const summaryRowTitles = ".ons-summary__row-title";
+
   describe("Given I have a Grand Calculated Summary across multiple sections", () => {
     before("Reaching the grand calculated summary section", async () => {
       await browser.openQuestionnaire("test_grand_calculated_summary_repeating_answers.json");
@@ -337,7 +343,25 @@ describe("Feature: Grand Calculated Summary", () => {
       await expect(await $(GrandCalculatedSummary5Page.grandCalculatedSummaryTitle()).getText()).toContain(
         "Grand Calculated Summary for total monthly household expenditure is calculated to be £1,159.00. Is this correct?",
       );
+    });
+
+    it("Given I pipe the grand calculated summary into the next question, When I press continue, Then I see the correct title", async () => {
       await click(GrandCalculatedSummary5Page.submit());
+      await expect(await $(InternetBreakdownBlockPage.questionTitle()).getText()).toContain("How did you use the 100 GB across your devices?")
+    });
+
+    it("Given I use the grand calculated summary for validation, When I enter values with too large a sum, Then I see a validation error", async () => {
+      await $(InternetBreakdownBlockPage.internetPc()).setValue(60);
+      await $(InternetBreakdownBlockPage.internetPhone()).setValue(60);
+      await click(InternetBreakdownBlockPage.submit());
+      await expect(await $(InternetBreakdownBlockPage.errorNumber(1)).getText()).toContain("Enter answers that add up to 100");
+    });
+
+    it("Given I use the grand calculated summary for validation, When I enter values with the correct sum, Then I progress to the summary page", async () => {
+      await $(InternetBreakdownBlockPage.internetPhone()).setValue(40);
+      await click(InternetBreakdownBlockPage.submit());
+      await expect(browser).toHaveUrlContaining(Section6SummaryPage.pageName);
+      await click(Section6SummaryPage.submit());
     });
 
     it("Given I have a grand calculated summary featuring dynamic answers, When I add an item to the list collector and return to the hub, Then I see the section with dynamic answers is in progress, and the grand calculated summary section is not available", async () => {
@@ -381,6 +405,9 @@ describe("Feature: Grand Calculated Summary", () => {
         "Grand Calculated Summary for total monthly household expenditure is calculated to be £1,199.00. Is this correct?",
       );
       await click(GrandCalculatedSummary5Page.submit());
+      await expect(browser).toHaveUrlContaining(Section6SummaryPage.pageName);
+      await expect(await $$(summaryRowTitles)[0].getText()).toContain("How did you use the 100 GB across your devices?");
+      await click(Section6SummaryPage.submit());
       await expect(await $(HubPage.summaryRowState("section-6")).getText()).toContain("Completed");
     });
 
@@ -428,6 +455,7 @@ describe("Feature: Grand Calculated Summary", () => {
         "Grand Calculated Summary for total monthly household expenditure is calculated to be £1,209.00. Is this correct?",
       );
       await click(GrandCalculatedSummary5Page.submit());
+      await click(Section6SummaryPage.submit());
     });
 
     it("Given I remove a list item involved in the grand calculated summary, When I confirm, Then I am taken to each affected calculated summary to reconfirm, and when I return to the Hub the grand calculated summary is in progress", async () => {
@@ -465,6 +493,30 @@ describe("Feature: Grand Calculated Summary", () => {
         "Grand Calculated Summary for total monthly household expenditure is calculated to be £1,199.00. Is this correct?",
       );
       await click(GrandCalculatedSummary5Page.submit());
+    });
+
+    it("Given I have a further section depending on the grand calculated summary section, When I return to the Hub, Then I see the new section is available", async () => {
+      await click(Section6SummaryPage.submit());
+      await expect(await $(HubPage.summaryRowState("section-7")).getText()).toContain("Not started");
+      await click(HubPage.submit());
+    });
+
+    it("Given I use a grand calculated summary value as a maximum, When I enter a value that is too large, Then I see a validation error", async () => {
+      await expect(await $(PersonalExpenditureBlockPage.questionTitle()).getText()).toContain("How much of the £1,199 household expenditure do you contribute personally?");
+      await $(PersonalExpenditureBlockPage.personalExpenditure()).setValue(1200);
+      await click(PersonalExpenditureBlockPage.submit());
+      await expect(await $(PersonalExpenditureBlockPage.errorNumber(1)).getText()).toContain("Enter an answer less than or equal to £1,199.00");
+    });
+
+    it("Given I display multiple grand calculated summaries on an Interstitial page, When I reach the page, Then I see the correct values piped in", async () => {
+      await $(PersonalExpenditureBlockPage.personalExpenditure()).setValue(1100);
+      await click(PersonalExpenditureBlockPage.submit());
+      await expect(browser).toHaveUrlContaining(GrandCalculatedSummaryPipingPage.pageName);
+      await expect(await $("body").getText()).toContain("Total household expenditure: £1,199");
+      await expect(await $("body").getText()).toContain("Personal contribution: £1,100");
+      await expect(await $("body").getText()).toContain("Total internet usage: 85 GB");
+      await expect(await $("body").getText()).toContain("Usage by phone: 40 GB");
+      await expect(await $("body").getText()).toContain("Usage by PC: 60 GB");
     });
   });
 });
