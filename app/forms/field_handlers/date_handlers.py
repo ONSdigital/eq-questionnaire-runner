@@ -156,7 +156,7 @@ class YearDateHandler(DateHandler):
 
     def get_field(self) -> YearDateField:
         return YearDateField(
-            self.validators, label=self.label, description=self.guidance
+            validators=self.validators, label=self.label, description=self.guidance
         )
 
     def get_min_max_validator(
