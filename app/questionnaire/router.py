@@ -120,7 +120,6 @@ class Router:
         return_to: str | None = None,
         return_to_answer_id: str | None = None,
         return_to_block_id: str | None = None,
-        return_to_list_name: str | None = None,
         return_to_list_item_id: str | None = None,
     ) -> str:
         """
@@ -139,7 +138,6 @@ class Router:
             is_section_complete=is_section_complete,
             return_to_answer_id=return_to_answer_id,
             return_to_block_id=return_to_block_id,
-            return_to_list_name=return_to_list_name,
             return_to_list_item_id=return_to_list_item_id,
         ):
             return return_to_url
@@ -179,7 +177,6 @@ class Router:
         return_to: str | None = None,
         return_to_answer_id: str | None = None,
         return_to_block_id: str | None = None,
-        return_to_list_name: str | None = None,
         return_to_list_item_id: str | None = None,
     ) -> str | None:
         """
@@ -193,7 +190,6 @@ class Router:
             is_for_previous=True,
             return_to_answer_id=return_to_answer_id,
             return_to_block_id=return_to_block_id,
-            return_to_list_name=return_to_list_name,
             return_to_list_item_id=return_to_list_item_id,
         ):
             return return_to_url
@@ -236,7 +232,6 @@ class Router:
         is_section_complete: bool | None = None,
         return_to_answer_id: str | None = None,
         return_to_block_id: str | None = None,
-        return_to_list_name: str | None = None,
         return_to_list_item_id: str | None = None,
     ) -> str | None:
         if not return_to:
@@ -250,7 +245,6 @@ class Router:
                 routing_path=routing_path,
                 is_for_previous=is_for_previous,
                 return_to_answer_id=return_to_answer_id,
-                return_to_list_name=return_to_list_name,
                 return_to_list_item_id=return_to_list_item_id,
             )
         ):
@@ -260,7 +254,6 @@ class Router:
             url := self._get_return_to_for_calculated_summary(
                 return_to=return_to,
                 return_to_block_id=return_to_block_id,
-                return_to_list_name=return_to_list_name,
                 return_to_list_item_id=return_to_list_item_id,
                 location=location,
                 routing_path=routing_path,
@@ -301,7 +294,6 @@ class Router:
         routing_path: RoutingPath,
         is_for_previous: bool,
         return_to_answer_id: str | None = None,
-        return_to_list_name: str | None = None,
         return_to_list_item_id: str | None = None,
     ) -> str | None:
         """
@@ -314,6 +306,11 @@ class Router:
         # Type ignore: if the block is valid, then we'll be able to find a section for it
         grand_calculated_summary_section: str = (
             self._schema.get_section_id_for_block_id(return_to_block_id)  # type: ignore
+        )
+        list_name = (
+            self._list_store.get_list_name_for_list_item_id(return_to_list_item_id)
+            if return_to_list_item_id
+            else None
         )
         if grand_calculated_summary_section != section_key.section_id:
             # the grand calculated summary is in a different section which will have a different routing path
@@ -334,15 +331,15 @@ class Router:
                 block_id=return_to_block_id,
                 section_id=grand_calculated_summary_section,
                 list_item_id=return_to_list_item_id,
-                list_name=return_to_list_name,
+                list_name=list_name,
             ),
             routing_path,
         ):
             return url_for(
                 "questionnaire.block",
                 block_id=return_to_block_id,
-                list_name=return_to_list_name,
                 list_item_id=return_to_list_item_id,
+                list_name=list_name,
                 _anchor=return_to_answer_id,
             )
         # since the above may define a different routing_path,
@@ -359,7 +356,6 @@ class Router:
         *,
         return_to: str,
         return_to_block_id: str | None,
-        return_to_list_name: str | None,
         return_to_list_item_id: str | None,
         location: LocationType,
         routing_path: RoutingPath,
@@ -399,7 +395,6 @@ class Router:
                 list_item_id=location.list_item_id,
                 return_to=return_to_remaining,
                 return_to_block_id=return_to_block_id,
-                return_to_list_name=return_to_list_name,
                 return_to_list_item_id=return_to_list_item_id,
                 _anchor=return_to_answer_id,
             )

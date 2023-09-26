@@ -44,7 +44,6 @@ class BlockHandler:
         self._return_to = request_args.get("return_to")
         self._return_to_answer_id = request_args.get("return_to_answer_id")
         self._return_to_block_id = request_args.get("return_to_block_id")
-        self._return_to_list_name = request_args.get("return_to_list_name")
         self._return_to_list_item_id = request_args.get("return_to_list_item_id")
         self.resume = "resume" in request_args
 
@@ -113,7 +112,6 @@ class BlockHandler:
             self._return_to,
             self._return_to_answer_id,
             self._return_to_block_id,
-            self._return_to_list_name,
             self._return_to_list_item_id,
         )
 
@@ -124,7 +122,6 @@ class BlockHandler:
             self._return_to,
             self._return_to_answer_id,
             self._return_to_block_id,
-            self._return_to_list_name,
             self._return_to_list_item_id,
         )
 

@@ -83,7 +83,6 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
                 supplementary_data_store=self._supplementary_data_store,
                 return_to="grand-calculated-summary",
                 return_to_block_id=self.current_location.block_id,
-                return_to_list_name=self.current_location.list_name,
                 return_to_list_item_id=self.current_location.list_item_id,
                 summary_type="GrandCalculatedSummary",
             ).serialize()

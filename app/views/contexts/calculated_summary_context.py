@@ -42,7 +42,6 @@ class CalculatedSummaryContext(Context):
         supplementary_data_store: SupplementaryDataStore,
         return_to: str | None = None,
         return_to_block_id: str | None = None,
-        return_to_list_name: str | None = None,
         return_to_list_item_id: str | None = None,
     ) -> None:
         super().__init__(
@@ -59,7 +58,6 @@ class CalculatedSummaryContext(Context):
         self.current_location = current_location
         self.return_to = return_to
         self.return_to_block_id = return_to_block_id
-        self.return_to_list_name = return_to_list_name
         self.return_to_list_item_id = return_to_list_item_id
 
     @cached_property
@@ -103,7 +101,6 @@ class CalculatedSummaryContext(Context):
                 supplementary_data_store=self._supplementary_data_store,
                 return_to=return_to,
                 return_to_block_id=return_to_block_id,
-                return_to_list_name=self.return_to_list_name,
                 return_to_list_item_id=self.return_to_list_item_id,
                 summary_type="CalculatedSummary",
             ).serialize()

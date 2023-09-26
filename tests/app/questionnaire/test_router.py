@@ -871,7 +871,6 @@ class TestRouterNextLocation(RouterTestCase):
             routing_path,
             return_to="grand-calculated-summary",
             return_to_block_id="grand-calculated-summary-vehicle",
-            return_to_list_name="vehicles",
             return_to_list_item_id="ZIrqqR",
         )
         expected_next_url = url_for(

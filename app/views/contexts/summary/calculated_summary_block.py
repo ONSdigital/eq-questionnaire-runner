@@ -31,7 +31,6 @@ class CalculatedSummaryBlock:
         location: LocationType,
         return_to: str | None,
         return_to_block_id: str | None = None,
-        return_to_list_name: str | None = None,
         return_to_list_item_id: str | None = None,
         progress_store: ProgressStore,
         routing_path_block_ids: Iterable[str],
@@ -49,7 +48,6 @@ class CalculatedSummaryBlock:
         self.title = block_schema["calculation"]["title"]
         self._return_to = return_to
         self._return_to_block_id = return_to_block_id
-        self._return_to_list_name = return_to_list_name
         self._return_to_list_item_id = return_to_list_item_id
         self._block_schema = block_schema
         self._schema = schema
@@ -94,7 +92,6 @@ class CalculatedSummaryBlock:
             return_to=self._return_to,
             return_to_answer_id=self.id,
             return_to_block_id=self._return_to_block_id,
-            return_to_list_name=self._return_to_list_name,
             return_to_list_item_id=self._return_to_list_item_id,
             _anchor=self.id,
         )

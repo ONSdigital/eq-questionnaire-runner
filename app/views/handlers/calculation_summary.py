@@ -21,7 +21,6 @@ class _SummaryWithCalculation(Content):
             routing_path=self._routing_path,
             return_to=self.return_to,
             return_to_block_id=self.return_to_block_id,
-            return_to_list_name=self._return_to_list_name,
             return_to_list_item_id=self._return_to_list_item_id,
             supplementary_data_store=self._questionnaire_store.supplementary_data_store,
         )
