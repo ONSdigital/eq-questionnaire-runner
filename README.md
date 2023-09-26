@@ -63,7 +63,20 @@ It is preferable to use the version of Python locally that matches that
 used on deployment. This project has a `.python_version` file for this
 purpose.
 
-It is recommended to install `pyenv` python version management tool (on Mac `brew install pyenv`) to easily switch between python versions. They can be changed with `pyenv local` or `pyenv global` command suffixed with desired version (e.g. 3.11.4). Different versions of python need to be installed first with `pyenv install` command. Refer to the pyenv project Readme [here](https://github.com/pyenv/pyenv). To avoid confusion check current python version at any given time using `python --version` or `python3 --version` command.
+It is recommended to install `pyenv` python version management tool to easily switch between python versions.
+To install `pyenv` use this command:
+```shell
+curl https://pyenv.run | bash
+```
+After the installation it should tell you to execute a command to add `pyenv` to path. It should look something like this:
+```shell
+export PYENV_ROOT="$HOME/.pyenv"
+
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+
+eval "$(pyenv init -)"
+```
+Python versions can be changed with `pyenv local` or `pyenv global` command suffixed with desired version (e.g. 3.11.4). Different versions of python can be installed first with `pyenv install` command. Refer to the pyenv project Readme [here](https://github.com/pyenv/pyenv). To avoid confusion check current python version at any given time using `python --version` or `python3 --version` command.
 
 Inside the project directory install python version, upgrade pip and install dependencies:
 
@@ -164,10 +177,14 @@ Or set the `GOOGLE_CLOUD_PROJECT` environment variable to your gcp project id.
 
 ## Frontend Tests
 
-The frontend tests use NodeJS to run. To handle different versions of NodeJs it is recommended to install Node Version Manager (nvm). You will need to have specific node version installed to run the tests. To do all this, use the following commands:
+The frontend tests use NodeJS to run. To handle different versions of NodeJs it is recommended to install `Node Version Manager` (`nvm`). It is similar to pyenv but for Node versions.
+To install `nvm` use the command below (make sure to replace "v0.39.2" with the current latest version):
+``` shell
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
+```
+You will need to have specific node version installed to run the tests. To do this, use the following commands:
 
 ``` shell
-brew install nvm
 nvm install
 nvm use
 ```
