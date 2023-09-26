@@ -244,8 +244,8 @@ class ValueSourceResolver:
 
         calculation = summary_block["calculation"]
         # old calculated summary blocks may have answers_to_calculate instead of calculation
-        if summary_block.get("answers_to_calculate"):
-            operator = self.get_calculation_operator(summary_block["calculation_type"])
+        if calculation.get("answers_to_calculate"):
+            operator = self.get_calculation_operator(calculation["calculation_type"])
             list_item_id = self._resolve_list_item_id_for_value_source(value_source)
             values = [
                 self._get_answer_value(

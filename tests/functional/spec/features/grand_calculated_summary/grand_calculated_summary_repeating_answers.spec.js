@@ -347,7 +347,7 @@ describe("Feature: Grand Calculated Summary", () => {
 
     it("Given I pipe the grand calculated summary into the next question, When I press continue, Then I see the correct title", async () => {
       await click(GrandCalculatedSummary5Page.submit());
-      await expect(await $(InternetBreakdownBlockPage.questionTitle()).getText()).toContain("How did you use the 100 GB across your devices?")
+      await expect(await $(InternetBreakdownBlockPage.questionTitle()).getText()).toContain("How did you use the 100 GB across your devices?");
     });
 
     it("Given I use the grand calculated summary for validation, When I enter values with too large a sum, Then I see a validation error", async () => {
@@ -502,7 +502,9 @@ describe("Feature: Grand Calculated Summary", () => {
     });
 
     it("Given I use a grand calculated summary value as a maximum, When I enter a value that is too large, Then I see a validation error", async () => {
-      await expect(await $(PersonalExpenditureBlockPage.questionTitle()).getText()).toContain("How much of the £1,199 household expenditure do you contribute personally?");
+      await expect(await $(PersonalExpenditureBlockPage.questionTitle()).getText()).toContain(
+        "How much of the £1,199 household expenditure do you contribute personally?",
+      );
       await $(PersonalExpenditureBlockPage.personalExpenditure()).setValue(1200);
       await click(PersonalExpenditureBlockPage.submit());
       await expect(await $(PersonalExpenditureBlockPage.errorNumber(1)).getText()).toContain("Enter an answer less than or equal to £1,199.00");

@@ -785,14 +785,8 @@
                                             "identifier": "grand-calculated-summary-vehicle",
                                             "source": "grand_calculated_summary"
                                         },
-                                        "answers_to_calculate": [
-                                            "pay-debit",
-                                            "pay-credit",
-                                            "pay-other"
-                                        ],
-                                        "conditions": [
-                                            "equals"
-                                        ]
+                                        "answers_to_calculate": ["pay-debit", "pay-credit", "pay-other"],
+                                        "conditions": ["equals"]
                                     }
                                 ],
                                 "answers": [
