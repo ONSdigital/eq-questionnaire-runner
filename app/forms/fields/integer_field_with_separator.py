@@ -1,3 +1,5 @@
+from typing import Sequence, Any, Callable
+
 from wtforms import IntegerField
 
 from app.helpers.form_helpers import sanitise_number
@@ -13,13 +15,25 @@ class IntegerFieldWithSeparator(IntegerField):
     DecimalPlace validators
     """
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(
+        self,
+        *,
+        description: str | None = None,
+        label: str | None = None,
+        validators: Sequence[Callable] | None = None,
+        **kwargs: Any
+    ) -> None:
+        super().__init__(
+            description=description,
+            label=label,
+            validators=validators,
+            **kwargs,
+        )
         self.data = None
 
-    def process_formdata(self, valuelist):
+    def process_formdata(self, valuelist: Sequence[str] | None = None) -> None:
         if valuelist:
             try:
-                self.data = int(sanitise_number(valuelist[0]))
+                self.data = int(sanitise_number(valuelist[0]))    # type: ignore # None type is safeguarded in if statement above
             except ValueError:
                 pass

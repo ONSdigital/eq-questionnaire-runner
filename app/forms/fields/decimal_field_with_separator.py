@@ -1,4 +1,5 @@
 from decimal import Decimal, InvalidOperation
+from typing import Sequence, Any, Callable
 
 from wtforms import DecimalField
 
@@ -15,13 +16,25 @@ class DecimalFieldWithSeparator(DecimalField):
     DecimalPlace validators
     """
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(
+        self,
+        *,
+        description: str,
+        label: str | None = None,
+        validators: Sequence[Callable],
+        **kwargs: Any
+    ) -> None:
+        super().__init__(
+            description=description,
+            label=label,
+            validators=validators,
+            **kwargs,
+        )
         self.data = None
 
-    def process_formdata(self, valuelist):
+    def process_formdata(self, valuelist: Sequence[str] | None = None) -> None:
         if valuelist:
             try:
-                self.data = Decimal(sanitise_number(valuelist[0]))
+                self.data = Decimal(sanitise_number(valuelist[0]))  # type: ignore # None type is safeguarded in if statement above
             except (ValueError, TypeError, InvalidOperation):
                 pass
