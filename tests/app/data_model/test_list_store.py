@@ -187,4 +187,4 @@ def test_lookup_invalid_list_item():
     with pytest.raises(ValueError) as error:
         store.get_list_name_for_list_item_id("not-a-list-item-id")
 
-    assert f"list_item_id not-a-list-item-id not found in any lists" in str(error.value)
+    assert "list_item_id not-a-list-item-id not found in any lists" in str(error.value)
