@@ -6,7 +6,7 @@ from wtforms import SelectField, SelectFieldBase
 from wtforms.validators import ValidationError
 
 if TYPE_CHECKING:
-    from app.forms.field_handlers.select_handlers import ChoiceType
+    from app.forms.field_handlers.select_handlers import ChoiceType     # pragma: no cover
 
 ChoiceWidgetRenderType: TypeAlias = tuple[str, str, bool, str | None]
 

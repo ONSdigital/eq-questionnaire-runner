@@ -127,7 +127,7 @@ class NumberRange:
         form: "QuestionnaireForm",
         field: Union[DecimalFieldWithSeparator, IntegerFieldWithSeparator],
     ) -> None:
-        value: Union[int, Decimal] = field.data
+        value: Union[int, Decimal, None] = field.data
 
         if value is not None:
             decimal_limit = (

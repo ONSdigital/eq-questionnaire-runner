@@ -5,7 +5,7 @@ from typing import Sequence, Callable, Any, TYPE_CHECKING, TypeAlias, Generator
 from wtforms import SelectMultipleField, SelectFieldBase
 
 if TYPE_CHECKING:
-    from app.forms.field_handlers.select_handlers import ChoiceType
+    from app.forms.field_handlers.select_handlers import ChoiceType     # pragma: no cover
 
 ChoiceWidgetRenderType: TypeAlias = tuple[str, str, bool, str | None]
 

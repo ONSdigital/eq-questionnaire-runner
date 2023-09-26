@@ -50,7 +50,7 @@ class DateField(FormField):
 
     def process(
         self,
-        formdata: MultiDict | None = None,
+        formdata: MultiDict,
         data: UnsetValue = unset_value,
         extra_filters: None = None
     ) -> None:
