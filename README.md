@@ -68,7 +68,7 @@ purpose.
 
 #### Pyenv
 
-It is recommended to install `pyenv` python version management tool to easily switch between python versions.
+It is recommended to install the `pyenv` Python version management tool to easily switch between Python versions.
 To install `pyenv` use this command:
 ```shell
 curl https://pyenv.run | bash
