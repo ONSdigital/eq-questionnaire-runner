@@ -11,9 +11,7 @@ from app.views.contexts.summary.group import Group
 
 
 class GrandCalculatedSummaryContext(CalculatedSummaryContext):
-    def _build_grand_calculated_summary_section(
-        self, rendered_block: Mapping
-    ) -> dict[str, str | list]:
+    def _build_grand_calculated_summary_section(self) -> dict[str, str | list]:
         """
         Build list of calculated summary blocks that the grand calculated summary will be adding up
         """
@@ -23,7 +21,7 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
         )
 
         calculated_summary_ids = get_calculation_block_ids_for_grand_calculated_summary(
-            rendered_block
+            self.rendered_block
         )
         blocks_to_calculate = [
             self._schema.get_block(block_id) for block_id in calculated_summary_ids
@@ -68,7 +66,6 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
         self,
         *,
         section: Mapping,
-        return_to_block_id: str,
         routing_path_block_ids: Iterable[str],
     ) -> list[Mapping]:
         return [
@@ -85,7 +82,7 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
                 progress_store=self._progress_store,
                 supplementary_data_store=self._supplementary_data_store,
                 return_to="grand-calculated-summary",
-                return_to_block_id=return_to_block_id,
+                return_to_block_id=self.current_location.block_id,
                 return_to_list_name=self.current_location.list_name,
                 return_to_list_item_id=self.current_location.list_item_id,
                 summary_type="GrandCalculatedSummary",
@@ -97,25 +94,16 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
         """
         Build summary section with formatted total and change links for each calculated summary
         """
-        # Type ignore: Block will exist at this point
-        block: ImmutableDict = self._schema.get_block(self.current_location.block_id)  # type: ignore
-        rendered_block = self._placeholder_renderer.render(
-            data_to_render=block, list_item_id=self.current_location.list_item_id
-        )
-
-        calculation = rendered_block["calculation"]
+        calculation = self.rendered_block["calculation"]
         calculated_summary_ids = get_calculation_block_ids_for_grand_calculated_summary(
-            rendered_block
+            self.rendered_block
         )
         routing_path_block_ids = self._blocks_on_routing_path(calculated_summary_ids)
 
-        calculated_section = self._build_grand_calculated_summary_section(
-            rendered_block
-        )
+        calculated_section = self._build_grand_calculated_summary_section()
 
         groups = self.build_groups_for_section(
             section=calculated_section,
-            return_to_block_id=block["id"],
             routing_path_block_ids=routing_path_block_ids,
         )
         total = self._get_evaluated_total(
@@ -135,24 +123,9 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
         formatted_total = self._format_total(answer_format=answer_format, total=total)
 
         return self._build_formatted_summary(
-            rendered_block=rendered_block,
             groups=groups,
             calculation=calculation,
             formatted_total=formatted_total,
             summary_type="GrandCalculatedSummary",
+            block_type="grand-calculated-summary",
         )
-
-    @staticmethod
-    def _get_calculated_question(
-        calculation_question: Mapping,
-        formatted_total: str,
-    ) -> dict:
-        calculation_title = calculation_question["title"]
-
-        return {
-            "title": calculation_title,
-            "id": "grand-calculated-summary-question",
-            "answers": [
-                {"id": "grand-calculated-summary-answer", "value": formatted_total}
-            ],
-        }

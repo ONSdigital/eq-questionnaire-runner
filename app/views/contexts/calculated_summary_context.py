@@ -1,3 +1,4 @@
+from functools import cached_property
 from typing import Callable, Iterable, Mapping, MutableMapping, Tuple
 
 from werkzeug.datastructures import ImmutableDict
@@ -61,11 +62,20 @@ class CalculatedSummaryContext(Context):
         self.return_to_list_name = return_to_list_name
         self.return_to_list_item_id = return_to_list_item_id
 
+    @cached_property
+    def rendered_block(self) -> dict:
+        # Type ignore block is guaranteed to exist at this point
+        block_id: str = self.current_location.block_id  # type: ignore
+        block: ImmutableDict = self._schema.get_block(block_id)  # type: ignore
+
+        return self._placeholder_renderer.render(
+            data_to_render=block, list_item_id=self.current_location.list_item_id
+        )
+
     def build_groups_for_section(
         self,
         *,
         section: Mapping,
-        return_to_block_id: str,
         routing_path_block_ids: Iterable[str],
     ) -> list[Mapping]:
         """
@@ -73,6 +83,8 @@ class CalculatedSummaryContext(Context):
         the details of the grand calculated summary to return to needs to be passed down to the calculated summary answer links
         """
         return_to = "calculated-summary"
+        # Type ignore: safe to assume block_id is not None
+        return_to_block_id: str = self.current_location.block_id  # type: ignore
         if self.return_to == "grand-calculated-summary":
             return_to_block_id += f",{self.return_to_block_id}"
             return_to += ",grand-calculated-summary"
@@ -99,22 +111,13 @@ class CalculatedSummaryContext(Context):
         ]
 
     def build_view_context(self) -> dict[str, dict]:
-        # type ignores added as block will exist at this point
-        block_id: str = self.current_location.block_id  # type: ignore
-        block: ImmutableDict = self._schema.get_block(block_id)  # type: ignore
-
-        rendered_block = self._placeholder_renderer.render(
-            data_to_render=block, list_item_id=self.current_location.list_item_id
-        )
-
         calculated_section: dict = self._build_calculated_summary_section(
-            rendered_block
+            self.rendered_block
         )
-        calculation = rendered_block["calculation"]
+        calculation = self.rendered_block["calculation"]
 
         groups = self.build_groups_for_section(
             section=calculated_section,
-            return_to_block_id=block_id,
             routing_path_block_ids=self.routing_path_block_ids,
         )
 
@@ -128,24 +131,24 @@ class CalculatedSummaryContext(Context):
         )
 
         return self._build_formatted_summary(
-            rendered_block=rendered_block,
             groups=groups,
             calculation=calculation,
             formatted_total=formatted_total,
             summary_type="CalculatedSummary",
+            block_type="calculated-summary",
         )
 
     def _build_formatted_summary(
         self,
         *,
-        rendered_block: Mapping,
         groups: Iterable[Mapping],
         calculation: Mapping,
         formatted_total: str,
         summary_type: str,
+        block_type: str,
     ) -> dict[str, dict]:
-        collapsible = rendered_block.get("collapsible") or False
-        block_title = rendered_block["title"]
+        collapsible = self.rendered_block.get("collapsible") or False
+        block_title = self.rendered_block["title"]
 
         sections = [{"id": self.current_location.section_id, "groups": groups}]
 
@@ -154,7 +157,9 @@ class CalculatedSummaryContext(Context):
                 "sections": sections,
                 "answers_are_editable": True,
                 "calculated_question": self._get_calculated_question(
-                    calculation, formatted_total
+                    calculation_question=calculation,
+                    formatted_total=formatted_total,
+                    block_type=block_type,
                 ),
                 "title": block_title % {"total": formatted_total},
                 "collapsible": collapsible,
@@ -344,13 +349,12 @@ class CalculatedSummaryContext(Context):
 
     @staticmethod
     def _get_calculated_question(
-        calculation_question: Mapping,
-        formatted_total: str,
+        *, calculation_question: Mapping, formatted_total: str, block_type: str
     ) -> dict:
         calculation_title = calculation_question["title"]
 
         return {
             "title": calculation_title,
-            "id": "calculated-summary-question",
-            "answers": [{"id": "calculated-summary-answer", "value": formatted_total}],
+            "id": f"{block_type}-question",
+            "answers": [{"id": f"{block_type}-answer", "value": formatted_total}],
         }
