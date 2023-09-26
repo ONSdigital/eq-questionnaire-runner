@@ -179,7 +179,6 @@ class ListStore:
         return ids
 
     def get_list_name_for_list_item_id(self, list_item_id: str) -> str:
-        """Looks up the name of the list by list item id"""
         for list_name in self._lists:
             if list_item_id in self[list_name].items:
                 return list_name
