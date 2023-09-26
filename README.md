@@ -195,7 +195,7 @@ To install `nvm` use the command below (make sure to replace "v0.39.5" with the 
 ``` shell
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
 ```
-You will need to have specific node version installed to run the tests. To do this, use the following commands:
+You will need to have the correct node version installed to run the tests. To do this, use the following commands:
 
 ``` shell
 nvm install
