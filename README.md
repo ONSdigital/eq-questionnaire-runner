@@ -178,9 +178,9 @@ Or set the `GOOGLE_CLOUD_PROJECT` environment variable to your gcp project id.
 ## Frontend Tests
 
 The frontend tests use NodeJS to run. To handle different versions of NodeJs it is recommended to install `Node Version Manager` (`nvm`). It is similar to pyenv but for Node versions.
-To install `nvm` use the command below (make sure to replace "v0.39.2" with the current latest version):
+To install `nvm` use the command below (make sure to replace "v0.39.5" with the current latest version in [releases](https://github.com/nvm-sh/nvm/releases/):
 ``` shell
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
 ```
 You will need to have specific node version installed to run the tests. To do this, use the following commands:
 
