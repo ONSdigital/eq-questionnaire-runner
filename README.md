@@ -49,6 +49,8 @@ brew install snappy npm pyenv jq wkhtmltopdf
 
 ### Setup
 
+#### Application version
+
 Create `.application-version` for local development
 
 This file is automatically created and populated with the git revision id during CI for anything other than development,
@@ -58,10 +60,13 @@ to `local` removes the implication that any particular revision is used when run
 ``` shell
 echo "local" > .application-version
 ```
+#### Python version
 
 It is preferable to use the version of Python locally that matches that
 used on deployment. This project has a `.python_version` file for this
 purpose.
+
+#### Pyenv
 
 It is recommended to install `pyenv` python version management tool to easily switch between python versions.
 To install `pyenv` use this command:
@@ -78,6 +83,8 @@ eval "$(pyenv init -)"
 ```
 Python versions can be changed with `pyenv local` or `pyenv global` command suffixed with desired version (e.g. 3.11.4). Different versions of python can be installed first with `pyenv install` command. Refer to the pyenv project Readme [here](https://github.com/pyenv/pyenv). To avoid confusion check current python version at any given time using `python --version` or `python3 --version` command.
 
+#### Python & dependencies
+
 Inside the project directory install python version, upgrade pip and install dependencies:
 
 ``` shell
@@ -91,17 +98,23 @@ pipenv install --dev
 CPPFLAGS="-I/usr/local/include -L/usr/local/lib" pipenv install --dev
 ```
 
+#### Design system templates
+
 To update the design system templates run:
 
 ``` shell
 make load-design-system-templates
 ```
 
+#### Schemas
+
 To download the latest schemas from the [Questionnaire Registry](https://github.com/ONSdigital/eq-questionnaire-schemas):
 
 ``` shell
 make load-schemas
 ```
+
+#### Run server
 
 Run the server inside the virtual env created by Pipenv with:
 
