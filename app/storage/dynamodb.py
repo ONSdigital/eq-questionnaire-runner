@@ -4,8 +4,7 @@ import boto3
 from botocore.exceptions import ClientError
 
 from app.storage.errors import ItemAlreadyExistsError
-
-from .storage import ModelTypes, StorageHandler, StorageModel
+from app.storage.storage import ModelTypes, StorageHandler, StorageModel
 
 
 class Dynamodb(StorageHandler):

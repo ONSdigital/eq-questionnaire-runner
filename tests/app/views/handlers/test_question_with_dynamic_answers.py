@@ -7,9 +7,8 @@ from app.data_models import AnswerStore, ListStore, QuestionnaireStore
 from app.questionnaire import Location
 from app.utilities.schema import load_schema_from_name
 from app.views.handlers.question import Question
-
-from ...parser.conftest import get_response_expires_at
-from .conftest import set_storage_data
+from tests.app.parser.conftest import get_response_expires_at
+from tests.app.views.handlers.conftest import set_storage_data
 
 
 @pytest.mark.usefixtures("app")

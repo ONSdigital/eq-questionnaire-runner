@@ -2,8 +2,8 @@ from typing import Mapping, Union
 
 from flask_babel import lazy_gettext
 
-from .context import Context
-from .summary_context import SummaryContext
+from app.views.contexts.context import Context
+from app.views.contexts.summary_context import SummaryContext
 
 
 class SubmitQuestionnaireContext(Context):

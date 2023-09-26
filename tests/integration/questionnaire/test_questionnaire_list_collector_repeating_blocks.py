@@ -1,6 +1,6 @@
 from datetime import date
 
-from ..integration_test_case import IntegrationTestCase
+from tests.integration.integration_test_case import IntegrationTestCase
 
 # pylint: disable=too-many-public-methods
 
