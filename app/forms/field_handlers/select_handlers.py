@@ -9,7 +9,6 @@ from app.questionnaire.dynamic_answer_options import DynamicAnswerOptions
 from app.questionnaire.questionnaire_schema import InvalidSchemaConfigurationException
 from app.utilities.types import Choice, ChoiceWithDetailAnswer
 
-
 ChoiceType: TypeAlias = Choice | ChoiceWithDetailAnswer
 
 

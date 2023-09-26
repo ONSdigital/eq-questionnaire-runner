@@ -1,4 +1,4 @@
-from typing import Sequence, Any, Callable
+from typing import Any, Callable, Sequence
 
 from wtforms import IntegerField
 
@@ -21,7 +21,7 @@ class IntegerFieldWithSeparator(IntegerField):
         description: str | None = None,
         label: str | None = None,
         validators: Sequence[Callable] | None = None,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> None:
         super().__init__(
             description=description,
@@ -34,6 +34,6 @@ class IntegerFieldWithSeparator(IntegerField):
     def process_formdata(self, valuelist: Sequence[str] | None = None) -> None:
         if valuelist:
             try:
-                self.data = int(sanitise_number(valuelist[0]))    # type: ignore # None type is safeguarded in if statement above
+                self.data = int(sanitise_number(valuelist[0]))  # type: ignore # None type is safeguarded in if statement above
             except ValueError:
                 pass

@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from typing import Sequence, Callable, Any, TYPE_CHECKING, TypeAlias, Generator
+from typing import TYPE_CHECKING, Any, Callable, Generator, Sequence, TypeAlias
 
-from wtforms import SelectMultipleField, SelectFieldBase
+from wtforms import SelectFieldBase, SelectMultipleField
 
 if TYPE_CHECKING:
-    from app.forms.field_handlers.select_handlers import ChoiceType     # pragma: no cover
+    from app.forms.field_handlers.select_handlers import ChoiceType  # pragma: no cover
 
 ChoiceWidgetRenderType: TypeAlias = tuple[str, str, bool, str | None]
 
@@ -30,7 +30,7 @@ class MultipleSelectFieldWithDetailAnswer(SelectMultipleField):
             label=label,
             choices=choices,
             validators=validators,
-            **kwargs
+            **kwargs,
         )
 
     def __iter__(self) -> Generator[SelectFieldBase._Option, None, None]:

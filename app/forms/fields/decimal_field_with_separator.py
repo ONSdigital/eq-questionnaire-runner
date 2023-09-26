@@ -1,5 +1,5 @@
 from decimal import Decimal, InvalidOperation
-from typing import Sequence, Any, Callable
+from typing import Any, Callable, Sequence
 
 from wtforms import DecimalField
 
@@ -22,7 +22,7 @@ class DecimalFieldWithSeparator(DecimalField):
         description: str,
         label: str | None = None,
         validators: Sequence[Callable],
-        **kwargs: Any
+        **kwargs: Any,
     ) -> None:
         super().__init__(
             description=description,

@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-from typing import Any, Callable, Sequence, Generator, TypeAlias, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Callable, Generator, Sequence, TypeAlias
 
 from wtforms import SelectField, SelectFieldBase
 from wtforms.validators import ValidationError
 
 if TYPE_CHECKING:
-    from app.forms.field_handlers.select_handlers import ChoiceType     # pragma: no cover
+    from app.forms.field_handlers.select_handlers import ChoiceType  # pragma: no cover
 
 ChoiceWidgetRenderType: TypeAlias = tuple[str, str, bool, str | None]
 
@@ -16,6 +16,7 @@ class SelectFieldWithDetailAnswer(SelectField):
     This custom field allows us to add the additional detail_answer_id to choices/options.
     This saves us having to later map options with their detail_answer.
     """
+
     def __init__(
         self,
         *,
@@ -24,7 +25,7 @@ class SelectFieldWithDetailAnswer(SelectField):
         choices: Sequence[ChoiceType],
         coerce: Callable[[str | None], str | None],
         validators: Sequence[Callable],
-        **kwargs: Any
+        **kwargs: Any,
     ) -> None:
         super().__init__(
             description=description,
@@ -32,7 +33,7 @@ class SelectFieldWithDetailAnswer(SelectField):
             choices=choices,
             coerce=coerce,
             validators=validators,
-            **kwargs
+            **kwargs,
         )
 
     def __iter__(self) -> Generator[SelectFieldBase._Option, None, None]:
