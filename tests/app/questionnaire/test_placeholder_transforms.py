@@ -1,42 +1,44 @@
+import unicodedata
 from decimal import Decimal
 
 import pytest
 
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
-
-
-@pytest.mark.parametrize(
-    "number, currency, expected",
-    (
-        ("11", "GBP", "£11.00"),
-        ("11.99", "GBP", "£11.99"),
-        ("11000", "USD", "US$11,000.00"),
-        (0, None, "£0.00"),
-        (0.00, None, "£0.00"),
-    ),
+from tests.app.test_jinja_filters import (
+    TEST_FORMAT_CURRENCY_PARAMS,
+    TEST_FORMAT_NUMBER_PARAMS,
+    TEST_FORMAT_UNIT_PARAMS,
 )
-def test_format_currency(number, currency, expected, transformer):
-    assert transformer().format_currency(number, currency or "GBP") == expected
 
 
-@pytest.mark.parametrize(
-    "number, expected",
-    (
-        (123, "123"),
-        ("123.4", "123.4"),
-        ("123.40", "123.4"),
-        ("1000", "1,000"),
-        ("10000", "10,000"),
-        ("100000000", "100,000,000"),
-        (0, "0"),
-        (0.00, "0"),
-        ("", ""),
-        (None, ""),
-    ),
-)
-def test_format_number(number, expected, transformer):
-    assert transformer().format_number(number) == expected
+@pytest.mark.parametrize(*TEST_FORMAT_CURRENCY_PARAMS)
+def test_format_currency(
+    mocker,
+    transformer,
+    value,
+    currency,
+    locale_string,
+    decimal_limit,
+    expected_result,
+    app,
+):
+    with app.app_context():
+        mocker.patch(
+            "app.questionnaire.placeholder_transforms.PlaceholderTransforms._get_decimal_limit",
+            return_value=decimal_limit,
+        )
+        result = transformer(language=locale_string).format_currency(
+            number=value, currency=currency, unresolved_arguments={}
+        )
+        assert unicodedata.normalize("NFKD", result) == expected_result
+
+
+@pytest.mark.parametrize(*TEST_FORMAT_NUMBER_PARAMS)
+def test_format_number(value, locale_string, expected_result, transformer, app):
+    with app.app_context():
+        result = transformer(language=locale_string).format_number(value)
+        assert unicodedata.normalize("NFKD", result) == expected_result
 
 
 @pytest.mark.parametrize(
@@ -55,19 +57,23 @@ def test_format_percentage(value, expected, transformer):
     assert transformer().format_percentage(value) == expected
 
 
-@pytest.mark.parametrize(
-    "unit, value, unit_length, expected",
-    (
-        ("millimeter", Decimal(0.123), "short", "0.123 mm"),
-        ("centimeter", "123", "short", "123 cm"),
-        ("kilometer", "123", "long", "123 kilometre"),
-        ("mile", "123", "short", "123 mi"),
-        ("mile", "123", "narrow", "123mi"),
-        ("mile", "123", None, "123 mi"),
-    ),
-)
-def test_format_unit(unit, value, unit_length, expected, transformer):
-    assert transformer().format_unit(unit, value, unit_length) == expected
+@pytest.mark.parametrize(*TEST_FORMAT_UNIT_PARAMS)
+def test_format_unit(
+    value,
+    measurement_unit,
+    locale_string,
+    length,
+    expected_result,
+    transformer,
+    app,
+):
+    with app.app_context():
+        assert (
+            transformer(language=locale_string).format_unit(
+                measurement_unit, value, length
+            )
+            == expected_result
+        )
 
 
 def test_format_list(transformer):
@@ -103,7 +109,7 @@ def test_format_list_empty_or_none(transformer, list_to_format):
     ),
 )
 def test_format_possessive(name, expected, transformer):
-    assert transformer().format_possessive(name) == expected
+    assert transformer(language="en").format_possessive(name) == expected
 
 
 @pytest.mark.parametrize(

@@ -102,7 +102,8 @@
                                         "type": "Currency",
                                         "currency": "GBP",
                                         "mandatory": true,
-                                        "label": "What is your budget?"
+                                        "label": "What is your budget?",
+                                        "decimal_places": 2
                                     },
                                     {
                                         "id": "month-year-date-answer",

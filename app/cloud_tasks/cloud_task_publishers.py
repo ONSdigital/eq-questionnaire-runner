@@ -4,7 +4,7 @@ from google.cloud.tasks_v2 import CloudTasksClient, HttpMethod
 from google.cloud.tasks_v2.types.task import Task
 from structlog import get_logger
 
-from .exceptions import CloudTaskCreationFailed
+from app.cloud_tasks.exceptions import CloudTaskCreationFailed
 
 logger = get_logger(__name__)
 

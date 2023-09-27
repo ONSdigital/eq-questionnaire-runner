@@ -204,7 +204,8 @@
                                         "mandatory": false,
                                         "type": "Unit",
                                         "unit": "volume-cubic-centimeter",
-                                        "unit_length": "short"
+                                        "unit_length": "short",
+                                        "decimal_places": 6
                                     },
                                     {
                                         "id": "cubic-metres",
@@ -212,7 +213,8 @@
                                         "mandatory": false,
                                         "type": "Unit",
                                         "unit": "volume-cubic-meter",
-                                        "unit_length": "short"
+                                        "unit_length": "short",
+                                        "decimal_places": 6
                                     },
                                     {
                                         "id": "litres",
@@ -220,7 +222,8 @@
                                         "mandatory": false,
                                         "type": "Unit",
                                         "unit": "volume-liter",
-                                        "unit_length": "short"
+                                        "unit_length": "short",
+                                        "decimal_places": 6
                                     },
                                     {
                                         "id": "hectolitres",
@@ -228,7 +231,8 @@
                                         "mandatory": false,
                                         "type": "Unit",
                                         "unit": "volume-hectoliter",
-                                        "unit_length": "short"
+                                        "unit_length": "short",
+                                        "decimal_places": 6
                                     },
                                     {
                                         "id": "megalitres",
@@ -236,7 +240,8 @@
                                         "mandatory": false,
                                         "type": "Unit",
                                         "unit": "volume-megaliter",
-                                        "unit_length": "short"
+                                        "unit_length": "short",
+                                        "decimal_places": 6
                                     }
                                 ],
                                 "id": "set-volume-unit-questions",

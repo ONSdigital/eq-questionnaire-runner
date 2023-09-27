@@ -39,7 +39,7 @@ def get_objects_matching(ids: Sequence[str]) -> dict[int, dict]
 
 If the typing used for a generic type would be Any or indeterministic, do not specify it:
 
-```
+```python
 items: list[Any] = ["demo", 2, true]  # Incorrect
 items: list[str | int | bool] = ["demo", 2, true]  # Incorrect
 items: list = ["demo", 2, true]  # Correct
@@ -49,13 +49,13 @@ This same ruling applies for key-val types such as Mapping.
 
 If the key type and value types are known, they may be specified:
 
-```
-known_types_dict: dict[str, str] = {"name" = "demo"}
+```python
+known_types_dict: dict[str, str] = {"name": "demo"}
 ```
 
 If the key type is known, and the value types are deterministic, use TypedDict:
 
-```
+```python
 from typing import TypedDict
 
 class Movie(TypedDict):
@@ -65,7 +65,7 @@ class Movie(TypedDict):
 
 If the key type is known but the value types are indeterministic or the key type is not known, do not declare the types:
 
-```
+```python
 json_data: dict = json.loads(stringified_json)
 ```
 
@@ -89,10 +89,8 @@ def test(self, var: None | int | str) -> None:
 - Make return types as specific as possible (to be predictable to callers)
 
 ```python
-    def increment_values(self, values: Sequence[int]) -> list[int]:
-
-
-return [value + 1 for value in values]
+def increment_values(self, values: Sequence[int]) -> list[int]:
+    return [value + 1 for value in values]
 ```
 
 ## Self Type
@@ -140,13 +138,52 @@ of a file, it silences all errors in the file:
 # type: ignore
 ```
 
-`# type: ignore` should only be used when unavoidable. Ensure that a comment is added to explain why it has been used and have a prefix of `Type ignore:`
+`# type: ignore` should only be used when unavoidable (or in the return `Any` case detailed below). Ensure that a comment is added to explain why it has been used and have a prefix of `Type ignore:`
 
 ```python
 def format_number(number: int) -> str:
     # Type ignore: babel.format_number is untyped therefore returns Any.
     formatted_number: str = babel.format_number(number)  # type: ignore
     return formatted_number
+```
+
+The `warn_return_any` flag is turned on to force type hinting the return types for third party libraries and increase the safety of the code base.
+
+Where type hints aren’t specific enough to identify the return type (e.g. objects like blocks where some keys correspond to strings, others to lists, others to dicts) mypy will complain if you assume the type of any attribute:
+
+```python
+def get_id_from_block(block: dict) -> str:
+   return block["id"] # Returning Any from function declared to return "str"
+```
+
+A type ignore can be avoided here, by changing the code to this...
+
+```python
+def get_id_from_block(block: dict) -> str:
+   block_id: str = block["id"]
+   return block_id
+```
+
+...but as this is a common pattern in a number of places, it results in a lot of duplicating the return type, and extra lines of code for the sake of type hinting. In this scenario, it is ok to type ignore it.
+
+If the value was needed for any other checks e.g.
+
+```python
+def get_first_answer_from_block(block: dict) -> str:
+   answer = ...
+   if answer["id"] ... :
+      ...
+   return answer
+```
+
+This would not be suitable to type ignore, and it should use the existing convention of typing the unknown variable:
+
+```python
+def get_first_answer_from_block(block: dict) -> str:
+   answer: Answer = ...
+   if answer["id"] ... :
+      ...
+   return answer
 ```
 
 ## ParamSpec

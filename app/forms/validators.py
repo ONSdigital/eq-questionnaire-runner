@@ -130,38 +130,51 @@ class NumberRange:
         value: Union[int, Decimal] = field.data
 
         if value is not None:
-            error_message = self.validate_minimum(value) or self.validate_maximum(value)
-            if error_message:
+            decimal_limit = (
+                field.places if isinstance(field, DecimalFieldWithSeparator) else None
+            )
+
+            if error_message := self.validate_minimum(
+                value=value, decimal_limit=decimal_limit
+            ) or self.validate_maximum(value=value, decimal_limit=decimal_limit):
                 raise validators.ValidationError(error_message)
 
-    def validate_minimum(self, value: NumType) -> Optional[str]:
+    def validate_minimum(
+        self, *, value: NumType, decimal_limit: int | None
+    ) -> Optional[str]:
         if self.minimum is None:
             return None
 
+        minimum_value = format_playback_value(
+            value=self.minimum,
+            currency=self.currency,
+            decimal_limit=decimal_limit,
+        )
+
         if self.minimum_exclusive and value <= self.minimum:
-            return self.messages["NUMBER_TOO_SMALL_EXCLUSIVE"] % {
-                "min": format_playback_value(self.minimum, self.currency)
-            }
+            return self.messages["NUMBER_TOO_SMALL_EXCLUSIVE"] % {"min": minimum_value}
 
         if value < self.minimum:
-            return self.messages["NUMBER_TOO_SMALL"] % {
-                "min": format_playback_value(self.minimum, self.currency)
-            }
+            return self.messages["NUMBER_TOO_SMALL"] % {"min": minimum_value}
 
         return None
 
-    def validate_maximum(self, value: NumType) -> Optional[str]:
+    def validate_maximum(
+        self, *, value: NumType, decimal_limit: int | None
+    ) -> Optional[str]:
         if self.maximum is None:
             return None
 
+        maximum_value = format_playback_value(
+            value=self.maximum,
+            currency=self.currency,
+            decimal_limit=decimal_limit,
+        )
+
         if self.maximum_exclusive and value >= self.maximum:
-            return self.messages["NUMBER_TOO_LARGE_EXCLUSIVE"] % {
-                "max": format_playback_value(self.maximum, self.currency)
-            }
+            return self.messages["NUMBER_TOO_LARGE_EXCLUSIVE"] % {"max": maximum_value}
         if value > self.maximum:
-            return self.messages["NUMBER_TOO_LARGE"] % {
-                "max": format_playback_value(self.maximum, self.currency)
-            }
+            return self.messages["NUMBER_TOO_LARGE"] % {"max": maximum_value}
 
         return None
 
@@ -405,8 +418,9 @@ class SumCheck:
         self,
         form: QuestionnaireForm,
         conditions: List[str],
-        total: Union[Decimal, int],
-        target_total: Union[Decimal, float],
+        total: Decimal | int,
+        target_total: Decimal | float | int,
+        decimal_limit: int | None = None,
     ) -> None:
         if len(conditions) > 1:
             try:
@@ -424,9 +438,20 @@ class SumCheck:
         is_valid, message = self._is_valid(condition, total, target_total)
 
         if not is_valid:
+            decimal_limit = decimal_limit or (
+                None
+                if isinstance(target_total, int)
+                else str(target_total)[::-1].find(".")
+            )
             raise validators.ValidationError(
                 self.messages[message]
-                % {"total": format_playback_value(target_total, self.currency)}
+                % {
+                    "total": format_playback_value(
+                        value=target_total,
+                        currency=self.currency,
+                        decimal_limit=decimal_limit,
+                    )
+                }
             )
 
     @staticmethod

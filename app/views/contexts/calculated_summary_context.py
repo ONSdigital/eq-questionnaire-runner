@@ -1,4 +1,4 @@
-from typing import Callable, Iterable, Literal, Mapping, MutableMapping, Tuple
+from typing import Callable, Iterable, Mapping, MutableMapping, Tuple
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -9,12 +9,7 @@ from app.data_models import (
     SupplementaryDataStore,
 )
 from app.data_models.metadata_proxy import MetadataProxy
-from app.jinja_filters import (
-    format_number,
-    format_percentage,
-    format_unit,
-    get_formatted_currency,
-)
+from app.jinja_filters import format_number, format_percentage, format_unit
 from app.questionnaire.questionnaire_schema import (
     QuestionnaireSchema,
     get_calculated_summary_answer_ids,
@@ -24,6 +19,7 @@ from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.schema_utils import get_answer_ids_in_block
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.questionnaire.variants import choose_question_to_display, transform_variants
+from app.utilities.decimal_places import get_formatted_currency
 from app.utilities.types import LocationType
 from app.views.contexts.context import Context
 from app.views.contexts.summary.calculated_summary_block import NumericType
@@ -278,6 +274,7 @@ class CalculatedSummaryContext(Context):
     def _get_answer_format(self, groups: Iterable[Mapping]) -> Tuple[dict, list]:
         values_to_calculate: list = []
         answer_format: dict = {"type": None}
+        decimal_limits: list[int] = []
         for group in groups:
             for block in group["blocks"]:
                 question = choose_question_to_display(
@@ -299,19 +296,27 @@ class CalculatedSummaryContext(Context):
                             "unit_length": answer.get("unit_length"),
                             "currency": answer.get("currency"),
                         }
+
+                    if (decimal_places := answer.get("decimal_places")) is not None:
+                        decimal_limits.append(decimal_places)
+
                     answer_value = answer.get("value") or 0
                     values_to_calculate.append(answer_value)
-
+        answer_format["decimal_places"] = max(decimal_limits, default=None)
         return answer_format, values_to_calculate
 
     @staticmethod
     def _format_total(
         *,
-        answer_format: Mapping[str, Literal["short", "long", "narrow"]],
+        answer_format: Mapping,
         total: NumericType,
     ) -> str:
         if answer_format["type"] == "currency":
-            return get_formatted_currency(total, answer_format["currency"])
+            return get_formatted_currency(
+                value=total,
+                currency=answer_format["currency"],
+                decimal_limit=answer_format.get("decimal_places"),
+            )
 
         if answer_format["type"] == "unit":
             return format_unit(

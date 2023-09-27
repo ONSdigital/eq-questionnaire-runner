@@ -3,8 +3,7 @@ import pytest
 from app.data_models import QuestionnaireStore
 from app.views.contexts.preview_context import PreviewNotEnabledException
 from app.views.handlers.preview_questions_pdf import PreviewQuestionsPDF
-
-from .conftest import set_storage_data
+from tests.app.views.handlers.conftest import set_storage_data
 
 
 @pytest.mark.usefixtures("app")

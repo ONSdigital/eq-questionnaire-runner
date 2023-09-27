@@ -63,7 +63,8 @@
                                         "label": "Monthly expenditure travelling by car",
                                         "mandatory": false,
                                         "type": "Currency",
-                                        "currency": "GBP"
+                                        "currency": "GBP",
+                                        "decimal_places": 2
                                     }
                                 ]
                             }
@@ -303,7 +304,8 @@
                                                 },
                                                 "mandatory": false,
                                                 "type": "Currency",
-                                                "currency": "GBP"
+                                                "currency": "GBP",
+                                                "decimal_places": 2
                                             },
                                             {
                                                 "id": "transport-additional-cost",
@@ -321,7 +323,8 @@
                                                 },
                                                 "mandatory": false,
                                                 "type": "Currency",
-                                                "currency": "GBP"
+                                                "currency": "GBP",
+                                                "decimal_places": 2
                                             }
                                         ]
                                     }

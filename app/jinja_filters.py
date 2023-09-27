@@ -1,4 +1,5 @@
 # coding: utf-8
+
 import re
 from datetime import datetime
 from decimal import Decimal
@@ -6,7 +7,7 @@ from typing import Any, Callable, Literal, Mapping, Optional, TypeAlias, Union
 
 import flask
 import flask_babel
-from babel import numbers, units
+from babel import numbers
 from flask import current_app, g
 from jinja2 import nodes, pass_eval_context
 from markupsafe import Markup, escape
@@ -18,6 +19,11 @@ from app.questionnaire.questionnaire_schema import (
 )
 from app.questionnaire.rules.utils import parse_datetime
 from app.settings import MAX_NUMBER
+from app.utilities.decimal_places import (
+    custom_format_decimal,
+    custom_format_unit,
+    get_formatted_currency,
+)
 
 blueprint = flask.Blueprint("filters", __name__)
 FormType = Mapping[str, Mapping[str, Any]]
@@ -34,30 +40,16 @@ def strip_tags(value: str) -> Markup:
 
 
 @blueprint.app_template_filter()
-def format_number(value: Union[int, Decimal, float]) -> str:
-    formatted_number: str
-    if value or value == 0:
-        formatted_number = numbers.format_decimal(
-            value, locale=flask_babel.get_locale()
-        )
-        return formatted_number
+def format_number(value: int | Decimal | float) -> str:
+    locale = flask_babel.get_locale()
 
-    return ""
+    formatted_number: str = custom_format_decimal(value, locale)
+    return formatted_number
 
 
 def get_formatted_address(address_fields: dict[str, str]) -> str:
     address_fields.pop("uprn", None)
     return "<br>".join(address_field for address_field in address_fields.values())
-
-
-def get_formatted_currency(value: Union[float, Decimal], currency: str = "GBP") -> str:
-    if value or value == 0:
-        formatted_currency: str = numbers.format_currency(
-            number=value, currency=currency, locale=flask_babel.get_locale()
-        )
-        return formatted_currency
-
-    return ""
 
 
 @blueprint.app_template_filter()
@@ -78,7 +70,7 @@ def format_unit(
     value: int | float | Decimal,
     length: UnitLengthType = "short",
 ) -> str:
-    formatted_unit: str = units.format_unit(
+    formatted_unit: str = custom_format_unit(
         value=value,
         measurement_unit=unit,
         length=length,
@@ -506,8 +498,15 @@ class SummaryRowItem:
                 for option in value
             ]
         elif answer_type == "currency":
+            decimal_places = answer.get("decimal_places")
             self.valueList = [
-                SummaryRowItemValue(get_formatted_currency(value, answer["currency"]))
+                SummaryRowItemValue(
+                    get_formatted_currency(
+                        value=value,
+                        currency=answer["currency"],
+                        decimal_limit=decimal_places,
+                    )
+                )
             ]
         elif answer_type in ["date", "monthyeardate", "yeardate"]:
             if question["type"] == "DateRange":
