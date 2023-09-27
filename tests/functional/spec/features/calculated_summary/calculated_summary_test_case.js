@@ -422,6 +422,51 @@ class TestCase {
       );
     });
   }
+
+  testNegative(schema, firstAnswerValue, secondAnswerValue, thirdAnswerValue, fourthAnswerValue, expectedTotalValue, expectedAnswerValue) {
+    before("Get to Calculated Summary", async () => {
+      await browser.openQuestionnaire(schema);
+
+      await $(FirstNumberBlockPage.firstNumber()).setValue(firstAnswerValue);
+      await click(FirstNumberBlockPage.submit());
+
+      await $(SecondNumberBlockPage.secondNumber()).setValue(secondAnswerValue);
+      await $(SecondNumberBlockPage.secondNumberUnitTotal()).setValue(789);
+      await $(SecondNumberBlockPage.secondNumberAlsoInTotal()).setValue(0);
+      await click(SecondNumberBlockPage.submit());
+
+      await $(ThirdNumberBlockPage.thirdNumber()).setValue(thirdAnswerValue);
+      await click(ThirdNumberBlockPage.submit());
+      await $(ThirdAndAHalfNumberBlockPage.thirdAndAHalfNumberUnitTotal()).setValue(678);
+      await click(ThirdAndAHalfNumberBlockPage.submit());
+
+      await $(SkipFourthBlockPage.no()).click();
+      await click(SkipFourthBlockPage.submit());
+
+      await $(FourthNumberBlockPage.fourthNumber()).setValue(fourthAnswerValue);
+      await click(FourthNumberBlockPage.submit());
+      await $(FourthAndAHalfNumberBlockPage.fourthAndAHalfNumberAlsoInTotal()).setValue(0);
+      await click(FourthAndAHalfNumberBlockPage.submit());
+
+      await $(FifthNumberBlockPage.fifthPercent()).setValue(56);
+      await $(FifthNumberBlockPage.fifthNumber()).setValue(78.91);
+      await click(FifthNumberBlockPage.submit());
+
+      await $(SixthNumberBlockPage.sixthPercent()).setValue(23);
+      await $(SixthNumberBlockPage.sixthNumber()).setValue(45.67);
+      await click(SixthNumberBlockPage.submit());
+
+      await expect(browser).toHaveUrlContaining(CurrencyTotalPlaybackPage.pageName);
+    });
+    it("Given I have a range of positive and negative values to enter, when I enter the negative values, then the total of the summary should be correct", async () => {
+      await expect(await $(CurrencyTotalPlaybackPage.firstNumberAnswer()).getText()).toContain(expectedAnswerValue);
+      await expect(await $(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).toContain(
+        "We calculate the total of currency values entered to be ",
+        String(expectedTotalValue),
+        ". Is this correct?",
+      );
+    });
+  }
 }
 
 export const CalculatedSummaryTestCase = new TestCase();

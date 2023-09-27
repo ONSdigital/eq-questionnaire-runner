@@ -15,3 +15,18 @@ describe("Feature: Calculated Summary", () => {
     CalculatedSummaryTestCase.testCrossSectionDependencies("test_new_calculated_summary_cross_section_dependencies.json");
   });
 });
+
+describe("Feature: Calculated Summary with negative values", () => {
+  describe("Given I enter a negative value in the first section", () => {
+    CalculatedSummaryTestCase.testNegative("test_calculated_summary.json", -1, 2, 3, 0, 4, "-£1.00");
+  });
+  describe("Given I enter a negative value in the second section ", () => {
+    CalculatedSummaryTestCase.testNegative("test_calculated_summary.json", 12, -2, 1, 0, 11, "£12.00");
+  });
+  describe("Given I enter a negative value in the third section ", () => {
+    CalculatedSummaryTestCase.testNegative("test_calculated_summary.json", 3, 2, -6, 0, -1, "£3.00");
+  });
+  describe("Given I enter negative values in every currency field ", () => {
+    CalculatedSummaryTestCase.testNegative("test_calculated_summary.json", -1, -2, -3, 0, -6, "-£1.00");
+  });
+});
