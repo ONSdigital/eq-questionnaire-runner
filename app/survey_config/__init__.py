@@ -1,4 +1,4 @@
-from .business_config import (
+from app.survey_config.business_config import (
     BusinessSurveyConfig,
     DBTBusinessSurveyConfig,
     DBTDSITBusinessSurveyConfig,
@@ -9,14 +9,14 @@ from .business_config import (
     NIBusinessSurveyConfig,
     ORRBusinessSurveyConfig,
 )
-from .census_config import (
+from app.survey_config.census_config import (
     CensusNISRASurveyConfig,
     CensusSurveyConfig,
     WelshCensusSurveyConfig,
 )
-from .link import Link
-from .social_survey_config import SocialSurveyConfig
-from .survey_config import SurveyConfig
+from app.survey_config.link import Link
+from app.survey_config.social_survey_config import SocialSurveyConfig
+from app.survey_config.survey_config import SurveyConfig
 
 __all__ = [
     "SocialSurveyConfig",

@@ -6,9 +6,8 @@ from redis.exceptions import ConnectionError as RedisConnectionError
 from structlog import get_logger
 
 from app.storage.errors import ItemAlreadyExistsError
+from app.storage.storage import ModelTypes, StorageHandler, StorageModel
 from app.utilities.json import json_dumps, json_loads
-
-from .storage import ModelTypes, StorageHandler, StorageModel
 
 logger = get_logger()
 
