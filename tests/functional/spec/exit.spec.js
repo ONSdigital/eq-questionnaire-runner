@@ -20,7 +20,7 @@ describe("Post submission exit", () => {
     await click(SubmitPage.submit());
     await click(HubPage.submit());
     await $(CensusThankYouPage.exit()).click();
-    await expect(await browser.getUrl()).to.equal("https://census.gov.uk/en/start");
+    await expect(await browser.getUrl()).to.equal("https://www.ons.gov.uk/census");
   });
 
   it("Given I have clicked the exit button, When I navigate back, Then I am taken to the session timed out page", async () => {
