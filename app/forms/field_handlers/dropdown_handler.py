@@ -2,13 +2,11 @@ from typing import Sequence
 
 from flask_babel import lazy_gettext
 from wtforms import SelectField
+from wtforms.fields.core import UnboundField
 
-from app.forms.field_handlers.select_handlers import (
-    Choice,
-    ChoiceWithDetailAnswer,
-    SelectHandlerBase,
-)
+from app.forms.field_handlers.select_handlers import SelectHandlerBase
 from app.questionnaire.questionnaire_schema import InvalidSchemaConfigurationException
+from app.utilities.types import Choice, ChoiceWithDetailAnswer
 
 
 class DropdownHandler(SelectHandlerBase):
@@ -31,7 +29,7 @@ class DropdownHandler(SelectHandlerBase):
     def _get_placeholder_text(self) -> str:
         return self.answer_schema.get("placeholder", self.DEFAULT_PLACEHOLDER)
 
-    def get_field(self) -> SelectField:
+    def get_field(self) -> UnboundField | SelectField:
         return SelectField(
             label=self.label,
             description=self.guidance,

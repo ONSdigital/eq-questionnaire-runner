@@ -1,8 +1,9 @@
 from datetime import datetime, timezone
 from functools import cached_property
-from typing import Any, Optional, Union
+from typing import Any, Optional
 
 from dateutil.relativedelta import relativedelta
+from wtforms.fields.core import UnboundField
 
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.fields import DateField, MonthYearDateField, YearDateField
@@ -14,10 +15,7 @@ from app.forms.validators import (
     format_message_with_title,
 )
 from app.questionnaire.rules.utils import parse_datetime
-
-DateValidatorTypes = list[
-    Union[OptionalForm, DateRequired, DateCheck, SingleDatePeriodCheck]
-]
+from app.utilities.types import DateValidatorType
 
 
 class DateHandler(FieldHandler):
@@ -26,8 +24,8 @@ class DateHandler(FieldHandler):
     DISPLAY_FORMAT = "d MMMM yyyy"
 
     @cached_property
-    def validators(self) -> DateValidatorTypes:
-        validate_with: DateValidatorTypes = [OptionalForm()]
+    def validators(self) -> list[DateValidatorType]:
+        validate_with: list[DateValidatorType] = [OptionalForm()]
 
         if self.answer_schema["mandatory"] is True:
             validate_with = [
@@ -52,7 +50,7 @@ class DateHandler(FieldHandler):
             validate_with.append(min_max_validator)
         return validate_with
 
-    def get_field(self) -> DateField:
+    def get_field(self) -> UnboundField | DateField:
         return DateField(
             validators=self.validators, label=self.label, description=self.guidance
         )
@@ -125,7 +123,7 @@ class MonthYearDateHandler(DateHandler):
     DATE_FORMAT = "yyyy-mm"
     DISPLAY_FORMAT = "MMMM yyyy"
 
-    def get_field(self) -> MonthYearDateField:
+    def get_field(self) -> UnboundField | MonthYearDateField:
         return MonthYearDateField(
             validators=self.validators, label=self.label, description=self.guidance
         )
@@ -154,7 +152,7 @@ class YearDateHandler(DateHandler):
     DATE_FORMAT = "yyyy"
     DISPLAY_FORMAT = "yyyy"
 
-    def get_field(self) -> YearDateField:
+    def get_field(self) -> UnboundField | YearDateField:
         return YearDateField(
             validators=self.validators, label=self.label, description=self.guidance
         )

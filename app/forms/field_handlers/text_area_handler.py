@@ -1,13 +1,13 @@
 from functools import cached_property
-from typing import Union
+from typing import Sequence, Union
 
 from wtforms import validators
+from wtforms.fields.core import UnboundField
 from wtforms.validators import Length
 
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.fields import MaxTextAreaField
-
-TextAreaValidatorTypes = list[Union[validators.Optional, validators.Length]]
+from app.utilities.types import TextAreaValidatorType
 
 
 class TextAreaHandler(FieldHandler):
@@ -16,8 +16,8 @@ class TextAreaHandler(FieldHandler):
     MANDATORY_MESSAGE_KEY = "MANDATORY_TEXTAREA"
 
     @cached_property
-    def validators(self) -> TextAreaValidatorTypes:
-        validate_with: TextAreaValidatorTypes = super().validators
+    def validators(self) -> list[TextAreaValidatorType]:
+        validate_with: list[TextAreaValidatorType] = super().validators
         if self.disable_validation is False:
             validate_with.append(self.get_length_validator())
         return validate_with
@@ -32,7 +32,7 @@ class TextAreaHandler(FieldHandler):
 
         return validators.length(-1, self.max_length, message=length_message)
 
-    def get_field(self) -> MaxTextAreaField:
+    def get_field(self) -> UnboundField | MaxTextAreaField:
         return MaxTextAreaField(
             label=self.label,
             description=self.guidance,

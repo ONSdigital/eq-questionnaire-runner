@@ -1,4 +1,6 @@
-from typing import Any, Optional, Sequence, TypeAlias
+from typing import Any, Optional, Sequence
+
+from wtforms.fields.core import UnboundField
 
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.fields import (
@@ -7,9 +9,7 @@ from app.forms.fields import (
 )
 from app.questionnaire.dynamic_answer_options import DynamicAnswerOptions
 from app.questionnaire.questionnaire_schema import InvalidSchemaConfigurationException
-from app.utilities.types import Choice, ChoiceWithDetailAnswer
-
-ChoiceType: TypeAlias = Choice | ChoiceWithDetailAnswer
+from app.utilities.types import ChoiceType, ChoiceWithDetailAnswer
 
 
 class SelectHandlerBase(FieldHandler):
@@ -70,7 +70,7 @@ class SelectHandler(SelectHandlerBase):
     # not providing an answer and them selecting the 'None' option otherwise.
     # https://github.com/ONSdigital/eq-survey-runner/issues/1013
     # See related WTForms PR: https://github.com/wtforms/wtforms/pull/288
-    def get_field(self) -> SelectFieldWithDetailAnswer:
+    def get_field(self) -> UnboundField | SelectFieldWithDetailAnswer:
         return SelectFieldWithDetailAnswer(
             label=self.label,
             description=self.guidance,
@@ -83,7 +83,7 @@ class SelectHandler(SelectHandlerBase):
 class SelectMultipleHandler(SelectHandler):
     MANDATORY_MESSAGE_KEY = "MANDATORY_CHECKBOX"
 
-    def get_field(self) -> MultipleSelectFieldWithDetailAnswer:
+    def get_field(self) -> UnboundField | MultipleSelectFieldWithDetailAnswer:
         return MultipleSelectFieldWithDetailAnswer(
             label=self.label,
             description=self.guidance,
