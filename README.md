@@ -49,6 +49,8 @@ brew install snappy npm pyenv jq wkhtmltopdf
 
 ### Setup
 
+#### Application version
+
 Create `.application-version` for local development
 
 This file is automatically created and populated with the git revision id during CI for anything other than development,
@@ -58,12 +60,32 @@ to `local` removes the implication that any particular revision is used when run
 ``` shell
 echo "local" > .application-version
 ```
+#### Python version
 
 It is preferable to use the version of Python locally that matches that
 used on deployment. This project has a `.python_version` file for this
 purpose.
 
-Upgrade pip and install dependencies:
+#### Pyenv
+
+It is recommended to install the `pyenv` Python version management tool to easily switch between Python versions.
+To install `pyenv` use this command:
+```shell
+curl https://pyenv.run | bash
+```
+After the installation it should tell you to execute a command to add `pyenv` to path. It should look something like this:
+```shell
+export PYENV_ROOT="$HOME/.pyenv"
+
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+
+eval "$(pyenv init -)"
+```
+Python versions can be changed with the `pyenv local` or `pyenv global` commands suffixed with the desired version (e.g. 3.11.4). Different versions of Python can be installed first with the `pyenv install` command. Refer to the pyenv project Readme [here](https://github.com/pyenv/pyenv). To avoid confusion, check the current Python version at any given time using `python --version` or `python3 --version`.
+
+#### Python & dependencies
+
+Inside the project directory install python version, upgrade pip and install dependencies:
 
 ``` shell
 pyenv install
@@ -76,17 +98,23 @@ pipenv install --dev
 CPPFLAGS="-I/usr/local/include -L/usr/local/lib" pipenv install --dev
 ```
 
+#### Design system templates
+
 To update the design system templates run:
 
 ``` shell
 make load-design-system-templates
 ```
 
+#### Schemas
+
 To download the latest schemas from the [Questionnaire Registry](https://github.com/ONSdigital/eq-questionnaire-schemas):
 
 ``` shell
 make load-schemas
 ```
+
+#### Run server
 
 Run the server inside the virtual env created by Pipenv with:
 
@@ -162,10 +190,14 @@ Or set the `GOOGLE_CLOUD_PROJECT` environment variable to your gcp project id.
 
 ## Frontend Tests
 
-The frontend tests use NodeJS to run. You will need to have node version 14.X to run these tests. To do this, do the following commands:
+The frontend tests use NodeJS to run. To handle different versions of NodeJS it is recommended to install `Node Version Manager` (`nvm`). It is similar to pyenv but for Node versions.
+To install `nvm` use the command below (make sure to replace "v0.39.5" with the current latest version in [releases](https://github.com/nvm-sh/nvm/releases/):
+``` shell
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+```
+You will need to have the correct node version installed to run the tests. To do this, use the following commands:
 
 ``` shell
-brew install nvm
 nvm install
 nvm use
 ```
