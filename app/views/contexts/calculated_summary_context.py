@@ -1,4 +1,3 @@
-import re
 from functools import cached_property
 from typing import Callable, Iterable, Mapping, MutableMapping, Tuple
 
@@ -22,6 +21,7 @@ from app.questionnaire.schema_utils import get_answer_ids_in_block
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.questionnaire.variants import choose_question_to_display, transform_variants
 from app.utilities.decimal_places import get_formatted_currency
+from app.utilities.strings import pascal_case_to_hyphenated_lowercase
 from app.utilities.types import LocationType
 from app.views.contexts.context import Context
 from app.views.contexts.summary.calculated_summary_block import NumericType
@@ -342,10 +342,7 @@ class CalculatedSummaryContext(Context):
         self, *, calculation_question: Mapping, formatted_total: str
     ) -> dict:
         calculation_title = calculation_question["title"]
-        # turn PascalCase into hyphenated-lowercase
-        block_type = re.sub(
-            r"(?<=[a-z])([A-Z])", r"-\1", self.rendered_block["type"]
-        ).lower()
+        block_type = pascal_case_to_hyphenated_lowercase(self.rendered_block["type"])
 
         return {
             "title": calculation_title,
