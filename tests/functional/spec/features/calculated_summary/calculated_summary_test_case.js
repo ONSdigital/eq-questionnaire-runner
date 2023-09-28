@@ -27,8 +27,9 @@ import SectionSummarySectionOne from "../../../generated_pages/calculated_summar
 import SectionSummarySectionTwo from "../../../generated_pages/calculated_summary_cross_section_dependencies/calculated-summary-section-summary.page";
 import DependencyQuestionSectionTwo from "../../../generated_pages/calculated_summary_cross_section_dependencies/mutually-exclusive-checkbox.page";
 import MinMaxSectionTwo from "../../../generated_pages/calculated_summary_cross_section_dependencies/set-min-max-block.page";
-import { click } from "../../../helpers";
+import { assertSummaryValues, click } from "../../../helpers";
 import { expect } from "@wdio/globals";
+
 
 class TestCase {
   testCase(schema) {
@@ -423,7 +424,7 @@ class TestCase {
     });
   }
 
-  testNegative(schema, firstAnswerValue, secondAnswerValue, thirdAnswerValue, fourthAnswerValue, expectedTotalValue, expectedAnswerValue) {
+  testNegative(schema, firstAnswerValue, secondAnswerValue, thirdAnswerValue, fourthAnswerValue, expectedTotalValue, expectedAnswerValues) {
     before("Get to Calculated Summary", async () => {
       await browser.openQuestionnaire(schema);
 
@@ -458,12 +459,10 @@ class TestCase {
 
       await expect(browser).toHaveUrlContaining(CurrencyTotalPlaybackPage.pageName);
     });
-    it("Given I have a range of positive and negative values to enter, when I enter the negative values, then the total of the summary should be correct", async () => {
-      await expect(await $(CurrencyTotalPlaybackPage.firstNumberAnswer()).getText()).toContain(expectedAnswerValue);
+    it("Given I have entered a range of positive and negative values, When I reach the calculated summary, Then the total is correct", async () => {
+      assertSummaryValues(expectedAnswerValues);
       await expect(await $(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).toContain(
-        "We calculate the total of currency values entered to be ",
-        String(expectedTotalValue),
-        ". Is this correct?",
+        `We calculate the total of currency values entered to be ${expectedTotalValue}. Is this correct?`
       );
     });
   }
