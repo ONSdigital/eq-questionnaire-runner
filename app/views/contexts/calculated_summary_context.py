@@ -1,3 +1,4 @@
+import re
 from functools import cached_property
 from typing import Callable, Iterable, Mapping, MutableMapping, Tuple
 
@@ -128,11 +129,7 @@ class CalculatedSummaryContext(Context):
         )
 
         return self._build_formatted_summary(
-            groups=groups,
-            calculation=calculation,
-            formatted_total=formatted_total,
-            summary_type="CalculatedSummary",
-            block_type="calculated-summary",
+            groups=groups, calculation=calculation, formatted_total=formatted_total
         )
 
     def _build_formatted_summary(
@@ -141,8 +138,6 @@ class CalculatedSummaryContext(Context):
         groups: Iterable[Mapping],
         calculation: Mapping,
         formatted_total: str,
-        summary_type: str,
-        block_type: str,
     ) -> dict[str, dict]:
         collapsible = self.rendered_block.get("collapsible") or False
         block_title = self.rendered_block["title"]
@@ -156,11 +151,10 @@ class CalculatedSummaryContext(Context):
                 "calculated_question": self._get_calculated_question(
                     calculation_question=calculation,
                     formatted_total=formatted_total,
-                    block_type=block_type,
                 ),
                 "title": block_title % {"total": formatted_total},
                 "collapsible": collapsible,
-                "summary_type": summary_type,
+                "summary_type": self.rendered_block["type"],
             }
         }
 
@@ -344,11 +338,14 @@ class CalculatedSummaryContext(Context):
 
         return format_number(total)
 
-    @staticmethod
     def _get_calculated_question(
-        *, calculation_question: Mapping, formatted_total: str, block_type: str
+        self, *, calculation_question: Mapping, formatted_total: str
     ) -> dict:
         calculation_title = calculation_question["title"]
+        # turn PascalCase into hyphenated-lowercase
+        block_type = re.sub(
+            r"(?<=[a-z])([A-Z])", r"-\1", self.rendered_block["type"]
+        ).lower()
 
         return {
             "title": calculation_title,
