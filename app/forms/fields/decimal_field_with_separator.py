@@ -1,9 +1,10 @@
 from decimal import Decimal, InvalidOperation
-from typing import Any, Callable, Sequence
+from typing import Any, Sequence
 
 from wtforms import DecimalField
 
 from app.helpers.form_helpers import sanitise_number
+from app.utilities.types import NumberValidatorType
 
 
 class DecimalFieldWithSeparator(DecimalField):
@@ -21,7 +22,7 @@ class DecimalFieldWithSeparator(DecimalField):
         *,
         description: str,
         label: str | None = None,
-        validators: Sequence[Callable],
+        validators: Sequence[NumberValidatorType],
         **kwargs: Any,
     ) -> None:
         super().__init__(
@@ -30,11 +31,11 @@ class DecimalFieldWithSeparator(DecimalField):
             validators=validators,
             **kwargs,
         )
-        self.data = None
+        self.data: Decimal | None = None
 
     def process_formdata(self, valuelist: Sequence[str] | None = None) -> None:
         if valuelist:
             try:
-                self.data = Decimal(sanitise_number(valuelist[0]))  # type: ignore # None type is safeguarded in if statement above
+                self.data = Decimal(sanitise_number(valuelist[0]))
             except (ValueError, TypeError, InvalidOperation):
                 pass

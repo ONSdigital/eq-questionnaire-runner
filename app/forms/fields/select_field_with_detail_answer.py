@@ -1,14 +1,9 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING, Any, Callable, Generator, Sequence, TypeAlias
+from typing import Any, Callable, Generator, Sequence
 
 from wtforms import SelectField, SelectFieldBase
-from wtforms.validators import ValidationError
+from wtforms.validators import ValidationError, Optional as OptionalValidator
 
-if TYPE_CHECKING:
-    from app.forms.field_handlers.select_handlers import ChoiceType  # pragma: no cover
-
-ChoiceWidgetRenderType: TypeAlias = tuple[str, str, bool, str | None]
+from app.utilities.types import ChoiceType, ChoiceWidgetRenderType
 
 
 class SelectFieldWithDetailAnswer(SelectField):
@@ -24,7 +19,7 @@ class SelectFieldWithDetailAnswer(SelectField):
         label: str | None = None,
         choices: Sequence[ChoiceType],
         coerce: Callable[[str | None], str | None],
-        validators: Sequence[Callable],
+        validators: Sequence[OptionalValidator],
         **kwargs: Any,
     ) -> None:
         super().__init__(

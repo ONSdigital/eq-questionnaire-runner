@@ -1,15 +1,17 @@
 import logging
 from functools import cached_property
-from typing import Any, Callable, Sequence
+from typing import Any, Callable, Sequence, Type
 
 from werkzeug.datastructures import MultiDict
 from wtforms import Form, FormField, StringField
 from wtforms.utils import UnsetValue, unset_value
 
+from app.utilities.types import DateValidatorType
+
 logger = logging.getLogger(__name__)
 
 
-def get_form_class(validators: Sequence[Callable]) -> Form:
+def get_form_class(validators: Sequence[DateValidatorType]) -> Type[Form]:
     class YearDateForm(Form):
         year = StringField(validators=validators)
 
@@ -31,7 +33,7 @@ class YearDateField(FormField):
     def __init__(
         self,
         *,
-        validators: Sequence[Callable],
+        validators: Sequence[DateValidatorType],
         label: str | None = None,
         description: str,
         **kwargs: Any,
@@ -46,9 +48,9 @@ class YearDateField(FormField):
 
     def process(
         self,
-        formdata: MultiDict,
-        data: UnsetValue = unset_value,
-        extra_filters: None = None,
+        formdata: MultiDict | None = None,
+        data: str | UnsetValue = unset_value,
+        extra_filters: Sequence[Callable] | None = None,
     ) -> None:
         if data is not unset_value:
             substrings = data.split("-")

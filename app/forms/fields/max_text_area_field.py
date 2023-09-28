@@ -1,6 +1,8 @@
-from typing import Any, Callable, Sequence
+from typing import Any, Sequence
 
 from wtforms import TextAreaField
+
+from app.utilities.types import TextAreaValidatorType
 
 
 class MaxTextAreaField(TextAreaField):
@@ -10,7 +12,7 @@ class MaxTextAreaField(TextAreaField):
         description: str,
         rows: int,
         maxlength: int,
-        validators: Sequence[Callable],
+        validators: Sequence[TextAreaValidatorType],
         label: str | None = None,
         **kwargs: Any,
     ) -> None:

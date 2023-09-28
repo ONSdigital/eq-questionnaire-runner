@@ -1,6 +1,18 @@
 from typing import TYPE_CHECKING, NamedTuple, TypeAlias, TypedDict, Union
 
 if TYPE_CHECKING:
+    from wtforms import validators  # pragma: no cover
+
+    from app.forms.validators import (  # pragma: no cover
+        DateCheck,
+        DateRequired,
+        DecimalPlaces,
+        NumberCheck,
+        NumberRange,
+        OptionalForm,
+        ResponseRequired,
+        SingleDatePeriodCheck,
+    )
     from app.questionnaire.location import Location  # pragma: no cover
     from app.questionnaire.relationship_location import (
         RelationshipLocation,  # pragma: no cover
@@ -9,6 +21,17 @@ if TYPE_CHECKING:
 LocationType: TypeAlias = Union["Location", "RelationshipLocation"]
 SupplementaryDataKeyType: TypeAlias = tuple[str, str | None]
 SupplementaryDataValueType: TypeAlias = dict | str | list | None
+
+DateValidatorType: TypeAlias = Union[
+    "OptionalForm", "DateRequired", "DateCheck", "SingleDatePeriodCheck"
+]
+NumberValidatorType: TypeAlias = Union[
+    "ResponseRequired", "NumberCheck", "NumberRange", "DecimalPlaces"
+]
+TextAreaValidatorType: TypeAlias = Union["validators.Optional", "validators.Length"]
+
+ChoiceType: TypeAlias = Union["Choice", "ChoiceWithDetailAnswer"]
+ChoiceWidgetRenderType: TypeAlias = tuple[str, str, bool, str | None]
 
 
 class SectionKeyDict(TypedDict):
