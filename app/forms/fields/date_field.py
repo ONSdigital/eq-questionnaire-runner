@@ -38,15 +38,11 @@ class DateField(FormField):
         self,
         *,
         validators: Sequence[DateValidatorType],
-        label: str | None = None,
-        description: str,
         **kwargs: Any,
     ) -> None:
         form_class = get_form_class(validators)
         super().__init__(
             form_class,
-            label=label,
-            description=description,
             **kwargs,
         )
 

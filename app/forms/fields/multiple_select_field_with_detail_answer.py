@@ -1,7 +1,6 @@
 from typing import Any, Generator, Sequence
 
 from wtforms import SelectFieldBase, SelectMultipleField
-from wtforms.validators import Optional as OptionalValidator
 
 from app.utilities.types import ChoiceType, ChoiceWidgetRenderType
 
@@ -15,17 +14,11 @@ class MultipleSelectFieldWithDetailAnswer(SelectMultipleField):
     def __init__(
         self,
         *,
-        description: str,
-        label: str | None = None,
         choices: Sequence[ChoiceType],
-        validators: Sequence[OptionalValidator],
         **kwargs: Any,
     ) -> None:
         super().__init__(
-            description=description,
-            label=label,
             choices=choices,
-            validators=validators,
             **kwargs,
         )
 

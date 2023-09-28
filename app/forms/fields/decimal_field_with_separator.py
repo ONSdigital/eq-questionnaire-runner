@@ -4,7 +4,6 @@ from typing import Any, Sequence
 from wtforms import DecimalField
 
 from app.helpers.form_helpers import sanitise_number
-from app.utilities.types import NumberValidatorType
 
 
 class DecimalFieldWithSeparator(DecimalField):
@@ -17,20 +16,8 @@ class DecimalFieldWithSeparator(DecimalField):
     DecimalPlace validators
     """
 
-    def __init__(
-        self,
-        *,
-        description: str,
-        label: str | None = None,
-        validators: Sequence[NumberValidatorType],
-        **kwargs: Any,
-    ) -> None:
-        super().__init__(
-            description=description,
-            label=label,
-            validators=validators,
-            **kwargs,
-        )
+    def __init__(self, **kwargs: Any) -> None:
+        super().__init__(**kwargs)
         self.data: Decimal | None = None
 
     def process_formdata(self, valuelist: Sequence[str] | None = None) -> None:

@@ -1,7 +1,7 @@
-from typing import Any, Callable, Generator, Sequence
+from typing import Any, Generator, Sequence
 
 from wtforms import SelectField, SelectFieldBase
-from wtforms.validators import ValidationError, Optional as OptionalValidator
+from wtforms.validators import ValidationError
 
 from app.utilities.types import ChoiceType, ChoiceWidgetRenderType
 
@@ -15,19 +15,11 @@ class SelectFieldWithDetailAnswer(SelectField):
     def __init__(
         self,
         *,
-        description: str,
-        label: str | None = None,
         choices: Sequence[ChoiceType],
-        coerce: Callable[[str | None], str | None],
-        validators: Sequence[OptionalValidator],
         **kwargs: Any,
     ) -> None:
         super().__init__(
-            description=description,
-            label=label,
             choices=choices,
-            coerce=coerce,
-            validators=validators,
             **kwargs,
         )
 
