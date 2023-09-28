@@ -453,7 +453,7 @@ class TestCase {
       await click(FifthNumberBlockPage.submit());
 
       await $(SixthNumberBlockPage.sixthPercent()).setValue(23);
-      await $(SixthNumberBlockPage.sixthNumber()).setValue(45.67);
+      await $(SixthNumberBlockPage.sixthNumber()).setValue(45);
       await click(SixthNumberBlockPage.submit());
 
       await expect(browser).toHaveUrlContaining(CurrencyTotalPlaybackPage.pageName);
