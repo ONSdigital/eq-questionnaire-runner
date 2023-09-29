@@ -10,9 +10,7 @@
     "questionnaire_flow": {
         "type": "Hub",
         "options": {
-            "summary": {
-                "required_completed_sections": ["stock-section","house-hold-section","questions-section"]
-            }
+            "required_completed_sections": ["stock-section", "house-hold-section", "questions-section"]
         }
     },
     "post_submission": {
@@ -188,7 +186,13 @@
                                 {
                                     "block": "block-381",
                                     "when": {
-                                        "==": [{ "identifier": "answer-434", "source": "answers" }, "Yes"]
+                                        "==": [
+                                            {
+                                                "identifier": "answer-434",
+                                                "source": "answers"
+                                            },
+                                            "Yes"
+                                        ]
                                     }
                                 },
                                 {
@@ -409,7 +413,13 @@
                                 {
                                     "block": "block-4953",
                                     "when": {
-                                        "==": [{ "identifier": "answer-6287", "source": "answers" }, "Yes"]
+                                        "==": [
+                                            {
+                                                "identifier": "answer-6287",
+                                                "source": "answers"
+                                            },
+                                            "Yes"
+                                        ]
                                     }
                                 },
                                 {
@@ -513,7 +523,7 @@
         {
             "id": "house-hold-section",
             "title": "Household",
-            "show_on_hub":true,
+            "show_on_hub": true,
             "groups": [
                 {
                     "id": "group",
@@ -713,7 +723,9 @@
         {
             "id": "questions-section",
             "title": "Questions",
-            "summary": { "show_on_completion": true },
+            "summary": {
+                "show_on_completion": true
+            },
             "show_on_hub": true,
             "groups": [
                 {
@@ -856,7 +868,9 @@
         {
             "id": "calculated-summary-section",
             "title": "Calculated Summary",
-            "summary": { "show_on_completion": true },
+            "summary": {
+                "show_on_completion": true
+            },
             "repeat": {
                 "for_list": "people",
                 "title": {
