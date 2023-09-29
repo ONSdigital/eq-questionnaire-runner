@@ -74,7 +74,11 @@
                                         "mandatory": true,
                                         "type": "Currency",
                                         "currency": "GBP",
-                                        "decimal_places": 2
+                                        "decimal_places": 2,
+                                        "minimum": {
+                                            "value": -1000,
+                                            "exclusive": false
+                                        }
                                     },
                                     {
                                         "id": "second-number-answer-unit-total",
@@ -90,7 +94,11 @@
                                         "mandatory": false,
                                         "type": "Currency",
                                         "currency": "GBP",
-                                        "decimal_places": 2
+                                        "decimal_places": 2,
+                                        "minimum": {
+                                            "value": -1000,
+                                            "exclusive": false
+                                        }
                                     }
                                 ]
                             }
