@@ -32,4 +32,7 @@ describe("Feature: Calculated Summary with negative values", () => {
   describe("Given I enter a negative value in the first section", () => {
     CalculatedSummaryTestCase.testNegative("test_new_calculated_summary.json", -1, 2, 3, 0, "£4.00", ["-£1.00", "£2.00", "£3.00", "£0.00"]);
   });
+  describe("Given I enter a negative value in the second section ", () => {
+    CalculatedSummaryTestCase.testNegative("test_new_calculated_summary.json", 12, -2, 1, 0, "£11.00", ["£12.00", "-£2.00", "£1.00", "£0.00"]);
+  });
 });
