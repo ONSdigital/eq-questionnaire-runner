@@ -22,9 +22,7 @@ def test_year_date_form_format_data():
     data = {"field": "2000"}
 
     class TestForm(Form):
-        field = year_date_field.YearDateField(
-            validators=[OptionalForm()], description=""
-        )
+        field = year_date_field.YearDateField(validators=[OptionalForm()])
 
     test_form = TestForm(data=data)
 

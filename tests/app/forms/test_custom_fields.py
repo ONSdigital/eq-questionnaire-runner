@@ -15,10 +15,8 @@ def test_text_area_a_wtforms_field(mock_form):
         label="LabelText",
         _form=mock_form,
         name="aName",
-        description="",
         rows=0,
         maxlength=0,
-        validators=[],
     )
     assert isinstance(text_area, Field)
 
@@ -29,9 +27,7 @@ def test_text_area_supports_maxlength_property(mock_form):
         maxlength=20,
         _form=mock_form,
         name="aName",
-        description="",
         rows=0,
-        validators=[],
     )
     assert isinstance(text_area, Field)
     assert text_area.maxlength == 20
@@ -79,9 +75,7 @@ def test_integer_field_inputs(mock_form, number_input, result):
     ],
 )
 def test_decimal_field_inputs(mock_form, number_input, result):
-    decimal_field = DecimalFieldWithSeparator(
-        _form=mock_form, name="aName", description="", validators=[]
-    )
+    decimal_field = DecimalFieldWithSeparator(_form=mock_form, name="aName")
     decimal_field.process_formdata([number_input])
 
     assert decimal_field.data == result
@@ -89,9 +83,7 @@ def test_decimal_field_inputs(mock_form, number_input, result):
 
 @pytest.mark.usefixtures("gb_locale")
 def test_decimal_field(mock_form):
-    decimal_field = DecimalFieldWithSeparator(
-        _form=mock_form, name="aName", description="", validators=[]
-    )
+    decimal_field = DecimalFieldWithSeparator(_form=mock_form, name="aName")
     assert isinstance(decimal_field, Field)
 
     try:
