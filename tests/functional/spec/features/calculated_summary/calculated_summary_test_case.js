@@ -30,7 +30,6 @@ import MinMaxSectionTwo from "../../../generated_pages/calculated_summary_cross_
 import { assertSummaryValues, click } from "../../../helpers";
 import { expect } from "@wdio/globals";
 
-
 class TestCase {
   testCase(schema) {
     before("Get to Calculated Summary", async () => {
@@ -462,7 +461,7 @@ class TestCase {
     it("Given I have entered a range of positive and negative values, When I reach the calculated summary, Then the total is correct", async () => {
       assertSummaryValues(expectedAnswerValues);
       await expect(await $(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).toContain(
-        `We calculate the total of currency values entered to be ${expectedTotalValue}. Is this correct?`
+        `We calculate the total of currency values entered to be ${expectedTotalValue}. Is this correct?`,
       );
     });
   }
