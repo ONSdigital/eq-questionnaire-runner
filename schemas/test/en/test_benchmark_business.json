@@ -8,11 +8,9 @@
     "legal_basis": "Notice is given under section 1 of the Statistics of Trade Act 1947.",
     "title": "Benchmark-Survey",
     "questionnaire_flow": {
-        "type": "Linear",
+        "type": "Hub",
         "options": {
-            "summary": {
-                "collapsible": false
-            }
+            "required_completed_sections": ["stock-section", "house-hold-section", "questions-section"]
         }
     },
     "post_submission": {
@@ -23,6 +21,7 @@
         {
             "id": "stock-section",
             "title": "Quarterly Stocks Survey",
+            "show_on_hub": true,
             "groups": [
                 {
                     "id": "group-questionnaire-introduction",
@@ -187,7 +186,13 @@
                                 {
                                     "block": "block-381",
                                     "when": {
-                                        "==": [{ "identifier": "answer-434", "source": "answers" }, "Yes"]
+                                        "==": [
+                                            {
+                                                "identifier": "answer-434",
+                                                "source": "answers"
+                                            },
+                                            "Yes"
+                                        ]
                                     }
                                 },
                                 {
@@ -408,7 +413,13 @@
                                 {
                                     "block": "block-4953",
                                     "when": {
-                                        "==": [{ "identifier": "answer-6287", "source": "answers" }, "Yes"]
+                                        "==": [
+                                            {
+                                                "identifier": "answer-6287",
+                                                "source": "answers"
+                                            },
+                                            "Yes"
+                                        ]
                                     }
                                 },
                                 {
@@ -510,8 +521,9 @@
             ]
         },
         {
-            "id": "section",
+            "id": "house-hold-section",
             "title": "Household",
+            "show_on_hub": true,
             "groups": [
                 {
                     "id": "group",
@@ -711,7 +723,10 @@
         {
             "id": "questions-section",
             "title": "Questions",
-            "summary": { "show_on_completion": true },
+            "summary": {
+                "show_on_completion": true
+            },
+            "show_on_hub": true,
             "groups": [
                 {
                     "id": "radio",
@@ -853,7 +868,9 @@
         {
             "id": "calculated-summary-section",
             "title": "Calculated Summary",
-            "summary": { "show_on_completion": true },
+            "summary": {
+                "show_on_completion": true
+            },
             "repeat": {
                 "for_list": "people",
                 "title": {
