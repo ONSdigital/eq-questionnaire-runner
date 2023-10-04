@@ -171,7 +171,7 @@ def test_get_item_using_method():
     assert item.items[0] == first_id
 
 
-def test_lookup_valid_list_item():
+def test_lookup_list_items():
     store = ListStore()
 
     person_id = store.add_list_item("people")
@@ -179,12 +179,4 @@ def test_lookup_valid_list_item():
 
     assert store.get_list_name_for_list_item_id(person_id) == "people"
     assert store.get_list_name_for_list_item_id(item_id) == "items"
-
-
-def test_lookup_invalid_list_item():
-    store = ListStore()
-
-    with pytest.raises(ValueError) as error:
-        store.get_list_name_for_list_item_id("not-a-list-item-id")
-
-    assert "list_item_id not-a-list-item-id not found in any lists" in str(error.value)
+    assert store.get_list_name_for_list_item_id("not-a-list-item-id") is None

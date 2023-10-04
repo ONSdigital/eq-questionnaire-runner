@@ -244,6 +244,7 @@ class Router:
                 section_key=location.section_key,
                 routing_path=routing_path,
                 is_for_previous=is_for_previous,
+                location=location,
                 return_to_answer_id=return_to_answer_id,
                 return_to_list_item_id=return_to_list_item_id,
             )
@@ -273,6 +274,7 @@ class Router:
                 is_for_previous=is_for_previous,
                 return_to_block_id=return_to_block_id,
                 return_to=return_to,
+                return_to_list_item_id=return_to_list_item_id,
                 routing_path=routing_path,
             )
 
@@ -293,6 +295,7 @@ class Router:
         section_key: SectionKey,
         routing_path: RoutingPath,
         is_for_previous: bool,
+        location: LocationType,
         return_to_answer_id: str | None = None,
         return_to_list_item_id: str | None = None,
     ) -> str | None:
@@ -307,9 +310,10 @@ class Router:
         grand_calculated_summary_section: str = (
             self._schema.get_section_id_for_block_id(return_to_block_id)  # type: ignore
         )
+        list_item_id = location.list_item_id or return_to_list_item_id
         list_name = (
-            self._list_store.get_list_name_for_list_item_id(return_to_list_item_id)
-            if return_to_list_item_id
+            self._list_store.get_list_name_for_list_item_id(list_item_id)
+            if list_item_id
             else None
         )
         if grand_calculated_summary_section != section_key.section_id:
@@ -323,14 +327,14 @@ class Router:
             routing_path = self._path_finder.routing_path(
                 SectionKey(
                     section_id=grand_calculated_summary_section,
-                    list_item_id=return_to_list_item_id,
+                    list_item_id=list_item_id,
                 )
             )
         if self.can_access_location(
             Location(
                 block_id=return_to_block_id,
                 section_id=grand_calculated_summary_section,
-                list_item_id=return_to_list_item_id,
+                list_item_id=list_item_id,
                 list_name=list_name,
             ),
             routing_path,
@@ -338,7 +342,7 @@ class Router:
             return url_for(
                 "questionnaire.block",
                 block_id=return_to_block_id,
-                list_item_id=return_to_list_item_id,
+                list_item_id=list_item_id,
                 list_name=list_name,
                 _anchor=return_to_answer_id,
             )
@@ -348,6 +352,7 @@ class Router:
             is_for_previous=is_for_previous,
             return_to_block_id=return_to_block_id,
             return_to=return_to,
+            return_to_list_item_id=return_to_list_item_id,
             routing_path=routing_path,
         )
 
@@ -405,6 +410,7 @@ class Router:
         is_for_previous: bool,
         return_to_block_id: str | None,
         return_to: str | None,
+        return_to_list_item_id: str | None,
         routing_path: RoutingPath,
     ) -> str | None:
         """
@@ -423,6 +429,7 @@ class Router:
             return next_incomplete_location.url(
                 return_to=return_to,
                 return_to_block_id=return_to_block_id,
+                return_to_list_item_id=return_to_list_item_id,
             )
 
     def get_next_location_url_for_end_of_section(self) -> str:

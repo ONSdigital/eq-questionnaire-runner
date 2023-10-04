@@ -125,6 +125,4 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
             groups=groups,
             calculation=calculation,
             formatted_total=formatted_total,
-            summary_type="GrandCalculatedSummary",
-            block_type="grand-calculated-summary",
         )

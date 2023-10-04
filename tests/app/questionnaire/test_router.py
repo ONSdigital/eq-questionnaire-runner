@@ -797,14 +797,21 @@ class TestRouterNextLocation(RouterTestCase):
         assert expected_previous_url == next_location_url
 
     @pytest.mark.parametrize(
-        "section_id,block_id,list_name,list_item_id",
+        "section_id,block_id,list_name,list_item_id,return_to_list_item_id",
         [
-            ("base-costs-section", "calculated-summary-base-cost", None, None),
+            (
+                "base-costs-section",
+                "calculated-summary-base-cost",
+                None,
+                None,
+                "ZIrqqR",
+            ),
             (
                 "vehicle-details-section",
                 "calculated-summary-running-costs",
                 "vehicles",
-                "ZIrggR",
+                "ZIrqqR",
+                None,
             ),
         ],
     )
@@ -815,6 +822,7 @@ class TestRouterNextLocation(RouterTestCase):
         block_id,
         list_name,
         list_item_id,
+        return_to_list_item_id,
         grand_calculated_summary_in_repeating_section_schema,
     ):
         """
@@ -871,7 +879,7 @@ class TestRouterNextLocation(RouterTestCase):
             routing_path,
             return_to="grand-calculated-summary",
             return_to_block_id="grand-calculated-summary-vehicle",
-            return_to_list_item_id="ZIrqqR",
+            return_to_list_item_id=return_to_list_item_id,
         )
         expected_next_url = url_for(
             "questionnaire.block",
