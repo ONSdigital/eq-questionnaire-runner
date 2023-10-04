@@ -1,3 +1,4 @@
+from functools import cached_property
 from typing import Callable, Iterable, Mapping, MutableMapping, Tuple
 
 from werkzeug.datastructures import ImmutableDict
@@ -20,6 +21,7 @@ from app.questionnaire.schema_utils import get_answer_ids_in_block
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.questionnaire.variants import choose_question_to_display, transform_variants
 from app.utilities.decimal_places import get_formatted_currency
+from app.utilities.strings import pascal_case_to_hyphenated_lowercase
 from app.utilities.types import LocationType
 from app.views.contexts.context import Context
 from app.views.contexts.summary.calculated_summary_block import NumericType
@@ -41,6 +43,7 @@ class CalculatedSummaryContext(Context):
         supplementary_data_store: SupplementaryDataStore,
         return_to: str | None = None,
         return_to_block_id: str | None = None,
+        return_to_list_item_id: str | None = None,
     ) -> None:
         super().__init__(
             language,
@@ -56,12 +59,22 @@ class CalculatedSummaryContext(Context):
         self.current_location = current_location
         self.return_to = return_to
         self.return_to_block_id = return_to_block_id
+        self.return_to_list_item_id = return_to_list_item_id
+
+    @cached_property
+    def rendered_block(self) -> dict:
+        # Type ignore block is guaranteed to exist at this point
+        block_id: str = self.current_location.block_id  # type: ignore
+        block: ImmutableDict = self._schema.get_block(block_id)  # type: ignore
+
+        return self._placeholder_renderer.render(
+            data_to_render=block, list_item_id=self.current_location.list_item_id
+        )
 
     def build_groups_for_section(
         self,
         *,
         section: Mapping,
-        return_to_block_id: str,
         routing_path_block_ids: Iterable[str],
     ) -> list[Mapping]:
         """
@@ -69,6 +82,8 @@ class CalculatedSummaryContext(Context):
         the details of the grand calculated summary to return to needs to be passed down to the calculated summary answer links
         """
         return_to = "calculated-summary"
+        # Type ignore: safe to assume block_id is not None
+        return_to_block_id: str = self.current_location.block_id  # type: ignore
         if self.return_to == "grand-calculated-summary":
             return_to_block_id += f",{self.return_to_block_id}"
             return_to += ",grand-calculated-summary"
@@ -87,22 +102,20 @@ class CalculatedSummaryContext(Context):
                 supplementary_data_store=self._supplementary_data_store,
                 return_to=return_to,
                 return_to_block_id=return_to_block_id,
+                return_to_list_item_id=self.return_to_list_item_id,
                 summary_type="CalculatedSummary",
             ).serialize()
             for group in section["groups"]
         ]
 
     def build_view_context(self) -> dict[str, dict]:
-        # type ignores added as block will exist at this point
-        block_id: str = self.current_location.block_id  # type: ignore
-        block: ImmutableDict = self._schema.get_block(block_id)  # type: ignore
-
-        calculated_section: dict = self._build_calculated_summary_section(block)
-        calculation = block["calculation"]
+        calculated_section: dict = self._build_calculated_summary_section(
+            self.rendered_block
+        )
+        calculation = self.rendered_block["calculation"]
 
         groups = self.build_groups_for_section(
             section=calculated_section,
-            return_to_block_id=block_id,
             routing_path_block_ids=self.routing_path_block_ids,
         )
 
@@ -116,24 +129,18 @@ class CalculatedSummaryContext(Context):
         )
 
         return self._build_formatted_summary(
-            block=block,
-            groups=groups,
-            calculation=calculation,
-            formatted_total=formatted_total,
-            summary_type="CalculatedSummary",
+            groups=groups, calculation=calculation, formatted_total=formatted_total
         )
 
     def _build_formatted_summary(
         self,
         *,
-        block: ImmutableDict,
         groups: Iterable[Mapping],
-        calculation: ImmutableDict,
+        calculation: Mapping,
         formatted_total: str,
-        summary_type: str,
     ) -> dict[str, dict]:
-        collapsible = block.get("collapsible") or False
-        block_title = block["title"]
+        collapsible = self.rendered_block.get("collapsible") or False
+        block_title = self.rendered_block["title"]
 
         sections = [{"id": self.current_location.section_id, "groups": groups}]
 
@@ -142,15 +149,16 @@ class CalculatedSummaryContext(Context):
                 "sections": sections,
                 "answers_are_editable": True,
                 "calculated_question": self._get_calculated_question(
-                    calculation, formatted_total
+                    calculation_question=calculation,
+                    formatted_total=formatted_total,
                 ),
                 "title": block_title % {"total": formatted_total},
                 "collapsible": collapsible,
-                "summary_type": summary_type,
+                "summary_type": self.rendered_block["type"],
             }
         }
 
-    def _build_calculated_summary_section(self, rendered_block: ImmutableDict) -> dict:
+    def _build_calculated_summary_section(self, rendered_block: Mapping) -> dict:
         """Build up the list of blocks only including blocks / questions / answers which are relevant to the summary"""
         # type ignores added as block will exist at this point
         block_id: str = self.current_location.block_id  # type: ignore
@@ -235,7 +243,7 @@ class CalculatedSummaryContext(Context):
     def _get_evaluated_total(
         self,
         *,
-        calculation: ImmutableDict,
+        calculation: Mapping,
         routing_path_block_ids: Iterable[str],
     ) -> NumericType:
         """
@@ -261,7 +269,7 @@ class CalculatedSummaryContext(Context):
     ) -> str:
         answer_format, values_to_calculate = self._get_answer_format(groups)
 
-        if isinstance(calculation, ImmutableDict):
+        if isinstance(calculation, Mapping):
             calculated_total = self._get_evaluated_total(
                 calculation=calculation,
                 routing_path_block_ids=self.routing_path_block_ids,
@@ -330,15 +338,14 @@ class CalculatedSummaryContext(Context):
 
         return format_number(total)
 
-    @staticmethod
     def _get_calculated_question(
-        calculation_question: ImmutableDict,
-        formatted_total: str,
+        self, *, calculation_question: Mapping, formatted_total: str
     ) -> dict:
         calculation_title = calculation_question["title"]
+        block_type = pascal_case_to_hyphenated_lowercase(self.rendered_block["type"])
 
         return {
             "title": calculation_title,
-            "id": "calculated-summary-question",
-            "answers": [{"id": "calculated-summary-answer", "value": formatted_total}],
+            "id": f"{block_type}-question",
+            "answers": [{"id": f"{block_type}-answer", "value": formatted_total}],
         }

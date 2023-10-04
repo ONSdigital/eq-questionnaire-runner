@@ -24,6 +24,7 @@ def test_create_answer(return_to, return_to_block_id, is_in_repeating_section):
         list_item_id="answer-item-id",
         return_to=return_to,
         return_to_block_id=return_to_block_id,
+        return_to_list_item_id=None,
         is_in_repeating_section=is_in_repeating_section,
     )
 
@@ -62,6 +63,7 @@ def test_date_answer_type():
         list_item_id="answer-item-id",
         return_to="section-summary",
         return_to_block_id=None,
+        return_to_list_item_id=None,
         is_in_repeating_section=False,
     )
 

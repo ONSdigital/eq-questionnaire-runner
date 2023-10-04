@@ -42,6 +42,7 @@ class Question:
         block_id: str,
         return_to: Optional[str],
         return_to_block_id: Optional[str] = None,
+        return_to_list_item_id: Optional[str] = None,
         metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
         language: str,
@@ -75,6 +76,7 @@ class Question:
             list_name=location.list_name if location else None,
             return_to=return_to,
             return_to_block_id=return_to_block_id,
+            return_to_list_item_id=return_to_list_item_id,
             metadata=metadata,
             response_metadata=response_metadata,
             language=language,
@@ -98,6 +100,7 @@ class Question:
         list_name: str | None,
         return_to: str | None,
         return_to_block_id: str | None,
+        return_to_list_item_id: str | None,
         metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
         language: str,
@@ -111,6 +114,7 @@ class Question:
                 list_item_id=self.list_item_id,
                 return_to=return_to,
                 return_to_answer_id=answer_id if return_to else None,
+                return_to_list_item_id=return_to_list_item_id,
                 _anchor=question_schema["answers"][0]["id"],
             )
 
@@ -149,6 +153,7 @@ class Question:
                 list_item_id=list_item_id or self.list_item_id,
                 return_to=return_to,
                 return_to_block_id=return_to_block_id,
+                return_to_list_item_id=return_to_list_item_id,
                 is_in_repeating_section=self._is_in_repeating_section,
             ).serialize()
             summary_answers.append(summary_answer)

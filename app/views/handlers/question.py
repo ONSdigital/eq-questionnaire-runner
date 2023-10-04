@@ -122,6 +122,7 @@ class Question(BlockHandler):
             self._return_to,
             self._return_to_answer_id,
             self._return_to_block_id,
+            self._return_to_list_item_id,
         )
 
     def _get_answers_for_question(self, question_json: Mapping) -> dict:

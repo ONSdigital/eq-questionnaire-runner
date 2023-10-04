@@ -38,3 +38,10 @@ def safe_content(content: str) -> str:
         # Strip HTML Tags
         content = re.sub(r"</?[^>]+>", "", content)
     return content
+
+
+def pascal_case_to_hyphenated_lowercase(string: str) -> str:
+    """
+    Changes text from PascalCase to hyphenated-lowercase
+    """
+    return re.sub(r"(?<!^)(?=[A-Z])", "-", string).lower()

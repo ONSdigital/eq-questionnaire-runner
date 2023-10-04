@@ -790,12 +790,105 @@ class TestRouterNextLocation(RouterTestCase):
 
         expected_previous_url = url_for(
             "questionnaire.block",
-            return_to="grand-calculated-summary",
             block_id="distance-grand-calculated-summary",
             _anchor="distance-calculated-summary-1",
         )
 
         assert expected_previous_url == next_location_url
+
+    @pytest.mark.parametrize(
+        "section_id,block_id,list_name,list_item_id,return_to_list_item_id",
+        [
+            (
+                "base-costs-section",
+                "calculated-summary-base-cost",
+                None,
+                None,
+                "ZIrqqR",
+            ),
+            (
+                "vehicle-details-section",
+                "calculated-summary-running-costs",
+                "vehicles",
+                "ZIrqqR",
+                None,
+            ),
+        ],
+    )
+    @pytest.mark.usefixtures("app")
+    def test_return_to_repeating_grand_calculated_summary_from_calculated_summary(
+        self,
+        section_id,
+        block_id,
+        list_name,
+        list_item_id,
+        return_to_list_item_id,
+        grand_calculated_summary_in_repeating_section_schema,
+    ):
+        """
+        This tests that if you use a change link from a repeating GCS to return to:
+        either a non-repeating CS in another section or a repeating CS in the same section,
+        the continue button for the CS has a next location url of the original repeating GCS.
+        """
+        self.schema = grand_calculated_summary_in_repeating_section_schema
+        self.list_store = ListStore([{"items": ["ZIrqqR"], "name": "vehicles"}])
+
+        self.progress_store = ProgressStore(
+            [
+                ProgressDict(
+                    section_id="base-costs-section",
+                    block_ids=[
+                        "any-cost",
+                        "finance-cost",
+                        "calculated-summary-base-cost",
+                    ],
+                    status=CompletionStatus.COMPLETED,
+                ),
+                ProgressDict(
+                    section_id="vehicle-details-section",
+                    block_ids=[
+                        "vehicle-maintenance-block",
+                        "vehicle-fuel-block",
+                        "calculated-summary-running-cost",
+                        "grand-calculated-summary-vehicle",
+                    ],
+                    status=CompletionStatus.COMPLETED,
+                    list_item_id="ZIrqqR",
+                ),
+            ]
+        )
+        current_location = Location(
+            section_id=section_id,
+            block_id=block_id,
+            list_name=list_name,
+            list_item_id=list_item_id,
+        )
+        routing_path = RoutingPath(
+            block_ids=[
+                "vehicle-maintenance-block",
+                "vehicle-fuel-block",
+                "calculated-summary-running-cost",
+                "grand-calculated-summary-vehicle",
+            ],
+            section_id="vehicle-details-section",
+            list_name="vehicles",
+            list_item_id="ZIrqqR",
+        )
+        next_location_url = self.router.get_next_location_url(
+            current_location,
+            routing_path,
+            return_to="grand-calculated-summary",
+            return_to_block_id="grand-calculated-summary-vehicle",
+            return_to_list_item_id=return_to_list_item_id,
+        )
+        expected_next_url = url_for(
+            "questionnaire.block",
+            list_name="vehicles",
+            list_item_id="ZIrqqR",
+            block_id="grand-calculated-summary-vehicle",
+        )
+
+        assert expected_next_url == next_location_url
 
     @pytest.mark.parametrize(
         "return_to_block_id",
