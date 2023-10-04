@@ -331,6 +331,63 @@
                                     ]
                                 }
                             }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "base-cost-payment-breakdown",
+                            "question": {
+                                "type": "Calculated",
+                                "id": "base-cost-payment-breakdown-question",
+                                "title": {
+                                    "text": "How much of the {total} is paid by debit or credit card?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "total",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_currency",
+                                                    "arguments": {
+                                                        "number": {
+                                                            "source": "calculated_summary",
+                                                            "identifier": "calculated-summary-base-cost"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "warning": "The sum of these answers must not exceed the total",
+                                "calculations": [
+                                    {
+                                        "calculation_type": "sum",
+                                        "value": {
+                                            "source": "calculated_summary",
+                                            "identifier": "calculated-summary-base-cost"
+                                        },
+                                        "answers_to_calculate": ["base-credit", "base-debit"],
+                                        "conditions": ["less than", "equals"]
+                                    }
+                                ],
+                                "answers": [
+                                    {
+                                        "id": "base-credit",
+                                        "label": "Credit card",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "base-debit",
+                                        "label": "Debit card",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
                         }
                     ]
                 }

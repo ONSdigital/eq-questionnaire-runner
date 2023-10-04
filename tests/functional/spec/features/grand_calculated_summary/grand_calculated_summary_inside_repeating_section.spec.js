@@ -14,6 +14,7 @@ import VehicleFuelBlockPage from "../../../generated_pages/grand_calculated_summ
 import VehicleMaintenanceBlockPage from "../../../generated_pages/grand_calculated_summary_inside_repeating_section/vehicle-maintenance-block.page.js";
 import VehiclesSectionPage from "../../../generated_pages/grand_calculated_summary_inside_repeating_section/vehicles-section-summary.page.js";
 import FinanceCostPage from "../../../generated_pages/grand_calculated_summary_inside_repeating_section/finance-cost.page";
+import BaseCostPaymentBreakdownPage from "../../../generated_pages/grand_calculated_summary_inside_repeating_section/base-cost-payment-breakdown.page";
 
 describe("Grand Calculated Summary inside a repeating section", () => {
   let vehicleListItemIds = [];
@@ -31,6 +32,9 @@ describe("Grand Calculated Summary inside a repeating section", () => {
       "We calculate the total base cost for any owned vehicle to be £90.00. Is this correct?",
     );
     await click(CalculatedSummaryBaseCostPage.submit());
+    await $(BaseCostPaymentBreakdownPage.baseCredit()).setValue(30);
+    await $(BaseCostPaymentBreakdownPage.baseDebit()).setValue(40);
+    await click(BaseCostPaymentBreakdownPage.submit());
     await click(BaseCostsSectionPage.submit());
     await click(HubPage.submit());
     await $(AnyVehiclePage.yes()).click();
@@ -136,7 +140,7 @@ describe("Grand Calculated Summary inside a repeating section", () => {
     await expect(browser).toHaveUrlContaining(`vehicles/${vehicleListItemIds[1]}/`);
   });
 
-  it("Given I change a non repeating answer, When I return to the Grand Calculated Summary, Then I see the correctly updated values", async () => {
+  it("Given I change a non repeating answer which results in the section being incomplete, When I press continue, Then I go to the next incomplete location with the list item id preserved", async () => {
     await $(GrandCalculatedSummaryVehiclePage.calculatedSummaryBaseCostEdit()).click();
     await $(CalculatedSummaryBaseCostPage.financeCostAnswerEdit()).click();
     await $(FinanceCostPage.answer()).setValue(100);
@@ -146,6 +150,13 @@ describe("Grand Calculated Summary inside a repeating section", () => {
       "We calculate the total base cost for any owned vehicle to be £100.00. Is this correct?",
     );
     await click(CalculatedSummaryBaseCostPage.submit());
+    await expect(browser).toHaveUrlContaining(BaseCostPaymentBreakdownPage.pageName);
+    await expect(browser).toHaveUrlContaining(`return_to_list_item_id=${vehicleListItemIds[1]}`);
+  });
+
+  it("Given I have changed a non repeating answer, When I return to the Grand Calculated Summary, Then I see the correctly updated values", async () => {
+    await click(BaseCostPaymentBreakdownPage.submit());
+
     await expect(browser).toHaveUrlContaining(GrandCalculatedSummaryVehiclePage.pageName);
     await expect(await $(GrandCalculatedSummaryVehiclePage.grandCalculatedSummaryTitle()).getText()).toContain(
       "The total cost of owning and running your Van is calculated to be £195.00. Is this correct?",
@@ -181,6 +192,7 @@ describe("Grand Calculated Summary inside a repeating section", () => {
     await $(FinanceCostPage.answer()).setValue(110);
     await click(FinanceCostPage.submit());
     await click(CalculatedSummaryBaseCostPage.submit());
+    await click(BaseCostPaymentBreakdownPage.submit());
     await click(BaseCostsSectionPage.submit());
     await expect(await $(HubPage.summaryRowState("vehicle-details-section-1")).getText()).toContain("Partially completed");
     await expect(await $(HubPage.summaryRowState("vehicle-details-section-2")).getText()).toContain("Partially completed");

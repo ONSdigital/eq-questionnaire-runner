@@ -225,6 +225,7 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
         self.post({"any-cost-answer": "No"})
         self.post({"finance-cost-answer": "150"})
         self.post()
+        self.post({"base-credit": "20", "base-debit": "30"})
         self.post()
         self.post()
         self.post({"any-vehicle-answer": "Yes"})

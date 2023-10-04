@@ -274,6 +274,7 @@ class Router:
                 is_for_previous=is_for_previous,
                 return_to_block_id=return_to_block_id,
                 return_to=return_to,
+                return_to_list_item_id=return_to_list_item_id,
                 routing_path=routing_path,
             )
 
@@ -351,6 +352,7 @@ class Router:
             is_for_previous=is_for_previous,
             return_to_block_id=return_to_block_id,
             return_to=return_to,
+            return_to_list_item_id=return_to_list_item_id,
             routing_path=routing_path,
         )
 
@@ -408,6 +410,7 @@ class Router:
         is_for_previous: bool,
         return_to_block_id: str | None,
         return_to: str | None,
+        return_to_list_item_id: str | None,
         routing_path: RoutingPath,
     ) -> str | None:
         """
@@ -426,6 +429,7 @@ class Router:
             return next_incomplete_location.url(
                 return_to=return_to,
                 return_to_block_id=return_to_block_id,
+                return_to_list_item_id=return_to_list_item_id,
             )
 
     def get_next_location_url_for_end_of_section(self) -> str:
