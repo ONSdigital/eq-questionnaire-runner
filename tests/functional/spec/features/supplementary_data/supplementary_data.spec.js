@@ -29,6 +29,9 @@ import ViewSubmittedResponsePage from "../../../generated_pages/supplementary_da
 import { assertSummaryItems, assertSummaryTitles, assertSummaryValues, click } from "../../../helpers";
 import { getRandomString } from "../../../jwt_helper";
 import { expect } from "@wdio/globals";
+import ProductVolumeInterstitialPage from "../../../generated_pages/supplementary_data/product-volume-interstitial.page";
+import ProductSalesInterstitialPage from "../../../generated_pages/supplementary_data/product-sales-interstitial.page";
+import ProductQuestion3EnabledPage from "../../../generated_pages/supplementary_data/product-question-3-enabled.page";
 
 describe("Using supplementary data", () => {
   const responseId = getRandomString(16);
@@ -311,6 +314,14 @@ describe("Using supplementary data", () => {
     ]);
     assertSummaryValues(["100 kg", "200 kg", "110 kg", "50 kg", "300 kg", "220 kg", "£110.00", "£220.00", "£330.00"]);
     await click(Section6Page.submit());
+    await expect(await $(HubPage.summaryRowState("section-6")).getText()).toBe("Completed");
+  });
+
+  it("Given I am using a supplementary dataset with 2 items in the product list, When I enter the production targets section, Then I only see an interstitial block as the question is skipped", async () => {
+    await $(HubPage.summaryRowLink("section-8")).click();
+    await expect(browser).toHaveUrlContaining(ProductVolumeInterstitialPage.pageName);
+    await click(ProductVolumeInterstitialPage.submit());
+    await expect(await $(HubPage.summaryRowState("section-8")).getText()).toBe("Completed");
   });
 
   it("Given I relaunch the survey for a newer version of the supplementary data, When I open the Hub page, Then I see the new supplementary list items as new incomplete sections and not the old ones", async () => {
@@ -330,7 +341,38 @@ describe("Using supplementary data", () => {
     await expect(await $("body").getText()).not.toContain("Clark Kent");
   });
 
-  it("Given I now have a new incomplete section, When I start the section, Then I see the new supplementary data piped in accordingly", async () => {
+  it("Given the survey has been relaunched with new data and more items in the products list, When I am on the Hub, Then I see the products section and production targets sections are now in progress", async () => {
+    // :TODO: this currently doesn't revert the section of the Products Details section to in progress because the progress doesn't work properly for repeating blocks
+    // :TODO: this line should be uncommented once the above has been fixed.
+    // await expect(await $(HubPage.summaryRowState("section-6")).getText()).toBe("Partially completed");
+    await expect(await $(HubPage.summaryRowState("section-8")).getText()).toBe("Partially completed");
+  });
+
+  it("Given I am using a supplementary dataset with 3 items in the product list, When I enter the sales targets section, Then I only see an interstitial block as the question is skipped", async () => {
+    // :TODO: once progress of sections with repeating blocks is updating properly, this comment will need replacing with completion of the missing answers from section 6
+    await expect(await $(HubPage.summaryRowState("section-6")).getText()).toBe("Completed");
+    await $(HubPage.summaryRowLink("section-7")).click();
+    await expect(browser).toHaveUrlContaining(ProductSalesInterstitialPage.pageName);
+    await click(ProductSalesInterstitialPage.submit());
+    await expect(await $(HubPage.summaryRowState("section-7")).getText()).toBe("Completed");
+  });
+
+  it("Given I relaunch with the old data that has fewer items in the products list, When I am on the Hub, Then I see the products section and sales targets sections are now in progress", async () => {
+    await browser.openQuestionnaire("test_supplementary_data.json", {
+      version: "v2",
+      sdsDatasetId: "c067f6de-6d64-42b1-8b02-431a3486c178",
+      responseId,
+    });
+    await expect(await $(HubPage.summaryRowState("section-6")).getText()).toBe("Partially completed");
+    await expect(await $(HubPage.summaryRowState("section-7")).getText()).toBe("Partially completed");
+  });
+
+  it("Given I return to the new data resulting in a new incomplete section, When I start the section, Then I see the new supplementary data piped in accordingly", async () => {
+    await browser.openQuestionnaire("test_supplementary_data.json", {
+      version: "v2",
+      sdsDatasetId: "693dc252-2e90-4412-bd9c-c4d953e36fcd",
+      responseId,
+    });
     await click(HubPage.submit());
     await $(LengthOfEmploymentPage.day()).setValue(10);
     await $(LengthOfEmploymentPage.month()).setValue(10);
@@ -342,6 +384,13 @@ describe("Using supplementary data", () => {
   });
 
   it("Given I can view my response after submission, When I submit the survey, Then I see the values I've entered and correct rendering with supplementary data", async () => {
+    await click(HubPage.submit());
+    await click(CalculatedSummaryVolumeSalesPage.submit());
+    await click(CalculatedSummaryVolumeTotalPage.submit());
+    await click(Section6Page.submit());
+    await click(HubPage.submit());
+    await $(ProductQuestion3EnabledPage.yes()).click();
+    await click(ProductQuestion3EnabledPage.submit());
     await click(HubPage.submit());
     await $(ThankYouPage.savePrintAnswersLink()).click();
 

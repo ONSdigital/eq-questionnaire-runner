@@ -1,4 +1,5 @@
 import pytest
+from mock import MagicMock
 
 from app.data_models import QuestionnaireStore
 from app.data_models.answer_store import AnswerStore
@@ -6,8 +7,19 @@ from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
 from app.data_models.supplementary_data_store import SupplementaryDataStore
 from app.questionnaire.location import SectionKey
+from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.utilities.json import json_dumps, json_loads
 from app.utilities.make_immutable import make_immutable
+
+
+def get_questionnaire_store_updater(questionnaire_store: QuestionnaireStore):
+    return QuestionnaireStoreUpdater(
+        schema=MagicMock(),
+        questionnaire_store=questionnaire_store,
+        current_location=MagicMock(),
+        router=MagicMock(),
+        current_question=None,
+    )
 
 
 @pytest.mark.parametrize(
@@ -136,7 +148,12 @@ class TestQuestionnaireStoreWithSupplementaryData:
         this test doesn't mock list item ids, and checks that they match those in list_mappings
         """
         self.store = QuestionnaireStore(questionnaire_store.storage)
-        self.store.set_supplementary_data(supplementary_data)
+        self.store.set_supplementary_data(
+            to_set=supplementary_data,
+            questionnaire_store_updater=get_questionnaire_store_updater(
+                questionnaire_store
+            ),
+        )
         assert "products" in self.store.supplementary_data_store.list_lookup
         supplementary_list_item_ids = list(
             self.store.supplementary_data_store.list_lookup["products"].values()
@@ -153,7 +170,12 @@ class TestQuestionnaireStoreWithSupplementaryData:
 
         supplementary_data["items"]["supermarkets"] = [{"identifier": "54321"}]
         supplementary_data["items"]["products"].append({"identifier": "12345"})
-        self.store.set_supplementary_data(supplementary_data)
+        self.store.set_supplementary_data(
+            to_set=supplementary_data,
+            questionnaire_store_updater=get_questionnaire_store_updater(
+                questionnaire_store_with_supplementary_data
+            ),
+        )
 
         assert self.store.supplementary_data_store.list_mappings == make_immutable(
             {
@@ -179,7 +201,12 @@ class TestQuestionnaireStoreWithSupplementaryData:
         self.store = questionnaire_store_with_supplementary_data
 
         del supplementary_data["items"]["products"][0]
-        self.store.set_supplementary_data(supplementary_data)
+        self.store.set_supplementary_data(
+            to_set=supplementary_data,
+            questionnaire_store_updater=get_questionnaire_store_updater(
+                questionnaire_store_with_supplementary_data
+            ),
+        )
 
         # products item-1 should be gone
         self.assert_list_store_data("products", ["item-2"])
@@ -189,7 +216,12 @@ class TestQuestionnaireStoreWithSupplementaryData:
     ):
         """Checks that removing all supplementary data clears out the list store"""
         self.store = questionnaire_store_with_supplementary_data
-        self.store.set_supplementary_data({})
+        self.store.set_supplementary_data(
+            to_set={},
+            questionnaire_store_updater=get_questionnaire_store_updater(
+                questionnaire_store_with_supplementary_data
+            ),
+        )
         assert len(list(self.store.list_store)) == 0
 
     def test_removing_supplementary_lists_with_answers(
@@ -217,7 +249,12 @@ class TestQuestionnaireStoreWithSupplementaryData:
 
         # delete the first product and update supplementary data
         del supplementary_data["items"]["products"][0]
-        self.store.set_supplementary_data(supplementary_data)
+        self.store.set_supplementary_data(
+            to_set=supplementary_data,
+            questionnaire_store_updater=get_questionnaire_store_updater(
+                questionnaire_store_with_supplementary_data
+            ),
+        )
 
         # item-1 should be gone
         self.assert_list_store_data("products", ["item-2"])
@@ -227,7 +264,12 @@ class TestQuestionnaireStoreWithSupplementaryData:
         assert answers[0] == ("product-sales-answer", "item-2")
 
         # remove all answers
-        self.store.set_supplementary_data({})
+        self.store.set_supplementary_data(
+            to_set={},
+            questionnaire_store_updater=get_questionnaire_store_updater(
+                questionnaire_store_with_supplementary_data
+            ),
+        )
         assert not self.store.answer_store.answer_map
 
     def test_removing_supplementary_data_ignores_non_supplementary_data(
@@ -253,7 +295,12 @@ class TestQuestionnaireStoreWithSupplementaryData:
         self.assert_list_store_data("products", ["item-1", "item-2"])
         self.assert_list_store_data("supermarkets", ["item-3"])
 
-        self.store.set_supplementary_data({})
+        self.store.set_supplementary_data(
+            to_set={},
+            questionnaire_store_updater=get_questionnaire_store_updater(
+                questionnaire_store_with_supplementary_data
+            ),
+        )
         self.assert_list_store_data("supermarkets", ["item-3"])
         answers = list(self.store.answer_store.answer_map.keys())
         assert answers == [("unrelated-answer", "JxSW21"), ("sales", None)]

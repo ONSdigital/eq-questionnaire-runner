@@ -1544,6 +1544,204 @@
                     ]
                 }
             ]
+        },
+        {
+            "id": "section-7",
+            "title": "Sales targets",
+            "groups": [
+                {
+                    "id": "value-sales-group",
+                    "blocks": [
+                        {
+                            "id": "product-sales-interstitial",
+                            "type": "Interstitial",
+                            "content": {
+                                "title": "Product value sales",
+                                "contents": [
+                                    {
+                                        "guidance": {
+                                            "contents": [
+                                                {
+                                                    "description": "The next block only shows when there are 2 products in the supplementary dataset."
+                                                },
+                                                {
+                                                    "description": "This is to test that section progress updates when swapping between supplementary datasets which remove or add list items"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "product-question-2-enabled",
+                            "type": "Question",
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "products"
+                                                }
+                                            ]
+                                        },
+                                        2
+                                    ]
+                                }
+                            },
+                            "question": {
+                                "id": "product-2-question",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "This block is enabled because there are 2 products in the supplementary dataset"
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "title": {
+                                    "text": "Did the total value sales of {value_sales} over the last quarter meet the target?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "value_sales",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_currency",
+                                                    "arguments": {
+                                                        "number": {
+                                                            "source": "calculated_summary",
+                                                            "identifier": "calculated-summary-value-sales"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "value-yes-no-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-8",
+            "title": "Production targets",
+            "groups": [
+                {
+                    "id": "volume-produced-group",
+                    "blocks": [
+                        {
+                            "id": "product-volume-interstitial",
+                            "type": "Interstitial",
+                            "content": {
+                                "title": "Product volume produced",
+                                "contents": [
+                                    {
+                                        "guidance": {
+                                            "contents": [
+                                                {
+                                                    "description": "The next block only shows when there are 3 products in the supplementary dataset."
+                                                },
+                                                {
+                                                    "description": "This is to test that section progress updates when swapping between supplementary datasets which remove or add list items"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "product-question-3-enabled",
+                            "type": "Question",
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "products"
+                                                }
+                                            ]
+                                        },
+                                        3
+                                    ]
+                                }
+                            },
+                            "question": {
+                                "id": "product-3-question",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "This block is enabled because there are 3 products in the supplementary dataset"
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "title": {
+                                    "text": "Did the total volume produced of {volume produced} over the last quarter meet the target?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "volume produced",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_unit",
+                                                    "arguments": {
+                                                        "value": {
+                                                            "source": "calculated_summary",
+                                                            "identifier": "calculated-summary-volume-total"
+                                                        },
+                                                        "unit": "mass-kilogram",
+                                                        "unit_length": "short"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "volume-yes-no-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }

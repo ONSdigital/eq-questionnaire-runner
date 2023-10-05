@@ -159,9 +159,10 @@ class QuestionnaireStoreUpdater:
             self._update_relationship_question_completeness(list_name)
 
         self._progress_store.remove_progress_for_list_item_id(list_item_id=list_item_id)
-        self._capture_dependencies_for_list_item_removal(list_name)
+        self.capture_dependencies_for_list_item_removal(list_name)
+        self.capture_dependent_sections_for_list(list_name)
 
-    def _capture_dependencies_for_list_item_removal(self, list_name: str) -> None:
+    def capture_dependencies_for_list_item_removal(self, list_name: str) -> None:
         """
         If an item is removed from a list, dependencies of any child blocks need to be captured and their progress updated.
         (E.g. dynamic-answers depending on a child block could have validation, so need revisiting if an item is removed)
@@ -521,6 +522,25 @@ class QuestionnaireStoreUpdater:
                 self.dependent_sections.add(
                     DependentSection(section_id, list_item_id, is_complete=False)
                 )
+
+    def capture_dependent_sections_for_list(self, list_name: str) -> None:
+        section_ids = self._schema.get_section_ids_dependent_on_list(list_name)
+        section_ids.append(self._current_location.section_id)
+
+        for (
+            section_id,
+            list_item_id,
+        ) in self.started_section_keys(section_ids=section_ids):
+            # Only add sections which are repeated sections for this list, or the section in which this list is collected
+            # Prevents list item progresses being added as dependants as these are captured by started_section_keys(section_ids=section_ids)
+            if section_id == self._current_location.section_id and list_item_id:
+                continue
+            self.dependent_sections.add(
+                DependentSection(
+                    section_id,
+                    list_item_id,
+                )
+            )
 
     def started_section_keys(
         self, section_ids: Iterable[str] | None = None

@@ -55,7 +55,9 @@ class ListAddQuestion(ListAction):
             self.form.data, self._list_item_id
         )
 
-        self.capture_dependent_sections_for_list(self.parent_block["for_list"])
+        self.questionnaire_store_updater.capture_dependent_sections_for_list(
+            self.parent_block["for_list"]
+        )
 
         return super().handle_post()
 

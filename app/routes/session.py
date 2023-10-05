@@ -25,8 +25,10 @@ from app.helpers.template_helpers import (
     get_survey_config,
     render_template,
 )
-from app.questionnaire import QuestionnaireSchema
+from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
+from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
+from app.questionnaire.router import Router
 from app.routes.errors import _render_error_page
 from app.services.supplementary_data import get_supplementary_data_v1
 from app.utilities.metadata_parser import validate_runner_claims
@@ -184,7 +186,46 @@ def _set_questionnaire_supplementary_data(
     _validate_supplementary_data_lists(
         supplementary_data=supplementary_data["data"], schema=schema
     )
-    questionnaire_store.set_supplementary_data(supplementary_data["data"])
+    _set_supplementary_data(
+        questionnaire_store=questionnaire_store,
+        schema=schema,
+        supplementary_data=supplementary_data["data"],
+    )
+
+
+def _set_supplementary_data(
+    *,
+    questionnaire_store: QuestionnaireStore,
+    schema: QuestionnaireSchema,
+    supplementary_data: dict,
+) -> None:
+    """
+    Adds the supplementary data to the questionnaire store which:
+    1) removes any old list items and answers
+    2) Updates block and section progress to reflect any newly unlocked questions due to supplementary data list changes
+    """
+    router = Router(
+        schema=schema,
+        answer_store=questionnaire_store.answer_store,
+        metadata=questionnaire_store.metadata,
+        list_store=questionnaire_store.list_store,
+        progress_store=questionnaire_store.progress_store,
+        response_metadata=questionnaire_store.response_metadata,
+        supplementary_data_store=questionnaire_store.supplementary_data_store,
+    )
+    questionnaire_store_updater = QuestionnaireStoreUpdater(
+        questionnaire_store=questionnaire_store,
+        schema=schema,
+        router=router,
+        current_location=Location(section_id="TODO"),
+        current_question=None,
+    )
+    questionnaire_store.set_supplementary_data(
+        to_set=supplementary_data,
+        questionnaire_store_updater=questionnaire_store_updater,
+    )
+    questionnaire_store_updater.remove_dependent_blocks_and_capture_dependent_sections()
+    questionnaire_store_updater.update_progress_for_dependent_sections()
 
 
 def _validate_supplementary_data_lists(
