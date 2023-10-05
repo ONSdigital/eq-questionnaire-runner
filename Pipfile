@@ -38,6 +38,7 @@ types-python-dateutil = "*"
 pytest-mock = "*"
 types-cachetools = "*"
 types-pytz = "*"
+djlint = "*"
 
 [packages]
 colorama = "*"

@@ -1,9 +1,9 @@
 {% extends 'layouts/_base.html' %}
-
 {% set page_title = _("Submission Complete") %}
-
 {% block main %}
-  <h1>{{ _("This page is no longer available") }}</h1>
-  <p>{{ _("Your survey has been submitted") }}</p>
-  <p>{{ _("<a href='{url}'>Return to previous page</a>").format(url = thank_you_url) }}</p>
+    <h1>{{ _("This page is no longer available") }}</h1>
+    <p>{{ _("Your survey has been submitted") }}</p>
+    <p>
+        {{ _("<a href='{url}'>Return to previous page</a>").format(url = thank_you_url) }}
+    </p>
 {% endblock %}

@@ -2,95 +2,77 @@
 {% from "components/cookies-banner/_macro.njk" import onsCookiesBanner %}
 {% from "components/skip-to-content/_macro.njk" import onsSkipToContent %}
 {% from "components/timeout-modal/_macro.njk" import onsTimeoutModal %}
-
-{% set form = {
-  "attributes": {
-    "autocomplete": "off",
-    "novalidate": null
-  }
-} %}
-
+{% set form = {"attributes": {"autocomplete": "off", "novalidate": null}} %}
 {% if previous_location_url %}
-  {% set breadcrumbs = {
-    "ariaLabel": 'Previous',
-    "itemsList": [
-      {
-        "url": previous_location_url,
-        "id": "top-previous",
-        "text": _("Previous"),
-        "attributes": {
-          "data-ga": 'click',
-          "data-ga-category": 'Navigation',
-          "data-ga-action": 'Previous link click'
-        }
-      }
-    ]
-  } %}
+    {% set breadcrumbs = {
+            "ariaLabel": 'Previous',
+            "itemsList": [
+                {
+                    "url": previous_location_url,
+                    "id": "top-previous",
+                    "text": _("Previous"),
+                    "attributes": {
+                        "data-ga": 'click',
+                        "data-ga-category": 'Navigation',
+                        "data-ga-action": 'Previous link click'
+                    }
+                }
+            ]
+        } %}
 {% endif %}
-
 {% if survey_title %}
-  {% set full_page_title = page_title ~ " - " ~ survey_title %}
+    {% set full_page_title = page_title ~ " - " ~ survey_title %}
 {% else %}
-  {% set full_page_title = page_title %}
+    {% set full_page_title = page_title %}
 {% endif %}
-
 {% set pageConfig = {
-  "title": full_page_title,
-  "pageColNumber": 8,
-  "footer": footer,
-  "cdn": {
-    "url": cdn_url
-  },
-  "breadcrumbs": breadcrumbs,
-  "cspNonce": csp_nonce
+    "title": full_page_title,
+    "pageColNumber": 8,
+    "footer": footer,
+    "cdn": {
+        "url": cdn_url
+    },
+    "breadcrumbs": breadcrumbs,
+    "cspNonce": csp_nonce
 } %}
-
 {% if theme %}
-  {% do pageConfig.update({"theme":theme}) %}
+    {% do pageConfig.update({"theme":theme}) %}
 {% endif %}
-
 {% include 'layouts/configs/_header.html' %}
-
-
 {# if there is not a previous link add extra margin top to the page #}
 {% if not previous_location_url %}
-  {% set pageClasses = pageClasses + " ons-u-mt-m" if pageClasses else "ons-u-mt-m" %}
+    {% set pageClasses = pageClasses + " ons-u-mt-m" if pageClasses else "ons-u-mt-m" %}
 {% endif %}
-
 {% block preHeader %}
-  {% if include_csrf_token %}
-    <input id="csrf_token" name="csrf_token" type="hidden" value="{{ csrf_token() }}"/>
-  {% endif %}
-
-  {% if cookie_settings_url and cookie_domain %}
-    {{
-      onsCookiesBanner({
-        "secondaryButtonUrl": cookie_settings_url,
-        "statementTitle": _('Tell us whether you accept cookies'),
+    {% if include_csrf_token %}
+        <input id="csrf_token"
+               name="csrf_token"
+               type="hidden"
+               value="{{ csrf_token() }}" />
+    {% endif %}
+    {% if cookie_settings_url and cookie_domain %}
+        {{ onsCookiesBanner({
+                "secondaryButtonUrl": cookie_settings_url,
+                "statementTitle": _('Tell us whether you accept cookies') ,
         "statementText": _("We use <a href='{cookie_settings_url}'>cookies to collect information</a> about how you use {cookie_domain}. We use this information to make the website work as well as possible and improve our services.").format(cookie_settings_url=cookie_settings_url, cookie_domain=cookie_domain),
         "confirmationText": _("You’ve accepted all cookies. You can <a href='{cookie_settings_url}'>change your cookie preferences</a> at any time.").format(cookie_settings_url=cookie_settings_url),
         "primaryButtonText": _('Accept all cookies'),
         "secondaryButtonText": _('Set cookie preferences'),
         "confirmationButtonText": _('Hide'),
         'lang': language_code
-      })
-    }}
-  {% endif %}
+        })
+        }}
+    {% endif %}
 {% endblock %}
-
-
 {% block head %}
-  {% if google_tag_manager_id and google_tag_manager_auth %}
-    <!--
+    {% if google_tag_manager_id and google_tag_manager_auth %}
+        <!--
     Information such as events or variables can be passed to Google Tag Manager via the data layer,
     and triggers can be set up in Google Tag Manager
     -->
-    <script nonce="{{ csp_nonce }}">
-      dataLayer = {{ data_layer | tojson }}
-    </script>
-
-    <!-- Google Tag Manager -->
-    <script nonce="{{ csp_nonce }}">
+        <script nonce="{{ csp_nonce }}">dataLayer = {{ data_layer | tojson }}</script>
+        <!-- Google Tag Manager -->
+        <script nonce="{{ csp_nonce }}">
       function loadGTM() {
         (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
         new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -104,49 +86,43 @@
       if (document.cookie.match(cookie_usage_regex)) {
           loadGTM();
       }
-    </script>
-    <!-- End Google Tag Manager -->
-  {% endif %}
+        </script>
+        <!-- End Google Tag Manager -->
+    {% endif %}
 {% endblock %}
-
-
 {% block skipLink %}
-  {{
-    onsSkipToContent({
-      "url": "#main-content",
-      "text": _("Skip to main content")
+    {{ onsSkipToContent({
+        "url": "#main-content",
+        "text": _("Skip to main content") 
     })
-  }}
-{% endblock %}
-
-
-{% block scripts %}
-  {% if config['EQ_ENABLE_LIVE_RELOAD'] %}
-    <script nonce="{{ csp_nonce }}" id="__bs_script__">//<![CDATA[
-      document.write("<script async nonce='{{ csp_nonce }}' src='http://HOST:35729/livereload.js'><\/script>".replace("HOST", location.hostname));
-    //]]></script>
-  {% endif %}
-{% endblock %}
-
-{% block preFooter %}
-  {% if session_expires_at %}
-    {{
-      onsTimeoutModal({
-        "showModalTimeInSeconds": 60,
-        "serverSessionExpiryEndpoint": url_for('session.session_expiry'),
-        "sessionExpiresAt": session_expires_at,
-        "redirectUrl": url_for('session.get_session_expired'),
-        "title": _("You will be signed out soon"),
-        "textFirstLine": _("It appears you have been inactive for a while."),
-        "countdownText": _("To protect your information, your progress will be saved and you will be signed out in"),
-        "countdownExpiredText": _("You are being signed out"),
-        "btnText": _("Continue survey"),
-        "minutesTextSingular": _("minute"),
-        "minutesTextPlural": _("minutes"),
-        "secondsTextSingular": _("second"),
-        "secondsTextPlural": _("seconds"),
-        "endWithFullStop": true
-      })
     }}
-  {% endif %}
+{% endblock %}
+{% block scripts %}
+    {% if config['EQ_ENABLE_LIVE_RELOAD'] %}
+        <script nonce="{{ csp_nonce }}" id="__bs_script__">//<![CDATA[
+      document.write("<script async nonce='{{ csp_nonce }}' src='http://HOST:35729/livereload.js'><\/script>".replace("HOST", location.hostname));
+    //]]>
+</script>
+{% endif %}
+{% endblock %}
+{% block preFooter %}
+{% if session_expires_at %}
+{{ onsTimeoutModal({
+"showModalTimeInSeconds": 60,
+"serverSessionExpiryEndpoint": url_for('session.session_expiry') ,
+"sessionExpiresAt": session_expires_at,
+"redirectUrl": url_for('session.get_session_expired'),
+"title": _("You will be signed out soon"),
+"textFirstLine": _("It appears you have been inactive for a while."),
+"countdownText": _("To protect your information, your progress will be saved and you will be signed out in"),
+"countdownExpiredText": _("You are being signed out"),
+"btnText": _("Continue survey"),
+"minutesTextSingular": _("minute"),
+"minutesTextPlural": _("minutes"),
+"secondsTextSingular": _("second"),
+"secondsTextPlural": _("seconds"),
+"endWithFullStop": true
+})
+}}
+{% endif %}
 {% endblock %}

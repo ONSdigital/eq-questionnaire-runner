@@ -1,11 +1,9 @@
 {% from 'components/feedback/_macro.njk' import onsFeedback %}
-
-{{
-    onsFeedback({
-        "id": "feedback",
-        "heading": _("What do you think about this service?"),
-        "content": _("Your comments will help us make improvements"),
-        "url": url_for('post_submission.send_feedback'),
-        "linkText": _("Give feedback")
-    })
+{{ onsFeedback({
+"id": "feedback",
+"heading": _("What do you think about this service?") ,
+"content": _("Your comments will help us make improvements"),
+"url": url_for('post_submission.send_feedback'),
+"linkText": _("Give feedback")
+})
 }}

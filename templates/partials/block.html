@@ -1,10 +1,7 @@
 {% set block = content.block %}
-
-<div class="block" id="{{content.block.id}}">
-
-  {% if 'question' in block %}
-      {% set question = block['question'] %}
-      {% include 'partials/question.html' %}
-  {% endif %}
-
+<div class="block" id="{{ content.block.id }}">
+    {% if 'question' in block %}
+        {% set question = block['question'] %}
+        {% include 'partials/question.html' %}
+    {% endif %}
 </div>

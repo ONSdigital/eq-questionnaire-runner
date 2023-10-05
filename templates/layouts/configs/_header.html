@@ -1,5 +1,4 @@
 {% if current_user.is_authenticated and not hide_sign_out_button %}
-
     {% if save_on_signout %}
         {% set sign_out_url = url_for('session.get_sign_out', internal_redirect=true) %}
         {% set header_button_text = sign_out_button_text %}
@@ -13,29 +12,26 @@
         {% set header_button_data_ga_action = "Exit" %}
         {% set header_button_data_ga_label = "Exit button click" %}
     {% endif %}
-
     {% set signout_button = {
-        "text": header_button_text,
-        "url": sign_out_url,
-        "attributes": {
-            "data-qa": header_button_data_qa,
-            "data-ga-category": "Navigation",
-            "data-ga-action": header_button_data_ga_action,
-            "data-ga-label": header_button_data_ga_label
-        },
-        "iconType": "exit",
-        "iconPosition": "after"
-    } %}
-
+            "text": header_button_text,
+            "url": sign_out_url,
+            "attributes": {
+                "data-qa": header_button_data_qa,
+                "data-ga-category": "Navigation",
+                "data-ga-action": header_button_data_ga_action,
+                "data-ga-label": header_button_data_ga_label
+            },
+            "iconType": "exit",
+            "iconPosition": "after"
+        } %}
 {% endif %}
-
 {% do pageConfig | setAttribute("header", {
-    "title": survey_title,
-    "signoutButton": signout_button,
-    "language": languages,
-    "serviceLinks": service_links,
-    "mastheadLogo": {
-        "large": masthead_logo,
-        "small": masthead_logo_mobile
-    }
+"title": survey_title,
+"signoutButton": signout_button,
+"language": languages,
+"serviceLinks": service_links,
+"mastheadLogo": {
+"large": masthead_logo,
+"small": masthead_logo_mobile
+}
 }) %}

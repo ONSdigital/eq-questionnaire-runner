@@ -1,2 +1,6 @@
 [tool.black]
 target_version = ['py37']
+
+[tool.djlint]
+profile="jinja"
+max_line_length=160

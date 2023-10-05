@@ -1,36 +1,27 @@
 {% set definition_count = namespace(value=1) %}
 {% set guidance_count = namespace(value=1) %}
-
 {% for item in contents %}
     {%- if item.definition -%}
         {% set definition = item.definition %}
-        {% set definition_id = 'definition' %}
-        {% set category = 'Definition' %}
+        {% set definition_id = "definition" %}
+        {% set category = "Definition" %}
         {%- include 'partials/definition.html' -%}
         {% set definition_count.value = definition_count.value + 1 %}
     {%- endif -%}
-
     {%- if item.guidance -%}
         {% set guidance = item.guidance %}
         {% set guidance_id = 'guidance-' ~ guidance_count.value %}
         {%- include 'partials/guidance.html' -%}
         {% set guidance_count.value = guidance_count.value + 1 %}
     {%- endif -%}
-
-    {%- if item.title -%}
-        <h2>{{ item.title }}</h2>
-    {% endif %}
-
-    {%- if item.description -%}
-        <p>{{ item.description }}</p>
-    {% endif %}
-
+    {%- if item.title -%}<h2>{{ item.title }}</h2>{% endif %}
+    {%- if item.description -%}<p>{{ item.description }}</p>{% endif %}
     {%- if item.list -%}
         <ul>
             {%- for list_item in item.list -%}
-              {%- if list_item|length > 0 -%}
-                <li>{{ list_item }}</li>
-              {%- endif -%}
+                {%- if list_item|length > 0 -%}
+                    <li>{{ list_item }}</li>
+                {%- endif -%}
             {% endfor %}
         </ul>
     {% endif %}

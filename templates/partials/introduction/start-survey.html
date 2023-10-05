@@ -1,16 +1,14 @@
 {% from "components/button/_macro.njk" import onsButton %}
-
-{{
-  onsButton({
-    "text": _("Start survey"),
-    "variants": 'timer',
-    "classes": "qa-btn-get-started",
-    "name": "action[start_questionnaire]",
-    "attributes": {
-      "data-qa": "btn-submit",
-      "data-ga-category": "Submit button",
-      "data-ga-action": "Start survey",
-      "data-ga-label": "Start button click"
-    }
-  })
+{{ onsButton({
+"text": _("Start survey") ,
+"variants": 'timer',
+"classes": "qa-btn-get-started",
+"name": "action[start_questionnaire]",
+"attributes": {
+"data-qa": "btn-submit",
+"data-ga-category": "Submit button",
+"data-ga-action": "Start survey",
+"data-ga-label": "Start button click"
+}
+})
 }}

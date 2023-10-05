@@ -1,16 +1,13 @@
 {% from "components/checkboxes/_macro.njk" import onsCheckboxes %}
-
 {% set config = {
-  "legend": answer.label,
-  "dontWrap": not answer.label,
-  "id": answer.id,
-  "checkboxes": map_select_config(form, answer),
-  "mutuallyExclusive": mutuallyExclusive,
-  "error": error
+    "legend": answer.label,
+    "dontWrap": not answer.label,
+    "id": answer.id,
+    "checkboxes": map_select_config(form, answer),
+    "mutuallyExclusive": mutuallyExclusive,
+    "error": error
 } %}
-
 {% if answer.instruction != None and answer.options|length > 1 %}
-  {% set config = config | setAttribute("checkboxesLabel", answer.instruction or _("Select all that apply")) %}
+    {% set config = config | setAttribute("checkboxesLabel", answer.instruction or _("Select all that apply")) %}
 {% endif %}
-
-{{ onsCheckboxes(config) }}
+{{ onsCheckboxes(<djlint.settings.Config object at 0x10652f4d0>) }}

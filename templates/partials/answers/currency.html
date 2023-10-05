@@ -1,27 +1,25 @@
 {% from "components/input/_macro.njk" import onsInput %}
-
 {% set input = form.fields[answer['id']] %}
-
 {{ onsInput({
-  "id": answer.id,
-  "type": "number",
-  "name": answer.id,
-  "value": input._value() | e,
-  "label": {
-    "id": answer.id ~ "-label",
-    "text": answer.label,
-    "description": answer.description
-  },
-  "prefix": {
-    "id": answer.id ~ "-type",
-    "title": answer.currency,
-    "text": get_currency_symbol(answer.currency)
-  },
-  "attributes": {
-    "data-qa": "input-text"
-  },
-  "dontWrap": true if mutuallyExclusive else false,
-  "mutuallyExclusive": mutuallyExclusive,
-  "width": get_width_for_number(answer),
-  "error": error
+"id": answer.id,
+"type": "number",
+"name": answer.id,
+"value": input._value() | e,
+"label": {
+"id": answer.id ~ "-label",
+"text": answer.label,
+"description": answer.description
+},
+"prefix": {
+"id": answer.id ~ "-type",
+"title": answer.currency,
+"text": get_currency_symbol(answer.currency)
+},
+"attributes": {
+"data-qa": "input-text"
+},
+"dontWrap": true if mutuallyExclusive else false,
+"mutuallyExclusive": mutuallyExclusive,
+"width": get_width_for_number(answer),
+"error": error
 }) }}
