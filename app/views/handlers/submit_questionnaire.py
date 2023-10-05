@@ -9,6 +9,8 @@ from app.questionnaire.router import Router
 from app.views.contexts import SubmitQuestionnaireContext
 from app.views.handlers.submission import SubmissionHandler
 
+from flask import url_for
+
 
 class SubmitQuestionnaireHandler:
     def __init__(
@@ -50,6 +52,13 @@ class SubmitQuestionnaireHandler:
         return submit_questionnaire_context()
 
     def get_previous_location_url(self) -> str | None:
+        last_complete_section_key = self.router.get_last_complete_section_key()     # TODO: This can return a None type, can this be handled better?
+
+        if last_complete_section_key and self.router.can_display_section_summary(last_complete_section_key):
+            return url_for(
+                "questionnaire.get_section",
+                section_id=last_complete_section_key.section_id
+            )
         return self.router.get_last_location_in_questionnaire_url()
 
     @property
