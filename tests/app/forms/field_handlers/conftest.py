@@ -3,10 +3,10 @@ import pytest
 from app.data_models import ProgressStore, SupplementaryDataStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
-from app.forms.field_handlers.select_handlers import Choice, ChoiceWithDetailAnswer
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
+from app.utilities.types import Choice, ChoiceWithDetailAnswer
 
 
 def get_mock_schema():

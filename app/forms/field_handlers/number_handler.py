@@ -2,6 +2,7 @@ from functools import cached_property
 from typing import Any, Type, Union
 
 from wtforms import DecimalField, IntegerField
+from wtforms.fields.core import UnboundField
 
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.fields import DecimalFieldWithSeparator, IntegerFieldWithSeparator
@@ -64,7 +65,7 @@ class NumberHandler(FieldHandler):
             else IntegerFieldWithSeparator
         )
 
-    def get_field(self) -> Union[DecimalField, IntegerField]:
+    def get_field(self) -> UnboundField | DecimalField | IntegerField:
         additional_args = (
             {"places": self.max_decimals}
             if self._field_type == DecimalFieldWithSeparator
