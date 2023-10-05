@@ -42,10 +42,11 @@ djlint = "*"
 
 [packages]
 colorama = "*"
-flask = "*"
-flask-babel = "*"
+flask = "==2.3.3"
+flask-babel = "==3.1.0"
 flask-login = "*"
-flask-wtf = "*"
+flask-wtf = "==1.1.1"
+werkzeug = "==2.3.7"
 gevent = { version = "==23.7.0", platform_python_implementation = "=='CPython'" }
 google-cloud-datastore = "*"
 grpcio = "*"
