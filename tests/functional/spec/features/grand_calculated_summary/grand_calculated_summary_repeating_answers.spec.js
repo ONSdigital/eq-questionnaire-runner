@@ -503,7 +503,7 @@ describe("Feature: Grand Calculated Summary", () => {
 
     it("Given I use a grand calculated summary value as a maximum, When I enter a value that is too large, Then I see a validation error", async () => {
       await expect(await $(PersonalExpenditureBlockPage.questionTitle()).getText()).toContain(
-        "How much of the £1,199 household expenditure do you contribute personally?",
+        "How much of the £1,199.00 household expenditure do you contribute personally?",
       );
       await $(PersonalExpenditureBlockPage.personalExpenditure()).setValue(1200);
       await click(PersonalExpenditureBlockPage.submit());
@@ -514,8 +514,8 @@ describe("Feature: Grand Calculated Summary", () => {
       await $(PersonalExpenditureBlockPage.personalExpenditure()).setValue(1100);
       await click(PersonalExpenditureBlockPage.submit());
       await expect(browser).toHaveUrlContaining(GrandCalculatedSummaryPipingPage.pageName);
-      await expect(await $("body").getText()).toContain("Total household expenditure: £1,199");
-      await expect(await $("body").getText()).toContain("Personal contribution: £1,100");
+      await expect(await $("body").getText()).toContain("Total household expenditure: £1,199.00");
+      await expect(await $("body").getText()).toContain("Personal contribution: £1,100.00");
       await expect(await $("body").getText()).toContain("Total internet usage: 85 GB");
       await expect(await $("body").getText()).toContain("Usage by phone: 40 GB");
       await expect(await $("body").getText()).toContain("Usage by PC: 60 GB");
