@@ -9,8 +9,6 @@ from app.questionnaire.router import Router
 from app.views.contexts import SubmitQuestionnaireContext
 from app.views.handlers.submission import SubmissionHandler
 
-from flask import url_for
-
 
 class SubmitQuestionnaireHandler:
     def __init__(
