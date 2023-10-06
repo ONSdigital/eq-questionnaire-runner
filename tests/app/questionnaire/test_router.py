@@ -1784,22 +1784,7 @@ class TestRouterLastLocationLinearFlow(RouterTestCase):
     @pytest.mark.usefixtures("app")
     def test_list_collector_list_summary_returns_to_summary(self):
         self.schema = load_schema_from_name("test_list_collector_list_summary")
-        # self.answer_store = AnswerStore(
-        #     [
-        #         {
-        #             "answer_id": "you-live-here",
-        #             "value": "No"
-        #         },
-        #         {
-        #             "answer_id": "anyone-else",
-        #             "value": "No"
-        #         },
-        #         {
-        #             "answer_id": "any-more-visitors",
-        #             "value": "No"
-        #         }
-        #     ],
-        # )
+
         section_id = "section"
         self.progress_store = ProgressStore(
             [
@@ -1815,10 +1800,6 @@ class TestRouterLastLocationLinearFlow(RouterTestCase):
                 )
             ]
         )
-
-        # expected_location_url = Location(
-        #     section_id="default-section", block_id="visitor-list-collector", list_item_id=None
-        # ).url()
 
         last_location_url = self.router.get_last_location_in_questionnaire_url()
 
