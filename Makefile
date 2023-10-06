@@ -1,6 +1,7 @@
 SCHEMAS_VERSION=`cat .schemas-version`
 DESIGN_SYSTEM_VERSION=`cat .design-system-version`
 RUNNER_ENV_FILE?=.development.env
+SCHEMA_PATH=./schemas/test/en/
 
 clean:
 	find schemas/* -prune | grep -v "schemas/test" | xargs rm -r
@@ -38,8 +39,14 @@ test-unit:
 test-functional:
 	pipenv run ./scripts/run_tests_functional.sh
 
+test-single-functional:
+	yarn test_functional --spec ./tests/functional/spec/$(SPEC)
+
 validate-test-schemas:
 	pipenv run ./scripts/validate_test_schemas.sh
+
+validate-test-schema:
+	pipenv run ./scripts/validate_test_schemas.sh $(SCHEMA_PATH)$(SCHEMA)
 
 translation-templates:
 	pipenv run python -m scripts.extract_translation_templates
