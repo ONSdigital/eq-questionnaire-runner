@@ -18,6 +18,7 @@ NumericType: TypeAlias = int | float | Decimal
 
 
 class CalculatedSummaryBlock:
+    # pylint: disable=too-many-locals
     def __init__(
         self,
         block_schema: Mapping,
@@ -30,20 +31,32 @@ class CalculatedSummaryBlock:
         location: LocationType,
         return_to: str | None,
         return_to_block_id: str | None = None,
+        return_to_list_item_id: str | None = None,
         progress_store: ProgressStore,
         routing_path_block_ids: Iterable[str],
         supplementary_data_store: SupplementaryDataStore,
     ) -> None:
         """
         A Calculated summary block that is rendered as part of a grand calculated summary
+
+        If the GCS is in a repeating section, and the calculated summary also is
+        then the list name and item id need to be used to build the calculated summary change link
+        but if the GCS is repeating and the CS is not, the list parameters in the change link should be set to None
         """
 
         self.id = block_schema["id"]
         self.title = block_schema["calculation"]["title"]
         self._return_to = return_to
         self._return_to_block_id = return_to_block_id
+        self._return_to_list_item_id = return_to_list_item_id
         self._block_schema = block_schema
         self._schema = schema
+        if self._schema.is_block_in_repeating_section(self.id):
+            self._list_item_id = location.list_item_id
+            self._list_name = location.list_name
+        else:
+            self._list_item_id = None
+            self._list_name = None
 
         self._rule_evaluator = RuleEvaluator(
             schema=schema,
@@ -71,12 +84,19 @@ class CalculatedSummaryBlock:
         ]
 
     def _build_link(self) -> str:
+        # not required if the calculated summary is in the repeat alongside the GCS
+        return_to_list_item_id = (
+            self._return_to_list_item_id if not self._list_item_id else None
+        )
         return url_for(
             "questionnaire.block",
             block_id=self.id,
+            list_name=self._list_name,
+            list_item_id=self._list_item_id,
             return_to=self._return_to,
             return_to_answer_id=self.id,
             return_to_block_id=self._return_to_block_id,
+            return_to_list_item_id=return_to_list_item_id,
             _anchor=self.id,
         )
 

@@ -11,13 +11,23 @@ from app.forms.fields import (
 
 
 def test_text_area_a_wtforms_field(mock_form):
-    text_area = MaxTextAreaField("LabelText", _form=mock_form, name="aName")
+    text_area = MaxTextAreaField(
+        label="LabelText",
+        _form=mock_form,
+        name="aName",
+        rows=0,
+        maxlength=0,
+    )
     assert isinstance(text_area, Field)
 
 
 def test_text_area_supports_maxlength_property(mock_form):
     text_area = MaxTextAreaField(
-        "TestLabel", maxlength=20, _form=mock_form, name="aName"
+        label="TestLabel",
+        maxlength=20,
+        _form=mock_form,
+        name="aName",
+        rows=0,
     )
     assert isinstance(text_area, Field)
     assert text_area.maxlength == 20

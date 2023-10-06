@@ -1,10 +1,11 @@
-from wtforms import Form, validators
+from wtforms import Form
 
 from app.forms.fields import date_field
+from app.forms.validators import OptionalForm
 
 
 def test_generate_date_form_creates_empty_form():
-    form_class = date_field.get_form_class([validators.Optional()])
+    form_class = date_field.get_form_class([OptionalForm()])
 
     assert hasattr(form_class, "day")
     assert hasattr(form_class, "month")
@@ -12,7 +13,7 @@ def test_generate_date_form_creates_empty_form():
 
 
 def test_date_form_empty_data():
-    form = date_field.get_form_class([validators.Optional()])
+    form = date_field.get_form_class([OptionalForm()])
 
     assert form().data is None
 
@@ -21,7 +22,7 @@ def test_date_form_format_data():
     data = {"field": "2000-01-01"}
 
     class TestForm(Form):
-        field = date_field.DateField([validators.Optional()])
+        field = date_field.DateField(validators=[OptionalForm()])
 
     test_form = TestForm(data=data)
 

@@ -169,3 +169,14 @@ def test_get_item_using_method():
     item = store.get("people")
 
     assert item.items[0] == first_id
+
+
+def test_lookup_list_items():
+    store = ListStore()
+
+    person_id = store.add_list_item("people")
+    item_id = store.add_list_item("items")
+
+    assert store.get_list_name_for_list_item_id(person_id) == "people"
+    assert store.get_list_name_for_list_item_id(item_id) == "items"
+    assert store.get_list_name_for_list_item_id("not-a-list-item-id") is None

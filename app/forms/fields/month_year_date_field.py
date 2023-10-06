@@ -1,19 +1,23 @@
 import logging
 from functools import cached_property
+from typing import Any, Callable, Sequence, Type
 
+from werkzeug.datastructures import MultiDict
 from wtforms import Form, FormField, StringField
-from wtforms.utils import unset_value
+from wtforms.utils import UnsetValue, unset_value
+
+from app.utilities.types import DateValidatorType
 
 logger = logging.getLogger(__name__)
 
 
-def get_form_class(validators):
+def get_form_class(validators: Sequence[DateValidatorType]) -> Type[Form]:
     class YearMonthDateForm(Form):
         year = StringField(validators=validators)
         month = StringField()
 
         @cached_property
-        def data(self):
+        def data(self) -> str | None:
             # pylint: disable=no-member
             # wtforms Form parents are not discoverable in the 2.3.3 implementation
             data = super().data
@@ -27,11 +31,24 @@ def get_form_class(validators):
 
 
 class MonthYearDateField(FormField):
-    def __init__(self, validators, **kwargs):
+    def __init__(
+        self,
+        *,
+        validators: Sequence[DateValidatorType],
+        **kwargs: Any,
+    ) -> None:
         form_class = get_form_class(validators)
-        super().__init__(form_class, **kwargs)
+        super().__init__(
+            form_class,
+            **kwargs,
+        )
 
-    def process(self, formdata, data=unset_value, extra_filters=None):
+    def process(
+        self,
+        formdata: MultiDict | None = None,
+        data: str | UnsetValue = unset_value,
+        extra_filters: Sequence[Callable] | None = None,
+    ) -> None:
         if data is not unset_value:
             substrings = data.split("-")
             data = {"year": substrings[0], "month": substrings[1]}

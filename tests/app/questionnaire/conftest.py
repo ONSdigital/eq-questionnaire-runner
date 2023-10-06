@@ -1340,6 +1340,13 @@ def grand_calculated_summary_schema():
 
 
 @pytest.fixture
+def grand_calculated_summary_in_repeating_section_schema():
+    return load_schema_from_name(
+        "test_grand_calculated_summary_inside_repeating_section"
+    )
+
+
+@pytest.fixture
 def grand_calculated_summary_progress_store():
     return ProgressStore(
         [

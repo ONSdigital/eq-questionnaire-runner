@@ -2,6 +2,7 @@ from functools import cached_property
 from typing import Union
 
 from wtforms import validators
+from wtforms.fields.core import UnboundField
 from wtforms.validators import Length
 
 from app.forms.field_handlers.field_handler import FieldHandler
@@ -32,7 +33,7 @@ class TextAreaHandler(FieldHandler):
 
         return validators.length(-1, self.max_length, message=length_message)
 
-    def get_field(self) -> MaxTextAreaField:
+    def get_field(self) -> UnboundField | MaxTextAreaField:
         return MaxTextAreaField(
             label=self.label,
             description=self.guidance,

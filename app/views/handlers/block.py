@@ -44,6 +44,7 @@ class BlockHandler:
         self._return_to = request_args.get("return_to")
         self._return_to_answer_id = request_args.get("return_to_answer_id")
         self._return_to_block_id = request_args.get("return_to_block_id")
+        self._return_to_list_item_id = request_args.get("return_to_list_item_id")
         self.resume = "resume" in request_args
 
         if not self.is_location_valid():
@@ -111,6 +112,7 @@ class BlockHandler:
             self._return_to,
             self._return_to_answer_id,
             self._return_to_block_id,
+            self._return_to_list_item_id,
         )
 
     def get_next_location_url(self) -> str:
@@ -120,6 +122,7 @@ class BlockHandler:
             self._return_to,
             self._return_to_answer_id,
             self._return_to_block_id,
+            self._return_to_list_item_id,
         )
 
     def handle_post(self) -> None:
