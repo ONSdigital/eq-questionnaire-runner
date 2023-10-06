@@ -235,7 +235,7 @@ class ValueSourceResolver:
     ) -> IntOrDecimal | None:
         """Calculates the value for the 'calculation' used by the provided Calculated or Grand Calculated Summary.
 
-        The caller is responsible for ensuring the provided Summary and its components are on the path
+        The caller is responsible for ensuring the provided summary and its components are on the path
         or providing routing_path_block_ids when initialising the value source resolver.
         """
         summary_block: ImmutableDict = self.schema.get_block(value_source["identifier"])  # type: ignore
@@ -243,7 +243,7 @@ class ValueSourceResolver:
             return None
 
         calculation = summary_block["calculation"]
-        # old calculated summary blocks may have answers_to_calculate instead of calculation
+        # the calculation object for the old type of calculated summary block may contain answers_to_calculate instead of operation
         if calculation.get("answers_to_calculate"):
             operator = self.get_calculation_operator(calculation["calculation_type"])
             list_item_id = self._resolve_list_item_id_for_value_source(value_source)
