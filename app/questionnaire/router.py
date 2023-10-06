@@ -69,7 +69,13 @@ class Router:
         return self.get_next_location_url_for_end_of_section()
 
     def get_last_location_in_questionnaire_url(self) -> str | None:
-        section_key = self.get_last_complete_section_key()
+        section_key = self._get_last_complete_section_key()
+        if section_key and self.can_display_section_summary(section_key):
+            return url_for(
+                "questionnaire.get_section",
+                section_id=section_key.section_id
+            )
+
         if section_key:
             routing_path = self.routing_path(section_key)
             return self.get_last_location_in_section(routing_path).url()
@@ -538,8 +544,7 @@ class Router:
             if not self._progress_store.is_section_complete(section_key):
                 return section_key
 
-    # TODO: If this is no longer a private class function, should it be moved up to join other public funcs?
-    def get_last_complete_section_key(self) -> SectionKey | None:
+    def _get_last_complete_section_key(self) -> SectionKey | None:
         for section_key in list(self._get_enabled_section_keys())[::-1]:
             if self._progress_store.is_section_complete(section_key):
                 return section_key
