@@ -1700,10 +1700,10 @@
                                 },
                                 "type": "General",
                                 "title": {
-                                    "text": "Did the total volume produced of {volume produced} over the last quarter meet the target?",
+                                    "text": "Did the total volume produced of {volume_produced} over the last quarter meet the target?",
                                     "placeholders": [
                                         {
-                                            "placeholder": "volume produced",
+                                            "placeholder": "volume_produced",
                                             "transforms": [
                                                 {
                                                     "transform": "format_unit",
