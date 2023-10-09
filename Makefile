@@ -1,3 +1,4 @@
+include .functional-tests.env
 SCHEMAS_VERSION=`cat .schemas-version`
 DESIGN_SYSTEM_VERSION=`cat .design-system-version`
 RUNNER_ENV_FILE?=.development.env
@@ -23,6 +24,8 @@ lint: lint-python
 lint-python:
 	pipenv run ./scripts/run_lint_python.sh
 
+lint-test-python: lint-python
+
 format: format-python
 	yarn format
 
@@ -41,6 +44,11 @@ test-functional:
 
 test-single-functional:
 	yarn test_functional --spec ./tests/functional/spec/$(SPEC)
+
+lint-js:
+	yarn lint
+
+test-lint-js: lint-js test-functional
 
 validate-test-schemas:
 	pipenv run ./scripts/validate_test_schemas.sh
