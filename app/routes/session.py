@@ -25,7 +25,7 @@ from app.helpers.template_helpers import (
     get_survey_config,
     render_template,
 )
-from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.questionnaire.router import Router
@@ -217,7 +217,7 @@ def _set_supplementary_data(
         questionnaire_store=questionnaire_store,
         schema=schema,
         router=router,
-        current_location=Location(section_id="TODO"),
+        current_location=None,
         current_question=None,
     )
     questionnaire_store.set_supplementary_data(

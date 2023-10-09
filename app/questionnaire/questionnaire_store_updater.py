@@ -22,7 +22,7 @@ class QuestionnaireStoreUpdater:
 
     def __init__(
         self,
-        current_location: LocationType,
+        current_location: LocationType | None,
         schema: QuestionnaireSchema,
         questionnaire_store: QuestionnaireStore,
         router: Router,
@@ -237,12 +237,15 @@ class QuestionnaireStoreUpdater:
 
     def add_completed_location(self, location: LocationType | None = None) -> None:
         if not self._progress_store.is_routing_backwards:
-            location = location or self._current_location
-            self._progress_store.add_completed_location(location)
+            if location := location or self._current_location:
+                self._progress_store.add_completed_location(location)
 
     def remove_completed_location(self, location: LocationType | None = None) -> bool:
-        location = location or self._current_location
-        return self._progress_store.remove_completed_location(location)
+        return (
+            self._progress_store.remove_completed_location(location)
+            if (location := location or self._current_location)
+            else False
+        )
 
     def update_section_status(
         self, *, is_complete: bool, section_key: SectionKey
@@ -351,8 +354,9 @@ class QuestionnaireStoreUpdater:
         """
         Captures a unique list of section ids that are dependents of the current section, for progress value sources.
         """
+        # Type ignore: only called if current location exists
         dependent_sections: Iterable = self._schema.when_rules_section_dependencies_by_section_for_progress_value_source.get(
-            self._current_location.section_id, set()
+            self._current_location.section_id, set()  # type: ignore
         )
         self._update_section_dependencies(dependent_sections)
 
@@ -362,9 +366,9 @@ class QuestionnaireStoreUpdater:
         """
         Captures a unique list of section ids that are dependents of the current block, for progress value sources.
         """
-        # Type ignore: Added as block_id will exist at this point
+        # Type ignore: This is only called if current location exists, and block_id will exist at this point
         dependent_sections: Iterable = self._schema.when_rules_block_dependencies_by_section_for_progress_value_source.get(
-            self._current_location.section_id, {}
+            self._current_location.section_id, {}  # type: ignore
         ).get(
             self._current_location.block_id, set()  # type: ignore
         )
@@ -386,7 +390,9 @@ class QuestionnaireStoreUpdater:
     def update_answers(
         self, form_data: Mapping, list_item_id: str | None = None
     ) -> None:
-        list_item_id = list_item_id or self._current_location.list_item_id
+        list_item_id = list_item_id or (
+            self._current_location.list_item_id if self._current_location else None
+        )
         answers_by_answer_id = self._schema.get_answers_for_question_by_id(
             self._current_question
         )
@@ -405,8 +411,9 @@ class QuestionnaireStoreUpdater:
                 self.capture_progress_section_dependencies()
 
     def capture_progress_section_dependencies(self) -> None:
-        self._capture_section_dependencies_progress_value_source_for_current_block()
-        self._capture_section_dependencies_progress_value_source_for_current_section()
+        if self._current_location:
+            self._capture_section_dependencies_progress_value_source_for_current_block()
+            self._capture_section_dependencies_progress_value_source_for_current_section()
 
     def update_progress_for_dependent_sections(self) -> None:
         """Removes dependent blocks from the progress store and updates the progress to IN_PROGRESS.
@@ -510,8 +517,11 @@ class QuestionnaireStoreUpdater:
                 blocks_removed |= self.remove_completed_location(location)
 
             if blocks_removed and (
-                section_id != self._current_location.section_id
-                or list_item_id != self._current_location.list_item_id
+                not self._current_location
+                or (
+                    section_id != self._current_location.section_id
+                    or list_item_id != self._current_location.list_item_id
+                )
             ):
                 # Since this section key will be marked as incomplete, any `DependentSection` with is_complete as `None`
                 # can be removed as we do not need to re-evaluate progress as we already know the section would be incomplete.
@@ -525,7 +535,8 @@ class QuestionnaireStoreUpdater:
 
     def capture_dependent_sections_for_list(self, list_name: str) -> None:
         section_ids = self._schema.get_section_ids_dependent_on_list(list_name)
-        section_ids.append(self._current_location.section_id)
+        if self._current_location:
+            section_ids.append(self._current_location.section_id)
 
         for (
             section_id,
@@ -533,7 +544,11 @@ class QuestionnaireStoreUpdater:
         ) in self.started_section_keys(section_ids=section_ids):
             # Only add sections which are repeated sections for this list, or the section in which this list is collected
             # Prevents list item progresses being added as dependants as these are captured by started_section_keys(section_ids=section_ids)
-            if section_id == self._current_location.section_id and list_item_id:
+            if (
+                self._current_location
+                and section_id == self._current_location.section_id
+                and list_item_id
+            ):
                 continue
             self.dependent_sections.add(
                 DependentSection(
