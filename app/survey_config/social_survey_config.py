@@ -3,7 +3,7 @@ from typing import Iterable, Mapping, MutableMapping, Optional
 
 from flask_babel import lazy_gettext
 
-from app.settings import ACCOUNT_SERVICE_BASE_URL_SOCIAL, ONS_URL, ONS_URL_CY
+from app.settings import ACCOUNT_SERVICE_BASE_URL_SOCIAL, ONS_URL, ONS_URL_CY, read_file
 from app.survey_config.link import Link
 from app.survey_config.survey_config import SurveyConfig
 
@@ -63,3 +63,13 @@ class SocialSurveyConfig(
             ]
 
         return None
+
+
+@dataclass
+class UKHSAONSSocialSurveyConfig(SocialSurveyConfig):
+    masthead_logo: str = read_file(
+        "./templates/assets/images/ons-logo-stacked.svg"
+    ) + read_file("./templates/assets/images/ukhsa-logo-stacked.svg")
+    masthead_logo_mobile: str = read_file(
+        "./templates/assets/images/ons-logo-stacked.svg"
+    ) + read_file("./templates/assets/images/ukhsa-logo-stacked.svg")

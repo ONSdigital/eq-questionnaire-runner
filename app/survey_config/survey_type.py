@@ -16,3 +16,4 @@ class SurveyType(Enum):
     DESNZ_NI = "desnz-ni"
     CENSUS = "census"
     CENSUS_NISRA = "census-nisra"
+    UKHSA_ONS = "ukhsa-ons"

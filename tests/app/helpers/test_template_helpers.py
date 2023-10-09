@@ -28,6 +28,7 @@ from app.survey_config import (
     ORRBusinessSurveyConfig,
     SocialSurveyConfig,
     SurveyConfig,
+    UKHSAONSSocialSurveyConfig,
     WelshCensusSurveyConfig,
 )
 from app.survey_config.survey_type import SurveyType
@@ -363,6 +364,18 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
                 None,
             ],
         ),
+        (
+            SurveyType.UKHSA_ONS,
+            "Test",
+            UKHSAONSSocialSurveyConfig(),
+            [
+                "Test",
+                read_file("./templates/assets/images/ons-logo-stacked.svg")
+                + read_file("./templates/assets/images/ukhsa-logo-stacked.svg"),
+                read_file("./templates/assets/images/ons-logo-stacked.svg")
+                + read_file("./templates/assets/images/ukhsa-logo-stacked.svg"),
+            ],
+        ),
     ),
 )
 def test_header_context(app: Flask, theme, survey_title, survey_config, expected):
@@ -542,6 +555,11 @@ def test_service_links_context(
             "cy",
             f"{ONS_URL_CY}/aboutus/contactus/surveyenquiries/",
         ),
+        (
+            UKHSAONSSocialSurveyConfig(),
+            "en",
+            f"{ONS_URL}/aboutus/contactus/surveyenquiries/",
+        ),
     ],
 )
 def test_contact_us_url_context(
@@ -641,6 +659,11 @@ def test_sign_out_button_text_context(
             True,
             f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cy/cookies/",
         ),
+        (
+            UKHSAONSSocialSurveyConfig(),
+            True,
+            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/en/cookies/",
+        ),
         (SurveyConfig(), False, None),
     ],
 )
@@ -720,6 +743,11 @@ def test_cookie_settings_url_context(
             "cy",
             ACCOUNT_SERVICE_BASE_URL_SOCIAL,
         ),
+        (
+            UKHSAONSSocialSurveyConfig(),
+            "en",
+            ACCOUNT_SERVICE_BASE_URL_SOCIAL,
+        ),
     ],
 )
 def test_cookie_domain_context(
@@ -752,6 +780,7 @@ def test_cookie_domain_context(
         DBTDSITBusinessSurveyConfig(),
         DBTDSITNIBusinessSurveyConfig(),
         ORRBusinessSurveyConfig(),
+        UKHSAONSSocialSurveyConfig(),
     ],
 )
 def test_cookie_domain_context_cookie_not_provided(
@@ -861,6 +890,10 @@ def test_account_service_my_todo_url_context(
             SocialSurveyConfig(language_code="cy"),
             f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/cy/start/",
         ),
+        (
+            UKHSAONSSocialSurveyConfig(),
+            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/en/start/",
+        ),
     ],
 )
 def test_account_service_log_out_url_context(
@@ -890,6 +923,7 @@ def test_account_service_log_out_url_context(
         (SurveyType.CENSUS, "en", CensusSurveyConfig),
         (SurveyType.CENSUS, "cy", WelshCensusSurveyConfig),
         (SurveyType.CENSUS_NISRA, "en", CensusNISRASurveyConfig),
+        (SurveyType.UKHSA_ONS, "en", UKHSAONSSocialSurveyConfig),
         (None, None, BusinessSurveyConfig),
     ],
 )
