@@ -48,6 +48,9 @@ test-functional-headless:
 test-single-functional:
 	yarn test_functional --spec ./tests/functional/spec/$(SPEC)
 
+test-suite-functional:
+	yarn test_functional --suite $(SUITE)
+
 lint-js:
 	yarn lint
 
