@@ -1782,14 +1782,13 @@ class TestRouterLastLocationLinearFlow(RouterTestCase):
         assert expected_location_url == last_location_url
 
     @pytest.mark.usefixtures("app")
-    def test_list_collector_list_summary_returns_to_summary(self):
+    def test_list_collector_final_summary_returns_to_section_summary(self):
         self.schema = load_schema_from_name("test_list_collector_list_summary")
 
-        section_id = "section"
         self.progress_store = ProgressStore(
             [
                 ProgressDict(
-                    section_id=section_id,
+                    section_id="section",
                     block_ids=[
                         "introduction",
                         "primary-person-list-collector",
@@ -1803,7 +1802,7 @@ class TestRouterLastLocationLinearFlow(RouterTestCase):
 
         last_location_url = self.router.get_last_location_in_questionnaire_url()
 
-        assert f"/questionnaire/sections/{section_id}/" == last_location_url
+        assert "/questionnaire/sections/section/" == last_location_url
 
 
 class TestRouterSectionResume(RouterTestCase):

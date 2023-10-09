@@ -232,7 +232,7 @@ describe("List Collector", () => {
       await expect(await $(SectionSummaryListCollectorRemovePage.individualResponseGuidance()).isExisting()).to.equal(true);
     });
 
-    it("When the user submits and navigates back, They should see the Section Summary", async () => {
+    it("When the user reaches the submit page and navigates back, They should see the Section Summary", async () => {
       await click(PeopleListSectionSummaryPage.submit());
       await click(SubmitPage.previous());
       await expect(await browser.getUrl()).to.contain(PeopleListSectionSummaryPage.pageName);
