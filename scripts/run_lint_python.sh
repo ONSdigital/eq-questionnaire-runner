@@ -34,5 +34,5 @@ display_result $? 1 "isort linting check"
 ./scripts/run_mypy.sh
 display_result $? 1 "Mypy type check"
 
-black --check . --exclude node_modules
+black --check . --exclude node_modules --exclude venv
 display_result $? 1 "Python code formatting check"
