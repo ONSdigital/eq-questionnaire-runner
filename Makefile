@@ -42,6 +42,9 @@ test-unit:
 test-functional:
 	pipenv run ./scripts/run_tests_functional.sh
 
+test-functional-headless:
+	EQ_RUN_FUNCTIONAL_TESTS_HEADLESS='True' pipenv run ./scripts/run_tests_functional.sh
+
 test-single-functional:
 	yarn test_functional --spec ./tests/functional/spec/$(SPEC)
 
