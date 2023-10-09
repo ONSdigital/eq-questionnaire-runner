@@ -24,7 +24,7 @@ lint: lint-python
 lint-python:
 	pipenv run ./scripts/run_lint_python.sh
 
-lint-test-python: lint-python
+test-lint-python: lint-python
 
 format: format-python
 	yarn format
@@ -55,6 +55,8 @@ lint-js:
 	yarn lint
 
 test-lint-js: lint-js test-functional
+
+test-headless-lint-js: lint-js test-functional-headless
 
 validate-test-schemas:
 	pipenv run ./scripts/validate_test_schemas.sh
