@@ -1,4 +1,4 @@
-<svg class="ons-u-di" xmlns="http://www.w3.org/2000/svg" focusable="false" width="76" height="56" viewBox="16 2 96 96" aria-labelledby="ukhsa-logo-alt">
+<svg class="ons-u-di ons-u-mr-m" style="display:inline;" xmlns="http://www.w3.org/2000/svg" focusable="false" width="76" height="56" viewBox="16 2 96 96" aria-labelledby="ukhsa-logo-alt">
   <title id="ukhsa-logo-alt">UK Health Security Agency</title>
   <g class="ons-svg-logo__group">
     <line x1="0.5" y1="1.5" x2="0.5" y2="97" id="Line" stroke="#00AE92" stroke-linecap="square"/>

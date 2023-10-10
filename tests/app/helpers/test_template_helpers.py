@@ -371,10 +371,10 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             UKHSAONSSocialSurveyConfig(),
             [
                 "Test",
-                read_file("./templates/assets/images/ons-logo-stacked.svg")
-                + read_file("./templates/assets/images/ukhsa-logo-stacked.svg"),
-                read_file("./templates/assets/images/ons-logo-stacked.svg")
-                + read_file("./templates/assets/images/ukhsa-logo-stacked.svg"),
+                read_file("./templates/assets/images/ukhsa-logo-stacked.svg")
+                + read_file("./templates/assets/images/ons-logo-stacked.svg"),
+                read_file("./templates/assets/images/ukhsa-logo-stacked.svg")
+                + read_file("./templates/assets/images/ons-logo-stacked.svg"),
             ],
         ),
     ),

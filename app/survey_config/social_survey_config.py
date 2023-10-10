@@ -68,8 +68,8 @@ class SocialSurveyConfig(
 @dataclass
 class UKHSAONSSocialSurveyConfig(SocialSurveyConfig):
     masthead_logo: str = read_file(
-        "./templates/assets/images/ons-logo-stacked.svg"
-    ) + read_file("./templates/assets/images/ukhsa-logo-stacked.svg")
+        "./templates/assets/images/ukhsa-logo-stacked.svg"
+    ) + read_file("./templates/assets/images/ons-logo-stacked.svg")
     masthead_logo_mobile: str = read_file(
-        "./templates/assets/images/ons-logo-stacked.svg"
-    ) + read_file("./templates/assets/images/ukhsa-logo-stacked.svg")
+        "./templates/assets/images/ukhsa-logo-stacked.svg"
+    ) + read_file("./templates/assets/images/ons-logo-stacked.svg")
