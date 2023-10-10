@@ -12,6 +12,7 @@ from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.path_finder import PathFinder
+from app.questionnaire.return_location import ReturnLocation
 from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.utilities.types import LocationType
@@ -120,10 +121,11 @@ class Router:
         self,
         location: LocationType,
         routing_path: RoutingPath,
-        return_to: str | None = None,
-        return_to_answer_id: str | None = None,
-        return_to_block_id: str | None = None,
-        return_to_list_item_id: str | None = None,
+        return_location: ReturnLocation,
+        # return_to: str | None = None,
+        # return_to_answer_id: str | None = None,
+        # return_to_block_id: str | None = None,
+        # return_to_list_item_id: str | None = None,
     ) -> str:
         """
         Get the next location in the section. If the section is complete, determine where to go next,
@@ -135,13 +137,14 @@ class Router:
 
         if return_to_url := self.get_return_to_location_url(
             location=location,
-            return_to=return_to,
+            return_location=return_location,
+            # return_to=return_to,
             routing_path=routing_path,
             is_for_previous=False,
             is_section_complete=is_section_complete,
-            return_to_answer_id=return_to_answer_id,
-            return_to_block_id=return_to_block_id,
-            return_to_list_item_id=return_to_list_item_id,
+            # return_to_answer_id=return_to_answer_id,
+            # return_to_block_id=return_to_block_id,
+            # return_to_list_item_id=return_to_list_item_id,
         ):
             return return_to_url
 
@@ -160,9 +163,9 @@ class Router:
         return self._get_next_block_url(
             location,
             routing_path,
-            return_to=return_to,
-            return_to_answer_id=return_to_answer_id,
-            return_to_block_id=return_to_block_id,
+            return_to=return_location.return_to,
+            return_to_answer_id=return_location.return_to_answer_id,
+            return_to_block_id=return_location.return_to_block_id,
         )
 
     def _get_next_location_url_for_complete_section(
@@ -177,10 +180,11 @@ class Router:
         self,
         location: LocationType,
         routing_path: RoutingPath,
-        return_to: str | None = None,
-        return_to_answer_id: str | None = None,
-        return_to_block_id: str | None = None,
-        return_to_list_item_id: str | None = None,
+        return_location: ReturnLocation,
+        # return_to: str | None = None,
+        # return_to_answer_id: str | None = None,
+        # return_to_block_id: str | None = None,
+        # return_to_list_item_id: str | None = None,
     ) -> str | None:
         """
         Returns the previous 'location' to visit given a set of user answers or returns to the summary if
@@ -188,12 +192,13 @@ class Router:
         """
         if return_to_url := self.get_return_to_location_url(
             location=location,
-            return_to=return_to,
+            # return_to=return_to,
             routing_path=routing_path,
+            return_location=return_location,
             is_for_previous=True,
-            return_to_answer_id=return_to_answer_id,
-            return_to_block_id=return_to_block_id,
-            return_to_list_item_id=return_to_list_item_id,
+            # return_to_answer_id=return_to_answer_id,
+            # return_to_block_id=return_to_block_id,
+            # return_to_list_item_id=return_to_list_item_id,
         ):
             return return_to_url
 
@@ -207,17 +212,17 @@ class Router:
                 return url_for(
                     "questionnaire.relationships",
                     last=True,
-                    return_to=return_to,
-                    _anchor=return_to_answer_id,
+                    return_to=return_location.return_to,
+                    _anchor=return_location.return_to_answer_id,
                 )
             return url_for(
                 "questionnaire.block",
                 block_id=previous_block_id,
                 list_name=routing_path.list_name,
                 list_item_id=routing_path.list_item_id,
-                return_to=return_to,
-                return_to_block_id=return_to_block_id,
-                _anchor=return_to_answer_id,
+                return_to=return_location.return_to,
+                return_to_block_id=return_location.return_to_block_id,
+                _anchor=return_location.return_to_answer_id,
             )
 
         if self.can_access_hub():
@@ -229,39 +234,42 @@ class Router:
         self,
         *,
         location: LocationType,
-        return_to: str | None,
+        # return_to: str | None,
         routing_path: RoutingPath,
+        return_location: ReturnLocation,
         is_for_previous: bool,
         is_section_complete: bool | None = None,
-        return_to_answer_id: str | None = None,
-        return_to_block_id: str | None = None,
-        return_to_list_item_id: str | None = None,
+        # return_to_answer_id: str | None = None,
+        # return_to_block_id: str | None = None,
+        # return_to_list_item_id: str | None = None,
     ) -> str | None:
-        if not return_to:
+        if not return_location.return_to:       # TODO: Is this safe if it's empty? Is it better to convert to dict and safeguard?
             return None
 
-        if return_to == "grand-calculated-summary" and (
+        if return_location.return_to == "grand-calculated-summary" and (
             url := self._get_return_to_for_grand_calculated_summary(
-                return_to=return_to,
-                return_to_block_id=return_to_block_id,
+                # return_to=return_to,
+                # return_to_block_id=return_to_block_id,
                 section_key=location.section_key,
                 routing_path=routing_path,
                 is_for_previous=is_for_previous,
                 location=location,
-                return_to_answer_id=return_to_answer_id,
-                return_to_list_item_id=return_to_list_item_id,
+                return_location=return_location,
+                # return_to_answer_id=return_to_answer_id,
+                # return_to_list_item_id=return_to_list_item_id,
             )
         ):
             return url
 
-        if return_to.startswith("calculated-summary") and (
+        if return_location.return_to.startswith("calculated-summary") and (
             url := self._get_return_to_for_calculated_summary(
-                return_to=return_to,
-                return_to_block_id=return_to_block_id,
-                return_to_list_item_id=return_to_list_item_id,
+                # return_to=return_to,
+                # return_to_block_id=return_to_block_id,
+                # return_to_list_item_id=return_to_list_item_id,
                 location=location,
                 routing_path=routing_path,
-                return_to_answer_id=return_to_answer_id,
+                return_location=return_location,
+                # return_to_answer_id=return_to_answer_id,
             )
         ):
             return url
@@ -275,45 +283,47 @@ class Router:
             # go to the next incomplete item in the section whilst preserving return to parameters
             return self._get_return_url_for_inaccessible_location(
                 is_for_previous=is_for_previous,
-                return_to_block_id=return_to_block_id,
-                return_to=return_to,
-                return_to_list_item_id=return_to_list_item_id,
+                # return_to_block_id=return_to_block_id,
+                # return_to=return_to,
+                # return_to_list_item_id=return_to_list_item_id,
                 routing_path=routing_path,
+                return_location=return_location,
             )
 
-        if return_to == "section-summary":
+        if return_location.return_to == "section-summary":
             return self._get_section_url(
-                location.section_key, return_to_answer_id=return_to_answer_id
+                location.section_key, return_to_answer_id=return_location.return_to_answer_id
             )
-        if return_to == "final-summary" and self.is_questionnaire_complete:
+        if return_location.return_to == "final-summary" and self.is_questionnaire_complete:
             return url_for(
-                "questionnaire.submit_questionnaire", _anchor=return_to_answer_id
+                "questionnaire.submit_questionnaire", _anchor=return_location.return_to_answer_id
             )
 
     def _get_return_to_for_grand_calculated_summary(
         self,
         *,
-        return_to: str | None,
-        return_to_block_id: str | None,
+        # return_to: str | None,
+        # return_to_block_id: str | None,
+        return_location: ReturnLocation,
         section_key: SectionKey,
         routing_path: RoutingPath,
         is_for_previous: bool,
         location: LocationType,
-        return_to_answer_id: str | None = None,
-        return_to_list_item_id: str | None = None,
+        # return_to_answer_id: str | None = None,
+        # return_to_list_item_id: str | None = None,
     ) -> str | None:
         """
         Builds the return url for a grand calculated summary,
         and accounts for it possibly being in a different section to the calculated summaries it references
         """
-        if not (return_to_block_id and self._schema.is_block_valid(return_to_block_id)):
+        if not (return_location.return_to_block_id and self._schema.is_block_valid(return_location.return_to_block_id)):
             return None
 
         # Type ignore: if the block is valid, then we'll be able to find a section for it
         grand_calculated_summary_section: str = (
-            self._schema.get_section_id_for_block_id(return_to_block_id)  # type: ignore
+            self._schema.get_section_id_for_block_id(return_location.return_to_block_id)  # type: ignore
         )
-        list_item_id = location.list_item_id or return_to_list_item_id
+        list_item_id = location.list_item_id or return_location.return_to_list_item_id
         list_name = (
             self._list_store.get_list_name_for_list_item_id(list_item_id)
             if list_item_id
@@ -335,7 +345,7 @@ class Router:
             )
         if self.can_access_location(
             Location(
-                block_id=return_to_block_id,
+                block_id=return_location.return_to_block_id,
                 section_id=grand_calculated_summary_section,
                 list_item_id=list_item_id,
                 list_name=list_name,
@@ -344,30 +354,32 @@ class Router:
         ):
             return url_for(
                 "questionnaire.block",
-                block_id=return_to_block_id,
+                block_id=return_location.return_to_block_id,
                 list_item_id=list_item_id,
                 list_name=list_name,
-                _anchor=return_to_answer_id,
+                _anchor=return_location.return_to_answer_id,
             )
         # since the above may define a different routing_path,
         # retrieval of the next incomplete block needs to be here instead of returning None and allowing default behaviour
         return self._get_return_url_for_inaccessible_location(
             is_for_previous=is_for_previous,
-            return_to_block_id=return_to_block_id,
-            return_to=return_to,
-            return_to_list_item_id=return_to_list_item_id,
+            return_location=return_location,
+            # return_to_block_id=return_location.return_to_block_id,
+            # return_to=return_to,
+            # return_to_list_item_id=return_to_list_item_id,
             routing_path=routing_path,
         )
 
     def _get_return_to_for_calculated_summary(
         self,
         *,
-        return_to: str,
-        return_to_block_id: str | None,
-        return_to_list_item_id: str | None,
+        # return_to: str,
+        # return_to_block_id: str | None,
+        # return_to_list_item_id: str | None,
         location: LocationType,
         routing_path: RoutingPath,
-        return_to_answer_id: str | None = None,
+        return_location: ReturnLocation,    #TODO: Check if this is mutable. If so, it's modified in this func so need to safeguard?
+        # return_to_answer_id: str | None = None,
     ) -> str | None:
         """
         The return url for a calculated summary varies based on whether it's standalone or part of a grand calculated summary
@@ -378,10 +390,10 @@ class Router:
         block_id = None
         remaining: list[str] = []
         # for a calculated summary this might have multiple items, e.g. a calculated summary to go to and then a grand calculated one
-        if return_to_block_id:
+        if return_location.return_to_block_id:
             # the first item is the block id to route to (e.g. a calculated summary to go back to first)
             # anything remaining forms where to go next (e.g. a grand calculated summary)
-            block_id, *remaining = return_to_block_id.split(",")
+            block_id, *remaining = return_location.return_to_block_id.split(",")
 
         if self.can_access_location(
             Location(
@@ -392,9 +404,9 @@ class Router:
             routing_path,
         ):
             # if the next location is valid, the new url is that location, and the new 'return to block id' is just what remains
-            return_to_block_id = ",".join(remaining) if remaining else None
+            return_location.return_to_block_id = ",".join(remaining) if remaining else None
             # remove first item and return the remaining ones
-            return_to_remaining = ",".join(return_to.split(",")[1:]) or None
+            return_to_remaining = ",".join(return_location.return_to.split(",")[1:]) or None
 
             return url_for(
                 "questionnaire.block",
@@ -402,18 +414,19 @@ class Router:
                 list_name=location.list_name,
                 list_item_id=location.list_item_id,
                 return_to=return_to_remaining,
-                return_to_block_id=return_to_block_id,
-                return_to_list_item_id=return_to_list_item_id,
-                _anchor=return_to_answer_id,
+                return_to_block_id=return_location.return_to_block_id,
+                return_to_list_item_id=return_location.return_to_list_item_id,
+                _anchor=return_location.return_to_answer_id,
             )
 
     def _get_return_url_for_inaccessible_location(
         self,
         *,
         is_for_previous: bool,
-        return_to_block_id: str | None,
-        return_to: str | None,
-        return_to_list_item_id: str | None,
+        return_location: ReturnLocation,
+        # return_to_block_id: str | None,
+        # return_to: str | None,
+        # return_to_list_item_id: str | None,
         routing_path: RoutingPath,
     ) -> str | None:
         """
@@ -422,7 +435,7 @@ class Router:
         """
         if (
             not is_for_previous
-            and return_to
+            and return_location.return_to
             and (
                 next_incomplete_location := self._get_first_incomplete_location_in_section(
                     routing_path
@@ -430,9 +443,10 @@ class Router:
             )
         ):
             return next_incomplete_location.url(
-                return_to=return_to,
-                return_to_block_id=return_to_block_id,
-                return_to_list_item_id=return_to_list_item_id,
+                # **return_location.to_dict()   # TODO: Started doing this, but might be best to use explicit kwargs for url_for()?
+                return_to=return_location.return_to,
+                return_to_block_id=return_location.return_to_block_id,
+                return_to_list_item_id=return_location.return_to_list_item_id,
             )
 
     def get_next_location_url_for_end_of_section(self) -> str:
