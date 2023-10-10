@@ -24,7 +24,7 @@ lint: lint-python
 lint-python:
 	pipenv run ./scripts/run_lint_python.sh
 
-test-lint-python: lint-python
+lint-test-python: lint-python test-unit
 
 format: format-python
 	yarn format
@@ -54,7 +54,7 @@ test-suite-functional:
 lint-js:
 	yarn lint
 
-test-lint-js: lint-js test-functional
+lint-test-js: lint-js test-functional
 
 test-headless-lint-js: lint-js test-functional-headless
 
