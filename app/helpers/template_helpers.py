@@ -27,6 +27,7 @@ from app.survey_config import (
     ORRBusinessSurveyConfig,
     SocialSurveyConfig,
     SurveyConfig,
+    UKHSAONSSocialSurveyConfig,
     WelshCensusSurveyConfig,
 )
 from app.survey_config.survey_type import SurveyType
@@ -197,6 +198,7 @@ def survey_config_mapping(
             WelshCensusSurveyConfig if language == "cy" else CensusSurveyConfig
         ),
         SurveyType.CENSUS_NISRA: CensusNISRASurveyConfig,
+        SurveyType.UKHSA_ONS: UKHSAONSSocialSurveyConfig,
     }
 
     return survey_type_to_config[theme](
