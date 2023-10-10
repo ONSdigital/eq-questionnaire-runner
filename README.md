@@ -241,10 +241,15 @@ RUNNER_ENV_FILE=.functional-tests.env make run
 
 This will set the correct environment variables for running the functional tests.
 
-Then you can run:
+Then you can run either:
 
 ``` shell
 make test-functional
+```
+or
+
+``` shell
+make test-functional-headless
 ```
 
 This will delete the `tests/functional/generated_pages` directory and regenerate all the files in it from the schemas.
@@ -255,7 +260,6 @@ You can also individually run the `generate_pages` and `test_functional` yarn sc
 yarn generate_pages
 yarn test_functional
 ```
-
 
 To generate the pages manually you can run the `generate_pages` scripts with the schema directory. Run it from the `tests/functional` directory as follows:
 
@@ -280,6 +284,11 @@ This can be limited to a single spec using:
 ``` shell
 yarn test_functional --spec ./tests/functional/spec/exit.spec.js
 ```
+Or alternatively you can use the command:
+
+``` shell
+make test-functional-spec SPEC=<spec>
+```
 
 To run a single test, add `.only` into the name of any `describe` or `it` function:
 
@@ -292,6 +301,11 @@ An individual test suite can be run using:
 
 ``` shell
 yarn test_functional --suite <suite>
+```
+Or alternatively you can use the command:
+
+``` shell
+make test-functional-suite SUITE=<suite>
 ```
 
 To run the tests against a remote deployment you will need to specify the environment variable of EQ_FUNCTIONAL_TEST_ENV eg:
