@@ -13,8 +13,8 @@ from app.utilities.json import json_dumps, json_loads
 from app.utilities.types import SupplementaryDataListMapping
 
 if TYPE_CHECKING:
-    from app.questionnaire.questionnaire_store_updater import (  # pragma: no cover
-        QuestionnaireStoreUpdater,
+    from app.questionnaire.base_questionnaire_store_updater import (
+        BaseQuestionnaireStoreUpdater,  # pragma: no cover
     )
     from app.storage.encrypted_questionnaire_storage import (  # pragma: no cover
         EncryptedQuestionnaireStorage,
@@ -71,7 +71,7 @@ class QuestionnaireStore:
         self,
         *,
         to_set: MutableMapping,
-        questionnaire_store_updater: QuestionnaireStoreUpdater,
+        base_questionnaire_store_updater: BaseQuestionnaireStoreUpdater,
     ) -> None:
         """
         Used to set or update the supplementary data whenever the sds endpoint is called
@@ -82,14 +82,14 @@ class QuestionnaireStore:
         """
         if self.supplementary_data_store.list_mappings:
             self._remove_old_supplementary_lists_and_answers(
-                to_set, questionnaire_store_updater
+                to_set, base_questionnaire_store_updater
             )
 
         list_mappings = {
             list_name: self._create_supplementary_list(
                 list_name=list_name,
                 list_data=list_data,
-                questionnaire_store_updater=questionnaire_store_updater,
+                base_questionnaire_store_updater=base_questionnaire_store_updater,
             )
             for list_name, list_data in to_set.get("items", {}).items()
         }
@@ -103,7 +103,7 @@ class QuestionnaireStore:
         *,
         list_name: str,
         list_data: list[dict],
-        questionnaire_store_updater: QuestionnaireStoreUpdater,
+        base_questionnaire_store_updater: BaseQuestionnaireStoreUpdater,
     ) -> list[SupplementaryDataListMapping]:
         """
         Creates or updates a list in ListStore based off supplementary data
@@ -120,7 +120,7 @@ class QuestionnaireStore:
                 ).get(identifier)
             ):
                 list_item_id = self.list_store.add_list_item(list_name)
-                questionnaire_store_updater.capture_dependent_sections_for_list(
+                base_questionnaire_store_updater.capture_dependent_sections_for_list(
                     list_name
                 )
 
@@ -134,7 +134,7 @@ class QuestionnaireStore:
     def _remove_old_supplementary_lists_and_answers(
         self,
         new_data: MutableMapping,
-        questionnaire_store_updater: QuestionnaireStoreUpdater,
+        base_questionnaire_store_updater: BaseQuestionnaireStoreUpdater,
     ) -> None:
         """
         In the case that existing supplementary data is being replaced with new data: any list items in the old data
@@ -147,12 +147,12 @@ class QuestionnaireStore:
                 ]
                 for identifier, list_item_id in mappings.items():
                     if identifier not in new_identifiers:
-                        questionnaire_store_updater.remove_list_item_data(
+                        base_questionnaire_store_updater.remove_list_item_data(
                             list_name, list_item_id
                         )
             else:
                 for list_item_id in mappings.values():
-                    questionnaire_store_updater.remove_list_item_data(
+                    base_questionnaire_store_updater.remove_list_item_data(
                         list_name, list_item_id
                     )
 

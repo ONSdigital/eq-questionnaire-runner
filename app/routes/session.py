@@ -25,9 +25,11 @@ from app.helpers.template_helpers import (
     get_survey_config,
     render_template,
 )
-from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire import QuestionnaireSchema
+from app.questionnaire.base_questionnaire_store_updater import (
+    BaseQuestionnaireStoreUpdater,
+)
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
-from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.questionnaire.router import Router
 from app.routes.errors import _render_error_page
 from app.services.supplementary_data import get_supplementary_data_v1
@@ -213,19 +215,15 @@ def _set_supplementary_data(
         response_metadata=questionnaire_store.response_metadata,
         supplementary_data_store=questionnaire_store.supplementary_data_store,
     )
-    questionnaire_store_updater = QuestionnaireStoreUpdater(
-        questionnaire_store=questionnaire_store,
-        schema=schema,
-        router=router,
-        current_location=Location(section_id="TODO"),
-        current_question=None,
+    base_questionnaire_store_updater = BaseQuestionnaireStoreUpdater(
+        questionnaire_store=questionnaire_store, schema=schema, router=router
     )
     questionnaire_store.set_supplementary_data(
         to_set=supplementary_data,
-        questionnaire_store_updater=questionnaire_store_updater,
+        base_questionnaire_store_updater=base_questionnaire_store_updater,
     )
-    questionnaire_store_updater.remove_dependent_blocks_and_capture_dependent_sections()
-    questionnaire_store_updater.update_progress_for_dependent_sections()
+    base_questionnaire_store_updater.remove_dependent_blocks_and_capture_dependent_sections()
+    base_questionnaire_store_updater.update_progress_for_dependent_sections()
 
 
 def _validate_supplementary_data_lists(

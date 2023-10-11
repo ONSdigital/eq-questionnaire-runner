@@ -6,19 +6,19 @@ from app.data_models.answer_store import AnswerStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
 from app.data_models.supplementary_data_store import SupplementaryDataStore
+from app.questionnaire.base_questionnaire_store_updater import (
+    BaseQuestionnaireStoreUpdater,
+)
 from app.questionnaire.location import SectionKey
-from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.utilities.json import json_dumps, json_loads
 from app.utilities.make_immutable import make_immutable
 
 
-def get_questionnaire_store_updater(questionnaire_store: QuestionnaireStore):
-    return QuestionnaireStoreUpdater(
+def get_base_questionnaire_store_updater(questionnaire_store: QuestionnaireStore):
+    return BaseQuestionnaireStoreUpdater(
         schema=MagicMock(),
         questionnaire_store=questionnaire_store,
-        current_location=MagicMock(),
         router=MagicMock(),
-        current_question=None,
     )
 
 
@@ -150,7 +150,7 @@ class TestQuestionnaireStoreWithSupplementaryData:
         self.store = QuestionnaireStore(questionnaire_store.storage)
         self.store.set_supplementary_data(
             to_set=supplementary_data,
-            questionnaire_store_updater=get_questionnaire_store_updater(
+            base_questionnaire_store_updater=get_base_questionnaire_store_updater(
                 questionnaire_store
             ),
         )
@@ -172,7 +172,7 @@ class TestQuestionnaireStoreWithSupplementaryData:
         supplementary_data["items"]["products"].append({"identifier": "12345"})
         self.store.set_supplementary_data(
             to_set=supplementary_data,
-            questionnaire_store_updater=get_questionnaire_store_updater(
+            base_questionnaire_store_updater=get_base_questionnaire_store_updater(
                 questionnaire_store_with_supplementary_data
             ),
         )
@@ -203,7 +203,7 @@ class TestQuestionnaireStoreWithSupplementaryData:
         del supplementary_data["items"]["products"][0]
         self.store.set_supplementary_data(
             to_set=supplementary_data,
-            questionnaire_store_updater=get_questionnaire_store_updater(
+            base_questionnaire_store_updater=get_base_questionnaire_store_updater(
                 questionnaire_store_with_supplementary_data
             ),
         )
@@ -218,7 +218,7 @@ class TestQuestionnaireStoreWithSupplementaryData:
         self.store = questionnaire_store_with_supplementary_data
         self.store.set_supplementary_data(
             to_set={},
-            questionnaire_store_updater=get_questionnaire_store_updater(
+            base_questionnaire_store_updater=get_base_questionnaire_store_updater(
                 questionnaire_store_with_supplementary_data
             ),
         )
@@ -251,7 +251,7 @@ class TestQuestionnaireStoreWithSupplementaryData:
         del supplementary_data["items"]["products"][0]
         self.store.set_supplementary_data(
             to_set=supplementary_data,
-            questionnaire_store_updater=get_questionnaire_store_updater(
+            base_questionnaire_store_updater=get_base_questionnaire_store_updater(
                 questionnaire_store_with_supplementary_data
             ),
         )
@@ -266,7 +266,7 @@ class TestQuestionnaireStoreWithSupplementaryData:
         # remove all answers
         self.store.set_supplementary_data(
             to_set={},
-            questionnaire_store_updater=get_questionnaire_store_updater(
+            base_questionnaire_store_updater=get_base_questionnaire_store_updater(
                 questionnaire_store_with_supplementary_data
             ),
         )
@@ -297,7 +297,7 @@ class TestQuestionnaireStoreWithSupplementaryData:
 
         self.store.set_supplementary_data(
             to_set={},
-            questionnaire_store_updater=get_questionnaire_store_updater(
+            base_questionnaire_store_updater=get_base_questionnaire_store_updater(
                 questionnaire_store_with_supplementary_data
             ),
         )
