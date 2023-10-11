@@ -10,7 +10,7 @@
     "questionnaire_flow": {
         "type": "Hub",
         "options": {
-            "required_completed_sections": ["stock-section", "house-hold-section", "questions-section"]
+            "required_completed_sections": ["stock-section", "house-hold-section", "questions-section","section-companies","grand-calculated-summary-section-1"]
         }
     },
     "post_submission": {
@@ -524,9 +524,6 @@
             "id": "house-hold-section",
             "title": "Household",
             "show_on_hub": true,
-            "summary": {
-                "show_on_completion": true
-            },
             "groups": [
                 {
                     "id": "group",
