@@ -1,4 +1,3 @@
-include .functional-tests.env
 SCHEMAS_VERSION=`cat .schemas-version`
 DESIGN_SYSTEM_VERSION=`cat .design-system-version`
 RUNNER_ENV_FILE?=.development.env
@@ -45,10 +44,10 @@ test-functional:
 test-functional-headless:
 	EQ_RUN_FUNCTIONAL_TESTS_HEADLESS='True' pipenv run ./scripts/run_tests_functional.sh
 
-test-single-functional:
+test-functional-spec:
 	yarn test_functional --spec ./tests/functional/spec/$(SPEC)
 
-test-suite-functional:
+test-functional-suite:
 	yarn test_functional --suite $(SUITE)
 
 lint-js:
@@ -56,7 +55,7 @@ lint-js:
 
 lint-test-js: lint-js test-functional
 
-test-headless-lint-js: lint-js test-functional-headless
+lint-test-js-headless: lint-js test-functional-headless
 
 validate-test-schemas:
 	pipenv run ./scripts/validate_test_schemas.sh
