@@ -135,7 +135,7 @@ class ListCollectorBaseBlock:
                             list_item_id=list_id,
                             section_id=section_id,
                         ),
-                        return_location=self._return_location,  # TODO: Should this be a new object, like location above?
+                        return_location=self._return_location,
                         progress_store=self._progress_store,
                         supplementary_data_store=self._supplementary_data_store,
                         language=self._language,

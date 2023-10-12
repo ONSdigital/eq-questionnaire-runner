@@ -28,9 +28,9 @@ class ListCollector(Question):
                 "questionnaire.block",
                 list_name=self.rendered_block["for_list"],
                 block_id=self.rendered_block["add_block"]["id"],
-                return_to=self._return_location.return_to,          # TODO: Make this a helper function in return_location.py?
-                return_to_answer_id=self._return_location.return_to_answer_id,
-                return_to_block_id=self._return_location.return_to_block_id,
+                return_to=self.return_location.return_to,          # TODO: Make this a helper function in return_location.py?
+                return_to_answer_id=self.return_location.return_to_answer_id,
+                return_to_block_id=self.return_location.return_to_block_id,
             )
             return add_url
 
@@ -44,9 +44,9 @@ class ListCollector(Question):
                 list_name=self.list_name,
                 list_item_id=incomplete_block.list_item_id,
                 block_id=incomplete_block.block_id,
-                return_to=self._return_location.return_to,          # TODO: Make this a helper function in return_location.py?
-                return_to_answer_id=self._return_location.return_to_answer_id,
-                return_to_block_id=self._return_location.return_to_block_id,
+                return_to=self.return_location.return_to,          # TODO: Make this a helper function in return_location.py?
+                return_to_answer_id=self.return_location.return_to_answer_id,
+                return_to_block_id=self.return_location.return_to_block_id,
             )
             return repeating_block_url
 
@@ -69,7 +69,7 @@ class ListCollector(Question):
             for_list=self.list_name,
             edit_block_id=self.rendered_block.get("edit_block", {}).get("id"),
             remove_block_id=self.rendered_block.get("remove_block", {}).get("id"),
-            return_to=self._return_location.return_to,
+            return_to=self.return_location.return_to,
             section_id=self.current_location.section_id,
             has_repeating_blocks=bool(self.repeating_block_ids),
         )

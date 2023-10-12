@@ -62,12 +62,8 @@ class BlockHandler:
         return self._current_location
 
     @property
-    def return_to(self) -> str | None:
-        return self._return_location.return_to
-
-    @property
-    def return_to_block_id(self) -> str | None:
-        return self._return_location.return_to_block_id
+    def return_location(self) -> ReturnLocation:
+        return self._return_location
 
     @cached_property
     def questionnaire_store_updater(self) -> QuestionnaireStoreUpdater:
@@ -114,14 +110,14 @@ class BlockHandler:
         return self.router.get_previous_location_url(
             self._current_location,
             self._routing_path,
-            self._return_location,
+            self.return_location,
         )
 
     def get_next_location_url(self) -> str:
         return self.router.get_next_location_url(
             self._current_location,
             self._routing_path,
-            self._return_location,
+            self.return_location,
         )
 
     def handle_post(self) -> None:

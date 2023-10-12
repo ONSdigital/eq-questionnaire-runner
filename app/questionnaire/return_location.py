@@ -11,14 +11,14 @@ class ReturnLocation:
     """
     Used to store return locations in the questionnaire.
 
-    return_to: The name of the section to return to   # TODO: Check that this can ONLY ever be section name. Could it ever be something else? Might need to debug
+    return_to: The name of the section to return to
     return_to_block_id: The block_id of the block to return to
     return_to_answer_id: The answer_id of the answer to return to
     return_to_list_name: The list_name to return to if the location is associated with a list
     return_to_list_item_id: The list_item_id to return to if the location is associated with a list
     """
 
-    return_to: str | None = None  # TODO: Can this be None??
+    return_to: str | None = None
     return_to_block_id: str | None = None
     return_to_answer_id: str | None = None
     return_to_list_name: str | None = None
