@@ -1093,6 +1093,9 @@
                     ]
                 }
             },
+            "summary": {
+                "show_on_completion": true
+            },
             "groups": [
                 {
                     "id": "group-7",
@@ -1168,6 +1171,251 @@
                                         }
                                     ]
                                 }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "internet-breakdown-block",
+                            "question": {
+                                "id": "internet-breakdown-question",
+                                "title": {
+                                    "text": "How did you use the {internet_usage} across your devices?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "internet_usage",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_unit",
+                                                    "arguments": {
+                                                        "value": {
+                                                            "source": "grand_calculated_summary",
+                                                            "identifier": "grand-calculated-summary-4"
+                                                        },
+                                                        "unit": "digital-gigabyte",
+                                                        "unit_length": "short"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "Calculated",
+                                "warning": "These answers must add up to the total internet usage",
+                                "calculations": [
+                                    {
+                                        "calculation_type": "sum",
+                                        "value": {
+                                            "identifier": "grand-calculated-summary-4",
+                                            "source": "grand_calculated_summary"
+                                        },
+                                        "answers_to_calculate": ["internet-pc", "internet-phone"],
+                                        "conditions": ["equals"]
+                                    }
+                                ],
+                                "answers": [
+                                    {
+                                        "id": "internet-pc",
+                                        "label": "Amount of internet usage via PC",
+                                        "mandatory": true,
+                                        "type": "Unit",
+                                        "unit_length": "short",
+                                        "unit": "digital-gigabyte",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "internet-phone",
+                                        "label": "Amount of internet usage via Phone",
+                                        "mandatory": true,
+                                        "type": "Unit",
+                                        "unit_length": "short",
+                                        "unit": "digital-gigabyte",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-7",
+            "title": "Personal Expenditure",
+            "enabled": {
+                "when": {
+                    "==": [
+                        "COMPLETED",
+                        {
+                            "source": "progress",
+                            "selector": "section",
+                            "identifier": "section-6"
+                        }
+                    ]
+                }
+            },
+            "summary": {
+                "show_on_completion": true
+            },
+            "groups": [
+                {
+                    "id": "group-8",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "personal-expenditure-block",
+                            "question": {
+                                "id": "personal-expenditure-question",
+                                "title": {
+                                    "text": "How much of the {total_expenditure} household expenditure do you contribute personally?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "total_expenditure",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_currency",
+                                                    "arguments": {
+                                                        "number": {
+                                                            "identifier": "grand-calculated-summary-5",
+                                                            "source": "grand_calculated_summary"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "personal-expenditure-answer",
+                                        "label": "Personal contribution",
+                                        "mandatory": true,
+                                        "description": "Cannot exceed the total expenditure from section 6",
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2,
+                                        "maximum": {
+                                            "value": {
+                                                "identifier": "grand-calculated-summary-5",
+                                                "source": "grand_calculated_summary"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Interstitial",
+                            "id": "grand-calculated-summary-piping",
+                            "content": {
+                                "title": "You have provided the following information about household expenditure and internet use.",
+                                "contents": [
+                                    {
+                                        "list": [
+                                            {
+                                                "text": "Total household expenditure: <em>{total_expenditure}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "total_expenditure",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_currency",
+                                                                "arguments": {
+                                                                    "number": {
+                                                                        "identifier": "grand-calculated-summary-5",
+                                                                        "source": "grand_calculated_summary"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "Personal contribution: <em>{personal_contribution}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "personal_contribution",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_currency",
+                                                                "arguments": {
+                                                                    "number": {
+                                                                        "identifier": "personal-expenditure-answer",
+                                                                        "source": "answers"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "Total internet usage: <em>{internet_usage}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "internet_usage",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_unit",
+                                                                "arguments": {
+                                                                    "value": {
+                                                                        "source": "grand_calculated_summary",
+                                                                        "identifier": "grand-calculated-summary-4"
+                                                                    },
+                                                                    "unit": "digital-gigabyte",
+                                                                    "unit_length": "short"
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "Usage by phone: <em>{internet_phone}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "internet_phone",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_unit",
+                                                                "arguments": {
+                                                                    "value": {
+                                                                        "source": "answers",
+                                                                        "identifier": "internet-phone"
+                                                                    },
+                                                                    "unit": "digital-gigabyte",
+                                                                    "unit_length": "short"
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "text": "Usage by PC: <em>{internet_pc}</em>",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "internet_pc",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "format_unit",
+                                                                "arguments": {
+                                                                    "value": {
+                                                                        "source": "answers",
+                                                                        "identifier": "internet-pc"
+                                                                    },
+                                                                    "unit": "digital-gigabyte",
+                                                                    "unit_length": "short"
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
                             }
                         }
                     ]
