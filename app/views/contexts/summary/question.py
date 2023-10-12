@@ -15,6 +15,7 @@ from app.data_models.metadata_proxy import MetadataProxy
 from app.forms.field_handlers.select_handlers import DynamicAnswerOptions
 from app.questionnaire import QuestionnaireSchema, QuestionSchemaType
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
+from app.questionnaire.return_location import ReturnLocation
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.utilities.types import LocationType
@@ -25,7 +26,6 @@ from app.views.contexts.summary.answer import (
 )
 
 
-# pylint: disable=too-many-locals
 class Question:
     def __init__(
         self,
@@ -40,9 +40,7 @@ class Question:
         value_source_resolver: ValueSourceResolver,
         location: LocationType,
         block_id: str,
-        return_to: Optional[str],
-        return_to_block_id: Optional[str] = None,
-        return_to_list_item_id: Optional[str] = None,
+        return_location: ReturnLocation,
         metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
         language: str,
@@ -74,9 +72,7 @@ class Question:
             question_schema=question_schema,
             block_id=block_id,
             list_name=location.list_name if location else None,
-            return_to=return_to,
-            return_to_block_id=return_to_block_id,
-            return_to_list_item_id=return_to_list_item_id,
+            return_location=return_location,
             metadata=metadata,
             response_metadata=response_metadata,
             language=language,
@@ -98,9 +94,7 @@ class Question:
         question_schema: QuestionSchemaType,
         block_id: str,
         list_name: str | None,
-        return_to: str | None,
-        return_to_block_id: str | None,
-        return_to_list_item_id: str | None,
+        return_location: ReturnLocation,
         metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
         language: str,
@@ -112,9 +106,9 @@ class Question:
                 list_name=list_name,
                 block_id=block_id,
                 list_item_id=self.list_item_id,
-                return_to=return_to,
-                return_to_answer_id=answer_id if return_to else None,
-                return_to_list_item_id=return_to_list_item_id,
+                return_to=return_location.return_to,
+                return_to_answer_id=answer_id if return_location.return_to else None,
+                return_to_list_item_id=return_location.return_to_list_item_id,
                 _anchor=question_schema["answers"][0]["id"],
             )
 
@@ -151,9 +145,7 @@ class Question:
                 block_id=block_id,
                 list_name=list_name,
                 list_item_id=list_item_id or self.list_item_id,
-                return_to=return_to,
-                return_to_block_id=return_to_block_id,
-                return_to_list_item_id=return_to_list_item_id,
+                return_location=return_location,
                 is_in_repeating_section=self._is_in_repeating_section,
             ).serialize()
             summary_answers.append(summary_answer)

@@ -3,6 +3,7 @@ from typing import Mapping
 from flask import url_for
 
 from app.data_models.answer import AnswerValueEscapedTypes
+from app.questionnaire.return_location import ReturnLocation
 
 RadioCheckboxTypes = dict[str, str | AnswerValueEscapedTypes | None]
 DateRangeTypes = dict[str, AnswerValueEscapedTypes | None]
@@ -21,9 +22,7 @@ class Answer:
         block_id: str,
         list_name: str | None,
         list_item_id: str | None,
-        return_to: str | None,
-        return_to_block_id: str | None,
-        return_to_list_item_id: str | None,
+        return_location: ReturnLocation,
         is_in_repeating_section: bool,
     ) -> None:
         self.id = answer_schema["id"]
@@ -39,9 +38,7 @@ class Answer:
             block_id=block_id,
             list_name=list_name,
             list_item_id=list_item_id,
-            return_to=return_to,
-            return_to_block_id=return_to_block_id,
-            return_to_list_item_id=return_to_list_item_id,
+            return_location=return_location,
             is_in_repeating_section=is_in_repeating_section,
         )
 
@@ -64,24 +61,22 @@ class Answer:
         block_id: str,
         list_name: str | None,
         list_item_id: str | None,
-        return_to: str | None,
-        return_to_block_id: str | None,
-        return_to_list_item_id: str | None,
+        return_location: ReturnLocation,
         is_in_repeating_section: bool,
     ) -> str:
-        return url_for(
+        return url_for(    # TODO: Come back to this - do we need to handle _anchor scenario here?
             endpoint="questionnaire.block",
             list_name=list_name,
             block_id=block_id,
             list_item_id=list_item_id,
-            return_to=return_to,
+            return_to=return_location.return_to,
             return_to_answer_id=self._return_to_answer_id(
-                return_to=return_to,
+                return_to=return_location.return_to,
                 list_item_id=list_item_id,
                 is_in_repeating_section=is_in_repeating_section,
             ),
-            return_to_block_id=return_to_block_id,
-            return_to_list_item_id=return_to_list_item_id,
+            return_to_block_id=return_location.return_to_block_id,
+            return_to_list_item_id=return_location.return_to_list_item_id,
             _anchor=self.id,
         )
 

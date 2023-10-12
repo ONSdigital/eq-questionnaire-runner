@@ -43,7 +43,6 @@ class BlockHandler:
         self._routing_path = self._get_routing_path()
         self.page_title: Optional[str] = None
 
-        # TODO: Instead of individually unpacking, can I use a dict unpacking here?
         self._return_location = ReturnLocation(
             return_to=request_args.get("return_to"),
             return_to_block_id=request_args.get("return_to_block_id"),
@@ -51,10 +50,6 @@ class BlockHandler:
             return_to_list_item_id=request_args.get("return_to_list_item_id"),
         )
 
-        # self._return_to = request_args.get("return_to")
-        # self._return_to_answer_id = request_args.get("return_to_answer_id")
-        # self._return_to_block_id = request_args.get("return_to_block_id")
-        # self._return_to_list_item_id = request_args.get("return_to_list_item_id")
         self.resume = "resume" in request_args
 
         if not self.is_location_valid():
@@ -120,10 +115,6 @@ class BlockHandler:
             self._current_location,
             self._routing_path,
             self._return_location,
-            # self._return_to,
-            # self._return_to_answer_id,
-            # self._return_to_block_id,
-            # self._return_to_list_item_id,
         )
 
     def get_next_location_url(self) -> str:
@@ -131,9 +122,6 @@ class BlockHandler:
             self._current_location,
             self._routing_path,
             self._return_location,
-            # self._return_to_answer_id,
-            # self._return_to_block_id,
-            # self._return_to_list_item_id,
         )
 
     def handle_post(self) -> None:
