@@ -1347,6 +1347,11 @@ def grand_calculated_summary_in_repeating_section_schema():
 
 
 @pytest.fixture
+def supplementary_data_schema():
+    return load_schema_from_name("test_supplementary_data")
+
+
+@pytest.fixture
 def grand_calculated_summary_progress_store():
     return ProgressStore(
         [

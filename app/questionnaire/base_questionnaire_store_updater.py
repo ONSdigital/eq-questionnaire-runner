@@ -12,7 +12,7 @@ from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.questionnaire_schema import AnswerDependent
 from app.questionnaire.router import Router
-from app.utilities.types import DependentSection, LocationType
+from app.utilities.types import DependentSection
 
 
 class BaseQuestionnaireStoreUpdater:
@@ -152,6 +152,8 @@ class BaseQuestionnaireStoreUpdater:
         for list_collector in self._schema.get_list_collectors_for_list(
             for_list=list_name
         ):
+            if list_name in self._schema.supplementary_lists:
+                self._capture_dependencies_for_supplementary_list(list_name)
             child_blocks = (
                 list_collector.get("add_block"),
                 list_collector.get("remove_block"),
@@ -254,6 +256,22 @@ class BaseQuestionnaireStoreUpdater:
             )
         )
 
+    def _capture_dependencies_for_supplementary_list(self, list_name: str) -> None:
+        """
+        In the case of a supplementary list being used for a block with dynamic answers,
+        there is no list collector with add/remove blocks that will act as a dependency for the dynamic answers
+        So the blocks are tracked separately and this handles adding them as dependencies for progress.
+
+        If the dependent block is in a repeating section, this is deleted entirely, so not relevant to progress
+        """
+        for block_id in self._schema.get_block_dependencies_for_supplementary_list(
+            list_name
+        ):
+            section_id: str = self._schema.get_section_id_for_block_id(block_id)  # type: ignore
+            self.dependent_block_id_by_section_key[SectionKey(section_id)].add(block_id)
+            for answer_id in self._schema.get_answer_ids_for_block(block_id):
+                self._capture_block_dependencies_for_answer(answer_id)
+
     def _capture_block_dependencies_for_answer(self, answer_id: str) -> None:
         """Captures a unique list of block ids that are dependents of the provided answer id.
 
@@ -286,7 +304,18 @@ class BaseQuestionnaireStoreUpdater:
     def _get_list_item_ids_for_dependency(
         self, dependency: AnswerDependent, is_repeating_answer: bool | None = False
     ) -> list[str] | list[None]:
-        if dependency.for_list and not is_repeating_answer:
+        """
+        For a repeating answer, and a dependency within that repeat,
+        the only affected list item id is the current one. Since the base updater doesn't have the current location
+        this is not allowed.
+
+        If the dependency is in a repeat, and the data is non-repeating, all list items are affected.
+        """
+        if dependency.for_list:
+            if is_repeating_answer:
+                raise ValueError(
+                    "Not valid to use BaseQuestionnaireStoreUpdater to capture a repeating answer dependency"
+                )
             return self._list_store[dependency.for_list].items
         return [None]
 

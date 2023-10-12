@@ -86,6 +86,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._answer_dependencies_map: dict[str, set[AnswerDependent]] = defaultdict(
             set
         )
+        self._supplementary_list_block_dependencies: dict[str, set[str]] = defaultdict(
+            set
+        )
         self._when_rules_section_dependencies_by_section: dict[str, set[str]] = {}
         self._when_rules_section_dependencies_by_section_for_progress_value_source: defaultdict[
             str, OrderedSet[str]
@@ -340,6 +343,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             all_section_dependencies.update(progress_dependencies)
 
         return all_section_dependencies
+
+    def get_block_dependencies_for_supplementary_list(self, list_name: str) -> set[str]:
+        return self._supplementary_list_block_dependencies.get(list_name, set())
 
     def _get_sections_by_id(self) -> dict[str, ImmutableDict]:
         return {
@@ -616,7 +622,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _update_answer_dependencies_for_list_source(
         self, *, block_id: str, list_name: str
     ) -> None:
-        """Updates dependencies for a block depending on a list collector
+        """Updates dependencies for a block depending on a list collector or supplementary list
 
         This method also stores a map of { block_depending_on_list_source -> {add_block, remove_block} }, because:
         blocks like dynamic_answers, don't directly need to depend on the add_block/remove_block,
@@ -625,6 +631,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         list_collectors = self.get_list_collectors_for_list(
             for_list=list_name,
         )
+
+        if list_name in self.supplementary_lists:
+            self._supplementary_list_block_dependencies[list_name].add(block_id)
 
         for list_collector in list_collectors:
             if add_block := self.get_add_block_for_list_collector(  # type: ignore

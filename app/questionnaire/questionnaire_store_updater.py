@@ -7,7 +7,7 @@ from app.questionnaire.base_questionnaire_store_updater import (
 )
 from app.questionnaire.questionnaire_schema import AnswerDependent
 from app.questionnaire.router import Router
-from app.utilities.types import DependentSection, LocationType
+from app.utilities.types import LocationType
 
 
 class QuestionnaireStoreUpdater(BaseQuestionnaireStoreUpdater):
