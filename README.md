@@ -282,11 +282,6 @@ yarn test_functional
 This can be limited to a single spec using:
 
 ``` shell
-yarn test_functional --spec ./tests/functional/spec/exit.spec.js
-```
-Or alternatively you can use the command:
-
-``` shell
 make test-functional-spec SPEC=<spec>
 ```
 
@@ -298,11 +293,6 @@ To run a single test, add `.only` into the name of any `describe` or `it` functi
 
 Test suites are configured in the `wdio.conf.js` file.
 An individual test suite can be run using:
-
-``` shell
-yarn test_functional --suite <suite>
-```
-Or alternatively you can use the command:
 
 ``` shell
 make test-functional-suite SUITE=<suite>
