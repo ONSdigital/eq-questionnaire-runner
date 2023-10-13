@@ -17,16 +17,14 @@ load-design-system-templates:
 
 build: load-design-system-templates load-schemas translate
 
-lint: lint-python
-	yarn lint
+lint: lint-python lint-js
 
 lint-python:
 	pipenv run ./scripts/run_lint_python.sh
 
 lint-test-python: lint-python test-unit
 
-format: format-python
-	yarn format
+format: format-python format-js
 
 format-python:
 	pipenv run isort .
@@ -53,9 +51,8 @@ test-functional-suite:
 lint-js:
 	yarn lint
 
-lint-test-js: lint-js test-functional
-
-lint-test-js-headless: lint-js test-functional-headless
+format-js:
+	yarn format
 
 validate-test-schemas:
 	pipenv run ./scripts/validate_test_schemas.sh
