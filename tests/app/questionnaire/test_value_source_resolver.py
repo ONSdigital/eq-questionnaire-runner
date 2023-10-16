@@ -41,6 +41,26 @@ def get_mock_schema():
     return schema
 
 
+def get_calculation_block(
+    block_id: str, summary_type: str, source_type: str, identifiers: list[str]
+) -> dict:
+    return {
+        "id": block_id,
+        "type": summary_type,
+        "calculation": {
+            "operation": {
+                "+": [
+                    {
+                        "source": source_type,
+                        "identifier": identifier,
+                    }
+                    for identifier in identifiers
+                ]
+            }
+        },
+    }
+
+
 def get_value_source_resolver(
     schema: QuestionnaireSchema = None,
     answer_store: AnswerStore = AnswerStore(),
@@ -732,6 +752,96 @@ def test_new_calculated_summary_nested_value_source(mocker, list_item_id):
             {"source": "calculated_summary", "identifier": "number-total"}
         )
         == 20
+    )
+
+
+@pytest.mark.parametrize(
+    "gcs_list_item_id, cs_list_item_id_1, cs_list_item_id_2",
+    [
+        (None, None, None),
+        ("item-1", "item-1", "item-1"),
+        ("item-1", "item-1", None),
+        ("item-1", None, None),
+    ],
+)
+def test_grand_calculated_summary_value_source(
+    mocker, gcs_list_item_id, cs_list_item_id_1, cs_list_item_id_2
+):
+    """
+    Mocks out the grand calculated summary block and its child calculated summary blocks and tests
+    that the value source resolver correctly sums up all child answers when
+    1) The GCS is in a repeat alongside both CS
+    2) The GCS is in a repeat alongside one CS
+    3) The GCS is in a repeat but neither CS is
+    3) The GCS is not in a repeat and neither CS is
+    """
+    schema = mocker.MagicMock()
+
+    def mock_get_block(block_id: str) -> dict:
+        blocks = {
+            "number-total": get_calculation_block(
+                "number-total",
+                "GrandCalculatedSummary",
+                "calculated_summary",
+                ["calculated-summary-1", "calculated-summary-2"],
+            ),
+            "calculated-summary-1": get_calculation_block(
+                "calculated-summary-1",
+                "CalculatedSummary",
+                "answers",
+                ["answer-1", "answer-2"],
+            ),
+            "calculated-summary-2": get_calculation_block(
+                "calculated-summary-2",
+                "CalculatedSummary",
+                "answers",
+                ["answer-3", "answer-4"],
+            ),
+        }
+        return blocks[block_id]
+
+    def mock_is_answer_repeating(answer_id: str) -> bool:
+        return (answer_id in {"answer-1", "answer-2"} and cs_list_item_id_1) or (
+            answer_id in {"answer-3", "answer-4"} and cs_list_item_id_2
+        )
+
+    schema.get_block = Mock(side_effect=mock_get_block)
+    schema.is_repeating_answer = Mock(side_effect=mock_is_answer_repeating)
+    schema.is_answer_dynamic = Mock(return_value=False)
+    schema.is_answer_in_list_collector_repeating_block = Mock(return_value=False)
+
+    location = Location(
+        section_id="test-section",
+        block_id="test-block",
+        list_item_id=gcs_list_item_id,
+    )
+
+    value_source_resolver = get_value_source_resolver(
+        answer_store=AnswerStore(
+            [
+                AnswerDict(
+                    answer_id="answer-1", value=10, list_item_id=cs_list_item_id_1
+                ),
+                AnswerDict(
+                    answer_id="answer-2", value=5, list_item_id=cs_list_item_id_1
+                ),
+                AnswerDict(
+                    answer_id="answer-3", value=20, list_item_id=cs_list_item_id_2
+                ),
+                AnswerDict(
+                    answer_id="answer-4", value=30, list_item_id=cs_list_item_id_2
+                ),
+            ]
+        ),
+        schema=schema,
+        list_item_id=gcs_list_item_id,
+        location=location,
+    )
+    assert (
+        value_source_resolver.resolve(
+            {"source": "grand_calculated_summary", "identifier": "number-total"}
+        )
+        == 65
     )
 
 
