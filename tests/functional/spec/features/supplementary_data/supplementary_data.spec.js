@@ -387,6 +387,9 @@ describe("Using supplementary data", () => {
     await click(HubPage.submit());
     await click(CalculatedSummaryVolumeSalesPage.submit());
     await click(CalculatedSummaryVolumeTotalPage.submit());
+    await $$(DynamicProductsPage.inputs())[2].setValue(115);
+    await click(DynamicProductsPage.submit());
+    await click(CalculatedSummaryValueSalesPage.submit());
     await click(Section6Page.submit());
     await click(HubPage.submit());
     await $(ProductQuestion3EnabledPage.yes()).click();
@@ -465,7 +468,7 @@ describe("Using supplementary data", () => {
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryItems)[3].getText()).toBe("Value of sales from other categories");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryValues)[0].getText()).toBe("£110.00");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryValues)[1].getText()).toBe("£220.00");
-    await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryValues)[2].getText()).toBe("No answer provided");
+    await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryValues)[2].getText()).toBe("£115.00");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryValues)[3].getText()).toBe("£330.00");
   });
 });
