@@ -6,8 +6,12 @@ from urllib.parse import quote
 from babel.dates import format_datetime
 from dateutil.relativedelta import relativedelta
 from flask_babel import ngettext
+from werkzeug.datastructures import ImmutableDict
 
-from app.questionnaire.questionnaire_schema import QuestionnaireSchema
+from app.questionnaire.questionnaire_schema import (
+    QuestionnaireSchema,
+    get_calculation_block_ids_for_grand_calculated_summary,
+)
 from app.questionnaire.rules.operations import DateOffset
 from app.questionnaire.rules.operations_helper import OperationHelper
 from app.questionnaire.rules.utils import parse_datetime
@@ -72,6 +76,14 @@ class PlaceholderTransforms:
         elif source == "calculated_summary":
             decimal_limit = self.schema.get_decimal_limit_from_calculated_summaries(
                 [identifier]
+            )
+        elif source == "grand_calculated_summary":
+            # Type ignore: Validator will have checked the id so the block is guaranteed to exist
+            grand_calculated_summary_block: ImmutableDict = self.schema.get_block(identifier)  # type: ignore
+            decimal_limit = self.schema.get_decimal_limit_from_calculated_summaries(
+                get_calculation_block_ids_for_grand_calculated_summary(
+                    grand_calculated_summary_block
+                )
             )
 
         return decimal_limit

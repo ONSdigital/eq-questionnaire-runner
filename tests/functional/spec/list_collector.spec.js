@@ -231,5 +231,11 @@ describe("List Collector", () => {
       await $(PeopleListSectionSummaryPage.peopleListRemoveLink(2)).click();
       await expect(await $(SectionSummaryListCollectorRemovePage.individualResponseGuidance()).isExisting()).to.equal(true);
     });
+
+    it("When the user reaches the submit page and navigates back, They should see the Section Summary", async () => {
+      await click(PeopleListSectionSummaryPage.submit());
+      await click(SubmitPage.previous());
+      await expect(await browser.getUrl()).to.contain(PeopleListSectionSummaryPage.pageName);
+    });
   });
 });
