@@ -47,7 +47,7 @@ class SectionSummaryContext(Context):
         self.routing_path = routing_path
         self.current_location = current_location
 
-    def __call__(           # TODO: Where is this called from? Should we instantiate a ReturnLocation object here, before the self.build_summary() is called?
+    def __call__(
         self,
         return_to: str | None = "section-summary",
         view_submitted_response: bool = False,
@@ -155,7 +155,7 @@ class SectionSummaryContext(Context):
                     language=self._language,
                     progress_store=self._progress_store,
                     supplementary_data_store=self._supplementary_data_store,
-                    return_location=ReturnLocation(     # TODO: Is this the right thing to do?
+                    return_location=ReturnLocation(
                         return_to=return_to,
                         return_to_block_id=None,
                     ),
@@ -192,7 +192,7 @@ class SectionSummaryContext(Context):
                     location=self.current_location,
                     language=self._language,
                     supplementary_data_store=self._supplementary_data_store,
-                    return_location=ReturnLocation(return_to="section-summary"),        # TODO: Not sure if this is the right thing to do here?
+                    return_location=ReturnLocation(return_to="section-summary"),
                 )
                 yield list_collector_block.list_summary_element(summary_element)
 

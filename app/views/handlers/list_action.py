@@ -40,8 +40,7 @@ class ListAction(Question):
 
         block_id = self._request_args.get("previous")
         return self._get_location_url(
-            block_id=block_id,
-            return_location=self.return_location
+            block_id=block_id, return_location=self.return_location
         )
 
     def get_section_or_final_summary_url(self) -> str | None:
@@ -56,9 +55,13 @@ class ListAction(Question):
                 section_id=self.parent_location.section_id,
                 _anchor=self.return_location.return_to_answer_id,
             )
-        if self.return_location.return_to == "final-summary" and self.router.is_questionnaire_complete:
+        if (
+            self.return_location.return_to == "final-summary"
+            and self.router.is_questionnaire_complete
+        ):
             return url_for(
-                "questionnaire.submit_questionnaire", _anchor=self.return_location.return_to_answer_id
+                "questionnaire.submit_questionnaire",
+                _anchor=self.return_location.return_to_answer_id,
             )
 
     def get_next_location_url(self) -> str:
@@ -99,7 +102,8 @@ class ListAction(Question):
         *,
         block_id: str | None = None,
         return_location: ReturnLocation,
-        anchor: str | None = None,
+        anchor: str
+        | None = None,  # TODO: is the anchor the same as the return_to_answer_id (move to return_location class prop potentially?). Possible modify the to_dict to handle
     ) -> str:
         if block_id and self._schema.is_block_valid(block_id):
             # Type ignore: the above line check that block_id exists and is valid and therefore section exists

@@ -35,7 +35,7 @@ class ListRepeatingQuestion(ListEditQuestion):
                 list_name=self.current_location.list_name,
                 list_item_id=self.current_location.list_item_id,
                 block_id=previous_repeating_block_id,
-                return_location=self.return_location,
+                **self.return_location.to_dict(),
             )
 
         if edit_block := self._schema.get_edit_block_for_list_collector(
@@ -46,15 +46,11 @@ class ListRepeatingQuestion(ListEditQuestion):
                 list_name=self.current_location.list_name,
                 list_item_id=self.current_location.list_item_id,
                 block_id=edit_block["id"],
-                return_to=self.return_location.return_to,
-                return_to_answer_id=self.return_location.return_to_answer_id,
-                return_to_block_id=self.return_location.return_to_block_id,
+                **self.return_location.to_dict(),
             )
 
         return self.parent_location.url(
-            return_to=self.return_location.return_to,
-            return_to_answer_id=self.return_location.return_to_answer_id,
-            return_to_block_id=self.return_location.return_to_block_id,
+            **self.return_location.to_dict(),
         )
 
     def handle_post(self) -> None:

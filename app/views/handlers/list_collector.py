@@ -28,7 +28,7 @@ class ListCollector(Question):
                 "questionnaire.block",
                 list_name=self.rendered_block["for_list"],
                 block_id=self.rendered_block["add_block"]["id"],
-                return_to=self.return_location.return_to,          # TODO: Make this a helper function in return_location.py?
+                return_to=self.return_location.return_to,  # TODO: Make this a helper function in return_location.py?
                 return_to_answer_id=self.return_location.return_to_answer_id,
                 return_to_block_id=self.return_location.return_to_block_id,
             )
@@ -44,7 +44,7 @@ class ListCollector(Question):
                 list_name=self.list_name,
                 list_item_id=incomplete_block.list_item_id,
                 block_id=incomplete_block.block_id,
-                return_to=self.return_location.return_to,          # TODO: Make this a helper function in return_location.py?
+                return_to=self.return_location.return_to,  # TODO: Make this a helper function in return_location.py?
                 return_to_answer_id=self.return_location.return_to_answer_id,
                 return_to_block_id=self.return_location.return_to_block_id,
             )

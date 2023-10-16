@@ -97,12 +97,12 @@ class CalculatedSummaryContext(Context):
                 language=self._language,
                 progress_store=self._progress_store,
                 supplementary_data_store=self._supplementary_data_store,
-                return_location=ReturnLocation(     # TODO: Creating a new instance here because I don't want to mutate the passed in return_location at class instantiation. Check if this works in debug?
+                summary_type="CalculatedSummary",
+                return_location=ReturnLocation(
                     return_to=return_to,
                     return_to_block_id=return_to_block_id,
                     return_to_list_item_id=self.return_location.return_to_list_item_id,
                 ),
-                summary_type="CalculatedSummary",
             ).serialize()
             for group in section["groups"]
         ]

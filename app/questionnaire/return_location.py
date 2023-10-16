@@ -1,12 +1,11 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Mapping, Any
-
-from flask import url_for
+from dataclasses import asdict, dataclass
+from typing import Mapping
 
 
-@dataclass(kw_only=True)
+
+@dataclass(kw_only=True, frozen=True)
 class ReturnLocation:
     """
     Used to store return locations in the questionnaire.
@@ -20,27 +19,13 @@ class ReturnLocation:
 
     return_to: str | None = None
     return_to_block_id: str | None = None
-    return_to_answer_id: str | None = None
+    return_to_answer_id: str | None = None  # TODO: This can be an anchor, so make sure to check for it when unpacking in the to_dict function
     return_to_list_name: str | None = None
     return_to_list_item_id: str | None = None
+    # anchor: # TODO: Check if this can live in the class, or whether it's
 
-
-    # def url(self, **kwargs: Any) -> str:
-    #     """
-    #     Return the survey runner url that this location represents
-    #     Any additional keyword arguments are parsed as query strings.
-    #     :return:
-    #     """
-    #     return url_for(
-    #         "questionnaire.block",
-    #         return_to_block_id=self.return_to_block_id,
-    #         return_to_list_name=self.return_to_list_name,
-    #         list_item_id=self.list_item_id,
-    #         **kwargs,
-    #     )
-
-
-    # TODO: Similar to other dataclass functions. Do we want to allow potentially ALL populated values being passed into things like url_for()?
     def to_dict(self) -> Mapping:
-        attributes = vars(self)
-        return {k: v for k, v in attributes.items() if v is not None}
+        attributes = asdict(self)
+        return {
+            k: v for k, v in attributes.items() if v is not None
+        }  # TODO: Add a boolean check to see if anchor == return_to_answer_id?

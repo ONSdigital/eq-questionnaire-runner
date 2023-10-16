@@ -155,9 +155,7 @@ class Router:
         return self._get_next_block_url(
             location,
             routing_path,
-            return_to=return_location.return_to,        # TODO: Do we want to be explicit here with return to kwargs? The caller passes 3 things through explicitly, so seems so?
-            return_to_answer_id=return_location.return_to_answer_id,
-            return_to_block_id=return_location.return_to_block_id,
+            return_location,
         )
 
     def _get_next_location_url_for_complete_section(
@@ -261,11 +259,16 @@ class Router:
 
         if return_location.return_to == "section-summary":
             return self._get_section_url(
-                location.section_key, return_to_answer_id=return_location.return_to_answer_id
+                location.section_key,
+                return_to_answer_id=return_location.return_to_answer_id,
             )
-        if return_location.return_to == "final-summary" and self.is_questionnaire_complete:
+        if (
+            return_location.return_to == "final-summary"
+            and self.is_questionnaire_complete
+        ):
             return url_for(
-                "questionnaire.submit_questionnaire", _anchor=return_location.return_to_answer_id
+                "questionnaire.submit_questionnaire",
+                _anchor=return_location.return_to_answer_id,
             )
 
     def _get_return_to_for_grand_calculated_summary(
@@ -281,13 +284,16 @@ class Router:
         Builds the return url for a grand calculated summary,
         and accounts for it possibly being in a different section to the calculated summaries it references
         """
-        if not (return_location.return_to_block_id and self._schema.is_block_valid(return_location.return_to_block_id)):
+        if not (
+            return_location.return_to_block_id
+            and self._schema.is_block_valid(return_location.return_to_block_id)
+        ):
             return None
 
         # Type ignore: if the block is valid, then we'll be able to find a section for it
         grand_calculated_summary_section: str = (
-            self._schema.get_section_id_for_block_id(return_location.return_to_block_id)  # type: ignore
-        )
+            self._schema.get_section_id_for_block_id(return_location.return_to_block_id)
+        )  # type: ignore
         list_item_id = location.list_item_id or return_location.return_to_list_item_id
         list_name = (
             self._list_store.get_list_name_for_list_item_id(list_item_id)
@@ -320,7 +326,7 @@ class Router:
             return url_for(
                 "questionnaire.block",
                 block_id=return_location.return_to_block_id,
-                list_item_id=list_item_id,  # TODO: list_item_id can be either Location or ReturnLocation type. Due to this, keep url_for() here instead of having it as a helper func in return_location?
+                list_item_id=list_item_id,
                 list_name=list_name,
                 _anchor=return_location.return_to_answer_id,
             )
@@ -335,7 +341,7 @@ class Router:
     def _get_return_to_for_calculated_summary(
         self,
         *,
-        return_location: ReturnLocation,  # TODO: Check if this is mutable. If so, it's modified in this func so need to safeguard?
+        return_location: ReturnLocation,
         location: LocationType,
         routing_path: RoutingPath,
     ) -> str | None:
@@ -362,17 +368,19 @@ class Router:
             routing_path,
         ):
             # if the next location is valid, the new url is that location, and the new 'return to block id' is just what remains
-            return_location.return_to_block_id = ",".join(remaining) if remaining else None
-            # remove first item and return the remaining ones
-            return_to_remaining = ",".join(return_location.return_to.split(",")[1:]) if return_location.return_to else None
+            return_to_block_id = ",".join(remaining) if remaining else None
 
-            return url_for(     #TODO: Come back to this
+            # remove first item and return the remaining ones
+            # Type ignore: return_location.return_to will always be populated at this point
+            return_to_remaining = ",".join(return_location.return_to.split(",")[1:]) or None  # type: ignore
+
+            return url_for(
                 "questionnaire.block",
                 block_id=block_id,
                 list_name=location.list_name,
                 list_item_id=location.list_item_id,
-                return_to=return_to_remaining,
-                return_to_block_id=return_location.return_to_block_id,
+                return_to=return_to_remaining,  # TODO: Come back to this. Should we create a new ReturnLocation above, or instantiate inline here, or keep the kwargs as is?
+                return_to_block_id=return_to_block_id,
                 return_to_list_item_id=return_location.return_to_list_item_id,
                 _anchor=return_location.return_to_answer_id,
             )
@@ -398,10 +406,7 @@ class Router:
             )
         ):
             return next_incomplete_location.url(
-                # **return_location.to_dict()   # TODO: Started doing this, but might be best to use explicit kwargs for url_for()?
-                return_to=return_location.return_to,
-                return_to_block_id=return_location.return_to_block_id,
-                return_to_list_item_id=return_location.return_to_list_item_id,
+                **return_location.to_dict(),
             )
 
     def get_next_location_url_for_end_of_section(self) -> str:
@@ -544,7 +549,7 @@ class Router:
     def _get_next_block_url(
         location: LocationType,
         routing_path: RoutingPath,
-        **kwargs: str | None,
+        return_location: ReturnLocation,
     ) -> str:
         # Type ignore: the location will have a block
         next_block_id = routing_path[routing_path.index(location.block_id) + 1]  # type: ignore
@@ -553,8 +558,10 @@ class Router:
             block_id=next_block_id,
             list_name=routing_path.list_name,
             list_item_id=routing_path.list_item_id,
+            return_to=return_location.return_to,
+            return_to_answer_id=return_location.return_to_answer_id,
+            return_to_block_id=return_location.return_to_block_id,
             _external=False,
-            **kwargs,
         )
 
     @staticmethod
