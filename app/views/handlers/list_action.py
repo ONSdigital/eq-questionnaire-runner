@@ -102,8 +102,7 @@ class ListAction(Question):
         *,
         block_id: str | None = None,
         return_location: ReturnLocation,
-        anchor: str
-        | None = None,  # TODO: is the anchor the same as the return_to_answer_id (move to return_location class prop potentially?). Possible modify the to_dict to handle
+        anchor: str | None = None,
     ) -> str:
         if block_id and self._schema.is_block_valid(block_id):
             # Type ignore: the above line check that block_id exists and is valid and therefore section exists

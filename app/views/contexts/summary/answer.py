@@ -70,14 +70,14 @@ class Answer:
             block_id=block_id,
             list_item_id=list_item_id,
             return_to=return_location.return_to,
-            return_to_answer_id=self._return_to_answer_id(  # TODO: Come back to this - return_to_answer_id is a special case here
+            return_to_answer_id=self._return_to_answer_id(
                 return_to=return_location.return_to,
                 list_item_id=list_item_id,
                 is_in_repeating_section=is_in_repeating_section,
             ),
             return_to_block_id=return_location.return_to_block_id,
             return_to_list_item_id=return_location.return_to_list_item_id,
-            _anchor=self.id,  # TODO: Come back to this - do we need to handle _anchor scenario here?
+            _anchor=self.id,
         )
 
     def _return_to_answer_id(

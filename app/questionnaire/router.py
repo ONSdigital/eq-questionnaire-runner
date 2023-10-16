@@ -379,7 +379,7 @@ class Router:
                 block_id=block_id,
                 list_name=location.list_name,
                 list_item_id=location.list_item_id,
-                return_to=return_to_remaining,  # TODO: Come back to this. Should we create a new ReturnLocation above, or instantiate inline here, or keep the kwargs as is?
+                return_to=return_to_remaining,
                 return_to_block_id=return_to_block_id,
                 return_to_list_item_id=return_location.return_to_list_item_id,
                 _anchor=return_location.return_to_answer_id,
@@ -558,10 +558,8 @@ class Router:
             block_id=next_block_id,
             list_name=routing_path.list_name,
             list_item_id=routing_path.list_item_id,
-            return_to=return_location.return_to,
-            return_to_answer_id=return_location.return_to_answer_id,
-            return_to_block_id=return_location.return_to_block_id,
             _external=False,
+            **return_location.to_dict(),
         )
 
     @staticmethod

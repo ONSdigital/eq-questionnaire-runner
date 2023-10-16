@@ -86,7 +86,7 @@ class CalculatedSummaryBlock:
             if not self._list_item_id
             else None
         )
-        return url_for(  # TODO: Uses the self.id - move to return_location class still?
+        return url_for(
             "questionnaire.block",
             block_id=self.id,
             list_name=self._list_name,
