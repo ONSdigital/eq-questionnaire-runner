@@ -104,13 +104,13 @@ def test_context_for_summary():
     )
 
     data_stores = DataStores(
-            answer_store=answer_store,
-            list_store=list_store,
-            progress_store=progress_store,
-            metadata=None,
-            response_metadata={},
-            supplementary_data_store=SupplementaryDataStore(),
-        )
+        answer_store=answer_store,
+        list_store=list_store,
+        progress_store=progress_store,
+        metadata=None,
+        response_metadata={},
+        supplementary_data_store=SupplementaryDataStore(),
+    )
 
     summary_context = SummaryContext(
         language=DEFAULT_LANGUAGE_CODE,

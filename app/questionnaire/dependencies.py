@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Mapping, Sequence
 from ordered_set import OrderedSet
 from werkzeug.datastructures import MultiDict
 
-from app.data_models import progress_store
+from app.data_models import progress_store as ps
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.questionnaire_schema import get_sources_for_type_from_data
 from app.utilities.mappings import get_flattened_mapping_values
@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 def get_routing_path_block_ids_by_section_for_dependent_sections(
     *,
     location: LocationType,
-    progress_store: progress_store.ProgressStore,
+    progress_store: ps.ProgressStore,
     path_finder: PathFinder,
     source_type: str,
     data: MultiDict | Mapping | Sequence,
@@ -58,7 +58,7 @@ def get_routing_path_block_ids_by_section_for_dependent_sections(
 def get_routing_path_block_ids_by_section_for_calculated_summary_dependencies(
     *,
     location: LocationType,
-    progress_store: ProgressStore,
+    progress_store: ps.ProgressStore,
     path_finder: PathFinder,
     data: MultiDict | Mapping | Sequence,
     sections_to_ignore: list | None = None,

@@ -1,14 +1,7 @@
-from typing import Mapping, MutableMapping
+from typing import Mapping
 
 from jsonpointer import resolve_pointer
 
-from app.data_models import (
-    AnswerStore,
-    ListStore,
-    ProgressStore,
-    SupplementaryDataStore,
-)
-from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.questionnaire_store import DataStores
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.schema_utils import find_pointers_containing
@@ -61,7 +54,7 @@ class Block:
     def get_question(
         self,
         *,
-        data_stores,
+        data_stores: DataStores,
         block_schema: Mapping,
         return_to: str | None,
         return_to_block_id: str | None,

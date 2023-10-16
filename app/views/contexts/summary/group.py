@@ -4,6 +4,7 @@ from werkzeug.datastructures import ImmutableDict
 
 from app.data_models.questionnaire_store import DataStores
 from app.questionnaire import QuestionnaireSchema
+from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.questionnaire_schema import (
     LIST_COLLECTORS_WITH_REPEATING_BLOCKS,
     is_list_collector_block_editable,
@@ -57,8 +58,16 @@ class Group:
             summary_type=summary_type,
         )
 
-        self.placeholder_renderer = self.data_stores.placeholder_renderer(
-            schema=schema, language=language
+        self.placeholder_renderer = PlaceholderRenderer(
+            language=language,
+            answer_store=self.data_stores.answer_store,
+            list_store=self.data_stores.list_store,
+            location=self.location,
+            metadata=self.data_stores.metadata,
+            response_metadata=self.data_stores.response_metadata,
+            schema=schema,
+            progress_store=self.data_stores.progress_store,
+            supplementary_data_store=self.data_stores.supplementary_data_store,
         )
 
     # pylint: disable=too-many-locals

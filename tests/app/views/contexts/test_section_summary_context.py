@@ -614,7 +614,7 @@ def test_primary_only_links_for_section_summary(people_answer_store):
         list_store=ListStore(
             [
                 {
-                    "items": ["PlwgoG", "fg0sPd"],
+                    "items": ["PlwgoG"],
                     "name": "people",
                     "primary_person": "PlwgoG",
                 }
