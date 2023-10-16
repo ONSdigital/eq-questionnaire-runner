@@ -1,22 +1,15 @@
 from functools import cached_property
-from typing import Callable, Iterable, Mapping, MutableMapping, Tuple
+from typing import Callable, Iterable, Mapping, Tuple
 
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import (
-    AnswerStore,
-    ListStore,
-    ProgressStore,
-    SupplementaryDataStore,
-)
-from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.questionnaire_store import DataStores
 from app.jinja_filters import format_number, format_percentage, format_unit
 from app.questionnaire.questionnaire_schema import (
     QuestionnaireSchema,
     get_calculated_summary_answer_ids,
 )
 from app.questionnaire.routing_path import RoutingPath
-from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.schema_utils import get_answer_ids_in_block
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.questionnaire.variants import choose_question_to_display, transform_variants
@@ -33,14 +26,9 @@ class CalculatedSummaryContext(Context):
         self,
         language: str,
         schema: QuestionnaireSchema,
-        answer_store: AnswerStore,
-        list_store: ListStore,
-        progress_store: ProgressStore,
-        metadata: MetadataProxy | None,
-        response_metadata: MutableMapping,
+        data_stores: DataStores,
         routing_path: RoutingPath,
         current_location: LocationType,
-        supplementary_data_store: SupplementaryDataStore,
         return_to: str | None = None,
         return_to_block_id: str | None = None,
         return_to_list_item_id: str | None = None,
@@ -48,13 +36,9 @@ class CalculatedSummaryContext(Context):
         super().__init__(
             language,
             schema,
-            answer_store,
-            list_store,
-            progress_store,
-            metadata,
-            response_metadata,
-            supplementary_data_store,
+            data_stores,
         )
+        self._data_stores = data_stores
         self.routing_path_block_ids = routing_path.block_ids
         self.current_location = current_location
         self.return_to = return_to
@@ -91,15 +75,10 @@ class CalculatedSummaryContext(Context):
             Group(
                 group_schema=group,
                 routing_path_block_ids=routing_path_block_ids,
-                answer_store=self._answer_store,
-                list_store=self._list_store,
-                metadata=self._metadata,
-                response_metadata=self._response_metadata,
                 schema=self._schema,
+                data_stores=self._data_stores,
                 location=self.current_location,
                 language=self._language,
-                progress_store=self._progress_store,
-                supplementary_data_store=self._supplementary_data_store,
                 return_to=return_to,
                 return_to_block_id=return_to_block_id,
                 return_to_list_item_id=self.return_to_list_item_id,
@@ -203,13 +182,13 @@ class CalculatedSummaryContext(Context):
         block_to_transform: ImmutableDict = transform_variants(
             block,
             self._schema,
-            self._metadata,
-            self._response_metadata,
-            self._answer_store,
-            self._list_store,
+            self._data_stores.metadata,
+            self._data_stores.response_metadata,
+            self._data_stores.answer_store,
+            self._data_stores.list_store,
             self.current_location,
-            self._progress_store,
-            self._supplementary_data_store,
+            self._data_stores.progress_store,
+            self._data_stores.supplementary_data_store,
         )
         transformed_block: dict = QuestionnaireSchema.get_mutable_deepcopy(
             block_to_transform
@@ -249,16 +228,11 @@ class CalculatedSummaryContext(Context):
         """
         For a calculation in the new style and the list of involved block ids (possibly across sections) evaluate the total
         """
-        evaluate_calculated_summary = RuleEvaluator(
-            self._schema,
-            self._answer_store,
-            self._list_store,
-            self._metadata,
-            self._response_metadata,
+        evaluate_calculated_summary = self._data_stores.rule_evaluator(
+            schema=self._schema,
             routing_path_block_ids=routing_path_block_ids,
-            location=self.current_location,
-            progress_store=self._progress_store,
-            supplementary_data_store=self._supplementary_data_store,
+            # Type ignore: location in rule_evaluator can be both Location or RelationshipLocation type but is only Location type here
+            location=self.current_location,  # type: ignore
         )
         # Type ignore: in the case of a calculated summation it will always be a numeric type
         calculated_total: NumericType = evaluate_calculated_summary.evaluate(calculation)  # type: ignore
@@ -288,13 +262,13 @@ class CalculatedSummaryContext(Context):
                 question = choose_question_to_display(
                     block,
                     self._schema,
-                    self._metadata,
-                    self._response_metadata,
-                    self._answer_store,
-                    self._list_store,
+                    self._data_stores.metadata,
+                    self._data_stores.response_metadata,
+                    self._data_stores.answer_store,
+                    self._data_stores.list_store,
                     current_location=self.current_location,
-                    progress_store=self._progress_store,
-                    supplementary_data_store=self._supplementary_data_store,
+                    progress_store=self._data_stores.progress_store,
+                    supplementary_data_store=self._data_stores.supplementary_data_store,
                 )
                 for answer in question["answers"]:
                     if not answer_format["type"]:

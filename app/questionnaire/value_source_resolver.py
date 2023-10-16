@@ -5,7 +5,7 @@ from typing import Callable, Iterable, Mapping, MutableMapping, TypeAlias
 from markupsafe import Markup
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import ProgressStore, SupplementaryDataStore
+from app.data_models import progress_store, supplementary_data_store
 from app.data_models.answer import (
     AnswerValueEscapedTypes,
     AnswerValueTypes,
@@ -34,8 +34,8 @@ class ValueSourceResolver:
     schema: QuestionnaireSchema
     location: LocationType | None
     list_item_id: str | None
-    progress_store: ProgressStore
-    supplementary_data_store: SupplementaryDataStore
+    progress_store: progress_store.ProgressStore
+    supplementary_data_store: supplementary_data_store.SupplementaryDataStore
     routing_path_block_ids: Iterable[str] | None = None
     use_default_answer: bool = False
     escape_answer_values: bool = False

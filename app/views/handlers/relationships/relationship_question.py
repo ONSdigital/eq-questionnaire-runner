@@ -50,7 +50,7 @@ class RelationshipQuestion(Question):
 
     @cached_property
     def relationship_store(self) -> RelationshipStore:
-        answer = self._questionnaire_store.answer_store.get_answer(
+        answer = self._questionnaire_store.data_stores.answer_store.get_answer(
             self.relationships_answer_id
         )
         if answer:
@@ -63,10 +63,10 @@ class RelationshipQuestion(Question):
     def relationship_router(self) -> RelationshipRouter:
         # Type ignore: list will be populated at this point as it is required to build relationship
         list_name = self.relationships_block["for_list"]  # type: ignore
-        list_items = self._questionnaire_store.list_store[list_name].items
+        list_items = self._questionnaire_store.data_stores.list_store[list_name].items
 
         return RelationshipRouter(
-            answer_store=self._questionnaire_store.answer_store,
+            answer_store=self._questionnaire_store.data_stores.answer_store,
             relationship_store=self.relationship_store,
             section_id=self._current_location.section_id,
             list_name=list_name,

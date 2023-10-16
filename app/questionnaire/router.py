@@ -1,19 +1,12 @@
-from typing import Generator, Mapping, MutableMapping
+from typing import Generator, Mapping
 
 from flask import url_for
 
-from app.data_models import (
-    AnswerStore,
-    ListStore,
-    ProgressStore,
-    SupplementaryDataStore,
-)
-from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.questionnaire_store import DataStores
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.routing_path import RoutingPath
-from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.utilities.types import LocationType
 
 
@@ -21,29 +14,19 @@ class Router:
     def __init__(
         self,
         schema: QuestionnaireSchema,
-        answer_store: AnswerStore,
-        list_store: ListStore,
-        progress_store: ProgressStore,
-        metadata: MetadataProxy | None,
-        response_metadata: MutableMapping,
-        supplementary_data_store: SupplementaryDataStore,
+        data_stores: DataStores,
     ):
         self._schema = schema
-        self._answer_store = answer_store
-        self._list_store = list_store
-        self._progress_store = progress_store
-        self._metadata = metadata
-        self._response_metadata = response_metadata
-        self._supplementary_data_store = supplementary_data_store
+        self._data_stores = data_stores
 
         self._path_finder = PathFinder(
             self._schema,
-            self._answer_store,
-            self._list_store,
-            self._progress_store,
-            self._metadata,
-            self._response_metadata,
-            self._supplementary_data_store,
+            self._data_stores.answer_store,
+            self._data_stores.list_store,
+            self._data_stores.progress_store,
+            self._data_stores.metadata,
+            self._data_stores.response_metadata,
+            self._data_stores.supplementary_data_store,
         )
 
     @property
@@ -78,7 +61,7 @@ class Router:
             return self.get_last_location_in_section(routing_path).url()
 
     def _is_list_item_in_list_store(self, list_item_id: str, list_name: str) -> bool:
-        return list_item_id in self._list_store[list_name]
+        return list_item_id in self._data_stores.list_store[list_name]
 
     def can_access_location(
         self, location: LocationType, routing_path: RoutingPath
@@ -103,7 +86,7 @@ class Router:
 
     def can_access_hub(self) -> bool:
         return self._schema.is_flow_hub and all(
-            self._progress_store.is_section_complete(SectionKey(section_id))
+            self._data_stores.progress_store.is_section_complete(SectionKey(section_id))
             for section_id in self._schema.get_section_ids_required_for_hub()
             if section_id in self.enabled_section_ids
         )
@@ -111,7 +94,7 @@ class Router:
     def can_display_section_summary(self, section_key: SectionKey) -> bool:
         return bool(
             self._schema.get_summary_for_section(section_key.section_id)
-        ) and self._progress_store.is_section_complete(section_key)
+        ) and self._data_stores.progress_store.is_section_complete(section_key)
 
     def routing_path(self, section_key: SectionKey) -> RoutingPath:
         return self._path_finder.routing_path(section_key)
@@ -129,7 +112,7 @@ class Router:
         Get the next location in the section. If the section is complete, determine where to go next,
         whether it be a summary, the hub or the next incomplete location.
         """
-        is_section_complete = self._progress_store.is_section_complete(
+        is_section_complete = self._data_stores.progress_store.is_section_complete(
             location.section_key
         )
 
@@ -267,7 +250,7 @@ class Router:
             return url
 
         if is_section_complete is None:
-            is_section_complete = self._progress_store.is_section_complete(
+            is_section_complete = self._data_stores.progress_store.is_section_complete(
                 location.section_key
             )
 
@@ -315,7 +298,7 @@ class Router:
         )
         list_item_id = location.list_item_id or return_to_list_item_id
         list_name = (
-            self._list_store.get_list_name_for_list_item_id(list_item_id)
+            self._data_stores.list_store.get_list_name_for_list_item_id(list_item_id)
             if list_item_id
             else None
         )
@@ -323,7 +306,7 @@ class Router:
             # the grand calculated summary is in a different section which will have a different routing path
             # but does not go to it unless the section is enabled and the current section is complete
             if (
-                not self._progress_store.is_section_complete(section_key)
+                not self._data_stores.progress_store.is_section_complete(section_key)
                 or grand_calculated_summary_section not in self.enabled_section_ids
             ):
                 return None
@@ -445,7 +428,7 @@ class Router:
         return self.get_first_incomplete_location_in_questionnaire_url()
 
     def get_section_resume_url(self, routing_path: RoutingPath) -> str:
-        if routing_path.section_key in self._progress_store:
+        if routing_path.section_key in self._data_stores.progress_store:
             location = self._get_first_incomplete_location_in_section(routing_path)
             if location:
                 return location.url(resume=True)
@@ -479,7 +462,7 @@ class Router:
             repeating_list = self._schema.get_repeating_list_for_section(section_id)
 
             if repeating_list:
-                for list_item_id in self._list_store[repeating_list]:
+                for list_item_id in self._data_stores.list_store[repeating_list]:
                     full_routing_path.append(
                         self._path_finder.routing_path(
                             SectionKey(section_id, list_item_id)
@@ -495,7 +478,7 @@ class Router:
         self, routing_path: RoutingPath
     ) -> Location | None:
         for block_id in routing_path:
-            if not self._progress_store.is_block_complete(
+            if not self._data_stores.progress_store.is_block_complete(
                 block_id=block_id,
                 section_key=routing_path.section_key,
             ):
@@ -516,7 +499,7 @@ class Router:
             for block_id in routing_path:
                 allowable_path.append(block_id)
 
-                if not self._progress_store.is_block_complete(
+                if not self._data_stores.progress_store.is_block_complete(
                     block_id=block_id,
                     section_key=routing_path.section_key,
                 ):
@@ -531,19 +514,19 @@ class Router:
             if repeating_list := self._schema.get_repeating_list_for_section(
                 section_id
             ):
-                for list_item_id in self._list_store[repeating_list]:
+                for list_item_id in self._data_stores.list_store[repeating_list]:
                     yield SectionKey(section_id, list_item_id)
             else:
                 yield SectionKey(section_id)
 
     def _get_first_incomplete_section_key(self) -> SectionKey | None:
         for section_key in self._get_enabled_section_keys():
-            if not self._progress_store.is_section_complete(section_key):
+            if not self._data_stores.progress_store.is_section_complete(section_key):
                 return section_key
 
     def _get_last_complete_section_key(self) -> SectionKey | None:
         for section_key in list(self._get_enabled_section_keys())[::-1]:
-            if self._progress_store.is_section_complete(section_key):
+            if self._data_stores.progress_store.is_section_complete(section_key):
                 return section_key
 
     def _is_section_enabled(self, section: Mapping) -> bool:
@@ -557,16 +540,10 @@ class Router:
             section_id
         )
 
-        when_rule_evaluator = RuleEvaluator(
+        when_rule_evaluator = self._data_stores.rule_evaluator(
             schema=self._schema,
-            answer_store=self._answer_store,
-            list_store=self._list_store,
-            metadata=self._metadata,
-            response_metadata=self._response_metadata,
-            progress_store=self._progress_store,
             location=Location(section_id=section_id),
             routing_path_block_ids=routing_path_block_ids,
-            supplementary_data_store=self._supplementary_data_store,
         )
 
         return bool(when_rule_evaluator.evaluate(enabled["when"]))

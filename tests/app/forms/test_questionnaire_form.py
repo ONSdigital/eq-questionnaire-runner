@@ -6,6 +6,7 @@ from werkzeug.datastructures import MultiDict
 
 from app.data_models import ListStore, ProgressStore, SupplementaryDataStore
 from app.data_models.answer_store import Answer, AnswerStore
+from app.data_models.questionnaire_store import DataStores
 from app.forms import error_messages
 from app.forms.questionnaire_form import generate_form
 from app.forms.validators import (
@@ -27,7 +28,7 @@ def error_exists(answer_id, msg, mapped_errors):
     )
 
 
-def test_form_ids_match_block_answer_ids(app, answer_store, list_store):
+def test_form_ids_match_block_answer_ids(app, data_stores):
     with app.test_request_context():
         schema = load_schema_from_name("test_textfield")
 
@@ -36,19 +37,14 @@ def test_form_ids_match_block_answer_ids(app, answer_store, list_store):
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
+            data_stores=data_stores,
         )
 
         for answer_id in schema.get_answer_ids_for_block("name-block"):
             assert hasattr(form, answer_id)
 
 
-def test_form_date_range_populates_data(app, answer_store, list_store):
+def test_form_date_range_populates_data(app, data_stores):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_range")
 
@@ -74,19 +70,14 @@ def test_form_date_range_populates_data(app, answer_store, list_store):
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
+            data_stores=data_stores,
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         assert form.data == expected_form_data
 
 
-def test_date_range_matching_dates_raises_question_error(app, answer_store, list_store):
+def test_date_range_matching_dates_raises_question_error(app, data_stores):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_range")
 
@@ -112,13 +103,8 @@ def test_date_range_matching_dates_raises_question_error(app, answer_store, list
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
+            data_stores=data_stores,
         )
 
         form.validate()
@@ -129,9 +115,7 @@ def test_date_range_matching_dates_raises_question_error(app, answer_store, list
         )
 
 
-def test_date_range_to_precedes_from_raises_question_error(
-    app, answer_store, list_store
-):
+def test_date_range_to_precedes_from_raises_question_error(app, data_stores):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_range")
 
@@ -157,13 +141,8 @@ def test_date_range_to_precedes_from_raises_question_error(
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
+            data_stores=data_stores,
         )
 
         form.validate()
@@ -174,9 +153,7 @@ def test_date_range_to_precedes_from_raises_question_error(
         )
 
 
-def test_date_range_too_large_period_raises_question_error(
-    app, answer_store, list_store
-):
+def test_date_range_too_large_period_raises_question_error(app, data_stores):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_range")
 
@@ -202,13 +179,8 @@ def test_date_range_too_large_period_raises_question_error(
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
+            data_stores=data_stores,
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         form.validate()
@@ -218,9 +190,7 @@ def test_date_range_too_large_period_raises_question_error(
         ] % {"max": "1 month, 20 days"}
 
 
-def test_date_range_too_small_period_raises_question_error(
-    app, answer_store, list_store
-):
+def test_date_range_too_small_period_raises_question_error(app, data_stores):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_range")
 
@@ -246,13 +216,8 @@ def test_date_range_too_small_period_raises_question_error(
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
+            data_stores=data_stores,
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         form.validate()
@@ -262,7 +227,7 @@ def test_date_range_too_small_period_raises_question_error(
         ] % {"min": "23 days"}
 
 
-def test_date_range_valid_period(app, answer_store, list_store):
+def test_date_range_valid_period(app, data_stores):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_range")
 
@@ -288,20 +253,15 @@ def test_date_range_valid_period(app, answer_store, list_store):
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
+            data_stores=data_stores,
         )
 
         form.validate()
         assert form.data == expected_form_data
 
 
-def test_date_combined_single_validation(app, answer_store, list_store):
+def test_date_combined_single_validation(app):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_combined")
 
@@ -325,8 +285,6 @@ def test_date_combined_single_validation(app, answer_store, list_store):
 
         metadata = get_metadata(test_metadata)
 
-        response_metadata = {}
-
         expected_form_data = {
             "csrf_token": None,
             "date-range-from": "2017-01-01",
@@ -336,13 +294,8 @@ def test_date_combined_single_validation(app, answer_store, list_store):
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=metadata,
-            response_metadata=response_metadata,
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
+            data_stores=DataStores(metadata=metadata),
         )
 
         form.validate()
@@ -356,7 +309,7 @@ def test_date_combined_single_validation(app, answer_store, list_store):
         ] % {"max": "14 March 2017"}
 
 
-def test_date_combined_range_too_small_validation(app, answer_store, list_store):
+def test_date_combined_range_too_small_validation(app):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_combined")
 
@@ -389,13 +342,8 @@ def test_date_combined_range_too_small_validation(app, answer_store, list_store)
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=metadata,
-            response_metadata={},
+            data_stores=DataStores(metadata=metadata),
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         form.validate()
@@ -405,7 +353,7 @@ def test_date_combined_range_too_small_validation(app, answer_store, list_store)
         ] % {"min": "10 days"}
 
 
-def test_date_combined_range_too_large_validation(app, answer_store, list_store):
+def test_date_combined_range_too_large_validation(app):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_combined")
 
@@ -429,8 +377,6 @@ def test_date_combined_range_too_large_validation(app, answer_store, list_store)
 
         metadata = get_metadata(test_metadata)
 
-        response_metadata = {}
-
         expected_form_data = {
             "csrf_token": None,
             "date-range-from": "2017-01-01",
@@ -440,13 +386,8 @@ def test_date_combined_range_too_large_validation(app, answer_store, list_store)
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=metadata,
-            response_metadata=response_metadata,
+            data_stores=DataStores(metadata=metadata),
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         form.validate()
@@ -456,7 +397,7 @@ def test_date_combined_range_too_large_validation(app, answer_store, list_store)
         ] % {"max": "50 days"}
 
 
-def test_date_mm_yyyy_combined_single_validation(app, answer_store, list_store):
+def test_date_mm_yyyy_combined_single_validation(app):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_mm_yyyy_combined")
 
@@ -478,8 +419,6 @@ def test_date_mm_yyyy_combined_single_validation(app, answer_store, list_store):
 
         metadata = get_metadata(test_metadata)
 
-        response_metadata = {}
-
         expected_form_data = {
             "csrf_token": None,
             "date-range-from": "2016-11",
@@ -489,13 +428,8 @@ def test_date_mm_yyyy_combined_single_validation(app, answer_store, list_store):
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=metadata,
-            response_metadata=response_metadata,
+            data_stores=DataStores(metadata=metadata),
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         form.validate()
@@ -509,9 +443,7 @@ def test_date_mm_yyyy_combined_single_validation(app, answer_store, list_store):
         ] % {"max": "June 2017"}
 
 
-def test_date_mm_yyyy_combined_range_too_small_validation(
-    app, answer_store, list_store
-):
+def test_date_mm_yyyy_combined_range_too_small_validation(app):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_mm_yyyy_combined")
 
@@ -542,13 +474,8 @@ def test_date_mm_yyyy_combined_range_too_small_validation(
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=metadata,
-            response_metadata={},
+            data_stores=DataStores(metadata=metadata),
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         form.validate()
@@ -558,9 +485,7 @@ def test_date_mm_yyyy_combined_range_too_small_validation(
         ] % {"min": "2 months"}
 
 
-def test_date_mm_yyyy_combined_range_too_large_validation(
-    app, answer_store, list_store
-):
+def test_date_mm_yyyy_combined_range_too_large_validation(app):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_mm_yyyy_combined")
 
@@ -582,8 +507,6 @@ def test_date_mm_yyyy_combined_range_too_large_validation(
 
         metadata = get_metadata(test_metadata)
 
-        response_metadata = {}
-
         expected_form_data = {
             "csrf_token": None,
             "date-range-from": "2017-01",
@@ -593,13 +516,8 @@ def test_date_mm_yyyy_combined_range_too_large_validation(
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=metadata,
-            response_metadata=response_metadata,
+            data_stores=DataStores(metadata=metadata),
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         form.validate()
@@ -609,7 +527,7 @@ def test_date_mm_yyyy_combined_range_too_large_validation(
         ] % {"max": "3 months"}
 
 
-def test_date_yyyy_combined_single_validation(app, answer_store, list_store):
+def test_date_yyyy_combined_single_validation(app):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_yyyy_combined")
 
@@ -635,13 +553,8 @@ def test_date_yyyy_combined_single_validation(app, answer_store, list_store):
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=metadata,
-            response_metadata={},
+            data_stores=DataStores(metadata=metadata),
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         form.validate()
@@ -655,7 +568,7 @@ def test_date_yyyy_combined_single_validation(app, answer_store, list_store):
         ] % {"max": "2021"}
 
 
-def test_date_yyyy_combined_range_too_small_validation(app, answer_store, list_store):
+def test_date_yyyy_combined_range_too_small_validation(app):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_yyyy_combined")
 
@@ -681,13 +594,8 @@ def test_date_yyyy_combined_range_too_small_validation(app, answer_store, list_s
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=metadata,
-            response_metadata={},
+            data_stores=DataStores(metadata=metadata),
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         form.validate()
@@ -697,7 +605,7 @@ def test_date_yyyy_combined_range_too_small_validation(app, answer_store, list_s
         ] % {"min": "2 years"}
 
 
-def test_date_yyyy_combined_range_too_large_validation(app, answer_store, list_store):
+def test_date_yyyy_combined_range_too_large_validation(app):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_yyyy_combined")
 
@@ -723,13 +631,8 @@ def test_date_yyyy_combined_range_too_large_validation(app, answer_store, list_s
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=metadata,
-            response_metadata={},
+            data_stores=DataStores(metadata=metadata),
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         form.validate()
@@ -739,9 +642,7 @@ def test_date_yyyy_combined_range_too_large_validation(app, answer_store, list_s
         ] % {"max": "3 years"}
 
 
-def test_date_raises_ValueError_when_any_date_range_parts_are_falsy(
-    app, answer_store, list_store
-):
+def test_date_raises_ValueError_when_any_date_range_parts_are_falsy(app):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_combined")
 
@@ -760,27 +661,18 @@ def test_date_raises_ValueError_when_any_date_range_parts_are_falsy(
 
         metadata = get_metadata()
 
-        response_metadata = {}
-
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=metadata,
-            response_metadata=response_metadata,
+            data_stores=DataStores(metadata=metadata),
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         with pytest.raises(ValueError):
             form.validate()
 
 
-def test_bespoke_message_for_date_validation_range(
-    app, answer_store, list_store, mocker
-):
+def test_bespoke_message_for_date_validation_range(app, data_stores, mocker):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_range")
 
@@ -819,13 +711,8 @@ def test_bespoke_message_for_date_validation_range(
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
+            data_stores=data_stores,
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         mocker.patch(
@@ -836,9 +723,7 @@ def test_bespoke_message_for_date_validation_range(
         assert form.question_errors["date-range-question"] == "Test Message"
 
 
-def test_invalid_minimum_period_limit_and_single_date_periods(
-    app, answer_store, list_store, mocker
-):
+def test_invalid_minimum_period_limit_and_single_date_periods(app, data_stores, mocker):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_range")
 
@@ -878,13 +763,8 @@ def test_invalid_minimum_period_limit_and_single_date_periods(
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
+            data_stores=data_stores,
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         with pytest.raises(Exception) as exc:
@@ -898,9 +778,7 @@ def test_invalid_minimum_period_limit_and_single_date_periods(
         )
 
 
-def test_invalid_maximum_period_limit_and_single_date_periods(
-    app, answer_store, list_store, mocker
-):
+def test_invalid_maximum_period_limit_and_single_date_periods(app, data_stores, mocker):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_range")
 
@@ -940,13 +818,8 @@ def test_invalid_maximum_period_limit_and_single_date_periods(
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
+            data_stores=data_stores,
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         with pytest.raises(Exception) as exc:
@@ -962,7 +835,7 @@ def test_invalid_maximum_period_limit_and_single_date_periods(
 
 
 def test_period_limits_minimum_not_set_and_single_date_periods(
-    app, answer_store, list_store, mocker
+    app, data_stores, mocker
 ):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_validation_range")
@@ -1003,13 +876,8 @@ def test_period_limits_minimum_not_set_and_single_date_periods(
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
+            data_stores=data_stores,
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         with mocker.patch(
@@ -1021,9 +889,7 @@ def test_period_limits_minimum_not_set_and_single_date_periods(
         assert len(form.question_errors) == 0
 
 
-def test_invalid_date_range_and_single_date_periods(
-    app, answer_store, list_store, mocker
-):
+def test_invalid_date_range_and_single_date_periods(app, answer_store, mocker):
     with app.test_request_context():
         test_answer_id = Answer(answer_id="date", value="2017-03-20")
         answer_store.add_or_update(test_answer_id)
@@ -1070,13 +936,8 @@ def test_invalid_date_range_and_single_date_periods(
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(metadata),
-            response_metadata={},
+            data_stores=DataStores(answer_store=answer_store, metadata=metadata),
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         with pytest.raises(Exception) as exc:
@@ -1091,7 +952,7 @@ def test_invalid_date_range_and_single_date_periods(
         )
 
 
-def test_invalid_calculation_type(app, answer_store, list_store, mocker):
+def test_invalid_calculation_type(app, answer_store, mocker):
     answer_total = Answer(answer_id="total-answer", value=10)
 
     answer_store.add_or_update(answer_total)
@@ -1117,13 +978,8 @@ def test_invalid_calculation_type(app, answer_store, list_store, mocker):
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
+            data_stores=DataStores(answer_store=answer_store),
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         with pytest.raises(Exception) as exc:
@@ -1135,7 +991,7 @@ def test_invalid_calculation_type(app, answer_store, list_store, mocker):
     assert "Invalid calculation_type: subtraction" == str(exc.value)
 
 
-def test_bespoke_message_for_sum_validation(app, answer_store, list_store, mocker):
+def test_bespoke_message_for_sum_validation(app, answer_store, mocker):
     answer_total = Answer(answer_id="total-answer", value=10)
 
     answer_store.add_or_update(answer_total)
@@ -1156,13 +1012,8 @@ def test_bespoke_message_for_sum_validation(app, answer_store, list_store, mocke
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
+            data_stores=DataStores(answer_store=answer_store),
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         mocker.patch(
@@ -1335,7 +1186,6 @@ def test_bespoke_message_for_sum_validation(app, answer_store, list_store, mocke
 def test_calculated_field(
     app,
     answer_store,
-    list_store,
     schema_name,
     block,
     answers,
@@ -1359,21 +1209,14 @@ def test_calculated_field(
             list_item_id=None,
         )
 
-        metadata = get_metadata()
-
         form_data = MultiDict(breakdowns)
 
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
+            data_stores=DataStores(answer_store=answer_store),
             location=location,
-            metadata=metadata,
-            response_metadata={},
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         form.validate()
@@ -1423,13 +1266,8 @@ def test_sum_calculated_field_value_source_calculated_summary_repeat_not_equal_v
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
+            data_stores=DataStores(answer_store=answer_store, list_store=list_store),
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         form.validate()
@@ -1438,7 +1276,7 @@ def test_sum_calculated_field_value_source_calculated_summary_repeat_not_equal_v
         ] == schema.error_messages["TOTAL_SUM_NOT_EQUALS"] % {"total": "10"}
 
 
-def test_multi_calculation(app, answer_store, list_store):
+def test_multi_calculation(app, answer_store, data_stores):
     answer_total = Answer(answer_id="total-answer", value=Decimal("10.00"))
 
     answer_store.add_or_update(answer_total)
@@ -1457,17 +1295,14 @@ def test_multi_calculation(app, answer_store, list_store):
             }
         )
 
+        data_stores = DataStores(answer_store=answer_store)
+
         # With no answers question validation should pass
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
+            data_stores=data_stores,
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
         form.validate()
 
@@ -1479,13 +1314,8 @@ def test_multi_calculation(app, answer_store, list_store):
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
+            data_stores=data_stores,
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
         form.validate()
 
@@ -1497,13 +1327,8 @@ def test_multi_calculation(app, answer_store, list_store):
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
+            data_stores=data_stores,
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
         form.validate()
 
@@ -1512,7 +1337,7 @@ def test_multi_calculation(app, answer_store, list_store):
         ] % {"total": "10.00"}
 
 
-def test_generate_form_with_title_and_no_answer_label(app, answer_store, list_store):
+def test_generate_form_with_title_and_no_answer_label(app, answer_store):
     """
     Checks that the form is still generated when there is no answer label but there is a question title
     """
@@ -1532,20 +1357,15 @@ def test_generate_form_with_title_and_no_answer_label(app, answer_store, list_st
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
+            data_stores=DataStores(answer_store=answer_store),
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         form.validate()
         assert form.data == expected_form_data
 
 
-def test_form_errors_are_correctly_mapped(app, answer_store, list_store):
+def test_form_errors_are_correctly_mapped(app, data_stores):
     with app.test_request_context():
         schema = load_schema_from_name("test_numbers")
 
@@ -1554,12 +1374,7 @@ def test_form_errors_are_correctly_mapped(app, answer_store, list_store):
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
+            data_stores=data_stores,
         )
 
         form.validate()
@@ -1570,7 +1385,7 @@ def test_form_errors_are_correctly_mapped(app, answer_store, list_store):
         )
 
 
-def test_form_subfield_errors_are_correctly_mapped(app, answer_store, list_store):
+def test_form_subfield_errors_are_correctly_mapped(app, data_stores):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_range")
 
@@ -1579,12 +1394,7 @@ def test_form_subfield_errors_are_correctly_mapped(app, answer_store, list_store
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
+            data_stores=data_stores,
         )
 
         form.validate()
@@ -1603,9 +1413,7 @@ def test_form_subfield_errors_are_correctly_mapped(app, answer_store, list_store
         )
 
 
-def test_detail_answer_mandatory_only_checked_if_option_selected(
-    app, answer_store, list_store
-):
+def test_detail_answer_mandatory_only_checked_if_option_selected(app, data_stores):
     # The detail_answer can only be mandatory if the option it is associated with is answered
     with app.test_request_context():
         schema = load_schema_from_name("test_checkbox_detail_answer_multiple")
@@ -1616,13 +1424,8 @@ def test_detail_answer_mandatory_only_checked_if_option_selected(
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
+            data_stores=data_stores,
             form_data=MultiDict({"mandatory-checkbox-answer": "Your choice"}),
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         detail_answer_field = getattr(form, "your-choice-answer-mandatory")
@@ -1632,22 +1435,15 @@ def test_detail_answer_mandatory_only_checked_if_option_selected(
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
+            data_stores=data_stores,
             data={"mandatory-checkbox-answer": "Ham"},
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         detail_answer_field = getattr(form, "your-choice-answer-mandatory")
         assert detail_answer_field.validators == ()
 
 
-def test_answer_with_detail_answer_errors_are_correctly_mapped(
-    app, answer_store, list_store
-):
+def test_answer_with_detail_answer_errors_are_correctly_mapped(app, data_stores):
     with app.test_request_context():
         schema = load_schema_from_name(
             "test_radio_mandatory_with_detail_answer_mandatory"
@@ -1658,13 +1454,8 @@ def test_answer_with_detail_answer_errors_are_correctly_mapped(
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
+            data_stores=data_stores,
             form_data=MultiDict({"radio-mandatory-answer": "Other"}),
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         form.validate()
@@ -1682,7 +1473,7 @@ def test_answer_with_detail_answer_errors_are_correctly_mapped(
         )
 
 
-def test_answer_errors_are_interpolated(app, answer_store, list_store):
+def test_answer_errors_are_interpolated(app, data_stores):
     with app.test_request_context():
         schema = load_schema_from_name("test_numbers")
 
@@ -1691,13 +1482,8 @@ def test_answer_errors_are_interpolated(app, answer_store, list_store):
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
+            data_stores=data_stores,
             form_data=MultiDict({"set-minimum": "-10001"}),
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         form.validate()
@@ -1709,7 +1495,7 @@ def test_answer_errors_are_interpolated(app, answer_store, list_store):
 
 
 def test_mandatory_mutually_exclusive_question_raises_error_when_not_answered(
-    app, answer_store, list_store
+    app, data_stores
 ):
     with app.test_request_context():
         schema = load_schema_from_name("test_mutually_exclusive")
@@ -1721,13 +1507,8 @@ def test_mandatory_mutually_exclusive_question_raises_error_when_not_answered(
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
+            data_stores=data_stores,
             form_data=MultiDict(),
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
         form.validate_mutually_exclusive_question(question_schema)
 
@@ -1769,13 +1550,8 @@ def test_mandatory_mutually_exclusive_question_raises_error_with_question_text(
         form = generate_form(
             schema=schema,
             question_schema=rendered_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
+            data_stores=DataStores(answer_store=answer_store),
             form_data=MultiDict(),
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
         form.validate_mutually_exclusive_question(question_schema)
         error = form.question_errors["mutually-exclusive-checkbox-question"]
@@ -1786,9 +1562,7 @@ def test_mandatory_mutually_exclusive_question_raises_error_with_question_text(
         )
 
 
-def test_mutually_exclusive_question_raises_error_when_both_answered(
-    app, answer_store, list_store
-):
+def test_mutually_exclusive_question_raises_error_when_both_answered(app, data_stores):
     with app.test_request_context():
         schema = load_schema_from_name("test_mutually_exclusive")
 
@@ -1806,13 +1580,8 @@ def test_mutually_exclusive_question_raises_error_when_both_answered(
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
+            data_stores=data_stores,
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
         form.validate_mutually_exclusive_question(question_schema)
 
@@ -1822,7 +1591,7 @@ def test_mutually_exclusive_question_raises_error_when_both_answered(
         )
 
 
-def test_date_range_form(app, answer_store, list_store):
+def test_date_range_form(app, data_stores):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_range")
         question_schema = schema.get_block("date-block").get("question")
@@ -1830,12 +1599,7 @@ def test_date_range_form(app, answer_store, list_store):
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
+            data_stores=data_stores,
         )
 
         assert hasattr(form, "date-range-from-answer")
@@ -1848,7 +1612,7 @@ def test_date_range_form(app, answer_store, list_store):
         assert isinstance(period_to_field.year.validators[0], DateRequired)
 
 
-def test_date_range_form_with_data(app, answer_store, list_store):
+def test_date_range_form_with_data(app, data_stores):
     with app.test_request_context():
         schema = load_schema_from_name("test_date_range")
         question_schema = schema.get_block("date-block").get("question")
@@ -1867,13 +1631,8 @@ def test_date_range_form_with_data(app, answer_store, list_store):
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
+            data_stores=data_stores,
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         assert hasattr(form, "date-range-from-answer")
@@ -1889,7 +1648,7 @@ def test_date_range_form_with_data(app, answer_store, list_store):
         assert period_to_field.data == "2017-09-01"
 
 
-def test_form_for_radio_other_not_selected(app, answer_store, list_store):
+def test_form_for_radio_other_not_selected(app, data_stores):
     with app.test_request_context():
         schema = load_schema_from_name(
             "test_radio_mandatory_with_detail_answer_mandatory"
@@ -1907,13 +1666,8 @@ def test_form_for_radio_other_not_selected(app, answer_store, list_store):
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
+            data_stores=data_stores,
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         assert hasattr(form, "radio-mandatory-answer")
@@ -1921,7 +1675,7 @@ def test_form_for_radio_other_not_selected(app, answer_store, list_store):
         assert other_text_field.data == ""
 
 
-def test_form_for_radio_other_selected(app, answer_store, list_store):
+def test_form_for_radio_other_selected(app, data_stores):
     with app.test_request_context():
         schema = load_schema_from_name(
             "test_radio_mandatory_with_detail_answer_mandatory"
@@ -1939,13 +1693,8 @@ def test_form_for_radio_other_selected(app, answer_store, list_store):
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
+            data_stores=data_stores,
             form_data=form_data,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         other_text_field = getattr(form, "other-answer-mandatory")
@@ -1957,7 +1706,7 @@ def test_dynamic_answers_question_validates(app):
         schema = load_schema_from_name(
             "test_validation_sum_against_total_dynamic_answers"
         )
-        answer_store = AnswerStore([{"answer_id": "total-answer", "value": 100}])
+
         question_schema = schema.get_block("dynamic-answer").get("question")
         question_schema = QuestionnaireSchema.get_mutable_deepcopy(question_schema)
         question_schema["answers"].append(
@@ -1972,8 +1721,6 @@ def test_dynamic_answers_question_validates(app):
                 "list_item_id": "lCIZsS",
             }
         )
-
-        list_store = ListStore([{"name": "supermarkets", "items": ["lCIZsS"]}])
 
         form_data = MultiDict(
             {
@@ -1991,19 +1738,17 @@ def test_dynamic_answers_question_validates(app):
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
-            form_data=form_data,
-            progress_store=ProgressStore(),
+            data_stores=DataStores(
+                answer_store=AnswerStore([{"answer_id": "total-answer", "value": 100}]),
+                list_store=ListStore([{"name": "supermarkets", "items": ["lCIZsS"]}]),
+            ),
             location=Location(
                 section_id="section",
                 block_id="dynamic-answer",
                 list_name=None,
                 list_item_id=None,
             ),
-            supplementary_data_store=SupplementaryDataStore(),
+            form_data=form_data,
         )
 
         form.validate()
@@ -2015,7 +1760,7 @@ def test_dynamic_answers_question_raises_validation_error(app):
         schema = load_schema_from_name(
             "test_validation_sum_against_total_dynamic_answers"
         )
-        answer_store = AnswerStore([{"answer_id": "total-answer", "value": 100}])
+
         question_schema = schema.get_block("dynamic-answer").get("question")
         question_schema = QuestionnaireSchema.get_mutable_deepcopy(question_schema)
         question_schema["answers"].append(
@@ -2031,8 +1776,6 @@ def test_dynamic_answers_question_raises_validation_error(app):
             }
         )
 
-        list_store = ListStore([{"name": "supermarkets", "items": ["lCIZsS"]}])
-
         form_data = MultiDict(
             {
                 "percentage-of-shopping-lCIZsS": "25",
@@ -2043,19 +1786,17 @@ def test_dynamic_answers_question_raises_validation_error(app):
         form = generate_form(
             schema=schema,
             question_schema=question_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
+            data_stores=DataStores(
+                answer_store=AnswerStore([{"answer_id": "total-answer", "value": 100}]),
+                list_store=ListStore([{"name": "supermarkets", "items": ["lCIZsS"]}]),
+            ),
             form_data=form_data,
-            progress_store=ProgressStore(),
             location=Location(
                 section_id="section",
                 block_id="dynamic-answer",
                 list_name=None,
                 list_item_id=None,
             ),
-            supplementary_data_store=SupplementaryDataStore(),
         )
 
         form.validate()

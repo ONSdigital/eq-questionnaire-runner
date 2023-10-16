@@ -1,16 +1,9 @@
-from typing import Iterable, Mapping, MutableMapping, Type
+from typing import Iterable, Mapping, Type
 
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import (
-    AnswerStore,
-    ListStore,
-    ProgressStore,
-    SupplementaryDataStore,
-)
-from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.questionnaire_store import DataStores
 from app.questionnaire import QuestionnaireSchema
-from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.questionnaire_schema import (
     LIST_COLLECTORS_WITH_REPEATING_BLOCKS,
     is_list_collector_block_editable,
@@ -32,15 +25,10 @@ class Group:
         *,
         group_schema: Mapping,
         routing_path_block_ids: Iterable[str],
-        answer_store: AnswerStore,
-        list_store: ListStore,
-        metadata: MetadataProxy | None,
-        response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
+        data_stores: DataStores,
         location: LocationType,
         language: str,
-        progress_store: ProgressStore,
-        supplementary_data_store: SupplementaryDataStore,
         return_to: str | None,
         return_to_block_id: str | None = None,
         return_to_list_item_id: str | None = None,
@@ -53,36 +41,24 @@ class Group:
         self.location = location
         self.placeholder_text = None
         self.links: dict[str, Link] = {}
+        self.data_stores = data_stores
 
         self.blocks = self._build_blocks_and_links(
             group_schema=group_schema,
             routing_path_block_ids=routing_path_block_ids,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=metadata,
-            response_metadata=response_metadata,
+            data_stores=self.data_stores,
             schema=schema,
             location=self.location,
             return_to=return_to,
-            progress_store=progress_store,
             language=language,
             return_to_block_id=return_to_block_id,
             return_to_list_item_id=return_to_list_item_id,
             view_submitted_response=view_submitted_response,
             summary_type=summary_type,
-            supplementary_data_store=supplementary_data_store,
         )
 
-        self.placeholder_renderer = PlaceholderRenderer(
-            language=language,
-            answer_store=answer_store,
-            list_store=list_store,
-            location=self.location,
-            metadata=metadata,
-            response_metadata=response_metadata,
-            schema=schema,
-            progress_store=progress_store,
-            supplementary_data_store=supplementary_data_store,
+        self.placeholder_renderer = self.data_stores.placeholder_renderer(
+            schema=schema, language=language
         )
 
     # pylint: disable=too-many-locals
@@ -91,15 +67,10 @@ class Group:
         *,
         group_schema: Mapping,
         routing_path_block_ids: Iterable[str],
-        answer_store: AnswerStore,
-        list_store: ListStore,
-        metadata: MetadataProxy | None,
-        response_metadata: MutableMapping,
+        data_stores: DataStores,
         schema: QuestionnaireSchema,
         location: LocationType,
         return_to: str | None,
-        progress_store: ProgressStore,
-        supplementary_data_store: SupplementaryDataStore,
         language: str,
         return_to_block_id: str | None,
         return_to_list_item_id: str | None,
@@ -130,15 +101,10 @@ class Group:
 
                 list_collector_block = list_collector_block_class(
                     routing_path_block_ids=routing_path_block_ids,
-                    answer_store=answer_store,
-                    list_store=list_store,
-                    progress_store=progress_store,
-                    metadata=metadata,
-                    response_metadata=response_metadata,
+                    data_stores=data_stores,
                     schema=schema,
                     location=location,
                     language=language,
-                    supplementary_data_store=supplementary_data_store,
                     return_to=return_to,
                     return_to_block_id=return_to_block_id,
                 )
@@ -159,18 +125,13 @@ class Group:
                     [
                         Block(
                             block,
-                            answer_store=answer_store,
-                            list_store=list_store,
-                            metadata=metadata,
-                            response_metadata=response_metadata,
+                            data_stores=data_stores,
                             schema=schema,
                             location=location,
                             return_to=return_to,
                             return_to_block_id=return_to_block_id,
                             return_to_list_item_id=return_to_list_item_id,
-                            progress_store=progress_store,
                             language=language,
-                            supplementary_data_store=supplementary_data_store,
                         ).serialize()
                     ]
                 )
@@ -181,18 +142,18 @@ class Group:
                     [
                         CalculatedSummaryBlock(
                             block,
-                            answer_store=answer_store,
-                            list_store=list_store,
-                            metadata=metadata,
-                            response_metadata=response_metadata,
+                            answer_store=data_stores.answer_store,
+                            list_store=data_stores.list_store,
+                            metadata=data_stores.metadata,
+                            response_metadata=data_stores.response_metadata,
                             schema=schema,
                             location=location,
                             return_to=return_to,
                             return_to_block_id=return_to_block_id,
                             return_to_list_item_id=return_to_list_item_id,
-                            progress_store=progress_store,
+                            progress_store=data_stores.progress_store,
                             routing_path_block_ids=routing_path_block_ids,
-                            supplementary_data_store=supplementary_data_store,
+                            supplementary_data_store=data_stores.supplementary_data_store,
                         ).serialize()
                     ]
                 )
@@ -212,17 +173,12 @@ class Group:
                         else ListCollectorContentBlock
                     )
                     list_collector_block = list_collector_block_class(
+                        data_stores=self.data_stores,
                         routing_path_block_ids=routing_path_block_ids,
-                        answer_store=answer_store,
-                        list_store=list_store,
-                        progress_store=progress_store,
-                        metadata=metadata,
-                        response_metadata=response_metadata,
                         schema=schema,
                         location=location,
                         language=language,
                         return_to=return_to,
-                        supplementary_data_store=supplementary_data_store,
                         return_to_block_id=return_to_block_id,
                     )
                     list_summary_element = list_collector_block.list_summary_element(

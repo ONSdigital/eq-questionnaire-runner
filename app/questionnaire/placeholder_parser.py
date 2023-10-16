@@ -11,7 +11,8 @@ from typing import (
     TypeAlias,
 )
 
-from app.data_models import ProgressStore, SupplementaryDataStore
+from app.data_models import progress_store as ps
+from app.data_models import supplementary_data_store as sds
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
@@ -57,8 +58,8 @@ class PlaceholderParser:
         response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
         renderer: PlaceholderRenderer,
-        progress_store: ProgressStore,
-        supplementary_data_store: SupplementaryDataStore,
+        progress_store: ps.ProgressStore,
+        supplementary_data_store: sds.SupplementaryDataStore,
         list_item_id: str | None = None,
         location: LocationType | None = None,
         placeholder_preview_mode: bool | None = False,

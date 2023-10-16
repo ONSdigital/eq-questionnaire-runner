@@ -56,12 +56,7 @@ class ListCollector(Question):
         list_context = ListContext(
             self._language,
             self._schema,
-            self._questionnaire_store.answer_store,
-            self._questionnaire_store.list_store,
-            self._questionnaire_store.progress_store,
-            self._questionnaire_store.metadata,
-            self._questionnaire_store.response_metadata,
-            self._questionnaire_store.supplementary_data_store,
+            self._questionnaire_store.data_stores,
         )
 
         return list_context(

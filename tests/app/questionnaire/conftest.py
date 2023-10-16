@@ -8,6 +8,7 @@ from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress import ProgressDict
 from app.data_models.progress_store import ProgressStore
+from app.data_models.questionnaire_store import DataStores
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.placeholder_parser import PlaceholderParser
@@ -1197,10 +1198,12 @@ def mock_questionnaire_store(
     return mocker.MagicMock(
         spec=QuestionnaireStore,
         completed_blocks=[],
-        answer_store=mock_empty_answer_store,
-        list_store=populated_list_store,
-        progress_store=mock_empty_progress_store,
-        supplementary_data_store=mock_empty_supplementary_data_store,
+        data_stores=DataStores(
+            answer_store=mock_empty_answer_store,
+            list_store=populated_list_store,
+            progress_store=mock_empty_progress_store,
+            supplementary_data_store=mock_empty_supplementary_data_store,
+        ),
     )
 
 

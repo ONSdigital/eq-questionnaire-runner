@@ -49,15 +49,15 @@ def convert_answers_v2(
     Returns:
         Data payload
     """
-    metadata = questionnaire_store.metadata
+    metadata = questionnaire_store.data_stores.metadata
     if not metadata:
         raise NoMetadataException
 
-    response_metadata = questionnaire_store.response_metadata
-    answer_store = questionnaire_store.answer_store
-    list_store = questionnaire_store.list_store
-    progress_store = questionnaire_store.progress_store
-    supplementary_data_store = questionnaire_store.supplementary_data_store
+    response_metadata = questionnaire_store.data_stores.response_metadata
+    answer_store = questionnaire_store.data_stores.answer_store
+    list_store = questionnaire_store.data_stores.list_store
+    progress_store = questionnaire_store.data_stores.progress_store
+    supplementary_data_store = questionnaire_store.data_stores.supplementary_data_store
 
     survey_id = schema.json["survey_id"]
 

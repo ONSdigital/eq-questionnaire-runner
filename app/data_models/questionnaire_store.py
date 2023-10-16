@@ -1,21 +1,109 @@
 from __future__ import annotations
 
+from dataclasses import dataclass, field
 from datetime import datetime
-from typing import TYPE_CHECKING, MutableMapping, Optional
+from typing import TYPE_CHECKING, Iterable, MutableMapping, Optional
+
+from ordered_set import OrderedSet
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
 from app.data_models.supplementary_data_store import SupplementaryDataStore
+from app.questionnaire import (
+    Location,
+    QuestionnaireSchema,
+    placeholder_renderer,
+    value_source_resolver,
+)
+from app.questionnaire.relationship_location import RelationshipLocation
+from app.questionnaire.rules import rule_evaluator
 from app.questionnaire.rules.utils import parse_iso_8601_datetime
 from app.utilities.json import json_dumps, json_loads
-from app.utilities.types import SupplementaryDataListMapping
+from app.utilities.types import LocationType, SupplementaryDataListMapping
 
 if TYPE_CHECKING:
     from app.storage.encrypted_questionnaire_storage import (  # pragma: no cover
         EncryptedQuestionnaireStorage,
     )
+
+
+@dataclass
+class DataStores:
+    # self.metadata is a read-only view over self._metadata
+    metadata: MetadataProxy | None = None
+    response_metadata: MutableMapping = field(default_factory=dict)
+    list_store: ListStore = ListStore()
+    answer_store: AnswerStore = field(default_factory=AnswerStore)
+    progress_store: ProgressStore = ProgressStore()
+    supplementary_data_store: SupplementaryDataStore = SupplementaryDataStore()
+
+    def rule_evaluator(
+        self,
+        *,
+        schema: QuestionnaireSchema,
+        location: Location,
+        routing_path_block_ids: Iterable[str] | None = None,
+    ) -> rule_evaluator.RuleEvaluator:
+        return rule_evaluator.RuleEvaluator(
+            schema=schema,
+            answer_store=self.answer_store,
+            list_store=self.list_store,
+            metadata=self.metadata,
+            response_metadata=self.response_metadata,
+            progress_store=self.progress_store,
+            location=location,
+            routing_path_block_ids=routing_path_block_ids,
+            supplementary_data_store=self.supplementary_data_store,
+        )
+
+    def value_source_resolver(
+        self,
+        *,
+        schema: QuestionnaireSchema,
+        location: Location | RelationshipLocation | None,
+        list_item_id: str | None,
+        routing_path_block_ids: OrderedSet[str] | None = None,
+        assess_routing_path: bool = True,
+        use_default_answer: bool = True,
+        escape_answer_values: bool = True,
+    ) -> value_source_resolver.ValueSourceResolver:
+        return value_source_resolver.ValueSourceResolver(
+            answer_store=self.answer_store,
+            list_store=self.list_store,
+            metadata=self.metadata,
+            schema=schema,
+            location=location,
+            list_item_id=list_item_id,
+            escape_answer_values=escape_answer_values,
+            response_metadata=self.response_metadata,
+            use_default_answer=use_default_answer,
+            assess_routing_path=assess_routing_path,
+            routing_path_block_ids=routing_path_block_ids,
+            progress_store=self.progress_store,
+            supplementary_data_store=self.supplementary_data_store,
+        )
+
+    def placeholder_renderer(
+        self,
+        language: str,
+        schema: QuestionnaireSchema,
+        location: LocationType | None = None,
+        placeholder_preview_mode: bool | None = False,
+    ) -> placeholder_renderer.PlaceholderRenderer:
+        return placeholder_renderer.PlaceholderRenderer(
+            language=language,
+            answer_store=self.answer_store,
+            list_store=self.list_store,
+            metadata=self.metadata,
+            response_metadata=self.response_metadata,
+            schema=schema,
+            progress_store=self.progress_store,
+            supplementary_data_store=self.supplementary_data_store,
+            location=location,
+            placeholder_preview_mode=placeholder_preview_mode,
+        )
 
 
 class QuestionnaireStore:
@@ -29,13 +117,7 @@ class QuestionnaireStore:
             version = self.get_latest_version_number()
         self.version = version
         self._metadata: MutableMapping = {}
-        # self.metadata is a read-only view over self._metadata
-        self.metadata: MetadataProxy | None = None
-        self.response_metadata: MutableMapping = {}
-        self.list_store = ListStore()
-        self.answer_store = AnswerStore()
-        self.progress_store = ProgressStore()
-        self.supplementary_data_store = SupplementaryDataStore()
+        self.data_stores = DataStores()
         self.submitted_at: Optional[datetime]
         self.collection_exercise_sid: Optional[str]
 
@@ -60,7 +142,7 @@ class QuestionnaireStore:
         Metadata should normally be read only.
         """
         self._metadata = to_set
-        self.metadata = MetadataProxy.from_dict(self._metadata)
+        self.data_stores.metadata = MetadataProxy.from_dict(self._metadata)
 
         return self
 
@@ -72,7 +154,7 @@ class QuestionnaireStore:
         this updates ListStore to add/update any lists for supplementary data and stores the
         identifier -> list_item_id mappings in the supplementary data store to use in the payload at the end
         """
-        if self.supplementary_data_store.list_mappings:
+        if self.data_stores.supplementary_data_store.list_mappings:
             self._remove_old_supplementary_lists_and_answers(new_data=to_set)
 
         list_mappings = {
@@ -82,7 +164,7 @@ class QuestionnaireStore:
             for list_name, list_data in to_set.get("items", {}).items()
         }
 
-        self.supplementary_data_store = SupplementaryDataStore(
+        self.data_stores.supplementary_data_store = SupplementaryDataStore(
             supplementary_data=to_set, list_mappings=list_mappings
         )
 
@@ -99,11 +181,13 @@ class QuestionnaireStore:
             # if any pre-existing supplementary data already has a mapping for this list item
             # then its already in the list store and doesn't require adding
             if not (
-                list_item_id := self.supplementary_data_store.list_lookup.get(
+                list_item_id := self.data_stores.supplementary_data_store.list_lookup.get(
                     list_name, {}
-                ).get(identifier)
+                ).get(
+                    identifier
+                )
             ):
-                list_item_id = self.list_store.add_list_item(list_name)
+                list_item_id = self.data_stores.list_store.add_list_item(list_name)
             list_mappings.append(
                 SupplementaryDataListMapping(
                     identifier=identifier, list_item_id=list_item_id
@@ -120,48 +204,55 @@ class QuestionnaireStore:
         :param new_data - the new supplementary data for comparison
         """
         deleted_list_item_ids: set[str] = set()
-        for list_name, mappings in self.supplementary_data_store.list_lookup.items():
+        for (
+            list_name,
+            mappings,
+        ) in self.data_stores.supplementary_data_store.list_lookup.items():
             if list_name in new_data.get("items", {}):
                 new_identifiers = [
                     item["identifier"] for item in new_data["items"][list_name]
                 ]
                 for identifier, list_item_id in mappings.items():
                     if identifier not in new_identifiers:
-                        self.list_store.delete_list_item(list_name, list_item_id)
+                        self.data_stores.list_store.delete_list_item(
+                            list_name, list_item_id
+                        )
                         deleted_list_item_ids.add(list_item_id)
             else:
-                self.list_store.delete_list(list_name)
+                self.data_stores.list_store.delete_list(list_name)
                 deleted_list_item_ids.update(mappings.values())
-        self.answer_store.remove_all_answers_for_list_item_ids(*deleted_list_item_ids)
+        self.data_stores.answer_store.remove_all_answers_for_list_item_ids(
+            *deleted_list_item_ids
+        )
 
     def _deserialize(self, data: str) -> None:
         json_data = json_loads(data)
-        self.progress_store = ProgressStore(json_data.get("PROGRESS"))
+        self.data_stores.progress_store = ProgressStore(json_data.get("PROGRESS"))
         self.set_metadata(json_data.get("METADATA", {}))
-        self.supplementary_data_store = SupplementaryDataStore.deserialize(
+        self.data_stores.supplementary_data_store = SupplementaryDataStore.deserialize(
             json_data.get("SUPPLEMENTARY_DATA", {})
         )
-        self.answer_store = AnswerStore(json_data.get("ANSWERS"))
-        self.list_store = ListStore.deserialize(json_data.get("LISTS"))
-        self.response_metadata = json_data.get("RESPONSE_METADATA", {})
+        self.data_stores.answer_store = AnswerStore(json_data.get("ANSWERS"))
+        self.data_stores.list_store = ListStore.deserialize(json_data.get("LISTS"))
+        self.data_stores.response_metadata = json_data.get("RESPONSE_METADATA", {})
 
     def serialize(self) -> str:
         data = {
             "METADATA": self._metadata,
-            "ANSWERS": list(self.answer_store),
-            "SUPPLEMENTARY_DATA": self.supplementary_data_store.serialize(),
-            "LISTS": self.list_store.serialize(),
-            "PROGRESS": self.progress_store.serialize(),
-            "RESPONSE_METADATA": self.response_metadata,
+            "ANSWERS": list(self.data_stores.answer_store),
+            "SUPPLEMENTARY_DATA": self.data_stores.supplementary_data_store.serialize(),
+            "LISTS": self.data_stores.list_store.serialize(),
+            "PROGRESS": self.data_stores.progress_store.serialize(),
+            "RESPONSE_METADATA": self.data_stores.response_metadata,
         }
         return json_dumps(data)
 
     def delete(self) -> None:
         self._storage.delete()
         self._metadata.clear()
-        self.response_metadata = {}
-        self.answer_store.clear()
-        self.progress_store.clear()
+        self.data_stores.response_metadata = {}
+        self.data_stores.answer_store.clear()
+        self.data_stores.progress_store.clear()
 
     def save(self) -> None:
         data = self.serialize()

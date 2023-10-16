@@ -1,12 +1,4 @@
-from typing import MutableMapping, Optional
-
-from app.data_models import (
-    AnswerStore,
-    ListStore,
-    ProgressStore,
-    SupplementaryDataStore,
-)
-from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.questionnaire_store import DataStores
 from app.questionnaire import QuestionnaireSchema
 from app.views.contexts.context import Context
 from app.views.contexts.preview import PreviewGroup
@@ -18,23 +10,13 @@ class SectionPreviewContext(Context):
         *,
         language: str,
         schema: QuestionnaireSchema,
-        answer_store: AnswerStore,
-        list_store: ListStore,
-        progress_store: ProgressStore,
-        supplementary_data_store: SupplementaryDataStore,
-        metadata: Optional[MetadataProxy],
-        response_metadata: MutableMapping,
+        data_stores: DataStores,
         section_id: str,
     ):
         super().__init__(
             language,
             schema,
-            answer_store,
-            list_store,
-            progress_store,
-            metadata,
-            response_metadata,
-            supplementary_data_store,
+            data_stores,
             placeholder_preview_mode=True,
         )
         self._section_id = section_id

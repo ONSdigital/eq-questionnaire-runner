@@ -6,8 +6,9 @@ from freezegun import freeze_time
 from mock import Mock
 
 from app.authentication.auth_payload_versions import AuthPayloadVersion
-from app.data_models import QuestionnaireStore
+from app.data_models import AnswerStore, QuestionnaireStore
 from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.questionnaire_store import DataStores
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.questionnaire import QuestionnaireSchema
@@ -203,7 +204,8 @@ def mock_questionnaire_store(mocker):
     storage_ = mocker.Mock()
     storage_.get_user_data = mocker.Mock(return_value=("{}", "ce_id", 1, None))
     questionnaire_store = QuestionnaireStore(storage_)
-    questionnaire_store.metadata = MetadataProxy.from_dict(
+    questionnaire_store.data_stores = DataStores()
+    questionnaire_store.data_stores.metadata = MetadataProxy.from_dict(
         {
             "tx_id": "tx_id",
             "case_id": "case_id",
@@ -225,7 +227,8 @@ def mock_questionnaire_store_v2(mocker):
     storage_ = mocker.Mock()
     storage_.get_user_data = mocker.Mock(return_value=("{}", "ce_id", 1, None))
     questionnaire_store = QuestionnaireStore(storage_)
-    questionnaire_store.metadata = MetadataProxy.from_dict(
+    questionnaire_store.data_stores = DataStores()
+    questionnaire_store.data_stores.metadata = MetadataProxy.from_dict(
         {
             "version": AuthPayloadVersion.V2,
             "tx_id": "tx_id",

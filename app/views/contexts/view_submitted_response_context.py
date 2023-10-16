@@ -25,7 +25,7 @@ def build_view_submitted_response_context(
         questionnaire_store.submitted_at  # type: ignore
     )
 
-    metadata = questionnaire_store.metadata
+    metadata = questionnaire_store.data_stores.metadata
     if not metadata:
         raise NoMetadataException
 
@@ -58,13 +58,8 @@ def build_view_submitted_response_context(
         summary_context = SummaryContext(
             language=language,
             schema=schema,
-            answer_store=questionnaire_store.answer_store,
-            list_store=questionnaire_store.list_store,
-            progress_store=questionnaire_store.progress_store,
-            metadata=questionnaire_store.metadata,
-            response_metadata=questionnaire_store.response_metadata,
+            data_stores=questionnaire_store.data_stores,
             view_submitted_response=True,
-            supplementary_data_store=questionnaire_store.supplementary_data_store,
         )
         context["summary"] = summary_context()
         context["pdf_url"] = url_for("post_submission.get_view_submitted_response_pdf")

@@ -8,6 +8,7 @@ from app.data_models import (
     SupplementaryDataStore,
 )
 from app.data_models.progress import CompletionStatus, ProgressDict
+from app.data_models.questionnaire_store import DataStores
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts.summary_context import SummaryContext
@@ -102,16 +103,20 @@ def test_context_for_summary():
         ]
     )
 
+    data_stores = DataStores(
+            answer_store=answer_store,
+            list_store=list_store,
+            progress_store=progress_store,
+            metadata=None,
+            response_metadata={},
+            supplementary_data_store=SupplementaryDataStore(),
+        )
+
     summary_context = SummaryContext(
         language=DEFAULT_LANGUAGE_CODE,
         schema=schema,
-        answer_store=answer_store,
-        list_store=list_store,
-        progress_store=progress_store,
-        metadata=None,
-        response_metadata={},
+        data_stores=data_stores,
         view_submitted_response=False,
-        supplementary_data_store=SupplementaryDataStore(),
     )
     context = summary_context()
     expected = {

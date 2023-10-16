@@ -2,6 +2,7 @@ import pytest
 
 from app.data_models import CompletionStatus
 from app.data_models.progress_store import ProgressStore
+from app.data_models.questionnaire_store import DataStores
 from app.questionnaire import Location
 from app.questionnaire.routing_path import RoutingPath
 from app.views.contexts.grand_calculated_summary_context import (
@@ -34,8 +35,6 @@ def test_build_view_context_for_grand_calculated_summary(
     value,
     test_grand_calculated_summary_schema,
     test_grand_calculated_summary_answers,
-    list_store,
-    supplementary_data_store,
     mocker,
     return_to_answer_id,
 ):
@@ -58,39 +57,37 @@ def test_build_view_context_for_grand_calculated_summary(
     grand_calculated_summary_context = GrandCalculatedSummaryContext(
         language="en",
         schema=test_grand_calculated_summary_schema,
-        answer_store=test_grand_calculated_summary_answers,
-        list_store=list_store,
-        progress_store=ProgressStore(
-            progress=[
-                {
-                    "section_id": "section-1",
-                    "status": CompletionStatus.COMPLETED,
-                    "block_ids": [
-                        "first-number-block",
-                        "second-number-block",
-                        "distance-calculated-summary-1",
-                        "number-calculated-summary-1",
-                    ],
-                },
-                {
-                    "section_id": "section-2",
-                    "status": CompletionStatus.COMPLETED,
-                    "block_ids": [
-                        "third-number-block",
-                        "fourth-number-block",
-                        "distance-calculated-summary-2",
-                        "number-calculated-summary-2",
-                    ],
-                },
-            ]
+        data_stores=DataStores(
+            answer_store=test_grand_calculated_summary_answers,
+            progress_store=ProgressStore(
+                progress=[
+                    {
+                        "section_id": "section-1",
+                        "status": CompletionStatus.COMPLETED,
+                        "block_ids": [
+                            "first-number-block",
+                            "second-number-block",
+                            "distance-calculated-summary-1",
+                            "number-calculated-summary-1",
+                        ],
+                    },
+                    {
+                        "section_id": "section-2",
+                        "status": CompletionStatus.COMPLETED,
+                        "block_ids": [
+                            "third-number-block",
+                            "fourth-number-block",
+                            "distance-calculated-summary-2",
+                            "number-calculated-summary-2",
+                        ],
+                    },
+                ]
+            ),
         ),
-        metadata=None,
-        response_metadata={},
         routing_path=RoutingPath(section_id="default-section", block_ids=block_ids),
         current_location=Location(section_id="default-section", block_id=block_id),
         return_to=None,
         return_to_block_id=None,
-        supplementary_data_store=supplementary_data_store,
     )
 
     context = grand_calculated_summary_context.build_view_context()

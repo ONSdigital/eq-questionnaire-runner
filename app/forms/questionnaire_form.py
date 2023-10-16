@@ -5,20 +5,14 @@ import logging
 from collections.abc import Callable
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal
-from typing import Any, Mapping, MutableMapping, Optional, Sequence, Union
+from typing import Any, Mapping, Optional, Sequence, Union
 
 from dateutil.relativedelta import relativedelta
 from flask_wtf import FlaskForm
 from werkzeug.datastructures import ImmutableMultiDict, MultiDict
 from wtforms import validators
 
-from app.data_models import (
-    AnswerStore,
-    ListStore,
-    ProgressStore,
-    SupplementaryDataStore,
-)
-from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.questionnaire_store import DataStores
 from app.forms import error_messages
 from app.forms.field_handlers import DateHandler, FieldHandler, get_field_handler
 from app.forms.validators import DateRangeCheck, MutuallyExclusiveCheck, SumCheck
@@ -28,7 +22,6 @@ from app.questionnaire.dependencies import (
 )
 from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.relationship_location import RelationshipLocation
-from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.utilities.mappings import get_flattened_mapping_values
 from app.utilities.types import LocationType, SectionKey
@@ -50,37 +43,21 @@ class QuestionnaireForm(FlaskForm):
         self,
         schema: QuestionnaireSchema,
         question_schema: QuestionSchemaType,
-        answer_store: AnswerStore,
-        list_store: ListStore,
-        metadata: Optional[MetadataProxy],
-        response_metadata: MutableMapping,
+        data_stores: DataStores,
         location: Union[None, Location, RelationshipLocation],
-        progress_store: ProgressStore,
-        supplementary_data_store: SupplementaryDataStore,
         **kwargs: Union[MultiDict, Mapping, None],
     ):
         self.schema = schema
         self.question = question_schema
-        self.answer_store = answer_store
-        self.list_store = list_store
-        self.metadata = metadata
-        self.response_metadata = response_metadata
         self.location = location
         self.question_errors: dict[str, str] = {}
         self.options_with_detail_answer: dict = {}
         self.question_title = self.question.get("title", "")
-        self.progress_store = progress_store
-        self.supplementary_data_store = supplementary_data_store
-        self.value_source_resolver = ValueSourceResolver(
-            answer_store=self.answer_store,
+        self.data_stores = data_stores
+        self.value_source_resolver = self.data_stores.value_source_resolver(
             schema=self.schema,
-            metadata=self.metadata,
-            response_metadata=self.response_metadata,
-            list_store=self.list_store,
             location=self.location,
             list_item_id=self.location.list_item_id if self.location else None,
-            progress_store=self.progress_store,
-            supplementary_data_store=self.supplementary_data_store,
         )
 
         super().__init__(**kwargs)
@@ -219,7 +196,7 @@ class QuestionnaireForm(FlaskForm):
             target_answer = self.schema.get_answers_by_answer_id(
                 calculation["answer_id"]
             )[0]
-            target_total = self.answer_store.get_answer(
+            target_total = self.data_stores.answer_store.get_answer(
                 calculation["answer_id"]
             ).value  # type: ignore # expect not None
 
@@ -330,28 +307,17 @@ class QuestionnaireForm(FlaskForm):
         date_to: Mapping[str, dict],
     ) -> timedelta:
         list_item_id = self.location.list_item_id if self.location else None
-        value_source_resolver = ValueSourceResolver(
-            answer_store=self.answer_store,
-            list_store=self.list_store,
-            metadata=self.metadata,
-            response_metadata=self.response_metadata,
+        value_source_resolver = self.data_stores.value_source_resolver(
             schema=self.schema,
             location=self.location,
             list_item_id=list_item_id,
             escape_answer_values=False,
-            progress_store=self.progress_store,
-            supplementary_data_store=self.supplementary_data_store,
         )
 
-        rule_evaluator = RuleEvaluator(
+        rule_evaluator = self.data_stores.rule_evaluator(
+            # Type ignore: location in rule_evaluator can be both Location or RelationshipLocation type but is only Location type here
             schema=self.schema,
-            answer_store=self.answer_store,
-            list_store=self.list_store,
-            metadata=self.metadata,
-            response_metadata=self.response_metadata,
-            location=self.location,
-            progress_store=self.progress_store,
-            supplementary_data_store=self.supplementary_data_store,
+            location=self.location,  # type: ignore
         )
 
         handler = DateHandler(
@@ -417,7 +383,7 @@ class QuestionnaireForm(FlaskForm):
         block_id = self.location.block_id if self.location else None
         if block_id and block_id in self.schema.dynamic_answers_parent_block_ids:
             list_name = self.schema.get_list_name_for_dynamic_answer(block_id)
-            list_item_ids = self.list_store[list_name]
+            list_item_ids = self.data_stores.list_store[list_name]
             for answer_id in answers_sequence:
                 if self.schema.is_answer_dynamic(answer_id):
                     answers_list.extend(
@@ -492,31 +458,26 @@ def get_answer_fields(
     question: QuestionSchemaType,
     data: MultiDict[str, Any] | Mapping[str, Any] | None,
     schema: QuestionnaireSchema,
-    answer_store: AnswerStore,
-    list_store: ListStore,
-    metadata: MetadataProxy | None,
-    response_metadata: MutableMapping,
+    data_stores: DataStores,
     location: LocationType | None,
-    progress_store: ProgressStore,
-    supplementary_data_store: SupplementaryDataStore,
 ) -> dict[str, FieldHandler]:
     list_item_id = location.list_item_id if location else None
 
     block_ids_by_section: dict[SectionKey, tuple[str, ...]] = {}
 
-    if location and progress_store:
+    if location and data_stores.progress_store:
         block_ids_by_section = (
             get_routing_path_block_ids_by_section_for_calculated_summary_dependencies(
                 location=location,
-                progress_store=progress_store,
+                progress_store=data_stores.progress_store,
                 path_finder=PathFinder(
                     schema=schema,
-                    answer_store=answer_store,
-                    list_store=list_store,
-                    progress_store=progress_store,
-                    metadata=metadata,
-                    response_metadata=response_metadata,
-                    supplementary_data_store=supplementary_data_store,
+                    answer_store=data_stores.answer_store,
+                    list_store=data_stores.list_store,
+                    progress_store=data_stores.progress_store,
+                    metadata=data_stores.metadata,
+                    response_metadata=data_stores.response_metadata,
+                    supplementary_data_store=data_stores.supplementary_data_store,
                 ),
                 data=question,
                 ignore_keys=["when"],
@@ -528,31 +489,16 @@ def get_answer_fields(
         block_ids = get_flattened_mapping_values(block_ids_by_section)
 
     def _get_value_source_resolver(list_item: str | None = None) -> ValueSourceResolver:
-        return ValueSourceResolver(
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=metadata,
+        return data_stores.value_source_resolver(
             schema=schema,
             location=location,
             list_item_id=list_item,
-            escape_answer_values=False,
-            response_metadata=response_metadata,
             routing_path_block_ids=block_ids,
             assess_routing_path=False,
-            progress_store=progress_store,
-            supplementary_data_store=supplementary_data_store,
         )
 
-    rule_evaluator = RuleEvaluator(
-        schema=schema,
-        answer_store=answer_store,
-        list_store=list_store,
-        metadata=metadata,
-        response_metadata=response_metadata,
-        location=location,
-        progress_store=progress_store,
-        supplementary_data_store=supplementary_data_store,
-    )
+    # Type ignore: location in rule_evaluator can be both Location or RelationshipLocation type but is only Location type here
+    rule_evaluator = data_stores.rule_evaluator(schema=schema, location=location)  # type: ignore
 
     answer_fields = {}
     question_title = question.get("title")
@@ -653,12 +599,7 @@ def generate_form(
     *,
     schema: QuestionnaireSchema,
     question_schema: QuestionSchemaType,
-    answer_store: AnswerStore,
-    list_store: ListStore,
-    metadata: MetadataProxy | None,
-    response_metadata: MutableMapping,
-    progress_store: ProgressStore,
-    supplementary_data_store: SupplementaryDataStore,
+    data_stores: DataStores,
     location: LocationType | None = None,
     data: dict[str, Any] | None = None,
     form_data: MultiDict | None = None,
@@ -674,13 +615,8 @@ def generate_form(
         question_schema,
         input_data,
         schema,
-        answer_store,
-        list_store,
-        metadata,
-        response_metadata,
+        data_stores,
         location,
-        progress_store=progress_store,
-        supplementary_data_store=supplementary_data_store,
     )
 
     for answer_id, field in answer_fields.items():
@@ -689,13 +625,8 @@ def generate_form(
     return DynamicForm(
         schema,
         question_schema,
-        answer_store,
-        list_store,
-        metadata,
-        response_metadata,
+        data_stores,
         location,
         data=data,
         formdata=form_data,
-        progress_store=progress_store,
-        supplementary_data_store=supplementary_data_store,
     )

@@ -1,15 +1,9 @@
 from functools import cached_property
-from typing import Any, Generator, Iterable, Mapping, MutableMapping, Optional, Union
+from typing import Any, Generator, Iterable, Mapping, Union
 
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import (
-    AnswerStore,
-    ListStore,
-    ProgressStore,
-    SupplementaryDataStore,
-)
-from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.questionnaire_store import DataStores
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.questionnaire_schema import LIST_COLLECTORS_WITH_REPEATING_BLOCKS
 from app.questionnaire.routing_path import RoutingPath
@@ -24,27 +18,18 @@ class SectionSummaryContext(Context):
         self,
         language: str,
         schema: QuestionnaireSchema,
-        answer_store: AnswerStore,
-        list_store: ListStore,
-        progress_store: ProgressStore,
-        metadata: Optional[MetadataProxy],
-        response_metadata: MutableMapping,
+        data_stores: DataStores,
         routing_path: RoutingPath,
         current_location: Location,
-        supplementary_data_store: SupplementaryDataStore,
     ) -> None:
         super().__init__(
             language,
             schema,
-            answer_store,
-            list_store,
-            progress_store,
-            metadata,
-            response_metadata,
-            supplementary_data_store,
+            data_stores,
         )
         self.routing_path = routing_path
         self.current_location = current_location
+        self.data_stores = data_stores
 
     def __call__(
         self,
@@ -105,7 +90,7 @@ class SectionSummaryContext(Context):
             page_title = f"{page_title}: {section_repeating_page_title}"
 
         if self.current_location.list_item_id and self.current_location.list_name:
-            list_item_position = self._list_store.list_item_position(
+            list_item_position = self._data_stores.list_store.list_item_position(
                 self.current_location.list_name, self.current_location.list_item_id
             )
             page_title = page_title.format(list_item_position=list_item_position)
@@ -145,15 +130,10 @@ class SectionSummaryContext(Context):
                 Group(
                     group_schema=group,
                     routing_path_block_ids=self.routing_path.block_ids,
-                    answer_store=self._answer_store,
-                    list_store=self._list_store,
-                    metadata=self._metadata,
-                    response_metadata=self._response_metadata,
                     schema=self._schema,
+                    data_stores=self._data_stores,
                     location=self.current_location,
                     language=self._language,
-                    progress_store=self._progress_store,
-                    supplementary_data_store=self._supplementary_data_store,
                     return_to=return_to,
                     return_to_block_id=None,
                     view_submitted_response=view_submitted_response,
@@ -180,15 +160,10 @@ class SectionSummaryContext(Context):
             if summary_element["type"] == "List":
                 list_collector_block = ListCollectorBlock(
                     routing_path_block_ids=self.routing_path.block_ids,
-                    answer_store=self._answer_store,
-                    list_store=self._list_store,
-                    progress_store=self._progress_store,
-                    metadata=self._metadata,
-                    response_metadata=self._response_metadata,
+                    data_stores=self._data_stores,
                     schema=self._schema,
                     location=self.current_location,
                     language=self._language,
-                    supplementary_data_store=self._supplementary_data_store,
                     return_to="section-summary",
                 )
                 yield list_collector_block.list_summary_element(summary_element)

@@ -1,6 +1,7 @@
 import pytest
 
 from app.data_models import AnswerStore, ListStore
+from app.data_models.questionnaire_store import DataStores
 from app.questionnaire import Location
 from app.questionnaire.routing_path import RoutingPath
 from app.views.contexts.calculated_summary_context import CalculatedSummaryContext
@@ -74,9 +75,6 @@ def test_build_view_context_for_currency_calculated_summary(
     test_calculated_summary_schema,
     test_calculated_summary_answers,
     test_calculated_summary_answers_skipped_fourth,
-    list_store,
-    progress_store,
-    supplementary_data_store,
     mocker,
     return_to_answer_id,
     skip_fourth,
@@ -113,16 +111,13 @@ def test_build_view_context_for_currency_calculated_summary(
     calculated_summary_context = CalculatedSummaryContext(
         language=language,
         schema=test_calculated_summary_schema,
-        answer_store=test_calculated_summary_answers_skipped_fourth
-        if skip_fourth
-        else test_calculated_summary_answers,
-        list_store=list_store,
-        progress_store=progress_store,
-        metadata=None,
-        response_metadata={},
+        data_stores=DataStores(
+            answer_store=test_calculated_summary_answers_skipped_fourth
+            if skip_fourth
+            else test_calculated_summary_answers
+        ),
         routing_path=RoutingPath(section_id="default-section", block_ids=block_ids),
         current_location=Location(section_id="default-section", block_id=block_id),
-        supplementary_data_store=supplementary_data_store,
     )
 
     context = calculated_summary_context.build_view_context()
@@ -183,9 +178,6 @@ def test_build_view_context_for_currency_calculated_summary(
 def test_build_view_context_for_return_to_calculated_summary(
     test_grand_calculated_summary_schema,
     test_grand_calculated_summary_answers,
-    list_store,
-    progress_store,
-    supplementary_data_store,
     mocker,
     block_id,
     return_to_answer_id,
@@ -214,16 +206,11 @@ def test_build_view_context_for_return_to_calculated_summary(
     calculated_summary_context = CalculatedSummaryContext(
         language="en",
         schema=test_grand_calculated_summary_schema,
-        answer_store=test_grand_calculated_summary_answers,
-        list_store=list_store,
-        progress_store=progress_store,
-        metadata=None,
-        response_metadata={},
+        data_stores=DataStores(answer_store=test_grand_calculated_summary_answers),
         routing_path=RoutingPath(section_id="default-section", block_ids=block_ids),
         current_location=Location(section_id="default-section", block_id=block_id),
         return_to=return_to,
         return_to_block_id=return_to_block_id,
-        supplementary_data_store=supplementary_data_store,
     )
 
     context = calculated_summary_context.build_view_context()
@@ -266,9 +253,6 @@ def test_build_view_context_for_return_to_calculated_summary(
 )
 def test_build_view_context_for_calculated_summary_with_dynamic_answers(
     test_calculated_summary_repeating_and_static_answers_schema,
-    answer_store,
-    progress_store,
-    supplementary_data_store,
     mocker,
     block_id,
     expected_answer_ids,
@@ -293,14 +277,13 @@ def test_build_view_context_for_calculated_summary_with_dynamic_answers(
     calculated_summary_context = CalculatedSummaryContext(
         language="en",
         schema=test_calculated_summary_repeating_and_static_answers_schema,
-        answer_store=answer_store,
-        list_store=ListStore([{"items": ["CHKtQS", "laFWcs"], "name": "supermarkets"}]),
-        progress_store=progress_store,
-        metadata=None,
-        response_metadata={},
+        data_stores=DataStores(
+            list_store=ListStore(
+                [{"items": ["CHKtQS", "laFWcs"], "name": "supermarkets"}]
+            )
+        ),
         routing_path=RoutingPath(section_id="section-1", block_ids=block_ids),
         current_location=Location(section_id="section-1", block_id=block_id),
-        supplementary_data_store=supplementary_data_store,
     )
 
     context = calculated_summary_context.build_view_context()
@@ -372,8 +355,6 @@ def test_build_view_context_for_calculated_summary_with_dynamic_answers(
 )
 def test_build_view_context_for_calculated_summary_with_answers_from_repeating_blocks(
     test_calculated_summary_repeating_blocks,
-    progress_store,
-    supplementary_data_store,
     mocker,
     block_id,
     expected_answer_ids,
@@ -391,22 +372,29 @@ def test_build_view_context_for_calculated_summary_with_answers_from_repeating_b
     )
 
     block_ids = ["block-car", "list-collector"]
-    answer_store = AnswerStore(
-        [
-            {"answer_id": "transport-name", "value": "Train", "list_item_id": "CHKtQS"},
-            {"answer_id": "transport-name", "value": "Bus", "list_item_id": "laFWcs"},
-        ]
-    )
 
     calculated_summary_context = CalculatedSummaryContext(
         language="en",
         schema=test_calculated_summary_repeating_blocks,
-        answer_store=answer_store,
-        list_store=ListStore([{"items": ["CHKtQS", "laFWcs"], "name": "transport"}]),
-        progress_store=progress_store,
-        supplementary_data_store=supplementary_data_store,
-        metadata=None,
-        response_metadata={},
+        data_stores=DataStores(
+            answer_store=AnswerStore(
+                [
+                    {
+                        "answer_id": "transport-name",
+                        "value": "Train",
+                        "list_item_id": "CHKtQS",
+                    },
+                    {
+                        "answer_id": "transport-name",
+                        "value": "Bus",
+                        "list_item_id": "laFWcs",
+                    },
+                ]
+            ),
+            list_store=ListStore(
+                [{"items": ["CHKtQS", "laFWcs"], "name": "transport"}]
+            ),
+        ),
         routing_path=RoutingPath(section_id="section-1", block_ids=block_ids),
         current_location=Location(section_id="section-1", block_id=block_id),
     )

@@ -3,7 +3,8 @@ from typing import Mapping, MutableMapping
 
 from jsonpointer import resolve_pointer, set_pointer
 
-from app.data_models import ProgressStore, SupplementaryDataStore
+from app.data_models import progress_store as ps
+from app.data_models import supplementary_data_store as sds
 from app.data_models.answer import AnswerValueTypes
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
@@ -29,8 +30,8 @@ class PlaceholderRenderer:
         metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
-        progress_store: ProgressStore,
-        supplementary_data_store: SupplementaryDataStore,
+        progress_store: ps.ProgressStore,
+        supplementary_data_store: sds.SupplementaryDataStore,
         location: LocationType | None = None,
         placeholder_preview_mode: bool | None = False,
     ):
