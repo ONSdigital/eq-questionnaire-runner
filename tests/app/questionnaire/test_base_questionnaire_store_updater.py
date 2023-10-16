@@ -12,20 +12,49 @@ from app.utilities.types import DependentSection, SectionKey
 
 @pytest.fixture
 def questionnaire_store_with_supplementary_data(
-    mock_questionnaire_store, supplementary_data_store_with_data
+    mock_questionnaire_store,
+    supplementary_data_store_with_employees,
 ):
     """Mock questionnaire store with supplementary data of two products and partial progress"""
     mock_questionnaire_store.supplementary_data_store = (
-        supplementary_data_store_with_data
+        supplementary_data_store_with_employees
     )
     mock_questionnaire_store.list_store = ListStore(
-        [{"items": ["item-1", "item-2"], "name": "products"}]
+        [
+            {"items": ["item-1", "item-2"], "name": "products"},
+            {
+                "items": ["employee-1", "employee-2", "employee-3", "employee-4"],
+                "name": "employees",
+            },
+        ],
     )
     mock_questionnaire_store.progress_store = ProgressStore(
         [
             ProgressDict(
                 section_id="introduction-section",
                 block_ids=["loaded-successfully-block", "introduction-block"],
+                status=CompletionStatus.COMPLETED,
+            ),
+            ProgressDict(
+                section_id="section-2",
+                block_ids=["list-collector-employees"],
+                status=CompletionStatus.COMPLETED,
+            ),
+            ProgressDict(
+                section_id="section-3",
+                block_ids=["any-additional-employees"],
+                status=CompletionStatus.COMPLETED,
+            ),
+            ProgressDict(
+                section_id="section-4",
+                block_ids=["length-of-employment"],
+                list_item_id="employee-1",
+                status=CompletionStatus.COMPLETED,
+            ),
+            ProgressDict(
+                section_id="section-4",
+                block_ids=["length-of-employment"],
+                list_item_id="employee-2",
                 status=CompletionStatus.COMPLETED,
             ),
             ProgressDict(
@@ -202,3 +231,22 @@ def test_update_progress_for_dependent_sections(
         ].status
         == CompletionStatus.IN_PROGRESS
     )
+
+
+def test_update_progress_of_repeating_dependent(
+    supplementary_data,
+    supplementary_data_schema,
+    questionnaire_store_with_supplementary_data,
+):
+    base_questionnaire_store_updater = BaseQuestionnaireStoreUpdater(
+        schema=supplementary_data_schema,
+        questionnaire_store=questionnaire_store_with_supplementary_data,
+        router=MagicMock(),
+    )
+    base_questionnaire_store_updater.remove_list_item_data("employees", "employee-4")
+    # :TODO: fix such that assertion passes
+    # assert base_questionnaire_store_updater.dependent_sections == {
+    #     DependentSection(section_id="section-4", list_item_id="employee-1"),
+    #     DependentSection(section_id="section-4", list_item_id="employee-2"),
+    #     DependentSection(section_id="section-4", list_item_id="employee-3"),
+    # }

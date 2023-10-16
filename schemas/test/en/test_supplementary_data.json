@@ -1054,6 +1054,88 @@
                                     }
                                 ]
                             }
+                        },
+                        {
+                            "id": "conditional-employee-block",
+                            "type": "Question",
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "employees"
+                                                }
+                                            ]
+                                        },
+                                        3
+                                    ]
+                                }
+                            },
+                            "question": {
+                                "id": "conditional-employee-question",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "This block is enabled because there are 3 employees in the supplementary dataset"
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "title": {
+                                    "text": "Has {employee_name} been promoted since starting at {company_name}?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "company_name",
+                                            "value": {
+                                                "source": "supplementary_data",
+                                                "identifier": "company_name"
+                                            }
+                                        },
+                                        {
+                                            "placeholder": "employee_name",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "supplementary_data",
+                                                                "identifier": "employees",
+                                                                "selectors": ["personal_details", "forename"]
+                                                            },
+                                                            {
+                                                                "source": "supplementary_data",
+                                                                "identifier": "employees",
+                                                                "selectors": ["personal_details", "surname"]
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "promoted-yes-no-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
                         }
                     ]
                 }
@@ -1189,6 +1271,86 @@
                                                 "identifier": "incorporation_date"
                                             }
                                         }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "conditional-additional-employee-block",
+                            "type": "Question",
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "additional-employees"
+                                                }
+                                            ]
+                                        },
+                                        3
+                                    ]
+                                }
+                            },
+                            "question": {
+                                "id": "conditional-additional-employee-question",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "This block is enabled because there are 3 additional employees"
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "title": {
+                                    "text": "Has {employee_name} been promoted since starting at {company_name}?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "company_name",
+                                            "value": {
+                                                "source": "supplementary_data",
+                                                "identifier": "company_name"
+                                            }
+                                        },
+                                        {
+                                            "placeholder": "employee_name",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "employee-first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "employee-last-name"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "additional-promoted-yes-no-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
                                     }
                                 ]
                             }

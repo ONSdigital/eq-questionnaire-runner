@@ -279,11 +279,122 @@ def supplementary_data():
 
 
 @pytest.fixture
+def supplementary_data_with_employees(supplementary_data):
+    supplementary_data["items"]["employees"] = [
+        {
+            "identifier": "429001",
+            "personal_details": {
+                "forename": "Harry",
+                "surname": "Potter",
+                "address": {
+                    "postcode": "BS1 1AJ",
+                    "house_number": "12",
+                    "city": "Bristol",
+                },
+            },
+            "employment_details": {
+                "job_title": "Customer assistant",
+                "start_date": "2020-01-01",
+                "salary": {
+                    "payroll_number": "54345",
+                    "value": "25000",
+                    "currency": "GBP",
+                },
+            },
+        },
+        {
+            "identifier": "529001",
+            "personal_details": {
+                "forename": "Bruce",
+                "surname": "Wayne",
+                "address": {
+                    "postcode": "BS1 1HJ",
+                    "house_number": "15",
+                    "city": "Bristol",
+                },
+            },
+            "employment_details": {
+                "job_title": "Customer assistant",
+                "start_date": "2019-03-01",
+                "salary": {
+                    "payroll_number": "4345",
+                    "value": "27000",
+                    "currency": "GBP",
+                },
+            },
+        },
+        {
+            "identifier": "629011",
+            "personal_details": {
+                "forename": "Henry",
+                "surname": "Green",
+                "address": {
+                    "postcode": "BS1 1HR",
+                    "house_number": "11",
+                    "city": "Bristol",
+                },
+            },
+            "employment_details": {
+                "job_title": "Warehouse operative",
+                "start_date": "2022-10-01",
+                "salary": {
+                    "payroll_number": "28379",
+                    "value": "29000",
+                    "currency": "GBP",
+                },
+            },
+        },
+        {
+            "identifier": "729011",
+            "personal_details": {
+                "forename": "Fourth",
+                "surname": "Person",
+                "address": {
+                    "postcode": "BS1 1HO",
+                    "house_number": "14",
+                    "city": "Bristol",
+                },
+            },
+            "employment_details": {
+                "job_title": "Warehouse operative",
+                "start_date": "2022-11-01",
+                "salary": {
+                    "payroll_number": "22238379",
+                    "value": "29500",
+                    "currency": "GBP",
+                },
+            },
+        },
+    ]
+    return supplementary_data
+
+
+@pytest.fixture
 def supplementary_data_list_mappings():
     return {
         "products": [
             SupplementaryDataListMapping(identifier=89929001, list_item_id="item-1"),
             SupplementaryDataListMapping(identifier="201630601", list_item_id="item-2"),
+        ],
+    }
+
+
+@pytest.fixture
+def supplementary_data_employee_list_mappings():
+    return {
+        "employees": [
+            SupplementaryDataListMapping(
+                identifier="429001", list_item_id="employee-1"
+            ),
+            SupplementaryDataListMapping(
+                identifier="529001", list_item_id="employee-2"
+            ),
+            SupplementaryDataListMapping(
+                identifier="629011", list_item_id="employee-3"
+            ),
+            SupplementaryDataListMapping(
+                identifier="729011", list_item_id="employee-4"
+            ),
         ],
     }
 
@@ -295,4 +406,19 @@ def supplementary_data_store_with_data(
     return SupplementaryDataStore(
         supplementary_data=supplementary_data,
         list_mappings=supplementary_data_list_mappings,
+    )
+
+
+@pytest.fixture
+def supplementary_data_store_with_employees(
+    supplementary_data_with_employees,
+    supplementary_data_list_mappings,
+    supplementary_data_employee_list_mappings,
+):
+    return SupplementaryDataStore(
+        supplementary_data=supplementary_data_with_employees,
+        list_mappings={
+            **supplementary_data_list_mappings,
+            **supplementary_data_employee_list_mappings,
+        },
     )
