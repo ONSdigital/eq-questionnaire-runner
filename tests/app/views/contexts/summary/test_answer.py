@@ -1,5 +1,6 @@
 import pytest
 
+from app.questionnaire.return_location import ReturnLocation
 from app.views.contexts.summary.answer import Answer
 
 
@@ -16,15 +17,19 @@ from app.views.contexts.summary.answer import Answer
     ],
 )
 def test_create_answer(return_to, return_to_block_id, is_in_repeating_section):
+    return_location = ReturnLocation(
+        return_to=return_to,
+        return_to_block_id=return_to_block_id,
+        return_to_list_item_id=None,
+    )
+
     answer = Answer(
         answer_schema={"id": "answer-id", "label": "Answer Label", "type": "date"},
         answer_value="An answer",
         block_id="house-type",
         list_name="answer-list",
         list_item_id="answer-item-id",
-        return_to=return_to,
-        return_to_block_id=return_to_block_id,
-        return_to_list_item_id=None,
+        return_location=return_location,
         is_in_repeating_section=is_in_repeating_section,
     )
 
@@ -55,15 +60,19 @@ def test_create_answer(return_to, return_to_block_id, is_in_repeating_section):
 @pytest.mark.usefixtures("app")
 def test_date_answer_type():
     # When
+    return_location = ReturnLocation(
+        return_to="section-summary",
+        return_to_block_id=None,
+        return_to_list_item_id=None,
+    )
+
     answer = Answer(
         answer_schema={"id": "answer-id", "label": "", "type": "date"},
         answer_value=None,
         block_id="house-type",
         list_name="answer-list",
         list_item_id="answer-item-id",
-        return_to="section-summary",
-        return_to_block_id=None,
-        return_to_list_item_id=None,
+        return_location=return_location,
         is_in_repeating_section=False,
     )
 

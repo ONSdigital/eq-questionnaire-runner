@@ -2,6 +2,7 @@ import pytest
 
 from app.data_models import AnswerStore, ListStore
 from app.questionnaire import Location
+from app.questionnaire.return_location import ReturnLocation
 from app.questionnaire.routing_path import RoutingPath
 from app.views.contexts.calculated_summary_context import CalculatedSummaryContext
 from tests.app.views.contexts import assert_summary_context
@@ -123,6 +124,7 @@ def test_build_view_context_for_currency_calculated_summary(
         routing_path=RoutingPath(section_id="default-section", block_ids=block_ids),
         current_location=Location(section_id="default-section", block_id=block_id),
         supplementary_data_store=supplementary_data_store,
+        return_location=ReturnLocation(return_to_answer_id=return_to_answer_id),
     )
 
     context = calculated_summary_context.build_view_context()
@@ -221,9 +223,10 @@ def test_build_view_context_for_return_to_calculated_summary(
         response_metadata={},
         routing_path=RoutingPath(section_id="default-section", block_ids=block_ids),
         current_location=Location(section_id="default-section", block_id=block_id),
-        return_to=return_to,
-        return_to_block_id=return_to_block_id,
         supplementary_data_store=supplementary_data_store,
+        return_location=ReturnLocation(
+            return_to=return_to, return_to_block_id=return_to_block_id
+        ),
     )
 
     context = calculated_summary_context.build_view_context()
@@ -301,6 +304,7 @@ def test_build_view_context_for_calculated_summary_with_dynamic_answers(
         routing_path=RoutingPath(section_id="section-1", block_ids=block_ids),
         current_location=Location(section_id="section-1", block_id=block_id),
         supplementary_data_store=supplementary_data_store,
+        return_location=ReturnLocation(),
     )
 
     context = calculated_summary_context.build_view_context()
@@ -409,6 +413,7 @@ def test_build_view_context_for_calculated_summary_with_answers_from_repeating_b
         response_metadata={},
         routing_path=RoutingPath(section_id="section-1", block_ids=block_ids),
         current_location=Location(section_id="section-1", block_id=block_id),
+        return_location=ReturnLocation(),
     )
 
     context = calculated_summary_context.build_view_context()
