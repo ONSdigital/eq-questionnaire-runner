@@ -22,6 +22,9 @@ class ReturnLocation:
     return_to_list_name: str | None = None
     return_to_list_item_id: str | None = None
 
-    def to_dict(self) -> Mapping:
+    def to_dict(self, anchor_return_to_answer_id: bool = False) -> Mapping:
         attributes = asdict(self)
+        if anchor_return_to_answer_id:
+            attributes["_anchor"] = attributes["return_to_answer_id"]
+            del attributes["return_to_answer_id"]
         return {k: v for k, v in attributes.items() if v is not None}

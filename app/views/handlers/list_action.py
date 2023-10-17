@@ -108,15 +108,11 @@ class ListAction(Question):
             # Type ignore: the above line check that block_id exists and is valid and therefore section exists
             section_id: str = self._schema.get_section_id_for_block_id(block_id)  # type: ignore
             return Location(section_id=section_id, block_id=block_id).url(
-                return_to=return_location.return_to,
-                return_to_answer_id=return_location.return_to_answer_id,
-                return_to_block_id=return_location.return_to_block_id,
+                **return_location.to_dict(),
                 _anchor=anchor,
             )
 
         return self.parent_location.url(
-            return_to=return_location.return_to,
-            return_to_answer_id=return_location.return_to_answer_id,
-            return_to_block_id=return_location.return_to_block_id,
+            **return_location.to_dict(),
             _anchor=anchor,
         )

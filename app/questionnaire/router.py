@@ -194,17 +194,14 @@ class Router:
                 return url_for(
                     "questionnaire.relationships",
                     last=True,
-                    return_to=return_location.return_to,
-                    _anchor=return_location.return_to_answer_id,
+                    **return_location.to_dict(anchor_return_to_answer_id=True),
                 )
             return url_for(
                 "questionnaire.block",
                 block_id=previous_block_id,
                 list_name=routing_path.list_name,
                 list_item_id=routing_path.list_item_id,
-                return_to=return_location.return_to,
-                return_to_block_id=return_location.return_to_block_id,
-                _anchor=return_location.return_to_answer_id,
+                **return_location.to_dict(anchor_return_to_answer_id=True),
             )
 
         if self.can_access_hub():
