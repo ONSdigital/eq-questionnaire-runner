@@ -1,4 +1,4 @@
-from typing import Any, Mapping, MutableMapping, Optional
+from typing import Any, Mapping, Optional
 
 from flask import url_for
 from markupsafe import Markup, escape
@@ -6,11 +6,9 @@ from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import AnswerStore
 from app.data_models.answer import AnswerValueEscapedTypes, escape_answer_value
-from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.questionnaire_store import DataStores
 from app.forms.field_handlers.select_handlers import DynamicAnswerOptions
 from app.questionnaire import QuestionnaireSchema, QuestionSchemaType
-from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.utilities.types import LocationType
 from app.views.contexts.summary.answer import (
     Answer,
@@ -38,6 +36,7 @@ class Question:
         self.id = question_schema["id"]
         self.type = question_schema["type"]
         self.schema = schema
+        self.data_stores = data_stores
         self.answer_schemas = iter(question_schema.get("answers", []))
         self.answer_store = data_stores.answer_store
         self.list_store = data_stores.list_store
@@ -72,8 +71,6 @@ class Question:
             return_to=return_to,
             return_to_block_id=return_to_block_id,
             return_to_list_item_id=return_to_list_item_id,
-            metadata=self.metadata,
-            response_metadata=self.response_metadata,
             language=language,
         )
 
@@ -96,8 +93,6 @@ class Question:
         return_to: str | None,
         return_to_block_id: str | None,
         return_to_list_item_id: str | None,
-        metadata: MetadataProxy | None,
-        response_metadata: MutableMapping,
         language: str,
     ) -> list[dict[str, Any]]:
         if self.summary:
@@ -128,8 +123,6 @@ class Question:
         for answer_schema in self._get_resolved_answers(
             question_schema=question_schema,
             language=language,
-            metadata=metadata,
-            response_metadata=response_metadata,
         ):
             list_item_id = answer_schema.get("list_item_id")
             answer_id = answer_schema.get("original_answer_id") or answer_schema["id"]
@@ -296,21 +289,12 @@ class Question:
         *,
         question_schema: QuestionSchemaType,
         language: str,
-        metadata: MetadataProxy | None = None,
-        response_metadata: MutableMapping,
     ) -> Any:
         resolved_question = ImmutableDict({"answers": self.answer_schemas})
 
         if "dynamic_answers" in question_schema:
-            placeholder_renderer = PlaceholderRenderer(
-                answer_store=self.answer_store,
-                list_store=self.list_store,
-                progress_store=self.progress_store,
-                schema=self.schema,
-                language=language,
-                metadata=metadata,
-                response_metadata=response_metadata,
-                supplementary_data_store=self.supplementary_data_store,
+            placeholder_renderer = self.data_stores.placeholder_renderer(
+                language=language, schema=self.schema
             )
 
             resolved_question = ImmutableDict(
