@@ -19,9 +19,9 @@ describe("Address Answer Type", () => {
       await click(AddressMandatory.submit());
       await click(AddressOptional.submit());
       await click(AddressConfirmation.submit());
-      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
-      await expect(await $(SubmitPage.addressMandatory()).getText()).to.equal("Evelyn Street\nApt 7\nBarry\nCF63 4JG");
-      await expect(await $(SubmitPage.addressMandatory()).getHTML()).to.contain("Evelyn Street<br>Apt 7<br>Barry<br>CF63 4JG");
+      await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
+      await expect(await $(SubmitPage.addressMandatory()).getText()).toEqual("Evelyn Street\nApt 7\nBarry\nCF63 4JG");
+      await expect(await $(SubmitPage.addressMandatory()).getHTML()).toContain("Evelyn Street<br>Apt 7<br>Barry<br>CF63 4JG");
     });
   });
 
@@ -32,15 +32,15 @@ describe("Address Answer Type", () => {
       await click(AddressMandatory.submit());
       await click(AddressOptional.submit());
       await click(AddressConfirmation.submit());
-      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
-      await expect(await $(SubmitPage.addressMandatory()).getText()).to.equal("Evelyn Street");
+      await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
+      await expect(await $(SubmitPage.addressMandatory()).getText()).toBe("Evelyn Street");
     });
   });
 
   describe("Given the user is on an mandatory address input question", () => {
     it("When the user submits the page without entering address line 1, Then an error is displayed", async () => {
       await click(AddressMandatory.submit());
-      await expect(await $(AddressMandatory.error()).getText()).to.equal("Enter an address");
+      await expect(await $(AddressMandatory.error()).getText()).toBe("Enter an address");
     });
   });
 
@@ -52,7 +52,7 @@ describe("Address Answer Type", () => {
 
       await click(AddressOptional.submit());
       await click(AddressConfirmation.submit());
-      await expect(await $(SubmitPage.addressOptional()).getText()).to.equal("No answer provided");
+      await expect(await $(SubmitPage.addressOptional()).getText()).toBe("No answer provided");
     });
   });
 
@@ -64,14 +64,14 @@ describe("Address Answer Type", () => {
       await $(AddressMandatory.Postcode()).setValue("CF63 4JG");
 
       await click(AddressMandatory.submit());
-      await expect(await browser.getUrl()).to.contain(AddressOptional.pageName);
+      await expect(await browser.getUrl()).toContain(AddressOptional.pageName);
 
       await browser.url(AddressMandatory.url());
 
-      await expect(await $(AddressMandatory.Line1()).getValue()).to.contain("Evelyn Street");
-      await expect(await $(AddressMandatory.Line2()).getValue()).to.contain("Apt 7");
-      await expect(await $(AddressMandatory.Town()).getValue()).to.contain("Barry");
-      await expect(await $(AddressMandatory.Postcode()).getValue()).to.contain("CF63 4JG");
+      await expect(await $(AddressMandatory.Line1()).getValue()).toContain("Evelyn Street");
+      await expect(await $(AddressMandatory.Line2()).getValue()).toContain("Apt 7");
+      await expect(await $(AddressMandatory.Town()).getValue()).toContain("Barry");
+      await expect(await $(AddressMandatory.Postcode()).getValue()).toContain("CF63 4JG");
     });
   });
   describe("Given the user has submitted an address answer type question", () => {
@@ -82,7 +82,7 @@ describe("Address Answer Type", () => {
       await $(AddressMandatory.Postcode()).setValue("CF63 4JG");
       await click(AddressMandatory.submit());
       await click(AddressOptional.submit());
-      await expect(await $(AddressConfirmation.questionText()).getText()).to.equal("Please confirm the first line of your address is Evelyn Street");
+      await expect(await $(AddressConfirmation.questionText()).getText()).toBe("Please confirm the first line of your address is Evelyn Street");
     });
   });
 });
