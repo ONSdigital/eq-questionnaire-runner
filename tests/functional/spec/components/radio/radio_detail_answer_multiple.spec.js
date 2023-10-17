@@ -7,9 +7,9 @@ describe('Radio with multiple "detail_answer" options', () => {
   it("Given detail answer options are available, When the user clicks an option, Then the detail answer input should be visible.", async () => {
     await browser.openQuestionnaire(radioSchema);
     await $(MandatoryRadioPage.eggs()).click();
-    await expect(await $(MandatoryRadioPage.eggsDetail()).isDisplayed()).to.be.true;
+    await expect(await $(MandatoryRadioPage.eggsDetail()).isDisplayed()).toBe(true);
     await $(MandatoryRadioPage.favouriteNotListed()).click();
-    await expect(await $(MandatoryRadioPage.favouriteNotListedDetail()).isDisplayed()).to.be.true;
+    await expect(await $(MandatoryRadioPage.favouriteNotListedDetail()).isDisplayed()).toBe(true);
   });
 
   it("Given a mandatory detail answer, When I select the option but leave the input field empty and submit, Then an error should be displayed.", async () => {
@@ -19,8 +19,8 @@ describe('Radio with multiple "detail_answer" options', () => {
     await $(MandatoryRadioPage.favouriteNotListed()).click();
     await click(MandatoryRadioPage.submit());
     // Then
-    await expect(await $(MandatoryRadioPage.error()).isDisplayed()).to.be.true;
-    await expect(await $(MandatoryRadioPage.errorNumber(1)).getText()).to.contain("Enter your favourite to continue");
+    await expect(await $(MandatoryRadioPage.error()).isDisplayed()).toBe(true);
+    await expect(await $(MandatoryRadioPage.errorNumber(1)).getText()).toEqual("Enter your favourite to continue");
   });
 
   it("Given a selected radio answer with an error for a mandatory detail answer, When I enter valid value and submit the page, Then the error is cleared and I navigate to next page.", async () => {
@@ -28,12 +28,12 @@ describe('Radio with multiple "detail_answer" options', () => {
     await browser.openQuestionnaire(radioSchema);
     await $(MandatoryRadioPage.favouriteNotListed()).click();
     await click(MandatoryRadioPage.submit());
-    await expect(await $(MandatoryRadioPage.error()).isDisplayed()).to.be.true;
+    await expect(await $(MandatoryRadioPage.error()).isDisplayed()).toBe(true);
 
     // When
     await $(MandatoryRadioPage.favouriteNotListedDetail()).setValue("Bacon");
     await click(MandatoryRadioPage.submit());
-    await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
+    await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
   });
 
   it("Given a non-mandatory detail answer, When the user does not provide any text, Then just the option value should be displayed on the summary screen", async () => {
@@ -41,10 +41,10 @@ describe('Radio with multiple "detail_answer" options', () => {
     await browser.openQuestionnaire(radioSchema);
     // When
     await $(MandatoryRadioPage.eggs()).click();
-    await expect(await $(MandatoryRadioPage.eggsDetail()).isDisplayed()).to.be.true;
+    await expect(await $(MandatoryRadioPage.eggsDetail()).isDisplayed()).toBe(true);
     await click(MandatoryRadioPage.submit());
     // Then
-    await expect(await $(SubmitPage.radioMandatoryAnswer()).getText()).to.equal("Eggs");
+    await expect(await $(SubmitPage.radioMandatoryAnswer()).getText()).toEqual("Eggs");
   });
 
   it("Given a detail answer, When the user provides text, Then that text should be displayed on the summary screen", async () => {
@@ -55,7 +55,7 @@ describe('Radio with multiple "detail_answer" options', () => {
     await $(MandatoryRadioPage.eggsDetail()).setValue("Scrambled");
     await click(MandatoryRadioPage.submit());
     // Then
-    await expect(await $(SubmitPage.radioMandatoryAnswer()).getText()).to.equal("Eggs\nScrambled");
+    await expect(await $(SubmitPage.radioMandatoryAnswer()).getText()).toEqual("Eggs\nScrambled");
   });
 
   it("Given I have previously added text in a detail answer and saved, When I select a different radio and save, Then the text entered in the detail answer field should be empty.", async () => {
@@ -71,6 +71,6 @@ describe('Radio with multiple "detail_answer" options', () => {
     await $(SubmitPage.previous()).click();
     // Then
     await $(MandatoryRadioPage.favouriteNotListed()).click();
-    await expect(await $(MandatoryRadioPage.favouriteNotListedDetail()).getValue()).to.equal("");
+    await expect(await $(MandatoryRadioPage.favouriteNotListedDetail()).getValue()).toEqual("");
   });
 });
