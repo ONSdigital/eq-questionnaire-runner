@@ -4,19 +4,13 @@ from flask import url_for
 from markupsafe import Markup, escape
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import (
-    AnswerStore,
-    ListStore,
-    ProgressStore,
-    SupplementaryDataStore,
-)
+from app.data_models import AnswerStore
 from app.data_models.answer import AnswerValueEscapedTypes, escape_answer_value
 from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.questionnaire_store import DataStores
 from app.forms.field_handlers.select_handlers import DynamicAnswerOptions
 from app.questionnaire import QuestionnaireSchema, QuestionSchemaType
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
-from app.questionnaire.rules.rule_evaluator import RuleEvaluator
-from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.utilities.types import LocationType
 from app.views.contexts.summary.answer import (
     Answer,
@@ -31,20 +25,13 @@ class Question:
         self,
         question_schema: QuestionSchemaType,
         *,
-        answer_store: AnswerStore,
-        list_store: ListStore,
-        progress_store: ProgressStore,
-        supplementary_data_store: SupplementaryDataStore,
+        data_stores: DataStores,
         schema: QuestionnaireSchema,
-        rule_evaluator: RuleEvaluator,
-        value_source_resolver: ValueSourceResolver,
         location: LocationType,
         block_id: str,
         return_to: Optional[str],
         return_to_block_id: Optional[str] = None,
         return_to_list_item_id: Optional[str] = None,
-        metadata: MetadataProxy | None,
-        response_metadata: MutableMapping,
         language: str,
     ) -> None:
         self.list_item_id = location.list_item_id if location else None
@@ -52,33 +39,41 @@ class Question:
         self.type = question_schema["type"]
         self.schema = schema
         self.answer_schemas = iter(question_schema.get("answers", []))
-        self.answer_store = answer_store
-        self.list_store = list_store
-        self.progress_store = progress_store
-        self.supplementary_data_store = supplementary_data_store
+        self.answer_store = data_stores.answer_store
+        self.list_store = data_stores.list_store
+        self.progress_store = data_stores.progress_store
+        self.supplementary_data_store = data_stores.supplementary_data_store
+        self.metadata = data_stores.metadata
+        self.response_metadata = data_stores.response_metadata
+        self.location = location
         self.summary = question_schema.get("summary")
         self.title = (
             question_schema.get("title") or question_schema["answers"][0]["label"]
         )
         self.number = question_schema.get("number", None)
 
-        self.rule_evaluator = rule_evaluator
-        self.value_source_resolver = value_source_resolver
+        self.rule_evaluator = data_stores.rule_evaluator(
+            location=self.location, schema=self.schema  # type: ignore
+        )
+        # Type ignore: Argument is expected to be "Location" not "Location | RelationshipLocation"
+        self.value_source_resolver = data_stores.value_source_resolver(
+            location=self.location, schema=self.schema, list_item_id=self.list_item_id
+        )
         # no need to call the method if no list item id
         self._is_in_repeating_section = bool(
             self.list_item_id and self.schema.is_block_in_repeating_section(block_id)
         )
 
         self.answers = self._build_answers(
-            answer_store=answer_store,
+            answer_store=self.answer_store,
             question_schema=question_schema,
             block_id=block_id,
             list_name=location.list_name if location else None,
             return_to=return_to,
             return_to_block_id=return_to_block_id,
             return_to_list_item_id=return_to_list_item_id,
-            metadata=metadata,
-            response_metadata=response_metadata,
+            metadata=self.metadata,
+            response_metadata=self.response_metadata,
             language=language,
         )
 

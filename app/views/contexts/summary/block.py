@@ -78,20 +78,13 @@ class Block:
         )
         return Question(
             variant,
-            answer_store=data_stores.answer_store,
-            list_store=data_stores.list_store,
-            progress_store=data_stores.progress_store,
-            supplementary_data_store=data_stores.supplementary_data_store,
+            data_stores=self.data_stores,
             schema=self.schema,
-            rule_evaluator=self._rule_evaluator,
-            value_source_resolver=self._value_source_resolver,
             location=self.location,
             block_id=self.id,
             return_to=return_to,
             return_to_block_id=return_to_block_id,
             return_to_list_item_id=return_to_list_item_id,
-            metadata=data_stores.metadata,
-            response_metadata=data_stores.response_metadata,
             language=language,
         ).serialize()
 
