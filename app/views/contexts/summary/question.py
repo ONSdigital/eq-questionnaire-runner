@@ -26,6 +26,7 @@ from app.views.contexts.summary.answer import (
 )
 
 
+# pylint: disable=too-many-locals
 class Question:
     def __init__(
         self,

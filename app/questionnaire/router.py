@@ -290,10 +290,11 @@ class Router:
         ):
             return None
 
+        return_to_block_id = return_location.return_to_block_id
         # Type ignore: if the block is valid, then we'll be able to find a section for it
         grand_calculated_summary_section: str = (
-            self._schema.get_section_id_for_block_id(return_location.return_to_block_id)
-        )  # type: ignore
+            self._schema.get_section_id_for_block_id(return_to_block_id)  # type: ignore
+        )
         list_item_id = location.list_item_id or return_location.return_to_list_item_id
         list_name = (
             self._list_store.get_list_name_for_list_item_id(list_item_id)
