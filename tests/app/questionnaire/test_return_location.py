@@ -1,5 +1,3 @@
-import pytest
-
 from app.questionnaire.return_location import ReturnLocation
 
 
