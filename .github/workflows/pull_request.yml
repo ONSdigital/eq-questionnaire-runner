@@ -130,8 +130,6 @@ jobs:
         run: ./scripts/run_validator.sh
       - name: Running schema tests
         run: make validate-test-schemas
-      - name: Running a single schema test
-        run: make validate-test-schema SCHEMA_PATH=<schema-path> SCHEMA=<schema>
   test-functional:
     needs: [python-dependencies, node-dependencies]
     strategy:
@@ -171,7 +169,7 @@ jobs:
       - name: Docker compose
         run: docker-compose --version && RUNNER_ENV_FILE=.functional-tests.env docker-compose up --build -d
       - name: Functional tests
-        run: test-functional-suite SUITE=<suite>
+        run: make test-functional-suite SUITE=
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker-compose kill
   docker-push:
