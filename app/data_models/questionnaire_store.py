@@ -34,10 +34,12 @@ class DataStores:
     # self.metadata is a read-only view over self._metadata
     metadata: MetadataProxy | None = None
     response_metadata: MutableMapping = field(default_factory=dict)
-    list_store: ListStore = ListStore()
+    list_store: ListStore = field(default_factory=ListStore)
     answer_store: AnswerStore = field(default_factory=AnswerStore)
-    progress_store: ProgressStore = ProgressStore()
-    supplementary_data_store: SupplementaryDataStore = SupplementaryDataStore()
+    progress_store: ProgressStore = field(default_factory=ProgressStore)
+    supplementary_data_store: SupplementaryDataStore = field(
+        default_factory=SupplementaryDataStore
+    )
 
     def rule_evaluator(
         self,
