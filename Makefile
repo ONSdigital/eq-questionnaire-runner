@@ -61,10 +61,10 @@ generate-spec:
 	pipenv run python -m tests.functional.generate_pages schemas/test/en/$(SCHEMA).json ./tests/functional/generated_pages/$(patsubst test_%,%,$(SCHEMA)) -r '../../base_pages' -s tests/functional/spec/$(SCHEMA).spec.js
 
 validate-test-schemas:
-	pipenv run ./scripts/validate_test_schemas.sh
+	./scripts/validate_test_schemas.sh
 
 validate-test-schema:
-	pipenv run ./scripts/validate_test_schemas.sh $(SCHEMA_PATH)$(SCHEMA)
+	./scripts/validate_test_schemas.sh $(SCHEMA_PATH)$(SCHEMA)
 
 translation-templates:
 	pipenv run python -m scripts.extract_translation_templates
