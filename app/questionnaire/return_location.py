@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
-from typing import Mapping
+from typing import Mapping, Any
 
 
 @dataclass(kw_only=True, frozen=True)
@@ -22,7 +22,7 @@ class ReturnLocation:
     return_to_list_name: str | None = None
     return_to_list_item_id: str | None = None
 
-    def to_dict(self, anchor_return_to_answer_id: bool = False) -> Mapping:
+    def to_dict(self, anchor_return_to_answer_id: bool = False) -> dict:
         attributes = asdict(self)
         if anchor_return_to_answer_id:
             attributes["_anchor"] = attributes["return_to_answer_id"]
