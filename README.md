@@ -217,11 +217,11 @@ yarn
 Available commands:
 
 | Command                | Task                                                                                                      |
-| ---------------------- | --------------------------------------------------------------------------------------------------------- |
-| `yarn test_functional` | Runs the functional tests through Webdriver (requires app running on localhost:5000 and generated pages). |
-| `yarn generate_pages`  | Generates the functional test pages.                                                                      |
-| `yarn lint`            | Lints the JS, reporting errors/warnings.                                                                  |
-| `yarn format`          | Format the json schemas.                                                                                  |
+|------------------------| --------------------------------------------------------------------------------------------------------- |
+| `make test-functional` | Runs the functional tests through Webdriver (requires app running on localhost:5000 and generated pages). |
+| `make generate-pages`  | Generates the functional test pages.                                                                      |
+| `make lint-js`         | Lints the JS, reporting errors/warnings.                                                                  |
+| `make format-js`       | Format the json schemas.                                                                                  |
 
 ---
 
@@ -254,13 +254,6 @@ make test-functional-headless
 
 This will delete the `tests/functional/generated_pages` directory and regenerate all the files in it from the schemas.
 
-You can also individually run the `generate_pages` and `test_functional` yarn scripts:
-
-``` shell
-yarn generate_pages
-yarn test_functional
-```
-
 To generate the pages manually you can run the `generate_pages` scripts with the schema directory. Run it from the `tests/functional` directory as follows:
 
 ``` shell
@@ -276,7 +269,7 @@ To generate a spec file with the imports included, you can use the `generate_pag
 If you have already built the generated pages, then the functional tests can be executed with:
 
 ``` shell
-yarn test_functional
+make test-functional
 ```
 
 This can be limited to a single spec using:
