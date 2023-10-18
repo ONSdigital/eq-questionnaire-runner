@@ -87,14 +87,9 @@ def test_convert_answers_v2_to_payload_0_0_3(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     # Then
@@ -145,14 +140,9 @@ def test_convert_payload_0_0_3_multiple_answers(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     # Then
@@ -198,14 +188,9 @@ def test_radio_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     assert len(data_payload["answers"]) == 1
@@ -243,14 +228,9 @@ def test_number_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     assert len(data_payload["answers"]) == 1
@@ -288,14 +268,9 @@ def test_percentage_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     assert len(data_payload["answers"]) == 1
@@ -335,14 +310,9 @@ def test_textarea_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     assert len(data_payload["answers"]) == 1
@@ -380,14 +350,9 @@ def test_currency_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     assert len(data_payload["answers"]) == 1
@@ -435,14 +400,9 @@ def test_dropdown_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     # Then
@@ -484,14 +444,9 @@ def test_date_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     assert len(data_payload["answers"]) == 1
@@ -533,14 +488,9 @@ def test_month_year_date_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     assert len(data_payload["answers"]) == 1
@@ -577,14 +527,9 @@ def test_unit_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     assert len(data_payload["answers"]) == 1
@@ -635,14 +580,9 @@ def test_primary_person_list_item_conversion(version):
     schema = load_schema_from_name("test_list_collector_primary_person")
 
     output = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     data_dict = json_loads(json_dumps(output["answers"]))
@@ -693,14 +633,9 @@ def test_list_item_conversion(version):
     schema = load_schema_from_name("test_list_collector")
 
     output = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     del answer_objects[-1]
@@ -748,14 +683,9 @@ def test_list_item_conversion_empty_list(version):
     schema = load_schema_from_name("test_list_collector")
 
     output = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     # Answers not on the routing path
@@ -796,14 +726,9 @@ def test_default_answers_not_present_when_not_answered(version):
     ]
 
     output = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     data = json_loads(json_dumps(output["answers"]))
@@ -856,14 +781,9 @@ def test_list_structure_in_payload_is_as_expected(version):
     schema = load_schema_from_name("test_list_collector_primary_person")
 
     output = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     data_dict = json_loads(json_dumps(output["lists"]))
@@ -914,14 +834,9 @@ def test_primary_person_not_in_payload_when_not_answered(version):
     schema = load_schema_from_name("test_list_collector")
 
     output = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     data_dict = json_loads(json_dumps(output["lists"]))
@@ -992,14 +907,9 @@ def test_relationships_in_payload(version):
     schema = load_schema_from_name("test_relationships")
 
     output = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     data = json_loads(json_dumps(output["answers"]))
@@ -1070,14 +980,9 @@ def test_no_relationships_in_payload(version):
     schema = load_schema_from_name("test_relationships_unrelated")
 
     output = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     data = json_loads(json_dumps(output["answers"]))
@@ -1165,14 +1070,9 @@ def test_unrelated_block_answers_in_payload(version):
     schema = load_schema_from_name("test_relationships_unrelated")
 
     output = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     data = json_loads(json_dumps(output["answers"]))
@@ -1277,14 +1177,9 @@ def test_unrelated_block_answers_not_on_path_not_in_payload(version):
     schema = load_schema_from_name("test_relationships_unrelated")
 
     output = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     data = json_loads(json_dumps(output["answers"]))
@@ -1379,14 +1274,9 @@ def test_relationship_answers_not_on_path_in_payload(version):
     schema = load_schema_from_name("test_relationships_unrelated")
 
     output = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     data = json_loads(json_dumps(output["answers"]))
@@ -1447,14 +1337,9 @@ def test_answers_codes_only_present_for_answered_questions(version):
     schema = load_schema_from_name("test_answer_codes")
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     # Then
@@ -1486,14 +1371,9 @@ def test_all_answers_codes_for_answer_options_in_payload_when_one_is_answered(ve
     schema = load_schema_from_name("test_answer_codes")
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     # Then
@@ -1523,14 +1403,9 @@ def test_no_answers_codes_in_payload_when_no_questions_answered(version):
     schema = load_schema_from_name("test_answer_codes")
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     # Then
@@ -1569,14 +1444,9 @@ def test_payload_dynamic_answers(version):
     schema = load_schema_from_name("test_dynamic_answers_list_source")
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     # Then
@@ -1622,14 +1492,9 @@ def test_repeating_block_answers_present(
     )
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     expected_answer_codes = [
@@ -1748,14 +1613,9 @@ def test_payload_supplementary_data():
     schema = load_schema_from_name("test_supplementary_data")
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     assert "supplementary_data" in data_payload

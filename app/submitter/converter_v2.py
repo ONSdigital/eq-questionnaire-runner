@@ -4,9 +4,9 @@ from typing import Any, Iterable, Mapping, MutableMapping, OrderedDict
 from structlog import get_logger
 
 from app.authentication.auth_payload_versions import AuthPayloadVersion
-from app.data_models import AnswerStore, ListStore, ProgressStore, QuestionnaireStore
+from app.data_models import QuestionnaireStore
 from app.data_models.metadata_proxy import MetadataProxy, NoMetadataException
-from app.data_models.supplementary_data_store import SupplementaryDataStore
+from app.data_models.questionnaire_store import DataStores
 from app.questionnaire.questionnaire_schema import (
     DEFAULT_LANGUAGE_CODE,
     QuestionnaireSchema,
@@ -53,11 +53,7 @@ def convert_answers_v2(
     if not metadata:
         raise NoMetadataException
 
-    response_metadata = questionnaire_store.data_stores.response_metadata
-    answer_store = questionnaire_store.data_stores.answer_store
-    list_store = questionnaire_store.data_stores.list_store
-    progress_store = questionnaire_store.data_stores.progress_store
-    supplementary_data_store = questionnaire_store.data_stores.supplementary_data_store
+    data_stores = questionnaire_store.data_stores
 
     survey_id = schema.json["survey_id"]
 
@@ -75,21 +71,18 @@ def convert_answers_v2(
         "launch_language_code": metadata.language_code or DEFAULT_LANGUAGE_CODE,
     }
 
-    optional_properties = get_optional_payload_properties(metadata, response_metadata)
+    optional_properties = get_optional_payload_properties(
+        metadata, data_stores.response_metadata
+    )
 
     payload["survey_metadata"] = {"survey_id": survey_id}
     if metadata.survey_metadata:
         payload["survey_metadata"].update(metadata.survey_metadata.data)
 
     payload["data"] = get_payload_data(
-        answer_store=answer_store,
-        list_store=list_store,
+        data_stores=data_stores,
         schema=schema,
         full_routing_path=full_routing_path,
-        metadata=metadata,
-        response_metadata=response_metadata,
-        progress_store=progress_store,
-        supplementary_data_store=supplementary_data_store,
     )
 
     logger.info("converted answer ready for submission")
@@ -113,45 +106,43 @@ def get_optional_payload_properties(
 
 # pylint: disable=too-many-locals
 def get_payload_data(
-    answer_store: AnswerStore,
-    list_store: ListStore,
+    data_stores: DataStores,
     schema: QuestionnaireSchema,
     full_routing_path: Iterable[RoutingPath],
-    metadata: MetadataProxy,
-    response_metadata: MutableMapping,
-    progress_store: ProgressStore,
-    supplementary_data_store: SupplementaryDataStore,
 ) -> OrderedDict | dict[str, list | dict]:
     if schema.json["data_version"] == "0.0.1":
         return convert_answers_to_payload_0_0_1(
-            metadata=metadata,
-            response_metadata=response_metadata,
-            answer_store=answer_store,
-            list_store=list_store,
+            # Type ignore: expected MetadataProxy but the type in data_stores is MetadataProxy | None
+            metadata=data_stores.metadata,  # type: ignore
+            response_metadata=data_stores.response_metadata,
+            answer_store=data_stores.answer_store,
+            list_store=data_stores.list_store,
             schema=schema,
             full_routing_path=full_routing_path,
-            progress_store=progress_store,
-            supplementary_data_store=supplementary_data_store,
+            progress_store=data_stores.progress_store,
+            supplementary_data_store=data_stores.supplementary_data_store,
         )
 
     if schema.json["data_version"] == "0.0.3":
         answers = convert_answers_to_payload_0_0_3(
-            answer_store=answer_store,
-            list_store=list_store,
+            answer_store=data_stores.answer_store,
+            list_store=data_stores.list_store,
             schema=schema,
             full_routing_path=full_routing_path,
         )
 
-        lists: list = list_store.serialize()
+        lists: list = data_stores.list_store.serialize()
         for list_ in lists:
             # for any lists that were populated by supplementary data, provide the identifier -> list_item_id mappings
-            if mapping := supplementary_data_store.list_mappings.get(list_["name"]):
+            if mapping := data_stores.supplementary_data_store.list_mappings.get(
+                list_["name"]
+            ):
                 list_["supplementary_data_mappings"] = mapping
 
         data: dict[str, list | dict] = {"answers": answers, "lists": lists}
 
-        if supplementary_data_store.raw_data:
-            data["supplementary_data"] = supplementary_data_store.raw_data
+        if data_stores.supplementary_data_store.raw_data:
+            data["supplementary_data"] = data_stores.supplementary_data_store.raw_data
 
         if answer_codes := schema.json.get("answer_codes"):
             answer_ids_to_filter = {answer.answer_id for answer in answers}

@@ -95,14 +95,9 @@ def test_answer_with_zero(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     assert data_payload["003"] == "0"
@@ -137,14 +132,9 @@ def test_answer_with_float(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     # Check the converter correctly
@@ -180,14 +170,9 @@ def test_answer_with_string(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     # Check the converter correctly
@@ -223,14 +208,9 @@ def test_answer_without_qcode(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     assert not data_payload
@@ -291,14 +271,9 @@ def test_converter_checkboxes_with_q_codes(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     # Then
@@ -371,14 +346,9 @@ def test_converter_checkboxes_with_q_codes_and_other_value(
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     # Then
@@ -449,14 +419,9 @@ def test_converter_checkboxes_with_missing_detail_answer_value_in_answer_store(v
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     # Then
@@ -522,14 +487,9 @@ def test_converter_checkboxes_with_missing_q_codes_uses_answer_q_code(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     # Then
@@ -577,14 +537,9 @@ def test_converter_q_codes_for_empty_strings(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     # Then
@@ -648,14 +603,9 @@ def test_radio_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     # Then
@@ -697,14 +647,9 @@ def test_number_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     # Then
@@ -745,14 +690,9 @@ def test_percentage_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     # Then
@@ -793,14 +733,9 @@ def test_textarea_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     # Then
@@ -841,14 +776,9 @@ def test_currency_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     # Then
@@ -900,14 +830,9 @@ def test_dropdown_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     # Then
@@ -951,14 +876,9 @@ def test_date_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     # Then
@@ -996,14 +916,9 @@ def test_unit_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores.answer_store,
-        questionnaire_store.data_stores.list_store,
+        questionnaire_store.data_stores,
         schema,
         full_routing_path,
-        questionnaire_store.data_stores.metadata,
-        questionnaire_store.data_stores.response_metadata,
-        questionnaire_store.data_stores.progress_store,
-        questionnaire_store.data_stores.supplementary_data_store,
     )
 
     # Then

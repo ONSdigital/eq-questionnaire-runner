@@ -66,11 +66,7 @@ def convert_answers(
     if not metadata:
         raise NoMetadataException
 
-    response_metadata = questionnaire_store.data_stores.response_metadata
-    answer_store = questionnaire_store.data_stores.answer_store
-    list_store = questionnaire_store.data_stores.list_store
-    progress_store = questionnaire_store.data_stores.progress_store
-    supplementary_data_store = questionnaire_store.data_stores.supplementary_data_store
+    data_stores = questionnaire_store.data_stores
 
     survey_id = schema.json["survey_id"]
 
@@ -88,17 +84,14 @@ def convert_answers(
         "launch_language_code": metadata.language_code or DEFAULT_LANGUAGE_CODE,
     }
 
-    optional_properties = get_optional_payload_properties(metadata, response_metadata)
+    optional_properties = get_optional_payload_properties(
+        metadata, data_stores.response_metadata
+    )
 
     payload["data"] = get_payload_data(
-        answer_store=answer_store,
-        list_store=list_store,
+        data_stores=data_stores,
         schema=schema,
         full_routing_path=full_routing_path,
-        metadata=metadata,
-        response_metadata=response_metadata,
-        progress_store=progress_store,
-        supplementary_data_store=supplementary_data_store,
     )
 
     return payload | optional_properties
