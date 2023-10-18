@@ -17,6 +17,9 @@ load-design-system-templates:
 
 build: load-design-system-templates load-schemas translate
 
+generate-pages:
+	yarn generate_pages
+
 lint: lint-python lint-js
 
 lint-python:
@@ -53,6 +56,9 @@ lint-js:
 
 format-js:
 	yarn format
+
+generate-spec:
+	pipenv run python -m tests.functional.generate_pages schemas/test/en/$(SCHEMA).json ./tests/functional/generated_pages/$(patsubst test_%,%,$(SCHEMA)) -r '../../base_pages' -s tests/functional/spec/$(SCHEMA).spec.js
 
 validate-test-schemas:
 	pipenv run ./scripts/validate_test_schemas.sh
