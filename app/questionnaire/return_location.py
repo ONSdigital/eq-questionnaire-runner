@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
-from typing import Mapping, Any
 
 
 @dataclass(kw_only=True, frozen=True)
