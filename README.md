@@ -284,7 +284,13 @@ To run a single test, add `.only` into the name of any `describe` or `it` functi
 `it.only('Given this is a test', function() {...}`
 
 Test suites are configured in the `wdio.conf.js` file.
-An individual test suite can be run using the suite names as the argument to this command:
+An individual test suite can be run using the suite names as the argument to this command. The suites that can be used with command below are:
+* timeout_modal_expired
+* timeout_modal_extended
+* timeout_modal_extended_new_window
+* features
+* general
+* components
 
 ``` shell
 make test-functional-suite SUITE=<suite>
