@@ -90,10 +90,7 @@ def test_build_view_context_for_grand_calculated_summary(
         routing_path=RoutingPath(section_id="default-section", block_ids=block_ids),
         current_location=Location(section_id="default-section", block_id=block_id),
         supplementary_data_store=supplementary_data_store,
-        return_location=ReturnLocation(
-            return_to=None,
-            return_to_block_id=None,
-        ),
+        return_location=ReturnLocation(),
     )
 
     context = grand_calculated_summary_context.build_view_context()

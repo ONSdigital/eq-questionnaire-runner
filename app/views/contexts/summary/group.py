@@ -26,7 +26,6 @@ from app.views.contexts.summary.list_collector_content_block import (
 )
 
 
-# pylint: disable=too-many-locals
 class Group:
     def __init__(
         self,
@@ -82,6 +81,7 @@ class Group:
             supplementary_data_store=supplementary_data_store,
         )
 
+    # pylint: disable=too-many-locals
     def _build_blocks_and_links(
         self,
         *,

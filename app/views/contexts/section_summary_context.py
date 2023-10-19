@@ -157,7 +157,6 @@ class SectionSummaryContext(Context):
                     supplementary_data_store=self._supplementary_data_store,
                     return_location=ReturnLocation(
                         return_to=return_to,
-                        return_to_block_id=None,
                     ),
                     view_submitted_response=view_submitted_response,
                 ).serialize()

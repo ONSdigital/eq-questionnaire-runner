@@ -20,7 +20,6 @@ def test_create_answer(return_to, return_to_block_id, is_in_repeating_section):
     return_location = ReturnLocation(
         return_to=return_to,
         return_to_block_id=return_to_block_id,
-        return_to_list_item_id=None,
     )
 
     answer = Answer(
@@ -62,8 +61,6 @@ def test_date_answer_type():
     # When
     return_location = ReturnLocation(
         return_to="section-summary",
-        return_to_block_id=None,
-        return_to_list_item_id=None,
     )
 
     answer = Answer(
