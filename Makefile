@@ -39,16 +39,16 @@ test:
 test-unit:
 	pipenv run ./scripts/run_tests_unit.sh
 
-test-functional:
-	pipenv run ./scripts/run_tests_functional.sh
+test-functional: generate-pages
+	yarn test_functional
 
-test-functional-headless:
-	EQ_RUN_FUNCTIONAL_TESTS_HEADLESS='True' pipenv run ./scripts/run_tests_functional.sh
+test-functional-headless: generate-pages
+	EQ_RUN_FUNCTIONAL_TESTS_HEADLESS='True' make test-functional
 
-test-functional-spec:
+test-functional-spec: generate-pages
 	yarn test_functional --spec ./tests/functional/spec/$(SPEC)
 
-test-functional-suite:
+test-functional-suite: generate-pages
 	yarn test_functional --suite $(SUITE)
 
 lint-js:
