@@ -1781,6 +1781,29 @@ class TestRouterLastLocationLinearFlow(RouterTestCase):
         assert completed_block_not_on_path == last_completed_block_in_progress_store
         assert expected_location_url == last_location_url
 
+    @pytest.mark.usefixtures("app")
+    def test_list_collector_final_summary_returns_to_section_summary(self):
+        self.schema = load_schema_from_name("test_list_collector_list_summary")
+
+        self.progress_store = ProgressStore(
+            [
+                ProgressDict(
+                    section_id="section",
+                    block_ids=[
+                        "introduction",
+                        "primary-person-list-collector",
+                        "list-collector",
+                        "visitor-list-collector",
+                    ],
+                    status=CompletionStatus.COMPLETED,
+                )
+            ]
+        )
+
+        last_location_url = self.router.get_last_location_in_questionnaire_url()
+
+        assert "/questionnaire/sections/section/" == last_location_url
+
 
 class TestRouterSectionResume(RouterTestCase):
     @pytest.mark.usefixtures("app")
