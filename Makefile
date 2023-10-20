@@ -64,7 +64,7 @@ validate-test-schemas:
 	./scripts/validate_test_schemas.sh
 
 validate-test-schema:
-	./scripts/validate_test_schemas.sh $(SCHEMA_PATH)$(SCHEMA)
+	./scripts/validate_test_schemas.sh $(SCHEMA_PATH)$(SCHEMA).json
 
 translation-templates:
 	pipenv run python -m scripts.extract_translation_templates
