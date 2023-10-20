@@ -15,6 +15,8 @@ import VehicleMaintenanceBlockPage from "../../../generated_pages/grand_calculat
 import VehiclesSectionPage from "../../../generated_pages/grand_calculated_summary_inside_repeating_section/vehicles-section-summary.page.js";
 import FinanceCostPage from "../../../generated_pages/grand_calculated_summary_inside_repeating_section/finance-cost.page";
 import BaseCostPaymentBreakdownPage from "../../../generated_pages/grand_calculated_summary_inside_repeating_section/base-cost-payment-breakdown.page";
+import GcsBreakdownBlockPage from "../../../generated_pages/grand_calculated_summary_inside_repeating_section/gcs-breakdown-block.page";
+import GcsPipingPage from "../../../generated_pages/grand_calculated_summary_inside_repeating_section/gcs-piping.page";
 
 describe("Grand Calculated Summary inside a repeating section", () => {
   let vehicleListItemIds = [];
@@ -68,8 +70,31 @@ describe("Grand Calculated Summary inside a repeating section", () => {
     assertSummaryValues(["£90.00", "£225.00", "£315.00"]);
   });
 
-  it("Given I have a Grand Calculated Summary inside a repeating section, When I reach it for the second list item, Then I see placeholder content rendered correctly", async () => {
+  it("Given I immediately use that Grand Calculated Summary for validation, When I enter a sum of values too high, Then I see an error message", async () => {
     await click(GrandCalculatedSummaryVehiclePage.submit());
+    await $(GcsBreakdownBlockPage.payDebit()).setValue(100);
+    await $(GcsBreakdownBlockPage.payCredit()).setValue(115);
+    await $(GcsBreakdownBlockPage.payOther()).setValue(200);
+    await click(GcsBreakdownBlockPage.submit());
+    await expect(await $(GcsBreakdownBlockPage.errorNumber()).getText()).toContain("Enter answers that add up to 315");
+  });
+
+  it("Given I enter a valid value for the Grand Calculated Summary breakdown, When I press continue, Then I see an Interstitial page with my values correctly piped in", async () => {
+    await $(GcsBreakdownBlockPage.payOther()).setValue(100);
+    await click(GcsBreakdownBlockPage.submit());
+    await expect(browser).toHaveUrlContaining(GcsPipingPage.pageName);
+    await expect(await $("body").getText()).toContain("Monthly maintenance cost: £100.00");
+    await expect(await $("body").getText()).toContain("Monthly fuel cost: £125.00");
+    await expect(await $("body").getText()).toContain("Total base cost: £90.00");
+    await expect(await $("body").getText()).toContain("Total running cost: £225.00");
+    await expect(await $("body").getText()).toContain("Total owning and running cost: £315.00");
+    await expect(await $("body").getText()).toContain("Paid by debit card: £100.00");
+    await expect(await $("body").getText()).toContain("Paid by credit card: £115.00");
+    await expect(await $("body").getText()).toContain("Paid by other means: £100.00");
+  });
+
+  it("Given I have a Grand Calculated Summary inside a repeating section, When I reach it for the second list item, Then I see placeholder content rendered correctly", async () => {
+    await click(GcsPipingPage.submit());
     await click(VehicleDetailsSectionPage.submit());
     await click(HubPage.submit());
     await $(VehicleMaintenanceBlockPage.vehicleMaintenanceCost()).setValue(50);
@@ -181,6 +206,11 @@ describe("Grand Calculated Summary inside a repeating section", () => {
 
   it("Given I edit the non-repeating calculated summary, When I return to the Hub, Then I see repeating sections are incomplete", async () => {
     await click(GrandCalculatedSummaryVehiclePage.submit());
+    await $(GcsBreakdownBlockPage.payDebit()).setValue(100);
+    await $(GcsBreakdownBlockPage.payCredit()).setValue(110);
+    await $(GcsBreakdownBlockPage.payOther()).setValue(10);
+    await click(GcsBreakdownBlockPage.submit());
+    await click(GcsPipingPage.submit());
     await click(VehicleDetailsSectionPage.submit());
     await $(HubPage.summaryRowLink("vehicle-details-section-1")).click();
     await click(GrandCalculatedSummaryVehiclePage.submit());
