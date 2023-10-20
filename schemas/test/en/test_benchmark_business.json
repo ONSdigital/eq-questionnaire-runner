@@ -527,7 +527,7 @@
             ]
         },
         {
-            "id": "house-hold-section",
+            "id": "household-section",
             "title": "Household",
             "show_on_hub": true,
             "groups": [
