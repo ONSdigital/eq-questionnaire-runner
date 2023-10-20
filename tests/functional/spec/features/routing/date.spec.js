@@ -42,7 +42,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateEqualsQuestionPage.month()).setValue(3);
         await $(DateEqualsQuestionPage.year()).setValue(2020);
         await click(DateEqualsQuestionPage.submit());
-        await expect(await browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
+        await expect(await browser.getUrl()).toContain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter the yesterday date, Then I should be routed to the correct page", async () => {
@@ -50,7 +50,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateEqualsQuestionPage.month()).setValue(3);
         await $(DateEqualsQuestionPage.year()).setValue(2020);
         await click(DateEqualsQuestionPage.submit());
-        await expect(await browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
+        await expect(await browser.getUrl()).toContain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter the tomorrow date, Then I should be routed to the correct page", async () => {
@@ -58,7 +58,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateEqualsQuestionPage.month()).setValue(4);
         await $(DateEqualsQuestionPage.year()).setValue(2020);
         await click(DateEqualsQuestionPage.submit());
-        await expect(await browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
+        await expect(await browser.getUrl()).toContain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter the last month date, Then I should be routed to the correct page", async () => {
@@ -66,7 +66,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateEqualsQuestionPage.month()).setValue(2);
         await $(DateEqualsQuestionPage.year()).setValue(2020);
         await click(DateEqualsQuestionPage.submit());
-        await expect(await browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
+        await expect(await browser.getUrl()).toContain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter the next month date, Then I should be routed to the correct page", async () => {
@@ -74,7 +74,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateEqualsQuestionPage.month()).setValue(4);
         await $(DateEqualsQuestionPage.year()).setValue(2020);
         await click(DateEqualsQuestionPage.submit());
-        await expect(await browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
+        await expect(await browser.getUrl()).toContain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter the last year date, Then I should be routed to the correct page", async () => {
@@ -82,7 +82,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateEqualsQuestionPage.month()).setValue(3);
         await $(DateEqualsQuestionPage.year()).setValue(2019);
         await click(DateEqualsQuestionPage.submit());
-        await expect(await browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
+        await expect(await browser.getUrl()).toContain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter the next year date, Then I should be routed to the correct page", async () => {
@@ -90,7 +90,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateEqualsQuestionPage.month()).setValue(3);
         await $(DateEqualsQuestionPage.year()).setValue(2021);
         await click(DateEqualsQuestionPage.submit());
-        await expect(await browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
+        await expect(await browser.getUrl()).toContain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter an incorrect date, Then I should be routed to the incorrect page", async () => {
@@ -98,7 +98,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateEqualsQuestionPage.month()).setValue(3);
         await $(DateEqualsQuestionPage.year()).setValue(2020);
         await click(DateEqualsComparisonQuestionPage.submit());
-        await expect(await browser.getUrl()).to.contain(CorrectAnswerPage.pageName);
+        await expect(await browser.getUrl()).toContain(CorrectAnswerPage.pageName);
       });
     });
   });
@@ -116,7 +116,7 @@ describe("Feature: Routing on a Date", () => {
 
         const expectedUrl = await browser.getUrl();
 
-        await expect(expectedUrl).to.contain(CorrectAnswerPage.pageName);
+        await expect(expectedUrl).toContain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter February 2018, Then I should be routed to the incorrect page", async () => {
@@ -126,7 +126,7 @@ describe("Feature: Routing on a Date", () => {
 
         const expectedUrl = await browser.getUrl();
 
-        await expect(expectedUrl).to.contain(IncorrectAnswerPage.pageName);
+        await expect(expectedUrl).toContain(IncorrectAnswerPage.pageName);
       });
     });
   });
@@ -145,7 +145,7 @@ describe("Feature: Routing on a Date", () => {
 
         const expectedUrl = await browser.getUrl();
 
-        await expect(expectedUrl).to.contain(CorrectAnswerPage.pageName);
+        await expect(expectedUrl).toContain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter the 1st March 2017, Then I should be routed to the incorrect page", async () => {
@@ -156,7 +156,7 @@ describe("Feature: Routing on a Date", () => {
 
         const expectedUrl = await browser.getUrl();
 
-        await expect(expectedUrl).to.contain(CorrectAnswerPage.pageName);
+        await expect(expectedUrl).toContain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter a date less than the 1st March 2017, Then I should be routed to the incorrect page", async () => {
@@ -167,7 +167,7 @@ describe("Feature: Routing on a Date", () => {
 
         const expectedUrl = await browser.getUrl();
 
-        await expect(expectedUrl).to.contain(IncorrectAnswerPage.pageName);
+        await expect(expectedUrl).toContain(IncorrectAnswerPage.pageName);
       });
     });
   });
@@ -184,7 +184,7 @@ describe("Feature: Routing on a Date", () => {
 
         const expectedUrl = await browser.getUrl();
 
-        await expect(expectedUrl).to.contain(CorrectAnswerPage.pageName);
+        await expect(expectedUrl).toContain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter 2017, Then I should be routed to the correct page", async () => {
@@ -193,7 +193,7 @@ describe("Feature: Routing on a Date", () => {
 
         const expectedUrl = await browser.getUrl();
 
-        await expect(expectedUrl).to.contain(CorrectAnswerPage.pageName);
+        await expect(expectedUrl).toContain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter a date less than March 2017, Then I should be routed to the incorrect page", async () => {
@@ -202,7 +202,7 @@ describe("Feature: Routing on a Date", () => {
 
         const expectedUrl = await browser.getUrl();
 
-        await expect(expectedUrl).to.contain(IncorrectAnswerPage.pageName);
+        await expect(expectedUrl).toContain(IncorrectAnswerPage.pageName);
       });
     });
   });
@@ -221,7 +221,7 @@ describe("Feature: Routing on a Date", () => {
 
         const browserUrl = await browser.getUrl();
 
-        await expect(await browserUrl).to.contain(CorrectAnswerPage.pageName);
+        await expect(await browserUrl).toContain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter a date equal to today, Then I should be routed to the incorrect page", async () => {
@@ -232,7 +232,7 @@ describe("Feature: Routing on a Date", () => {
 
         const browserUrl = await browser.getUrl();
 
-        await expect(await browserUrl).to.contain(IncorrectAnswerPage.pageName);
+        await expect(await browserUrl).toContain(IncorrectAnswerPage.pageName);
       });
 
       it("When I enter a date greater than today, Then I should be routed to the incorrect page", async () => {
@@ -243,7 +243,7 @@ describe("Feature: Routing on a Date", () => {
 
         const browserUrl = await browser.getUrl();
 
-        await expect(await browserUrl).to.contain(IncorrectAnswerPage.pageName);
+        await expect(await browserUrl).toContain(IncorrectAnswerPage.pageName);
       });
     });
   });
@@ -262,7 +262,7 @@ describe("Feature: Routing on a Date", () => {
 
         const browserUrl = await browser.getUrl();
 
-        await expect(browserUrl).to.contain(CorrectAnswerPage.pageName);
+        await expect(browserUrl).toContain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter a date equal to today, Then I should be routed to the correct page", async () => {
@@ -273,7 +273,7 @@ describe("Feature: Routing on a Date", () => {
 
         const browserUrl = await browser.getUrl();
 
-        await expect(await browserUrl).to.contain(CorrectAnswerPage.pageName);
+        await expect(await browserUrl).toContain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter a date greater than today, Then I should be routed to the incorrect page", async () => {
@@ -284,7 +284,7 @@ describe("Feature: Routing on a Date", () => {
 
         const browserUrl = await browser.getUrl();
 
-        await expect(await browserUrl).to.contain(IncorrectAnswerPage.pageName);
+        await expect(await browserUrl).toContain(IncorrectAnswerPage.pageName);
       });
     });
   });

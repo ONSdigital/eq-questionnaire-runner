@@ -15,7 +15,7 @@ describe("Date checks", () => {
 
     await click(DateQuestionPage.submit());
 
-    await expect(await $(DaysQuestionBlockPage.questionText()).getText()).to.contain("Monday 30 August to Monday 13 September 2021");
+    await expect(await $(DaysQuestionBlockPage.questionText()).getText()).toContain("Monday 30 August to Monday 13 September 2021");
     await click(DaysQuestionBlockPage.submit());
   });
 
@@ -37,6 +37,6 @@ describe("Date checks", () => {
 
     await click(Block0Page.submit());
 
-    await expect(await $(RangeQuestionBlockPage.questionText()).getText()).to.contain("Wednesday 1 to Sunday 19 May 2019");
+    await expect(await $(RangeQuestionBlockPage.questionText()).getText()).toContain("Wednesday 1 to Sunday 19 May 2019");
   });
 });

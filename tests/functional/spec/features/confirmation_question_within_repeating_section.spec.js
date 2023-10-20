@@ -16,7 +16,7 @@ describe("Feature: Confirmation Question Within A Repeating Section", () => {
       await click(AddPersonPage.submit());
       await $(DoesAnyoneLiveHerePage.no()).click();
       await click(DoesAnyoneLiveHerePage.submit());
-      await expect(await browser.getUrl()).to.contain(DateOfBirthPage.url().split("/").slice(-1)[0]);
+      await expect(await browser.getUrl()).toContain(DateOfBirthPage.url().split("/").slice(-1)[0]);
     });
 
     describe("Given a confirmation question", () => {
@@ -30,7 +30,7 @@ describe("Feature: Confirmation Question Within A Repeating Section", () => {
         // Answer 'No' to confirmation question
         await $(ConfirmDateOfBirthPage.noINeedToChangeTheirDateOfBirth()).click();
         await click(ConfirmDateOfBirthPage.submit());
-        await expect(await browser.getUrl()).to.contain(DateOfBirthPage.pageName);
+        await expect(await browser.getUrl()).toContain(DateOfBirthPage.pageName);
       });
     });
 
@@ -44,8 +44,8 @@ describe("Feature: Confirmation Question Within A Repeating Section", () => {
         await $(ConfirmDateOfBirthPage.yesPersonNameIsAgeOld()).click();
         await click(ConfirmDateOfBirthPage.submit());
 
-        await expect(await browser.getUrl()).to.contain("sections/default-section/");
-        await expect(await $(DefaultSectionSummary.confirmDateOfBirth()).isExisting()).to.be.false;
+        await expect(await browser.getUrl()).toContain("sections/default-section/");
+        await expect(await $(DefaultSectionSummary.confirmDateOfBirth()).isExisting()).toBe(false);
       });
     });
 
@@ -56,8 +56,8 @@ describe("Feature: Confirmation Question Within A Repeating Section", () => {
         await $(DateOfBirthPage.year()).setValue("2000");
         await click(DateOfBirthPage.submit());
 
-        await expect(await browser.getUrl()).to.contain(CarerPage.pageName);
-        await expect(await $(CarerPage.questionText()).getText()).to.contain("Does John Doe look");
+        await expect(await browser.getUrl()).toContain(CarerPage.pageName);
+        await expect(await $(CarerPage.questionText()).getText()).toContain("Does John Doe look");
       });
     });
   });

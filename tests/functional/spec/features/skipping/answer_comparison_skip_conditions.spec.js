@@ -12,20 +12,20 @@ describe("Test skip condition answer comparisons", () => {
     await click(Comparison1Page.submit());
     await $(Comparison2Page.answer()).setValue(1);
     await click(Comparison2Page.submit());
-    await expect(await $("#main-content > p").getText()).to.contain("Your second number was equal to your first number");
+    await expect(await $("#main-content > p").getText()).toContain("Your second number was equal to your first number");
   });
   it("Given we start the skip condition survey, when we enter a high number then a low number, then the interstitial should show that the answers are low then high", async () => {
     await $(Comparison1Page.answer()).setValue(3);
     await click(Comparison1Page.submit());
     await $(Comparison2Page.answer()).setValue(2);
     await click(Comparison2Page.submit());
-    await expect(await $("#main-content > p").getText()).to.contain("Your first answer was greater than your second number");
+    await expect(await $("#main-content > p").getText()).toContain("Your first answer was greater than your second number");
   });
   it("Given we start the skip condition survey, when we enter a low number then a high number, then the interstitial should show that the answers are high then low", async () => {
     await $(Comparison1Page.answer()).setValue(1);
     await click(Comparison1Page.submit());
     await $(Comparison2Page.answer()).setValue(2);
     await click(Comparison2Page.submit());
-    await expect(await $("#main-content > p").getText()).to.contain("Your first answer was less than your second number");
+    await expect(await $("#main-content > p").getText()).toContain("Your first answer was less than your second number");
   });
 });

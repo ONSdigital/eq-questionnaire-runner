@@ -18,8 +18,8 @@ describe("Feature: Combined question level and single validation for dates", () 
         await $(DateRangePage.dateRangeTomonth()).setValue(2);
         await $(DateRangePage.dateRangeToyear()).setValue(2017);
         await click(DateRangePage.submit());
-        await expect(await $(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a date after 12 December 2016");
-        await expect(await $(DateRangePage.errorNumber(2)).getText()).to.contain("Enter a date before 22 February 2017");
+        await expect(await $(DateRangePage.errorNumber(1)).getText()).toContain("Enter a date after 12 December 2016");
+        await expect(await $(DateRangePage.errorNumber(2)).getText()).toContain("Enter a date before 22 February 2017");
       });
 
       it("When I enter a range too large, Then I should see a range validation error", async () => {
@@ -31,7 +31,7 @@ describe("Feature: Combined question level and single validation for dates", () 
         await $(DateRangePage.dateRangeTomonth()).setValue(2);
         await $(DateRangePage.dateRangeToyear()).setValue(2017);
         await click(DateRangePage.submit());
-        await expect(await $(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period less than or equal to 50 days");
+        await expect(await $(DateRangePage.errorNumber(1)).getText()).toContain("Enter a reporting period less than or equal to 50 days");
       });
 
       it("When I enter a range too small, Then I should see a range validation error", async () => {
@@ -43,7 +43,7 @@ describe("Feature: Combined question level and single validation for dates", () 
         await $(DateRangePage.dateRangeTomonth()).setValue(1);
         await $(DateRangePage.dateRangeToyear()).setValue(2017);
         await click(DateRangePage.submit());
-        await expect(await $(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period greater than or equal to 10 days");
+        await expect(await $(DateRangePage.errorNumber(1)).getText()).toContain("Enter a reporting period greater than or equal to 10 days");
       });
 
       it("When I enter valid dates, Then I should see the summary page", async () => {
@@ -56,7 +56,7 @@ describe("Feature: Combined question level and single validation for dates", () 
         await $(DateRangePage.dateRangeTomonth()).setValue(1);
         await $(DateRangePage.dateRangeToyear()).setValue(2017);
         await click(DateRangePage.submit());
-        await expect(await $(SubmitPage.dateRangeFrom()).getText()).to.contain("1 January 2017 to 11 January 2017");
+        await expect(await $(SubmitPage.dateRangeFrom()).getText()).toContain("1 January 2017 to 11 January 2017");
 
         // Max range
         await $(SubmitPage.dateRangeFromEdit()).click();
@@ -64,7 +64,7 @@ describe("Feature: Combined question level and single validation for dates", () 
         await $(DateRangePage.dateRangeTomonth()).setValue(2);
         await $(DateRangePage.dateRangeToyear()).setValue(2017);
         await click(DateRangePage.submit());
-        await expect(await $(SubmitPage.dateRangeFrom()).getText()).to.contain("1 January 2017 to 20 February 2017");
+        await expect(await $(SubmitPage.dateRangeFrom()).getText()).toContain("1 January 2017 to 20 February 2017");
       });
     });
   });

@@ -17,7 +17,7 @@ describe("Difference check (years)", () => {
     await $(AgeBlockYearPage.month()).setValue(1);
     await $(AgeBlockYearPage.year()).setValue(1990);
     await click(AgeBlockYearPage.submit());
-    await expect(await $(AgeTestYearPage.heading()).getText()).to.equal(`You are ${getYears("1990/01/01")} years old. Is this correct?`);
+    await expect(await $(AgeTestYearPage.heading()).getText()).toBe(`You are ${getYears("1990/01/01")} years old. Is this correct?`);
   });
 });
 
@@ -32,8 +32,8 @@ describe("Difference check (months and years)", () => {
 
     await click(AgeBlockMonthYearPage.submit());
 
-    await expect(await $(AgeTestMonthYearPage.heading()).getText()).to.equal(
-      `It has been ${getYears("1990/01/01")} years since you last went on holiday. Is this correct?`,
+    await expect(await $(AgeTestMonthYearPage.heading()).getText()).toBe(
+      `It has been ${getYears("1990/01/01")} years since you last went on holiday. Is this correct?`
     );
   });
 });
@@ -51,7 +51,7 @@ describe("Difference check (months and years range)", () => {
 
     await click(AgeBlockMonthYearRangePage.submit());
 
-    await expect(await $(AgeTestMonthYearRangePage.heading()).getText()).to.have.string("You were out of the UK for 1 year. Is this correct?");
+    await expect(await $(AgeTestMonthYearRangePage.heading()).getText()).toContain("You were out of the UK for 1 year. Is this correct?");
   });
 });
 
@@ -71,7 +71,7 @@ describe("Difference check (years range)", () => {
 
     await click(AgeBlockDayMonthYearRangePage.submit());
 
-    await expect(await $(AgeTestDayMonthYearRangePage.heading()).getText()).to.have.string("You were out of the UK for 1 year. Is this correct?");
+    await expect(await $(AgeTestDayMonthYearRangePage.heading()).getText()).toContain("You were out of the UK for 1 year. Is this correct?");
   });
 });
 

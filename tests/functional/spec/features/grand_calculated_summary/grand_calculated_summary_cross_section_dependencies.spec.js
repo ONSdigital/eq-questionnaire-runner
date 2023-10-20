@@ -42,9 +42,9 @@ describe("Feature: Grand Calculated Summary", () => {
       await click(tvChoiceBlockPage.submit());
       await click(CalculatedSummarySectionSummaryPage.submit());
       await click(HubPage.submit());
-      await expect(await $(CurrencyAllPage.currencySection1()).getText()).toContain("£330.00");
-      await expect(await $(CurrencyAllPage.currencyQuestion3()).getText()).toContain("£70.00");
-      await expect(await $(CurrencyAllPage.grandCalculatedSummaryTitle()).getText()).toContain(
+      await expect(await $(CurrencyAllPage.currencySection1()).getText()).toEqual("£330.00");
+      await expect(await $(CurrencyAllPage.currencyQuestion3()).getText()).toEqual("£70.00");
+      await expect(await $(CurrencyAllPage.grandCalculatedSummaryTitle()).getText()).toEqual(
         "The grand calculated summary is calculated to be £400.00. Is this correct?",
       );
       await click(CurrencyAllPage.submit());
@@ -58,7 +58,7 @@ describe("Feature: Grand Calculated Summary", () => {
       // Currently the grand calculated summary remains 'Completed' because none of the answers have changed
       await expect(await $(HubPage.summaryRowState("grand-calculated-summary-section")).getText()).toBe("Completed");
       await $(HubPage.summaryRowLink("grand-calculated-summary-section")).click();
-      await expect(await $(CurrencyAllPage.grandCalculatedSummaryTitle()).getText()).toContain(
+      await expect(await $(CurrencyAllPage.grandCalculatedSummaryTitle()).getText()).toEqual(
         "The grand calculated summary is calculated to be £330.00. Is this correct?",
       );
       await expect(await $(CurrencyAllPage.currencyQuestion3()).isExisting()).toBe(false);
@@ -73,7 +73,7 @@ describe("Feature: Grand Calculated Summary", () => {
       // Although the calculated summary is not on the path, the answer is still a grand calculated summary dependency, so it updates progress
       await expect(await $(HubPage.summaryRowState("grand-calculated-summary-section")).getText()).toBe("Partially completed");
       await $(HubPage.summaryRowLink("grand-calculated-summary-section")).click();
-      await expect(await $(CurrencyAllPage.grandCalculatedSummaryTitle()).getText()).toContain(
+      await expect(await $(CurrencyAllPage.grandCalculatedSummaryTitle()).getText()).toEqual(
         "The grand calculated summary is calculated to be £330.00. Is this correct?",
       );
       await expect(await $(CurrencyAllPage.currencyQuestion3()).isExisting()).toBe(false);
@@ -104,7 +104,7 @@ describe("Feature: Grand Calculated Summary", () => {
       await click(CalculatedSummarySectionSummaryPage.submit());
       await expect(await $(HubPage.summaryRowState("grand-calculated-summary-section")).getText()).toBe("Partially completed");
       await $(HubPage.summaryRowLink("grand-calculated-summary-section")).click();
-      await expect(await $(CurrencyAllPage.grandCalculatedSummaryTitle()).getText()).toContain(
+      await expect(await $(CurrencyAllPage.grandCalculatedSummaryTitle()).getText()).toEqual(
         "The grand calculated summary is calculated to be £450.00. Is this correct?",
       );
     });
@@ -119,7 +119,7 @@ describe("Feature: Grand Calculated Summary", () => {
       await expect(browser).toHaveUrlContaining(CurrencyQuestion3Page.pageName);
       await click(CurrencyQuestion3Page.submit());
       await expect(browser).toHaveUrlContaining(CurrencyAllPage.pageName);
-      await expect(await $(CurrencyAllPage.grandCalculatedSummaryTitle()).getText()).toContain(
+      await expect(await $(CurrencyAllPage.grandCalculatedSummaryTitle()).getText()).toEqual(
         "The grand calculated summary is calculated to be £461.00. Is this correct?",
       );
       await click(CurrencyAllPage.submit());
@@ -131,8 +131,8 @@ describe("Feature: Grand Calculated Summary", () => {
       await click(SkipFirstBlockPage.submit());
       await click(QuestionsSectionSummaryPage.submit());
       await $(HubPage.summaryRowLink("grand-calculated-summary-section")).click();
-      await expect(await $(CurrencyAllPage.currencySection1()).getText()).toContain("£30.00");
-      await expect(await $(CurrencyAllPage.grandCalculatedSummaryTitle()).getText()).toContain(
+      await expect(await $(CurrencyAllPage.currencySection1()).getText()).toEqual("£30.00");
+      await expect(await $(CurrencyAllPage.grandCalculatedSummaryTitle()).getText()).toEqual(
         "The grand calculated summary is calculated to be £161.00. Is this correct?",
       );
     });

@@ -15,7 +15,7 @@ describe("Feature: Repeating Section Summaries", () => {
       // Ensure the questionnaire fully loads
       await browser.pause(100);
       // Ensure we are on the Hub
-      await expect(await browser.getUrl()).to.contain(HubPage.url());
+      await expect(await browser.getUrl()).toContain(HubPage.url());
       // Start first section to add household members
       await $(HubPage.summaryRowLink("section")).click();
 
@@ -56,15 +56,15 @@ describe("Feature: Repeating Section Summaries", () => {
       });
 
       it("the title set in the repeating block is used for the section summary title", async () => {
-        await expect(await $(PersonalSummaryPage.heading()).getText()).to.contain("Mark Twain");
+        await expect(await $(PersonalSummaryPage.heading()).getText()).toContain("Mark Twain");
       });
 
       it("renders their name as part of the question title on the section summary", async () => {
-        await expect(await $(PersonalSummaryPage.dateOfBirthQuestion()).getText()).to.contain("Mark Twain’s");
+        await expect(await $(PersonalSummaryPage.dateOfBirthQuestion()).getText()).toContain("Mark Twain’s");
       });
 
       it("renders the correct date of birth answer", async () => {
-        await expect(await $(PersonalSummaryPage.dateOfBirthAnswer()).getText()).to.contain("30 November 1835");
+        await expect(await $(PersonalSummaryPage.dateOfBirthAnswer()).getText()).toContain("30 November 1835");
       });
     });
   });

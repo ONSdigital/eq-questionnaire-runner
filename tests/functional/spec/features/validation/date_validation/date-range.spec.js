@@ -17,7 +17,7 @@ describe("Feature: Question level validation for date ranges", () => {
         await $(DateRangePage.dateRangeTomonth()).setValue(3);
         await $(DateRangePage.dateRangeToyear()).setValue(2018);
         await click(DateRangePage.submit());
-        await expect(await $(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period less than or equal to 1 month, 20 days");
+        await expect(await $(DateRangePage.errorNumber(1)).getText()).toContain("Enter a reporting period less than or equal to 1 month, 20 days");
       });
     });
 
@@ -31,7 +31,7 @@ describe("Feature: Question level validation for date ranges", () => {
         await $(DateRangePage.dateRangeTomonth()).setValue(1);
         await $(DateRangePage.dateRangeToyear()).setValue(2018);
         await click(DateRangePage.submit());
-        await expect(await $(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a reporting period greater than or equal to 23 days");
+        await expect(await $(DateRangePage.errorNumber(1)).getText()).toContain("Enter a reporting period greater than or equal to 23 days");
       });
     });
 
@@ -45,7 +45,7 @@ describe("Feature: Question level validation for date ranges", () => {
         await $(DateRangePage.dateRangeTomonth()).setValue(2);
         await $(DateRangePage.dateRangeToyear()).setValue(2018);
         await click(DateRangePage.submit());
-        await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
+        await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
       });
     });
   });
@@ -61,7 +61,7 @@ describe("Feature: Question level validation for date ranges", () => {
         await $(DateRangePage.dateRangeTomonth()).setValue(1);
         await $(DateRangePage.dateRangeToyear()).setValue(2018);
         await click(DateRangePage.submit());
-        await expect(await $(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a 'period to' date later than the 'period from' date");
+        await expect(await $(DateRangePage.errorNumber(1)).getText()).toContain("Enter a 'period to' date later than the 'period from' date");
       });
     });
 
@@ -75,7 +75,7 @@ describe("Feature: Question level validation for date ranges", () => {
         await $(DateRangePage.dateRangeTomonth()).setValue(1);
         await $(DateRangePage.dateRangeToyear()).setValue(2018);
         await click(DateRangePage.submit());
-        await expect(await $(DateRangePage.errorNumber(1)).getText()).to.contain("Enter a 'period to' date later than the 'period from' date");
+        await expect(await $(DateRangePage.errorNumber(1)).getText()).toContain("Enter a 'period to' date later than the 'period from' date");
       });
     });
 
@@ -89,7 +89,7 @@ describe("Feature: Question level validation for date ranges", () => {
         await $(DateRangePage.dateRangeTomonth()).setValue(2);
         await $(DateRangePage.dateRangeToyear()).setValue(2018);
         await click(DateRangePage.submit());
-        await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
+        await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
       });
     });
   });

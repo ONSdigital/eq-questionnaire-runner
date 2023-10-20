@@ -46,13 +46,13 @@ describe("Calculated summary with repeating answers", () => {
 
   it("Given I complete all list collector dynamic answers for two calculated summaries one of which also has static answers, I'm taken to each one in turn, showing the correct answers", async () => {
     await click(ExtraSpendingBlockPage.submit());
-    await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).toContain(
+    await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).toEqual(
       "We calculate the total cost of your weekly shopping to be £550.00. Is this correct?",
     );
-    await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryAnswer()).getText()).toContain("£550.00");
+    await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryAnswer()).getText()).toEqual("£550.00");
     await assertSummaryValues(["£300.00", "£200.00", "£30.00", "£15.00", "£5.00", "£0.00"]);
     await click(CalculatedSummarySpendingPage.submit());
-    await expect(await $(CalculatedSummaryVisitsPage.calculatedSummaryTitle()).getText()).toContain(
+    await expect(await $(CalculatedSummaryVisitsPage.calculatedSummaryTitle()).getText()).toEqual(
       "We calculate the total visits to the shop to be 6. Is this correct?",
     );
     await assertSummaryValues(["4", "2"]);
@@ -70,7 +70,7 @@ describe("Calculated summary with repeating answers", () => {
     await $$(DynamicAnswerPage.inputs())[5].setValue(3);
     await click(DynamicAnswerPage.submit());
     await expect(browser).toHaveUrlContaining(CalculatedSummaryVisitsPage.pageName);
-    await expect(await $(CalculatedSummaryVisitsPage.calculatedSummaryTitle()).getText()).toContain(
+    await expect(await $(CalculatedSummaryVisitsPage.calculatedSummaryTitle()).getText()).toEqual(
       "We calculate the total visits to the shop to be 7. Is this correct?",
     );
     await assertSummaryValues(["4", "3"]);
@@ -89,7 +89,7 @@ describe("Calculated summary with repeating answers", () => {
 
     // then calculated summary
     await expect(browser).toHaveUrlContaining(CalculatedSummarySpendingPage.pageName);
-    await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).toContain(
+    await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).toEqual(
       "We calculate the total cost of your weekly shopping to be £600.00. Is this correct?",
     );
 
@@ -114,14 +114,14 @@ describe("Calculated summary with repeating answers", () => {
 
     // first calc summary
     await expect(browser).toHaveUrlContaining(CalculatedSummarySpendingPage.pageName);
-    await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).toContain(
+    await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).toEqual(
       "We calculate the total cost of your weekly shopping to be £710.00. Is this correct?",
     );
     await assertSummaryValues(["£300.00", "£200.00", "£100.00", "£30.00", "£15.00", "£10.00", "£5.00", "£0.00"]);
 
     // second calculated summary
     await click(CalculatedSummarySpendingPage.submit());
-    await expect(await $(CalculatedSummaryVisitsPage.calculatedSummaryTitle()).getText()).toContain(
+    await expect(await $(CalculatedSummaryVisitsPage.calculatedSummaryTitle()).getText()).toEqual(
       "We calculate the total visits to the shop to be 14. Is this correct?",
     );
     await assertSummaryValues(["4", "3", "2"]);
@@ -145,12 +145,12 @@ describe("Calculated summary with repeating answers", () => {
     await click(DynamicAnswerPage.submit());
 
     // Tesco is now gone
-    await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).toContain(
+    await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).toEqual(
       "We calculate the total cost of your weekly shopping to be £380.00. Is this correct?",
     );
     await assertSummaryValues(["£200.00", "£100.00", "£15.00", "£10.00", "£5.00", "£50.00"]);
     await click(CalculatedSummarySpendingPage.submit());
-    await expect(await $(CalculatedSummaryVisitsPage.calculatedSummaryTitle()).getText()).toContain(
+    await expect(await $(CalculatedSummaryVisitsPage.calculatedSummaryTitle()).getText()).toEqual(
       "We calculate the total visits to the shop to be 10. Is this correct?",
     );
     await assertSummaryValues(["3", "7"]);
@@ -166,7 +166,7 @@ describe("Calculated summary with repeating answers", () => {
     await click(HubPage.submit());
     await $(SupermarketTransportPage.weeklyCarTrips()).setValue(11);
     await click(SupermarketTransportPage.submit());
-    await expect(await $(SupermarketTransportPage.singleErrorLink()).getText()).toContain("Enter an answer less than or equal to 10");
+    await expect(await $(SupermarketTransportPage.singleErrorLink()).getText()).toEqual("Enter an answer less than or equal to 10");
   });
 
   it("Given I change my answer to a value less than the calculated summary from the previous section, I am able to proceed", async () => {

@@ -8,10 +8,10 @@ describe("Feature: Hub and Spoke with custom content", () => {
 
   it("When the questionnaire is incomplete, then custom content should be displayed correctly", async () => {
     await browser.openQuestionnaire(hubAndSpokeSchema);
-    await expect(await $(HubPage.heading()).getText()).to.contain("Choose another section to complete");
-    await expect(await $(HubPage.guidance()).isExisting()).to.be.false;
-    await expect(await $(HubPage.submit()).getText()).to.contain("Continue");
-    await expect(await $(HubPage.warning()).isExisting()).to.be.false;
+    await expect(await $(HubPage.heading()).getText()).toContain("Choose another section to complete");
+    await expect(await $(HubPage.guidance()).isExisting()).toBe(false);
+    await expect(await $(HubPage.submit()).getText()).toContain("Continue");
+    await expect(await $(HubPage.warning()).isExisting()).toBe(false);
   });
 
   it("When the questionnaire is complete, then custom content should be displayed correctly", async () => {
@@ -22,9 +22,9 @@ describe("Feature: Hub and Spoke with custom content", () => {
     await $(HowManyPeopleLiveHere.answer1()).click();
     await click(HowManyPeopleLiveHere.submit());
     await click(HouseholdSummary.submit());
-    await expect(await $(HubPage.heading()).getText()).to.contain("Submission title");
-    await expect(await $(HubPage.guidance()).getText()).to.contain("Submission guidance");
-    await expect(await $(HubPage.submit()).getText()).to.contain("Submission button");
-    await expect(await $(HubPage.warning()).getText()).to.contain("Submission warning");
+    await expect(await $(HubPage.heading()).getText()).toContain("Submission title");
+    await expect(await $(HubPage.guidance()).getText()).toContain("Submission guidance");
+    await expect(await $(HubPage.submit()).getText()).toContain("Submission button");
+    await expect(await $(HubPage.warning()).getText()).toContain("Submission warning");
   });
 });

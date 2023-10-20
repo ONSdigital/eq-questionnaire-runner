@@ -17,24 +17,28 @@ describe("Summary Anchor Scrolling", () => {
     });
 
     it("When I have provided an answer and click through to the next question, Then the Previous link url shouldn't contain any anchors or reference to return_to or return_to_answer_id", async () => {
-      await expect(await $(InsuranceAddressPage.previous()).getAttribute("href")).not.to.contain("#");
-      await expect(await $(InsuranceAddressPage.previous()).getAttribute("href")).not.to.contain("return_to");
-      await expect(await $(InsuranceAddressPage.previous()).getAttribute("href")).not.to.contain("return_to_answer_id");
+      await expect(await $(InsuranceAddressPage.previous()).getAttribute("href")).not.toContain("#");
+      await expect(await $(InsuranceAddressPage.previous()).getAttribute("href")).not.toContain("return_to");
+      await expect(await $(InsuranceAddressPage.previous()).getAttribute("href")).not.toContain("return_to_answer_id");
     });
 
     it("When I reach the section summary page, Then the Change link url should contain return_to, return_to_answer_id query params", async () => {
       await click(InsuranceAddressPage.submit());
       await click(AddressDurationPage.submit());
-      await expect(await $(PropertyDetailsSummaryPage.insuranceAddressAnswer2Edit()).getAttribute("href")).to.contain(
-        "insurance-address/?return_to=section-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2",
+      await expect(
+        await $(PropertyDetailsSummaryPage.insuranceAddressAnswer2Edit()).getAttribute("href")
+      ).toContain(
+        "insurance-address/?return_to=section-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2"
       );
     });
 
     it("When I reach the section summary page, Then the Change link url for a concatenated answer should contain return_to, return_to_answer_id query params", async () => {
       await click(InsuranceAddressPage.submit());
       await click(AddressDurationPage.submit());
-      await expect(await $(PropertyDetailsSummaryPage.summaryRowState("name-question-concatenated-answer-edit")).getAttribute("href")).to.contain(
-        "name/?return_to=section-summary&return_to_answer_id=name-question-concatenated-answer#first-name",
+      await expect(
+        await $(PropertyDetailsSummaryPage.summaryRowState("name-question-concatenated-answer-edit")).getAttribute("href")
+      ).toContain(
+        "name/?return_to=section-summary&return_to_answer_id=name-question-concatenated-answer#first-name"
       );
     });
 
@@ -42,7 +46,7 @@ describe("Summary Anchor Scrolling", () => {
       await click(InsuranceAddressPage.submit());
       await click(AddressDurationPage.submit());
       await $(PropertyDetailsSummaryPage.insuranceAddressAnswer2Edit()).click();
-      await expect(await $(InsuranceAddressPage.previous()).getAttribute("href")).to.contain("property-details-section/#insurance-address-answer2");
+      await expect(await $(InsuranceAddressPage.previous()).getAttribute("href")).toContain("property-details-section/#insurance-address-answer2");
     });
 
     it("When I edit an answer from the section summary page and click the Previous link, Then the browser url should contain an anchor referencing the answer id of the answer I am changing", async () => {
@@ -50,7 +54,7 @@ describe("Summary Anchor Scrolling", () => {
       await click(AddressDurationPage.submit());
       await $(PropertyDetailsSummaryPage.insuranceAddressAnswer2Edit()).click();
       await $(InsuranceAddressPage.previous()).click();
-      await expect(await browser.getUrl()).to.contain("property-details-section/#insurance-address-answer2");
+      await expect(await browser.getUrl()).toContain("property-details-section/#insurance-address-answer2");
     });
 
     it("When I edit an answer from the section summary page and click the Submit button, Then I am taken to the summary page and the browser url should contain an anchor referencing the answer id of the answer I am changing", async () => {
@@ -58,7 +62,7 @@ describe("Summary Anchor Scrolling", () => {
       await click(AddressDurationPage.submit());
       await $(PropertyDetailsSummaryPage.insuranceAddressAnswer2Edit()).click();
       await click(InsuranceAddressPage.submit());
-      await expect(await browser.getUrl()).to.contain("property-details-section/#insurance-address-answer2");
+      await expect(await browser.getUrl()).toContain("property-details-section/#insurance-address-answer2");
     });
 
     it("When I am on the final summary page, Then the Change link url should contain return_to, return_to_answer_id query params", async () => {
@@ -68,8 +72,8 @@ describe("Summary Anchor Scrolling", () => {
       await click(HouseType.submit());
       await click(HouseholdDetailsSummaryPage.submit());
       await $(SubmitPage.summaryShowAllButton()).click();
-      await expect(await $(SubmitPage.insuranceAddressAnswer2Edit()).getAttribute("href")).to.contain(
-        "?return_to=final-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2",
+      await expect(await $(SubmitPage.insuranceAddressAnswer2Edit()).getAttribute("href")).toContain(
+        "?return_to=final-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2"
       );
     });
 
@@ -81,7 +85,9 @@ describe("Summary Anchor Scrolling", () => {
       await click(HouseholdDetailsSummaryPage.submit());
       await $(SubmitPage.summaryShowAllButton()).click();
       await $(SubmitPage.insuranceAddressAnswer2Edit()).click();
-      await expect(await browser.getUrl()).to.contain("?return_to=final-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2");
+      await expect(await browser.getUrl()).toContain(
+        "?return_to=final-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2"
+      );
     });
   });
 });

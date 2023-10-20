@@ -40,7 +40,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
 
-      await expect(await browser.getUrl()).to.contain(TotalPlaybackPage.pageName);
+      await expect(await browser.getUrl()).toContain(TotalPlaybackPage.pageName);
     });
   });
 
@@ -51,7 +51,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
 
-      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
     });
   });
 
@@ -68,13 +68,13 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await click(BreakdownAnswerPage.submit());
 
-      await expect(await $(BreakdownAnswerPage.singleErrorLink()).isDisplayed()).to.be.true;
+      await expect(await $(BreakdownAnswerPage.singleErrorLink()).isDisplayed()).toBe(true);
 
-      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 15");
+      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toContain("Enter answers that add up to 15");
 
       await answerBothBreakdownQuestions(["6", "3", "3", "3"], ["3", "3", "2", "1"]);
 
-      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
     });
   });
 
@@ -91,13 +91,13 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await answerAndSubmitBreakdownQuestion("0", "3", "3", "3");
 
-      await expect(await $(BreakdownAnswerPage.singleErrorLink()).isDisplayed()).to.be.true;
+      await expect(await $(BreakdownAnswerPage.singleErrorLink()).isDisplayed()).toBe(true);
 
-      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 15");
+      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toContain("Enter answers that add up to 15");
 
       await answerBothBreakdownQuestions(["5", "4", "4", "2"], ["3", "3", "2", "1"]);
 
-      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
     });
   });
 
@@ -116,15 +116,15 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await click(SecondBreakdownAnswerPage.submit());
 
-      await expect(await $(SecondBreakdownAnswerPage.singleErrorLink()).isDisplayed()).to.be.true;
+      await expect(await $(SecondBreakdownAnswerPage.singleErrorLink()).isDisplayed()).toBe(true);
 
-      await expect(await $(SecondBreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 9");
+      await expect(await $(SecondBreakdownAnswerPage.errorNumber(1)).getText()).toContain("Enter answers that add up to 9");
 
       await answerAndSubmitSecondBreakdownQuestion("5", "4", "0", "0");
 
-      await expect(await $(SecondBreakdownAnswerPage.singleErrorLink()).isDisplayed()).to.be.false;
+      await expect(await $(SecondBreakdownAnswerPage.singleErrorLink()).isDisplayed()).toBe(false);
 
-      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
     });
   });
 
@@ -135,7 +135,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
 
-      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 5");
+      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toContain("Enter answers that add up to 5");
     });
   });
 
@@ -146,7 +146,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await answerBothBreakdownQuestions(["2", "1", "1", "1"], ["3", "3", "3", "3"]);
 
-      await expect(await $(SecondBreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 3");
+      await expect(await $(SecondBreakdownAnswerPage.errorNumber(1)).getText()).toContain("Enter answers that add up to 3");
     });
   });
 });

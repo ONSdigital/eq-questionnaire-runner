@@ -19,20 +19,20 @@ describe("Test routing question answered/unanswered", () => {
     it("When I select any answer and submit, Then I should see a page saying I have answered the first question", async () => {
       await $(QuestionOne.ham()).click();
       await click(QuestionOne.submit());
-      await expect(await $(QuestionOneAnswered.heading()).getText()).to.contain("You answered the first question!");
-      await expect(await browser.getUrl()).to.contain(QuestionOneAnswered.pageName);
+      await expect(await $(QuestionOneAnswered.heading()).getText()).toContain("You answered the first question!");
+      await expect(await browser.getUrl()).toContain(QuestionOneAnswered.pageName);
 
       await $(QuestionOneAnswered.previous()).click();
       await $(QuestionOne.cheese()).click();
       await click(QuestionOne.submit());
-      await expect(await $(QuestionOneAnswered.heading()).getText()).to.contain("You answered the first question!");
-      await expect(await browser.getUrl()).to.contain(QuestionOneAnswered.pageName);
+      await expect(await $(QuestionOneAnswered.heading()).getText()).toContain("You answered the first question!");
+      await expect(await browser.getUrl()).toContain(QuestionOneAnswered.pageName);
     });
 
     it("When I don't select an answer and submit, Then I should see a page saying I have not answered the first question", async () => {
       await click(QuestionOne.submit());
-      await expect(await $(QuestionOneAnswered.heading()).getText()).to.contain("You did not answer the first question!");
-      await expect(await browser.getUrl()).to.contain(QuestionOneAnswered.pageName);
+      await expect(await $(QuestionOneAnswered.heading()).getText()).toContain("You did not answer the first question!");
+      await expect(await browser.getUrl()).toContain(QuestionOneAnswered.pageName);
     });
   });
 
@@ -46,20 +46,20 @@ describe("Test routing question answered/unanswered", () => {
     it("When I select any answer and submit, Then I should see a page saying I have answered the second question", async () => {
       await $(QuestionTwo.pizzaHut()).click();
       await click(QuestionTwo.submit());
-      await expect(await $(QuestionTwoAnswered.heading()).getText()).to.contain("You answered the second question!");
-      await expect(await browser.getUrl()).to.contain(QuestionTwoAnswered.pageName);
+      await expect(await $(QuestionTwoAnswered.heading()).getText()).toContain("You answered the second question!");
+      await expect(await browser.getUrl()).toContain(QuestionTwoAnswered.pageName);
 
       await $(QuestionOneAnswered.previous()).click();
       await $(QuestionTwo.dominoS()).click();
       await click(QuestionTwo.submit());
-      await expect(await $(QuestionTwoAnswered.heading()).getText()).to.contain("You answered the second question!");
-      await expect(await browser.getUrl()).to.contain(QuestionTwoAnswered.pageName);
+      await expect(await $(QuestionTwoAnswered.heading()).getText()).toContain("You answered the second question!");
+      await expect(await browser.getUrl()).toContain(QuestionTwoAnswered.pageName);
     });
 
     it("When I don't select an answer and submit, Then I should see a page saying I have not answered the second question", async () => {
       await click(QuestionTwo.submit());
-      await expect(await $(QuestionTwoUnanswered.heading()).getText()).to.contain("You did not answer the second question!");
-      await expect(await browser.getUrl()).to.contain(QuestionTwoAnswered.pageName);
+      await expect(await $(QuestionTwoUnanswered.heading()).getText()).toContain("You did not answer the second question!");
+      await expect(await browser.getUrl()).toContain(QuestionTwoAnswered.pageName);
     });
   });
 
@@ -74,21 +74,21 @@ describe("Test routing question answered/unanswered", () => {
 
     it("When I do not answer the question or answer `0` and submit, Then I should see a page saying I did not answer the question or that I chose `0`", async () => {
       await click(QuestionThree.submit());
-      await expect(await $(QuestionThreeUnansweredOrAnswerZero.heading()).getText()).to.contain("You did not answer the question or chose 0 slices");
-      await expect(await browser.getUrl()).to.contain(QuestionThreeUnansweredOrAnswerZero.pageName);
+      await expect(await $(QuestionThreeUnansweredOrAnswerZero.heading()).getText()).toContain("You did not answer the question or chose 0 slices");
+      await expect(await browser.getUrl()).toContain(QuestionThreeUnansweredOrAnswerZero.pageName);
 
       await $(QuestionThreeUnansweredOrAnswerZero.previous()).click();
       await $(QuestionThree.answer3()).setValue("0");
       await click(QuestionThree.submit());
-      await expect(await $(QuestionThreeUnansweredOrAnswerZero.heading()).getText()).to.contain("You did not answer the question or chose 0 slices");
-      await expect(await browser.getUrl()).to.contain(QuestionThreeUnansweredOrAnswerZero.pageName);
+      await expect(await $(QuestionThreeUnansweredOrAnswerZero.heading()).getText()).toContain("You did not answer the question or chose 0 slices");
+      await expect(await browser.getUrl()).toContain(QuestionThreeUnansweredOrAnswerZero.pageName);
     });
 
     it("When I enter an answer greater than 0 and submit, Then I should see a page saying I chose at least one", async () => {
       await $(QuestionThree.answer3()).setValue("2");
       await click(QuestionThree.submit());
-      await expect(await $(QuestionTwoAnswered.heading()).getText()).to.contain("You chose at least 1 slice");
-      await expect(await browser.getUrl()).to.contain(QuestionThreeAnsweredOrNotZero.pageName);
+      await expect(await $(QuestionTwoAnswered.heading()).getText()).toContain("You chose at least 1 slice");
+      await expect(await browser.getUrl()).toContain(QuestionThreeAnsweredOrNotZero.pageName);
     });
   });
 });
