@@ -12,7 +12,7 @@
         "options": {
             "required_completed_sections": [
                 "stock-section",
-                "house-hold-section",
+                "household-section",
                 "questions-section",
                 "section-companies",
                 "grand-calculated-summary-section-1"
