@@ -1,1 +1,2 @@
+# Exclude generated_pages directory
 tests/functional/generated_pages/

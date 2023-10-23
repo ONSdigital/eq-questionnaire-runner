@@ -15,7 +15,7 @@
         "lint": "yarn generate_pages && yarn lint:tests && yarn lint:test-schemas",
         "lint:tests": "prettier --check \"tests/functional/**/*.js\" && eslint \"tests/functional/**/*.js\"",
         "lint:test-schemas": "prettier --check \"schemas/test/*/*.json\" && eslint \"schemas/test/**/*.json\"",
-        "test_functional": "./node_modules/.bin/wdio tests/functional/wdio.conf.js --suite $1",
+        "test_functional": "./node_modules/.bin/wdio tests/functional/wdio.conf.js",
         "generate_pages": "rm -rf ./tests/functional/generated_pages && pipenv run python -m tests.functional.generate_pages schemas/test/en/ ./tests/functional/generated_pages -r '../../base_pages'",
         "format": "yarn format:tests && yarn format:test-schemas",
         "format:tests": "prettier \"tests/functional/**/*.js\" --write && eslint --fix \"tests/functional/**/*.js\"",
