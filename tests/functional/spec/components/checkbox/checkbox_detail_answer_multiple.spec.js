@@ -24,7 +24,7 @@ describe('Checkbox with multiple "detail_answer" options', () => {
     await click(MandatoryCheckboxPage.submit());
     // Then
     await expect(await $(MandatoryCheckboxPage.error()).isDisplayed()).toBe(true);
-    await expect(await $(MandatoryCheckboxPage.errorNumber(1)).getText()).toEqual("Enter your topping choice to continue");
+    await expect(await $(MandatoryCheckboxPage.errorNumber(1)).getText()).toBe("Enter your topping choice to continue");
   });
 
   it("Given a selected checkbox answer with an error for a mandatory detail answer, When I enter valid value and submit the page, Then the error is cleared and I navigate to next page.", async () => {

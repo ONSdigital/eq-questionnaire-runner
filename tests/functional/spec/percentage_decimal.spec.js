@@ -10,8 +10,8 @@ describe("Decimal places", () => {
     await $(PercentageDecimalPage.decimal()).setValue("3.333");
     await click(PercentageDecimalPage.submit());
     await $(SubmitPage.previous()).click();
-    await expect(await browser.getUrl()).to.contain(PercentageDecimalPage.pageName);
-    await expect(await $(PercentageDecimalPage.decimal()).getValue()).to.equal("3.333");
+    await expect(await browser.getUrl()).toContain(PercentageDecimalPage.pageName);
+    await expect(await $(PercentageDecimalPage.decimal()).getValue()).toBe("3.333");
   });
 
   it("Given an answer allows 3 decimal places, When I enter a value to 1 decimal place and return to edit the value, Then the answer should be displayed with 3 decimal places", async () => {
@@ -20,7 +20,7 @@ describe("Decimal places", () => {
     await $(PercentageDecimalPage.decimal()).setValue("3.3");
     await click(PercentageDecimalPage.submit());
     await $(SubmitPage.previous()).click();
-    await expect(await browser.getUrl()).to.contain(PercentageDecimalPage.pageName);
-    await expect(await $(PercentageDecimalPage.decimal()).getValue()).to.equal("3.300");
+    await expect(await browser.getUrl()).toContain(PercentageDecimalPage.pageName);
+    await expect(await $(PercentageDecimalPage.decimal()).getValue()).toBe("3.300");
   });
 });

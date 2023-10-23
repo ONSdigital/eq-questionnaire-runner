@@ -13,8 +13,8 @@ describe("Thank You Census Household", () => {
     it("When I navigate to the thank you page, Then I should not see the feedback call to action", async () => {
       await click(SubmitPage.submit());
       await click(HubPage.submit());
-      await expect(await browser.getUrl()).to.contain(ThankYouPage.pageName);
-      await expect(await $(ThankYouPage.feedback()).isExisting()).to.equal(false);
+      await expect(await browser.getUrl()).toContain(ThankYouPage.pageName);
+      await expect(await $(ThankYouPage.feedback()).isExisting()).toBe(false);
     });
   });
 });

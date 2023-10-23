@@ -13,19 +13,19 @@ describe("Component: Mutually Exclusive Percentage With Single Checkbox Override
     it("When then user clicks the mutually exclusive checkbox answer, Then only the mutually exclusive checkbox should be answered.", async () => {
       // Given
       await $(PercentagePage.percentage()).setValue("99");
-      await expect(await $(PercentagePage.percentage()).getValue()).toEqual("99");
+      await expect(await $(PercentagePage.percentage()).getValue()).toBe("99");
 
       // When
       await $(PercentagePage.percentageExclusiveIPreferNotToSay()).click();
 
       // Then
       await expect(await $(PercentagePage.percentageExclusiveIPreferNotToSay()).isSelected()).toBe(true);
-      await expect(await $(PercentagePage.percentage()).getValue()).toEqual("");
+      await expect(await $(PercentagePage.percentage()).getValue()).toBe("");
 
       await click(PercentagePage.submit());
 
-      await expect(await $(SummaryPage.percentageExclusiveAnswer()).getText()).toEqual("I prefer not to say");
-      await expect(await $(SummaryPage.percentageExclusiveAnswer()).getText()).not.toEqual("99");
+      await expect(await $(SummaryPage.percentageExclusiveAnswer()).getText()).toBe("I prefer not to say");
+      await expect(await $(SummaryPage.percentageExclusiveAnswer()).getText()).not.toBe("99");
     });
   });
 
@@ -46,7 +46,7 @@ describe("Component: Mutually Exclusive Percentage With Single Checkbox Override
       await click(PercentagePage.submit());
 
       await expect(await $(SummaryPage.percentageAnswer()).getText()).toContain("99");
-      await expect(await $(SummaryPage.percentageAnswer()).getText()).not.toEqual("I prefer not to say");
+      await expect(await $(SummaryPage.percentageAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });
 
@@ -65,7 +65,7 @@ describe("Component: Mutually Exclusive Percentage With Single Checkbox Override
       await click(PercentagePage.submit());
 
       await expect(await $(SummaryPage.percentageAnswer()).getText()).toContain("99");
-      await expect(await $(SummaryPage.percentageAnswer()).getText()).not.toEqual("I prefer not to say");
+      await expect(await $(SummaryPage.percentageAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });
 

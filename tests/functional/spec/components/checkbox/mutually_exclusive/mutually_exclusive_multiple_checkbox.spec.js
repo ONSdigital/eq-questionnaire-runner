@@ -18,7 +18,7 @@ describe("Component: Mutually Exclusive Checkbox With Multiple Radio Override", 
       await expect(await $(MandatoryCheckboxPage.checkboxBritish()).isSelected()).toBe(true);
       await expect(await $(MandatoryCheckboxPage.checkboxIrish()).isSelected()).toBe(true);
       await expect(await $(MandatoryCheckboxPage.checkboxOther()).isSelected()).toBe(true);
-      await expect(await $(MandatoryCheckboxPage.checkboxOtherDetail()).getValue()).toEqual("The other option");
+      await expect(await $(MandatoryCheckboxPage.checkboxOtherDetail()).getValue()).toBe("The other option");
     });
 
     it("When then user clicks the first mutually exclusive option, Then only the first mutually exclusive option should be checked.", async () => {
@@ -31,12 +31,12 @@ describe("Component: Mutually Exclusive Checkbox With Multiple Radio Override", 
       await expect(await $(MandatoryCheckboxPage.checkboxBritish()).isSelected()).toBe(false);
       await expect(await $(MandatoryCheckboxPage.checkboxIrish()).isSelected()).toBe(false);
       await expect(await $(MandatoryCheckboxPage.checkboxOther()).isSelected()).toBe(false);
-      await expect(await $(MandatoryCheckboxPage.checkboxOtherDetail()).getValue()).toEqual("");
+      await expect(await $(MandatoryCheckboxPage.checkboxOtherDetail()).getValue()).toBe("");
 
       await click(MandatoryCheckboxPage.submit());
 
-      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).toEqual("I prefer not to say");
-      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).not.toEqual("British\nIrish");
+      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).toBe("I prefer not to say");
+      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).not.toBe("British\nIrish");
     });
 
     it("When then user clicks the second mutually exclusive option, Then only the second mutually exclusive option should be checked.", async () => {
@@ -49,12 +49,12 @@ describe("Component: Mutually Exclusive Checkbox With Multiple Radio Override", 
       await expect(await $(MandatoryCheckboxPage.checkboxBritish()).isSelected()).toBe(false);
       await expect(await $(MandatoryCheckboxPage.checkboxIrish()).isSelected()).toBe(false);
       await expect(await $(MandatoryCheckboxPage.checkboxOther()).isSelected()).toBe(false);
-      await expect(await $(MandatoryCheckboxPage.checkboxOtherDetail()).getValue()).toEqual("");
+      await expect(await $(MandatoryCheckboxPage.checkboxOtherDetail()).getValue()).toBe("");
 
       await click(MandatoryCheckboxPage.submit());
 
-      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).toEqual("I am an alien");
-      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).not.toEqual("British\nIrish");
+      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).toBe("I am an alien");
+      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).not.toBe("British\nIrish");
     });
   });
 

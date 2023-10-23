@@ -16,25 +16,27 @@ describe("List Collector Section Summary and Summary Items", () => {
     });
     it("When I get to the Hub, Then from there the next block in list collector content section should be list collector content page.", async () => {
       await fillInListCollectorSection();
-      await expect(await browser.getUrl()).to.contain(HubPage.url());
-      await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).to.contain("Not started");
+      await expect(await browser.getUrl()).toContain(HubPage.url());
+      await expect(
+        await $(HubPage.summaryRowState("section-list-collector-contents")).getText()
+      ).toContain("Not started");
       await $(HubPage.submit()).click();
       await $(ResponsiblePartyQuestionPage.yes()).click();
       await $(ResponsiblePartyQuestionPage.submit()).click();
-      await expect(await browser.getUrl()).to.contain(ListCollectorContentPage.url());
+      await expect(await browser.getUrl()).toContain(ListCollectorContentPage.url());
     });
     it("When I get to the list collector content page, Then the relevant content and button is displayed.", async () => {
       await fillInListCollectorSection();
       await $(HubPage.submit()).click();
       await $(ResponsiblePartyQuestionPage.yes()).click();
       await $(ResponsiblePartyQuestionPage.submit()).click();
-      await expect(await $(ListCollectorContentPage.heading()).getHTML()).to.contain("Companies");
-      await expect(await $("#main-content > p").getText()).to.contain(
-        "You have previously reported the following companies. Press continue to updated registration and trading information.",
+      await expect(await $(ListCollectorContentPage.heading()).getHTML()).toContain("Companies");
+      await expect(await $("#main-content > p").getText()).toContain(
+        "You have previously reported the following companies. Press continue to updated registration and trading information."
       );
-      await expect(await $("#main-content > #guidance-1").getText()).to.contain("Include all companies");
-      await expect(await $("#main-content > #definition").getText()).to.contain("Companies definition");
-      await expect(await $(ListCollectorContentPage.submit()).getText()).to.equal("Continue");
+      await expect(await $("#main-content > #guidance-1").getText()).toContain("Include all companies");
+      await expect(await $("#main-content > #definition").getText()).toContain("Companies definition");
+      await expect(await $(ListCollectorContentPage.submit()).getText()).toBe("Continue");
     });
     it("When I get to list collector content block section, Then I should be able to complete repeating blocks and get to the summary.", async () => {
       await fillInListCollectorSection();
@@ -60,7 +62,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await $(ListCollectorSecondRepeatingBlockPage.authorisedTraderEuRadioRepeatingBlockYes()).click();
       await $(ListCollectorSecondRepeatingBlockPage.submit()).click();
       await $(ListCollectorContentPage.submit()).click();
-      await expect(await browser.getUrl()).to.contain(ListCollectorContentSectionSummaryPage.url());
+      await expect(await browser.getUrl()).toContain(ListCollectorContentSectionSummaryPage.url());
     });
     it("When I fill in first item repeating blocks, Then after going back to the hub the section should be in progress.", async () => {
       await fillInListCollectorSection();
@@ -78,7 +80,9 @@ describe("List Collector Section Summary and Summary Items", () => {
       await $(ListCollectorSecondRepeatingBlockPage.submit()).click();
       await $(ListCollectorContentPage.previous()).click();
       await $(ResponsiblePartyQuestionPage.previous()).click();
-      await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).to.contain("Partially completed");
+      await expect(
+        await $(HubPage.summaryRowState("section-list-collector-contents")).getText()
+      ).toContain("Partially completed");
     });
     it("When I fill in both items repeating blocks, Then after going back to the hub the section should be completed.", async () => {
       await fillInListCollectorSection();
@@ -107,7 +111,9 @@ describe("List Collector Section Summary and Summary Items", () => {
       await $(ListCollectorContentSectionSummaryPage.previous()).click();
       await $(ListCollectorContentPage.previous()).click();
       await $(ResponsiblePartyQuestionPage.previous()).click();
-      await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).to.contain("Completed");
+      await expect(
+        await $(HubPage.summaryRowState("section-list-collector-contents")).getText()
+      ).toContain("Completed");
     });
   });
 });

@@ -12,7 +12,7 @@ describe("Given the checkbox label variants questionnaire,", () => {
   it("Given an instruction has been set to null in the schema for a checkbox answer, When the checkbox answer is displayed, Then the instruction should not be visible", async () => {
     await $(DefaultInstructionPage.red()).click();
     await click(DefaultInstructionPage.submit());
-    await expect(await $("body").getText()).not.toEqual("Select all that apply");
+    await expect(await $("body").getText()).not.toBe("Select all that apply");
   });
   it("Given a custom instruction has been set in the schema for a checkbox answer, When the checkbox answer is displayed, Then the custom instruction should be visible", async () => {
     await $(DefaultInstructionPage.red()).click();

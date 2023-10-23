@@ -15,21 +15,21 @@ describe("Feedback", () => {
     });
 
     it("When I view the thank you page, Then I can see the feedback call to action", async () => {
-      await expect(await browser.getUrl()).to.contain(ThankYouPage.pageName);
-      await expect(await $(ThankYouPage.feedback()).getText()).to.contain("What do you think about this service?");
-      await expect(await $(ThankYouPage.feedbackLink()).getText()).to.equal("Give feedback");
-      await expect(await $(ThankYouPage.feedbackLink()).getAttribute("href")).to.contain("/submitted/feedback/send");
+      await expect(await browser.getUrl()).toContain(ThankYouPage.pageName);
+      await expect(await $(ThankYouPage.feedback()).getText()).toContain("What do you think about this service?");
+      await expect(await $(ThankYouPage.feedbackLink()).getText()).toBe("Give feedback");
+      await expect(await $(ThankYouPage.feedbackLink()).getAttribute("href")).toContain("/submitted/feedback/send");
     });
 
     it("When I try to submit without providing feedback, then I stay on the feedback page and get an error message", async () => {
       await browser.url(FeedbackPage.url());
-      await expect(await browser.getUrl()).to.contain(FeedbackPage.pageName);
-      await expect(await $(FeedbackPage.feedbackTitle()).getText()).to.contain("Give feedback about this service");
+      await expect(await browser.getUrl()).toContain(FeedbackPage.pageName);
+      await expect(await $(FeedbackPage.feedbackTitle()).getText()).toContain("Give feedback about this service");
       await click(FeedbackPage.submit());
-      await expect(await browser.getUrl()).to.contain(FeedbackPage.pageName);
-      await expect(await $(FeedbackPage.errorPanel()).isExisting()).to.be.true;
-      await expect(await $(FeedbackPage.errorPanel()).getText()).to.contain(
-        "There are 2 problems with your feedback\nSelect what your feedback is about\nEnter your feedback",
+      await expect(await browser.getUrl()).toContain(FeedbackPage.pageName);
+      await expect(await $(FeedbackPage.errorPanel()).isExisting()).toBe(true);
+      await expect(await $(FeedbackPage.errorPanel()).getText()).toContain(
+        "There are 2 problems with your feedback\nSelect what your feedback is about\nEnter your feedback"
       );
     });
 
@@ -38,8 +38,8 @@ describe("Feedback", () => {
       await $(FeedbackPage.feedbackTypeGeneralFeedback()).click();
       await $(FeedbackPage.feedbackText()).setValue("Well done!");
       await click(FeedbackPage.submit());
-      await expect(await browser.getUrl()).to.contain(FeedbackSentPage.pageName);
-      await expect(await $(FeedbackSentPage.feedbackThankYouText()).getText()).to.contain("Thank you for your feedback");
+      await expect(await browser.getUrl()).toContain(FeedbackSentPage.pageName);
+      await expect(await $(FeedbackSentPage.feedbackThankYouText()).getText()).toContain("Thank you for your feedback");
     });
 
     it("When I click the done button on the feedback sent page, Then I am taken to the thank you page", async () => {
@@ -48,8 +48,8 @@ describe("Feedback", () => {
       await $(FeedbackPage.feedbackText()).setValue("Well done!");
       await click(FeedbackPage.submit());
       await $(FeedbackSentPage.doneButton()).click();
-      await expect(await browser.getUrl()).to.contain("thank-you");
-      await expect(await $(ThankYouPage.title()).getText()).to.contain("Thank you for completing the Feedback test schema");
+      await expect(await browser.getUrl()).toContain("thank-you");
+      await expect(await $(ThankYouPage.title()).getText()).toContain("Thank you for completing the Feedback test schema");
     });
   });
 });

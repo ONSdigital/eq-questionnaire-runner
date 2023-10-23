@@ -7,9 +7,9 @@ describe("Theme DBT-NI", () => {
     });
 
     it("When I navigate to the radio page, Then I should see DBT-NI theme content", async () => {
-      await expect(await browser.getUrl()).to.contain(RadioPage.pageName);
-      await expect(await $("#dbt-logo-alt").getHTML()).to.contain("Department for Business and Trade");
-      await expect(await $("#finance-ni-logo-alt").getHTML()).to.contain("Northern Ireland Department of Finance logo");
+      await expect(await browser.getUrl()).toContain(RadioPage.pageName);
+      await expect(await $("#dbt-logo-alt").getHTML()).toContain("Department for Business and Trade");
+      await expect(await $("#finance-ni-logo-alt").getHTML()).toContain("Northern Ireland Department of Finance logo");
     });
   });
 });

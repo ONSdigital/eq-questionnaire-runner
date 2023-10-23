@@ -14,21 +14,21 @@ describe("Component: Mutually Exclusive Month Year Date With Single Checkbox Ove
       // Given
       await $(MonthYearDatePage.monthYearDateMonth()).setValue("3");
       await $(MonthYearDatePage.monthYearDateYear()).setValue("2018");
-      await expect(await $(MonthYearDatePage.monthYearDateMonth()).getValue()).toEqual("3");
-      await expect(await $(MonthYearDatePage.monthYearDateYear()).getValue()).toEqual("2018");
+      await expect(await $(MonthYearDatePage.monthYearDateMonth()).getValue()).toBe("3");
+      await expect(await $(MonthYearDatePage.monthYearDateYear()).getValue()).toBe("2018");
 
       // When
       await $(MonthYearDatePage.monthYearDateExclusiveIPreferNotToSay()).click();
 
       // Then
       await expect(await $(MonthYearDatePage.monthYearDateExclusiveIPreferNotToSay()).isSelected()).toBe(true);
-      await expect(await $(MonthYearDatePage.monthYearDateMonth()).getValue()).toEqual("");
-      await expect(await $(MonthYearDatePage.monthYearDateYear()).getValue()).toEqual("");
+      await expect(await $(MonthYearDatePage.monthYearDateMonth()).getValue()).toBe("");
+      await expect(await $(MonthYearDatePage.monthYearDateYear()).getValue()).toBe("");
 
       await click(MonthYearDatePage.submit());
 
-      await expect(await $(SummaryPage.monthYearDateExclusiveAnswer()).getText()).toEqual("I prefer not to say");
-      await expect(await $(SummaryPage.monthYearDateExclusiveAnswer()).getText()).not.toEqual("March 2018");
+      await expect(await $(SummaryPage.monthYearDateExclusiveAnswer()).getText()).toBe("I prefer not to say");
+      await expect(await $(SummaryPage.monthYearDateExclusiveAnswer()).getText()).not.toBe("March 2018");
     });
   });
 
@@ -43,8 +43,8 @@ describe("Component: Mutually Exclusive Month Year Date With Single Checkbox Ove
       await $(MonthYearDatePage.monthYearDateYear()).setValue("2018");
 
       // Then
-      await expect(await $(MonthYearDatePage.monthYearDateMonth()).getValue()).toEqual("3");
-      await expect(await $(MonthYearDatePage.monthYearDateYear()).getValue()).toEqual("2018");
+      await expect(await $(MonthYearDatePage.monthYearDateMonth()).getValue()).toBe("3");
+      await expect(await $(MonthYearDatePage.monthYearDateYear()).getValue()).toBe("2018");
 
       await expect(await $(MonthYearDatePage.monthYearDateExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 

@@ -15,21 +15,21 @@ describe("Component: Mutually Exclusive Duration With Single Checkbox Override",
       await $(DurationPage.durationYears()).setValue("1");
       await $(DurationPage.durationMonths()).setValue("7");
 
-      await expect(await $(DurationPage.durationYears()).getValue()).toEqual("1");
-      await expect(await $(DurationPage.durationMonths()).getValue()).toEqual("7");
+      await expect(await $(DurationPage.durationYears()).getValue()).toBe("1");
+      await expect(await $(DurationPage.durationMonths()).getValue()).toBe("7");
 
       // When
       await $(DurationPage.durationExclusiveIPreferNotToSay()).click();
 
       // Then
       await expect(await $(DurationPage.durationExclusiveIPreferNotToSay()).isSelected()).toBe(true);
-      await expect(await $(DurationPage.durationYears()).getValue()).toEqual("");
-      await expect(await $(DurationPage.durationMonths()).getValue()).toEqual("");
+      await expect(await $(DurationPage.durationYears()).getValue()).toBe("");
+      await expect(await $(DurationPage.durationMonths()).getValue()).toBe("");
 
       await click(DurationPage.submit());
 
-      await expect(await $(SummaryPage.durationExclusiveAnswer()).getText()).toEqual("I prefer not to say");
-      await expect(await $(SummaryPage.durationExclusiveAnswer()).getText()).not.toEqual("1 year 7 months");
+      await expect(await $(SummaryPage.durationExclusiveAnswer()).getText()).toBe("I prefer not to say");
+      await expect(await $(SummaryPage.durationExclusiveAnswer()).getText()).not.toBe("1 year 7 months");
     });
   });
 
@@ -44,7 +44,7 @@ describe("Component: Mutually Exclusive Duration With Single Checkbox Override",
       await $(DurationPage.durationMonths()).setValue("7");
 
       // Then
-      await expect(await $(DurationPage.durationYears()).getValue()).toEqual("1");
+      await expect(await $(DurationPage.durationYears()).getValue()).toBe("1");
       await expect(await $(DurationPage.durationMonths()).getValue()).toEqual("7");
       await expect(await $(DurationPage.durationExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 

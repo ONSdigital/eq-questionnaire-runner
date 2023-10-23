@@ -7,15 +7,15 @@ describe("Component: Interstitial Definition", () => {
     });
 
     it("When there is a definition on an interstitial, then the page is displayed correctly", async () => {
-      await expect(await $(InterstitialDefinitionPage.definitionTitle()).isDisplayed()).to.be.true;
-      await expect(await $(InterstitialDefinitionPage.definitionContent()).getText()).to.equal("");
+      await expect(await $(InterstitialDefinitionPage.definitionTitle()).isDisplayed()).toBe(true);
+      await expect(await $(InterstitialDefinitionPage.definitionContent()).getText()).toBe("");
     });
 
     it("When I click on a definition title, the content is displayed for just that definition", async () => {
       await $(InterstitialDefinitionPage.definitionTitle()).click();
 
-      await expect(await $(InterstitialDefinitionPage.definitionTitle()).isDisplayed()).to.be.true;
-      await expect(await $(InterstitialDefinitionPage.definitionContent()).getText()).to.equal("In a way that accomplishes a desired aim or result");
+      await expect(await $(InterstitialDefinitionPage.definitionTitle()).isDisplayed()).toBe(true);
+      await expect(await $(InterstitialDefinitionPage.definitionContent()).getText()).toBe("In a way that accomplishes a desired aim or result");
     });
   });
 });

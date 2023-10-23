@@ -7,7 +7,7 @@ describe("Suggestions", () => {
     await browser.openQuestionnaire("test_textfield_suggestions.json");
     await $(SuggestionsPage.country()).setValue("Uni");
     $("#country-answer-listbox li").waitForDisplayed();
-    await expect(await $$(".ons-js-autosuggest-listbox li").length).to.not.equal(0);
+    await expect(await $$(".ons-js-autosuggest-listbox li").length).not.toBe(0);
   });
 });
 
@@ -30,10 +30,10 @@ describe("Suggestions", () => {
     await browser.pause(500);
     await browser.keys(" United");
     await suggestionsList.waitForExist();
-    await expect(await $$(".ons-js-autosuggest-listbox li").length).to.not.equal(0);
+    await expect(await $$(".ons-js-autosuggest-listbox li").length).not.toBe(0);
     // TODO there is an issue with the load-time of the auto-suggest dropdown causing this test to fail. Uncomment when this has been resolved.
     // await suggestionsOption.click();
     await click(MultipleSuggestionsPage.submit());
-    await expect(await browser.getUrl()).to.contain(SubmitPage.url());
+    await expect(await browser.getUrl()).toContain(SubmitPage.url());
   });
 });

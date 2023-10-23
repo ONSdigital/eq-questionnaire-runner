@@ -13,19 +13,19 @@ describe("Component: Mutually Exclusive Currency With Single Checkbox Override",
     it("When then user clicks the mutually exclusive checkbox answer, Then only the mutually exclusive checkbox should be answered.", async () => {
       // Given
       await $(CurrencyPage.currency()).setValue("123");
-      await expect(await $(CurrencyPage.currency()).getValue()).toEqual("123");
+      await expect(await $(CurrencyPage.currency()).getValue()).toBe("123");
 
       // When
       await $(CurrencyPage.currencyExclusiveIPreferNotToSay()).click();
 
       // Then
       await expect(await $(CurrencyPage.currencyExclusiveIPreferNotToSay()).isSelected()).toBe(true);
-      await expect(await $(CurrencyPage.currency()).getValue()).toEqual("");
+      await expect(await $(CurrencyPage.currency()).getValue()).toBe("");
 
       await click(CurrencyPage.submit());
 
-      await expect(await $(SummaryPage.currencyExclusiveAnswer()).getText()).toEqual("I prefer not to say");
-      await expect(await $(SummaryPage.currencyExclusiveAnswer()).getText()).not.toEqual("123");
+      await expect(await $(SummaryPage.currencyExclusiveAnswer()).getText()).toBe("I prefer not to say");
+      await expect(await $(SummaryPage.currencyExclusiveAnswer()).getText()).not.toBe("123");
     });
   });
 
@@ -45,7 +45,7 @@ describe("Component: Mutually Exclusive Currency With Single Checkbox Override",
       await click(CurrencyPage.submit());
 
       await expect(await $(SummaryPage.currencyAnswer()).getText()).toContain("123");
-      await expect(await $(SummaryPage.currencyAnswer()).getText()).not.toEqual("I prefer not to say");
+      await expect(await $(SummaryPage.currencyAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });
 
@@ -64,14 +64,14 @@ describe("Component: Mutually Exclusive Currency With Single Checkbox Override",
       await click(CurrencyPage.submit());
 
       await expect(await $(SummaryPage.currencyAnswer()).getText()).toContain("123");
-      await expect(await $(SummaryPage.currencyAnswer()).getText()).not.toEqual("I prefer not to say");
+      await expect(await $(SummaryPage.currencyAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });
 
   describe("Given the user has not answered the non-exclusive currency answer", () => {
     it("When the user clicks the mutually exclusive checkbox answer, Then only the exclusive checkbox should be answered.", async () => {
       // Given
-      await expect(await $(CurrencyPage.currency()).getValue()).toEqual("");
+      await expect(await $(CurrencyPage.currency()).getValue()).toBe("");
 
       // When
       await $(CurrencyPage.currencyExclusiveIPreferNotToSay()).click();
@@ -80,22 +80,22 @@ describe("Component: Mutually Exclusive Currency With Single Checkbox Override",
       // Then
       await click(CurrencyPage.submit());
 
-      await expect(await $(SummaryPage.currencyExclusiveAnswer()).getText()).toEqual("I prefer not to say");
-      await expect(await $(SummaryPage.currencyExclusiveAnswer()).getText()).not.toEqual("123");
+      await expect(await $(SummaryPage.currencyExclusiveAnswer()).getText()).toBe("I prefer not to say");
+      await expect(await $(SummaryPage.currencyExclusiveAnswer()).getText()).not.toBe("123");
     });
   });
 
   describe("Given the user has not answered the question and the question is optional", () => {
     it("When the user clicks the Continue button, Then it should display `No answer provided`", async () => {
       // Given
-      await expect(await $(CurrencyPage.currency()).getValue()).toEqual("");
+      await expect(await $(CurrencyPage.currency()).getValue()).toBe("");
       await expect(await $(CurrencyPage.currencyExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       // When
       await click(CurrencyPage.submit());
 
       // Then
-      await expect(await $(SummaryPage.currencyAnswer()).getText()).toEqual("No answer provided");
+      await expect(await $(SummaryPage.currencyAnswer()).getText()).toBe("No answer provided");
     });
   });
 });

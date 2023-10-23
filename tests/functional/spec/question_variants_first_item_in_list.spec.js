@@ -16,7 +16,7 @@ describe("Question Variants First Item in List", () => {
     await $(ListCollectorPage.no()).click();
     await click(ListCollectorPage.submit());
     await click(HubPage.submit());
-    await expect(await $(ListStatusQuestion.questionText()).getText()).to.contain("You are the first person in the list");
+    await expect(await $(ListStatusQuestion.questionText()).getText()).toContain("You are the first person in the list");
   });
 
   it("Given I am the second person on the list, When the when rule is set, Then I should the correct question variant", async () => {
@@ -35,6 +35,6 @@ describe("Question Variants First Item in List", () => {
     await $(ListCollectorPage.no()).click();
     await click(ListCollectorPage.submit());
     await $(HubPage.summaryRowLink("personal-details-section-2")).click();
-    await expect(await $(ListStatusQuestion.questionText()).getText()).to.contain("You are not the first person in the list");
+    await expect(await $(ListStatusQuestion.questionText()).getText()).toContain("You are not the first person in the list");
   });
 });

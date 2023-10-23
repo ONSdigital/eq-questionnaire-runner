@@ -5,15 +5,15 @@ describe("Textfield", () => {
   it("Given a textfield option, a user should be able to click the label of the textfield to focus", async () => {
     await browser.openQuestionnaire("test_textfield.json");
     await $(TextFieldPage.nameLabel()).click();
-    await expect(await $(TextFieldPage.name()).isFocused()).to.be.true;
+    await expect(await $(TextFieldPage.name()).isFocused()).toBe(true);
   });
 
   it("Given a text entered in textfield , When user submits and revisits the textfield, Then the textfield must contain the text entered previously", async () => {
     await browser.openQuestionnaire("test_textfield.json");
     await $(TextFieldPage.name()).setValue("'Twenty><&Five'");
     await click(TextFieldPage.submit());
-    await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
-    await expect(await $(SubmitPage.nameAnswer()).getText()).to.contain("Twenty><&Five'");
+    await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
+    await expect(await $(SubmitPage.nameAnswer()).getText()).toContain("Twenty><&Five'");
     await $(SubmitPage.nameAnswerEdit()).click();
     await $(TextFieldPage.name()).getValue();
   });
@@ -22,6 +22,6 @@ describe("Textfield", () => {
     await browser.openQuestionnaire("test_textfield.json");
     await $(TextFieldPage.name()).setValue("This string is too long");
     await click(TextFieldPage.submit());
-    await expect(await $(TextFieldPage.errorNumber(1)).getText()).to.contain("You have entered too many characters. Enter up to 20 characters");
+    await expect(await $(TextFieldPage.errorNumber(1)).getText()).toContain("You have entered too many characters. Enter up to 20 characters");
   });
 });

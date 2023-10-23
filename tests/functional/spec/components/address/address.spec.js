@@ -20,7 +20,7 @@ describe("Address Answer Type", () => {
       await click(AddressOptional.submit());
       await click(AddressConfirmation.submit());
       await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
-      await expect(await $(SubmitPage.addressMandatory()).getText()).toEqual("Evelyn Street\nApt 7\nBarry\nCF63 4JG");
+      await expect(await $(SubmitPage.addressMandatory()).getText()).toBe("Evelyn Street\nApt 7\nBarry\nCF63 4JG");
       await expect(await $(SubmitPage.addressMandatory()).getHTML()).toContain("Evelyn Street<br>Apt 7<br>Barry<br>CF63 4JG");
     });
   });

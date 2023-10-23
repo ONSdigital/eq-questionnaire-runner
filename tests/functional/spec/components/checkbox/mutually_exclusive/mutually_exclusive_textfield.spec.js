@@ -13,19 +13,19 @@ describe("Component: Mutually Exclusive Textfield With Single Checkbox Override"
     it("When then user clicks the mutually exclusive checkbox answer, Then only the mutually exclusive checkbox should be answered.", async () => {
       // Given
       await $(TextFieldPage.textfield()).setValue("Blue");
-      await expect(await $(TextFieldPage.textfield()).getValue()).toEqual("Blue");
+      await expect(await $(TextFieldPage.textfield()).getValue()).toBe("Blue");
 
       // When
       await $(TextFieldPage.textfieldExclusiveIPreferNotToSay()).click();
 
       // Then
       await expect(await $(TextFieldPage.textfieldExclusiveIPreferNotToSay()).isSelected()).toBe(true);
-      await expect(await $(TextFieldPage.textfield()).getValue()).toEqual("");
+      await expect(await $(TextFieldPage.textfield()).getValue()).toBe("");
 
       await click(TextFieldPage.submit());
 
-      await expect(await $(SummaryPage.textfieldExclusiveAnswer()).getText()).toEqual("I prefer not to say");
-      await expect(await $(SummaryPage.textfieldExclusiveAnswer()).getText()).not.toEqual("Blue");
+      await expect(await $(SummaryPage.textfieldExclusiveAnswer()).getText()).toBe("I prefer not to say");
+      await expect(await $(SummaryPage.textfieldExclusiveAnswer()).getText()).not.toBe("Blue");
     });
   });
 
@@ -39,13 +39,13 @@ describe("Component: Mutually Exclusive Textfield With Single Checkbox Override"
       await $(TextFieldPage.textfield()).setValue("Blue");
 
       // Then
-      await expect(await $(TextFieldPage.textfield()).getValue()).toEqual("Blue");
+      await expect(await $(TextFieldPage.textfield()).getValue()).toBe("Blue");
       await expect(await $(TextFieldPage.textfieldExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       await click(TextFieldPage.submit());
 
-      await expect(await $(SummaryPage.textfieldAnswer()).getText()).toEqual("Blue");
-      await expect(await $(SummaryPage.textfieldAnswer()).getText()).not.toEqual("I prefer not to say");
+      await expect(await $(SummaryPage.textfieldAnswer()).getText()).toBe("Blue");
+      await expect(await $(SummaryPage.textfieldAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });
 

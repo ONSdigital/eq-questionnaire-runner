@@ -30,8 +30,8 @@ describe("First Non Empty Item Transform", () => {
     await $(DateEntryBlockPage.previous()).click();
     await $(DateQuestionBlockPage.yesICanReportForThisPeriod()).click();
     await click(DateQuestionBlockPage.submit());
-    expect(await browser.getUrl()).to.contain(TotalTurnoverBlockPage.pageName);
-    expect(await $(TotalTurnoverBlockPage.questionTitle()).getText()).to.contain("1 January 2017 to 1 February 2017");
+    expect(await browser.getUrl()).toContain(TotalTurnoverBlockPage.pageName);
+    expect(await $(TotalTurnoverBlockPage.questionTitle()).getText()).toContain("1 January 2017 to 1 February 2017");
   });
 });
 
@@ -55,15 +55,15 @@ describe("First Non Empty Item Transform Cross Section", () => {
 
     // Check date changed and then change to original dates
     await click(HubPage.submit());
-    expect(await $(FoodQuestionBlockPage.questionTitle()).getText()).to.contain("5 January 2017 to 25 January 2017");
+    expect(await $(FoodQuestionBlockPage.questionTitle()).getText()).toContain("5 January 2017 to 25 January 2017");
     await $(FoodQuestionBlockPage.previous()).click();
     await $(HubPage.summaryRowLink("default-section")).click();
     await $(DateQuestionBlockPage.yesICanReportForThisPeriod()).click();
     await click(DateQuestionBlockPage.submit());
     // Check the next section if the metadata date is shown
     await click(HubPage.submit());
-    expect(await browser.getUrl()).to.contain(FoodQuestionBlockPage.pageName);
-    expect(await $(FoodQuestionBlockPage.questionTitle()).getText()).to.contain("1 January 2017 to 1 February 2017");
+    expect(await browser.getUrl()).toContain(FoodQuestionBlockPage.pageName);
+    expect(await $(FoodQuestionBlockPage.questionTitle()).getText()).toContain("1 January 2017 to 1 February 2017");
   });
 });
 
@@ -96,8 +96,8 @@ describe("First Non Empty Item Transform Repeating Sections", () => {
     await click(ListCollectorPage.submit());
     // Check Repeating Section has the set dates
     await click(HubPage.submit());
-    expect(await browser.getUrl()).to.contain(PersonalDetailsBlockPage.pageName);
-    expect(await $(PersonalDetailsBlockPage.questionTitle()).getText()).to.contain("5 January 2017 to 25 January 2017");
+    expect(await browser.getUrl()).toContain(PersonalDetailsBlockPage.pageName);
+    expect(await $(PersonalDetailsBlockPage.questionTitle()).getText()).toContain("5 January 2017 to 25 January 2017");
     await $(PersonalDetailsBlockPage.previous()).click();
     // Change to original dates
     await $(HubPage.summaryRowLink("date-section")).click();
@@ -105,7 +105,7 @@ describe("First Non Empty Item Transform Repeating Sections", () => {
     await click(DateQuestionBlockPage.submit());
     await click(HubPage.submit());
     // Check the list collector has metadata dates in the title
-    expect(await browser.getUrl()).to.contain(PersonalDetailsBlockPage.pageName);
-    expect(await $(PersonalDetailsBlockPage.questionTitle()).getText()).to.contain("1 January 2017 to 1 February 2017");
+    expect(await browser.getUrl()).toContain(PersonalDetailsBlockPage.pageName);
+    expect(await $(PersonalDetailsBlockPage.questionTitle()).getText()).toContain("1 January 2017 to 1 February 2017");
   });
 });

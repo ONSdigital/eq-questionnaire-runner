@@ -14,9 +14,9 @@ describe("Component: Mutually Exclusive Day Month Year Date With Multiple Radio 
       await $(DatePage.dateday()).setValue("17");
       await $(DatePage.datemonth()).setValue("3");
       await $(DatePage.dateyear()).setValue("2018");
-      await expect(await $(DatePage.dateday()).getValue()).toEqual("17");
-      await expect(await $(DatePage.datemonth()).getValue()).toEqual("3");
-      await expect(await $(DatePage.dateyear()).getValue()).toEqual("2018");
+      await expect(await $(DatePage.dateday()).getValue()).toBe("17");
+      await expect(await $(DatePage.datemonth()).getValue()).toBe("3");
+      await expect(await $(DatePage.dateyear()).getValue()).toBe("2018");
     });
     it("When then user clicks the first mutually exclusive radio answer, Then only the first mutually exclusive radio should be answered.", async () => {
       // When
@@ -25,14 +25,14 @@ describe("Component: Mutually Exclusive Day Month Year Date With Multiple Radio 
       // Then
       await expect(await $(DatePage.dateExclusiveIPreferNotToSay()).isSelected()).toBe(true);
       await expect(await $(DatePage.dateExclusiveIHaveNeverWorked()).isSelected()).toBe(false);
-      await expect(await $(DatePage.dateday()).getValue()).toEqual("");
-      await expect(await $(DatePage.datemonth()).getValue()).toEqual("");
-      await expect(await $(DatePage.dateyear()).getValue()).toEqual("");
+      await expect(await $(DatePage.dateday()).getValue()).toBe("");
+      await expect(await $(DatePage.datemonth()).getValue()).toBe("");
+      await expect(await $(DatePage.dateyear()).getValue()).toBe("");
 
       await click(DatePage.submit());
 
-      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).toEqual("I prefer not to say");
-      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).not.toEqual("I have never worked");
+      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).toBe("I prefer not to say");
+      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).not.toBe("I have never worked");
       await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).not.toEqual("17 March 2018");
     });
 

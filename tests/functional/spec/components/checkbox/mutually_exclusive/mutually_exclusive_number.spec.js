@@ -13,19 +13,19 @@ describe("Component: Mutually Exclusive Number With Single Checkbox Override", (
     it("When then user clicks the mutually exclusive checkbox answer, Then only the mutually exclusive checkbox should be answered.", async () => {
       // Given
       await $(NumberPage.number()).setValue("123");
-      await expect(await $(NumberPage.number()).getValue()).toEqual("123");
+      await expect(await $(NumberPage.number()).getValue()).toBe("123");
 
       // When
       await $(NumberPage.numberExclusiveIPreferNotToSay()).click();
 
       // Then
       await expect(await $(NumberPage.numberExclusiveIPreferNotToSay()).isSelected()).toBe(true);
-      await expect(await $(NumberPage.number()).getValue()).toEqual("");
+      await expect(await $(NumberPage.number()).getValue()).toBe("");
 
       await click(NumberPage.submit());
 
-      await expect(await $(SummaryPage.numberExclusiveAnswer()).getText()).toEqual("I prefer not to say");
-      await expect(await $(SummaryPage.numberExclusiveAnswer()).getText()).not.toEqual("123");
+      await expect(await $(SummaryPage.numberExclusiveAnswer()).getText()).toBe("I prefer not to say");
+      await expect(await $(SummaryPage.numberExclusiveAnswer()).getText()).not.toBe("123");
     });
   });
 
@@ -39,13 +39,13 @@ describe("Component: Mutually Exclusive Number With Single Checkbox Override", (
       await $(NumberPage.number()).setValue("123");
 
       // Then
-      await expect(await $(NumberPage.number()).getValue()).toEqual("123");
+      await expect(await $(NumberPage.number()).getValue()).toBe("123");
       await expect(await $(NumberPage.numberExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       await click(NumberPage.submit());
 
-      await expect(await $(SummaryPage.numberAnswer()).getText()).toEqual("123");
-      await expect(await $(SummaryPage.numberAnswer()).getText()).not.toEqual("I prefer not to say");
+      await expect(await $(SummaryPage.numberAnswer()).getText()).toBe("123");
+      await expect(await $(SummaryPage.numberAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });
 

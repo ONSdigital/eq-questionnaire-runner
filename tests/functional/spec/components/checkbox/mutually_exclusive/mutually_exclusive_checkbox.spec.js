@@ -32,8 +32,8 @@ describe("Component: Mutually Exclusive Checkbox With Single Checkbox Override",
 
       await click(MandatoryCheckboxPage.submit());
 
-      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).toEqual("I prefer not to say");
-      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).not.toEqual("British\nIrish");
+      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).toBe("I prefer not to say");
+      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).not.toBe("British\nIrish");
     });
   });
 
@@ -68,8 +68,8 @@ describe("Component: Mutually Exclusive Checkbox With Single Checkbox Override",
 
       await click(MandatoryCheckboxPage.submit());
 
-      await expect(await $(SummaryPage.checkboxAnswer()).getText()).toEqual("British\nIrish");
-      await expect(await $(SummaryPage.checkboxAnswer()).getText()).not.toEqual("I prefer not to say");
+      await expect(await $(SummaryPage.checkboxAnswer()).getText()).toBe("British\nIrish");
+      await expect(await $(SummaryPage.checkboxAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });
 
@@ -88,8 +88,8 @@ describe("Component: Mutually Exclusive Checkbox With Single Checkbox Override",
 
       await click(MandatoryCheckboxPage.submit());
 
-      await expect(await $(SummaryPage.checkboxAnswer()).getText()).toEqual("British\nIrish");
-      await expect(await $(SummaryPage.checkboxAnswer()).getText()).not.toEqual("I prefer not to say");
+      await expect(await $(SummaryPage.checkboxAnswer()).getText()).toBe("British\nIrish");
+      await expect(await $(SummaryPage.checkboxAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });
 
@@ -106,8 +106,8 @@ describe("Component: Mutually Exclusive Checkbox With Single Checkbox Override",
       await click(MandatoryCheckboxPage.submit());
 
       // Then
-      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).toEqual("I prefer not to say");
-      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).not.toEqual("British\nIrish");
+      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).toBe("I prefer not to say");
+      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).not.toBe("British\nIrish");
     });
   });
 

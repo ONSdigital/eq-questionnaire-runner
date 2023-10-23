@@ -16,13 +16,13 @@ describe("List Collector With Variants", () => {
     it("The user is asked questions about whether they live there", async () => {
       await $(YouLiveHerePage.yes()).click();
       await click(YouLiveHerePage.submit());
-      await expect(await $(ListCollectorPage.questionText()).getText()).to.equal("Does anyone else live at 1 Pleasant Lane?");
+      await expect(await $(ListCollectorPage.questionText()).getText()).toBe("Does anyone else live at 1 Pleasant Lane?");
     });
 
     it("The user is able to add members of the household", async () => {
       await $(ListCollectorPage.anyoneElseYes()).click();
       await click(ListCollectorPage.submit());
-      await expect(await $(ListCollectorAddPage.questionText()).getText()).to.equal("What is the name of the person?");
+      await expect(await $(ListCollectorAddPage.questionText()).getText()).toBe("What is the name of the person?");
       await $(ListCollectorAddPage.firstName()).setValue("Samuel");
       await $(ListCollectorAddPage.lastName()).setValue("Clemens");
       await click(ListCollectorAddPage.submit());
@@ -35,22 +35,22 @@ describe("List Collector With Variants", () => {
 
     it("The questionnaire has the correct question text on the change and remove pages", async () => {
       await $(ListCollectorPage.listEditLink(1)).click();
-      await expect(await $(ListCollectorEditPage.questionText()).getText()).to.equal("What is the name of the person?");
+      await expect(await $(ListCollectorEditPage.questionText()).getText()).toBe("What is the name of the person?");
       await $(ListCollectorEditPage.previous()).click();
       await $(ListCollectorPage.listRemoveLink(1)).click();
-      await expect(await $(ListCollectorRemovePage.questionText()).getText()).to.equal("Are you sure you want to remove this person?");
+      await expect(await $(ListCollectorRemovePage.questionText()).getText()).toBe("Are you sure you want to remove this person?");
       await $(ListCollectorRemovePage.previous()).click();
     });
 
     it("The questionnaire shows the confirmation page when no more people to add", async () => {
       await $(ListCollectorPage.anyoneElseNo()).click();
       await click(ListCollectorPage.submit());
-      await expect(await browser.getUrl()).to.contain(SubmitPage.url());
+      await expect(await browser.getUrl()).toContain(SubmitPage.url());
     });
 
     it("The questionnaire allows submission", async () => {
       await click(SubmitPage.submit());
-      await expect(await browser.getUrl()).to.contain("thank-you");
+      await expect(await browser.getUrl()).toContain("thank-you");
     });
   });
 
@@ -62,13 +62,13 @@ describe("List Collector With Variants", () => {
     it("The user is asked questions about whether they live there", async () => {
       await $(YouLiveHerePage.no()).click();
       await click(YouLiveHerePage.submit());
-      await expect(await $(ListCollectorPage.questionText()).getText()).to.equal("Does anyone live at 1 Pleasant Lane?");
+      await expect(await $(ListCollectorPage.questionText()).getText()).toBe("Does anyone live at 1 Pleasant Lane?");
     });
 
     it("The user is able to add members of the household", async () => {
       await $(ListCollectorPage.anyoneElseYes()).click();
       await click(ListCollectorPage.submit());
-      await expect(await $(ListCollectorAddPage.questionText()).getText()).to.equal("What is the name of the person who isn’t you?");
+      await expect(await $(ListCollectorAddPage.questionText()).getText()).toBe("What is the name of the person who isn’t you?");
       await $(ListCollectorAddPage.firstName()).setValue("Samuel");
       await $(ListCollectorAddPage.lastName()).setValue("Clemens");
       await click(ListCollectorAddPage.submit());
@@ -81,22 +81,22 @@ describe("List Collector With Variants", () => {
 
     it("The questionnaire has the correct question text on the change and remove pages", async () => {
       await $(ListCollectorPage.listEditLink(1)).click();
-      await expect(await $(ListCollectorEditPage.questionText()).getText()).to.equal("What is the name of the person who isn’t you?");
+      await expect(await $(ListCollectorEditPage.questionText()).getText()).toBe("What is the name of the person who isn’t you?");
       await $(ListCollectorEditPage.previous()).click();
       await $(ListCollectorPage.listRemoveLink(1)).click();
-      await expect(await $(ListCollectorRemovePage.questionText()).getText()).to.equal("Are you sure you want to remove this person who isn’t you?");
+      await expect(await $(ListCollectorRemovePage.questionText()).getText()).toBe("Are you sure you want to remove this person who isn’t you?");
       await $(ListCollectorRemovePage.previous()).click();
     });
 
     it("The questionnaire shows the confirmation page when no more people to add", async () => {
       await $(ListCollectorPage.anyoneElseNo()).click();
       await click(ListCollectorPage.submit());
-      await expect(await browser.getUrl()).to.contain(SubmitPage.url());
+      await expect(await browser.getUrl()).toContain(SubmitPage.url());
     });
 
     it("The questionnaire allows submission", async () => {
       await click(SubmitPage.submit());
-      await expect(await browser.getUrl()).to.contain(ThankYouPage.url());
+      await expect(await browser.getUrl()).toContain(ThankYouPage.url());
     });
   });
 });

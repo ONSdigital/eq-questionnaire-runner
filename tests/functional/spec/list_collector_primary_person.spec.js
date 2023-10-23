@@ -22,7 +22,7 @@ describe("Primary Person List Collector Survey", () => {
       await $(PrimaryPersonListCollectorPage.yesLabel()).click();
       await click(PrimaryPersonListCollectorPage.submit());
       await browser.url("questionnaire/list-collector");
-      await expect(await $(PrimaryPersonListCollectorPage.questionText()).getText()).to.contain("Do you live here");
+      await expect(await $(PrimaryPersonListCollectorPage.questionText()).getText()).toContain("Do you live here");
     });
   });
 
@@ -37,7 +37,7 @@ describe("Primary Person List Collector Survey", () => {
       await $(PrimaryPersonListCollectorAddPage.firstName()).setValue("Mark");
       await $(PrimaryPersonListCollectorAddPage.lastName()).setValue("Twin");
       await click(PrimaryPersonListCollectorAddPage.submit());
-      await expect(await $(ListCollectorPage.listLabel(1)).getText()).to.equal("Mark Twin (You)");
+      await expect(await $(ListCollectorPage.listLabel(1)).getText()).toBe("Mark Twin (You)");
     });
 
     it("When the user adds another person, they are shown in the summary", async () => {
@@ -46,7 +46,7 @@ describe("Primary Person List Collector Survey", () => {
       await $(ListCollectorAddPage.firstName()).setValue("Samuel");
       await $(ListCollectorAddPage.lastName()).setValue("Clemens");
       await click(ListCollectorAddPage.submit());
-      await expect(await $(ListCollectorPage.listLabel(2)).getText()).to.equal("Samuel Clemens");
+      await expect(await $(ListCollectorPage.listLabel(2)).getText()).toBe("Samuel Clemens");
     });
 
     it("When the user goes back and answers No, the primary person is not shown", async () => {
@@ -55,7 +55,7 @@ describe("Primary Person List Collector Survey", () => {
       await click(PrimaryPersonListCollectorPage.submit());
       await $(AnyoneUsuallyLiveAtPage.no()).click();
       await click(AnyoneUsuallyLiveAtPage.submit());
-      await expect(await $(ListCollectorPage.listLabel(1)).getText()).to.equal("Samuel Clemens");
+      await expect(await $(ListCollectorPage.listLabel(1)).getText()).toBe("Samuel Clemens");
     });
 
     it("When the user adds the primary person again, then the primary person is first in the list", async () => {
@@ -66,12 +66,12 @@ describe("Primary Person List Collector Survey", () => {
       await $(PrimaryPersonListCollectorAddPage.firstName()).setValue("Mark");
       await $(PrimaryPersonListCollectorAddPage.lastName()).setValue("Twin");
       await click(PrimaryPersonListCollectorAddPage.submit());
-      await expect(await $(ListCollectorPage.listLabel(1)).getText()).to.equal("Mark Twin (You)");
+      await expect(await $(ListCollectorPage.listLabel(1)).getText()).toBe("Mark Twin (You)");
     });
 
     it("When the user views the summary, then it does not show the remove link for the primary person", async () => {
-      await expect(await $(ListCollectorPage.listRemoveLink(1)).isExisting()).to.be.false;
-      await expect(await $(ListCollectorPage.listRemoveLink(2)).isExisting()).to.be.true;
+      await expect(await $(ListCollectorPage.listRemoveLink(1)).isExisting()).toBe(false);
+      await expect(await $(ListCollectorPage.listRemoveLink(2)).isExisting()).toBe(true);
     });
 
     it("When the user changes the primary person's name on the summary, then the name should be updated", async () => {
@@ -79,24 +79,24 @@ describe("Primary Person List Collector Survey", () => {
       await $(ListCollectorEditPage.firstName()).setValue("Mark");
       await $(ListCollectorEditPage.lastName()).setValue("Twain");
       await click(ListCollectorEditPage.submit());
-      await expect(await $(ListCollectorPage.listLabel(1)).getText()).to.equal("Mark Twain (You)");
-      await expect(await $(ListCollectorPage.listLabel(2)).getText()).to.equal("Samuel Clemens");
+      await expect(await $(ListCollectorPage.listLabel(1)).getText()).toBe("Mark Twain (You)");
+      await expect(await $(ListCollectorPage.listLabel(2)).getText()).toBe("Samuel Clemens");
     });
 
     it("When the user views the summary, then it does not show the does anyone usually live here question", async () => {
       await $(ListCollectorPage.no()).click();
       await click(ListCollectorPage.submit());
-      await expect($("body").getText()).to.not.equal("usually live here");
+      await expect($("body").getText()).not.toBe("usually live here");
     });
 
     it("When the user attempts to submit, then they are shown the confirmation page", async () => {
       await click(SectionSummaryPage.submit());
-      await expect(await $(SubmitPage.guidance()).getText()).to.contain("Thank you for your answers, do you wish to submit");
+      await expect(await $(SubmitPage.guidance()).getText()).toContain("Thank you for your answers, do you wish to submit");
     });
 
     it("When the user submits, then they are allowed to submit the survey", async () => {
       await click(SubmitPage.submit());
-      await expect(await browser.getUrl()).to.contain(ThankYouPage.pageName);
+      await expect(await browser.getUrl()).toContain(ThankYouPage.pageName);
     });
   });
 
@@ -109,7 +109,7 @@ describe("Primary Person List Collector Survey", () => {
       await $(PrimaryPersonListCollectorPage.no()).click();
       await click(PrimaryPersonListCollectorPage.submit());
       await $(AnyoneUsuallyLiveAtPage.no()).click();
-      await expect(await $(ListCollectorPage.listLabel(1)).isExisting()).to.be.false;
+      await expect(await $(ListCollectorPage.listLabel(1)).isExisting()).toBe(false);
     });
 
     it("When the user clicks on the add person button multiple times, then only one person is added", async () => {
@@ -120,8 +120,8 @@ describe("Primary Person List Collector Survey", () => {
       await $(PrimaryPersonListCollectorAddPage.lastName()).setValue("Twain");
       await click(PrimaryPersonListCollectorPage.submit());
       await click(PrimaryPersonListCollectorPage.submit());
-      await expect(await $(ListCollectorPage.listLabel(1)).getText()).to.equal("Mark Twain (You)");
-      await expect(await $(ListCollectorPage.listLabel(2)).isExisting()).to.be.false;
+      await expect(await $(ListCollectorPage.listLabel(1)).getText()).toBe("Mark Twain (You)");
+      await expect(await $(ListCollectorPage.listLabel(2)).isExisting()).toBe(false);
     });
   });
 });

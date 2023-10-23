@@ -18,20 +18,20 @@ describe("Component: Mutually Exclusive TextArea With Single Checkbox Override",
       await $(TextFieldPage.textarea()).setValue("Blue");
 
       // Then
-      await expect(await $(TextFieldPage.textarea()).getValue()).toEqual("Blue");
+      await expect(await $(TextFieldPage.textarea()).getValue()).toBe("Blue");
       await expect(await $(TextFieldPage.textareaExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       await click(TextFieldPage.submit());
 
-      await expect(await $(SummaryPage.textareaAnswer()).getText()).toEqual("Blue");
-      await expect(await $(SummaryPage.textareaAnswer()).getText()).not.toEqual("I prefer not to say");
+      await expect(await $(SummaryPage.textareaAnswer()).getText()).toBe("Blue");
+      await expect(await $(SummaryPage.textareaAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });
 
   describe("Given the user has not answered the non-exclusive textarea answer", () => {
     it("When the user clicks the mutually exclusive checkbox answer, Then only the exclusive checkbox should be answered.", async () => {
       // Given
-      await expect(await $(TextFieldPage.textarea()).getValue()).toEqual("");
+      await expect(await $(TextFieldPage.textarea()).getValue()).toBe("");
 
       // When
       await $(TextFieldPage.textareaExclusiveIPreferNotToSay()).click();
@@ -40,22 +40,22 @@ describe("Component: Mutually Exclusive TextArea With Single Checkbox Override",
       // Then
       await click(TextFieldPage.submit());
 
-      await expect(await $(SummaryPage.textareaExclusiveAnswer()).getText()).toEqual("I prefer not to say");
-      await expect(await $(SummaryPage.textareaExclusiveAnswer()).getText()).not.toEqual("Blue");
+      await expect(await $(SummaryPage.textareaExclusiveAnswer()).getText()).toBe("I prefer not to say");
+      await expect(await $(SummaryPage.textareaExclusiveAnswer()).getText()).not.toBe("Blue");
     });
   });
 
   describe("Given the user has not answered the question and the question is optional", () => {
     it("When the user clicks the Continue button, Then it should display `No answer provided`", async () => {
       // Given
-      await expect(await $(TextFieldPage.textarea()).getValue()).toEqual("");
+      await expect(await $(TextFieldPage.textarea()).getValue()).toBe("");
       await expect(await $(TextFieldPage.textareaExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       // When
       await click(TextFieldPage.submit());
 
       // Then
-      await expect(await $(SummaryPage.textareaAnswer()).getText()).toEqual("No answer provided");
+      await expect(await $(SummaryPage.textareaAnswer()).getText()).toBe("No answer provided");
     });
   });
 });
