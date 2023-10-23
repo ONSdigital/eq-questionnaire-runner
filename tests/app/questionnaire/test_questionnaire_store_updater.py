@@ -8,10 +8,10 @@ from werkzeug.datastructures import MultiDict
 
 from app.data_models import CompletionStatus, QuestionnaireStore, SupplementaryDataStore
 from app.data_models.answer_store import AnswerDict, AnswerStore
+from app.data_models.data_stores import DataStores
 from app.data_models.list_store import ListStore
 from app.data_models.progress import ProgressDict
 from app.data_models.progress_store import ProgressStore
-from app.data_models.questionnaire_store import DataStores
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import AnswerDependent, QuestionnaireSchema
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater

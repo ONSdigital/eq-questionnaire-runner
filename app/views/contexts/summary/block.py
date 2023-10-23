@@ -2,7 +2,7 @@ from typing import Mapping
 
 from jsonpointer import resolve_pointer
 
-from app.data_models.questionnaire_store import DataStores
+from app.data_models.data_stores import DataStores
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.schema_utils import find_pointers_containing
 from app.questionnaire.variants import choose_variant

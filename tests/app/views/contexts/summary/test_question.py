@@ -3,7 +3,7 @@ import pytest
 
 from app.data_models import Answer, ListStore
 from app.data_models.answer_store import AnswerStore
-from app.data_models.questionnaire_store import DataStores
+from app.data_models.data_stores import DataStores
 from app.questionnaire import QuestionnaireSchema
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts.summary.question import Question

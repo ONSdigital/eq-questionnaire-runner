@@ -1,6 +1,6 @@
 from abc import ABC
 
-from app.data_models.questionnaire_store import DataStores
+from app.data_models.data_stores import DataStores
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.router import Router
 

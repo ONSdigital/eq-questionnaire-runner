@@ -6,7 +6,7 @@ from werkzeug.datastructures import MultiDict
 
 from app.data_models import ListStore, ProgressStore, SupplementaryDataStore
 from app.data_models.answer_store import Answer, AnswerStore
-from app.data_models.questionnaire_store import DataStores
+from app.data_models.data_stores import DataStores
 from app.forms import error_messages
 from app.forms.questionnaire_form import generate_form
 from app.forms.validators import (

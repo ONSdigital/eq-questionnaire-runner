@@ -12,10 +12,10 @@ from urllib3.connectionpool import HTTPConnectionPool, HTTPResponse
 
 from app.data_models import QuestionnaireStore
 from app.data_models.answer_store import AnswerStore
+from app.data_models.data_stores import DataStores
 from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
-from app.data_models.questionnaire_store import DataStores
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.data_models.supplementary_data_store import (

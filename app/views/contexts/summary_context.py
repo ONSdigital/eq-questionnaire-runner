@@ -1,4 +1,4 @@
-from app.data_models.questionnaire_store import DataStores
+from app.data_models.data_stores import DataStores
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.views.contexts.context import Context

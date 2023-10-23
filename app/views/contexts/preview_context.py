@@ -2,7 +2,7 @@ from typing import Generator, Union
 
 from flask_babel import lazy_gettext
 
-from app.data_models.questionnaire_store import DataStores
+from app.data_models.data_stores import DataStores
 from app.questionnaire import QuestionnaireSchema
 from app.views.contexts import Context
 from app.views.contexts.section_preview_context import SectionPreviewContext

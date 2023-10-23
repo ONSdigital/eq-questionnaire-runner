@@ -2,8 +2,8 @@ import pytest
 from mock import MagicMock
 
 from app.data_models.answer_store import Answer, AnswerStore
+from app.data_models.data_stores import DataStores
 from app.data_models.list_store import ListStore
-from app.data_models.questionnaire_store import DataStores
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.questionnaire.routing_path import RoutingPath

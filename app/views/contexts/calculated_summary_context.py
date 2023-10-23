@@ -3,7 +3,7 @@ from typing import Callable, Iterable, Mapping, Tuple
 
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models.questionnaire_store import DataStores
+from app.data_models.data_stores import DataStores
 from app.jinja_filters import format_number, format_percentage, format_unit
 from app.questionnaire.questionnaire_schema import (
     QuestionnaireSchema,

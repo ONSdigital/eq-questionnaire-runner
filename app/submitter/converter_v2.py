@@ -5,8 +5,8 @@ from structlog import get_logger
 
 from app.authentication.auth_payload_versions import AuthPayloadVersion
 from app.data_models import QuestionnaireStore
+from app.data_models.data_stores import DataStores
 from app.data_models.metadata_proxy import MetadataProxy, NoMetadataException
-from app.data_models.questionnaire_store import DataStores
 from app.questionnaire.questionnaire_schema import (
     DEFAULT_LANGUAGE_CODE,
     QuestionnaireSchema,

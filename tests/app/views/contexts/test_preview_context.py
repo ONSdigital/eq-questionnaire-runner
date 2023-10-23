@@ -1,7 +1,7 @@
 import pytest
 from flask_babel import lazy_gettext
 
-from app.data_models.questionnaire_store import DataStores
+from app.data_models.data_stores import DataStores
 from app.questionnaire import QuestionnaireSchema
 from app.views.contexts.preview_context import (
     PreviewContext,

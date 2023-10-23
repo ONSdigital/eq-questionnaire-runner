@@ -3,7 +3,7 @@ from typing import Any, Generator, Iterable, Mapping, Union
 
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models.questionnaire_store import DataStores
+from app.data_models.data_stores import DataStores
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.questionnaire_schema import LIST_COLLECTORS_WITH_REPEATING_BLOCKS
 from app.questionnaire.routing_path import RoutingPath

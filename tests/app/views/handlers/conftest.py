@@ -7,8 +7,8 @@ from mock import Mock
 
 from app.authentication.auth_payload_versions import AuthPayloadVersion
 from app.data_models import QuestionnaireStore
+from app.data_models.data_stores import DataStores
 from app.data_models.metadata_proxy import MetadataProxy
-from app.data_models.questionnaire_store import DataStores
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.questionnaire import QuestionnaireSchema

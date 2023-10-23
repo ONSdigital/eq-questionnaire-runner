@@ -6,7 +6,7 @@ from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import AnswerStore
 from app.data_models.answer import AnswerValueEscapedTypes, escape_answer_value
-from app.data_models.questionnaire_store import DataStores
+from app.data_models.data_stores import DataStores
 from app.forms.field_handlers.select_handlers import DynamicAnswerOptions
 from app.questionnaire import QuestionnaireSchema, QuestionSchemaType
 from app.utilities.types import LocationType

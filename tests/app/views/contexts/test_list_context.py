@@ -1,8 +1,8 @@
 import pytest
 
 from app.data_models import CompletionStatus, ProgressStore
+from app.data_models.data_stores import DataStores
 from app.data_models.progress import ProgressDict
-from app.data_models.questionnaire_store import DataStores
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts import ListContext

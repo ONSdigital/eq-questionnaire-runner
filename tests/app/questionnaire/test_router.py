@@ -8,10 +8,10 @@ from mock import Mock
 
 from app.data_models import CompletionStatus
 from app.data_models.answer_store import AnswerStore
+from app.data_models.data_stores import DataStores
 from app.data_models.list_store import ListStore
 from app.data_models.progress import ProgressDict
 from app.data_models.progress_store import ProgressStore
-from app.data_models.questionnaire_store import DataStores
 from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.router import Router
 from app.questionnaire.routing_path import RoutingPath

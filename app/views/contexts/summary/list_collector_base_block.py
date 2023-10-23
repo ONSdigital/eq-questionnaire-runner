@@ -3,8 +3,8 @@ from typing import Iterable, Mapping, Sequence
 
 from werkzeug.datastructures import ImmutableDict
 
+from app.data_models.data_stores import DataStores
 from app.data_models.list_store import ListModel
-from app.data_models.questionnaire_store import DataStores
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.questionnaire_schema import is_list_collector_block_editable
 from app.utilities.types import LocationType
