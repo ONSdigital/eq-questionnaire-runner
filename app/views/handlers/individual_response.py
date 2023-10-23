@@ -176,14 +176,9 @@ class IndividualResponseHandler:
         return PlaceholderRenderer(
             # Type ignore: Language is defaulted via handle_language in the individual_response blueprint before_request which triggers this
             language=self._language,  # type: ignore
-            answer_store=self._questionnaire_store.data_stores.answer_store,
-            list_store=self._questionnaire_store.data_stores.list_store,
-            metadata=self._questionnaire_store.data_stores.metadata,
-            response_metadata=self._questionnaire_store.data_stores.response_metadata,
+            data_stores=self._questionnaire_store.data_stores,
             schema=self._schema,
             location=None,
-            progress_store=self._questionnaire_store.data_stores.progress_store,
-            supplementary_data_store=self._questionnaire_store.data_stores.supplementary_data_store,
         )
 
     @cached_property

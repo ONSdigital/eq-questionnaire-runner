@@ -112,15 +112,9 @@ def get_payload_data(
 ) -> OrderedDict | dict[str, list | dict]:
     if schema.json["data_version"] == "0.0.1":
         return convert_answers_to_payload_0_0_1(
-            # Type ignore: expected MetadataProxy but the type in data_stores is MetadataProxy | None
-            metadata=data_stores.metadata,  # type: ignore
-            response_metadata=data_stores.response_metadata,
-            answer_store=data_stores.answer_store,
-            list_store=data_stores.list_store,
+            data_stores=data_stores,
             schema=schema,
             full_routing_path=full_routing_path,
-            progress_store=data_stores.progress_store,
-            supplementary_data_store=data_stores.supplementary_data_store,
         )
 
     if schema.json["data_version"] == "0.0.3":

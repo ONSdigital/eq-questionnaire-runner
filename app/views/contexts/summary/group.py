@@ -60,14 +60,9 @@ class Group:
 
         self.placeholder_renderer = PlaceholderRenderer(
             language=language,
-            answer_store=self.data_stores.answer_store,
-            list_store=self.data_stores.list_store,
+            data_stores=data_stores,
             location=self.location,
-            metadata=self.data_stores.metadata,
-            response_metadata=self.data_stores.response_metadata,
             schema=schema,
-            progress_store=self.data_stores.progress_store,
-            supplementary_data_store=self.data_stores.supplementary_data_store,
         )
 
     # pylint: disable=too-many-locals
@@ -151,18 +146,13 @@ class Group:
                     [
                         CalculatedSummaryBlock(
                             block,
-                            answer_store=data_stores.answer_store,
-                            list_store=data_stores.list_store,
-                            metadata=data_stores.metadata,
-                            response_metadata=data_stores.response_metadata,
+                            data_stores=self.data_stores,
                             schema=schema,
                             location=location,
                             return_to=return_to,
                             return_to_block_id=return_to_block_id,
                             return_to_list_item_id=return_to_list_item_id,
-                            progress_store=data_stores.progress_store,
                             routing_path_block_ids=routing_path_block_ids,
-                            supplementary_data_store=data_stores.supplementary_data_store,
                         ).serialize()
                     ]
                 )

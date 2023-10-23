@@ -22,6 +22,7 @@ from app.questionnaire.dependencies import (
 )
 from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.relationship_location import RelationshipLocation
+from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.utilities.mappings import get_flattened_mapping_values
 from app.utilities.types import LocationType, SectionKey
@@ -54,8 +55,10 @@ class QuestionnaireForm(FlaskForm):
         self.options_with_detail_answer: dict = {}
         self.question_title = self.question.get("title", "")
         self.data_stores = data_stores
-        self.value_source_resolver = self.data_stores.value_source_resolver(
+
+        self.value_source_resolver = ValueSourceResolver(
             schema=self.schema,
+            data_stores=data_stores,
             location=self.location,
             list_item_id=self.location.list_item_id if self.location else None,
         )
@@ -307,16 +310,18 @@ class QuestionnaireForm(FlaskForm):
         date_to: Mapping[str, dict],
     ) -> timedelta:
         list_item_id = self.location.list_item_id if self.location else None
-        value_source_resolver = self.data_stores.value_source_resolver(
+        value_source_resolver = ValueSourceResolver(
+            data_stores=self.data_stores,
             schema=self.schema,
             location=self.location,
             list_item_id=list_item_id,
             escape_answer_values=False,
         )
 
-        rule_evaluator = self.data_stores.rule_evaluator(
-            # Type ignore: location in rule_evaluator can be both Location or RelationshipLocation type but is only Location type here
+        rule_evaluator = RuleEvaluator(
+            data_stores=self.data_stores,
             schema=self.schema,
+            # Type ignore: location in rule_evaluator can be both Location or RelationshipLocation type but is only Location type here
             location=self.location,  # type: ignore
         )
 
@@ -470,15 +475,7 @@ def get_answer_fields(
             get_routing_path_block_ids_by_section_for_calculated_summary_dependencies(
                 location=location,
                 progress_store=data_stores.progress_store,
-                path_finder=PathFinder(
-                    schema=schema,
-                    answer_store=data_stores.answer_store,
-                    list_store=data_stores.list_store,
-                    progress_store=data_stores.progress_store,
-                    metadata=data_stores.metadata,
-                    response_metadata=data_stores.response_metadata,
-                    supplementary_data_store=data_stores.supplementary_data_store,
-                ),
+                path_finder=PathFinder(schema=schema, data_stores=data_stores),
                 data=question,
                 ignore_keys=["when"],
                 schema=schema,
@@ -489,16 +486,21 @@ def get_answer_fields(
         block_ids = get_flattened_mapping_values(block_ids_by_section)
 
     def _get_value_source_resolver(list_item: str | None = None) -> ValueSourceResolver:
-        return data_stores.value_source_resolver(
+        return ValueSourceResolver(
+            data_stores=data_stores,
             schema=schema,
             location=location,
             list_item_id=list_item,
+            escape_answer_values=False,
             routing_path_block_ids=block_ids,
             assess_routing_path=False,
         )
 
-    # Type ignore: location in rule_evaluator can be both Location or RelationshipLocation type but is only Location type here
-    rule_evaluator = data_stores.rule_evaluator(schema=schema, location=location)  # type: ignore
+    rule_evaluator = RuleEvaluator(
+        schema=schema,
+        data_stores=data_stores,
+        location=location,
+    )
 
     answer_fields = {}
     question_title = question.get("title")

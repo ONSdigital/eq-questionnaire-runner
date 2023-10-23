@@ -53,14 +53,9 @@ def test_convert_answers_v2_to_payload_0_0_1_with_key_error(version):
         RoutingPath(block_ids=["block-1"], section_id="section-1", list_item_id=None)
     ]
     answer_object = convert_answers_to_payload_0_0_1(
-        metadata=questionnaire_store.data_stores.metadata,
-        response_metadata=questionnaire_store.data_stores.response_metadata,
-        answer_store=questionnaire_store.data_stores.answer_store,
-        list_store=questionnaire_store.data_stores.list_store,
+        data_stores=questionnaire_store.data_stores,
         schema=QuestionnaireSchema(questionnaire),
         full_routing_path=full_routing_path,
-        progress_store=questionnaire_store.data_stores.progress_store,
-        supplementary_data_store=questionnaire_store.data_stores.supplementary_data_store,
     )
     assert answer_object["002"] == "2016-03-30"
     assert len(answer_object) == 1

@@ -10,6 +10,7 @@ from app.questionnaire.questionnaire_schema import (
     get_calculated_summary_answer_ids,
 )
 from app.questionnaire.routing_path import RoutingPath
+from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.schema_utils import get_answer_ids_in_block
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.questionnaire.variants import choose_question_to_display, transform_variants
@@ -51,7 +52,7 @@ class CalculatedSummaryContext(Context):
         block_id: str = self.current_location.block_id  # type: ignore
         block: ImmutableDict = self._schema.get_block(block_id)  # type: ignore
 
-        return self._placeholder_renderer.render(
+        return self._placeholder_renderer.render(  # type: ignore
             data_to_render=block, list_item_id=self.current_location.list_item_id
         )
 
@@ -182,13 +183,8 @@ class CalculatedSummaryContext(Context):
         block_to_transform: ImmutableDict = transform_variants(
             block,
             self._schema,
-            self._data_stores.metadata,
-            self._data_stores.response_metadata,
-            self._data_stores.answer_store,
-            self._data_stores.list_store,
+            self._data_stores,
             self.current_location,
-            self._data_stores.progress_store,
-            self._data_stores.supplementary_data_store,
         )
         transformed_block: dict = QuestionnaireSchema.get_mutable_deepcopy(
             block_to_transform
@@ -228,7 +224,8 @@ class CalculatedSummaryContext(Context):
         """
         For a calculation in the new style and the list of involved block ids (possibly across sections) evaluate the total
         """
-        evaluate_calculated_summary = self._data_stores.rule_evaluator(
+        evaluate_calculated_summary = RuleEvaluator(
+            data_stores=self._data_stores,
             schema=self._schema,
             routing_path_block_ids=routing_path_block_ids,
             # Type ignore: location in rule_evaluator can be both Location or RelationshipLocation type but is only Location type here
@@ -262,13 +259,8 @@ class CalculatedSummaryContext(Context):
                 question = choose_question_to_display(
                     block,
                     self._schema,
-                    self._data_stores.metadata,
-                    self._data_stores.response_metadata,
-                    self._data_stores.answer_store,
-                    self._data_stores.list_store,
+                    self._data_stores,
                     current_location=self.current_location,
-                    progress_store=self._data_stores.progress_store,
-                    supplementary_data_store=self._data_stores.supplementary_data_store,
                 )
                 for answer in question["answers"]:
                     if not answer_format["type"]:

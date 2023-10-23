@@ -57,13 +57,8 @@ class Question(BlockHandler):
         transformed_block = transform_variants(
             self.block,
             self._schema,
-            self._questionnaire_store.data_stores.metadata,
-            self._questionnaire_store.data_stores.response_metadata,
-            self._questionnaire_store.data_stores.answer_store,
-            self._questionnaire_store.data_stores.list_store,
+            self._questionnaire_store.data_stores,
             self._current_location,
-            self._questionnaire_store.data_stores.progress_store,
-            self._questionnaire_store.data_stores.supplementary_data_store,
         )
         page_title = transformed_block.get("page_title") or self._get_safe_page_title(
             transformed_block["question"]["title"]

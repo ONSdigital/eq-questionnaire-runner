@@ -9,6 +9,9 @@ from app.data_models.answer import AnswerValueEscapedTypes, escape_answer_value
 from app.data_models.data_stores import DataStores
 from app.forms.field_handlers.select_handlers import DynamicAnswerOptions
 from app.questionnaire import QuestionnaireSchema, QuestionSchemaType
+from app.questionnaire.placeholder_renderer import PlaceholderRenderer
+from app.questionnaire.rules.rule_evaluator import RuleEvaluator
+from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.utilities.types import LocationType
 from app.views.contexts.summary.answer import (
     Answer,
@@ -51,13 +54,20 @@ class Question:
         )
         self.number = question_schema.get("number", None)
 
-        self.rule_evaluator = data_stores.rule_evaluator(
-            location=self.location, schema=self.schema  # type: ignore
+        self._rule_evaluator = RuleEvaluator(
+            schema=self.schema,
+            data_stores=data_stores,
+            location=self.location,
         )
-        # Type ignore: Argument is expected to be "Location" not "Location | RelationshipLocation"
-        self.value_source_resolver = data_stores.value_source_resolver(
-            location=self.location, schema=self.schema, list_item_id=self.list_item_id
+
+        self._value_source_resolver = ValueSourceResolver(
+            data_stores=data_stores,
+            schema=self.schema,
+            location=self.location,
+            list_item_id=self.list_item_id,
+            use_default_answer=True,
         )
+
         # no need to call the method if no list item id
         self._is_in_repeating_section = bool(
             self.list_item_id and self.schema.is_block_in_repeating_section(block_id)
@@ -218,8 +228,8 @@ class Question:
 
         dynamic_options = DynamicAnswerOptions(
             dynamic_options_schema=dynamic_options_schema,
-            rule_evaluator=self.rule_evaluator,
-            value_source_resolver=self.value_source_resolver,
+            rule_evaluator=self._rule_evaluator,
+            value_source_resolver=self._value_source_resolver,
         )
 
         return dynamic_options.evaluate()
@@ -293,8 +303,8 @@ class Question:
         resolved_question = ImmutableDict({"answers": self.answer_schemas})
 
         if "dynamic_answers" in question_schema:
-            placeholder_renderer = self.data_stores.placeholder_renderer(
-                language=language, schema=self.schema
+            placeholder_renderer = PlaceholderRenderer(
+                data_stores=self.data_stores, language=language, schema=self.schema
             )
 
             resolved_question = ImmutableDict(

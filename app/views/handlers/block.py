@@ -78,14 +78,9 @@ class BlockHandler:
     def placeholder_renderer(self) -> PlaceholderRenderer:
         return PlaceholderRenderer(
             self._language,
-            answer_store=self._questionnaire_store.data_stores.answer_store,
-            list_store=self._questionnaire_store.data_stores.list_store,
-            metadata=self._questionnaire_store.data_stores.metadata,
-            response_metadata=self._questionnaire_store.data_stores.response_metadata,
+            data_stores=self._questionnaire_store.data_stores,
             schema=self._schema,
             location=self._current_location,
-            progress_store=self._questionnaire_store.data_stores.progress_store,
-            supplementary_data_store=self._questionnaire_store.data_stores.supplementary_data_store,
         )
 
     @cached_property

@@ -7,6 +7,7 @@ from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.routing_path import RoutingPath
+from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.utilities.types import LocationType
 
 
@@ -21,12 +22,7 @@ class Router:
 
         self._path_finder = PathFinder(
             self._schema,
-            self._data_stores.answer_store,
-            self._data_stores.list_store,
-            self._data_stores.progress_store,
-            self._data_stores.metadata,
-            self._data_stores.response_metadata,
-            self._data_stores.supplementary_data_store,
+            self._data_stores,
         )
 
     @property
@@ -538,7 +534,8 @@ class Router:
             section_id
         )
 
-        when_rule_evaluator = self._data_stores.rule_evaluator(
+        when_rule_evaluator = RuleEvaluator(
+            data_stores=self._data_stores,
             schema=self._schema,
             location=Location(section_id=section_id),
             routing_path_block_ids=routing_path_block_ids,

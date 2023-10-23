@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import Mapping, Optional, Union
+from typing import Optional, Union
 
 import pytest
 from freezegun import freeze_time
@@ -12,7 +12,7 @@ from app.data_models import (
     SupplementaryDataStore,
 )
 from app.data_models.answer import Answer
-from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.data_stores import DataStores
 from app.data_models.progress import CompletionStatus, ProgressDict
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
@@ -46,16 +46,11 @@ def get_rule_evaluator(
     *,
     language="en",
     schema: QuestionnaireSchema = None,
-    answer_store: AnswerStore = AnswerStore(),
-    list_store: ListStore = ListStore(),
-    metadata: Optional[MetadataProxy] = None,
-    response_metadata: Mapping = None,
+    data_stores: DataStores = DataStores(),
     location: Union[Location, RelationshipLocation] = Location(
         section_id="test-section", block_id="test-block"
     ),
     routing_path_block_ids: Optional[list] = None,
-    progress: ProgressStore = ProgressStore(),
-    supplementary_data_store: SupplementaryDataStore = SupplementaryDataStore(),
 ):
     if not schema:
         schema = get_mock_schema()
@@ -67,14 +62,9 @@ def get_rule_evaluator(
     return RuleEvaluator(
         language=language,
         schema=schema,
-        metadata=metadata or {},
-        response_metadata=response_metadata,
-        answer_store=answer_store,
-        list_store=list_store,
+        data_stores=data_stores,
         location=location,
         routing_path_block_ids=routing_path_block_ids,
-        progress_store=progress,
-        supplementary_data_store=supplementary_data_store,
     )
 
 
@@ -120,7 +110,11 @@ def test_boolean_operators_as_rule(rule, expected_result):
 )
 def test_answer_source(answer_value, expected_result):
     rule_evaluator = get_rule_evaluator(
-        answer_store=AnswerStore([{"answer_id": "some-answer", "value": answer_value}]),
+        data_stores=DataStores(
+            answer_store=AnswerStore(
+                [{"answer_id": "some-answer", "value": answer_value}]
+            )
+        ),
     )
 
     assert (
@@ -139,14 +133,16 @@ def test_answer_source(answer_value, expected_result):
 )
 def test_answer_source_with_list_item_selector_location(answer_value, expected_result):
     rule_evaluator = get_rule_evaluator(
-        answer_store=AnswerStore(
-            [
-                {
-                    "answer_id": "some-answer",
-                    "list_item_id": "item-1",
-                    "value": answer_value,
-                }
-            ]
+        data_stores=DataStores(
+            answer_store=AnswerStore(
+                [
+                    {
+                        "answer_id": "some-answer",
+                        "list_item_id": "item-1",
+                        "value": answer_value,
+                    }
+                ]
+            )
         ),
         location=Location(
             section_id="some-section", block_id="some-block", list_item_id="item-1"
@@ -181,16 +177,18 @@ def test_answer_source_with_list_item_selector_list_first_item(
     answer_value, expected_result
 ):
     rule_evaluator = get_rule_evaluator(
-        answer_store=AnswerStore(
-            [
-                {
-                    "answer_id": "some-answer",
-                    "list_item_id": "item-1",
-                    "value": answer_value,
-                }
-            ]
+        data_stores=DataStores(
+            answer_store=AnswerStore(
+                [
+                    {
+                        "answer_id": "some-answer",
+                        "list_item_id": "item-1",
+                        "value": answer_value,
+                    }
+                ]
+            ),
+            list_store=ListStore([{"name": "some-list", "items": get_list_items(3)}]),
         ),
-        list_store=ListStore([{"name": "some-list", "items": get_list_items(3)}]),
     )
 
     assert (
@@ -220,14 +218,16 @@ def test_answer_source_with_list_item_selector_list_first_item(
 )
 def test_answer_source_with_dict_answer_selector(answer_value, expected_result):
     rule_evaluator = get_rule_evaluator(
-        answer_store=AnswerStore(
-            [
-                {
-                    "answer_id": "some-answer",
-                    "value": {"years": answer_value, "months": 10},
-                }
-            ]
-        ),
+        data_stores=DataStores(
+            answer_store=AnswerStore(
+                [
+                    {
+                        "answer_id": "some-answer",
+                        "value": {"years": answer_value, "months": 10},
+                    }
+                ]
+            ),
+        )
     )
 
     assert (
@@ -253,7 +253,7 @@ def test_answer_source_with_dict_answer_selector(answer_value, expected_result):
 )
 def test_metadata_source(metadata_value, expected_result):
     rule_evaluator = get_rule_evaluator(
-        metadata=get_metadata({"some_key": metadata_value})
+        data_stores=DataStores(metadata=get_metadata({"some_key": metadata_value}))
     )
 
     assert (
@@ -287,7 +287,7 @@ def test_progress_source(identifier, selector, expected_result):
     rule_evaluator = get_rule_evaluator(
         schema=schema,
         location=Location(section_id="section-1", block_id="s1-b3", list_item_id=None),
-        progress=ProgressStore(in_progress_sections),
+        data_stores=DataStores(progress_store=ProgressStore(in_progress_sections)),
         routing_path_block_ids=["s1-b1", "s1-b2", "s1-b3"],
     )
 
@@ -317,7 +317,9 @@ def test_progress_source(identifier, selector, expected_result):
 )
 def test_response_metadata_source(response_metadata_value, expected_result):
     rule_evaluator = get_rule_evaluator(
-        response_metadata={"started_at": response_metadata_value},
+        data_stores=DataStores(
+            response_metadata={"started_at": response_metadata_value},
+        )
     )
 
     assert (
@@ -339,9 +341,11 @@ def test_response_metadata_source(response_metadata_value, expected_result):
 )
 def test_list_source(list_count, expected_result):
     rule_evaluator = get_rule_evaluator(
-        list_store=ListStore(
-            [{"name": "some-list", "items": get_list_items(list_count)}]
-        ),
+        data_stores=DataStores(
+            list_store=ListStore(
+                [{"name": "some-list", "items": get_list_items(list_count)}]
+            ),
+        )
     )
 
     assert (
@@ -363,7 +367,9 @@ def test_list_source(list_count, expected_result):
 )
 def test_list_source_with_id_selector_first(list_item_id, expected_result):
     rule_evaluator = get_rule_evaluator(
-        list_store=ListStore([{"name": "some-list", "items": get_list_items(1)}]),
+        data_stores=DataStores(
+            list_store=ListStore([{"name": "some-list", "items": get_list_items(1)}]),
+        )
     )
 
     assert (
@@ -389,15 +395,17 @@ def test_list_source_with_id_selector_first(list_item_id, expected_result):
 )
 def test_list_source_with_id_selector_same_name_items(list_item_id, expected_result):
     rule_evaluator = get_rule_evaluator(
-        list_store=ListStore(
-            [
-                {
-                    "name": "some-list",
-                    "items": get_list_items(5),
-                    "same_name_items": get_list_items(3),
-                }
-            ]
-        ),
+        data_stores=DataStores(
+            list_store=ListStore(
+                [
+                    {
+                        "name": "some-list",
+                        "items": get_list_items(5),
+                        "same_name_items": get_list_items(3),
+                    }
+                ]
+            ),
+        )
     )
 
     assert (
@@ -433,14 +441,16 @@ def test_list_source_id_selector_primary_person(
     )
 
     rule_evaluator = get_rule_evaluator(
-        list_store=ListStore(
-            [
-                {
-                    "name": "some-list",
-                    "primary_person": primary_person_list_item_id,
-                    "items": get_list_items(3),
-                }
-            ]
+        data_stores=DataStores(
+            list_store=ListStore(
+                [
+                    {
+                        "name": "some-list",
+                        "primary_person": primary_person_list_item_id,
+                        "items": get_list_items(3),
+                    }
+                ]
+            )
         ),
         location=location,
     )
@@ -471,6 +481,7 @@ def test_current_location_source(list_item_id, expected_result):
         location=Location(
             section_id="some-section", block_id="some-block", list_item_id=list_item_id
         ),
+        data_stores=DataStores(),
     )
 
     assert (
@@ -559,29 +570,31 @@ def test_current_location_source(list_item_id, expected_result):
 )
 def test_nested_rules(operator, operands, expected_result):
     rule_evaluator = get_rule_evaluator(
-        answer_store=AnswerStore(
-            [
-                {
-                    "answer_id": "answer-1",
-                    "list_item_id": "item-1",
-                    "value": "Yes, I do",
-                },
-                {
-                    "answer_id": "answer-2",
-                    "list_item_id": "item-1",
-                    "value": 10,
-                },
-            ]
-        ),
-        metadata=get_metadata({"region_code": "GB-NIR", "language_code": "en"}),
-        list_store=ListStore(
-            [
-                {
-                    "name": "some-list",
-                    "items": get_list_items(5),
-                    "same_name_items": get_list_items(3),
-                }
-            ],
+        data_stores=DataStores(
+            answer_store=AnswerStore(
+                [
+                    {
+                        "answer_id": "answer-1",
+                        "list_item_id": "item-1",
+                        "value": "Yes, I do",
+                    },
+                    {
+                        "answer_id": "answer-2",
+                        "list_item_id": "item-1",
+                        "value": 10,
+                    },
+                ]
+            ),
+            metadata=get_metadata({"region_code": "GB-NIR", "language_code": "en"}),
+            list_store=ListStore(
+                [
+                    {
+                        "name": "some-list",
+                        "items": get_list_items(5),
+                        "same_name_items": get_list_items(3),
+                    }
+                ],
+            ),
         ),
         location=Location(
             section_id="some-section", block_id="some-block", list_item_id="item-1"
@@ -612,7 +625,7 @@ def test_nested_rules(operator, operands, expected_result):
     ],
 )
 def test_comparison_operator_rule_with_nonetype_operands(operator_name, operands):
-    rule_evaluator = get_rule_evaluator(metadata=get_metadata())
+    rule_evaluator = get_rule_evaluator(data_stores=DataStores(metadata=get_metadata()))
     assert rule_evaluator.evaluate(rule={operator_name: operands}) is False
 
 
@@ -632,7 +645,7 @@ def test_comparison_operator_rule_with_nonetype_operands(operator_name, operands
 )
 def test_array_operator_rule_with_nonetype_operands(operator_name, operands):
     rule_evaluator = get_rule_evaluator(
-        metadata=get_metadata(),
+        data_stores=DataStores(metadata=get_metadata()),
     )
     assert (
         rule_evaluator.evaluate(
@@ -756,15 +769,17 @@ def test_array_operator_rule_with_nonetype_operands(operator_name, operands):
 )
 def test_date_value(rule, expected_result):
     rule_evaluator = get_rule_evaluator(
-        answer_store=AnswerStore(
-            [
-                {
-                    "answer_id": "some-answer",
-                    "value": current_date_as_yyyy_mm_dd,
-                }
-            ]
+        data_stores=DataStores(
+            answer_store=AnswerStore(
+                [
+                    {
+                        "answer_id": "some-answer",
+                        "value": current_date_as_yyyy_mm_dd,
+                    }
+                ]
+            ),
+            metadata=get_metadata({"some-metadata": current_date_as_yyyy_mm_dd}),
         ),
-        metadata=get_metadata({"some-metadata": current_date_as_yyyy_mm_dd}),
     )
 
     assert (
@@ -783,7 +798,7 @@ def test_answer_source_outside_of_repeating_section():
 
     rule_evaluator = get_rule_evaluator(
         schema=schema,
-        answer_store=answer_store,
+        data_stores=DataStores(answer_store=answer_store),
         location=Location(
             section_id="some-section", block_id="some-block", list_item_id="item-1"
         ),
@@ -821,7 +836,7 @@ def test_answer_source_not_on_path_non_repeating_section(is_answer_on_path):
 
     rule_evaluator = get_rule_evaluator(
         schema=schema,
-        answer_store=AnswerStore([answer.to_dict()]),
+        data_stores=DataStores(answer_store=AnswerStore([answer.to_dict()])),
         location=location,
         routing_path_block_ids=["block-on-path"],
     )
@@ -860,7 +875,7 @@ def test_answer_source_not_on_path_repeating_section(is_answer_on_path):
 
     rule_evaluator = get_rule_evaluator(
         schema=schema,
-        answer_store=AnswerStore([answer.to_dict()]),
+        data_stores=DataStores(answer_store=AnswerStore([answer.to_dict()])),
         location=location,
         routing_path_block_ids=["block-on-path"],
     )
@@ -889,7 +904,9 @@ def test_answer_source_default_answer_used_when_no_answer(
 
     rule_evaluator = get_rule_evaluator(
         schema=schema,
-        answer_store=AnswerStore([{"answer_id": "some-answer", "value": "No"}]),
+        data_stores=DataStores(
+            answer_store=AnswerStore([{"answer_id": "some-answer", "value": "No"}])
+        ),
     )
 
     assert (
@@ -907,7 +924,7 @@ def test_answer_source_default_answer_used_when_no_answer(
 
 def test_raises_exception_when_bad_operand_type():
     with pytest.raises(TypeError):
-        rule_evaluator = get_rule_evaluator()
+        rule_evaluator = get_rule_evaluator(data_stores=DataStores())
         rule_evaluator.evaluate(rule={Operator.EQUAL: {1, 2}})
 
 
@@ -931,14 +948,16 @@ def test_raises_exception_when_bad_operand_type():
 )
 def test_answer_source_count(rule, expected_result):
     rule_evaluator = get_rule_evaluator(
-        answer_store=AnswerStore(
-            [
-                {
-                    "answer_id": "some-answer",
-                    "value": ["array element 1", "array element 2"],
-                }
-            ]
-        ),
+        data_stores=DataStores(
+            answer_store=AnswerStore(
+                [
+                    {
+                        "answer_id": "some-answer",
+                        "value": ["array element 1", "array element 2"],
+                    }
+                ]
+            ),
+        )
     )
     assert rule_evaluator.evaluate(rule=rule) is expected_result
 
@@ -976,14 +995,16 @@ def test_answer_source_count(rule, expected_result):
 )
 def test_format_date(rule, expected_result):
     rule_evaluator = get_rule_evaluator(
-        answer_store=AnswerStore(
-            [
-                {
-                    "answer_id": "some-answer",
-                    "value": "2021-01-01",
-                }
-            ]
-        ),
+        data_stores=DataStores(
+            answer_store=AnswerStore(
+                [
+                    {
+                        "answer_id": "some-answer",
+                        "value": "2021-01-01",
+                    }
+                ]
+            ),
+        )
     )
     assert rule_evaluator.evaluate(rule=rule) == expected_result
 
@@ -1010,8 +1031,10 @@ def test_map_without_nested_date_operator(source):
 
     date_map = {"started_at": datetime.now(timezone.utc).isoformat()}
     rule_evaluator = get_rule_evaluator(
-        response_metadata=date_map,
-        supplementary_data_store=SupplementaryDataStore(date_map),
+        data_stores=DataStores(
+            response_metadata=date_map,
+            supplementary_data_store=SupplementaryDataStore(date_map),
+        )
     )
 
     assert rule_evaluator.evaluate(rule=rule) == [
@@ -1048,13 +1071,15 @@ def test_map_with_nested_date_operator(offset, expected_result):
     }
 
     rule_evaluator = get_rule_evaluator(
-        answer_store=AnswerStore(
-            [
-                {
-                    "answer_id": "checkbox-answer",
-                    "value": ["2021-01-01", "2021-01-02", "2021-01-03"],
-                }
-            ]
+        data_stores=DataStores(
+            answer_store=AnswerStore(
+                [
+                    {
+                        "answer_id": "checkbox-answer",
+                        "value": ["2021-01-01", "2021-01-02", "2021-01-03"],
+                    }
+                ]
+            )
         )
     )
 
@@ -1078,8 +1103,10 @@ def test_supplementary_data_source(
 
     rule_evaluator = get_rule_evaluator(
         schema=schema,
-        answer_store=answer_store,
-        supplementary_data_store=supplementary_data_store_with_data,
+        data_stores=DataStores(
+            answer_store=answer_store,
+            supplementary_data_store=supplementary_data_store_with_data,
+        ),
         location=Location(
             section_id="some-section", block_id="some-block", list_item_id="item-1"
         ),

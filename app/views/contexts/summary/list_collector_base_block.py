@@ -6,6 +6,7 @@ from werkzeug.datastructures import ImmutableDict
 from app.data_models.data_stores import DataStores
 from app.data_models.list_store import ListModel
 from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.questionnaire_schema import is_list_collector_block_editable
 from app.utilities.types import LocationType
 from app.views.contexts import list_context
@@ -26,8 +27,8 @@ class ListCollectorBaseBlock:
     ) -> None:
         self._location = location
         self._data_stores = data_stores
-        self._placeholder_renderer = self._data_stores.placeholder_renderer(
-            language=language, schema=schema, location=location
+        self._placeholder_renderer = PlaceholderRenderer(
+            data_stores=data_stores, language=language, schema=schema, location=location
         )
         self._schema = schema
         self._location = location

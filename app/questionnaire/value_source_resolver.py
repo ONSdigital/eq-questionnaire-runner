@@ -1,19 +1,18 @@
 from dataclasses import dataclass
 from decimal import Decimal
-from typing import Callable, Iterable, Mapping, MutableMapping, TypeAlias
+from typing import Callable, Iterable, Mapping, TypeAlias
 
 from markupsafe import Markup
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import progress_store, supplementary_data_store
 from app.data_models.answer import (
     AnswerValueEscapedTypes,
     AnswerValueTypes,
     escape_answer_value,
 )
-from app.data_models.answer_store import AnswerStore
-from app.data_models.list_store import ListModel, ListStore
-from app.data_models.metadata_proxy import MetadataProxy, NoMetadataException
+from app.data_models.data_stores import DataStores
+from app.data_models.list_store import ListModel
+from app.data_models.metadata_proxy import NoMetadataException
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException, SectionKey
 from app.questionnaire.rules import rule_evaluator
@@ -27,15 +26,10 @@ ResolvedAnswerList: TypeAlias = list[AnswerValueTypes | AnswerValueEscapedTypes 
 
 @dataclass
 class ValueSourceResolver:
-    answer_store: AnswerStore
-    list_store: ListStore
-    metadata: MetadataProxy | None
-    response_metadata: MutableMapping
+    data_stores: DataStores
     schema: QuestionnaireSchema
     location: LocationType | None
     list_item_id: str | None
-    progress_store: progress_store.ProgressStore
-    supplementary_data_store: supplementary_data_store.SupplementaryDataStore
     routing_path_block_ids: Iterable[str] | None = None
     use_default_answer: bool = False
     escape_answer_values: bool = False
@@ -73,7 +67,7 @@ class ValueSourceResolver:
         if assess_routing_path and not self._is_answer_on_path(answer_id):
             return None
 
-        if answer := self.answer_store.get_answer(answer_id, list_item_id):
+        if answer := self.data_stores.answer_store.get_answer(answer_id, list_item_id):
             return answer.value
 
         if self.use_default_answer and (
@@ -95,14 +89,14 @@ class ValueSourceResolver:
 
             if list_item_selector["source"] == "list":
                 return getattr(  # type: ignore
-                    self.list_store[list_item_selector["identifier"]],
+                    self.data_stores.list_store[list_item_selector["identifier"]],
                     list_item_selector["selector"],
                 )
 
         if value_source["source"] == "supplementary_data":
             return (
                 self.list_item_id
-                if self.supplementary_data_store.is_data_repeating(
+                if self.data_stores.supplementary_data_store.is_data_repeating(
                     value_source["identifier"]
                 )
                 else None
@@ -120,7 +114,7 @@ class ValueSourceResolver:
     ) -> ResolvedAnswerList:
         """Return the list of answers in answer store that correspond to the given list name and dynamic/repeating answer_id"""
         answer_values: ResolvedAnswerList = []
-        for list_item_id in self.list_store[list_name]:
+        for list_item_id in self.data_stores.list_store[list_name]:
             answer_value = self._get_answer_value(
                 answer_id=answer_id, list_item_id=list_item_id
             )
@@ -198,7 +192,9 @@ class ValueSourceResolver:
         if selector == "section":
             # List item id is set to None here as we do not support checking progress value sources for
             # repeating sections
-            return self.progress_store.get_section_status(SectionKey(identifier))
+            return self.data_stores.progress_store.get_section_status(
+                SectionKey(identifier)
+            )
 
         if selector == "block":
             if not self.location:
@@ -210,7 +206,7 @@ class ValueSourceResolver:
             # Type ignore: Section id will exist at this point
             section_id_for_block: str = self.schema.get_section_id_for_block_id(identifier)  # type: ignore
 
-            return self.progress_store.get_block_status(
+            return self.data_stores.progress_store.get_block_status(
                 block_id=identifier,
                 section_key=SectionKey(
                     section_id=section_id_for_block,
@@ -222,7 +218,7 @@ class ValueSourceResolver:
 
     def _resolve_list_value_source(self, value_source: Mapping) -> int | str | list:
         identifier = value_source["identifier"]
-        list_model: ListModel = self.list_store[identifier]
+        list_model: ListModel = self.data_stores.list_store[identifier]
 
         if selector := value_source.get("selector"):
             value: str | list | int = getattr(list_model, selector)
@@ -259,12 +255,7 @@ class ValueSourceResolver:
 
         evaluator = rule_evaluator.RuleEvaluator(
             self.schema,
-            self.answer_store,
-            self.list_store,
-            self.metadata,
-            self.response_metadata,
-            progress_store=self.progress_store,
-            supplementary_data_store=self.supplementary_data_store,
+            data_stores=self.data_stores,
             location=self.location,
             routing_path_block_ids=self.routing_path_block_ids,
         )
@@ -272,17 +263,17 @@ class ValueSourceResolver:
         return evaluator.evaluate(calculation["operation"])  # type: ignore
 
     def _resolve_metadata_source(self, value_source: Mapping) -> str | None:
-        if not self.metadata:
+        if not self.data_stores.metadata:
             raise NoMetadataException
         identifier = value_source["identifier"]
-        return self.metadata[identifier]
+        return self.data_stores.metadata[identifier]
 
     def _resolve_location_source(self, value_source: Mapping) -> str | None:
         if value_source.get("identifier") == "list_item_id":
             return self.list_item_id
 
     def _resolve_response_metadata_source(self, value_source: Mapping) -> str | None:
-        return self.response_metadata.get(value_source.get("identifier"))
+        return self.data_stores.response_metadata.get(value_source.get("identifier"))
 
     def resolve_list(self, value_source_list: list[Mapping]) -> list[ValueSourceTypes]:
         values: list[ValueSourceTypes] = []
@@ -299,7 +290,7 @@ class ValueSourceResolver:
     ) -> ValueSourceTypes:
         list_item_id = self._resolve_list_item_id_for_value_source(value_source)
 
-        return self.supplementary_data_store.get_data(
+        return self.data_stores.supplementary_data_store.get_data(
             identifier=value_source["identifier"],
             selectors=value_source.get("selectors"),
             list_item_id=list_item_id,

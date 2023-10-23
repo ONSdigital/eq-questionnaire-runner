@@ -59,15 +59,10 @@ def response_metadata():
 def parser(answer_store, location, mock_schema, mock_renderer):
     return PlaceholderParser(
         language="en",
-        answer_store=answer_store,
-        list_store=ListStore(),
-        metadata=get_metadata(),
-        response_metadata={},
+        data_stores=DataStores(answer_store=answer_store),
         schema=mock_schema,
         location=location,
         renderer=mock_renderer,
-        progress_store=ProgressStore(),
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
 
@@ -1012,14 +1007,12 @@ def placeholder_renderer(option_label_from_value_schema):
     )
     renderer = PlaceholderRenderer(
         language="en",
-        answer_store=answer_store,
-        list_store=ListStore(),
-        metadata=get_metadata({"trad_as": "ESSENTIAL SERVICES LTD"}),
-        response_metadata={},
+        data_stores=DataStores(
+            answer_store=answer_store,
+            metadata=get_metadata({"trad_as": "ESSENTIAL SERVICES LTD"}),
+        ),
         schema=option_label_from_value_schema,
-        progress_store=ProgressStore(),
         location=Location(section_id="checkbox-section"),
-        supplementary_data_store=SupplementaryDataStore(),
     )
     return renderer
 
@@ -1028,13 +1021,8 @@ def placeholder_renderer(option_label_from_value_schema):
 def mock_renderer(mock_schema):
     return PlaceholderRenderer(
         language="en",
-        answer_store=AnswerStore(),
-        list_store=ListStore(),
-        metadata=get_metadata(),
-        response_metadata={},
+        data_stores=DataStores(),
         schema=mock_schema,
-        progress_store=ProgressStore(),
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
 

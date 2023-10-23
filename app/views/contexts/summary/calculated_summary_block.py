@@ -1,15 +1,9 @@
 from decimal import Decimal
-from typing import Iterable, Mapping, MutableMapping, TypeAlias
+from typing import Iterable, Mapping, TypeAlias
 
 from flask import url_for
 
-from app.data_models import (
-    AnswerStore,
-    ListStore,
-    ProgressStore,
-    SupplementaryDataStore,
-)
-from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.data_stores import DataStores
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.utilities.types import LocationType
@@ -23,18 +17,13 @@ class CalculatedSummaryBlock:
         self,
         block_schema: Mapping,
         *,
-        answer_store: AnswerStore,
-        list_store: ListStore,
-        metadata: MetadataProxy | None,
-        response_metadata: MutableMapping,
+        data_stores: DataStores,
         schema: QuestionnaireSchema,
         location: LocationType,
         return_to: str | None,
         return_to_block_id: str | None = None,
         return_to_list_item_id: str | None = None,
-        progress_store: ProgressStore,
         routing_path_block_ids: Iterable[str],
-        supplementary_data_store: SupplementaryDataStore,
     ) -> None:
         """
         A Calculated summary block that is rendered as part of a grand calculated summary
@@ -51,6 +40,7 @@ class CalculatedSummaryBlock:
         self._return_to_list_item_id = return_to_list_item_id
         self._block_schema = block_schema
         self._schema = schema
+        self._data_stores = data_stores
         if self._schema.is_block_in_repeating_section(self.id):
             self._list_item_id = location.list_item_id
             self._list_name = location.list_name
@@ -60,14 +50,9 @@ class CalculatedSummaryBlock:
 
         self._rule_evaluator = RuleEvaluator(
             schema=schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=metadata,
-            response_metadata=response_metadata,
+            data_stores=self._data_stores,
             location=location,
-            progress_store=progress_store,
             routing_path_block_ids=routing_path_block_ids,
-            supplementary_data_store=supplementary_data_store,
         )
 
         # Type ignore: for a calculated summary the resolved answer would only ever be one of these 3

@@ -1,8 +1,8 @@
 import pytest
 from mock import MagicMock
 
-from app.data_models import ProgressStore, SupplementaryDataStore
 from app.data_models.answer_store import AnswerStore
+from app.data_models.data_stores import DataStores
 from app.data_models.list_store import ListStore
 from app.questionnaire import Location
 from app.questionnaire.placeholder_parser import PlaceholderParser
@@ -41,22 +41,17 @@ def test_renders_pointer(
         ]
     )
 
-    renderer = get_placeholder_render(answer_store=answer_store)
+    renderer = get_placeholder_render(data_stores=DataStores(answer_store=answer_store))
     rendered = renderer.render_pointer(
         dict_to_render=placholder_transform_question_json,
         pointer_to_render="/answers/0/options/0/label",
         list_item_id=None,
         placeholder_parser=PlaceholderParser(
             language="en",
-            answer_store=answer_store,
-            list_store=ListStore(),
-            metadata=None,
-            response_metadata={},
+            data_stores=DataStores(answer_store=answer_store),
             schema=mock_schema,
             location=mock_location,
             renderer=mock_renderer,
-            progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         ),
     )
 
@@ -87,7 +82,7 @@ def test_renders_json(placholder_transform_question_json):
         ]
     )
 
-    renderer = get_placeholder_render(answer_store=answer_store)
+    renderer = get_placeholder_render(data_stores=DataStores(answer_store=answer_store))
     rendered_schema = renderer.render(data_to_render=json_to_render, list_item_id=None)
     rendered_label = rendered_schema["answers"][0]["options"][0]["label"]
 
@@ -118,7 +113,9 @@ def test_renders_json_uses_language(placholder_transform_question_json):
         ]
     )
 
-    renderer = get_placeholder_render(language="cy", answer_store=answer_store)
+    renderer = get_placeholder_render(
+        language="cy", data_stores=DataStores(answer_store=answer_store)
+    )
     rendered_schema = renderer.render(data_to_render=json_to_render, list_item_id=None)
     rendered_label = rendered_schema["answers"][0]["options"][0]["label"]
 
@@ -135,15 +132,10 @@ def test_errors_on_invalid_pointer(placholder_transform_question_json, mock_sche
             list_item_id=None,
             placeholder_parser=PlaceholderParser(
                 language="en",
-                answer_store=AnswerStore(),
-                list_store=ListStore(),
-                metadata=None,
-                response_metadata={},
+                data_stores=DataStores(),
                 schema=mock_schema,
                 location=None,
                 renderer=renderer,
-                progress_store=ProgressStore(),
-                supplementary_data_store=SupplementaryDataStore(),
             ),
         )
 
@@ -158,15 +150,10 @@ def test_errors_on_invalid_json(mock_schema):
             list_item_id=None,
             placeholder_parser=PlaceholderParser(
                 language="en",
-                answer_store=AnswerStore(),
-                list_store=ListStore(),
-                metadata=None,
-                response_metadata={},
+                data_stores=DataStores(),
                 schema=mock_schema,
                 location=None,
                 renderer=renderer,
-                progress_store=ProgressStore(),
-                supplementary_data_store=SupplementaryDataStore(),
             ),
         )
 
@@ -174,7 +161,7 @@ def test_errors_on_invalid_json(mock_schema):
 def test_renders_text_plural_from_answers():
     answer_store = AnswerStore([{"answer_id": "number-of-people", "value": 1}])
 
-    renderer = get_placeholder_render(answer_store=answer_store)
+    renderer = get_placeholder_render(data_stores=DataStores(answer_store=answer_store))
     rendered_text = renderer.render_placeholder(
         {
             "text_plural": {
@@ -228,7 +215,7 @@ def test_renders_text_plural_from_list():
 
 def test_renders_text_plural_from_metadata():
     metadata = {"some_value": 100}
-    renderer = get_placeholder_render(metadata=metadata)
+    renderer = get_placeholder_render(data_stores=DataStores(metadata=metadata))
 
     rendered_text = renderer.render_placeholder(
         {
@@ -277,7 +264,7 @@ def test_renders_json_dynamic_answers(
     list_store = ListStore([{"items": ["yWKpNY", "vtbSnC"], "name": "supermarkets"}])
 
     renderer = get_placeholder_render_dynamic_answers(
-        answer_store=answer_store, list_store=list_store
+        data_stores=DataStores(answer_store=answer_store, list_store=list_store)
     )
     rendered_schema = renderer.render(data_to_render=json_to_render, list_item_id=None)
     rendered_label_first = rendered_schema["answers"][0]["label"]
@@ -316,7 +303,7 @@ def test_renders_json_dynamic_answers_pointer(
     list_store = ListStore([{"items": ["yWKpNY", "vtbSnC"], "name": "supermarkets"}])
 
     renderer = get_placeholder_render_dynamic_answers(
-        answer_store=answer_store, list_store=list_store
+        data_stores=DataStores(answer_store=answer_store, list_store=list_store)
     )
     rendered_schema = renderer.render(data_to_render=json_to_render, list_item_id=None)
     rendered_label_first = rendered_schema["question"]["answers"][0]["label"]
@@ -330,49 +317,23 @@ def test_renders_json_dynamic_answers_pointer(
     assert rendered_id_second == "percentage-of-shopping-vtbSnC"
 
 
-def get_placeholder_render_dynamic_answers(
-    *,
-    language="en",
-    answer_store=AnswerStore(),
-    list_store=ListStore(),
-    progress_store=ProgressStore(),
-    supplementary_data_store=SupplementaryDataStore(),
-    metadata=None,
-    response_metadata=None,
-):
+def get_placeholder_render_dynamic_answers(*, language="en", data_stores=DataStores()):
     schema = load_schema_from_name("test_dynamic_answers_list_source")
     return PlaceholderRenderer(
         language=language,
-        answer_store=answer_store,
-        list_store=list_store,
-        progress_store=progress_store,
-        metadata=metadata or {},
-        response_metadata=response_metadata or {},
+        data_stores=data_stores,
         schema=schema,
-        supplementary_data_store=supplementary_data_store,
     )
 
 
-def get_placeholder_render(
-    *,
-    language="en",
-    answer_store=AnswerStore(),
-    list_store=ListStore(),
-    metadata=None,
-    response_metadata=None,
-):
+def get_placeholder_render(*, language="en", data_stores=DataStores()):
     schema = MagicMock()
     schema.is_answer_dynamic = MagicMock(return_value=False)
     schema.is_answer_in_list_collector_repeating_block = MagicMock(return_value=False)
     renderer = PlaceholderRenderer(
         language=language,
-        answer_store=answer_store,
-        list_store=list_store,
-        metadata=metadata or {},
-        response_metadata=response_metadata or {},
+        data_stores=data_stores,
         schema=schema,
-        progress_store=ProgressStore(),
         location=Location(section_id="default-section"),
-        supplementary_data_store=SupplementaryDataStore(),
     )
     return renderer

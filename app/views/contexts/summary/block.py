@@ -30,17 +30,17 @@ class Block:
         self.schema = schema
         self.data_stores = data_stores
 
-        self._rule_evaluator = self.data_stores.rule_evaluator(
-            # Type ignore: location in rule_evaluator can be both Location or RelationshipLocation type but is only Location type here
-            schema=self.schema,
-            location=self.location,  # type: ignore
-        )
-
-        self._value_source_resolver = self.data_stores.value_source_resolver(
-            schema=self.schema,
-            location=self.location,
-            list_item_id=self.location.list_item_id if self.location else None,
-        )
+        # self._rule_evaluator = self.data_stores.rule_evaluator(
+        #     # Type ignore: location in rule_evaluator can be both Location or RelationshipLocation type but is only Location type here
+        #     schema=self.schema,
+        #     location=self.location,  # type: ignore
+        # )
+        #
+        # self._value_source_resolver = self.data_stores.value_source_resolver(
+        #     schema=self.schema,
+        #     location=self.location,
+        #     list_item_id=self.location.list_item_id if self.location else None,
+        # )
 
         self.question = self.get_question(
             block_schema=block_schema,
@@ -66,15 +66,10 @@ class Block:
         variant = choose_variant(
             block_schema,
             self.schema,
-            data_stores.metadata,
-            data_stores.response_metadata,
-            data_stores.answer_store,
-            data_stores.list_store,
+            data_stores,
             variants_key="question_variants",
             single_key="question",
             current_location=self.location,
-            progress_store=data_stores.progress_store,
-            supplementary_data_store=data_stores.supplementary_data_store,
         )
         return Question(
             variant,

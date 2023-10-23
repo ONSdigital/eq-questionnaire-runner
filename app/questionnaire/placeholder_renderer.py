@@ -3,12 +3,8 @@ from typing import Mapping, MutableMapping
 
 from jsonpointer import resolve_pointer, set_pointer
 
-from app.data_models import progress_store as ps
-from app.data_models import supplementary_data_store as sds
 from app.data_models.answer import AnswerValueTypes
-from app.data_models.answer_store import AnswerStore
-from app.data_models.list_store import ListStore
-from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.data_stores import DataStores
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_parser import PlaceholderParser
 from app.questionnaire.plural_forms import get_plural_form_key
@@ -25,26 +21,16 @@ class PlaceholderRenderer:
     def __init__(
         self,
         language: str,
-        answer_store: AnswerStore,
-        list_store: ListStore,
-        metadata: MetadataProxy | None,
-        response_metadata: MutableMapping,
+        data_stores: DataStores,
         schema: QuestionnaireSchema,
-        progress_store: ps.ProgressStore,
-        supplementary_data_store: sds.SupplementaryDataStore,
         location: LocationType | None = None,
         placeholder_preview_mode: bool | None = False,
     ):
         self._placeholder_preview_mode = placeholder_preview_mode
         self._language = language
-        self._answer_store = answer_store
-        self._list_store = list_store
-        self._metadata = metadata
-        self._response_metadata = response_metadata
+        self._data_stores = data_stores
         self._schema = schema
         self._location = location
-        self._progress_store = progress_store
-        self._supplementary_data_store = supplementary_data_store
 
     def render_pointer(
         self,
@@ -65,12 +51,16 @@ class PlaceholderRenderer:
         source_id = schema_partial["identifier"]
 
         if source == "answers":
-            answer = self._answer_store.get_answer(source_id)
+            answer = self._data_stores.answer_store.get_answer(source_id)
             return answer.value if answer else None
         if source == "list":
-            return len(self._list_store[source_id])
+            return len(self._data_stores.list_store[source_id])
 
-        return self._metadata[source_id] if self._metadata else None
+        return (
+            self._data_stores.metadata[source_id]
+            if self._data_stores.metadata
+            else None
+        )
 
     def render_placeholder(
         self,
@@ -81,17 +71,12 @@ class PlaceholderRenderer:
         if not placeholder_parser:
             placeholder_parser = PlaceholderParser(
                 language=self._language,
-                answer_store=self._answer_store,
-                list_store=self._list_store,
-                metadata=self._metadata,
-                response_metadata=self._response_metadata,
+                data_stores=self._data_stores,
                 schema=self._schema,
                 list_item_id=list_item_id,
                 location=self._location,
                 renderer=self,
-                progress_store=self._progress_store,
                 placeholder_preview_mode=self._placeholder_preview_mode,
-                supplementary_data_store=self._supplementary_data_store,
             )
 
         placeholder_data = QuestionnaireSchema.get_mutable_deepcopy(placeholder_data)
@@ -138,17 +123,12 @@ class PlaceholderRenderer:
 
         placeholder_parser = PlaceholderParser(
             language=self._language,
-            answer_store=self._answer_store,
-            list_store=self._list_store,
-            metadata=self._metadata,
-            response_metadata=self._response_metadata,
+            data_stores=self._data_stores,
             schema=self._schema,
             list_item_id=list_item_id,
             location=self._location,
             renderer=self,
             placeholder_preview_mode=self._placeholder_preview_mode,
-            progress_store=self._progress_store,
-            supplementary_data_store=self._supplementary_data_store,
         )
 
         for pointer in pointers:
@@ -189,7 +169,7 @@ class PlaceholderRenderer:
         dynamic_answers: dict,
     ) -> None:
         list_name = dynamic_answers["values"]["identifier"]
-        list_items = self._list_store[list_name].items
+        list_items = self._data_stores.list_store[list_name].items
 
         resolved_dynamic_answers = []
 
@@ -211,17 +191,12 @@ class PlaceholderRenderer:
         for answer in dynamic_answers["answers"]:
             placeholder_parser = PlaceholderParser(
                 language=self._language,
-                answer_store=self._answer_store,
-                list_store=self._list_store,
-                metadata=self._metadata,
-                response_metadata=self._response_metadata,
+                data_stores=self._data_stores,
                 schema=self._schema,
                 list_item_id=answer["list_item_id"],
                 location=self._location,
                 renderer=self,
                 placeholder_preview_mode=self._placeholder_preview_mode,
-                progress_store=self._progress_store,
-                supplementary_data_store=self._supplementary_data_store,
             )
 
             pointers = find_pointers_containing(answer, "placeholders")

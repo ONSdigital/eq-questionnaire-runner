@@ -1,13 +1,9 @@
-from typing import Iterable, Mapping, MutableMapping, Sequence
+from typing import Iterable, Mapping, Sequence
 
 from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import CompletionStatus
-from app.data_models.answer_store import AnswerStore
-from app.data_models.list_store import ListStore
-from app.data_models.metadata_proxy import MetadataProxy
-from app.data_models.progress_store import ProgressStore
-from app.data_models.supplementary_data_store import SupplementaryDataStore
+from app.data_models.data_stores import DataStores
 from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.routing_path import RoutingPath
@@ -16,23 +12,9 @@ from app.utilities.types import LocationType
 
 
 class PathFinder:
-    def __init__(
-        self,
-        schema: QuestionnaireSchema,
-        answer_store: AnswerStore,
-        list_store: ListStore,
-        progress_store: ProgressStore,
-        metadata: MetadataProxy | None,
-        response_metadata: MutableMapping,
-        supplementary_data_store: SupplementaryDataStore,
-    ):
-        self.answer_store = answer_store
-        self.metadata = metadata
-        self.response_metadata = response_metadata
+    def __init__(self, schema: QuestionnaireSchema, data_stores: DataStores):
+        self.data_stores = data_stores
         self.schema = schema
-        self.progress_store = progress_store
-        self.list_store = list_store
-        self.supplementary_data_store = supplementary_data_store
 
     def routing_path(self, section_key: SectionKey) -> RoutingPath:
         """
@@ -80,7 +62,7 @@ class PathFinder:
             for dependent_section in dependencies_for_section
             for block_id in self.routing_path(SectionKey(dependent_section))
             if SectionKey(dependent_section)
-            in self.progress_store.started_section_keys()
+            in self.data_stores.progress_store.started_section_keys()
         ]
 
     def _get_not_skipped_blocks_in_section(
@@ -200,14 +182,9 @@ class PathFinder:
 
         when_rule_evaluator = RuleEvaluator(
             self.schema,
-            self.answer_store,
-            self.list_store,
-            self.metadata,
-            self.response_metadata,
-            progress_store=self.progress_store,
+            self.data_stores,
             location=this_location,
             routing_path_block_ids=routing_path_block_ids,
-            supplementary_data_store=self.supplementary_data_store,
         )
         for rule in routing_rules:
             rule_valid = (
@@ -254,14 +231,9 @@ class PathFinder:
 
         when_rule_evaluator = RuleEvaluator(
             schema=self.schema,
-            answer_store=self.answer_store,
-            list_store=self.list_store,
-            metadata=self.metadata,
-            response_metadata=self.response_metadata,
-            progress_store=self.progress_store,
+            data_stores=self.data_stores,
             location=current_location,
             routing_path_block_ids=routing_path_block_ids,
-            supplementary_data_store=self.supplementary_data_store,
         )
 
         return when_rule_evaluator.evaluate(skip_conditions["when"])
@@ -285,8 +257,10 @@ class PathFinder:
                     rule["when"], answer_ids_for_current_block
                 )
 
-            self.progress_store.remove_location_for_backwards_routing(this_location)
-            self.progress_store.update_section_status(
+            self.data_stores.progress_store.remove_location_for_backwards_routing(
+                this_location
+            )
+            self.data_stores.progress_store.update_section_status(
                 CompletionStatus.IN_PROGRESS, this_location.section_key
             )
 
@@ -300,7 +274,7 @@ class PathFinder:
                 "identifier" in rule
                 and rule["identifier"] in answer_ids_for_current_block
             ):
-                self.answer_store.remove_answer(rule["identifier"])
+                self.data_stores.answer_store.remove_answer(rule["identifier"])
 
             if QuestionnaireSchema.has_operator(rule):
                 return self._remove_block_answers_for_backward_routing_according_to_when_rule(

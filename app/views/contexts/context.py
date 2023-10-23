@@ -1,6 +1,7 @@
 from abc import ABC
 
 from app.data_models.data_stores import DataStores
+from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.router import Router
 
@@ -20,7 +21,8 @@ class Context(ABC):
 
         self._router = Router(schema=self._schema, data_stores=self._data_stores)
 
-        self._placeholder_renderer = self._data_stores.placeholder_renderer(
+        self._placeholder_renderer = PlaceholderRenderer(
+            data_stores=data_stores,
             language=self._language,
             schema=self._schema,
             placeholder_preview_mode=self._placeholder_preview_mode,

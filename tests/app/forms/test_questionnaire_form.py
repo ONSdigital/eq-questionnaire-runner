@@ -4,7 +4,7 @@ from decimal import Decimal
 import pytest
 from werkzeug.datastructures import MultiDict
 
-from app.data_models import ListStore, ProgressStore, SupplementaryDataStore
+from app.data_models import ListStore
 from app.data_models.answer_store import Answer, AnswerStore
 from app.data_models.data_stores import DataStores
 from app.forms import error_messages
@@ -1519,9 +1519,7 @@ def test_mandatory_mutually_exclusive_question_raises_error_when_not_answered(
         )
 
 
-def test_mandatory_mutually_exclusive_question_raises_error_with_question_text(
-    app, list_store
-):
+def test_mandatory_mutually_exclusive_question_raises_error_with_question_text(app):
     with app.test_request_context():
         schema = load_schema_from_name("test_question_title_in_error")
 
@@ -1534,14 +1532,9 @@ def test_mandatory_mutually_exclusive_question_raises_error_with_question_text(
 
         renderer = PlaceholderRenderer(
             language="en",
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=get_metadata(),
-            response_metadata={},
+            data_stores=DataStores(answer_store=answer_store),
             schema=schema,
-            progress_store=ProgressStore(),
             location=Location(section_id="mutually-exclusive-checkbox-section"),
-            supplementary_data_store=SupplementaryDataStore(),
         )
         rendered_schema = renderer.render(
             data_to_render=question_schema, list_item_id=None

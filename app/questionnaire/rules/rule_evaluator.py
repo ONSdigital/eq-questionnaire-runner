@@ -1,15 +1,9 @@
 from dataclasses import dataclass
 from datetime import date
 from decimal import Decimal
-from typing import Generator, Iterable, MutableMapping, Sequence, TypeAlias
+from typing import Generator, Iterable, Sequence, TypeAlias
 
-from app.data_models import (
-    answer_store,
-    list_store,
-    progress_store,
-    supplementary_data_store,
-)
-from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.data_stores import DataStores
 from app.questionnaire import QuestionnaireSchema, placeholder_renderer
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.questionnaire.rules.operations import Operations
@@ -29,13 +23,8 @@ ResolvedOperand: TypeAlias = bool | date | ValueSourceTypes | None
 @dataclass
 class RuleEvaluator:
     schema: QuestionnaireSchema
-    answer_store: answer_store.AnswerStore
-    list_store: list_store.ListStore
-    metadata: MetadataProxy | None
-    response_metadata: MutableMapping
+    data_stores: DataStores
     location: LocationType | None
-    progress_store: progress_store.ProgressStore
-    supplementary_data_store: supplementary_data_store.SupplementaryDataStore
     routing_path_block_ids: Iterable[str] | None = None
     language: str = DEFAULT_LANGUAGE_CODE
 
@@ -43,30 +32,20 @@ class RuleEvaluator:
     def __post_init__(self) -> None:
         list_item_id = self.location.list_item_id if self.location else None
         self.value_source_resolver = ValueSourceResolver(
-            answer_store=self.answer_store,
-            list_store=self.list_store,
-            metadata=self.metadata,
-            response_metadata=self.response_metadata,
+            data_stores=self.data_stores,
             schema=self.schema,
             location=self.location,
             list_item_id=list_item_id,
             routing_path_block_ids=self.routing_path_block_ids,
-            progress_store=self.progress_store,
             use_default_answer=True,
-            supplementary_data_store=self.supplementary_data_store,
         )
 
         renderer: placeholder_renderer.PlaceholderRenderer = (
             placeholder_renderer.PlaceholderRenderer(
                 language=self.language,
-                answer_store=self.answer_store,
-                list_store=self.list_store,
-                metadata=self.metadata,
-                response_metadata=self.response_metadata,
+                data_stores=self.data_stores,
                 schema=self.schema,
                 location=self.location,
-                progress_store=self.progress_store,
-                supplementary_data_store=self.supplementary_data_store,
             )
         )
         self.operations = Operations(
