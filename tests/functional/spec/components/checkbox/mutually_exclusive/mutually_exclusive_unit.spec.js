@@ -13,19 +13,19 @@ describe("Component: Mutually Exclusive Unit With Single Checkbox Override", () 
     it("When then user clicks the mutually exclusive checkbox answer, Then only the mutually exclusive checkbox should be answered.", async () => {
       // Given
       await $(UnitPage.unit()).setValue("10");
-      await expect(await $(UnitPage.unit()).getValue()).toEqual("10");
+      await expect(await $(UnitPage.unit()).getValue()).toBe("10");
 
       // When
       await $(UnitPage.unitExclusiveIPreferNotToSay()).click();
 
       // Then
       await expect(await $(UnitPage.unitExclusiveIPreferNotToSay()).isSelected()).toBe(true);
-      await expect(await $(UnitPage.unit()).getValue()).toEqual("");
+      await expect(await $(UnitPage.unit()).getValue()).toBe("");
 
       await click(UnitPage.submit());
 
-      await expect(await $(SummaryPage.unitExclusiveAnswer()).getText()).toEqual("I prefer not to say");
-      await expect(await $(SummaryPage.unitExclusiveAnswer()).getText()).not.toEqual("10");
+      await expect(await $(SummaryPage.unitExclusiveAnswer()).getText()).toBe("I prefer not to say");
+      await expect(await $(SummaryPage.unitExclusiveAnswer()).getText()).not.toBe("10");
     });
   });
 
@@ -45,7 +45,7 @@ describe("Component: Mutually Exclusive Unit With Single Checkbox Override", () 
       await click(UnitPage.submit());
 
       await expect(await $(SummaryPage.unitAnswer()).getText()).toContain("10");
-      await expect(await $(SummaryPage.unitAnswer()).getText()).not.toEqual("I prefer not to say");
+      await expect(await $(SummaryPage.unitAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });
 
@@ -58,20 +58,20 @@ describe("Component: Mutually Exclusive Unit With Single Checkbox Override", () 
       await $(UnitPage.unit()).setValue("10");
 
       // Then
-      await expect(await $(UnitPage.unit()).getValue()).toContain("10");
+      await expect(await $(UnitPage.unit()).getValue()).toBe("10");
       await expect(await $(UnitPage.unitExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       await click(UnitPage.submit());
 
       await expect(await $(SummaryPage.unitAnswer()).getText()).toContain("10");
-      await expect(await $(SummaryPage.unitAnswer()).getText()).not.toEqual("I prefer not to say");
+      await expect(await $(SummaryPage.unitAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });
 
   describe("Given the user has not answered the non-exclusive unit answer", () => {
     it("When the user clicks the mutually exclusive checkbox answer, Then only the exclusive checkbox should be answered.", async () => {
       // Given
-      await expect(await $(UnitPage.unit()).getValue()).toEqual("");
+      await expect(await $(UnitPage.unit()).getValue()).toBe("");
 
       // When
       await $(UnitPage.unitExclusiveIPreferNotToSay()).click();
@@ -80,22 +80,22 @@ describe("Component: Mutually Exclusive Unit With Single Checkbox Override", () 
       // Then
       await click(UnitPage.submit());
 
-      await expect(await $(SummaryPage.unitExclusiveAnswer()).getText()).toEqual("I prefer not to say");
-      await expect(await $(SummaryPage.unitExclusiveAnswer()).getText()).not.toEqual("10");
+      await expect(await $(SummaryPage.unitExclusiveAnswer()).getText()).toBe("I prefer not to say");
+      await expect(await $(SummaryPage.unitExclusiveAnswer()).getText()).not.toBe("10");
     });
   });
 
   describe("Given the user has not answered the question and the question is optional", () => {
     it("When the user clicks the Continue button, Then it should display `No answer provided`", async () => {
       // Given
-      await expect(await $(UnitPage.unit()).getValue()).toEqual("");
+      await expect(await $(UnitPage.unit()).getValue()).toBe("");
       await expect(await $(UnitPage.unitExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       // When
       await click(UnitPage.submit());
 
       // Then
-      await expect(await $(SummaryPage.unitAnswer()).getText()).toEqual("No answer provided");
+      await expect(await $(SummaryPage.unitAnswer()).getText()).toBe("No answer provided");
     });
   });
 });

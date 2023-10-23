@@ -13,19 +13,19 @@ describe("Component: Mutually Exclusive Year Date With Single Checkbox Override"
     it("When then user clicks the mutually exclusive checkbox answer, Then only the mutually exclusive checkbox should be answered.", async () => {
       // Given
       await $(YearDatePage.yearDateYear()).setValue("2018");
-      await expect(await $(YearDatePage.yearDateYear()).getValue()).toEqual("2018");
+      await expect(await $(YearDatePage.yearDateYear()).getValue()).toBe("2018");
 
       // When
       await $(YearDatePage.yearDateExclusiveIPreferNotToSay()).click();
 
       // Then
       await expect(await $(YearDatePage.yearDateExclusiveIPreferNotToSay()).isSelected()).toBe(true);
-      await expect(await $(YearDatePage.yearDateYear()).getValue()).toEqual("");
+      await expect(await $(YearDatePage.yearDateYear()).getValue()).toBe("");
 
       await click(YearDatePage.submit());
 
-      await expect(await $(SubmitPage.yearDateExclusiveAnswer()).getText()).toEqual("I prefer not to say");
-      await expect(await $(SubmitPage.yearDateExclusiveAnswer()).getText()).not.toEqual("2018");
+      await expect(await $(SubmitPage.yearDateExclusiveAnswer()).getText()).toBe("I prefer not to say");
+      await expect(await $(SubmitPage.yearDateExclusiveAnswer()).getText()).not.toBe("2018");
     });
   });
 
@@ -39,13 +39,13 @@ describe("Component: Mutually Exclusive Year Date With Single Checkbox Override"
       await $(YearDatePage.yearDateYear()).setValue("2018");
 
       // Then
-      await expect(await $(YearDatePage.yearDateYear()).getValue()).toEqual("2018");
+      await expect(await $(YearDatePage.yearDateYear()).getValue()).toBe("2018");
       await expect(await $(YearDatePage.yearDateExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       await click(YearDatePage.submit());
 
-      await expect(await $(SubmitPage.yearDateAnswer()).getText()).toEqual("2018");
-      await expect(await $(SubmitPage.yearDateAnswer()).getText()).not.toEqual("I prefer not to say");
+      await expect(await $(SubmitPage.yearDateAnswer()).getText()).toBe("2018");
+      await expect(await $(SubmitPage.yearDateAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });
 
@@ -58,20 +58,20 @@ describe("Component: Mutually Exclusive Year Date With Single Checkbox Override"
       await $(YearDatePage.yearDateYear()).setValue("2018");
 
       // Then
-      await expect(await $(YearDatePage.yearDateYear()).getValue()).toEqual("2018");
+      await expect(await $(YearDatePage.yearDateYear()).getValue()).toBe("2018");
       await expect(await $(YearDatePage.yearDateExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       await click(YearDatePage.submit());
 
-      await expect(await $(SubmitPage.yearDateAnswer()).getText()).toEqual("2018");
-      await expect(await $(SubmitPage.yearDateAnswer()).getText()).not.toEqual("I prefer not to say");
+      await expect(await $(SubmitPage.yearDateAnswer()).getText()).toBe("2018");
+      await expect(await $(SubmitPage.yearDateAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });
 
   describe("Given the user has not answered the non-exclusive year date answer", () => {
     it("When the user clicks the mutually exclusive checkbox answer, Then only the exclusive checkbox should be answered.", async () => {
       // Given
-      await expect(await $(YearDatePage.yearDateYear()).getValue()).toEqual("");
+      await expect(await $(YearDatePage.yearDateYear()).getValue()).toBe("");
 
       // When
       await $(YearDatePage.yearDateExclusiveIPreferNotToSay()).click();
@@ -80,22 +80,22 @@ describe("Component: Mutually Exclusive Year Date With Single Checkbox Override"
       // Then
       await click(YearDatePage.submit());
 
-      await expect(await $(SubmitPage.yearDateExclusiveAnswer()).getText()).toEqual("I prefer not to say");
-      await expect(await $(SubmitPage.yearDateExclusiveAnswer()).getText()).not.toEqual("2018");
+      await expect(await $(SubmitPage.yearDateExclusiveAnswer()).getText()).toBe("I prefer not to say");
+      await expect(await $(SubmitPage.yearDateExclusiveAnswer()).getText()).not.toBe("2018");
     });
   });
 
   describe("Given the user has not answered the question and the question is optional", () => {
     it("When the user clicks the Continue button, Then it should display `No answer provided`", async () => {
       // Given
-      await expect(await $(YearDatePage.yearDateYear()).getValue()).toEqual("");
+      await expect(await $(YearDatePage.yearDateYear()).getValue()).toBe("");
       await expect(await $(YearDatePage.yearDateExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       // When
       await click(YearDatePage.submit());
 
       // Then
-      await expect(await $(SubmitPage.yearDateAnswer()).getText()).toEqual("No answer provided");
+      await expect(await $(SubmitPage.yearDateAnswer()).getText()).toBe("No answer provided");
     });
   });
 });

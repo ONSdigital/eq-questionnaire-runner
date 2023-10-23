@@ -68,10 +68,10 @@ describe("Address Answer Type", () => {
 
       await browser.url(AddressMandatory.url());
 
-      await expect(await $(AddressMandatory.Line1()).getValue()).toContain("Evelyn Street");
-      await expect(await $(AddressMandatory.Line2()).getValue()).toContain("Apt 7");
-      await expect(await $(AddressMandatory.Town()).getValue()).toContain("Barry");
-      await expect(await $(AddressMandatory.Postcode()).getValue()).toContain("CF63 4JG");
+      await expect(await $(AddressMandatory.Line1()).getValue()).toBe("Evelyn Street");
+      await expect(await $(AddressMandatory.Line2()).getValue()).toBe("Apt 7");
+      await expect(await $(AddressMandatory.Town()).getValue()).toBe("Barry");
+      await expect(await $(AddressMandatory.Postcode()).getValue()).toBe("CF63 4JG");
     });
   });
   describe("Given the user has submitted an address answer type question", () => {

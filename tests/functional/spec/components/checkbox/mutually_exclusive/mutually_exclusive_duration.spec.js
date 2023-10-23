@@ -45,13 +45,13 @@ describe("Component: Mutually Exclusive Duration With Single Checkbox Override",
 
       // Then
       await expect(await $(DurationPage.durationYears()).getValue()).toBe("1");
-      await expect(await $(DurationPage.durationMonths()).getValue()).toEqual("7");
+      await expect(await $(DurationPage.durationMonths()).getValue()).toBe("7");
       await expect(await $(DurationPage.durationExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       await click(DurationPage.submit());
 
-      await expect(await $(SummaryPage.durationAnswer()).getText()).toEqual("1 year 7 months");
-      await expect(await $(SummaryPage.durationAnswer()).getText()).not.toEqual("I prefer not to say");
+      await expect(await $(SummaryPage.durationAnswer()).getText()).toBe("1 year 7 months");
+      await expect(await $(SummaryPage.durationAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });
 
@@ -65,14 +65,14 @@ describe("Component: Mutually Exclusive Duration With Single Checkbox Override",
       await $(DurationPage.durationMonths()).setValue("7");
 
       // Then
-      await expect(await $(DurationPage.durationYears()).getValue()).toEqual("1");
-      await expect(await $(DurationPage.durationMonths()).getValue()).toEqual("7");
+      await expect(await $(DurationPage.durationYears()).getValue()).toBe("1");
+      await expect(await $(DurationPage.durationMonths()).getValue()).toBe("7");
       await expect(await $(DurationPage.durationExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       await click(DurationPage.submit());
 
-      await expect(await $(SummaryPage.durationAnswer()).getText()).toEqual("1 year 7 months");
-      await expect(await $(SummaryPage.durationAnswer()).getText()).not.toEqual("I prefer not to say");
+      await expect(await $(SummaryPage.durationAnswer()).getText()).toBe("1 year 7 months");
+      await expect(await $(SummaryPage.durationAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });
 
@@ -80,8 +80,8 @@ describe("Component: Mutually Exclusive Duration With Single Checkbox Override",
     it("When the user clicks the mutually exclusive checkbox answer, Then only the exclusive checkbox should be answered.", async () => {
       // Given
       await browser.url("/questionnaire/mutually-exclusive-duration");
-      await expect(await $(DurationPage.durationYears()).getValue()).toEqual("");
-      await expect(await $(DurationPage.durationMonths()).getValue()).toEqual("");
+      await expect(await $(DurationPage.durationYears()).getValue()).toBe("");
+      await expect(await $(DurationPage.durationMonths()).getValue()).toBe("");
 
       // When
       await $(DurationPage.durationExclusiveIPreferNotToSay()).click();
@@ -90,8 +90,8 @@ describe("Component: Mutually Exclusive Duration With Single Checkbox Override",
       // Then
       await click(DurationPage.submit());
 
-      await expect(await $(SummaryPage.durationExclusiveAnswer()).getText()).toEqual("I prefer not to say");
-      await expect(await $(SummaryPage.durationExclusiveAnswer()).getText()).not.toEqual("1 year 7 months");
+      await expect(await $(SummaryPage.durationExclusiveAnswer()).getText()).toBe("I prefer not to say");
+      await expect(await $(SummaryPage.durationExclusiveAnswer()).getText()).not.toBe("1 year 7 months");
     });
   });
 
@@ -99,15 +99,15 @@ describe("Component: Mutually Exclusive Duration With Single Checkbox Override",
     it("When the user clicks the Continue button, Then it should display `No answer provided`", async () => {
       // Given
       await browser.url("/questionnaire/mutually-exclusive-duration");
-      await expect(await $(DurationPage.durationYears()).getValue()).toEqual("");
-      await expect(await $(DurationPage.durationMonths()).getValue()).toEqual("");
+      await expect(await $(DurationPage.durationYears()).getValue()).toBe("");
+      await expect(await $(DurationPage.durationMonths()).getValue()).toBe("");
       await expect(await $(DurationPage.durationExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       // When
       await click(DurationPage.submit());
 
       // Then
-      await expect(await $(SummaryPage.durationAnswer()).getText()).toEqual("No answer provided");
+      await expect(await $(SummaryPage.durationAnswer()).getText()).toBe("No answer provided");
     });
   });
 });

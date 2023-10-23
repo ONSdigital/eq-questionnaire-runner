@@ -103,8 +103,8 @@ describe("Component: Mutually Exclusive Checkbox With Multiple Radio Override", 
 
       await click(MandatoryCheckboxPage.submit());
 
-      await expect(await $(SummaryPage.checkboxAnswer()).getText()).toEqual("British\nIrish");
-      await expect(await $(SummaryPage.checkboxAnswer()).getText()).not.toEqual("I prefer not to say");
+      await expect(await $(SummaryPage.checkboxAnswer()).getText()).toBe("British\nIrish");
+      await expect(await $(SummaryPage.checkboxAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });
 
@@ -125,8 +125,8 @@ describe("Component: Mutually Exclusive Checkbox With Multiple Radio Override", 
 
       await click(MandatoryCheckboxPage.submit());
 
-      await expect(await $(SummaryPage.checkboxAnswer()).getText()).toEqual("British\nIrish");
-      await expect(await $(SummaryPage.checkboxAnswer()).getText()).not.toEqual("I am an alien");
+      await expect(await $(SummaryPage.checkboxAnswer()).getText()).toBe("British\nIrish");
+      await expect(await $(SummaryPage.checkboxAnswer()).getText()).not.toBe("I am an alien");
     });
   });
 
@@ -146,9 +146,9 @@ describe("Component: Mutually Exclusive Checkbox With Multiple Radio Override", 
 
       await click(MandatoryCheckboxPage.submit());
 
-      await expect(await $(SummaryPage.checkboxAnswer()).getText()).toEqual("British\nIrish");
-      await expect(await $(SummaryPage.checkboxAnswer()).getText()).not.toEqual("I prefer not to say");
-      await expect(await $(SummaryPage.checkboxAnswer()).getText()).not.toEqual("I am an alien");
+      await expect(await $(SummaryPage.checkboxAnswer()).getText()).toBe("British\nIrish");
+      await expect(await $(SummaryPage.checkboxAnswer()).getText()).not.toBe("I prefer not to say");
+      await expect(await $(SummaryPage.checkboxAnswer()).getText()).not.toBe("I am an alien");
     });
   });
 
@@ -167,9 +167,9 @@ describe("Component: Mutually Exclusive Checkbox With Multiple Radio Override", 
       await click(MandatoryCheckboxPage.submit());
 
       // Then
-      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).toEqual("I prefer not to say");
-      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).not.toEqual("I am an alien");
-      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).not.toEqual("British\nIrish");
+      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).toBe("I prefer not to say");
+      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).not.toBe("I am an alien");
+      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).not.toBe("British\nIrish");
     });
     it("When the user clicks the second mutually exclusive option, Then only the second exclusive option should be checked.", async () => {
       // When
@@ -179,9 +179,9 @@ describe("Component: Mutually Exclusive Checkbox With Multiple Radio Override", 
       await click(MandatoryCheckboxPage.submit());
 
       // Then
-      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).toEqual("I am an alien");
-      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).not.toEqual("I prefer not to say");
-      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).not.toEqual("British\nIrish");
+      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).toBe("I am an alien");
+      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).not.toBe("I prefer not to say");
+      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).not.toBe("British\nIrish");
     });
   });
 
@@ -199,8 +199,8 @@ describe("Component: Mutually Exclusive Checkbox With Multiple Radio Override", 
       await click(MandatoryCheckboxPage.submit());
 
       // Then
-      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).toEqual("I am an alien");
-      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).not.toEqual("I prefer not to say");
+      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).toBe("I am an alien");
+      await expect(await $(SummaryPage.checkboxExclusiveAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });
 
@@ -217,7 +217,7 @@ describe("Component: Mutually Exclusive Checkbox With Multiple Radio Override", 
       await click(MandatoryCheckboxPage.submit());
 
       // Then
-      await expect(await $(MandatoryCheckboxPage.errorHeader()).getText()).toContain("There is a problem with your answer");
+      await expect(await $(MandatoryCheckboxPage.errorHeader()).getText()).toBe("There is a problem with your answer");
       await expect(await $(MandatoryCheckboxPage.errorNumber(1)).getText()).toContain("Select at least one answer");
       await expect(await $(MandatoryCheckboxPage.questionErrorPanel()).isExisting()).toBe(true);
     });

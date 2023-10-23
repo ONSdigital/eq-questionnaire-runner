@@ -18,7 +18,7 @@ describe("Component: Mutually Exclusive Checkbox With Single Checkbox Override",
       await expect(await $(MandatoryCheckboxPage.checkboxBritish()).isSelected()).toBe(true);
       await expect(await $(MandatoryCheckboxPage.checkboxIrish()).isSelected()).toBe(true);
       await expect(await $(MandatoryCheckboxPage.checkboxOther()).isSelected()).toBe(true);
-      await expect(await $(MandatoryCheckboxPage.checkboxOtherDetail()).getValue()).toContain("The other option");
+      await expect(await $(MandatoryCheckboxPage.checkboxOtherDetail()).getValue()).toBe("The other option");
 
       // When
       await $(MandatoryCheckboxPage.checkboxExclusiveIPreferNotToSay()).click();
@@ -28,7 +28,7 @@ describe("Component: Mutually Exclusive Checkbox With Single Checkbox Override",
       await expect(await $(MandatoryCheckboxPage.checkboxBritish()).isSelected()).toBe(false);
       await expect(await $(MandatoryCheckboxPage.checkboxIrish()).isSelected()).toBe(false);
       await expect(await $(MandatoryCheckboxPage.checkboxOther()).isSelected()).toBe(false);
-      await expect(await $(MandatoryCheckboxPage.checkboxOtherDetail()).getValue()).toContain("");
+      await expect(await $(MandatoryCheckboxPage.checkboxOtherDetail()).getValue()).toBe("");
 
       await click(MandatoryCheckboxPage.submit());
 
@@ -123,7 +123,7 @@ describe("Component: Mutually Exclusive Checkbox With Single Checkbox Override",
       await click(MandatoryCheckboxPage.submit());
 
       // Then
-      await expect(await $(MandatoryCheckboxPage.errorHeader()).getText()).toContain("There is a problem with your answer");
+      await expect(await $(MandatoryCheckboxPage.errorHeader()).getText()).toBe("There is a problem with your answer");
       await expect(await $(MandatoryCheckboxPage.errorNumber(1)).getText()).toContain("Select at least one answer");
       await expect(await $(MandatoryCheckboxPage.questionErrorPanel()).isExisting()).toBe(true);
     });

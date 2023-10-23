@@ -47,16 +47,16 @@ describe("Component: Mutually Exclusive Day Month Year Date With Single Checkbox
       await $(DatePage.dateyear()).setValue("2018");
 
       // Then
-      await expect(await $(DatePage.dateday()).getValue()).toEqual("17");
-      await expect(await $(DatePage.datemonth()).getValue()).toEqual("3");
-      await expect(await $(DatePage.dateyear()).getValue()).toEqual("2018");
+      await expect(await $(DatePage.dateday()).getValue()).toBe("17");
+      await expect(await $(DatePage.datemonth()).getValue()).toBe("3");
+      await expect(await $(DatePage.dateyear()).getValue()).toBe("2018");
 
       await expect(await $(DatePage.dateExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       await click(DatePage.submit());
 
-      await expect(await $(SummaryPage.dateAnswer()).getText()).toEqual("17 March 2018");
-      await expect(await $(SummaryPage.dateAnswer()).getText()).not.toEqual("I prefer not to say");
+      await expect(await $(SummaryPage.dateAnswer()).getText()).toBe("17 March 2018");
+      await expect(await $(SummaryPage.dateAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });
 
@@ -71,23 +71,23 @@ describe("Component: Mutually Exclusive Day Month Year Date With Single Checkbox
       await $(DatePage.dateyear()).setValue("2018");
 
       // Then
-      await expect(await $(DatePage.dateday()).getValue()).toEqual("17");
-      await expect(await $(DatePage.datemonth()).getValue()).toEqual("3");
-      await expect(await $(DatePage.dateyear()).getValue()).toEqual("2018");
+      await expect(await $(DatePage.dateday()).getValue()).toBe("17");
+      await expect(await $(DatePage.datemonth()).getValue()).toBe("3");
+      await expect(await $(DatePage.dateyear()).getValue()).toBe("2018");
       await expect(await $(DatePage.dateExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       await click(DatePage.submit());
-      await expect(await $(SummaryPage.dateAnswer()).getText()).toEqual("17 March 2018");
-      await expect(await $(SummaryPage.dateAnswer()).getText()).not.toEqual("I prefer not to say");
+      await expect(await $(SummaryPage.dateAnswer()).getText()).toBe("17 March 2018");
+      await expect(await $(SummaryPage.dateAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });
 
   describe("Given the user has not answered the non-exclusive month year date answer", () => {
     it("When the user clicks the mutually exclusive checkbox answer, Then only the exclusive checkbox should be answered.", async () => {
       // Given
-      await expect(await $(DatePage.dateday()).getValue()).toEqual("");
-      await expect(await $(DatePage.datemonth()).getValue()).toEqual("");
-      await expect(await $(DatePage.dateyear()).getValue()).toEqual("");
+      await expect(await $(DatePage.dateday()).getValue()).toBe("");
+      await expect(await $(DatePage.datemonth()).getValue()).toBe("");
+      await expect(await $(DatePage.dateyear()).getValue()).toBe("");
 
       // When
       await $(DatePage.dateExclusiveIPreferNotToSay()).click();
@@ -96,24 +96,24 @@ describe("Component: Mutually Exclusive Day Month Year Date With Single Checkbox
       // Then
       await click(DatePage.submit());
 
-      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).toEqual("I prefer not to say");
-      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).not.toEqual("17 March 2018");
+      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).toBe("I prefer not to say");
+      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).not.toBe("17 March 2018");
     });
   });
 
   describe("Given the user has not answered the question and the question is optional", () => {
     it("When the user clicks the Continue button, Then it should display `No answer provided`", async () => {
       // Given
-      await expect(await $(DatePage.dateday()).getValue()).toEqual("");
-      await expect(await $(DatePage.datemonth()).getValue()).toEqual("");
-      await expect(await $(DatePage.dateyear()).getValue()).toEqual("");
+      await expect(await $(DatePage.dateday()).getValue()).toBe("");
+      await expect(await $(DatePage.datemonth()).getValue()).toBe("");
+      await expect(await $(DatePage.dateyear()).getValue()).toBe("");
       await expect(await $(DatePage.dateExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       // When
       await click(DatePage.submit());
 
       // Then
-      await expect(await $(SummaryPage.dateAnswer()).getText()).toEqual("No answer provided");
+      await expect(await $(SummaryPage.dateAnswer()).getText()).toBe("No answer provided");
     });
   });
 });

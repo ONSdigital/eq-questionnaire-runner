@@ -50,8 +50,8 @@ describe("Component: Mutually Exclusive Month Year Date With Single Checkbox Ove
 
       await click(MonthYearDatePage.submit());
 
-      await expect(await $(SummaryPage.monthYearDateAnswer()).getText()).toEqual("March 2018");
-      await expect(await $(SummaryPage.monthYearDateAnswer()).getText()).not.toEqual("I prefer not to say");
+      await expect(await $(SummaryPage.monthYearDateAnswer()).getText()).toBe("March 2018");
+      await expect(await $(SummaryPage.monthYearDateAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });
 
@@ -65,22 +65,22 @@ describe("Component: Mutually Exclusive Month Year Date With Single Checkbox Ove
       await $(MonthYearDatePage.monthYearDateYear()).setValue("2018");
 
       // Then
-      await expect(await $(MonthYearDatePage.monthYearDateMonth()).getValue()).toEqual("3");
-      await expect(await $(MonthYearDatePage.monthYearDateYear()).getValue()).toEqual("2018");
+      await expect(await $(MonthYearDatePage.monthYearDateMonth()).getValue()).toBe("3");
+      await expect(await $(MonthYearDatePage.monthYearDateYear()).getValue()).toBe("2018");
       await expect(await $(MonthYearDatePage.monthYearDateExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       await click(MonthYearDatePage.submit());
 
-      await expect(await $(SummaryPage.monthYearDateAnswer()).getText()).toEqual("March 2018");
-      await expect(await $(SummaryPage.monthYearDateAnswer()).getText()).not.toEqual("I prefer not to say");
+      await expect(await $(SummaryPage.monthYearDateAnswer()).getText()).toBe("March 2018");
+      await expect(await $(SummaryPage.monthYearDateAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });
 
   describe("Given the user has not answered the non-exclusive month year date answer", () => {
     it("When the user clicks the mutually exclusive checkbox answer, Then only the exclusive checkbox should be answered.", async () => {
       // Given
-      await expect(await $(MonthYearDatePage.monthYearDateMonth()).getValue()).toEqual("");
-      await expect(await $(MonthYearDatePage.monthYearDateYear()).getValue()).toEqual("");
+      await expect(await $(MonthYearDatePage.monthYearDateMonth()).getValue()).toBe("");
+      await expect(await $(MonthYearDatePage.monthYearDateYear()).getValue()).toBe("");
 
       // When
       await $(MonthYearDatePage.monthYearDateExclusiveIPreferNotToSay()).click();
@@ -89,23 +89,23 @@ describe("Component: Mutually Exclusive Month Year Date With Single Checkbox Ove
       // Then
       await click(MonthYearDatePage.submit());
 
-      await expect(await $(SummaryPage.monthYearDateExclusiveAnswer()).getText()).toEqual("I prefer not to say");
-      await expect(await $(SummaryPage.monthYearDateExclusiveAnswer()).getText()).not.toEqual("March 2018");
+      await expect(await $(SummaryPage.monthYearDateExclusiveAnswer()).getText()).toBe("I prefer not to say");
+      await expect(await $(SummaryPage.monthYearDateExclusiveAnswer()).getText()).not.toBe("March 2018");
     });
   });
 
   describe("Given the user has not answered the question and the question is optional", () => {
     it("When the user clicks the Continue button, Then it should display `No answer provided`", async () => {
       // Given
-      await expect(await $(MonthYearDatePage.monthYearDateMonth()).getValue()).toEqual("");
-      await expect(await $(MonthYearDatePage.monthYearDateYear()).getValue()).toEqual("");
+      await expect(await $(MonthYearDatePage.monthYearDateMonth()).getValue()).toBe("");
+      await expect(await $(MonthYearDatePage.monthYearDateYear()).getValue()).toBe("");
       await expect(await $(MonthYearDatePage.monthYearDateExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       // When
       await click(MonthYearDatePage.submit());
 
       // Then
-      await expect(await $(SummaryPage.monthYearDateAnswer()).getText()).toEqual("No answer provided");
+      await expect(await $(SummaryPage.monthYearDateAnswer()).getText()).toBe("No answer provided");
     });
   });
 });

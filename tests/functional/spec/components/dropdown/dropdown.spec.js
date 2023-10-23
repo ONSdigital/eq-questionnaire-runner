@@ -15,19 +15,19 @@ describe("Component: Dropdown", () => {
     it("When I have selected a dropdown option, Then the selected option should be displayed in the summary", async () => {
       await $(DropdownMandatoryPage.answer()).selectByAttribute("value", "Rugby is better!");
       await click(DropdownMandatoryPage.submit());
-      await expect(await $(DropdownMandatorySummary.dropdownMandatoryAnswer()).getText()).toEqual("Rugby is better!");
+      await expect(await $(DropdownMandatorySummary.dropdownMandatoryAnswer()).getText()).toBe("Rugby is better!");
     });
 
     it("When I have not selected a dropdown option and click Continue, Then the default error message should be displayed", async () => {
       await click(DropdownMandatoryPage.submit());
-      await expect(await $(DropdownMandatoryPage.errorNumber(1)).getText()).toEqual("Select an answer");
+      await expect(await $(DropdownMandatoryPage.errorNumber(1)).getText()).toBe("Select an answer");
     });
 
     it("When I have selected a dropdown option and I try to select a default (disabled) dropdown option, Then the already selected option should be displayed in summary", async () => {
       await $(DropdownMandatoryPage.answer()).selectByAttribute("value", "Liverpool");
       await $(DropdownMandatoryPage.answer()).selectByAttribute("value", "");
       await click(DropdownMandatoryPage.submit());
-      await expect(await $(DropdownMandatorySummary.dropdownMandatoryAnswer()).getText()).toEqual("Liverpool");
+      await expect(await $(DropdownMandatorySummary.dropdownMandatoryAnswer()).getText()).toBe("Liverpool");
     });
 
     it("When I click the dropdown label, Then the dropdown should be focused", async () => {
@@ -38,23 +38,23 @@ describe("Component: Dropdown", () => {
     it("When I'm on the summary page and I click Edit then Continue, Then the answer on the summary page should be unchanged", async () => {
       await $(DropdownMandatoryPage.answer()).selectByAttribute("value", "Rugby is better!");
       await click(DropdownMandatoryPage.submit());
-      await expect(await $(DropdownMandatorySummary.dropdownMandatoryAnswer()).getText()).toEqual("Rugby is better!");
+      await expect(await $(DropdownMandatorySummary.dropdownMandatoryAnswer()).getText()).toBe("Rugby is better!");
       await $(DropdownMandatorySummary.dropdownMandatoryAnswerEdit()).click();
       await click(DropdownMandatoryPage.submit());
-      await expect(await $(DropdownMandatorySummary.dropdownMandatoryAnswer()).getText()).toEqual("Rugby is better!");
+      await expect(await $(DropdownMandatorySummary.dropdownMandatoryAnswer()).getText()).toBe("Rugby is better!");
     });
 
     it("When I'm on the summary page and I click Edit and change the answer, Then the newly selected answer should be displayed in the summary", async () => {
       await $(DropdownMandatoryPage.answer()).selectByAttribute("value", "Rugby is better!");
       await click(DropdownMandatoryPage.submit());
-      await expect(await $(DropdownMandatorySummary.dropdownMandatoryAnswer()).getText()).toEqual("Rugby is better!");
+      await expect(await $(DropdownMandatorySummary.dropdownMandatoryAnswer()).getText()).toBe("Rugby is better!");
       await $(DropdownMandatorySummary.dropdownMandatoryAnswerEdit()).click();
       await click(DropdownMandatoryPage.submit());
-      await expect(await $(DropdownMandatorySummary.dropdownMandatoryAnswer()).getText()).toEqual("Rugby is better!");
+      await expect(await $(DropdownMandatorySummary.dropdownMandatoryAnswer()).getText()).toBe("Rugby is better!");
       await $(DropdownMandatorySummary.dropdownMandatoryAnswerEdit()).click();
       await $(DropdownMandatoryPage.answer()).selectByAttribute("value", "Liverpool");
       await click(DropdownMandatoryPage.submit());
-      await expect(await $(DropdownMandatorySummary.dropdownMandatoryAnswer()).getText()).toEqual("Liverpool");
+      await expect(await $(DropdownMandatorySummary.dropdownMandatoryAnswer()).getText()).toBe("Liverpool");
     });
   });
 
@@ -65,7 +65,7 @@ describe("Component: Dropdown", () => {
 
     it("When I have not selected a dropdown option and click Continue, Then the overridden error message should be displayed", async () => {
       await click(DropdownMandatoryOverriddenPage.submit());
-      await expect(await $(DropdownMandatoryOverriddenPage.errorNumber(1)).getText()).toEqual("Overridden test error message.");
+      await expect(await $(DropdownMandatoryOverriddenPage.errorNumber(1)).getText()).toBe("Overridden test error message.");
     });
   });
 
@@ -77,23 +77,23 @@ describe("Component: Dropdown", () => {
 
     it('When I have not selected a dropdown option, Then the summary should display "No answer provided"', async () => {
       await click(DropdownOptionalPage.submit());
-      await expect(await $(DropdownOptionalSummary.dropdownOptionalAnswer()).getText()).toEqual("No answer provided");
+      await expect(await $(DropdownOptionalSummary.dropdownOptionalAnswer()).getText()).toBe("No answer provided");
     });
 
     it("When I have selected a dropdown option, Then the selected option should be displayed in the summary", async () => {
       await $(DropdownOptionalPage.answer()).selectByAttribute("value", "Rugby is better!");
       await click(DropdownOptionalPage.submit());
-      await expect(await $(DropdownOptionalSummary.dropdownOptionalAnswer()).getText()).toEqual("Rugby is better!");
+      await expect(await $(DropdownOptionalSummary.dropdownOptionalAnswer()).getText()).toBe("Rugby is better!");
     });
 
     it('When I have selected a dropdown option and I reselect the default option (Select an answer), Then the summary should display "No answer provided"', async () => {
       await $(DropdownOptionalPage.answer()).selectByAttribute("value", "Chelsea");
       await click(DropdownOptionalPage.submit());
-      await expect(await $(DropdownOptionalSummary.dropdownOptionalAnswer()).getText()).toEqual("Chelsea");
+      await expect(await $(DropdownOptionalSummary.dropdownOptionalAnswer()).getText()).toBe("Chelsea");
       await $(DropdownOptionalSummary.dropdownOptionalAnswerEdit()).click();
       await $(DropdownOptionalPage.answer()).selectByAttribute("value", "");
       await click(DropdownOptionalPage.submit());
-      await expect(await $(DropdownOptionalSummary.dropdownOptionalAnswer()).getText()).toEqual("No answer provided");
+      await expect(await $(DropdownOptionalSummary.dropdownOptionalAnswer()).getText()).toBe("No answer provided");
     });
   });
 });

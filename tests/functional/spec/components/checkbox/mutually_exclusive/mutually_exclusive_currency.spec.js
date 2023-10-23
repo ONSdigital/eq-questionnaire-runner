@@ -44,7 +44,7 @@ describe("Component: Mutually Exclusive Currency With Single Checkbox Override",
 
       await click(CurrencyPage.submit());
 
-      await expect(await $(SummaryPage.currencyAnswer()).getText()).toContain("123");
+      await expect(await $(SummaryPage.currencyAnswer()).getText()).toBe("£123");
       await expect(await $(SummaryPage.currencyAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });
@@ -58,12 +58,12 @@ describe("Component: Mutually Exclusive Currency With Single Checkbox Override",
       await $(CurrencyPage.currency()).setValue("123");
 
       // Then
-      await expect(await $(CurrencyPage.currency()).getValue()).toContain("123");
+      await expect(await $(CurrencyPage.currency()).getValue()).toBe("123");
       await expect(await $(CurrencyPage.currencyExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       await click(CurrencyPage.submit());
 
-      await expect(await $(SummaryPage.currencyAnswer()).getText()).toContain("123");
+      await expect(await $(SummaryPage.currencyAnswer()).getText()).toBe("£123");
       await expect(await $(SummaryPage.currencyAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });

@@ -33,7 +33,7 @@ describe("Component: Mutually Exclusive Day Month Year Date With Multiple Radio 
 
       await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).toBe("I prefer not to say");
       await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).not.toBe("I have never worked");
-      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).not.toEqual("17 March 2018");
+      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).not.toBe("17 March 2018");
     });
 
     it("When then user clicks the second mutually exclusive radio answer, Then only the second mutually exclusive radio should be answered.", async () => {
@@ -43,15 +43,15 @@ describe("Component: Mutually Exclusive Day Month Year Date With Multiple Radio 
       // Then
       await expect(await $(DatePage.dateExclusiveIHaveNeverWorked()).isSelected()).toBe(true);
       await expect(await $(DatePage.dateExclusiveIPreferNotToSay()).isSelected()).toBe(false);
-      await expect(await $(DatePage.dateday()).getValue()).toEqual("");
-      await expect(await $(DatePage.datemonth()).getValue()).toEqual("");
-      await expect(await $(DatePage.dateyear()).getValue()).toEqual("");
+      await expect(await $(DatePage.dateday()).getValue()).toBe("");
+      await expect(await $(DatePage.datemonth()).getValue()).toBe("");
+      await expect(await $(DatePage.dateyear()).getValue()).toBe("");
 
       await click(DatePage.submit());
 
-      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).toEqual("I have never worked");
-      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).not.toEqual("I prefer not to say");
-      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).not.toEqual("17 March 2018");
+      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).toBe("I have never worked");
+      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).not.toBe("I prefer not to say");
+      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).not.toBe("17 March 2018");
     });
   });
 
@@ -68,17 +68,17 @@ describe("Component: Mutually Exclusive Day Month Year Date With Multiple Radio 
       await $(DatePage.dateyear()).setValue("2018");
 
       // Then
-      await expect(await $(DatePage.dateday()).getValue()).toEqual("17");
-      await expect(await $(DatePage.datemonth()).getValue()).toEqual("3");
-      await expect(await $(DatePage.dateyear()).getValue()).toEqual("2018");
+      await expect(await $(DatePage.dateday()).getValue()).toBe("17");
+      await expect(await $(DatePage.datemonth()).getValue()).toBe("3");
+      await expect(await $(DatePage.dateyear()).getValue()).toBe("2018");
 
       await expect(await $(DatePage.dateExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       await click(DatePage.submit());
 
-      await expect(await $(SummaryPage.dateAnswer()).getText()).toEqual("17 March 2018");
-      await expect(await $(SummaryPage.dateAnswer()).getText()).not.toEqual("I prefer not to say");
-      await expect(await $(SummaryPage.dateAnswer()).getText()).not.toEqual("I have never worked");
+      await expect(await $(SummaryPage.dateAnswer()).getText()).toBe("17 March 2018");
+      await expect(await $(SummaryPage.dateAnswer()).getText()).not.toBe("I prefer not to say");
+      await expect(await $(SummaryPage.dateAnswer()).getText()).not.toBe("I have never worked");
     });
   });
 
@@ -95,17 +95,17 @@ describe("Component: Mutually Exclusive Day Month Year Date With Multiple Radio 
       await $(DatePage.dateyear()).setValue("2018");
 
       // Then
-      await expect(await $(DatePage.dateday()).getValue()).toEqual("17");
-      await expect(await $(DatePage.datemonth()).getValue()).toEqual("3");
-      await expect(await $(DatePage.dateyear()).getValue()).toEqual("2018");
+      await expect(await $(DatePage.dateday()).getValue()).toBe("17");
+      await expect(await $(DatePage.datemonth()).getValue()).toBe("3");
+      await expect(await $(DatePage.dateyear()).getValue()).toBe("2018");
 
       await expect(await $(DatePage.dateExclusiveIHaveNeverWorked()).isSelected()).toBe(false);
 
       await click(DatePage.submit());
 
-      await expect(await $(SummaryPage.dateAnswer()).getText()).toEqual("17 March 2018");
-      await expect(await $(SummaryPage.dateAnswer()).getText()).not.toEqual("I prefer not to say");
-      await expect(await $(SummaryPage.dateAnswer()).getText()).not.toEqual("I have never worked");
+      await expect(await $(SummaryPage.dateAnswer()).getText()).toBe("17 March 2018");
+      await expect(await $(SummaryPage.dateAnswer()).getText()).not.toBe("I prefer not to say");
+      await expect(await $(SummaryPage.dateAnswer()).getText()).not.toBe("I have never worked");
     });
   });
 
@@ -121,25 +121,25 @@ describe("Component: Mutually Exclusive Day Month Year Date With Multiple Radio 
       await $(DatePage.dateyear()).setValue("2018");
 
       // Then
-      await expect(await $(DatePage.dateday()).getValue()).toEqual("17");
-      await expect(await $(DatePage.datemonth()).getValue()).toEqual("3");
-      await expect(await $(DatePage.dateyear()).getValue()).toEqual("2018");
+      await expect(await $(DatePage.dateday()).getValue()).toBe("17");
+      await expect(await $(DatePage.datemonth()).getValue()).toBe("3");
+      await expect(await $(DatePage.dateyear()).getValue()).toBe("2018");
       await expect(await $(DatePage.dateExclusiveIPreferNotToSay()).isSelected()).toBe(false);
       await expect(await $(DatePage.dateExclusiveIHaveNeverWorked()).isSelected()).toBe(false);
 
       await click(DatePage.submit());
-      await expect(await $(SummaryPage.dateAnswer()).getText()).toEqual("17 March 2018");
-      await expect(await $(SummaryPage.dateAnswer()).getText()).not.toEqual("I prefer not to say");
-      await expect(await $(SummaryPage.dateAnswer()).getText()).not.toEqual("I have never worked");
+      await expect(await $(SummaryPage.dateAnswer()).getText()).toBe("17 March 2018");
+      await expect(await $(SummaryPage.dateAnswer()).getText()).not.toBe("I prefer not to say");
+      await expect(await $(SummaryPage.dateAnswer()).getText()).not.toBe("I have never worked");
     });
   });
 
   describe("Given the user has not answered the non-exclusive month year date answer", () => {
     beforeEach(async () => {
       // Given
-      await expect(await $(DatePage.dateday()).getValue()).toEqual("");
-      await expect(await $(DatePage.datemonth()).getValue()).toEqual("");
-      await expect(await $(DatePage.dateyear()).getValue()).toEqual("");
+      await expect(await $(DatePage.dateday()).getValue()).toBe("");
+      await expect(await $(DatePage.datemonth()).getValue()).toBe("");
+      await expect(await $(DatePage.dateyear()).getValue()).toBe("");
     });
     it("When the user clicks the first mutually exclusive radio answer, Then only the first exclusive radio should be answered.", async () => {
       // When
@@ -150,9 +150,9 @@ describe("Component: Mutually Exclusive Day Month Year Date With Multiple Radio 
       // Then
       await click(DatePage.submit());
 
-      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).toEqual("I prefer not to say");
-      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).not.toEqual("I have never worked");
-      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).not.toEqual("17 March 2018");
+      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).toBe("I prefer not to say");
+      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).not.toBe("I have never worked");
+      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).not.toBe("17 March 2018");
     });
 
     it("When the user clicks the second mutually exclusive radio answer, Then only the second exclusive radio should be answered.", async () => {
@@ -164,18 +164,18 @@ describe("Component: Mutually Exclusive Day Month Year Date With Multiple Radio 
       // Then
       await click(DatePage.submit());
 
-      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).toEqual("I have never worked");
-      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).not.toEqual("I prefer not to say");
-      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).not.toEqual("17 March 2018");
+      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).toBe("I have never worked");
+      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).not.toBe("I prefer not to say");
+      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).not.toBe("17 March 2018");
     });
   });
 
   describe("Given the user has not answered the question and the question is optional", () => {
     it("When the user clicks the Continue button, Then it should display `No answer provided`", async () => {
       // Given
-      await expect(await $(DatePage.dateday()).getValue()).toEqual("");
-      await expect(await $(DatePage.datemonth()).getValue()).toEqual("");
-      await expect(await $(DatePage.dateyear()).getValue()).toEqual("");
+      await expect(await $(DatePage.dateday()).getValue()).toBe("");
+      await expect(await $(DatePage.datemonth()).getValue()).toBe("");
+      await expect(await $(DatePage.dateyear()).getValue()).toBe("");
       await expect(await $(DatePage.dateExclusiveIPreferNotToSay()).isSelected()).toBe(false);
       await expect(await $(DatePage.dateExclusiveIHaveNeverWorked()).isSelected()).toBe(false);
 
@@ -183,7 +183,7 @@ describe("Component: Mutually Exclusive Day Month Year Date With Multiple Radio 
       await click(DatePage.submit());
 
       // Then
-      await expect(await $(SummaryPage.dateAnswer()).getText()).toEqual("No answer provided");
+      await expect(await $(SummaryPage.dateAnswer()).getText()).toBe("No answer provided");
     });
   });
 
@@ -201,8 +201,8 @@ describe("Component: Mutually Exclusive Day Month Year Date With Multiple Radio 
       await click(DatePage.submit());
 
       // Then
-      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).toEqual("I have never worked");
-      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).not.toEqual("I prefer not to say");
+      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).toBe("I have never worked");
+      await expect(await $(SummaryPage.dateExclusiveAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });
 });

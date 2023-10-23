@@ -20,7 +20,7 @@ describe('Radio with multiple "detail_answer" options', () => {
     await click(MandatoryRadioPage.submit());
     // Then
     await expect(await $(MandatoryRadioPage.error()).isDisplayed()).toBe(true);
-    await expect(await $(MandatoryRadioPage.errorNumber(1)).getText()).toEqual("Enter your favourite to continue");
+    await expect(await $(MandatoryRadioPage.errorNumber(1)).getText()).toBe("Enter your favourite to continue");
   });
 
   it("Given a selected radio answer with an error for a mandatory detail answer, When I enter valid value and submit the page, Then the error is cleared and I navigate to next page.", async () => {
@@ -44,7 +44,7 @@ describe('Radio with multiple "detail_answer" options', () => {
     await expect(await $(MandatoryRadioPage.eggsDetail()).isDisplayed()).toBe(true);
     await click(MandatoryRadioPage.submit());
     // Then
-    await expect(await $(SubmitPage.radioMandatoryAnswer()).getText()).toEqual("Eggs");
+    await expect(await $(SubmitPage.radioMandatoryAnswer()).getText()).toBe("Eggs");
   });
 
   it("Given a detail answer, When the user provides text, Then that text should be displayed on the summary screen", async () => {
@@ -55,7 +55,7 @@ describe('Radio with multiple "detail_answer" options', () => {
     await $(MandatoryRadioPage.eggsDetail()).setValue("Scrambled");
     await click(MandatoryRadioPage.submit());
     // Then
-    await expect(await $(SubmitPage.radioMandatoryAnswer()).getText()).toEqual("Eggs\nScrambled");
+    await expect(await $(SubmitPage.radioMandatoryAnswer()).getText()).toBe("Eggs\nScrambled");
   });
 
   it("Given I have previously added text in a detail answer and saved, When I select a different radio and save, Then the text entered in the detail answer field should be empty.", async () => {
@@ -71,6 +71,6 @@ describe('Radio with multiple "detail_answer" options', () => {
     await $(SubmitPage.previous()).click();
     // Then
     await $(MandatoryRadioPage.favouriteNotListed()).click();
-    await expect(await $(MandatoryRadioPage.favouriteNotListedDetail()).getValue()).toEqual("");
+    await expect(await $(MandatoryRadioPage.favouriteNotListedDetail()).getValue()).toBe("");
   });
 });

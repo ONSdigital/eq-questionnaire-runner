@@ -26,7 +26,7 @@ describe("Component: Radio", () => {
       await $(RadioMandatoryPage.teaCoffee()).click();
       await click(RadioMandatoryPage.submit());
       await expect(await browser.getUrl()).toContain(RadioMandatorySummary.pageName);
-      await expect(await $(RadioMandatorySummary.radioMandatoryAnswer()).getText()).toContain("Tea & Coffee");
+      await expect(await $(RadioMandatorySummary.radioMandatoryAnswer()).getText()).toBe("Tea & Coffee");
     });
   });
 
@@ -39,7 +39,7 @@ describe("Component: Radio", () => {
       await $(RadioMandatoryPage.coffee()).click();
       await click(RadioMandatoryPage.submit());
       await expect(await browser.getUrl()).toContain(RadioMandatorySummary.pageName);
-      await expect(await $(RadioMandatorySummary.radioMandatoryAnswer()).getText()).toContain("Coffee");
+      await expect(await $(RadioMandatorySummary.radioMandatoryAnswer()).getText()).toBe("Coffee");
     });
   });
 
@@ -80,7 +80,7 @@ describe("Component: Radio", () => {
     it("When I submit without any data in the other text field it should Then throw an overridden error", async () => {
       await $(RadioMandatoryDetailAnswerOverriddenPage.other()).click();
       await click(RadioMandatoryDetailAnswerOverriddenPage.submit());
-      await expect(await $(RadioMandatoryDetailAnswerOverriddenPage.errorNumber(1)).getText()).toEqual("Test error message is overridden");
+      await expect(await $(RadioMandatoryDetailAnswerOverriddenPage.errorNumber(1)).getText()).toBe("Test error message is overridden");
     });
   });
 
@@ -105,7 +105,7 @@ describe("Component: Radio", () => {
 
     it("When I have submitted the page without any option, Then an overridden error is displayed", async () => {
       await click(RadioMandatoryOverriddenPage.submit());
-      await expect(await $(RadioMandatoryOverriddenPage.errorNumber(1)).getText()).toEqual("Test error message is overridden");
+      await expect(await $(RadioMandatoryOverriddenPage.errorNumber(1)).getText()).toBe("Test error message is overridden");
     });
   });
 
@@ -117,7 +117,7 @@ describe("Component: Radio", () => {
     it("When I have selected no option, Then the selected option should be displayed in the summary", async () => {
       await click(RadioNonMandatoryPage.submit());
       await expect(await browser.getUrl()).toContain(RadioNonMandatorySummary.pageName);
-      await expect(await $(RadioNonMandatorySummary.radioNonMandatoryAnswer()).getText()).toContain("No answer provided");
+      await expect(await $(RadioNonMandatorySummary.radioNonMandatoryAnswer()).getText()).toBe("No answer provided");
     });
   });
 
@@ -131,7 +131,7 @@ describe("Component: Radio", () => {
       await click(RadioNonMandatoryDetailAnswerOverriddenPage.submit());
       await expect(
         await $(RadioNonMandatoryDetailAnswerOverriddenPage.errorNumber(1)).getText()
-      ).toEqual("Test error message is overridden");
+      ).toBe("Test error message is overridden");
     });
   });
 
