@@ -31,7 +31,7 @@ from app.questionnaire.value_source_resolver import (
     ValueSourceResolver,
     ValueSourceTypes,
 )
-from app.utilities.mappings import get_flattened_mapping_values
+from app.utilities.mappings import get_flattened_mapping_values, get_values_for_key
 from app.utilities.types import LocationType, SectionKey
 
 if TYPE_CHECKING:
@@ -210,8 +210,9 @@ class PlaceholderParser:
             )
         )
 
-    def _all_value_sources_metadata(self, placeholder: Mapping) -> bool:
-        sources = self._schema.get_values_for_key(placeholder, key="source")
+    @staticmethod
+    def _all_value_sources_metadata(placeholder: Mapping) -> bool:
+        sources = get_values_for_key("source", placeholder)
         return all(source == "metadata" for source in sources)
 
     def _get_value_source_resolver_for_transform(

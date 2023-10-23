@@ -15,7 +15,11 @@ from app.questionnaire.rules.operator import OPERATION_MAPPING
 from app.questionnaire.schema_utils import get_answers_from_question
 from app.settings import MAX_NUMBER
 from app.utilities.make_immutable import make_immutable
-from app.utilities.mappings import get_flattened_mapping_values, get_mappings_with_key
+from app.utilities.mappings import (
+    get_flattened_mapping_values,
+    get_mappings_with_key,
+    get_values_for_key,
+)
 
 DEFAULT_LANGUAGE_CODE = "en"
 
@@ -1107,23 +1111,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             operator in rule for operator in OPERATION_MAPPING
         )
 
-    def get_values_for_key(
-        self, block: Mapping, key: str, ignore_keys: list[str] | None = None
-    ) -> Generator:
-        ignore_keys = ignore_keys or []
-        for k, v in block.items():
-            if k in ignore_keys:
-                continue
-            if k == key:
-                yield v
-            if isinstance(v, dict):
-                yield from self.get_values_for_key(v, key, ignore_keys)
-            elif isinstance(v, (list, tuple)):
-                for d in v:
-                    # in the case of a when_rule "==": {dict, "Yes"} d could be a string
-                    if isinstance(d, dict):
-                        yield from self.get_values_for_key(d, key, ignore_keys)
-
     def _get_parent_section_id_for_block(self, block_id: str) -> str:
         parent_block_id = self._parent_id_map[block_id]
         group_id = self._parent_id_map[parent_block_id]
@@ -1177,7 +1164,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         )
 
         for section in self.get_sections():
-            when_rules = self.get_values_for_key(section, "when")
+            when_rules = get_values_for_key("when", section)
             rules: list = list(when_rules)
 
             (
