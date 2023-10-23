@@ -4,7 +4,7 @@ import pytest
 from ordered_set import OrderedSet
 from werkzeug.datastructures import ImmutableDict
 
-from app.questionnaire.questionnaire_schema import AnswerDependent, QuestionnaireSchema
+from app.questionnaire.questionnaire_schema import Dependent, QuestionnaireSchema
 from app.utilities.schema import load_schema_from_name
 
 
@@ -223,10 +223,10 @@ def test_get_all_questions_for_block_question():
 
 def test_get_section_ids_by_list_name(sections_dependent_on_list_schema):
     schema = QuestionnaireSchema(sections_dependent_on_list_schema)
-    when_blocks = schema.get_section_ids_dependent_on_list("list")
+    when_blocks = schema.get_when_rule_section_dependencies_for_list("list")
 
     assert len(when_blocks) == 2
-    assert ["section2", "section4"] == when_blocks
+    assert {"section2", "section4"} == when_blocks
 
 
 def test_get_all_questions_for_block_question_variants():
@@ -409,7 +409,7 @@ def test_answer_dependencies_for_calculated_question_non_repeating(
 
     assert schema.answer_dependencies == {
         "total-employees-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="breakdown-section",
                 block_id="employees-breakdown-block",
                 for_list=None,
@@ -417,7 +417,7 @@ def test_answer_dependencies_for_calculated_question_non_repeating(
             )
         },
         "total-turnover-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="breakdown-section",
                 block_id="turnover-breakdown-block",
                 for_list=None,
@@ -434,7 +434,7 @@ def test_answer_dependencies_for_calculated_question_repeating(
 
     assert schema.answer_dependencies == {
         "entertainment-spending-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="breakdown-section",
                 block_id="second-spending-breakdown-block",
                 for_list="people",
@@ -442,7 +442,7 @@ def test_answer_dependencies_for_calculated_question_repeating(
             )
         },
         "total-spending-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="breakdown-section",
                 block_id="spending-breakdown-block",
                 for_list="people",
@@ -459,13 +459,13 @@ def test_answer_dependencies_for_calculated_question_value_source(
 
     assert schema.answer_dependencies == {
         "breakdown-1": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="number-total-playback",
                 for_list=None,
                 answer_id=None,
             ),
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="second-breakdown-block",
                 for_list=None,
@@ -473,13 +473,13 @@ def test_answer_dependencies_for_calculated_question_value_source(
             ),
         },
         "breakdown-2": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="number-total-playback",
                 for_list=None,
                 answer_id=None,
             ),
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="second-breakdown-block",
                 for_list=None,
@@ -487,7 +487,7 @@ def test_answer_dependencies_for_calculated_question_value_source(
             ),
         },
         "total-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="breakdown-block",
                 for_list=None,
@@ -504,13 +504,13 @@ def test_answer_dependencies_for_calculated_summary(
 
     expected_dependencies = {
         "first-number-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="currency-total-playback",
                 for_list=None,
                 answer_id=None,
             ),
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="set-min-max-block",
                 for_list=None,
@@ -518,13 +518,13 @@ def test_answer_dependencies_for_calculated_summary(
             ),
         },
         "second-number-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="currency-total-playback",
                 for_list=None,
                 answer_id=None,
             ),
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="set-min-max-block",
                 for_list=None,
@@ -532,13 +532,13 @@ def test_answer_dependencies_for_calculated_summary(
             ),
         },
         "second-number-answer-also-in-total": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="currency-total-playback",
                 for_list=None,
                 answer_id=None,
             ),
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="set-min-max-block",
                 for_list=None,
@@ -546,13 +546,13 @@ def test_answer_dependencies_for_calculated_summary(
             ),
         },
         "third-number-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="currency-total-playback",
                 for_list=None,
                 answer_id=None,
             ),
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="set-min-max-block",
                 for_list=None,
@@ -560,13 +560,13 @@ def test_answer_dependencies_for_calculated_summary(
             ),
         },
         "fourth-number-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="currency-total-playback",
                 for_list=None,
                 answer_id=None,
             ),
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="set-min-max-block",
                 for_list=None,
@@ -574,13 +574,13 @@ def test_answer_dependencies_for_calculated_summary(
             ),
         },
         "fourth-and-a-half-number-answer-also-in-total": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="currency-total-playback",
                 for_list=None,
                 answer_id=None,
             ),
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="set-min-max-block",
                 for_list=None,
@@ -588,7 +588,7 @@ def test_answer_dependencies_for_calculated_summary(
             ),
         },
         "second-number-answer-unit-total": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="unit-total-playback",
                 for_list=None,
@@ -596,7 +596,7 @@ def test_answer_dependencies_for_calculated_summary(
             )
         },
         "third-and-a-half-number-answer-unit-total": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="unit-total-playback",
                 for_list=None,
@@ -604,7 +604,7 @@ def test_answer_dependencies_for_calculated_summary(
             )
         },
         "fifth-percent-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="percentage-total-playback",
                 for_list=None,
@@ -612,7 +612,7 @@ def test_answer_dependencies_for_calculated_summary(
             )
         },
         "sixth-percent-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="percentage-total-playback",
                 for_list=None,
@@ -620,7 +620,7 @@ def test_answer_dependencies_for_calculated_summary(
             )
         },
         "fifth-number-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="number-total-playback",
                 for_list=None,
@@ -628,7 +628,7 @@ def test_answer_dependencies_for_calculated_summary(
             )
         },
         "sixth-number-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="number-total-playback",
                 for_list=None,
@@ -645,7 +645,7 @@ def test_answer_dependencies_for_min_max(numbers_schema):
 
     assert schema.answer_dependencies == {
         "set-minimum": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="test-min-max-block",
                 for_list=None,
@@ -653,13 +653,13 @@ def test_answer_dependencies_for_min_max(numbers_schema):
             )
         },
         "set-maximum": {
-            AnswerDependent(
+            Dependent(
                 section_id="currency-section",
                 block_id="second-number-block",
                 for_list=None,
                 answer_id=None,
             ),
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="test-min-max-block",
                 for_list=None,
@@ -667,7 +667,7 @@ def test_answer_dependencies_for_min_max(numbers_schema):
             ),
         },
         "test-range": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="detail-answer-block",
                 for_list=None,
@@ -675,7 +675,7 @@ def test_answer_dependencies_for_min_max(numbers_schema):
             )
         },
         "first-number-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="currency-section",
                 block_id="second-number-block",
                 for_list=None,
@@ -692,13 +692,13 @@ def test_answer_dependencies_for_dynamic_options(
 
     assert schema.answer_dependencies == {
         "injury-sustained-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="injury-sustained-section",
                 block_id="most-serious-injury",
                 for_list=None,
                 answer_id="most-serious-injury-answer",
             ),
-            AnswerDependent(
+            Dependent(
                 section_id="injury-sustained-section",
                 block_id="healed-the-quickest",
                 for_list=None,
@@ -715,25 +715,25 @@ def test_answer_dependencies_for_dynamic_options_function_driven(
 
     assert schema.answer_dependencies == {
         "reference-date-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="dynamic-mutually-exclusive",
                 for_list=None,
                 answer_id="dynamic-mutually-exclusive-dynamic-answer",
             ),
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="dynamic-checkbox",
                 for_list=None,
                 answer_id="dynamic-checkbox-answer",
             ),
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="dynamic-dropdown",
                 for_list=None,
                 answer_id="dynamic-dropdown-answer",
             ),
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="dynamic-radio",
                 for_list=None,

@@ -54,9 +54,6 @@ class ListAddQuestion(ListAction):
         self.questionnaire_store_updater.update_answers(
             self.form.data, self._list_item_id
         )
-
-        self.capture_dependent_sections_for_list(self.parent_block["for_list"])
-
         return super().handle_post()
 
     def _resolve_custom_page_title_vars(self) -> dict[str, int]:

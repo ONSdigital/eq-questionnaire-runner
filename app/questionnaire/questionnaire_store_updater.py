@@ -10,7 +10,7 @@ from app.data_models.answer_store import Answer
 from app.data_models.relationship_store import RelationshipDict, RelationshipStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location, SectionKey
-from app.questionnaire.questionnaire_schema import AnswerDependent
+from app.questionnaire.questionnaire_schema import Dependent
 from app.questionnaire.router import Router
 from app.utilities.types import DependentSection, LocationType
 
@@ -131,12 +131,14 @@ class QuestionnaireStoreUpdater:
         # If a primary person was initially answered negatively, then changed to positive,
         # the location must be removed from the progress store.
         self.remove_completed_location(self._current_location)
+        self._capture_dependencies_for_list_change(list_name)
 
         return self._list_store.add_list_item(list_name, primary_person=True)
 
     def add_list_item(self, list_name: str) -> str:
         new_list_item_id = self._list_store.add_list_item(list_name)
         self.remove_completed_relationship_locations_for_list_name(list_name)
+        self._capture_dependencies_for_list_change(list_name)
         return new_list_item_id
 
     def remove_primary_person(self, list_name: str) -> None:
@@ -159,27 +161,33 @@ class QuestionnaireStoreUpdater:
             self._update_relationship_question_completeness(list_name)
 
         self._progress_store.remove_progress_for_list_item_id(list_item_id=list_item_id)
-        self._capture_dependencies_for_list_item_removal(list_name)
+        self._capture_dependencies_for_list_change(list_name)
 
-    def _capture_dependencies_for_list_item_removal(self, list_name: str) -> None:
+    def _capture_dependencies_for_list_change(self, list_name: str) -> None:
         """
-        If an item is removed from a list, dependencies of any child blocks need to be captured and their progress updated.
-        (E.g. dynamic-answers depending on a child block could have validation, so need revisiting if an item is removed)
+        Captures the dependencies when a list is added to or removed from
         """
-        for list_collector in self._schema.get_list_collectors_for_list(
-            for_list=list_name
-        ):
-            child_blocks = (
-                list_collector.get("add_block"),
-                list_collector.get("remove_block"),
-                *list_collector.get("repeating_blocks", []),
+        self._capture_block_dependencies_for_list(list_name)
+        self.capture_progress_section_dependencies()
+        section_ids = self._schema.get_when_rule_section_dependencies_for_list(
+            list_name
+        )
+        section_ids.add(self._current_location.section_id)
+
+        for (
+            section_id,
+            list_item_id,
+        ) in self.started_section_keys(section_ids=section_ids):
+            # Only add sections which are repeated sections for this list, or the section in which this list is collected
+            # Prevents list item progresses being added as dependants as these are captured by started_section_keys(section_ids=section_ids)
+            if not self._schema.get_repeat_for_section(section_id) and list_item_id:
+                continue
+            self.dependent_sections.add(
+                DependentSection(
+                    section_id,
+                    list_item_id,
+                )
             )
-            for child_block in child_blocks:
-                if child_block:
-                    for answer_id in self._schema.get_answer_ids_for_block(
-                        child_block["id"]
-                    ):
-                        self._capture_block_dependencies_for_answer(answer_id)
 
     def _get_relationship_answers_for_list_name(
         self, list_name: str
@@ -280,9 +288,28 @@ class QuestionnaireStoreUpdater:
             )
         )
 
+    def _capture_block_dependencies_for_list(self, list_name: str) -> None:
+        """Captures a list of block ids that are dependents of the given list"""
+        dependencies: set[Dependent] = self._schema.list_dependencies.get(
+            list_name, set()
+        )
+        self._capture_block_dependencies(dependencies)
+
     def _capture_block_dependencies_for_answer(self, answer_id: str) -> None:
         """Captures a unique list of block ids that are dependents of the provided answer id.
 
+        If the answer is repeating, then blocks that depend on the list it repeats over, are also affected
+        """
+        dependencies: set[Dependent] = self._schema.answer_dependencies.get(
+            answer_id, set()
+        )
+        is_repeating_answer = self._schema.is_answer_in_repeating_section(answer_id)
+        self._capture_block_dependencies(dependencies, is_repeating_answer)
+
+    def _capture_block_dependencies(
+        self, dependencies: set[Dependent], within_repeat: bool | None = None
+    ) -> None:
+        """
         The block_ids are mapped to the section key. Dependencies in a repeating section use the list items
         for the repeating list when creating the section key.
 
@@ -290,41 +317,28 @@ class QuestionnaireStoreUpdater:
         multiples times, as you may have multiple dependencies for one block which may also apply to each item in the list.
         However, when updating the progress store, the block ids are checked to ensure they exist in the progress store.
         """
-        dependencies: set[AnswerDependent] = self._schema.answer_dependencies.get(
-            answer_id, set()
-        )
-
-        is_repeating_answer = self._schema.is_answer_in_repeating_section(answer_id)
-
         for dependency in dependencies:
             for list_item_id in self._get_list_item_ids_for_dependency(
-                dependency, is_repeating_answer
+                dependency, within_repeat
             ):
                 if dependency.answer_id:
                     self._answer_store.remove_answer(
                         dependency.answer_id, list_item_id=list_item_id
                     )
-
                 self.dependent_block_id_by_section_key[
                     SectionKey(dependency.section_id, list_item_id)
                 ].add(dependency.block_id)
 
     def _get_list_item_ids_for_dependency(
-        self, dependency: AnswerDependent, is_repeating_answer: bool | None = False
+        self, dependency: Dependent, within_repeat: bool | None = False
     ) -> list[str] | list[None]:
         if dependency.for_list:
-            list_item_ids: list[str] | list[None]
-
-            if is_repeating_answer:
+            if within_repeat:
                 # If the source answer is repeating, then we must be in the current repeating section.
                 # A repeating answer should only ever be depended on by itself.
-                list_item_ids = [self._current_location.list_item_id]  # type: ignore
-            else:
-                list_item_ids = self._list_store[dependency.for_list].items
-        else:
-            list_item_ids = [None]
-
-        return list_item_ids
+                return [self._current_location.list_item_id]  # type: ignore
+            return self._list_store[dependency.for_list].items
+        return [None]
 
     def _capture_section_dependencies_for_answer(self, answer_id: str) -> None:
         """Captures a unique list of section ids that are dependents of the provided answer id."""
@@ -344,28 +358,30 @@ class QuestionnaireStoreUpdater:
             else:
                 self.dependent_sections.add(DependentSection(section_id))
 
-    def _capture_section_dependencies_progress_value_source_for_current_section(
+    def _capture_section_dependencies_progress_value_source_for_section(
         self,
+        section_id: str,
     ) -> None:
         """
         Captures a unique list of section ids that are dependents of the current section, for progress value sources.
         """
         dependent_sections: Iterable = self._schema.when_rules_section_dependencies_by_section_for_progress_value_source.get(
-            self._current_location.section_id, set()
+            section_id, set()
         )
         self._update_section_dependencies(dependent_sections)
 
-    def _capture_section_dependencies_progress_value_source_for_current_block(
+    def _capture_section_dependencies_progress_value_source_for_location(
         self,
+        location: LocationType,
     ) -> None:
         """
-        Captures a unique list of section ids that are dependents of the current block, for progress value sources.
+        Captures a unique list of section ids that are dependents of the current location, for progress value sources.
         """
         # Type ignore: Added as block_id will exist at this point
         dependent_sections: Iterable = self._schema.when_rules_block_dependencies_by_section_for_progress_value_source.get(
-            self._current_location.section_id, {}
+            location.section_id, {}
         ).get(
-            self._current_location.block_id, set()  # type: ignore
+            location.block_id, set()  # type: ignore
         )
 
         self._update_section_dependencies(dependent_sections)
@@ -390,6 +406,7 @@ class QuestionnaireStoreUpdater:
             self._current_question
         )
 
+        answers_updated = False
         for answer_id, answer_value in form_data.items():
             if answer_id not in answers_by_answer_id:
                 continue
@@ -401,11 +418,18 @@ class QuestionnaireStoreUpdater:
             if self._update_answer(answer_id_to_use, list_item_id_to_use, answer_value):
                 self._capture_section_dependencies_for_answer(answer_id_to_use)
                 self._capture_block_dependencies_for_answer(answer_id_to_use)
-                self.capture_progress_section_dependencies()
+                answers_updated = True
+
+        if answers_updated:
+            self.capture_progress_section_dependencies()
 
     def capture_progress_section_dependencies(self) -> None:
-        self._capture_section_dependencies_progress_value_source_for_current_block()
-        self._capture_section_dependencies_progress_value_source_for_current_section()
+        self._capture_section_dependencies_progress_value_source_for_section(
+            self._current_location.section_id
+        )
+        self._capture_section_dependencies_progress_value_source_for_location(
+            self._current_location
+        )
 
     def update_progress_for_dependent_sections(self) -> None:
         """Removes dependent blocks from the progress store and updates the progress to IN_PROGRESS.
