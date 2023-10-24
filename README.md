@@ -217,11 +217,11 @@ yarn
 Available commands:
 
 | Command                | Task                                                                                                      |
-| ---------------------- | --------------------------------------------------------------------------------------------------------- |
-| `yarn test_functional` | Runs the functional tests through Webdriver (requires app running on localhost:5000 and generated pages). |
-| `yarn generate_pages`  | Generates the functional test pages.                                                                      |
-| `yarn lint`            | Lints the JS, reporting errors/warnings.                                                                  |
-| `yarn format`          | Format the json schemas.                                                                                  |
+|------------------------| --------------------------------------------------------------------------------------------------------- |
+| `make test-functional` | Runs the functional tests through Webdriver (requires app running on localhost:5000 and generated pages). |
+| `make generate-pages`  | Generates the functional test pages.                                                                      |
+| `make lint-js`         | Lints the JS, reporting errors/warnings.                                                                  |
+| `make format-js`       | Format the json schemas.                                                                                  |
 
 ---
 
@@ -241,21 +241,18 @@ RUNNER_ENV_FILE=.functional-tests.env make run
 
 This will set the correct environment variables for running the functional tests.
 
-Then you can run:
+Then you can run either:
 
 ``` shell
 make test-functional
 ```
-
-This will delete the `tests/functional/generated_pages` directory and regenerate all the files in it from the schemas.
-
-You can also individually run the `generate_pages` and `test_functional` yarn scripts:
+or
 
 ``` shell
-yarn generate_pages
-yarn test_functional
+make test-functional-headless
 ```
 
+This will delete the `tests/functional/generated_pages` directory and regenerate all the files in it from the schemas.
 
 To generate the pages manually you can run the `generate_pages` scripts with the schema directory. Run it from the `tests/functional` directory as follows:
 
@@ -263,22 +260,21 @@ To generate the pages manually you can run the `generate_pages` scripts with the
 ./generate_pages.py ../../schemas/test/en/ ./generated_pages -r "../../base_pages"
 ```
 
-To generate a spec file with the imports included, you can use the `generate_pages.py` script on a single schema with the `-s` argument.
-
+To generate a spec file with the imports included, you can pass the schema name as an argument without the file extension, e.g. `SCHEMA=test_address`:
 ``` shell
-./generate_pages.py ../../schemas/test/en/test_multiple_piping.json ./temp_directory -r "../../base_pages" -s spec/test_multiple_piping.spec.js
+make generate-spec SCHEMA=<schema-name>
 ```
 
 If you have already built the generated pages, then the functional tests can be executed with:
 
 ``` shell
-yarn test_functional
+make test-functional
 ```
 
-This can be limited to a single spec using:
+This can be limited to a single spec where argument needed is the remainder of the path after `./tests/functional/spec/` (which is included in the command):
 
 ``` shell
-yarn test_functional --spec ./tests/functional/spec/exit.spec.js
+make test-functional-spec SPEC=<spec>
 ```
 
 To run a single test, add `.only` into the name of any `describe` or `it` function:
@@ -288,10 +284,16 @@ To run a single test, add `.only` into the name of any `describe` or `it` functi
 `it.only('Given this is a test', function() {...}`
 
 Test suites are configured in the `wdio.conf.js` file.
-An individual test suite can be run using:
+An individual test suite can be run using the suite names as the argument to this command. The suites that can be used with command below are:
+* timeout_modal_expired
+* timeout_modal_extended
+* timeout_modal_extended_new_window
+* features
+* general
+* components
 
 ``` shell
-yarn test_functional --suite <suite>
+make test-functional-suite SUITE=<suite>
 ```
 
 To run the tests against a remote deployment you will need to specify the environment variable of EQ_FUNCTIONAL_TEST_ENV eg:

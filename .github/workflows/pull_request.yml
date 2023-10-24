@@ -73,7 +73,7 @@ jobs:
       - name: Running translation tests
         run: pipenv run python -m scripts.extract_translation_templates --test
       - name: Python linting
-        run: pipenv run ./scripts/run_lint_python.sh
+        run: make lint-python
       - name: Get yarn cache
         id: get-yarn-cache
         run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
@@ -88,7 +88,7 @@ jobs:
       - name: Functional tests spec lint
         run: ./scripts/lint_functional_test_specs.sh
       - name: Javascript linting
-        run: yarn lint
+        run: make lint-js
   test-unit:
     needs: python-dependencies
     runs-on: ubuntu-22.04
@@ -121,7 +121,7 @@ jobs:
       - name: Link env vars
         run: ln -sf .development.env .env
       - name: Running unit tests
-        run: pipenv run ./scripts/run_tests_unit.sh
+        run: make test-unit
   validate-schemas:
     runs-on: ubuntu-22.04
     steps:
@@ -129,7 +129,7 @@ jobs:
       - name: Run validator
         run: ./scripts/run_validator.sh
       - name: Running schema tests
-        run: ./scripts/validate_test_schemas.sh
+        run: make validate-test-schemas
   test-functional:
     needs: [python-dependencies, node-dependencies]
     strategy:
@@ -169,7 +169,7 @@ jobs:
       - name: Docker compose
         run: docker-compose --version && RUNNER_ENV_FILE=.functional-tests.env docker-compose up --build -d
       - name: Functional tests
-        run: ./scripts/run_tests_functional.sh ${{ matrix.suite }}
+        run: make test-functional-suite SUITE=${{ matrix.suite }}
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker-compose kill
   docker-push:
