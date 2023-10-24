@@ -12,13 +12,13 @@ describe("Summary Screen", () => {
     completeAllQuestions();
     await expect(
       await $(SubmitPage.summaryRowState("name-question-concatenated-answer")).getText()
-    ).toContain("John Smith");
+    ).toBe("John Smith");
     await expect(
       await $(SubmitPage.summaryRowState("address-question-concatenated-answer")).getText()
-    ).toContain("Cardiff Road\nNewport\nNP10 8XG");
+    ).toBe("Cardiff Road\nNewport\nNP10 8XG");
     await expect(
       await $(SubmitPage.summaryRowState("age-question-concatenated-answer")).getText()
-    ).toContain("7\nThis age is an estimate");
+    ).toBe("7\nThis age is an estimate");
   });
 
   it("Given no values are entered in a question with multiple answers and concatenation set, when on the summary screen then the correct response should be displayed", async () => {
@@ -28,7 +28,7 @@ describe("Summary Screen", () => {
     await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
     await expect(
       await $(SubmitPage.summaryRowState("name-question-concatenated-answer")).getText()
-    ).toContain("No answer provided");
+    ).toBe("No answer provided");
   });
 
   async function completeAllQuestions() {

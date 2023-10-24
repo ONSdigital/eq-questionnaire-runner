@@ -28,7 +28,7 @@ describe("Grand Calculated Summary inside a repeating section", () => {
     await click(AnyCostPage.submit());
     await $(FinanceCostPage.answer()).setValue(90);
     await click(FinanceCostPage.submit());
-    await expect(await $(CalculatedSummaryBaseCostPage.calculatedSummaryTitle()).getText()).toContain(
+    await expect(await $(CalculatedSummaryBaseCostPage.calculatedSummaryTitle()).getText()).toBe(
       "We calculate the total base cost for any owned vehicle to be £90.00. Is this correct?",
     );
     await click(CalculatedSummaryBaseCostPage.submit());
@@ -54,17 +54,17 @@ describe("Grand Calculated Summary inside a repeating section", () => {
     await click(VehicleMaintenanceBlockPage.submit());
     await $(VehicleFuelBlockPage.vehicleFuelCost()).setValue(125);
     await click(VehicleFuelBlockPage.submit());
-    await expect(await $(CalculatedSummaryRunningCostPage.calculatedSummaryTitle()).getText()).toContain(
+    await expect(await $(CalculatedSummaryRunningCostPage.calculatedSummaryTitle()).getText()).toBe(
       "We calculate the monthly running costs of your Car to be £225.00. Is this correct?",
     );
     await click(CalculatedSummaryRunningCostPage.submit());
     await expect(browser).toHaveUrlContaining(GrandCalculatedSummaryVehiclePage.pageName);
-    await expect(await $(GrandCalculatedSummaryVehiclePage.grandCalculatedSummaryTitle()).getText()).toContain(
+    await expect(await $(GrandCalculatedSummaryVehiclePage.grandCalculatedSummaryTitle()).getText()).toBe(
       "The total cost of owning and running your Car is calculated to be £315.00. Is this correct?",
     );
-    await expect(await $(GrandCalculatedSummaryVehiclePage.calculatedSummaryBaseCostLabel()).getText()).toContain("Vehicle base cost");
-    await expect(await $(GrandCalculatedSummaryVehiclePage.calculatedSummaryRunningCostLabel()).getText()).toContain("Monthly Car costs");
-    await expect(await $(GrandCalculatedSummaryVehiclePage.grandCalculatedSummaryQuestion()).getText()).toContain("Grand total Car expenditure");
+    await expect(await $(GrandCalculatedSummaryVehiclePage.calculatedSummaryBaseCostLabel()).getText()).toBe("Vehicle base cost");
+    await expect(await $(GrandCalculatedSummaryVehiclePage.calculatedSummaryRunningCostLabel()).getText()).toBe("Monthly Car costs");
+    await expect(await $(GrandCalculatedSummaryVehiclePage.grandCalculatedSummaryQuestion()).getText()).toBe("Grand total Car expenditure");
     assertSummaryValues(["£90.00", "£225.00", "£315.00"]);
   });
 
@@ -76,17 +76,17 @@ describe("Grand Calculated Summary inside a repeating section", () => {
     await click(VehicleMaintenanceBlockPage.submit());
     await $(VehicleFuelBlockPage.vehicleFuelCost()).setValue(45);
     await click(VehicleFuelBlockPage.submit());
-    await expect(await $(CalculatedSummaryRunningCostPage.calculatedSummaryTitle()).getText()).toContain(
+    await expect(await $(CalculatedSummaryRunningCostPage.calculatedSummaryTitle()).getText()).toBe(
       "We calculate the monthly running costs of your Van to be £95.00. Is this correct?",
     );
     await click(CalculatedSummaryRunningCostPage.submit());
     await expect(browser).toHaveUrlContaining(GrandCalculatedSummaryVehiclePage.pageName);
-    await expect(await $(GrandCalculatedSummaryVehiclePage.grandCalculatedSummaryTitle()).getText()).toContain(
+    await expect(await $(GrandCalculatedSummaryVehiclePage.grandCalculatedSummaryTitle()).getText()).toBe(
       "The total cost of owning and running your Van is calculated to be £185.00. Is this correct?",
     );
-    await expect(await $(GrandCalculatedSummaryVehiclePage.calculatedSummaryBaseCostLabel()).getText()).toContain("Vehicle base cost");
-    await expect(await $(GrandCalculatedSummaryVehiclePage.calculatedSummaryRunningCostLabel()).getText()).toContain("Monthly Van costs");
-    await expect(await $(GrandCalculatedSummaryVehiclePage.grandCalculatedSummaryQuestion()).getText()).toContain("Grand total Van expenditure");
+    await expect(await $(GrandCalculatedSummaryVehiclePage.calculatedSummaryBaseCostLabel()).getText()).toBe("Vehicle base cost");
+    await expect(await $(GrandCalculatedSummaryVehiclePage.calculatedSummaryRunningCostLabel()).getText()).toBe("Monthly Van costs");
+    await expect(await $(GrandCalculatedSummaryVehiclePage.grandCalculatedSummaryQuestion()).getText()).toBe("Grand total Van expenditure");
     assertSummaryValues(["£90.00", "£95.00", "£185.00"]);
   });
 
@@ -146,7 +146,7 @@ describe("Grand Calculated Summary inside a repeating section", () => {
     await $(FinanceCostPage.answer()).setValue(100);
     await click(FinanceCostPage.submit());
     await expect(browser).toHaveUrlContaining(CalculatedSummaryBaseCostPage.pageName);
-    await expect(await $(CalculatedSummaryBaseCostPage.calculatedSummaryTitle()).getText()).toContain(
+    await expect(await $(CalculatedSummaryBaseCostPage.calculatedSummaryTitle()).getText()).toBe(
       "We calculate the total base cost for any owned vehicle to be £100.00. Is this correct?",
     );
     await click(CalculatedSummaryBaseCostPage.submit());
@@ -158,7 +158,7 @@ describe("Grand Calculated Summary inside a repeating section", () => {
     await click(BaseCostPaymentBreakdownPage.submit());
 
     await expect(browser).toHaveUrlContaining(GrandCalculatedSummaryVehiclePage.pageName);
-    await expect(await $(GrandCalculatedSummaryVehiclePage.grandCalculatedSummaryTitle()).getText()).toContain(
+    await expect(await $(GrandCalculatedSummaryVehiclePage.grandCalculatedSummaryTitle()).getText()).toBe(
       "The total cost of owning and running your Van is calculated to be £195.00. Is this correct?",
     );
   });
@@ -169,12 +169,12 @@ describe("Grand Calculated Summary inside a repeating section", () => {
     await $(VehicleMaintenanceBlockPage.vehicleMaintenanceCost()).setValue(75);
     await click(VehicleMaintenanceBlockPage.submit());
     await expect(browser).toHaveUrlContaining(CalculatedSummaryRunningCostPage.pageName);
-    await expect(await $(CalculatedSummaryRunningCostPage.calculatedSummaryTitle()).getText()).toContain(
+    await expect(await $(CalculatedSummaryRunningCostPage.calculatedSummaryTitle()).getText()).toBe(
       "We calculate the monthly running costs of your Van to be £120.00. Is this correct?",
     );
     await click(CalculatedSummaryRunningCostPage.submit());
     await expect(browser).toHaveUrlContaining(GrandCalculatedSummaryVehiclePage.pageName);
-    await expect(await $(GrandCalculatedSummaryVehiclePage.grandCalculatedSummaryTitle()).getText()).toContain(
+    await expect(await $(GrandCalculatedSummaryVehiclePage.grandCalculatedSummaryTitle()).getText()).toBe(
       "The total cost of owning and running your Van is calculated to be £220.00. Is this correct?",
     );
   });
@@ -185,8 +185,8 @@ describe("Grand Calculated Summary inside a repeating section", () => {
     await $(HubPage.summaryRowLink("vehicle-details-section-1")).click();
     await click(GrandCalculatedSummaryVehiclePage.submit());
     await click(VehicleDetailsSectionPage.submit());
-    await expect(await $(HubPage.summaryRowState("vehicle-details-section-1")).getText()).toContain("Completed");
-    await expect(await $(HubPage.summaryRowState("vehicle-details-section-2")).getText()).toContain("Completed");
+    await expect(await $(HubPage.summaryRowState("vehicle-details-section-1")).getText()).toBe("Completed");
+    await expect(await $(HubPage.summaryRowState("vehicle-details-section-2")).getText()).toBe("Completed");
     await $(HubPage.summaryRowLink("base-costs-section")).click();
     await $(BaseCostsSectionPage.financeCostAnswerEdit()).click();
     await $(FinanceCostPage.answer()).setValue(110);
@@ -194,15 +194,15 @@ describe("Grand Calculated Summary inside a repeating section", () => {
     await click(CalculatedSummaryBaseCostPage.submit());
     await click(BaseCostPaymentBreakdownPage.submit());
     await click(BaseCostsSectionPage.submit());
-    await expect(await $(HubPage.summaryRowState("vehicle-details-section-1")).getText()).toContain("Partially completed");
-    await expect(await $(HubPage.summaryRowState("vehicle-details-section-2")).getText()).toContain("Partially completed");
+    await expect(await $(HubPage.summaryRowState("vehicle-details-section-1")).getText()).toBe("Partially completed");
+    await expect(await $(HubPage.summaryRowState("vehicle-details-section-2")).getText()).toBe("Partially completed");
   });
 
   it("Given I have two partially complete repeating sections, When I press continue, Then I am taken straight to the grand calculated summary as it is the first incomplete block", async () => {
     await click(HubPage.submit());
     await expect(browser).toHaveUrlContaining(GrandCalculatedSummaryVehiclePage.pageName);
     await expect(browser).toHaveUrlContaining(`vehicles/${vehicleListItemIds[0]}/`);
-    await expect(await $(GrandCalculatedSummaryVehiclePage.grandCalculatedSummaryTitle()).getText()).toContain(
+    await expect(await $(GrandCalculatedSummaryVehiclePage.grandCalculatedSummaryTitle()).getText()).toBe(
       "The total cost of owning and running your Car is calculated to be £335.00. Is this correct?",
     );
     await click(GrandCalculatedSummaryVehiclePage.submit());
@@ -213,7 +213,7 @@ describe("Grand Calculated Summary inside a repeating section", () => {
     await click(HubPage.submit());
     await expect(browser).toHaveUrlContaining(GrandCalculatedSummaryVehiclePage.pageName);
     await expect(browser).toHaveUrlContaining(`vehicles/${vehicleListItemIds[1]}/`);
-    await expect(await $(GrandCalculatedSummaryVehiclePage.grandCalculatedSummaryTitle()).getText()).toContain(
+    await expect(await $(GrandCalculatedSummaryVehiclePage.grandCalculatedSummaryTitle()).getText()).toBe(
       "The total cost of owning and running your Van is calculated to be £230.00. Is this correct?",
     );
   });

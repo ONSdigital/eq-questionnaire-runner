@@ -42,7 +42,7 @@ describe("Feature: Sum of grouped answers validation (less than) against total",
       await $(BreakdownAnswerPage.breakdown3()).setValue("3");
       await $(BreakdownAnswerPage.breakdown4()).setValue("3");
       await click(BreakdownAnswerPage.submit());
-      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toContain("Enter answers that add up to less than £12.00");
+      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toBe("Enter answers that add up to less than £12.00");
     });
   });
 
@@ -55,7 +55,7 @@ describe("Feature: Sum of grouped answers validation (less than) against total",
       await $(BreakdownAnswerPage.breakdown3()).setValue("3");
       await $(BreakdownAnswerPage.breakdown4()).setValue("3");
       await click(BreakdownAnswerPage.submit());
-      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toContain("Enter answers that add up to less than £5.00");
+      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toBe("Enter answers that add up to less than £5.00");
     });
   });
 });

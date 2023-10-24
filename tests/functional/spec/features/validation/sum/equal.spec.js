@@ -40,7 +40,7 @@ describe("Feature: Sum of grouped answers equal to validation against total ", (
       await expect(await browser.getUrl()).toContain(BreakdownAnswerPage.pageName);
 
       await click(BreakdownAnswerPage.submit());
-      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toContain("Enter answers that add up to 15");
+      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toBe("Enter answers that add up to 15");
 
       await answerAndSubmitBreakdownQuestion("6", "3", "3", "3");
 
@@ -64,7 +64,7 @@ describe("Feature: Sum of grouped answers equal to validation against total ", (
       await click(TotalAnswerPage.submit());
       await answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
 
-      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toContain("Enter answers that add up to 5");
+      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toBe("Enter answers that add up to 5");
     });
   });
 });

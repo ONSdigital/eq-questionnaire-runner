@@ -80,7 +80,7 @@ describe("Using supplementary data", () => {
   it("Given I have answers with a sum validated against a supplementary data value, When I enter a breakdown less than the total, Then I see a calculated summary page with the sum of my previous answers", async () => {
     await $(SalesBreakdownBlockPage.salesLondon()).setValue(111000);
     await click(SalesBreakdownBlockPage.submit());
-    await expect(await $(CalculatedSummarySalesPage.calculatedSummaryTitle()).getText()).toContain(
+    await expect(await $(CalculatedSummarySalesPage.calculatedSummaryTitle()).getText()).toBe(
       "Total value of sales from Bristol and London is calculated to be £444,000.00. Is this correct?",
     );
   });
@@ -105,13 +105,13 @@ describe("Using supplementary data", () => {
 
   it("Given I have a section summary enabled, When I reach the section summary, Then I see it rendered correctly with supplementary data", async () => {
     await click(Section1InterstitialPage.submit());
-    await expect(await $(Section1Page.emailQuestion()).getText()).toContain("Is contact@tesco.org still the correct contact email for Tesco?");
-    await expect(await $(Section1Page.sameEmailAnswer()).getText()).toContain("Yes");
-    await expect(await $(Section1Page.tradingQuestion()).getText()).toContain("When did Tesco begin trading?");
-    await expect(await $(Section1Page.tradingAnswer()).getText()).toContain("Sunday 30 November 1947");
-    await expect(await $$(summaryRowTitles)[0].getText()).toContain("How much of the £555,000.00 total UK sales was from Bristol and London?");
-    await expect(await $(Section1Page.salesBristolAnswer()).getText()).toContain("£333,000.00");
-    await expect(await $(Section1Page.salesLondonAnswer()).getText()).toContain("£111,000.00");
+    await expect(await $(Section1Page.emailQuestion()).getText()).toBe("Is contact@tesco.org still the correct contact email for Tesco?");
+    await expect(await $(Section1Page.sameEmailAnswer()).getText()).toBe("Yes");
+    await expect(await $(Section1Page.tradingQuestion()).getText()).toBe("When did Tesco begin trading?");
+    await expect(await $(Section1Page.tradingAnswer()).getText()).toBe("Sunday 30 November 1947");
+    await expect(await $$(summaryRowTitles)[0].getText()).toBe("How much of the £555,000.00 total UK sales was from Bristol and London?");
+    await expect(await $(Section1Page.salesBristolAnswer()).getText()).toBe("£333,000.00");
+    await expect(await $(Section1Page.salesLondonAnswer()).getText()).toBe("£111,000.00");
   });
 
   it("Given I change the email for the company, When I return to the interstitial block, Then I see the email has updated", async () => {
@@ -128,8 +128,8 @@ describe("Using supplementary data", () => {
 
   it("Given I have a list collector block using a supplementary list, When I start the section, I see the supplementary list items in the list", async () => {
     await click(HubPage.submit());
-    await expect(await $(ListCollectorEmployeesPage.listLabel(1)).getText()).toContain("Harry Potter");
-    await expect(await $(ListCollectorEmployeesPage.listLabel(2)).getText()).toContain("Clark Kent");
+    await expect(await $(ListCollectorEmployeesPage.listLabel(1)).getText()).toBe("Harry Potter");
+    await expect(await $(ListCollectorEmployeesPage.listLabel(2)).getText()).toBe("Clark Kent");
     await click(ListCollectorEmployeesPage.submit());
   });
 
@@ -165,14 +165,14 @@ describe("Using supplementary data", () => {
     await $(LengthOfEmploymentPage.month()).setValue(1);
     await $(LengthOfEmploymentPage.year()).setValue(1930);
     await click(LengthOfEmploymentPage.submit());
-    await expect(await $(LengthOfEmploymentPage.singleErrorLink()).getText()).toContain("Enter a date after 26 November 1947");
+    await expect(await $(LengthOfEmploymentPage.singleErrorLink()).getText()).toBe("Enter a date after 26 November 1947");
   });
 
   it("Given I have validation on the start date in the repeating section, When I enter a date after the incorporation date, Then I see that date on the summary page for the section", async () => {
     await $(LengthOfEmploymentPage.year()).setValue(1990);
     await click(LengthOfEmploymentPage.submit());
-    await expect(await $(Section4Page.lengthEmploymentQuestion()).getText()).toContain("When did Harry Potter start working for Tesco?");
-    await expect(await $(Section4Page.employmentStart()).getText()).toContain("1 January 1990");
+    await expect(await $(Section4Page.lengthEmploymentQuestion()).getText()).toBe("When did Harry Potter start working for Tesco?");
+    await expect(await $(Section4Page.employmentStart()).getText()).toBe("1 January 1990");
   });
 
   it("Given I complete the repeating section for the other supplementary item, When I reach the summary page, Then I see the correct supplementary data with my answers", async () => {
@@ -183,39 +183,39 @@ describe("Using supplementary data", () => {
     await $(LengthOfEmploymentPage.month()).setValue(6);
     await $(LengthOfEmploymentPage.year()).setValue(2011);
     await click(LengthOfEmploymentPage.submit());
-    await expect(await $(Section4Page.lengthEmploymentQuestion()).getText()).toContain("When did Clark Kent start working for Tesco?");
-    await expect(await $(Section4Page.employmentStart()).getText()).toContain("5 June 2011");
+    await expect(await $(Section4Page.lengthEmploymentQuestion()).getText()).toBe("When did Clark Kent start working for Tesco?");
+    await expect(await $(Section4Page.employmentStart()).getText()).toBe("5 June 2011");
   });
 
   it("Given I move onto the dynamic list items, When I start a repeating section for a dynamic list item, Then I see static supplementary data correctly piped in and the same validation and summary", async () => {
     await click(Section4Page.submit());
     await click(HubPage.submit());
     await expect(await $(AdditionalLengthOfEmploymentPage.questionTitle()).getText()).toContain("When did Jane Doe start working for Tesco?");
-    await expect(await $(AdditionalLengthOfEmploymentPage.additionalEmploymentStartLegend()).getText()).toContain("Start date at Tesco");
+    await expect(await $(AdditionalLengthOfEmploymentPage.additionalEmploymentStartLegend()).getText()).toBe("Start date at Tesco");
     await $(AdditionalLengthOfEmploymentPage.day()).setValue(1);
     await $(AdditionalLengthOfEmploymentPage.month()).setValue(1);
     await $(AdditionalLengthOfEmploymentPage.year()).setValue(1930);
     await click(AdditionalLengthOfEmploymentPage.submit());
-    await expect(await $(AdditionalLengthOfEmploymentPage.singleErrorLink()).getText()).toContain("Enter a date after 26 November 1947");
+    await expect(await $(AdditionalLengthOfEmploymentPage.singleErrorLink()).getText()).toBe("Enter a date after 26 November 1947");
     await $(AdditionalLengthOfEmploymentPage.year()).setValue(2000);
     await click(AdditionalLengthOfEmploymentPage.submit());
-    await expect(await $(Section5Page.additionalLengthEmploymentQuestion()).getText()).toContain("When did Jane Doe start working for Tesco?");
-    await expect(await $(Section5Page.additionalEmploymentStart()).getText()).toContain("1 January 2000");
+    await expect(await $(Section5Page.additionalLengthEmploymentQuestion()).getText()).toBe("When did Jane Doe start working for Tesco?");
+    await expect(await $(Section5Page.additionalEmploymentStart()).getText()).toBe("1 January 2000");
     await click(Section5Page.submit());
     await click(HubPage.submit());
     await $(AdditionalLengthOfEmploymentPage.day()).setValue(3);
     await $(AdditionalLengthOfEmploymentPage.month()).setValue(3);
     await $(AdditionalLengthOfEmploymentPage.year()).setValue(2010);
     await click(AdditionalLengthOfEmploymentPage.submit());
-    await expect(await $(Section5Page.additionalLengthEmploymentQuestion()).getText()).toContain("When did John Smith start working for Tesco?");
-    await expect(await $(Section5Page.additionalEmploymentStart()).getText()).toContain("3 March 2010");
+    await expect(await $(Section5Page.additionalLengthEmploymentQuestion()).getText()).toBe("When did John Smith start working for Tesco?");
+    await expect(await $(Section5Page.additionalEmploymentStart()).getText()).toBe("3 March 2010");
     await click(Section5Page.submit());
   });
 
   it("Given I have some repeating blocks with supplementary data, When I begin the section, Then I see the supplementary names rendered correctly", async () => {
     await click(HubPage.submit());
-    await expect(await $(ListCollectorProductsPage.listLabel(1)).getText()).toContain("Articles and equipment for sports or outdoor games");
-    await expect(await $(ListCollectorProductsPage.listLabel(2)).getText()).toContain("Kitchen Equipment");
+    await expect(await $(ListCollectorProductsPage.listLabel(1)).getText()).toBe("Articles and equipment for sports or outdoor games");
+    await expect(await $(ListCollectorProductsPage.listLabel(2)).getText()).toBe("Kitchen Equipment");
     await click(ListCollectorProductsPage.submit());
   });
 
@@ -230,10 +230,10 @@ describe("Using supplementary data", () => {
     await expect(await $("body").getHTML()).toContain(
       "<li>for skiing, water sports, golf, fishing', for skiing, water sports, golf, fishing, table tennis, PE, gymnastics, athletics</li>",
     );
-    await expect(await $(ProductRepeatingBlock1Page.productVolumeSalesLabel()).getText()).toContain(
+    await expect(await $(ProductRepeatingBlock1Page.productVolumeSalesLabel()).getText()).toBe(
       "Volume of sales for Articles and equipment for sports or outdoor games",
     );
-    await expect(await $(ProductRepeatingBlock1Page.productVolumeTotalLabel()).getText()).toContain(
+    await expect(await $(ProductRepeatingBlock1Page.productVolumeTotalLabel()).getText()).toBe(
       "Total volume produced for Articles and equipment for sports or outdoor games",
     );
     await $(ProductRepeatingBlock1Page.productVolumeSales()).setValue(100);
@@ -245,9 +245,9 @@ describe("Using supplementary data", () => {
     await click(ListCollectorProductsPage.submit());
     await expect(await $("body").getText()).toContain("Include");
     await expect(await $("body").getText()).toContain("pots and pans");
-    await expect(await $("body").getText()).not.toContain("Exclude");
-    await expect(await $(ProductRepeatingBlock1Page.productVolumeSalesLabel()).getText()).toContain("Volume of sales for Kitchen Equipment");
-    await expect(await $(ProductRepeatingBlock1Page.productVolumeTotalLabel()).getText()).toContain("Total volume produced for Kitchen Equipment");
+    await expect(await $("body").getText()).not.toBe("Exclude");
+    await expect(await $(ProductRepeatingBlock1Page.productVolumeSalesLabel()).getText()).toBe("Volume of sales for Kitchen Equipment");
+    await expect(await $(ProductRepeatingBlock1Page.productVolumeTotalLabel()).getText()).toBe("Total volume produced for Kitchen Equipment");
     await $(ProductRepeatingBlock1Page.productVolumeSales()).setValue(50);
     await $(ProductRepeatingBlock1Page.productVolumeTotal()).setValue(300);
     await click(ProductRepeatingBlock1Page.submit());
@@ -256,7 +256,7 @@ describe("Using supplementary data", () => {
   it("Given I have a calculated summary using the repeating blocks, When I reach the Calculated Summary, Then I see the correct total and supplementary data labels", async () => {
     await click(ListCollectorProductsPage.submit());
     await expect(await browser.getUrl()).toContain(CalculatedSummaryVolumeSalesPage.pageName);
-    await expect(await $(CalculatedSummaryVolumeSalesPage.calculatedSummaryTitle()).getText()).toContain(
+    await expect(await $(CalculatedSummaryVolumeSalesPage.calculatedSummaryTitle()).getText()).toBe(
       "We calculate the total volume of sales over the previous quarter to be 150 kg. Is this correct?",
     );
     assertSummaryItems(["Volume of sales for Articles and equipment for sports or outdoor games", "Volume of sales for Kitchen Equipment"]);
@@ -265,7 +265,7 @@ describe("Using supplementary data", () => {
   });
 
   it("Given I have another calculated summary using the repeating blocks, When I reach the Calculated Summary, Then I see the correct total and supplementary data labels", async () => {
-    await expect(await $(CalculatedSummaryVolumeTotalPage.calculatedSummaryTitle()).getText()).toContain(
+    await expect(await $(CalculatedSummaryVolumeTotalPage.calculatedSummaryTitle()).getText()).toBe(
       "We calculate the total volume produced over the previous quarter to be 500 kg. Is this correct?",
     );
     assertSummaryItems(["Total volume produced for Articles and equipment for sports or outdoor games", "Total volume produced for Kitchen Equipment"]);
@@ -274,9 +274,9 @@ describe("Using supplementary data", () => {
   });
 
   it("Given I have dynamic answers using a supplementary list, When I reach the dynamic answer page, Then I see the correct supplementary data in the answer labels", async () => {
-    await expect(await $$(DynamicProductsPage.labels())[0].getText()).toContain("Value of sales for Articles and equipment for sports or outdoor games");
-    await expect(await $$(DynamicProductsPage.labels())[1].getText()).toContain("Value of sales for Kitchen Equipment");
-    await expect(await $$(DynamicProductsPage.labels())[2].getText()).toContain("Value of sales from other categories");
+    await expect(await $$(DynamicProductsPage.labels())[0].getText()).toBe("Value of sales for Articles and equipment for sports or outdoor games");
+    await expect(await $$(DynamicProductsPage.labels())[1].getText()).toBe("Value of sales for Kitchen Equipment");
+    await expect(await $$(DynamicProductsPage.labels())[2].getText()).toBe("Value of sales from other categories");
     await $$(DynamicProductsPage.inputs())[0].setValue(110);
     await $$(DynamicProductsPage.inputs())[1].setValue(220);
     await $$(DynamicProductsPage.inputs())[2].setValue(330);
@@ -284,7 +284,7 @@ describe("Using supplementary data", () => {
   });
 
   it("Given I have a calculated summary of dynamic answers for a supplementary list, When I reach the calculated summary, Then I see the correct supplementary data in the title and labels", async () => {
-    await expect(await $(CalculatedSummaryValueSalesPage.calculatedSummaryTitle()).getText()).toContain(
+    await expect(await $(CalculatedSummaryValueSalesPage.calculatedSummaryTitle()).getText()).toBe(
       "We calculate the total value of sales over the previous quarter to be £660.00. Is this correct?",
     );
     assertSummaryItems([
@@ -297,7 +297,7 @@ describe("Using supplementary data", () => {
   });
 
   it("Given I have a section summary for product details, When I reach the summary page, Then I see the supplementary data and my answers rendered correctly", async () => {
-    await expect(await $$(summaryRowTitles)[0].getText()).toContain("Sales during the previous quarter");
+    await expect(await $$(summaryRowTitles)[0].getText()).toBe("Sales during the previous quarter");
     assertSummaryItems([
       "Articles and equipment for sports or outdoor games",
       "Volume of sales for Articles and equipment for sports or outdoor games",
@@ -327,7 +327,7 @@ describe("Using supplementary data", () => {
     await expect(await $(HubPage.summaryRowState("section-4-2")).getText()).toBe("Not started");
     await expect(await $(HubPage.summaryRowState("section-5-1")).getText()).toBe("Completed");
     await expect(await $(HubPage.summaryRowState("section-5-2")).getText()).toBe("Completed");
-    await expect(await $("body").getText()).not.toContain("Clark Kent");
+    await expect(await $("body").getText()).not.toBe("Clark Kent");
   });
 
   it("Given I now have a new incomplete section, When I start the section, Then I see the new supplementary data piped in accordingly", async () => {
@@ -336,8 +336,8 @@ describe("Using supplementary data", () => {
     await $(LengthOfEmploymentPage.month()).setValue(10);
     await $(LengthOfEmploymentPage.year()).setValue(1999);
     await click(LengthOfEmploymentPage.submit());
-    await expect(await $(Section4Page.lengthEmploymentQuestion()).getText()).toContain("When did Bruce Wayne start working for Lidl?");
-    await expect(await $(Section4Page.employmentStart()).getText()).toContain("10 October 1999");
+    await expect(await $(Section4Page.lengthEmploymentQuestion()).getText()).toBe("When did Bruce Wayne start working for Lidl?");
+    await expect(await $(Section4Page.employmentStart()).getText()).toBe("10 October 1999");
     await click(Section4Page.submit());
   });
 
@@ -348,19 +348,19 @@ describe("Using supplementary data", () => {
     assertSummaryTitles(["Company Details", "Employees", "Additional Employees", "Harry Potter", "Bruce Wayne", "Jane Doe", "John Smith", "Product details"]);
 
     // Company details
-    await expect(await $(ViewSubmittedResponsePage.emailQuestion()).getText()).toContain("Is contact@lidl.org still the correct contact email for Lidl?");
-    await expect(await $(ViewSubmittedResponsePage.sameEmailAnswer()).getText()).toContain("No");
-    await expect(await $(ViewSubmittedResponsePage.newEmailQuestion()).getText()).toContain("What is the new contact email for Lidl?");
-    await expect(await $(ViewSubmittedResponsePage.newEmailAnswer()).getText()).toContain("new.contact@gmail.com");
-    await expect(await $(ViewSubmittedResponsePage.tradingQuestion()).getText()).toContain("When did Lidl begin trading?");
-    await expect(await $(ViewSubmittedResponsePage.tradingAnswer()).getText()).toContain("Sunday 30 November 1947");
-    await expect(await $$(summaryRowTitles)[0].getText()).toContain("How much of the £555,000.00 total UK sales was from Bristol and London?");
-    await expect(await $(ViewSubmittedResponsePage.salesBristolAnswer()).getText()).toContain("£333,000.00");
-    await expect(await $(ViewSubmittedResponsePage.salesLondonAnswer()).getText()).toContain("£111,000.00");
+    await expect(await $(ViewSubmittedResponsePage.emailQuestion()).getText()).toBe("Is contact@lidl.org still the correct contact email for Lidl?");
+    await expect(await $(ViewSubmittedResponsePage.sameEmailAnswer()).getText()).toBe("No");
+    await expect(await $(ViewSubmittedResponsePage.newEmailQuestion()).getText()).toBe("What is the new contact email for Lidl?");
+    await expect(await $(ViewSubmittedResponsePage.newEmailAnswer()).getText()).toBe("new.contact@gmail.com");
+    await expect(await $(ViewSubmittedResponsePage.tradingQuestion()).getText()).toBe("When did Lidl begin trading?");
+    await expect(await $(ViewSubmittedResponsePage.tradingAnswer()).getText()).toBe("Sunday 30 November 1947");
+    await expect(await $$(summaryRowTitles)[0].getText()).toBe("How much of the £555,000.00 total UK sales was from Bristol and London?");
+    await expect(await $(ViewSubmittedResponsePage.salesBristolAnswer()).getText()).toBe("£333,000.00");
+    await expect(await $(ViewSubmittedResponsePage.salesLondonAnswer()).getText()).toBe("£111,000.00");
 
     // Additional Employees
-    await expect(await $(ViewSubmittedResponsePage.anyAdditionalEmployeeQuestion()).getText()).toContain("Do you have any additional employees to report on?");
-    await expect(await $(ViewSubmittedResponsePage.anyAdditionalEmployeeAnswer()).getText()).toContain("Yes");
+    await expect(await $(ViewSubmittedResponsePage.anyAdditionalEmployeeQuestion()).getText()).toBe("Do you have any additional employees to report on?");
+    await expect(await $(ViewSubmittedResponsePage.anyAdditionalEmployeeAnswer()).getText()).toBe("Yes");
     await expect(await $(ViewSubmittedResponsePage.additionalEmployeeReportingContent(1)).$$(summaryItems)[0].getText()).toBe("Jane Doe");
     await expect(await $(ViewSubmittedResponsePage.additionalEmployeeReportingContent(1)).$$(summaryItems)[1].getText()).toBe("John Smith");
 

@@ -56,7 +56,7 @@ describe("Feature: Repeating Section Summaries", () => {
       });
 
       it("the title set in the repeating block is used for the section summary title", async () => {
-        await expect(await $(PersonalSummaryPage.heading()).getText()).toContain("Mark Twain");
+        await expect(await $(PersonalSummaryPage.heading()).getText()).toBe("Mark Twain");
       });
 
       it("renders their name as part of the question title on the section summary", async () => {
@@ -64,7 +64,7 @@ describe("Feature: Repeating Section Summaries", () => {
       });
 
       it("renders the correct date of birth answer", async () => {
-        await expect(await $(PersonalSummaryPage.dateOfBirthAnswer()).getText()).toContain("30 November 1835");
+        await expect(await $(PersonalSummaryPage.dateOfBirthAnswer()).getText()).toBe("30 November 1835");
       });
     });
   });

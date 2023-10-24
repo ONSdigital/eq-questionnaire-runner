@@ -70,7 +70,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await expect(await $(BreakdownAnswerPage.singleErrorLink()).isDisplayed()).toBe(true);
 
-      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toContain("Enter answers that add up to 15");
+      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toBe("Enter answers that add up to 15");
 
       await answerBothBreakdownQuestions(["6", "3", "3", "3"], ["3", "3", "2", "1"]);
 
@@ -93,7 +93,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await expect(await $(BreakdownAnswerPage.singleErrorLink()).isDisplayed()).toBe(true);
 
-      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toContain("Enter answers that add up to 15");
+      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toBe("Enter answers that add up to 15");
 
       await answerBothBreakdownQuestions(["5", "4", "4", "2"], ["3", "3", "2", "1"]);
 
@@ -118,7 +118,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await expect(await $(SecondBreakdownAnswerPage.singleErrorLink()).isDisplayed()).toBe(true);
 
-      await expect(await $(SecondBreakdownAnswerPage.errorNumber(1)).getText()).toContain("Enter answers that add up to 9");
+      await expect(await $(SecondBreakdownAnswerPage.errorNumber(1)).getText()).toBe("Enter answers that add up to 9");
 
       await answerAndSubmitSecondBreakdownQuestion("5", "4", "0", "0");
 
@@ -135,7 +135,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
 
-      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toContain("Enter answers that add up to 5");
+      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toBe("Enter answers that add up to 5");
     });
   });
 
@@ -146,7 +146,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await answerBothBreakdownQuestions(["2", "1", "1", "1"], ["3", "3", "3", "3"]);
 
-      await expect(await $(SecondBreakdownAnswerPage.errorNumber(1)).getText()).toContain("Enter answers that add up to 3");
+      await expect(await $(SecondBreakdownAnswerPage.errorNumber(1)).getText()).toBe("Enter answers that add up to 3");
     });
   });
 });

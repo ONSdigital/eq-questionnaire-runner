@@ -15,7 +15,7 @@ describe("Feature: Confirmation Question", () => {
       await $(ConfirmZeroEmployeesBlockPage.yesThisIsCorrect()).click();
       await click(ConfirmZeroEmployeesBlockPage.submit());
       await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
-      await expect(await $(SubmitPage.numberOfEmployeesTotal()).getText()).toContain("0");
+      await expect(await $(SubmitPage.numberOfEmployeesTotal()).getText()).toBe("0");
       await expect(await $$(SubmitPage.confirmZeroEmployeesAnswer())).toHaveLength(0);
     });
   });
@@ -34,7 +34,7 @@ describe("Feature: Confirmation Question", () => {
       await click(NumberOfEmployeesTotalBlockPage.submit());
       await $(ConfirmZeroEmployeesBlockPage.yesThisIsCorrect()).click();
       await click(ConfirmZeroEmployeesBlockPage.submit());
-      await expect(await $(SubmitPage.numberOfEmployeesTotal()).getText()).toContain("0");
+      await expect(await $(SubmitPage.numberOfEmployeesTotal()).getText()).toBe("0");
     });
   });
 });

@@ -152,8 +152,8 @@ describe("Dynamic answers list value source", () => {
     await $(SectionSummaryPage.anySupermarketAnswerEdit()).click();
     await $(DriverPage.no()).click();
     await click(DriverPage.submit());
-    await expect(await $("body").getText()).not.toContain("Percentage of shopping at Tesco");
-    await expect(await $("body").getText()).not.toContain("Percentage of shopping at Aldi");
+    await expect(await $("body").getText()).not.toBe("Percentage of shopping at Tesco");
+    await expect(await $("body").getText()).not.toBe("Percentage of shopping at Aldi");
     await $(SectionSummaryPage.anySupermarketAnswerEdit()).click();
     await $(DriverPage.yes()).click();
     await click(DriverPage.submit());

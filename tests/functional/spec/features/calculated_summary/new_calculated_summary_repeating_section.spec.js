@@ -220,11 +220,11 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await $(BreakdownPage.answer2()).setValue(24.58);
       await click(BreakdownPage.submit());
       await expect(browser).toHaveUrlContaining(SecondCurrencyTotalPlaybackPage.pageName);
-      await expect(await $(SecondCurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).toContain(
+      await expect(await $(SecondCurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).toBe(
         "We calculate the total of number values entered to be £124.58. Is this correct?",
       );
       await expect(await $("body").getText()).toContain("Enter two values that add up to the previous calculated summary total of £124.58");
-      await expect(await $(SecondCurrencyTotalPlaybackPage.calculatedSummaryAnswer()).getText()).toContain("124.58");
+      await expect(await $(SecondCurrencyTotalPlaybackPage.calculatedSummaryAnswer()).getText()).toBe("£124.58");
     });
 
     it("Given I complete every calculated summary, When I go to a page with calculated summary piping, Then I should the see the piped calculated summary total for each summary", async () => {
@@ -443,10 +443,10 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await $(HubPage.summaryRowLink("calculated-summary-section-1")).click();
       await expect(await $("body").getText()).toContain("30 - calculated summary answer (previous section)");
       await $(SectionSummarySectionTwo.checkboxAnswerEdit()).click();
-      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue1Label()).getText()).toContain(
+      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue1Label()).getText()).toBe(
         "30 - calculated summary answer (previous section)",
       );
-      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2Label()).getText()).toContain(
+      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2Label()).getText()).toBe(
         "40 - calculated summary answer (current section)",
       );
     });

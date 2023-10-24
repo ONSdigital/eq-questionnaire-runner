@@ -14,7 +14,7 @@ describe("Placeholder metadata check", () => {
       await click(MandatoryRadioPage.submit());
 
       await expect(await $(SubmitPage.mandatoryRadioAnswer()).getText()).toBe("Apple");
-      await expect(await $(SubmitPage.guidance()).getText()).toContain("Please submit this survey to complete it");
+      await expect(await $(SubmitPage.guidance()).getText()).toBe("Please submit this survey to complete it");
     });
   });
 });

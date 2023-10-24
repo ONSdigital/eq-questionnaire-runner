@@ -19,7 +19,7 @@ describe("Feature: Validation for single date periods", () => {
       await $(DatePeriodPage.dateRangeTomonth()).setValue(3);
       await $(DatePeriodPage.dateRangeToyear()).setValue(2018);
       await click(DatePeriodPage.submit());
-      await expect(await $(DatePeriodPage.errorNumber(1)).getText()).toContain("Enter a date after 12 December 2016");
+      await expect(await $(DatePeriodPage.errorNumber(1)).getText()).toBe("Enter a date after 12 December 2016");
     });
   });
 
@@ -34,7 +34,7 @@ describe("Feature: Validation for single date periods", () => {
       await $(DatePeriodPage.dateRangeTomonth()).setValue(3);
       await $(DatePeriodPage.dateRangeToyear()).setValue(2018);
       await click(DatePeriodPage.submit());
-      await expect(await $(DatePeriodPage.errorNumber(1)).getText()).toContain("Enter a date before 2 July 2017");
+      await expect(await $(DatePeriodPage.errorNumber(1)).getText()).toBe("Enter a date before 2 July 2017");
     });
   });
 
@@ -49,7 +49,7 @@ describe("Feature: Validation for single date periods", () => {
       await $(DatePeriodPage.dateRangeTomonth()).setValue(1);
       await $(DatePeriodPage.dateRangeToyear()).setValue(2018);
       await click(DatePeriodPage.submit());
-      await expect(await $(DatePeriodPage.errorNumber(2)).getText()).toContain("Enter a date after 10 February 2018");
+      await expect(await $(DatePeriodPage.errorNumber(2)).getText()).toBe("Enter a date after 10 February 2018");
     });
   });
 

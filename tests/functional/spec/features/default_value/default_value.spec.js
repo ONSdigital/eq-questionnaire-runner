@@ -12,7 +12,7 @@ describe("Feature: Default Value", () => {
     await $(QuestionPageTwo.two()).setValue(123);
     await click(QuestionPageTwo.submit());
     await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
-    await expect(await $(SubmitPage.answerOne()).getText()).toEqual("0");
+    await expect(await $(SubmitPage.answerOne()).getText()).toBe("0");
   });
 
   it("Given I have not answered a question containing a default value, When I return to the question, Then no value should be displayed", async () => {
@@ -33,6 +33,6 @@ describe("Feature: Default Value", () => {
     await browser.openQuestionnaire("test_default_with_skip.json");
     await click(QuestionPageOneSkip.submit());
     await expect(await browser.getUrl()).toContain(QuestionPageThreeSkip.pageName);
-    await expect(await $(QuestionPageThreeSkip.questionText()).getText()).toEqual("Question Three");
+    await expect(await $(QuestionPageThreeSkip.questionText()).getText()).toBe("Question Three");
   });
 });

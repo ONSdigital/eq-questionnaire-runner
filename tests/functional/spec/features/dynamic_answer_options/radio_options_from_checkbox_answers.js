@@ -12,9 +12,9 @@ describe("Dynamic radio options from checkbox answers", () => {
       await click(InjurySustainedPage.submit());
 
       await expect(await browser.getUrl()).toContain(MostSeriousInjuryPage.pageName);
-      await expect(await $(MostSeriousInjuryPage.answerLabelByIndex(0)).getText()).toEqual("Head");
-      await expect(await $(MostSeriousInjuryPage.answerLabelByIndex(1)).getText()).toEqual("Body");
-      await expect(await $(MostSeriousInjuryPage.answerLabelByIndex(2)).getText()).toEqual("They were of equal severity (static option)");
+      await expect(await $(MostSeriousInjuryPage.answerLabelByIndex(0)).getText()).toBe("Head");
+      await expect(await $(MostSeriousInjuryPage.answerLabelByIndex(1)).getText()).toBe("Body");
+      await expect(await $(MostSeriousInjuryPage.answerLabelByIndex(2)).getText()).toBe("They were of equal severity (static option)");
       await expect(await $(MostSeriousInjuryPage.answerLabelByIndex(3)).isExisting()).toBe(false);
     });
 
@@ -23,8 +23,8 @@ describe("Dynamic radio options from checkbox answers", () => {
       await click(MostSeriousInjuryPage.submit());
 
       await expect(await browser.getUrl()).toContain(HealedTheQuickestPage.pageName);
-      await expect(await $(HealedTheQuickestPage.answerLabelByIndex(0)).getText()).toEqual("Head");
-      await expect(await $(HealedTheQuickestPage.answerLabelByIndex(1)).getText()).toEqual("Body");
+      await expect(await $(HealedTheQuickestPage.answerLabelByIndex(0)).getText()).toBe("Head");
+      await expect(await $(HealedTheQuickestPage.answerLabelByIndex(1)).getText()).toBe("Body");
       await expect(await $(HealedTheQuickestPage.answerLabelByIndex(2)).isExisting()).toBe(false);
     });
 
@@ -33,9 +33,9 @@ describe("Dynamic radio options from checkbox answers", () => {
       await click(HealedTheQuickestPage.submit());
 
       await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
-      await expect(await $(SubmitPage.injurySustainedAnswer()).getText()).toEqual("Head\nBody");
-      await expect(await $(SubmitPage.mostSeriousInjuryAnswer()).getText()).toEqual("Head");
-      await expect(await $(SubmitPage.healedTheQuickestAnswer()).getText()).toEqual("Body");
+      await expect(await $(SubmitPage.injurySustainedAnswer()).getText()).toBe("Head\nBody");
+      await expect(await $(SubmitPage.mostSeriousInjuryAnswer()).getText()).toBe("Head");
+      await expect(await $(SubmitPage.healedTheQuickestAnswer()).getText()).toBe("Body");
     });
 
     it("When I edit and change the answer which the dynamic options is dependent on, then my selected answers are removed", async () => {

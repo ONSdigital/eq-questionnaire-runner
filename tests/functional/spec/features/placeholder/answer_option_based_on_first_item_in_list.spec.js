@@ -30,7 +30,7 @@ describe("Component: Definition", () => {
       await click(FavouriteDrinkQuestion.submit());
 
       // Then
-      await expect(await $(ListStatusQuestion.listStatus2TeaLabel()).getText()).toContain("Tea");
+      await expect(await $(ListStatusQuestion.listStatus2TeaLabel()).getText()).toBe("Tea");
     });
 
     it("Given I am not the first person in the list, When I get to the question page, Then I should see the correct answer option", async () => {
@@ -63,7 +63,7 @@ describe("Component: Definition", () => {
       await click(FavouriteDrinkQuestion.submit());
 
       // Then
-      await expect(await $(ListStatusQuestion.listStatus2TeaLabel()).getText()).toContain("Orange Juice");
+      await expect(await $(ListStatusQuestion.listStatus2TeaLabel()).getText()).toBe("Orange Juice");
     });
   });
 });

@@ -68,7 +68,7 @@ const assertRepeatingSectionOnChange = async (repeatIndex, currentBreakdown1, cu
   it("When I submit the spending breakdown question with no changes, Then I should see a validation error", async () => {
     await click(SpendingBreakdownPage.submit());
 
-    await expect(await $(SpendingBreakdownPage.errorNumber(1)).getText()).toContain(`Enter answers that add up to £${newTotal}`);
+    await expect(await $(SpendingBreakdownPage.errorNumber(1)).getText()).toBe(`Enter answers that add up to £${newTotal}`);
   });
 
   it("When I update my answers to equal the new total spending, Then I should be able to get to the section summary and the breakdown section should be marked as 'Completed'", async () => {
@@ -114,7 +114,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
 
       await answerAndSubmitSpendingBreakdownQuestion(500, 500, 500);
 
-      await expect(await $(SpendingBreakdownPage.errorNumber(1)).getText()).toContain("Enter answers that add up to £1,000.00");
+      await expect(await $(SpendingBreakdownPage.errorNumber(1)).getText()).toBe("Enter answers that add up to £1,000.00");
     });
 
     it("When I enter an answer that is equal to the total for the spending question, Then I should be able to get to the section summary and the repeating section should be marked as 'Completed'", async () => {

@@ -17,7 +17,7 @@ describe(`Feature: Dynamically generated mandatory answer options driven by a fu
 
     it("When I do not answer the Checkbox question and submit, then an error message and the question error panel should be displayed.", async () => {
       await click(DynamicCheckboxPage.submit());
-      await expect(await $(DynamicCheckboxPage.errorHeader()).getText()).toEqual("There is a problem with your answer");
+      await expect(await $(DynamicCheckboxPage.errorHeader()).getText()).toBe("There is a problem with your answer");
       await expect(await $(DynamicCheckboxPage.answerErrorItem()).getText()).toContain("Select at least one answer");
       await expect(await $(DynamicCheckboxPage.questionErrorPanel()).isExisting()).toBe(true);
     });
@@ -28,7 +28,7 @@ describe(`Feature: Dynamically generated mandatory answer options driven by a fu
       await click(DynamicCheckboxPage.submit());
 
       await click(DynamicRadioPage.submit());
-      await expect(await $(DynamicRadioPage.errorHeader()).getText()).toEqual("There is a problem with your answer");
+      await expect(await $(DynamicRadioPage.errorHeader()).getText()).toBe("There is a problem with your answer");
       await expect(await $(DynamicRadioPage.answerErrorItem()).getText()).toContain("Select an answer");
       await expect(await $(DynamicRadioPage.questionErrorPanel()).isExisting()).toBe(true);
     });
@@ -39,8 +39,8 @@ describe(`Feature: Dynamically generated mandatory answer options driven by a fu
       await click(DynamicRadioPage.submit());
 
       await click(DynamicDropdownPage.submit());
-      await expect(await $(DynamicDropdownPage.errorHeader()).getText()).toEqual("There is a problem with your answer");
-      await expect(await $(DynamicDropdownPage.answerErrorItem()).getText()).toEqual("Select an answer");
+      await expect(await $(DynamicDropdownPage.errorHeader()).getText()).toBe("There is a problem with your answer");
+      await expect(await $(DynamicDropdownPage.answerErrorItem()).getText()).toBe("Select an answer");
       await expect(await $(DynamicDropdownPage.questionErrorPanel()).isExisting()).toBe(true);
     });
 
@@ -50,7 +50,7 @@ describe(`Feature: Dynamically generated mandatory answer options driven by a fu
       await click(DynamicDropdownPage.submit());
 
       await click(DynamicMutuallyExclusivePage.submit());
-      await expect(await $(DynamicMutuallyExclusivePage.errorHeader()).getText()).toEqual("There is a problem with your answer");
+      await expect(await $(DynamicMutuallyExclusivePage.errorHeader()).getText()).toBe("There is a problem with your answer");
       await expect(await $(DynamicMutuallyExclusivePage.errorNumber(1)).getText()).toContain("Select at least one answer");
       await expect(await $(DynamicMutuallyExclusivePage.questionErrorPanel()).isExisting()).toBe(true);
     });

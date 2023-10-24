@@ -27,7 +27,7 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await $$(DynamicAnswerPage.inputs())[1].setValue(33);
       await $(DynamicAnswerPage.percentageOfShoppingElsewhere()).setValue(33);
       await click(DynamicAnswerPage.submit());
-      await expect(await $(DynamicAnswerPage.errorNumber(1)).getText()).toContain("Enter answers that add up to 100");
+      await expect(await $(DynamicAnswerPage.errorNumber(1)).getText()).toBe("Enter answers that add up to 100");
     });
   });
   describe("Given I add list items with hardcoded total used for validation of dynamic answers", () => {
@@ -57,7 +57,7 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await $$(DynamicAnswerOnlyPage.inputs())[0].setValue(50);
       await $$(DynamicAnswerOnlyPage.inputs())[1].setValue(0);
       await click(DynamicAnswerOnlyPage.submit());
-      await expect(await $(DynamicAnswerOnlyPage.errorNumber(1)).getText()).toContain("Enter answers that add up to £100.00");
+      await expect(await $(DynamicAnswerOnlyPage.errorNumber(1)).getText()).toBe("Enter answers that add up to £100.00");
     });
   });
   describe("Given I add list items with custom total used for validation of dynamic answers", () => {

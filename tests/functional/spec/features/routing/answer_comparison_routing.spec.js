@@ -12,7 +12,7 @@ describe("Test routing skip", () => {
     await click(RouteComparison1Page.submit());
     await $(RouteComparison2Page.answer()).setValue(2);
     await click(RouteComparison2Page.submit());
-    await expect(await $("#main-content > p").getText()).toContain("This page should never be skipped");
+    await expect(await $("#main-content > p").getText()).toBe("This page should never be skipped");
   });
 
   it("Given we start the routing test survey, When we enter a high number then a low number, Then, we should be routed to the third page", async () => {
@@ -20,7 +20,7 @@ describe("Test routing skip", () => {
     await click(RouteComparison1Page.submit());
     await $(RouteComparison2Page.answer()).setValue(0);
     await click(RouteComparison2Page.submit());
-    await expect(await $("#main-content > p").getText()).toContain(
+    await expect(await $("#main-content > p").getText()).toBe(
       "This page should be skipped if your second answer was higher than your first"
     );
   });
@@ -30,7 +30,7 @@ describe("Test routing skip", () => {
     await click(RouteComparison1Page.submit());
     await $(RouteComparison2Page.answer()).setValue(1);
     await click(RouteComparison2Page.submit());
-    await expect(await $("#main-content > p").getText()).toContain(
+    await expect(await $("#main-content > p").getText()).toBe(
       "This page should be skipped if your second answer was higher than your first"
     );
   });

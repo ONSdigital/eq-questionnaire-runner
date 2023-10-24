@@ -12,22 +12,22 @@ describe("Feature: Conditional checkbox and radio question titles", () => {
     it("When I enter an expected name and submit", async () => {
       await $(NameEntryPage.name()).setValue("Peter");
       await click(NameEntryPage.submit());
-      await expect(await $(CheckBoxPage.questionText()).getText()).toEqual("Did Peter make changes to this business?");
+      await expect(await $(CheckBoxPage.questionText()).getText()).toBe("Did Peter make changes to this business?");
     });
 
     it("When I enter an unknown name and go to the checkbox page", async () => {
       await $(NameEntryPage.name()).setValue("Fred");
       await click(NameEntryPage.submit());
-      await expect(await $(CheckBoxPage.questionText()).getText()).toEqual("Did this business make major changes in the following areas?");
+      await expect(await $(CheckBoxPage.questionText()).getText()).toBe("Did this business make major changes in the following areas?");
       await $(CheckBoxPage.checkboxImplementationOfChangesToMarketingConceptsOrStrategies()).click();
-      await expect(await $(RadioButtonsPage.questionText()).getText()).toEqual("Did this business make major changes in the following areas?");
+      await expect(await $(RadioButtonsPage.questionText()).getText()).toBe("Did this business make major changes in the following areas?");
     });
 
     it("When I enter another known name page title should include selected title", async () => {
       await $(NameEntryPage.name()).setValue("Mary");
       await click(NameEntryPage.submit());
 
-      await expect(await browser.getTitle()).toEqual(
+      await expect(await browser.getTitle()).toBe(
         "Did Mary make changes to this business? - Test Survey - Checkbox and Radio titles"
       );
     });
@@ -35,14 +35,14 @@ describe("Feature: Conditional checkbox and radio question titles", () => {
     it("When I enter another known name and go to the summary", async () => {
       await $(NameEntryPage.name()).setValue("Mary");
       await click(NameEntryPage.submit());
-      await expect(await $(CheckBoxPage.questionText()).getText()).toEqual("Did Mary make changes to this business?");
+      await expect(await $(CheckBoxPage.questionText()).getText()).toBe("Did Mary make changes to this business?");
       await $(CheckBoxPage.checkboxImplementationOfChangesToMarketingConceptsOrStrategiesLabel()).click();
       await click(CheckBoxPage.submit());
-      await expect(await $(RadioButtonsPage.questionText()).getText()).toEqual("Is Mary the boss?");
+      await expect(await $(RadioButtonsPage.questionText()).getText()).toBe("Is Mary the boss?");
       await $(RadioButtonsPage.radioMaybe()).click();
       await click(RadioButtonsPage.submit());
-      await expect(await $(SubmitPage.nameAnswer()).getText()).toEqual("Mary");
-      await expect(await $(SubmitPage.checkboxQuestion()).getText()).toEqual("Did Mary make changes to this business?");
+      await expect(await $(SubmitPage.nameAnswer()).getText()).toBe("Mary");
+      await expect(await $(SubmitPage.checkboxQuestion()).getText()).toBe("Did Mary make changes to this business?");
     });
   });
 });

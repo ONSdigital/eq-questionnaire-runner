@@ -51,7 +51,7 @@ describe("Difference check (months and years range)", () => {
 
     await click(AgeBlockMonthYearRangePage.submit());
 
-    await expect(await $(AgeTestMonthYearRangePage.heading()).getText()).toContain("You were out of the UK for 1 year. Is this correct?");
+    await expect(await $(AgeTestMonthYearRangePage.heading()).getText()).toBe("You were out of the UK for 1 year. Is this correct?");
   });
 });
 
@@ -71,7 +71,7 @@ describe("Difference check (years range)", () => {
 
     await click(AgeBlockDayMonthYearRangePage.submit());
 
-    await expect(await $(AgeTestDayMonthYearRangePage.heading()).getText()).toContain("You were out of the UK for 1 year. Is this correct?");
+    await expect(await $(AgeTestDayMonthYearRangePage.heading()).getText()).toBe("You were out of the UK for 1 year. Is this correct?");
   });
 });
 

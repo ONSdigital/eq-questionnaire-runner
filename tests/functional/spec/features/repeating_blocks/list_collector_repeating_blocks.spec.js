@@ -108,7 +108,7 @@ describe("List Collector Repeating Blocks", () => {
     });
 
     it("The list collector does not show 'GOV' anymore.", async () => {
-      await expect(await $(AnyOtherCompaniesOrBranchesPage.listLabel(2)).getText()).not.toContain("Government");
+      await expect(await $(AnyOtherCompaniesOrBranchesPage.listLabel(2)).getText()).not.toBe("Government");
       await expect(await $(AnyOtherCompaniesOrBranchesPage.listLabel(2)).getText()).toBe("MOD");
     });
 
@@ -264,30 +264,30 @@ describe("List Collector Repeating Blocks", () => {
     });
 
     it("Edit each type of answer on different items from the section summary.", async () => {
-      await expect(await $$(summaryValues)[8].getText()).toContain("456");
+      await expect(await $$(summaryValues)[8].getText()).toBe("456");
       await repeatingAnswerChangeLink(8).click();
       await $(CompaniesRepeatingBlock1Page.registrationNumber()).setValue("789");
       await click(CompaniesRepeatingBlock1Page.submit());
-      await expect(await $$(summaryValues)[8].getText()).toContain("789");
+      await expect(await $$(summaryValues)[8].getText()).toBe("789");
 
-      await expect(await $$(summaryValues)[4].getText()).toContain("1 January 2023");
+      await expect(await $$(summaryValues)[4].getText()).toBe("1 January 2023");
       await repeatingAnswerChangeLink(4).click();
       await $(CompaniesRepeatingBlock1Page.registrationDateday()).setValue("4");
       await $(CompaniesRepeatingBlock1Page.registrationDatemonth()).setValue("4");
       await click(CompaniesRepeatingBlock1Page.submit());
-      await expect(await $$(summaryValues)[4].getText()).toContain("4 April 2023");
+      await expect(await $$(summaryValues)[4].getText()).toBe("4 April 2023");
 
-      await expect(await $$(summaryValues)[5].getText()).toContain("Yes");
+      await expect(await $$(summaryValues)[5].getText()).toBe("Yes");
       await repeatingAnswerChangeLink(5).click();
       await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioNo()).click();
       await click(CompaniesRepeatingBlock2Page.submit());
-      await expect(await $$(summaryValues)[5].getText()).toContain("No");
+      await expect(await $$(summaryValues)[5].getText()).toBe("No");
 
-      await expect(await $$(summaryValues)[11].getText()).toContain("No answer provided");
+      await expect(await $$(summaryValues)[11].getText()).toBe("No answer provided");
       await repeatingAnswerChangeLink(11).click();
       await $(CompaniesRepeatingBlock2Page.authorisedTraderEuRadioYes()).click();
       await click(CompaniesRepeatingBlock2Page.submit());
-      await expect(await $$(summaryValues)[11].getText()).toContain("Yes");
+      await expect(await $$(summaryValues)[11].getText()).toBe("Yes");
     });
 
     it("The list collector can then be submitted", async () => {

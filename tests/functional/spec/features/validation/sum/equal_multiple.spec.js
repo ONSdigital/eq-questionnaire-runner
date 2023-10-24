@@ -39,13 +39,13 @@ describe("Feature: Sum validation (Multi Rule Equals)", () => {
       await $(BreakdownAnswerPage.breakdown1()).setValue("1");
       await click(BreakdownAnswerPage.submit());
 
-      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toContain("Enter answers that add up to 10");
+      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toBe("Enter answers that add up to 10");
 
       await $(BreakdownAnswerPage.breakdown2()).setValue("2");
       await $(BreakdownAnswerPage.breakdown3()).setValue("3");
       await $(BreakdownAnswerPage.breakdown4()).setValue("5");
       await click(BreakdownAnswerPage.submit());
-      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toContain("Enter answers that add up to 10");
+      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toBe("Enter answers that add up to 10");
     });
   });
 });

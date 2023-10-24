@@ -54,7 +54,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Total in 
       await click(HubPage.submit());
       await answerAndSubmitTurnoverBreakdownQuestion(1000, 250, 250);
 
-      await expect(await $(TurnoverBreakdownPage.errorNumber(1)).getText()).toContain("Enter answers that add up to £1,000.00");
+      await expect(await $(TurnoverBreakdownPage.errorNumber(1)).getText()).toBe("Enter answers that add up to £1,000.00");
     });
 
     it("When I start the breakdown section and enter answers that are equal the total, Then I should be able to get to the section summary and the breakdown section should be marked as 'Completed'", async () => {
@@ -106,7 +106,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Total in 
     it("When I submit the turnover breakdown question with no changes, Then I should see a validation error", async () => {
       await click(TurnoverBreakdownPage.submit());
 
-      await expect(await $(TurnoverBreakdownPage.errorNumber(1)).getText()).toContain("Enter answers that add up to £1,500.00");
+      await expect(await $(TurnoverBreakdownPage.errorNumber(1)).getText()).toBe("Enter answers that add up to £1,500.00");
     });
 
     it("When I update my answers to equal the new total turnover, Then I should be able to get to the section summary and the breakdown section should be marked as 'Completed'", async () => {

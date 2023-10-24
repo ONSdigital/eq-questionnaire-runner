@@ -18,11 +18,11 @@ describe("Feature: Hub and Spoke", () => {
     });
 
     it("When a user first views the Hub, The Hub should be in a continue state", async () => {
-      await expect(await $(HubPage.submit()).getText()).toContain("Continue");
-      await expect(await $(HubPage.heading()).getText()).toContain("Choose another section to complete");
-      await expect(await $(HubPage.summaryRowState("employment-section")).getText()).toContain("Not started");
-      await expect(await $(HubPage.summaryRowState("accommodation-section")).getText()).toContain("Not started");
-      await expect(await $(HubPage.summaryRowState("household-section")).getText()).toContain("Not started");
+      await expect(await $(HubPage.submit()).getText()).toBe("Continue");
+      await expect(await $(HubPage.heading()).getText()).toBe("Choose another section to complete");
+      await expect(await $(HubPage.summaryRowState("employment-section")).getText()).toBe("Not started");
+      await expect(await $(HubPage.summaryRowState("accommodation-section")).getText()).toBe("Not started");
+      await expect(await $(HubPage.summaryRowState("household-section")).getText()).toBe("Not started");
     });
 
     it("When a user views the Hub, any section with show_on_hub set to true should appear", async () => {
@@ -32,7 +32,7 @@ describe("Feature: Hub and Spoke", () => {
     });
 
     it("When a user views the Hub, any section with show_on_hub set to false should not appear", async () => {
-      await expect(await $(HubPage.summaryItems()).getText()).not.toContain("Relationships");
+      await expect(await $(HubPage.summaryItems()).getText()).not.toBe("Relationships");
     });
 
     it("When the user click the 'Save and sign out' button then they should be redirected to the correct log out url", async () => {
@@ -52,9 +52,9 @@ describe("Feature: Hub and Spoke", () => {
   describe("Given a user has not started a section", () => {
     beforeEach("Open survey", async () => {
       await browser.openQuestionnaire(hubAndSpokeSchema);
-      await expect(await $(HubPage.summaryRowState("employment-section")).getText()).toContain("Not started");
-      await expect(await $(HubPage.summaryRowState("accommodation-section")).getText()).toContain("Not started");
-      await expect(await $(HubPage.summaryRowState("household-section")).getText()).toContain("Not started");
+      await expect(await $(HubPage.summaryRowState("employment-section")).getText()).toBe("Not started");
+      await expect(await $(HubPage.summaryRowState("accommodation-section")).getText()).toBe("Not started");
+      await expect(await $(HubPage.summaryRowState("household-section")).getText()).toBe("Not started");
     });
 
     it("When the user starts a section, Then the first question in the section should be displayed", async () => {
@@ -81,13 +81,13 @@ describe("Feature: Hub and Spoke", () => {
 
     it("When the user returns to the Hub, Then the Hub should be in a continue state", async () => {
       await browser.url(HubPage.url());
-      await expect(await $(HubPage.submit()).getText()).toContain("Continue");
-      await expect(await $(HubPage.heading()).getText()).toContain("Choose another section to complete");
+      await expect(await $(HubPage.submit()).getText()).toBe("Continue");
+      await expect(await $(HubPage.heading()).getText()).toBe("Choose another section to complete");
     });
 
     it("When the user returns to the Hub, Then the section should be marked as 'Partially completed'", async () => {
       await browser.url(HubPage.url());
-      await expect(await $(HubPage.summaryRowState("employment-section")).getText()).toContain("Partially completed");
+      await expect(await $(HubPage.summaryRowState("employment-section")).getText()).toBe("Partially completed");
     });
 
     it("When the user returns to the Hub and restarts the same section, Then they should be redirected to the first incomplete block", async () => {
@@ -115,13 +115,13 @@ describe("Feature: Hub and Spoke", () => {
 
     it("When the user returns to the Hub, Then the Hub should be in a continue state", async () => {
       await click(EmploymentTypeBlockPage.submit());
-      await expect(await $(HubPage.submit()).getText()).toContain("Continue");
-      await expect(await $(HubPage.heading()).getText()).toContain("Choose another section to complete");
+      await expect(await $(HubPage.submit()).getText()).toBe("Continue");
+      await expect(await $(HubPage.heading()).getText()).toBe("Choose another section to complete");
     });
 
     it("When the user returns to the Hub, Then the section should be marked as 'Completed'", async () => {
       await click(EmploymentTypeBlockPage.submit());
-      await expect(await $(HubPage.summaryRowState("employment-section")).getText()).toContain("Completed");
+      await expect(await $(HubPage.summaryRowState("employment-section")).getText()).toBe("Completed");
     });
 
     it("When the user returns to the Hub and clicks the 'View answers' link on the Hub, if this no summary they are returned to the first block", async () => {
@@ -147,7 +147,7 @@ describe("Feature: Hub and Spoke", () => {
       await $(EmploymentStatusBlockPage.workingAsAnEmployee()).click();
       await click(EmploymentStatusBlockPage.submit());
 
-      await expect(await $(HubPage.summaryRowState("employment-section")).getText()).toContain("Completed");
+      await expect(await $(HubPage.summaryRowState("employment-section")).getText()).toBe("Completed");
     });
 
     it("When the user clicks the 'View answers' link and incompletes the section, Then they the should be taken to the next incomplete question on 'Continue", async () => {
@@ -167,7 +167,7 @@ describe("Feature: Hub and Spoke", () => {
       await browser.url(HubPage.url());
       const expectedUrl = await browser.getUrl();
       await expect(expectedUrl).toContain(HubPage.url());
-      await expect(await $(HubPage.summaryRowState("employment-section")).getText()).toContain("Partially completed");
+      await expect(await $(HubPage.summaryRowState("employment-section")).getText()).toBe("Partially completed");
     });
   });
 
@@ -199,8 +199,8 @@ describe("Feature: Hub and Spoke", () => {
     });
 
     it("When the user returns to the Hub, Then the Hub should be in a completed state", async () => {
-      await expect(await $(HubPage.submit()).getText()).toContain("Submit survey");
-      await expect(await $(HubPage.heading()).getText()).toContain("Submit survey");
+      await expect(await $(HubPage.submit()).getText()).toBe("Submit survey");
+      await expect(await $(HubPage.heading()).getText()).toBe("Submit survey");
     });
 
     it("When the user submits, it should show the thankyou page", async () => {

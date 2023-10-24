@@ -18,18 +18,18 @@ describe("Section Summary", () => {
       await click(InsuranceTypePage.submit());
       await click(InsuranceAddressPage.submit());
       await click(ListedPage.submit());
-      await expect(await $(PropertyDetailsSummaryPage.insuranceTypeAnswer()).getText()).toContain("Both");
+      await expect(await $(PropertyDetailsSummaryPage.insuranceTypeAnswer()).getText()).toBe("Both");
     });
 
     it("When I get to the section summary page, Then the submit button should read 'Continue'", async () => {
-      await expect(await $(PropertyDetailsSummaryPage.submit()).getText()).toContain("Continue");
+      await expect(await $(PropertyDetailsSummaryPage.submit()).getText()).toBe("Continue");
     });
 
     it("When I have selected an answer to edit and edit it, Then I should return to the section summary with new value displayed", async () => {
       await $(PropertyDetailsSummaryPage.insuranceAddressAnswerEdit()).click();
       await $(InsuranceAddressPage.answer()).setValue("Test Address");
       await click(InsuranceAddressPage.submit());
-      await expect(await $(PropertyDetailsSummaryPage.insuranceAddressAnswer()).getText()).toContain("Test Address");
+      await expect(await $(PropertyDetailsSummaryPage.insuranceAddressAnswer()).getText()).toBe("Test Address");
     });
 
     it("When I select edit from the section summary and click previous on the question page, Then I should be taken back to the section summary", async () => {
@@ -129,13 +129,13 @@ describe("Section Summary", () => {
 
     it("When I change an answer, Then the final summary should display the updated value", async () => {
       await $(SubmitPage.summaryShowAllButton()).click();
-      await expect(await $(SubmitPage.insuranceAddressAnswer()).getText()).toContain("No answer provided");
+      await expect(await $(SubmitPage.insuranceAddressAnswer()).getText()).toBe("No answer provided");
       await $(SubmitPage.insuranceAddressAnswerEdit()).click();
       await expect(await browser.getUrl()).toContain(InsuranceAddressPage.pageName);
       await $(InsuranceAddressPage.answer()).setValue("Test Address");
       await click(InsuranceAddressPage.submit());
       await $(SubmitPage.summaryShowAllButton()).click();
-      await expect(await $(SubmitPage.insuranceAddressAnswer()).getText()).toContain("Test Address");
+      await expect(await $(SubmitPage.insuranceAddressAnswer()).getText()).toBe("Test Address");
     });
   });
   describe("Given I start the Test Section Summary questionnaire", () => {
@@ -147,13 +147,13 @@ describe("Section Summary", () => {
       await click(InsuranceTypePage.submit());
       await click(InsuranceAddressPage.submit());
       await click(ListedPage.submit());
-      await expect(await $(PropertyDetailsSummaryPage.heading()).getText()).toContain("Property Details Section");
+      await expect(await $(PropertyDetailsSummaryPage.heading()).getText()).toBe("Property Details Section");
     });
     it("When there is a title set in the sections summary, it is used for the section summary title", async () => {
       await click(PropertyDetailsSummaryPage.submit());
       await $(HouseType.semiDetached()).click();
       await click(HouseType.submit());
-      await expect(await $(HouseholdDetailsSummaryPage.heading()).getText()).toContain("Household Summary - Semi-detached");
+      await expect(await $(HouseholdDetailsSummaryPage.heading()).getText()).toBe("Household Summary - Semi-detached");
     });
   });
 });

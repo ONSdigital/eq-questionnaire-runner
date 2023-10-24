@@ -55,7 +55,7 @@ describe("Feature: Sum of grouped answers validation (equal or less than) agains
       await $(BreakdownAnswerPage.breakdown3()).setValue("4");
       await $(BreakdownAnswerPage.breakdown4()).setValue("4");
       await click(BreakdownAnswerPage.submit());
-      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toContain("Enter answers that add up to or are less than 12");
+      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toBe("Enter answers that add up to or are less than 12");
     });
   });
 
@@ -68,7 +68,7 @@ describe("Feature: Sum of grouped answers validation (equal or less than) agains
       await $(BreakdownAnswerPage.breakdown3()).setValue("3");
       await $(BreakdownAnswerPage.breakdown4()).setValue("3");
       await click(BreakdownAnswerPage.submit());
-      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toContain("Enter answers that add up to or are less than 5");
+      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toBe("Enter answers that add up to or are less than 5");
     });
   });
 });

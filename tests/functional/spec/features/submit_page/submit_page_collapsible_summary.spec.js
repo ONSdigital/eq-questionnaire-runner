@@ -38,8 +38,8 @@ describe("Collapsible Summary", () => {
     it("When I click the Show all button, Then the summary should be expanded and questions should be displayed", async () => {
       await $(SubmitPage.summaryShowAllButton()).click();
 
-      await expect(await $(SubmitPage.insuranceAddressQuestion()).getText()).toContain("What is the address you would like to insure?");
-      await expect(await $(SubmitPage.numberOfPeopleQuestion()).getText()).toContain("Title");
+      await expect(await $(SubmitPage.insuranceAddressQuestion()).getText()).toBe("What is the address you would like to insure?");
+      await expect(await $(SubmitPage.numberOfPeopleQuestion()).getText()).toBe("Title");
     });
   });
 });

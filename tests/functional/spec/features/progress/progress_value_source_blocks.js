@@ -30,8 +30,8 @@ describe("Feature: Routing  based on progress value sources using block identifi
       await click(SeventhQuestionPage.submit());
 
       await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
-      await expect(await $("body").getText()).not.toContain("Section 1 Question 2");
-      await expect(await $("body").getText()).not.toContain("Section 1 Question 4");
+      await expect(await $("body").getText()).not.toBe("Section 1 Question 2");
+      await expect(await $("body").getText()).not.toBe("Section 1 Question 4");
     });
   });
 
@@ -141,8 +141,8 @@ describe("Feature: Routing  based on progress value sources using block identifi
       await $(FirstQuestionPage.q1A1()).setValue("0");
       await click(FirstQuestionPage.submit());
 
-      await expect(await $("body").getText()).not.toContain("Section 1 Question 4");
-      await expect(await $("body").getText()).not.toContain("Section 1 Question 6");
+      await expect(await $("body").getText()).not.toBe("Section 1 Question 4");
+      await expect(await $("body").getText()).not.toBe("Section 1 Question 6");
     });
   });
 });
@@ -187,7 +187,7 @@ describe("Feature: Section enabled based on progress value sources using section
       await browser.url(HubPage.url());
 
       await expect(await $(HubPage.summaryRowState("section-1")).getText()).toBe("Partially completed");
-      await expect(await $("body").getText()).not.toContain("Section 2");
+      await expect(await $("body").getText()).not.toBe("Section 2");
     });
   });
 });

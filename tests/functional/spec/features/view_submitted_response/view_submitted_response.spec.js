@@ -39,15 +39,15 @@ describe("View Submitted Response", () => {
   it("Given I have completed a questionnaire with view submitted response enabled, When I am on the view submitted response page within 45 minutes of submission, Then the summary is displayed correctly", async () => {
     await expect(await $(ViewSubmittedResponsePage.informationPanel()).isDisplayed()).toBe(false);
     await expect(await $(ViewSubmittedResponsePage.printButton()).isDisplayed()).toBe(true);
-    await expect(await $(ViewSubmittedResponsePage.heading()).getText()).toEqual("Answers submitted for Apple");
-    await expect(await $(ViewSubmittedResponsePage.metadataTerm(1)).getText()).toEqual("Submitted on:");
-    await expect(await $(ViewSubmittedResponsePage.metadataTerm(2)).getText()).toEqual("Submission reference:");
-    await expect(await $(ViewSubmittedResponsePage.personalDetailsGroupTitle()).getText()).toEqual("Personal Details");
-    await expect(await $(ViewSubmittedResponsePage.nameQuestion()).getText()).toEqual("What is your name?");
-    await expect(await $(ViewSubmittedResponsePage.nameAnswer()).getText()).toEqual("John Smith");
-    await expect(await $(ViewSubmittedResponsePage.addressDetailsGroupTitle()).getText()).toEqual("Address Details");
-    await expect(await $(ViewSubmittedResponsePage.addressQuestion()).getText()).toEqual("What is your address?");
-    await expect(await $(ViewSubmittedResponsePage.addressAnswer()).getText()).toEqual("NP10 8XG");
+    await expect(await $(ViewSubmittedResponsePage.heading()).getText()).toBe("Answers submitted for Apple");
+    await expect(await $(ViewSubmittedResponsePage.metadataTerm(1)).getText()).toBe("Submitted on:");
+    await expect(await $(ViewSubmittedResponsePage.metadataTerm(2)).getText()).toBe("Submission reference:");
+    await expect(await $(ViewSubmittedResponsePage.personalDetailsGroupTitle()).getText()).toBe("Personal Details");
+    await expect(await $(ViewSubmittedResponsePage.nameQuestion()).getText()).toBe("What is your name?");
+    await expect(await $(ViewSubmittedResponsePage.nameAnswer()).getText()).toBe("John Smith");
+    await expect(await $(ViewSubmittedResponsePage.addressDetailsGroupTitle()).getText()).toBe("Address Details");
+    await expect(await $(ViewSubmittedResponsePage.addressQuestion()).getText()).toBe("What is your address?");
+    await expect(await $(ViewSubmittedResponsePage.addressAnswer()).getText()).toBe("NP10 8XG");
   });
 
   describe("Given I am on the view submitted response page and I submitted over 45 minutes ago", () => {
@@ -132,23 +132,23 @@ describe("View Submitted Response Summary Page With Repeating Sections", () => {
   it("Given I have completed a questionnaire with a repeating section and view submitted response enabled, When I am on the view submitted response page within 45 minutes of submission, Then the summary is displayed correctly", async () => {
     await expect(await $(ViewSubmittedResponseRepeatingPage.informationPanel()).isDisplayed()).toBe(false);
     await expect(await $(ViewSubmittedResponseRepeatingPage.printButton()).isDisplayed()).toBe(true);
-    await expect(await $(ViewSubmittedResponseRepeatingPage.heading()).getText()).toEqual("Answers submitted for Apple");
-    await expect(await $(ViewSubmittedResponseRepeatingPage.metadataTerm(1)).getText()).toEqual("Submitted on:");
-    await expect(await $(ViewSubmittedResponseRepeatingPage.metadataTerm(2)).getText()).toEqual("Submission reference:");
-    await expect(await $(ViewSubmittedResponseRepeatingPage.personalDetailsGroupTitle()).getText()).toEqual("Personal Details");
-    await expect(await $(ViewSubmittedResponseRepeatingPage.nameQuestion()).getText()).toEqual("What is your name?");
-    await expect(await $(ViewSubmittedResponseRepeatingPage.nameAnswer()).getText()).toEqual("John Smith");
-    await expect(await $(ViewSubmittedResponseRepeatingPage.addressDetailsGroupTitle()).getText()).toEqual("Address Details");
-    await expect(await $(ViewSubmittedResponseRepeatingPage.addressQuestion()).getText()).toEqual("What is your address?");
-    await expect(await $(ViewSubmittedResponseRepeatingPage.addressAnswer()).getText()).toEqual("NP10 8XG");
+    await expect(await $(ViewSubmittedResponseRepeatingPage.heading()).getText()).toBe("Answers submitted for Apple");
+    await expect(await $(ViewSubmittedResponseRepeatingPage.metadataTerm(1)).getText()).toBe("Submitted on:");
+    await expect(await $(ViewSubmittedResponseRepeatingPage.metadataTerm(2)).getText()).toBe("Submission reference:");
+    await expect(await $(ViewSubmittedResponseRepeatingPage.personalDetailsGroupTitle()).getText()).toBe("Personal Details");
+    await expect(await $(ViewSubmittedResponseRepeatingPage.nameQuestion()).getText()).toBe("What is your name?");
+    await expect(await $(ViewSubmittedResponseRepeatingPage.nameAnswer()).getText()).toBe("John Smith");
+    await expect(await $(ViewSubmittedResponseRepeatingPage.addressDetailsGroupTitle()).getText()).toBe("Address Details");
+    await expect(await $(ViewSubmittedResponseRepeatingPage.addressQuestion()).getText()).toBe("What is your address?");
+    await expect(await $(ViewSubmittedResponseRepeatingPage.addressAnswer()).getText()).toBe("NP10 8XG");
     await expect(await $("body").getHTML()).toContain("Marcus Twin");
-    await expect(await $(firstGroup).$$(groupTitle)[0].getText()).toEqual("Calculated Summary Group");
-    await expect(await $(firstGroup).$$(repeatingSectionAnswer)[0].getText()).toEqual("40 - calculated summary answer (current section)");
+    await expect(await $(firstGroup).$$(groupTitle)[0].getText()).toBe("Calculated Summary Group");
+    await expect(await $(firstGroup).$$(repeatingSectionAnswer)[0].getText()).toBe("40 - calculated summary answer (current section)");
     await expect(await $("body").getHTML()).toContain("How much did Marcus Twin spend on fruit?");
-    await expect(await $(firstGroup).$$(skippableRepeatingSectionAnswer)[0].getText()).toEqual("£100");
+    await expect(await $(firstGroup).$$(skippableRepeatingSectionAnswer)[0].getText()).toBe("£100");
     await expect(await $("body").getHTML()).toContain("John Doe");
-    await expect(await $(secondGroup).$$(groupTitle)[0].getText()).toEqual("Calculated Summary Group");
-    await expect(await $(secondGroup).$$(repeatingSectionAnswer)[0].getText()).toEqual("80 - calculated summary answer (current section)");
+    await expect(await $(secondGroup).$$(groupTitle)[0].getText()).toBe("Calculated Summary Group");
+    await expect(await $(secondGroup).$$(repeatingSectionAnswer)[0].getText()).toBe("80 - calculated summary answer (current section)");
     await expect(await $("body").getHTML()).not.toContain("How much did John Doe spend on fruit?");
   });
 });
