@@ -1275,6 +1275,26 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             dependencies_ids_for_progress_value_source,
         )
 
+    def _get_section_dependencies_for_dependent_answers(
+        self, current_section_id: str, dependent_answer_ids: Iterable[str]
+    ) -> set[str]:
+        """
+        For a set of answer ids dependent on a rule in the current section, add the current section
+        as a dependency of the answer and return the set of sections those answers reside in.
+        """
+        section_dependencies: set[str] = set()
+        # Type Ignore: Added to this method as the block will exist at this point
+        for answer_id in dependent_answer_ids:
+            block = self.get_block_for_answer_id(answer_id)  # type: ignore
+            section_id = self.get_section_id_for_block_id(block["id"])  # type: ignore
+
+            if section_id != current_section_id:
+                self._when_rules_section_dependencies_by_answer[answer_id].add(
+                    current_section_id
+                )
+                section_dependencies.add(section_id)  # type: ignore
+        return section_dependencies
+
     def _get_rules_section_dependencies(
         self, current_section_id: str, rules: Mapping | Sequence
     ) -> tuple[set[str], DependencyDictType, dict[str, DependencyDictType]]:
@@ -1307,16 +1327,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 dependencies_for_progress_value_source["blocks"]
             )
 
-            # Type Ignore: Added to this method as the block will exist at this point
-            for answer_id in dependent_answer_ids:
-                block = self.get_block_for_answer_id(answer_id)  # type: ignore
-                section_id = self.get_section_id_for_block_id(block["id"])  # type: ignore
-
-                if section_id != current_section_id:
-                    self._when_rules_section_dependencies_by_answer[answer_id].add(
-                        current_section_id
-                    )
-                    section_dependencies.add(section_id)  # type: ignore
+            section_dependencies |= (
+                self._get_section_dependencies_for_dependent_answers(
+                    current_section_id, dependent_answer_ids
+                )
+            )
 
             for list_name in dependent_list_names:
                 self._when_rules_section_dependencies_by_list[list_name].add(
