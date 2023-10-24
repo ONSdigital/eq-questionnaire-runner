@@ -63,7 +63,7 @@ class InvalidSchemaConfigurationException(Exception):
 
 @dataclass(frozen=True)
 class Dependent:
-    """Represents a dependent belonging to some answer.
+    """Represents a dependent belonging to some answer or list.
 
     The dependent can be a reference to another answer, or just the parent block of the answer.
     If the dependent has an answer_id, then the dependent answer is removed
@@ -129,7 +129,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._dynamic_answer_ids: set[str] = set()
 
         # Post schema parsing.
-        self._populate_answer_dependencies()
+        self._populate_answer_and_list_dependencies()
         self._populate_when_rules_section_dependencies()
         self._populate_calculated_summary_section_dependencies()
         self._populate_min_max_for_numeric_answers()
@@ -335,6 +335,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def list_collector_repeating_block_ids(self) -> list[str]:
         return list(self._list_names_by_list_repeating_block_id.keys())
 
+    @cached_property
+    def list_collector_section_ids_by_list_name(self) -> ImmutableDict[str, tuple[str]]:
+        # Type ignore: make_immutable is generic so type is manually specified
+        return make_immutable(self._list_collector_section_ids_by_list_name)  # type: ignore
+
     def get_all_when_rules_section_dependencies_for_section(
         self, section_id: str
     ) -> set[str]:
@@ -350,6 +355,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return all_section_dependencies
 
     def get_when_rule_section_dependencies_for_list(self, list_name: str) -> set[str]:
+        """Gets the set of all sections which reference the list in a when rule somewhere"""
         return self._when_rules_section_dependencies_by_list.get(list_name, set())
 
     def _get_sections_by_id(self) -> dict[str, ImmutableDict]:
@@ -442,7 +448,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         return answers_by_id
 
-    def _populate_answer_dependencies(self) -> None:
+    def _populate_answer_and_list_dependencies(self) -> None:
         for block in self.get_blocks():
             if block["type"] in {"CalculatedSummary", "GrandCalculatedSummary"}:
                 self._update_answer_dependencies_for_summary(block)
@@ -570,6 +576,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         block_id: str,
         answer_id: str | None = None,
     ) -> None:
+        """
+        For a given value source, get the answer ids it consists of, or the list it references,
+        and add the given block (and optionally answer) as a dependency of those answers or lists
+        """
         if value_source["source"] == "answers":
             self._answer_dependencies_map[value_source["identifier"]] |= {
                 self._get_answer_dependent_for_block_id(
@@ -603,12 +613,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _update_answer_dependencies_for_list_source(
         self, *, block_id: str, list_name: str
     ) -> None:
-        """Updates dependencies for a block depending on a list collector
-
-        This method also stores a map of { block_depending_on_list_source -> {add_block, remove_block} }, because:
-        blocks like dynamic_answers, don't directly need to depend on the add_block/remove_block,
-        but a block depending on the dynamic answers might (such as a calculated summary)
-        """
+        """Store the given block as a dependency of the list"""
         self._list_dependencies_map[list_name].add(
             self._get_answer_dependent_for_block_id(block_id=block_id)
         )
@@ -1213,7 +1218,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         set[str], set[str], dict[str, dict[str, OrderedSet[str] | DependencyDictType]]
     ]:
         """
-        For a given rule, returns a set of dependent answer ids and any dependent sections for progress value sources.
+        For a given rule, returns:
+        - a set of dependent answer ids
+        - a set of dependent lists
+        - any dependent sections for progress value sources.
         Progress dependencies are keyed both by section and by block e.g.
         sections: {"section-1": {"section-2"}}
         blocks: {"section-1": {"block-1": {"section-2"}}}
