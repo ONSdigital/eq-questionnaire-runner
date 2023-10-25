@@ -123,7 +123,7 @@ def test_renders_json_uses_language(placholder_transform_question_json):
 
 
 def test_errors_on_invalid_pointer(placholder_transform_question_json, mock_schema):
-    renderer = get_placeholder_render()
+    renderer = get_placeholder_render(data_stores=DataStores())
 
     with pytest.raises(ValueError):
         renderer.render_pointer(
@@ -141,7 +141,7 @@ def test_errors_on_invalid_pointer(placholder_transform_question_json, mock_sche
 
 
 def test_errors_on_invalid_json(mock_schema):
-    renderer = get_placeholder_render()
+    renderer = get_placeholder_render(data_stores=DataStores())
     with pytest.raises(ValueError):
         dict_to_render = {"invalid": {"no": "placeholders", "in": "this"}}
         renderer.render_pointer(
@@ -185,7 +185,7 @@ def test_renders_text_plural_from_answers():
 
 
 def test_renders_text_plural_from_list():
-    renderer = get_placeholder_render()
+    renderer = get_placeholder_render(data_stores=DataStores())
 
     rendered_text = renderer.render_placeholder(
         {
@@ -317,7 +317,7 @@ def test_renders_json_dynamic_answers_pointer(
     assert rendered_id_second == "percentage-of-shopping-vtbSnC"
 
 
-def get_placeholder_render_dynamic_answers(*, language="en", data_stores=DataStores()):
+def get_placeholder_render_dynamic_answers(*, language="en", data_stores=None):
     schema = load_schema_from_name("test_dynamic_answers_list_source")
     return PlaceholderRenderer(
         language=language,
@@ -326,7 +326,7 @@ def get_placeholder_render_dynamic_answers(*, language="en", data_stores=DataSto
     )
 
 
-def get_placeholder_render(*, language="en", data_stores=DataStores()):
+def get_placeholder_render(*, language="en", data_stores=None):
     schema = MagicMock()
     schema.is_answer_dynamic = MagicMock(return_value=False)
     schema.is_answer_in_list_collector_repeating_block = MagicMock(return_value=False)

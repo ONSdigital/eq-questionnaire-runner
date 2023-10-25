@@ -46,7 +46,7 @@ def get_rule_evaluator(
     *,
     language="en",
     schema: QuestionnaireSchema = None,
-    data_stores: DataStores = DataStores(),
+    data_stores: DataStores = None,
     location: Union[Location, RelationshipLocation] = Location(
         section_id="test-section", block_id="test-block"
     ),

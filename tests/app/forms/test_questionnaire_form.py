@@ -1276,7 +1276,7 @@ def test_sum_calculated_field_value_source_calculated_summary_repeat_not_equal_v
         ] == schema.error_messages["TOTAL_SUM_NOT_EQUALS"] % {"total": "10"}
 
 
-def test_multi_calculation(app, answer_store, data_stores):
+def test_multi_calculation(app, answer_store):
     answer_total = Answer(answer_id="total-answer", value=Decimal("10.00"))
 
     answer_store.add_or_update(answer_total)

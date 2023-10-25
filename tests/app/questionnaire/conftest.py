@@ -59,7 +59,7 @@ def response_metadata():
 def parser(answer_store, location, mock_schema, mock_renderer):
     return PlaceholderParser(
         language="en",
-        data_stores=DataStores(answer_store=answer_store),
+        data_stores=DataStores(answer_store=answer_store, metadata=get_metadata()),
         schema=mock_schema,
         location=location,
         renderer=mock_renderer,

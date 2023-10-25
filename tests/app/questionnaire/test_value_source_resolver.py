@@ -59,7 +59,7 @@ def get_calculation_block(
 
 def get_value_source_resolver(
     schema: QuestionnaireSchema = None,
-    data_stores: DataStores = DataStores(),
+    data_stores: DataStores = None,
     location: Union[Location, RelationshipLocation] = Location(
         section_id="test-section", block_id="test-block"
     ),
@@ -367,6 +367,7 @@ def test_answer_source_default_answer(use_default_answer):
         schema.get_default_answer = Mock(return_value=None)
 
     value_source_resolver = get_value_source_resolver(
+        data_stores=DataStores(),
         schema=schema,
         use_default_answer=use_default_answer,
     )
@@ -605,7 +606,7 @@ def test_list_source_id_selector_primary_person(primary_person_list_item_id):
 
 
 def test_location_source():
-    value_source_resolver = get_value_source_resolver(list_item_id="item-1")
+    value_source_resolver = get_value_source_resolver(data_stores=DataStores(), list_item_id="item-1")
     assert (
         value_source_resolver.resolve(
             {"source": "location", "identifier": "list_item_id"}

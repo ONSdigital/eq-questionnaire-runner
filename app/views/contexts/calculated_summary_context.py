@@ -49,7 +49,7 @@ class CalculatedSummaryContext(Context):
         block_id: str = self.current_location.block_id  # type: ignore
         block: ImmutableDict = self._schema.get_block(block_id)  # type: ignore
 
-        return self._placeholder_renderer.render(  # type: ignore
+        return self._placeholder_renderer.render(
             data_to_render=block, list_item_id=self.current_location.list_item_id
         )
 
