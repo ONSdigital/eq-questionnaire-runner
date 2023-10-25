@@ -4,7 +4,8 @@ from decimal import Decimal
 from typing import Generator, Iterable, Sequence, TypeAlias
 
 from app.data_models.data_stores import DataStores
-from app.questionnaire import QuestionnaireSchema, placeholder_renderer
+from app.questionnaire import QuestionnaireSchema
+from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.questionnaire.rules.operations import Operations
 from app.questionnaire.rules.operator import Operator
@@ -40,13 +41,11 @@ class RuleEvaluator:
             use_default_answer=True,
         )
 
-        renderer: placeholder_renderer.PlaceholderRenderer = (
-            placeholder_renderer.PlaceholderRenderer(
-                language=self.language,
-                data_stores=self.data_stores,
-                schema=self.schema,
-                location=self.location,
-            )
+        renderer: PlaceholderRenderer = PlaceholderRenderer(
+            language=self.language,
+            data_stores=self.data_stores,
+            schema=self.schema,
+            location=self.location,
         )
         self.operations = Operations(
             language=self.language, schema=self.schema, renderer=renderer

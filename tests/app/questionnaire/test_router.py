@@ -284,6 +284,7 @@ class TestRouterLocationValidity(RouterTestCase):
 
     def test_cant_access_section_disabled(self):
         self.schema = load_schema_from_name("test_section_enabled_checkbox")
+        self.data_stores = DataStores()
 
         current_location = Location(
             section_id="section-2", block_id="section-2-block", list_item_id=None

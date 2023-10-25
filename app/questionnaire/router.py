@@ -67,6 +67,9 @@ class Router:
         Checks whether the location is valid and accessible.
         :return: boolean
         """
+        if location.section_id not in self.enabled_section_ids:
+            return False
+
         if (
             location.list_item_id
             and location.list_name
