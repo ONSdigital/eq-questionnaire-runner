@@ -221,14 +221,6 @@ def test_get_all_questions_for_block_question():
     assert all_questions[0]["answers"][0]["id"] == "answer1"
 
 
-def test_get_section_ids_by_list_name(sections_dependent_on_list_schema):
-    schema = QuestionnaireSchema(sections_dependent_on_list_schema)
-    when_blocks = schema.get_when_rule_section_dependencies_for_list("list")
-
-    assert len(when_blocks) == 2
-    assert {"section2", "section4"} == when_blocks
-
-
 def test_get_all_questions_for_block_question_variants():
     block = {
         "id": "block1",
@@ -743,6 +735,25 @@ def test_answer_dependencies_for_dynamic_options_function_driven(
     }
 
 
+def test_list_dependencies_for_calculated_summary_with_repeating_answers():
+    """
+    Tests list dependencies for list value sources, calculated summaries involving a repeat
+    and calculated summary value sources where the calculated summary includes a repeating answer.
+    """
+    schema = load_schema_from_name(
+        "test_new_calculated_summary_repeating_and_static_answers"
+    )
+
+    assert schema.list_dependencies == {
+        "supermarkets": {
+            Dependent(section_id="section-1", block_id="dynamic-answer"),
+            Dependent(section_id="section-1", block_id="calculated-summary-spending"),
+            Dependent(section_id="section-1", block_id="calculated-summary-visits"),
+            Dependent(section_id="section-2", block_id="supermarket-transport"),
+        }
+    }
+
+
 def test_when_rules_section_dependencies_by_section(
     skipping_section_dependencies_schema,
 ):
@@ -802,6 +813,17 @@ def test_when_rules_section_dependencies_new_calculated_summary(
         "cheese-answer": {"dependent-enabled-section", "dependent-question-section"},
         "butter-answer": {"dependent-enabled-section", "dependent-question-section"},
     } == schema.when_rules_section_dependencies_by_answer
+
+
+def test_when_rule_section_dependencies_for_list(sections_dependent_on_list_schema):
+    """Tests when rule dependencies for lists when used in a section, a block, and nested in a conditional question"""
+    schema = QuestionnaireSchema(sections_dependent_on_list_schema)
+
+    assert schema.get_when_rule_section_dependencies_for_list("list") == {
+        "section2",
+        "section4",
+        "section6",
+    }
 
 
 def test_progress_block_dependencies(

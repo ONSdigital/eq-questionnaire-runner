@@ -165,7 +165,7 @@ class QuestionnaireStoreUpdater:
 
     def _capture_dependencies_for_list_change(self, list_name: str) -> None:
         """
-        Captures the dependencies when a list is added to or removed from
+        Captures the dependencies when an item is added to or removed from the given list.
         Any list collector sections will be affected by the change as well as other sections using when rules
         """
         self._capture_block_dependencies_for_list(list_name)
@@ -176,20 +176,15 @@ class QuestionnaireStoreUpdater:
             self._schema.list_collector_section_ids_by_list_name[list_name]
         )
 
-        for (
-            section_id,
-            list_item_id,
-        ) in self.started_section_keys(section_ids=section_ids):
+        for section_key in self.started_section_keys(section_ids=section_ids):
             # Only add sections which are repeated sections for this list, or the section in which this list is collected
             # Prevents list item progresses being added as dependants as these are captured by started_section_keys(section_ids=section_ids)
-            if not self._schema.get_repeat_for_section(section_id) and list_item_id:
+            if (
+                not self._schema.get_repeat_for_section(section_key.section_id)
+                and section_key.list_item_id
+            ):
                 continue
-            self.dependent_sections.add(
-                DependentSection(
-                    section_id,
-                    list_item_id,
-                )
-            )
+            self.dependent_sections.add(DependentSection(**section_key.to_dict()))
 
     def _get_relationship_answers_for_list_name(
         self, list_name: str

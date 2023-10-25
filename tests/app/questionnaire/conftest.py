@@ -718,6 +718,29 @@ def sections_dependent_on_list_schema():
                     }
                 ],
             },
+            {
+                "id": "section6",
+                "enabled": {
+                    "when": {
+                        ">": [
+                            {"count": [{"source": "list", "identifier": "list"}]},
+                            0,
+                        ]
+                    }
+                },
+                "groups": [
+                    {
+                        "id": "group6",
+                        "blocks": [
+                            {
+                                "type": "Question",
+                                "id": "block6",
+                                "question": {},
+                            }
+                        ],
+                    }
+                ],
+            },
         ]
     }
 
