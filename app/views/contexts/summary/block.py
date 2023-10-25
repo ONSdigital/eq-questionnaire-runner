@@ -5,7 +5,6 @@ from jsonpointer import resolve_pointer
 from app.data_models.data_stores import DataStores
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.return_location import ReturnLocation
-from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.schema_utils import find_pointers_containing
 from app.questionnaire.variants import choose_variant
 from app.utilities.types import LocationType

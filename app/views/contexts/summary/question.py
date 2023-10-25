@@ -72,6 +72,7 @@ class Question:
             block_id=block_id,
             list_name=location.list_name if location else None,
             language=language,
+            return_location=return_location,
         )
 
     def get_answer(

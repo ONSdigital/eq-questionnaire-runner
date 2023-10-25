@@ -6,8 +6,6 @@ from app.data_models.answer_store import AnswerStore
 from app.data_models.data_stores import DataStores
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.return_location import ReturnLocation
-from app.questionnaire.rules.rule_evaluator import RuleEvaluator
-from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts.summary.question import Question
 
@@ -115,9 +113,6 @@ def address_question(
         location=None,
         block_id="address-block",
         return_location=ReturnLocation(),
-        value_source_resolver=get_value_source_resolver(
-            answer_store, list_store, schema
-        ),
         language="en",
     )
 
