@@ -3,6 +3,7 @@ import pytest
 from app.data_models import CompletionStatus
 from app.data_models.progress_store import ProgressStore
 from app.questionnaire import Location
+from app.questionnaire.return_location import ReturnLocation
 from app.questionnaire.routing_path import RoutingPath
 from app.views.contexts.grand_calculated_summary_context import (
     GrandCalculatedSummaryContext,
@@ -88,9 +89,8 @@ def test_build_view_context_for_grand_calculated_summary(
         response_metadata={},
         routing_path=RoutingPath(section_id="default-section", block_ids=block_ids),
         current_location=Location(section_id="default-section", block_id=block_id),
-        return_to=None,
-        return_to_block_id=None,
         supplementary_data_store=supplementary_data_store,
+        return_location=ReturnLocation(),
     )
 
     context = grand_calculated_summary_context.build_view_context()

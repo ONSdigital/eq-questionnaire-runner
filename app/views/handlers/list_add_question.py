@@ -24,15 +24,15 @@ class ListAddQuestion(ListAction):
                 list_name=self.parent_block["for_list"],
                 list_item_id=self._list_item_id,
                 block_id=repeating_blocks[0]["id"],
-                return_to=self._return_to,
-                return_to_answer_id=self._return_to_answer_id,
-                return_to_block_id=self._return_to_block_id,
+                return_to=self.return_location.return_to,
+                return_to_answer_id=self.return_location.return_to_answer_id,
+                return_to_block_id=self.return_location.return_to_block_id,
             )
 
         return self.parent_location.url(
-            return_to=self._return_to,
-            return_to_answer_id=self._return_to_answer_id,
-            return_to_block_id=self._return_to_block_id,
+            return_to=self.return_location.return_to,
+            return_to_answer_id=self.return_location.return_to_answer_id,
+            return_to_block_id=self.return_location.return_to_block_id,
         )
 
     def handle_post(self) -> None:
