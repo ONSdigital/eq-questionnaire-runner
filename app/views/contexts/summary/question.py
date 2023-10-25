@@ -41,12 +41,6 @@ class Question:
         self.schema = schema
         self.data_stores = data_stores
         self.answer_schemas = iter(question_schema.get("answers", []))
-        self.answer_store = data_stores.answer_store
-        self.list_store = data_stores.list_store
-        self.progress_store = data_stores.progress_store
-        self.supplementary_data_store = data_stores.supplementary_data_store
-        self.metadata = data_stores.metadata
-        self.response_metadata = data_stores.response_metadata
         self.location = location
         self.summary = question_schema.get("summary")
         self.title = (
@@ -74,7 +68,7 @@ class Question:
         )
 
         self.answers = self._build_answers(
-            answer_store=self.answer_store,
+            answer_store=self.data_stores.answer_store,
             question_schema=question_schema,
             block_id=block_id,
             list_name=location.list_name if location else None,

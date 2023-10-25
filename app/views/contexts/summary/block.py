@@ -30,18 +30,6 @@ class Block:
         self.schema = schema
         self.data_stores = data_stores
 
-        # self._rule_evaluator = self.data_stores.rule_evaluator(
-        #     # Type ignore: location in rule_evaluator can be both Location or RelationshipLocation type but is only Location type here
-        #     schema=self.schema,
-        #     location=self.location,  # type: ignore
-        # )
-        #
-        # self._value_source_resolver = self.data_stores.value_source_resolver(
-        #     schema=self.schema,
-        #     location=self.location,
-        #     list_item_id=self.location.list_item_id if self.location else None,
-        # )
-
         self.question = self.get_question(
             block_schema=block_schema,
             data_stores=self.data_stores,
