@@ -11,6 +11,7 @@ from app.data_models import (
 )
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import QuestionnaireSchema
+from app.questionnaire.return_location import ReturnLocation
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.utilities.types import LocationType
 
@@ -18,7 +19,6 @@ NumericType: TypeAlias = int | float | Decimal
 
 
 class CalculatedSummaryBlock:
-    # pylint: disable=too-many-locals
     def __init__(
         self,
         block_schema: Mapping,
@@ -29,9 +29,7 @@ class CalculatedSummaryBlock:
         response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
         location: LocationType,
-        return_to: str | None,
-        return_to_block_id: str | None = None,
-        return_to_list_item_id: str | None = None,
+        return_location: ReturnLocation,
         progress_store: ProgressStore,
         routing_path_block_ids: Iterable[str],
         supplementary_data_store: SupplementaryDataStore,
@@ -46,9 +44,7 @@ class CalculatedSummaryBlock:
 
         self.id = block_schema["id"]
         self.title = block_schema["calculation"]["title"]
-        self._return_to = return_to
-        self._return_to_block_id = return_to_block_id
-        self._return_to_list_item_id = return_to_list_item_id
+        self._return_location = return_location
         self._block_schema = block_schema
         self._schema = schema
         if self._schema.is_block_in_repeating_section(self.id):
@@ -86,16 +82,18 @@ class CalculatedSummaryBlock:
     def _build_link(self) -> str:
         # not required if the calculated summary is in the repeat alongside the GCS
         return_to_list_item_id = (
-            self._return_to_list_item_id if not self._list_item_id else None
+            self._return_location.return_to_list_item_id
+            if not self._list_item_id
+            else None
         )
         return url_for(
             "questionnaire.block",
             block_id=self.id,
             list_name=self._list_name,
             list_item_id=self._list_item_id,
-            return_to=self._return_to,
+            return_to=self._return_location.return_to,
             return_to_answer_id=self.id,
-            return_to_block_id=self._return_to_block_id,
+            return_to_block_id=self._return_location.return_to_block_id,
             return_to_list_item_id=return_to_list_item_id,
             _anchor=self.id,
         )

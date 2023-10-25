@@ -12,6 +12,7 @@ from app.data_models import (
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.questionnaire_schema import LIST_COLLECTORS_WITH_REPEATING_BLOCKS
+from app.questionnaire.return_location import ReturnLocation
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities import safe_content
 from app.views.contexts.context import Context
@@ -154,8 +155,9 @@ class SectionSummaryContext(Context):
                     language=self._language,
                     progress_store=self._progress_store,
                     supplementary_data_store=self._supplementary_data_store,
-                    return_to=return_to,
-                    return_to_block_id=None,
+                    return_location=ReturnLocation(
+                        return_to=return_to,
+                    ),
                     view_submitted_response=view_submitted_response,
                 ).serialize()
                 for group in refactored_groups
@@ -189,7 +191,7 @@ class SectionSummaryContext(Context):
                     location=self.current_location,
                     language=self._language,
                     supplementary_data_store=self._supplementary_data_store,
-                    return_to="section-summary",
+                    return_location=ReturnLocation(return_to="section-summary"),
                 )
                 yield list_collector_block.list_summary_element(summary_element)
 
