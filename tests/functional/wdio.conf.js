@@ -22,7 +22,7 @@ export const config = {
     timeout_modal_extended: ["./spec/timeout/timeout_modal_extended/*.js"],
     timeout_modal_extended_new_window: ["./spec/timeout/timeout_modal_extended_new_window/*.js"],
     components: ["./spec/components/**/*.js"],
-    features: ["./spec/features/**/*.js"],
+    features: ["./spec/timeout/**/*.js"],
     general: ["./spec/*.spec.js"],
   },
   // Patterns to exclude.
@@ -194,10 +194,7 @@ export const config = {
    * @param {Array} args arguments that command would receive
    */
   before: async function (capabilities, specs) {
-    // const chai = require("chai");
     const JwtHelper = require("./jwt_helper");
-
-    // global.expect = chai.expect;
 
     await browser.addCommand(
       "openQuestionnaire",

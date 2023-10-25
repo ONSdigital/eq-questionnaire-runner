@@ -7,6 +7,14 @@ class TestCase {
       await this.checkTimeoutModal();
       await browser.pause(65000); // We are waiting for the session to expire
       await expect(browser).toHaveUrlContaining("/session-expired");
+      await expect(await $("body").getHTML())
+        .toContain(
+          "Sorry, you need to sign in again",
+          "This is because you have either:",
+          "been inactive for 45 minutes and your session has timed out to protect your information",
+          "followed a link to a page you are not signed in to",
+          "followed a link to a survey that has already been submitted",
+        );
       await expect(await $("body").getHTML()).not.toContain("To protect your information, your progress will be saved and you will be signed out in");
     }).timeout(140000);
   }
