@@ -16,11 +16,9 @@ class ListRepeatingQuestion(ListEditQuestion):
         # since the list collector won't be in a repeating section, use the parent location which doesn't have a list item id
         if url := self.router.get_return_to_location_url(
             location=self.parent_location,
-            return_to=self._return_to,
+            return_location=self.return_location,
             routing_path=self._routing_path,
             is_for_previous=True,
-            return_to_answer_id=self._return_to_answer_id,
-            return_to_block_id=self._return_to_block_id,
         ):
             return url
 
@@ -37,9 +35,7 @@ class ListRepeatingQuestion(ListEditQuestion):
                 list_name=self.current_location.list_name,
                 list_item_id=self.current_location.list_item_id,
                 block_id=previous_repeating_block_id,
-                return_to=self._return_to,
-                return_to_answer_id=self._return_to_answer_id,
-                return_to_block_id=self._return_to_block_id,
+                **self.return_location.to_dict(),
             )
 
         if edit_block := self._schema.get_edit_block_for_list_collector(
@@ -50,15 +46,11 @@ class ListRepeatingQuestion(ListEditQuestion):
                 list_name=self.current_location.list_name,
                 list_item_id=self.current_location.list_item_id,
                 block_id=edit_block["id"],
-                return_to=self._return_to,
-                return_to_answer_id=self._return_to_answer_id,
-                return_to_block_id=self._return_to_block_id,
+                **self.return_location.to_dict(),
             )
 
         return self.parent_location.url(
-            return_to=self._return_to,
-            return_to_answer_id=self._return_to_answer_id,
-            return_to_block_id=self._return_to_block_id,
+            **self.return_location.to_dict(),
         )
 
     def handle_post(self) -> None:
