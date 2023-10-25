@@ -43,9 +43,7 @@ class ListEditQuestion(ListAction):
                 list_name=first_incomplete_block.list_name,
                 list_item_id=first_incomplete_block.list_item_id,
                 block_id=first_incomplete_block.block_id,
-                return_to=self._return_to,
-                return_to_answer_id=self._return_to_answer_id,
-                return_to_block_id=self._return_to_block_id,
+                **self.return_location.to_dict(),
             )
 
         return super().get_next_location_url()
