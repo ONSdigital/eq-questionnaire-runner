@@ -16,7 +16,7 @@ describe("Feature: Sum of grouped answers validation (equal or less than) agains
       await $(BreakdownAnswerPage.breakdown3()).setValue("2");
       await $(BreakdownAnswerPage.breakdown4()).setValue("2");
       await click(BreakdownAnswerPage.submit());
-      await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
+      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
     });
   });
 
@@ -29,7 +29,7 @@ describe("Feature: Sum of grouped answers validation (equal or less than) agains
       await $(BreakdownAnswerPage.breakdown3()).setValue("3");
       await $(BreakdownAnswerPage.breakdown4()).setValue("3");
       await click(BreakdownAnswerPage.submit());
-      await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
+      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
     });
   });
 
@@ -42,7 +42,7 @@ describe("Feature: Sum of grouped answers validation (equal or less than) agains
       await $(BreakdownAnswerPage.breakdown3()).setValue("");
       await $(BreakdownAnswerPage.breakdown4()).setValue("");
       await click(BreakdownAnswerPage.submit());
-      await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
+      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
     });
   });
 

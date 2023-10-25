@@ -33,7 +33,7 @@ describe('Radio with multiple "detail_answer" options', () => {
     // When
     await $(MandatoryRadioPage.favouriteNotListedDetail()).setValue("Bacon");
     await click(MandatoryRadioPage.submit());
-    await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
+    await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
   });
 
   it("Given a non-mandatory detail answer, When the user does not provide any text, Then just the option value should be displayed on the summary screen", async () => {

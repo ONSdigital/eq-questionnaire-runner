@@ -58,7 +58,7 @@ describe("Date checks", () => {
 
     await click(DateYearDatePage.submit());
 
-    await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
+    await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
 
     // Then the summary screen shows the dates entered formatted
     await expect(await $(SubmitPage.dateRangeFromAnswer()).getText()).toBe("1 January 1901 to 3 May 2017");
@@ -161,7 +161,7 @@ describe("Date checks", () => {
     await $(DateMonthYearPage.Year()).setValue(2018);
     await click(DateMonthYearPage.submit());
 
-    await expect(await browser.getUrl()).toContain(DateSinglePage.url());
+    await expect(browser).toHaveUrlContaining(DateSinglePage.url());
   });
 
   it("Given the test_dates survey is selected when an error message is shown then when it is corrected, it goes to the summary page and the information is correct", async () => {

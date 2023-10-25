@@ -6,7 +6,7 @@ class TestCase {
     it("When the timeout modal is displayed, and I do not extend my session, Then I will be redirected to the session expired page", async () => {
       await this.checkTimeoutModal();
       await browser.pause(65000); // We are waiting for the session to expire
-      await expect(await browser.getUrl()).toContain("/session-expired");
+      await expect(browser).toHaveUrlContaining("/session-expired");
       await expect(await $("body").getHTML()).not.toContain(
         "To protect your information, your progress will be saved and you will be signed out in"
       );
@@ -20,7 +20,7 @@ class TestCase {
       await expect(await $(TimeoutModalPage.timer()).getText()).toBe("");
       await browser.pause(65000); // Waiting 65 seconds to sanity check that it hasn’t expired
       await browser.refresh();
-      await expect(await browser.getUrl()).toContain(await page.pageName);
+      await expect(browser).toHaveUrlContaining(await page.pageName);
       await expect(await $("body").getHTML()).not.toContain("Sorry, you need to sign in again");
     }).timeout(140000);
   }
@@ -32,7 +32,7 @@ class TestCase {
       await browser.switchWindow(await page.pageName);
       await browser.refresh();
       await browser.pause(65000); // Waiting 65 seconds to sanity check that it hasn’t expired
-      await expect(await browser.getUrl()).toContain(await page.pageName);
+      await expect(browser).toHaveUrlContaining(await page.pageName);
     }).timeout(140000);
   }
 

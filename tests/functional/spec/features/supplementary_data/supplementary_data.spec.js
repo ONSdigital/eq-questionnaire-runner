@@ -255,7 +255,7 @@ describe("Using supplementary data", () => {
 
   it("Given I have a calculated summary using the repeating blocks, When I reach the Calculated Summary, Then I see the correct total and supplementary data labels", async () => {
     await click(ListCollectorProductsPage.submit());
-    await expect(await browser.getUrl()).toContain(CalculatedSummaryVolumeSalesPage.pageName);
+    await expect(browser).toHaveUrlContaining(CalculatedSummaryVolumeSalesPage.pageName);
     await expect(await $(CalculatedSummaryVolumeSalesPage.calculatedSummaryTitle()).getText()).toBe(
       "We calculate the total volume of sales over the previous quarter to be 150 kg. Is this correct?",
     );

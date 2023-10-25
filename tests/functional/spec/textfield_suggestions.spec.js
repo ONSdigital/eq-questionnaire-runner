@@ -34,6 +34,6 @@ describe("Suggestions", () => {
     // TODO there is an issue with the load-time of the auto-suggest dropdown causing this test to fail. Uncomment when this has been resolved.
     // await suggestionsOption.click();
     await click(MultipleSuggestionsPage.submit());
-    await expect(await browser.getUrl()).toContain(SubmitPage.url());
+    await expect(browser).toHaveUrlContaining(SubmitPage.url());
   });
 });

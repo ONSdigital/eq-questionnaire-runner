@@ -21,7 +21,7 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
     it("When I continue and enter numbers on dynamic and static answers page that don't add up to that total, Then validation error should be displayed with appropriate message", async () => {
       await $(TotalBlockPage.acceptCookies()).click();
       await addTwoSupermarkets();
-      await expect(await browser.getUrl()).toContain(DynamicAnswerPage.pageName);
+      await expect(browser).toHaveUrlContaining(DynamicAnswerPage.pageName);
       await expect(await $$(DynamicAnswerPage.labels()).length).toBe(3);
       await $$(DynamicAnswerPage.inputs())[0].setValue(33);
       await $$(DynamicAnswerPage.inputs())[1].setValue(33);
@@ -33,19 +33,19 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
   describe("Given I add list items with hardcoded total used for validation of dynamic answers", () => {
     it("When I continue and enter numbers on dynamic and static answers page that add up to that total, Then I should be able to get to the subsequent question", async () => {
       await addTwoSupermarkets();
-      await expect(await browser.getUrl()).toContain(DynamicAnswerPage.pageName);
+      await expect(browser).toHaveUrlContaining(DynamicAnswerPage.pageName);
       await expect(await $$(DynamicAnswerPage.labels()).length).toBe(3);
       await $$(DynamicAnswerPage.inputs())[0].setValue(34);
       await $$(DynamicAnswerPage.inputs())[1].setValue(33);
       await $(DynamicAnswerPage.percentageOfShoppingElsewhere()).setValue(33);
       await click(DynamicAnswerPage.submit());
-      await expect(await browser.getUrl()).toContain(TotalBlockOtherPage.pageName);
+      await expect(browser).toHaveUrlContaining(TotalBlockOtherPage.pageName);
     });
   });
   describe("Given I add list items with custom total used for validation of dynamic answers", () => {
     it("When I continue and enter numbers on dynamic answers only page that don't add up to that total, Then validation error should be displayed with appropriate message", async () => {
       await addTwoSupermarkets();
-      await expect(await browser.getUrl()).toContain(DynamicAnswerPage.pageName);
+      await expect(browser).toHaveUrlContaining(DynamicAnswerPage.pageName);
       await expect(await $$(DynamicAnswerPage.labels()).length).toBe(3);
       await $$(DynamicAnswerPage.inputs())[0].setValue(34);
       await $$(DynamicAnswerPage.inputs())[1].setValue(33);
@@ -53,7 +53,7 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await click(DynamicAnswerPage.submit());
       await $(TotalBlockOtherPage.totalOther()).setValue(100);
       await click(TotalBlockOtherPage.submit());
-      await expect(await browser.getUrl()).toContain(DynamicAnswerOnlyPage.pageName);
+      await expect(browser).toHaveUrlContaining(DynamicAnswerOnlyPage.pageName);
       await $$(DynamicAnswerOnlyPage.inputs())[0].setValue(50);
       await $$(DynamicAnswerOnlyPage.inputs())[1].setValue(0);
       await click(DynamicAnswerOnlyPage.submit());
@@ -63,9 +63,9 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
   describe("Given I add list items with custom total used for validation of dynamic answers", () => {
     it("When I continue and enter numbers on dynamic answers only page that add up to that total, Then I should be able to get to the summary", async () => {
       await addTwoSupermarkets();
-      await expect(await browser.getUrl()).toContain(DynamicAnswerPage.pageName);
+      await expect(browser).toHaveUrlContaining(DynamicAnswerPage.pageName);
       await fillDynamicAnswers();
-      await expect(await browser.getUrl()).toContain(SectionSummaryPage.pageName);
+      await expect(browser).toHaveUrlContaining(SectionSummaryPage.pageName);
     });
   });
   describe("Given I add list items and fill all the dynamic answers", () => {
@@ -78,7 +78,7 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await click(ListCollectorAddPage.submit());
       await $(ListCollectorPage.no()).click();
       await click(ListCollectorPage.submit());
-      await expect(await browser.getUrl()).toContain(DynamicAnswerPage.pageName);
+      await expect(browser).toHaveUrlContaining(DynamicAnswerPage.pageName);
       await expect(await $$(DynamicAnswerPage.labels()).length).toBe(4);
     });
   });
@@ -89,7 +89,7 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await $(SectionSummaryPage.supermarketsListRemoveLink(1)).click();
       await $(ListCollectorRemovePage.yes()).click();
       await click(ListCollectorRemovePage.submit());
-      await expect(await browser.getUrl()).toContain(DynamicAnswerPage.pageName);
+      await expect(browser).toHaveUrlContaining(DynamicAnswerPage.pageName);
       await expect(await $$(DynamicAnswerPage.labels()).length).toBe(2);
     });
   });
@@ -102,7 +102,7 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await click(ListCollectorEditPage.submit());
       await click(DynamicAnswerPage.submit());
       await click(DynamicAnswerOnlyPage.submit());
-      await expect(await browser.getUrl()).toContain(SectionSummaryPage.pageName);
+      await expect(browser).toHaveUrlContaining(SectionSummaryPage.pageName);
       await $(SectionSummaryPage.groupContent(2)).waitForExist({ timeout: 2000 });
       await expect(await $(SectionSummaryPage.groupContent(2)).$$(summaryTitles)[0].getText()).toBe("Percentage of shopping at Aldi");
     });
@@ -111,13 +111,13 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
     it("When I journey backwards, Then I should be revisiting all the previous blocks", async () => {
       await addTwoSupermarkets();
       await fillDynamicAnswers();
-      await expect(await browser.getUrl()).toContain(SectionSummaryPage.pageName);
+      await expect(browser).toHaveUrlContaining(SectionSummaryPage.pageName);
       await $(SectionSummaryPage.previous()).click();
       await $(DynamicAnswerOnlyPage.previous()).click();
       await $(TotalBlockOtherPage.previous()).click();
       await $(DynamicAnswerPage.previous()).click();
       await $(ListCollectorPage.previous()).click();
-      await expect(await browser.getUrl()).toContain(DriverPage.pageName);
+      await expect(browser).toHaveUrlContaining(DriverPage.pageName);
     });
   });
 });

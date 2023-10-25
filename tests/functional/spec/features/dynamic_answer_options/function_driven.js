@@ -54,7 +54,7 @@ testCases.forEach(async (testCase) => {
 
         it("When I submit the page, then I should be taken to the next page", async () => {
           await click(DynamicCheckboxPage.submit());
-          await expect(await browser.getUrl()).toContain(DynamicRadioPage.pageName);
+          await expect(browser).toHaveUrlContaining(DynamicRadioPage.pageName);
         });
       });
 
@@ -68,7 +68,7 @@ testCases.forEach(async (testCase) => {
 
         it("When I submit the page, then I should be taken to the next page", async () => {
           await click(DynamicRadioPage.submit());
-          await expect(await browser.getUrl()).toContain(DynamicDropdownPage.pageName);
+          await expect(browser).toHaveUrlContaining(DynamicDropdownPage.pageName);
         });
       });
 
@@ -82,7 +82,7 @@ testCases.forEach(async (testCase) => {
 
         it("When I submit the page, then I should be taken to the next page", async () => {
           await click(DynamicDropdownPage.submit());
-          await expect(await browser.getUrl()).toContain(DynamicMutuallyExclusivePage.pageName);
+          await expect(browser).toHaveUrlContaining(DynamicMutuallyExclusivePage.pageName);
         });
       });
 
@@ -127,7 +127,7 @@ testCases.forEach(async (testCase) => {
           await click(DynamicRadioPage.submit());
           await click(DynamicMutuallyExclusivePage.submit());
 
-          await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
+          await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
           await expect(await $(SubmitPage.dynamicCheckboxAnswer()).getText()).toBe("No answer provided");
           await expect(await $(SubmitPage.dynamicRadioAnswer()).getText()).toBe("No answer provided");
           await expect(await $(SubmitPage.dynamicDropdownAnswer()).getText()).toBe("No answer provided");
@@ -153,7 +153,7 @@ testCases.forEach(async (testCase) => {
           await $(DynamicMutuallyExclusivePage.answerByIndex(6)).click(); //  Sunday 3 January 2021
           await click(DynamicMutuallyExclusivePage.submit());
 
-          await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
+          await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
           await expect(await $(SubmitPage.dynamicCheckboxAnswer()).getText()).toBe("Wednesday 30 December 2020\nThursday 31 December 2020");
           await expect(await $(SubmitPage.dynamicRadioAnswer()).getText()).toBe("Tuesday 29 December 2020");
           await expect(await $(SubmitPage.dynamicDropdownAnswer()).getText()).toBe("Saturday 2 January 2021");
@@ -195,7 +195,7 @@ describe(`Feature: Dynamically generated answer options driven by a function wit
       await $(DynamicMutuallyExclusivePage.staticIDidNotWork()).click();
       await click(DynamicMutuallyExclusivePage.submit());
 
-      await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
+      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
       await expect(await $(SubmitPage.dynamicCheckboxAnswer()).getText()).toBe("I did not work");
       await expect(await $(SubmitPage.dynamicRadioAnswer()).getText()).toBe("I did not work");
       await expect(await $(SubmitPage.dynamicDropdownAnswer()).getText()).toBe("I did not work");
@@ -226,7 +226,7 @@ describe(`Feature: Dynamically generated answer options driven by a function wit
       await expect(await $(DynamicMutuallyExclusivePage.staticIDidNotWork()).isSelected()).toBe(true);
       await click(DynamicMutuallyExclusivePage.submit());
 
-      await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
+      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
     });
   });
 });

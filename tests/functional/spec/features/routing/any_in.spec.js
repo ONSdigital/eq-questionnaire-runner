@@ -13,18 +13,18 @@ describe("Feature: Routing - ANY-IN Operator", () => {
         await $(CountryCheckboxPage.india()).click();
         await $(CountryCheckboxPage.malta()).click();
         await click(CountryCheckboxPage.submit());
-        await expect(await browser.getUrl()).toContain(CountryInterstitialPage.pageName);
+        await expect(browser).toHaveUrlContaining(CountryInterstitialPage.pageName);
       });
 
       it("When I do select India or Malta, Then I should be routed to the correct answer interstitial page", async () => {
         await $(CountryCheckboxPage.india()).click();
         await click(CountryCheckboxPage.submit());
-        await expect(await browser.getUrl()).toContain(CountryInterstitialPage.pageName);
+        await expect(browser).toHaveUrlContaining(CountryInterstitialPage.pageName);
       });
       it("When I do not select India or Malta, Then I should be routed to the incorrect answer interstitial page", async () => {
         await $(CountryCheckboxPage.liechtenstein()).click();
         await click(CountryCheckboxPage.submit());
-        await expect(await browser.getUrl()).toContain(CountryInterstitialOtherPage.pageName);
+        await expect(browser).toHaveUrlContaining(CountryInterstitialOtherPage.pageName);
       });
     });
   });

@@ -11,7 +11,7 @@ describe("Dynamic radio options from checkbox answers", () => {
       await $(InjurySustainedPage.body()).click();
       await click(InjurySustainedPage.submit());
 
-      await expect(await browser.getUrl()).toContain(MostSeriousInjuryPage.pageName);
+      await expect(browser).toHaveUrlContaining(MostSeriousInjuryPage.pageName);
       await expect(await $(MostSeriousInjuryPage.answerLabelByIndex(0)).getText()).toBe("Head");
       await expect(await $(MostSeriousInjuryPage.answerLabelByIndex(1)).getText()).toBe("Body");
       await expect(await $(MostSeriousInjuryPage.answerLabelByIndex(2)).getText()).toBe("They were of equal severity (static option)");
@@ -22,7 +22,7 @@ describe("Dynamic radio options from checkbox answers", () => {
       await $(MostSeriousInjuryPage.answerLabelByIndex(0)).click();
       await click(MostSeriousInjuryPage.submit());
 
-      await expect(await browser.getUrl()).toContain(HealedTheQuickestPage.pageName);
+      await expect(browser).toHaveUrlContaining(HealedTheQuickestPage.pageName);
       await expect(await $(HealedTheQuickestPage.answerLabelByIndex(0)).getText()).toBe("Head");
       await expect(await $(HealedTheQuickestPage.answerLabelByIndex(1)).getText()).toBe("Body");
       await expect(await $(HealedTheQuickestPage.answerLabelByIndex(2)).isExisting()).toBe(false);
@@ -32,7 +32,7 @@ describe("Dynamic radio options from checkbox answers", () => {
       await $(HealedTheQuickestPage.answerLabelByIndex(1)).click();
       await click(HealedTheQuickestPage.submit());
 
-      await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
+      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
       await expect(await $(SubmitPage.injurySustainedAnswer()).getText()).toBe("Head\nBody");
       await expect(await $(SubmitPage.mostSeriousInjuryAnswer()).getText()).toBe("Head");
       await expect(await $(SubmitPage.healedTheQuickestAnswer()).getText()).toBe("Body");

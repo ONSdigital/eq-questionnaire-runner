@@ -88,7 +88,7 @@ describe("Feature: Grand Calculated Summary", () => {
     });
     it("Given I confirm the calculated summary and the blocks following it are already complete, When I press submit, Then I am returned to the section summary anchored to the answer I edited initially", async () => {
       await click(CurrencyQuestion3Page.submit());
-      await expect(await browser.getUrl()).toContain("calculated-summary-section/#skip-answer-2");
+      await expect(browser).toHaveUrlContaining("calculated-summary-section/#skip-answer-2");
     });
     it("Given I change an answer, When I press previous from the now incomplete calculated summary, Then I am routed to the block before the calculated summary", async () => {
       await $(CalculatedSummarySectionSummaryPage.thirdNumberAnswerPartAEdit()).click();

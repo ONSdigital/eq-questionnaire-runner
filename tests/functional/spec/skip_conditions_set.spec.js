@@ -10,11 +10,11 @@ describe("Skip Conditions - Set", () => {
   it("Given I complete the first page, Then I should see the summary page", async () => {
     await $(FoodPage.bacon()).click();
     await click(FoodPage.submit());
-    await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
+    await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
   });
 
   it("Given I do not complete the first page, Then I should see the drink page", async () => {
     await click(FoodPage.submit());
-    await expect(await browser.getUrl()).toContain(DrinkPage.pageName);
+    await expect(browser).toHaveUrlContaining(DrinkPage.pageName);
   });
 });

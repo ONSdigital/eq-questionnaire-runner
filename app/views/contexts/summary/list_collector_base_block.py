@@ -9,6 +9,7 @@ from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.questionnaire_schema import is_list_collector_block_editable
+from app.questionnaire.return_location import ReturnLocation
 from app.utilities.types import LocationType
 from app.views.contexts import list_context
 from app.views.contexts.summary.block import Block
@@ -28,8 +29,7 @@ class ListCollectorBaseBlock:
         location: LocationType,
         language: str,
         supplementary_data_store: SupplementaryDataStore,
-        return_to: str | None,
-        return_to_block_id: str | None = None,
+        return_location: ReturnLocation,
     ) -> None:
         self._location = location
         self._placeholder_renderer = PlaceholderRenderer(
@@ -55,8 +55,7 @@ class ListCollectorBaseBlock:
         self._routing_path_block_ids = routing_path_block_ids
         self._progress_store = progress_store
         self._supplementary_data_store = supplementary_data_store
-        self._return_to = return_to
-        self._return_to_block_id = return_to_block_id
+        self._return_location = return_location
 
     @property
     def list_context(self) -> list_context.ListContext:
@@ -136,8 +135,7 @@ class ListCollectorBaseBlock:
                             list_item_id=list_id,
                             section_id=section_id,
                         ),
-                        return_to=self._return_to,
-                        return_to_block_id=self._return_to_block_id,
+                        return_location=self._return_location,
                         progress_store=self._progress_store,
                         supplementary_data_store=self._supplementary_data_store,
                         language=self._language,

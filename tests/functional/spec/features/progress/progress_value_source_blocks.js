@@ -19,7 +19,7 @@ describe("Feature: Routing  based on progress value sources using block identifi
       await $(FirstQuestionPage.q1A1()).setValue("0");
       await click(FirstQuestionPage.submit());
 
-      await expect(await browser.getUrl()).toContain(ThirdQuestionPage.pageName);
+      await expect(browser).toHaveUrlContaining(ThirdQuestionPage.pageName);
       await $(ThirdQuestionPage.q1A1()).setValue("1");
       await click(ThirdQuestionPage.submit());
 
@@ -29,7 +29,7 @@ describe("Feature: Routing  based on progress value sources using block identifi
       await $(SeventhQuestionPage.q1A1()).setValue("3");
       await click(SeventhQuestionPage.submit());
 
-      await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
+      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
       await expect(await $("body").getText()).not.toBe("Section 1 Question 2");
       await expect(await $("body").getText()).not.toBe("Section 1 Question 4");
     });
@@ -40,28 +40,28 @@ describe("Feature: Routing  based on progress value sources using block identifi
       await $(FirstQuestionPage.q1A1()).setValue("1");
       await click(FirstQuestionPage.submit());
 
-      await expect(await browser.getUrl()).toContain(SecondQuestionPage.pageName);
+      await expect(browser).toHaveUrlContaining(SecondQuestionPage.pageName);
       await $(SecondQuestionPage.q1A1()).setValue("1");
       await click(SecondQuestionPage.submit());
 
       await $(ThirdQuestionPage.q1A1()).setValue("2");
       await click(ThirdQuestionPage.submit());
 
-      await expect(await browser.getUrl()).toContain(FourthQuestionPage.pageName);
+      await expect(browser).toHaveUrlContaining(FourthQuestionPage.pageName);
       await $(FourthQuestionPage.q1A1()).setValue("3");
       await click(FourthQuestionPage.submit());
 
       await $(FifthQuestionPage.q1A1()).setValue("4");
       await click(FifthQuestionPage.submit());
 
-      await expect(await browser.getUrl()).toContain(SixthQuestionPage.pageName);
+      await expect(browser).toHaveUrlContaining(SixthQuestionPage.pageName);
       await $(SixthQuestionPage.q1A1()).setValue("5");
       await click(SixthQuestionPage.submit());
 
       await $(SeventhQuestionPage.q1A1()).setValue("6");
       await click(SeventhQuestionPage.submit());
 
-      await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
+      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
       await expect(await $("body").getText()).toContain("Section 1 Question 4");
       await expect(await $("body").getText()).toContain("Section 1 Question 6");
     });
@@ -72,7 +72,7 @@ describe("Feature: Routing  based on progress value sources using block identifi
       await $(FirstQuestionPage.q1A1()).setValue("0");
       await click(FirstQuestionPage.submit());
 
-      await expect(await browser.getUrl()).toContain(ThirdQuestionPage.pageName);
+      await expect(browser).toHaveUrlContaining(ThirdQuestionPage.pageName);
       await $(ThirdQuestionPage.q1A1()).setValue("1");
       await click(ThirdQuestionPage.submit());
 
@@ -83,27 +83,27 @@ describe("Feature: Routing  based on progress value sources using block identifi
       await click(SeventhQuestionPage.submit());
 
       await $(SubmitPage.s1B1Q1A1Edit()).click();
-      await expect(await browser.getUrl()).toContain(FirstQuestionPage.pageName);
+      await expect(browser).toHaveUrlContaining(FirstQuestionPage.pageName);
       await $(FirstQuestionPage.q1A1()).setValue("1");
       await click(FirstQuestionPage.submit());
 
-      await expect(await browser.getUrl()).toContain(SecondQuestionPage.pageName);
+      await expect(browser).toHaveUrlContaining(SecondQuestionPage.pageName);
       await $(SecondQuestionPage.q1A1()).setValue("1");
       await click(SecondQuestionPage.submit());
 
       await click(ThirdQuestionPage.submit());
 
-      await expect(await browser.getUrl()).toContain(FourthQuestionPage.pageName);
+      await expect(browser).toHaveUrlContaining(FourthQuestionPage.pageName);
       await $(FourthQuestionPage.q1A1()).setValue("3");
       await click(FourthQuestionPage.submit());
 
       await click(FifthQuestionPage.submit());
 
-      await expect(await browser.getUrl()).toContain(SixthQuestionPage.pageName);
+      await expect(browser).toHaveUrlContaining(SixthQuestionPage.pageName);
       await $(SixthQuestionPage.q1A1()).setValue("3");
       await click(SixthQuestionPage.submit());
 
-      await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
+      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
       await expect(await $("body").getText()).toContain("Section 1 Question 4");
       await expect(await $("body").getText()).toContain("Section 1 Question 6");
     });
@@ -114,30 +114,30 @@ describe("Feature: Routing  based on progress value sources using block identifi
       await $(FirstQuestionPage.q1A1()).setValue("1");
       await click(FirstQuestionPage.submit());
 
-      await expect(await browser.getUrl()).toContain(SecondQuestionPage.pageName);
+      await expect(browser).toHaveUrlContaining(SecondQuestionPage.pageName);
       await $(SecondQuestionPage.q1A1()).setValue("1");
       await click(SecondQuestionPage.submit());
 
       await $(ThirdQuestionPage.q1A1()).setValue("2");
       await click(ThirdQuestionPage.submit());
 
-      await expect(await browser.getUrl()).toContain(FourthQuestionPage.pageName);
+      await expect(browser).toHaveUrlContaining(FourthQuestionPage.pageName);
       await $(FourthQuestionPage.q1A1()).setValue("3");
       await click(FourthQuestionPage.submit());
 
       await $(FifthQuestionPage.q1A1()).setValue("4");
       await click(FifthQuestionPage.submit());
 
-      await expect(await browser.getUrl()).toContain(SixthQuestionPage.pageName);
+      await expect(browser).toHaveUrlContaining(SixthQuestionPage.pageName);
       await $(SixthQuestionPage.q1A1()).setValue("5");
       await click(SixthQuestionPage.submit());
 
       await $(SeventhQuestionPage.q1A1()).setValue("6");
       await click(SeventhQuestionPage.submit());
 
-      await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
+      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
       await $(SubmitPage.s1B1Q1A1Edit()).click();
-      await expect(await browser.getUrl()).toContain(FirstQuestionPage.pageName);
+      await expect(browser).toHaveUrlContaining(FirstQuestionPage.pageName);
       await $(FirstQuestionPage.q1A1()).setValue("0");
       await click(FirstQuestionPage.submit());
 
@@ -158,7 +158,7 @@ describe("Feature: Section enabled based on progress value sources using block i
       await click(FirstQuestionPage.submit());
       await $(SecondQuestionPage.q1A1()).setValue("1");
       await click(SecondQuestionPage.submit());
-      await expect(await browser.getUrl()).toContain(ThirdQuestionSectionTwoPage.pageName);
+      await expect(browser).toHaveUrlContaining(ThirdQuestionSectionTwoPage.pageName);
     });
   });
 });

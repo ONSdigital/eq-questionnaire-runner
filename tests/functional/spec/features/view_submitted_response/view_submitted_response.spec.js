@@ -30,10 +30,10 @@ describe("View Submitted Response", () => {
     await $(AddressBlockPage.answer()).setValue("NP10 8XG");
     await click(AddressBlockPage.submit());
     await click(SubmitPage.submit());
-    await expect(await browser.getUrl()).toContain(ThankYouPage.pageName);
+    await expect(browser).toHaveUrlContaining(ThankYouPage.pageName);
     await expect(await $(ThankYouPage.title()).getHTML()).toContain("Thank you for completing the Test");
     await $(ThankYouPage.savePrintAnswersLink()).click();
-    await expect(await browser.getUrl()).toContain(ViewSubmittedResponsePage.pageName);
+    await expect(browser).toHaveUrlContaining(ViewSubmittedResponsePage.pageName);
   });
 
   it("Given I have completed a questionnaire with view submitted response enabled, When I am on the view submitted response page within 45 minutes of submission, Then the summary is displayed correctly", async () => {
@@ -123,10 +123,10 @@ describe("View Submitted Response Summary Page With Repeating Sections", () => {
     await click(SectionSummarySectionTwo.submit());
 
     await click(HubPage.submit());
-    await expect(await browser.getUrl()).toContain(ThankYouPage.pageName);
+    await expect(browser).toHaveUrlContaining(ThankYouPage.pageName);
     await expect(await $(ThankYouPage.title()).getHTML()).toContain("Thank you for completing the Test");
     await $(ThankYouPage.savePrintAnswersLink()).click();
-    await expect(await browser.getUrl()).toContain(ViewSubmittedResponsePage.pageName);
+    await expect(browser).toHaveUrlContaining(ViewSubmittedResponsePage.pageName);
   });
 
   it("Given I have completed a questionnaire with a repeating section and view submitted response enabled, When I am on the view submitted response page within 45 minutes of submission, Then the summary is displayed correctly", async () => {

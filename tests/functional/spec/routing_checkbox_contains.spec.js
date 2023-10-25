@@ -15,7 +15,7 @@ describe("Routing Checkbox Contains Condition.", () => {
     await $(RoutingCheckboxContains.india()).click();
     await click(RoutingCheckboxContains.submit());
     // Then
-    await expect(await browser.getUrl()).toContain(ContainsAnyPage.pageName);
+    await expect(browser).toHaveUrlContaining(ContainsAnyPage.pageName);
 
     // Or
     await $(ContainsAnyPage.previous()).click();
@@ -26,7 +26,7 @@ describe("Routing Checkbox Contains Condition.", () => {
     await click(RoutingCheckboxContains.submit());
 
     // Then
-    await expect(await browser.getUrl()).toContain(ContainsAnyPage.pageName);
+    await expect(browser).toHaveUrlContaining(ContainsAnyPage.pageName);
 
     // Or
     await $(ContainsAnyPage.previous()).click();
@@ -36,7 +36,7 @@ describe("Routing Checkbox Contains Condition.", () => {
     await click(RoutingCheckboxContains.submit());
 
     // Then
-    await expect(await browser.getUrl()).toContain(ContainsAnyPage.pageName);
+    await expect(browser).toHaveUrlContaining(ContainsAnyPage.pageName);
   });
 
   it('Given a list of checkbox options, when I select the option "Malta" or the option "Liechtenstein" or both then I should be routed to the summary condition page', async () => {
@@ -44,7 +44,7 @@ describe("Routing Checkbox Contains Condition.", () => {
     await $(RoutingCheckboxContains.liechtenstein()).click();
     await click(RoutingCheckboxContains.submit());
     // Then
-    await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
+    await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
 
     // Or
     await $(ContainsAnyPage.previous()).click();
@@ -55,7 +55,7 @@ describe("Routing Checkbox Contains Condition.", () => {
     await click(RoutingCheckboxContains.submit());
 
     // Then
-    await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
+    await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
 
     // Or
     await $(ContainsAnyPage.previous()).click();
@@ -65,7 +65,7 @@ describe("Routing Checkbox Contains Condition.", () => {
     await click(RoutingCheckboxContains.submit());
 
     // Then
-    await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
+    await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
   });
 
   it('Given a list of checkbox options, when I select the options "India", "Azerbaijan" and "Liechtenstein" then I should be routed to the "contains all" condition page', async () => {
@@ -75,6 +75,6 @@ describe("Routing Checkbox Contains Condition.", () => {
     await $(RoutingCheckboxContains.liechtenstein()).click();
     await click(RoutingCheckboxContains.submit());
     // Then
-    await expect(await browser.getUrl()).toContain(ContainsAllPage.pageName);
+    await expect(browser).toHaveUrlContaining(ContainsAllPage.pageName);
   });
 });

@@ -21,7 +21,7 @@ describe("Last viewed question guidance", () => {
     });
 
     it("When the respondent launches the survey, then last question guidance is not shown", async () => {
-      await expect(await browser.getUrl()).toContain(WorkInterstitialPage.url());
+      await expect(browser).toHaveUrlContaining(WorkInterstitialPage.url());
       await expect(await $(WorkInterstitialPage.lastViewedQuestionGuidance()).isExisting()).toBe(false);
     });
 
@@ -29,7 +29,7 @@ describe("Last viewed question guidance", () => {
       await $(WorkInterstitialPage.saveSignOut()).click();
       await browser.openQuestionnaire("test_last_viewed_question_guidance_hub.json", resumableLaunchParams);
       await browser.pause(100);
-      await expect(await browser.getUrl()).toContain(WorkInterstitialPage.url());
+      await expect(browser).toHaveUrlContaining(WorkInterstitialPage.url());
       await expect(await $(WorkInterstitialPage.lastViewedQuestionGuidance()).isExisting()).toBe(false);
     });
 
@@ -54,7 +54,7 @@ describe("Last viewed question guidance", () => {
 
     it("When the respondent selects a section which is not started, then last question guidance is not shown", async () => {
       await $(HubPage.summaryRowLink("education-section")).click();
-      await expect(await browser.getUrl()).toContain(GcsesPage.url());
+      await expect(browser).toHaveUrlContaining(GcsesPage.url());
       await expect(await $(GcsesPage.lastViewedQuestionGuidance()).isExisting()).toBe(false);
     });
 
@@ -64,7 +64,7 @@ describe("Last viewed question guidance", () => {
       await click(GcsesPage.submit());
       await browser.url(HubPage.url());
       await $(HubPage.summaryRowLink("education-section")).click();
-      await expect(await browser.getUrl()).toContain(ALevelsPage.url());
+      await expect(browser).toHaveUrlContaining(ALevelsPage.url());
       await expect(await $(ALevelsPage.lastViewedQuestionGuidanceLink()).getAttribute("href")).toContain(GcsesPage.url());
       await expect(await $(ALevelsPage.lastViewedQuestionGuidance()).isExisting()).toBe(true);
     });
@@ -72,11 +72,11 @@ describe("Last viewed question guidance", () => {
     it("When the respondent selects a section which is complete , then last question guidance is not shown on the summary or any link clicked from the summary", async () => {
       await $(ALevelsPage.yes()).click();
       await click(ALevelsPage.submit());
-      await expect(await browser.getUrl()).toContain(EducationSectionSummaryPage.url());
+      await expect(browser).toHaveUrlContaining(EducationSectionSummaryPage.url());
       await expect(await $(ALevelsPage.lastViewedQuestionGuidance()).isExisting()).toBe(false);
       await click(EducationSectionSummaryPage.submit());
       await $(HubPage.summaryRowLink("education-section")).click();
-      await expect(await browser.getUrl()).toContain(EducationSectionSummaryPage.url());
+      await expect(browser).toHaveUrlContaining(EducationSectionSummaryPage.url());
       await $(EducationSectionSummaryPage.alevelsAnswerEdit()).click();
       await expect(await $(ALevelsPage.lastViewedQuestionGuidance()).isExisting()).toBe(false);
     });
@@ -84,7 +84,7 @@ describe("Last viewed question guidance", () => {
     it("When the user clicks continue on the hub and it takes you to a section which is not started, then last question guidance is not shown", async () => {
       await browser.url(HubPage.url());
       await click(HubPage.submit());
-      await expect(await browser.getUrl()).toContain(SportsPage.url());
+      await expect(browser).toHaveUrlContaining(SportsPage.url());
       await expect(await $(SportsPage.lastViewedQuestionGuidance()).isExisting()).toBe(false);
     });
 
@@ -94,7 +94,7 @@ describe("Last viewed question guidance", () => {
       await click(SportsPage.submit());
       await browser.url(HubPage.url());
       await click(HubPage.submit());
-      await expect(await browser.getUrl()).toContain(HobbiesPage.url());
+      await expect(browser).toHaveUrlContaining(HobbiesPage.url());
       await expect(await $(HobbiesPage.lastViewedQuestionGuidanceLink()).getAttribute("href")).toContain(SportsPage.url());
       await expect(await $(HobbiesPage.lastViewedQuestionGuidance()).isExisting()).toBe(true);
     });
@@ -103,7 +103,7 @@ describe("Last viewed question guidance", () => {
       await $(HobbiesPage.yes()).click();
       await click(HobbiesPage.submit());
       await $(HubPage.summaryRowLink("interests-section")).click();
-      await expect(await browser.getUrl()).toContain(SportsPage.url());
+      await expect(browser).toHaveUrlContaining(SportsPage.url());
       await expect(await $(SportsPage.lastViewedQuestionGuidance()).isExisting()).toBe(false);
     });
   });

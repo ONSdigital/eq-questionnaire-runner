@@ -11,14 +11,14 @@ describe("Feature: Section Enabled Based On Checkbox Answers", () => {
     await $(sectionOne.section1Section2()).click();
     await click(sectionOne.submit());
 
-    await expect(await browser.getUrl()).toContain("section-2-block");
+    await expect(browser).toHaveUrlContaining("section-2-block");
   });
 
   it("When the user selects `Section 3` and submits, Then section 2 should not be displayed and section 3 should be displayed", async () => {
     await $(sectionOne.section1Section3()).click();
     await click(sectionOne.submit());
 
-    await expect(await browser.getUrl()).toContain("section-3-block");
+    await expect(browser).toHaveUrlContaining("section-3-block");
   });
 
   it("When the user selects `Section 2` and `Section 3` and submits, Then section 2 and section 3 should be displayed", async () => {
@@ -26,16 +26,16 @@ describe("Feature: Section Enabled Based On Checkbox Answers", () => {
     await $(sectionOne.section1Section3()).click();
     await click(sectionOne.submit());
 
-    await expect(await browser.getUrl()).toContain("section-2-block");
+    await expect(browser).toHaveUrlContaining("section-2-block");
     await click(sectionTwo.submit());
-    await expect(await browser.getUrl()).toContain("section-3-block");
+    await expect(browser).toHaveUrlContaining("section-3-block");
   });
 
   it("When the user selects `Neither` and submits, Then they should be taken straight to the summary", async () => {
     await $(sectionOne.section1ExclusiveNeither()).click();
     await click(sectionOne.submit());
 
-    await expect(await browser.getUrl()).toContain(SubmitPage.url());
+    await expect(browser).toHaveUrlContaining(SubmitPage.url());
     await expect(await $(SubmitPage.section2Question()).isExisting()).toBe(false);
     await expect(await $(SubmitPage.section3Question()).isExisting()).toBe(false);
   });

@@ -15,7 +15,7 @@ describe("Feature: Routing - OR Operator", () => {
         await click(FirstNumberQuestionPage.submit());
         await $(SecondNumberQuestionPage.answer2()).setValue(321);
         await click(SecondNumberQuestionPage.submit());
-        await expect(await browser.getUrl()).toContain(CorrectAnswerPage.pageName);
+        await expect(browser).toHaveUrlContaining(CorrectAnswerPage.pageName);
       });
 
       it("When I only enter the second answer correctly with 555 and 321, Then I should be routed to the correct page", async () => {
@@ -23,7 +23,7 @@ describe("Feature: Routing - OR Operator", () => {
         await click(FirstNumberQuestionPage.submit());
         await $(SecondNumberQuestionPage.answer2()).setValue(321);
         await click(SecondNumberQuestionPage.submit());
-        await expect(await browser.getUrl()).toContain(CorrectAnswerPage.pageName);
+        await expect(browser).toHaveUrlContaining(CorrectAnswerPage.pageName);
       });
 
       it("When I only enter the first answer correctly with 123 and 555, Then I should be routed to the correct page", async () => {
@@ -31,7 +31,7 @@ describe("Feature: Routing - OR Operator", () => {
         await click(FirstNumberQuestionPage.submit());
         await $(SecondNumberQuestionPage.answer2()).setValue(555);
         await click(SecondNumberQuestionPage.submit());
-        await expect(await browser.getUrl()).toContain(CorrectAnswerPage.pageName);
+        await expect(browser).toHaveUrlContaining(CorrectAnswerPage.pageName);
       });
 
       it("When I answer both questions incorrectly with 555 and 444, Then I should be routed to the incorrect page", async () => {
@@ -39,7 +39,7 @@ describe("Feature: Routing - OR Operator", () => {
         await click(FirstNumberQuestionPage.submit());
         await $(SecondNumberQuestionPage.answer2()).setValue(444);
         await click(SecondNumberQuestionPage.submit());
-        await expect(await browser.getUrl()).toContain(IncorrectAnswerPage.pageName);
+        await expect(browser).toHaveUrlContaining(IncorrectAnswerPage.pageName);
       });
     });
   });

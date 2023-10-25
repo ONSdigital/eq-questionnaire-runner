@@ -1,6 +1,7 @@
 SCHEMAS_VERSION=`cat .schemas-version`
 DESIGN_SYSTEM_VERSION=`cat .design-system-version`
 RUNNER_ENV_FILE?=.development.env
+SCHEMA_PATH=./schemas/test/en/
 
 clean:
 	find schemas/* -prune | grep -v "schemas/test" | xargs rm -r
@@ -16,14 +17,17 @@ load-design-system-templates:
 
 build: load-design-system-templates load-schemas translate
 
-lint: lint-python
-	yarn lint
+generate-pages:
+	yarn generate_pages
+
+lint: lint-python lint-js
 
 lint-python:
 	pipenv run ./scripts/run_lint_python.sh
 
-format: format-python
-	yarn format
+lint-test-python: lint-python test-unit
+
+format: format-python format-js
 
 format-python:
 	pipenv run isort .
@@ -35,11 +39,32 @@ test:
 test-unit:
 	pipenv run ./scripts/run_tests_unit.sh
 
-test-functional:
-	pipenv run ./scripts/run_tests_functional.sh
+test-functional: generate-pages
+	yarn test_functional
+
+test-functional-headless: generate-pages
+	EQ_RUN_FUNCTIONAL_TESTS_HEADLESS='True' make test-functional
+
+test-functional-spec: generate-pages
+	yarn test_functional --spec ./tests/functional/spec/$(SPEC)
+
+test-functional-suite: generate-pages
+	yarn test_functional --suite $(SUITE)
+
+lint-js:
+	yarn lint
+
+format-js:
+	yarn format
+
+generate-spec:
+	pipenv run python -m tests.functional.generate_pages schemas/test/en/$(SCHEMA).json ./tests/functional/generated_pages/$(patsubst test_%,%,$(SCHEMA)) -r '../../base_pages' -s tests/functional/spec/$(SCHEMA).spec.js
 
 validate-test-schemas:
-	pipenv run ./scripts/validate_test_schemas.sh
+	./scripts/validate_test_schemas.sh
+
+validate-test-schema:
+	./scripts/validate_test_schemas.sh $(SCHEMA_PATH)$(SCHEMA).json
 
 translation-templates:
 	pipenv run python -m scripts.extract_translation_templates

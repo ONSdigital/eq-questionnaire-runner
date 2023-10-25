@@ -10,14 +10,14 @@ describe("Feature: Section Enabled Based On Radio Answers", () => {
     await $(sectionOne.yesEnableSection2()).click();
     await click(sectionOne.submit());
 
-    await expect(await browser.getUrl()).toContain("section-2-block");
+    await expect(browser).toHaveUrlContaining("section-2-block");
   });
 
   it("When the user answers `No, disable section 2` and submits, Then they should be taking straight to the summary", async () => {
     await $(sectionOne.noDisableSection2()).click();
     await click(sectionOne.submit());
 
-    await expect(await browser.getUrl()).toContain(SubmitPage.url());
+    await expect(browser).toHaveUrlContaining(SubmitPage.url());
     await expect(await $(SubmitPage.section2Question()).isExisting()).toBe(false);
   });
 
@@ -26,16 +26,16 @@ describe("Feature: Section Enabled Based On Radio Answers", () => {
       await $(sectionOne.yesEnableSection2()).click();
       await click(sectionOne.submit());
 
-      await expect(await browser.getUrl()).toContain("section-2-block");
+      await expect(browser).toHaveUrlContaining("section-2-block");
     });
 
     it("When the user changes the answers and disables section 2, Then they should be taken straight to the summary", async () => {
       await browser.back();
-      await expect(await browser.getUrl()).toContain("section-1-block");
+      await expect(browser).toHaveUrlContaining("section-1-block");
 
       await $(sectionOne.noDisableSection2()).click();
       await click(sectionOne.submit());
-      await expect(await browser.getUrl()).toContain(SubmitPage.url());
+      await expect(browser).toHaveUrlContaining(SubmitPage.url());
     });
   });
 });

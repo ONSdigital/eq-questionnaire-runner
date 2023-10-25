@@ -95,7 +95,7 @@ describe("List Collector", () => {
       await $(ListCollectorAddPage.firstName()).setValue("Someone");
       await $(ListCollectorAddPage.lastName()).setValue("Else");
       await $(ListCollectorAddPage.cancelAndReturn()).click();
-      await expect(await browser.getUrl()).toContain(ListCollectorPage.pageName);
+      await expect(browser).toHaveUrlContaining(ListCollectorPage.pageName);
     });
 
     it("The user is returned to the list collector when the cancel link is clicked on the edit page.", async () => {
@@ -106,7 +106,7 @@ describe("List Collector", () => {
       await click(ListCollectorAddPage.submit());
       await $(ListCollectorPage.listEditLink(1)).click();
       await $(ListCollectorEditPage.cancelAndReturn()).click();
-      await expect(await browser.getUrl()).toContain(ListCollectorPage.pageName);
+      await expect(browser).toHaveUrlContaining(ListCollectorPage.pageName);
     });
 
     it("The collector shows everyone on the summary", async () => {
@@ -117,12 +117,12 @@ describe("List Collector", () => {
     it("When No is answered on the list collector the user sees an interstitial", async () => {
       await $(ListCollectorPage.no()).click();
       await click(ListCollectorPage.submit());
-      await expect(await browser.getUrl()).toContain(NextInterstitialPage.pageName);
+      await expect(browser).toHaveUrlContaining(NextInterstitialPage.pageName);
       await click(NextInterstitialPage.submit());
     });
 
     it("After the interstitial, the user should be on the second list collector page", async () => {
-      await expect(await browser.getUrl()).toContain(AnotherListCollectorPage.pageName);
+      await expect(browser).toHaveUrlContaining(AnotherListCollectorPage.pageName);
     });
 
     it("The collector still shows the same list of people on the summary", async () => {
@@ -148,26 +148,26 @@ describe("List Collector", () => {
     it("The user is returned to the list collector when the previous link is clicked.", async () => {
       await $(AnotherListCollectorPage.listRemoveLink(1)).click();
       await $(AnotherListCollectorRemovePage.previous()).click();
-      await expect(await browser.getUrl()).toContain(AnotherListCollectorPage.pageName);
+      await expect(browser).toHaveUrlContaining(AnotherListCollectorPage.pageName);
       await $(AnotherListCollectorPage.listEditLink(1)).click();
       await $(AnotherListCollectorEditPage.previous()).click();
-      await expect(await browser.getUrl()).toContain(AnotherListCollectorPage.pageName);
+      await expect(browser).toHaveUrlContaining(AnotherListCollectorPage.pageName);
       await $(AnotherListCollectorPage.yes()).click();
       await click(AnotherListCollectorPage.submit());
       await $(AnotherListCollectorEditPage.previous()).click();
-      await expect(await browser.getUrl()).toContain(AnotherListCollectorPage.pageName);
+      await expect(browser).toHaveUrlContaining(AnotherListCollectorPage.pageName);
     });
 
     it("The questionnaire shows the confirmation page when no more people to add", async () => {
       await $(AnotherListCollectorPage.no()).click();
       await click(AnotherListCollectorPage.submit());
-      await expect(await browser.getUrl()).toContain("/sections/section/");
+      await expect(browser).toHaveUrlContaining("/sections/section/");
     });
 
     it("The questionnaire allows submission", async () => {
       await click(SummaryPage.submit());
       await click(SubmitPage.submit());
-      await expect(await browser.getUrl()).toContain("thank-you");
+      await expect(browser).toHaveUrlContaining("thank-you");
     });
   });
 
@@ -230,6 +230,12 @@ describe("List Collector", () => {
     it("When the user removes an item from the list, They should see the individual response guidance", async () => {
       await $(PeopleListSectionSummaryPage.peopleListRemoveLink(2)).click();
       await expect(await $(SectionSummaryListCollectorRemovePage.individualResponseGuidance()).isExisting()).toBe(true);
+    });
+
+    it("When the user reaches the submit page and navigates back, They should see the Section Summary", async () => {
+      await click(PeopleListSectionSummaryPage.submit());
+      await click(SubmitPage.previous());
+      await expect(browser).toHaveUrlContaining(PeopleListSectionSummaryPage.pageName);
     });
   });
 });

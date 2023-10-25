@@ -15,11 +15,15 @@ from app.survey_config.census_config import (
     WelshCensusSurveyConfig,
 )
 from app.survey_config.link import Link
-from app.survey_config.social_survey_config import SocialSurveyConfig
+from app.survey_config.social_survey_config import (
+    SocialSurveyConfig,
+    UKHSAONSSocialSurveyConfig,
+)
 from app.survey_config.survey_config import SurveyConfig
 
 __all__ = [
     "SocialSurveyConfig",
+    "UKHSAONSSocialSurveyConfig",
     "SurveyConfig",
     "CensusSurveyConfig",
     "CensusNISRASurveyConfig",

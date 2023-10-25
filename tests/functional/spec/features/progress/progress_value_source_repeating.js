@@ -27,14 +27,14 @@ describe("Feature: Routing rules based on progress value sources in repeating se
       await click(ListCollectorAddPage.submit());
       await $(ListCollectorPage.no()).click();
       await click(ListCollectorPage.submit());
-      await expect(await browser.getUrl()).toContain(QuestionBlockPage.pageName);
+      await expect(browser).toHaveUrlContaining(QuestionBlockPage.pageName);
 
       await browser.url(HubPage.url());
       await expect(await $(HubPage.summaryRowState("section-1")).getText()).toBe("Partially completed");
 
       await $(HubPage.summaryRowLink("section-2-1")).click();
       await click(DOBQuestionBlockPage.submit());
-      await expect(await browser.getUrl()).toContain(SectionTwoSummaryPage.pageName);
+      await expect(browser).toHaveUrlContaining(SectionTwoSummaryPage.pageName);
     });
   });
 
@@ -57,7 +57,7 @@ describe("Feature: Routing rules based on progress value sources in repeating se
 
       await $(HubPage.summaryRowLink("section-2-1")).click();
       await click(DOBQuestionBlockPage.submit());
-      await expect(await browser.getUrl()).toContain(OtherQuestionBlockPage.pageName);
+      await expect(browser).toHaveUrlContaining(OtherQuestionBlockPage.pageName);
     });
   });
 
@@ -118,7 +118,7 @@ describe("Feature: Routing rules based on progress value sources in repeating se
       await click(ListCollectorAddPage.submit());
       await $(ListCollectorPage.no()).click();
       await click(ListCollectorPage.submit());
-      await expect(await browser.getUrl()).toContain(HubPage.pageName);
+      await expect(browser).toHaveUrlContaining(HubPage.pageName);
 
       await $(HubPage.summaryRowLink("section-3-1")).click();
       await click(DOBQuestionBlockPage.submit());
@@ -146,7 +146,7 @@ describe("Feature: Routing rules based on progress value sources in repeating se
       await click(ListCollectorAddPage.submit());
       await $(ListCollectorPage.no()).click();
       await click(ListCollectorPage.submit());
-      await expect(await browser.getUrl()).toContain(HubPage.pageName);
+      await expect(browser).toHaveUrlContaining(HubPage.pageName);
 
       await $(HubPage.summaryRowLink("section-3-1")).click();
       await click(DOBQuestionBlockPage.submit());
@@ -189,11 +189,11 @@ describe("Feature: Routing rules based on progress value sources in repeating se
       await click(ListCollectorAddPage.submit());
       await $(ListCollectorPage.no()).click();
       await click(ListCollectorPage.submit());
-      await expect(await browser.getUrl()).toContain(HubPage.pageName);
+      await expect(browser).toHaveUrlContaining(HubPage.pageName);
 
       await $(HubPage.summaryRowLink("section-3-1")).click();
       await click(DOBQuestionBlockPage.submit());
-      await expect(await browser.getUrl()).toContain(OtherQuestionBlockPage.pageName);
+      await expect(browser).toHaveUrlContaining(OtherQuestionBlockPage.pageName);
     });
   });
 });

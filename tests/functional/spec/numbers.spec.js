@@ -75,7 +75,7 @@ describe("Number validation", () => {
       await click(secondNumberBlock.submit());
       await click(currencySectionSummary.submit());
 
-      await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
+      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
     });
 
     it("When I edit and change the maximum value, Then I must re-validate and submit any dependent answers before I can return to the summary", async () => {
@@ -93,7 +93,7 @@ describe("Number validation", () => {
       await click(secondNumberBlock.submit());
       await click(currencySectionSummary.submit());
 
-      await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
+      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
     });
 
     it("When I edit and change the minimum value, Then I must re-validate and submit any dependent answers again before I can return to the summary", async () => {
@@ -107,7 +107,7 @@ describe("Number validation", () => {
       await $(TestMinMax.testRangeExclusive()).setValue("12");
       await click(TestMinMax.submit());
 
-      await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
+      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
     });
 
     it("When a number with more than 3 decimal places has been entered, Then it should be displayed correctly on the summary", async () => {
