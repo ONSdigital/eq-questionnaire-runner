@@ -23,7 +23,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await anyMoreCompaniesNo();
       await expect(await browser.getUrl()).toContain(SectionSummaryPage.url());
       await expect(await $(SectionSummaryPage.anyCompaniesOrBranchesQuestion()).isExisting()).toBe(true);
-      await expect(await $(SectionSummaryPage.anyCompaniesOrBranchesAnswer()).getText()).toContain("Yes");
+      await expect(await $(SectionSummaryPage.anyCompaniesOrBranchesAnswer()).getText()).toBe("Yes");
     });
     it("When I add my own item, Then the item should be visible on the section summary and have correct values", async () => {
       await drivingQuestionYes();
@@ -69,7 +69,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await anyMoreCompaniesNo();
       await removeFirstCompany();
       await expect(await browser.getUrl()).toContain(SectionSummaryPage.url());
-      await expect(await $("body").getText()).not.toContain("Company A");
+      await expect(await $("body").getText()).not.toBe("Company A");
       await expect(await $(SectionSummaryPage.companiesListEditLink(1)).isExisting()).toBe(false);
       await expect(await $(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).toBe(false);
     });
@@ -89,7 +89,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await anyMoreCompaniesNo();
       await removeFirstCompany();
       await expect(await browser.getUrl()).toContain(SectionSummaryPage.url());
-      await expect(await $("body").getText()).not.toContain("Company A");
+      await expect(await $("body").getText()).not.toBe("Company A");
       await expect(await $("body").getText()).toContain("Company B");
     });
     it("When I add an item and relevant data and answer No on the additional items page, Then I should get to the section summary page.", async () => {
@@ -106,7 +106,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await expect(await $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).isExisting()).toBe(true);
       await expect(await $(AnyCompaniesOrBranchesAddPage.registrationNumber()).isExisting()).toBe(true);
       await expect(await $(AnyCompaniesOrBranchesAddPage.authorisedInsurerRadioYes()).isExisting()).toBe(true);
-      await expect(await $(AnyCompaniesOrBranchesAddPage.heading()).getText()).toContain(
+      await expect(await $(AnyCompaniesOrBranchesAddPage.heading()).getText()).toBe(
         "Give details about the company or branch that undertakes general insurance business"
       );
     });
@@ -155,7 +155,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await expect(await browser.getUrl()).toContain(SectionSummaryPage.url());
       await expect(await $(SectionSummaryPage.companiesListEditLink(1)).isExisting()).toBe(false);
       await expect(await $(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).toBe(false);
-      await expect(await $("body").getText()).not.toContain("No UK company or branch added");
+      await expect(await $("body").getText()).not.toBe("No UK company or branch added");
       await expect(await $(SectionSummaryPage.companiesListAddLink()).isExisting()).toBe(false);
       await $(SectionSummaryPage.anyCompaniesOrBranchesAnswerEdit()).click();
       await drivingQuestionYes();

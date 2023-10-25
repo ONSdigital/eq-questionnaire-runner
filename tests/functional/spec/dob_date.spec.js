@@ -11,13 +11,13 @@ describe("Date of birth check", () => {
     await $(DateOfBirthPage.month()).setValue(4);
     await $(DateOfBirthPage.year()).setValue(2021);
     await click(DateOfBirthPage.submit());
-    await expect(await $(UnderSixteenPage.legend()).getText()).toContain("You are under 16!");
+    await expect(await $(UnderSixteenPage.legend()).getText()).toBe("You are under 16!");
   });
   it("Given I am completing a date question, When I enter a value less than 16 years, Then I am routed to over 16 page", async () => {
     await $(DateOfBirthPage.day()).setValue(12);
     await $(DateOfBirthPage.month()).setValue(4);
     await $(DateOfBirthPage.year()).setValue(1980);
     await click(DateOfBirthPage.submit());
-    await expect(await $(UnderSixteenPage.legend()).getText()).toContain("You are over 16!");
+    await expect(await $(UnderSixteenPage.legend()).getText()).toBe("You are over 16!");
   });
 });

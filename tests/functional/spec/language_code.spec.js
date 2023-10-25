@@ -102,7 +102,7 @@ describe("Language Code", () => {
       language: "cy",
     });
     await click(HubPage.submit());
-    await expect(await $(NamePage.questionText()).getText()).toContain("Rhowch enw");
+    await expect(await $(NamePage.questionText()).getText()).toBe("Rhowch enw");
 
     await $(NamePage.firstName()).setValue("Catherine");
     await $(NamePage.lastName()).setValue("Zeta-Jones");
@@ -118,10 +118,10 @@ describe("Language Code", () => {
     await $(ConfirmNumberOfPeoplePage.yes()).click();
     await click(ConfirmNumberOfPeoplePage.submit());
 
-    await expect(await $(HubPage.heading()).getText()).toContain("Teitl cyflwyno");
-    await expect(await $(HubPage.warning()).getText()).toContain("Rhybudd cyflwyno");
-    await expect(await $(HubPage.guidance()).getText()).toContain("Canllawiau cyflwyno");
-    await expect(await $(HubPage.submit()).getText()).toContain("Botwm cyflwyno");
+    await expect(await $(HubPage.heading()).getText()).toBe("Teitl cyflwyno");
+    await expect(await $(HubPage.warning()).getText()).toBe("Rhybudd cyflwyno");
+    await expect(await $(HubPage.guidance()).getText()).toBe("Canllawiau cyflwyno");
+    await expect(await $(HubPage.submit()).getText()).toBe("Botwm cyflwyno");
     await click(HubPage.submit());
 
     await expect(await browser.getUrl()).toContain("thank-you");
@@ -133,7 +133,7 @@ describe("Language Code", () => {
     });
 
     await click(HubPage.submit());
-    await expect(await $(NamePage.questionText()).getText()).toContain("Please enter a name");
+    await expect(await $(NamePage.questionText()).getText()).toBe("Please enter a name");
     await $(NamePage.firstName()).setValue("Catherine");
     await $(NamePage.lastName()).setValue("Zeta-Jones");
     await click(NamePage.submit());
@@ -148,10 +148,10 @@ describe("Language Code", () => {
     await $(ConfirmNumberOfPeoplePage.yes()).click();
     await click(ConfirmNumberOfPeoplePage.submit());
 
-    await expect(await $(HubPage.heading()).getText()).toContain("Submission title");
-    await expect(await $(HubPage.warning()).getText()).toContain("Submission warning");
-    await expect(await $(HubPage.guidance()).getText()).toContain("Submission guidance");
-    await expect(await $(HubPage.submit()).getText()).toContain("Submission button");
+    await expect(await $(HubPage.heading()).getText()).toBe("Submission title");
+    await expect(await $(HubPage.warning()).getText()).toBe("Submission warning");
+    await expect(await $(HubPage.guidance()).getText()).toBe("Submission guidance");
+    await expect(await $(HubPage.submit()).getText()).toBe("Submission button");
     await click(HubPage.submit());
 
     await expect(await browser.getUrl()).toContain("thank-you");
@@ -163,10 +163,10 @@ describe("Language Code", () => {
     });
 
     await click(HubPage.submit());
-    await expect(await $(NamePage.questionText()).getText()).toContain("Please enter a name");
+    await expect(await $(NamePage.questionText()).getText()).toBe("Please enter a name");
     await expect(await $("header").getText()).toContain("Test Language Survey");
     await $(NamePage.switchLanguage("cy")).click();
-    await expect(await $(NamePage.questionText()).getText()).toContain("Rhowch enw");
+    await expect(await $(NamePage.questionText()).getText()).toBe("Rhowch enw");
     await expect(await $("header").getText()).toContain("Arolwg Iaith Prawf");
     await $(NamePage.switchLanguage("en")).click();
 
@@ -184,15 +184,15 @@ describe("Language Code", () => {
     await $(ConfirmNumberOfPeoplePage.yes()).click();
     await click(ConfirmNumberOfPeoplePage.submit());
 
-    await expect(await $(HubPage.heading()).getText()).toContain("Submission title");
-    await expect(await $(HubPage.warning()).getText()).toContain("Submission warning");
-    await expect(await $(HubPage.guidance()).getText()).toContain("Submission guidance");
-    await expect(await $(HubPage.submit()).getText()).toContain("Submission button");
+    await expect(await $(HubPage.heading()).getText()).toBe("Submission title");
+    await expect(await $(HubPage.warning()).getText()).toBe("Submission warning");
+    await expect(await $(HubPage.guidance()).getText()).toBe("Submission guidance");
+    await expect(await $(HubPage.submit()).getText()).toBe("Submission button");
     await $(HubPage.switchLanguage("cy")).click();
-    await expect(await $(HubPage.heading()).getText()).toContain("Teitl cyflwyno");
-    await expect(await $(HubPage.warning()).getText()).toContain("Rhybudd cyflwyno");
-    await expect(await $(HubPage.guidance()).getText()).toContain("Canllawiau cyflwyno");
-    await expect(await $(HubPage.submit()).getText()).toContain("Botwm cyflwyno");
+    await expect(await $(HubPage.heading()).getText()).toBe("Teitl cyflwyno");
+    await expect(await $(HubPage.warning()).getText()).toBe("Rhybudd cyflwyno");
+    await expect(await $(HubPage.guidance()).getText()).toBe("Canllawiau cyflwyno");
+    await expect(await $(HubPage.submit()).getText()).toBe("Botwm cyflwyno");
     await click(HubPage.submit());
 
     await expect(await browser.getUrl()).toContain("thank-you");
@@ -204,9 +204,9 @@ describe("Language Code", () => {
     });
 
     await click(HubPage.submit());
-    await expect(await $(NamePage.questionText()).getText()).toContain("Rhowch enw");
+    await expect(await $(NamePage.questionText()).getText()).toBe("Rhowch enw");
     await $(NamePage.switchLanguage("en")).click();
-    await expect(await $(NamePage.questionText()).getText()).toContain("Please enter a name");
+    await expect(await $(NamePage.questionText()).getText()).toBe("Please enter a name");
   });
 
   describe("Given a launch language of English and a question with plural forms, When I select switch languages, Then the plural forms are displayed correctly for the chosen language", () => {
@@ -219,7 +219,7 @@ describe("Language Code", () => {
         });
 
         await click(HubPage.submit());
-        await expect(await $(NamePage.questionText()).getText()).toContain("Please enter a name");
+        await expect(await $(NamePage.questionText()).getText()).toBe("Please enter a name");
         await $(NamePage.firstName()).setValue("Catherine");
         await $(NamePage.lastName()).setValue("Zeta-Jones");
         await click(NamePage.submit());

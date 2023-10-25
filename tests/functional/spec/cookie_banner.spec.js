@@ -40,20 +40,20 @@ describe("Given I start a survey with multiple languages,", () => {
     await browser.openQuestionnaire("test_language.json", {
       language: "en",
     });
-    await expect(await $(HubPage.acceptCookies()).getText()).toContain("Accept additional cookies");
+    await expect(await $(HubPage.acceptCookies()).getText()).toBe("Accept additional cookies");
   });
   it("When I open the page in welsh, Then the cookie banner should be displayed in welsh", async () => {
     await browser.openQuestionnaire("test_language.json", {
       language: "cy",
     });
-    await expect(await $(HubPage.acceptCookies()).getText()).toContain("Derbyn cwcis ychwanegol");
+    await expect(await $(HubPage.acceptCookies()).getText()).toBe("Derbyn cwcis ychwanegol");
   });
   it("When I open the page in english, Then change the language to welsh the cookie banner should be displayed in welsh", async () => {
     await browser.openQuestionnaire("test_language.json", {
       language: "en",
     });
-    await expect(await $(HubPage.acceptCookies()).getText()).toContain("Accept additional cookies");
+    await expect(await $(HubPage.acceptCookies()).getText()).toBe("Accept additional cookies");
     await $(HubPage.switchLanguage("cy")).click();
-    await expect(await $(HubPage.acceptCookies()).getText()).toContain("Derbyn cwcis ychwanegol");
+    await expect(await $(HubPage.acceptCookies()).getText()).toBe("Derbyn cwcis ychwanegol");
   });
 });

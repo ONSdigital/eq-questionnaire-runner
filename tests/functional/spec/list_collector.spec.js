@@ -71,14 +71,14 @@ describe("List Collector", () => {
     });
 
     it("The collector summary does not show Mark Twain anymore.", async () => {
-      await expect(await $(ListCollectorPage.listLabel(1)).getText()).not.toContain("Mark Twain");
+      await expect(await $(ListCollectorPage.listLabel(1)).getText()).not.toBe("Mark Twain");
       await expect(await $(ListCollectorPage.listLabel(3)).getText()).toBe("Suzy Clemens");
     });
 
     it("The questionnaire allows more people to be added", async () => {
       await $(ListCollectorPage.yes()).click();
       await click(ListCollectorPage.submit());
-      await expect(await $(ListCollectorAddPage.questionText()).getText()).toContain("What is the name of the person");
+      await expect(await $(ListCollectorAddPage.questionText()).getText()).toBe("What is the name of the person?");
       await $(ListCollectorAddPage.firstName()).setValue("Clara");
       await $(ListCollectorAddPage.lastName()).setValue("Clemens");
       await click(ListCollectorAddPage.submit());
@@ -197,9 +197,9 @@ describe("List Collector", () => {
     });
 
     it("The section summary should display contents of the list collector", async () => {
-      await expect(await $(PeopleListSectionSummaryPage.peopleListLabel(1)).getText()).toContain("Marcus Twin (You)");
-      await expect(await $(PeopleListSectionSummaryPage.peopleListLabel(2)).getText()).toContain("Samuel Clemens");
-      await expect(await $(PeopleListSectionSummaryPage.visitorsListLabel(1)).getText()).toContain("Olivia Clemens");
+      await expect(await $(PeopleListSectionSummaryPage.peopleListLabel(1)).getText()).toBe("Marcus Twin (You)");
+      await expect(await $(PeopleListSectionSummaryPage.peopleListLabel(2)).getText()).toBe("Samuel Clemens");
+      await expect(await $(PeopleListSectionSummaryPage.visitorsListLabel(1)).getText()).toBe("Olivia Clemens");
     });
 
     it("When the user adds an item to the list, They should return to the section summary and it should display the updated list", async () => {
@@ -209,7 +209,7 @@ describe("List Collector", () => {
       await click(VisitorListCollectorAddPage.submit());
       await $(VisitorListCollectorPage.no()).click();
       await click(VisitorListCollectorPage.submit());
-      await expect(await $(PeopleListSectionSummaryPage.visitorsListLabel(2)).getText()).toContain("Joe Bloggs");
+      await expect(await $(PeopleListSectionSummaryPage.visitorsListLabel(2)).getText()).toBe("Joe Bloggs");
     });
 
     it("When the user removes an item from the list, They should return to the section summary and it should display the updated list", async () => {
@@ -224,7 +224,7 @@ describe("List Collector", () => {
       await $(SectionSummaryListCollectorEditPage.firstName()).setValue("Mark");
       await $(SectionSummaryListCollectorEditPage.lastName()).setValue("Twain");
       await click(SectionSummaryListCollectorEditPage.submit());
-      await expect(await $(PeopleListSectionSummaryPage.peopleListLabel(1)).getText()).toContain("Mark Twain (You)");
+      await expect(await $(PeopleListSectionSummaryPage.peopleListLabel(1)).getText()).toBe("Mark Twain (You)");
     });
 
     it("When the user removes an item from the list, They should see the individual response guidance", async () => {

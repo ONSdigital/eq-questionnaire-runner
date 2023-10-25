@@ -24,11 +24,11 @@ describe("Feedback", () => {
     it("When I try to submit without providing feedback, then I stay on the feedback page and get an error message", async () => {
       await browser.url(FeedbackPage.url());
       await expect(await browser.getUrl()).toContain(FeedbackPage.pageName);
-      await expect(await $(FeedbackPage.feedbackTitle()).getText()).toContain("Give feedback about this service");
+      await expect(await $(FeedbackPage.feedbackTitle()).getText()).toBe("Give feedback about this service");
       await click(FeedbackPage.submit());
       await expect(await browser.getUrl()).toContain(FeedbackPage.pageName);
       await expect(await $(FeedbackPage.errorPanel()).isExisting()).toBe(true);
-      await expect(await $(FeedbackPage.errorPanel()).getText()).toContain(
+      await expect(await $(FeedbackPage.errorPanel()).getText()).toBe(
         "There are 2 problems with your feedback\nSelect what your feedback is about\nEnter your feedback"
       );
     });
@@ -39,7 +39,7 @@ describe("Feedback", () => {
       await $(FeedbackPage.feedbackText()).setValue("Well done!");
       await click(FeedbackPage.submit());
       await expect(await browser.getUrl()).toContain(FeedbackSentPage.pageName);
-      await expect(await $(FeedbackSentPage.feedbackThankYouText()).getText()).toContain("Thank you for your feedback");
+      await expect(await $(FeedbackSentPage.feedbackThankYouText()).getText()).toBe("Thank you for your feedback");
     });
 
     it("When I click the done button on the feedback sent page, Then I am taken to the thank you page", async () => {
@@ -49,7 +49,7 @@ describe("Feedback", () => {
       await click(FeedbackPage.submit());
       await $(FeedbackSentPage.doneButton()).click();
       await expect(await browser.getUrl()).toContain("thank-you");
-      await expect(await $(ThankYouPage.title()).getText()).toContain("Thank you for completing the Feedback test schema");
+      await expect(await $(ThankYouPage.title()).getText()).toBe("Thank you for completing the Feedback test schema");
     });
   });
 });

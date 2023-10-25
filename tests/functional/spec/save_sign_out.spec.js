@@ -82,13 +82,13 @@ describe("Save sign out / Exit", () => {
   it("Given a business questionnaire, when I navigate the questionnaire, then I see the correct sign out buttons", async () => {
     await browser.openQuestionnaire("test_introduction.json");
 
-    await expect(await $(IntroductionPage.exitButton()).getText()).toContain("Exit");
+    await expect(await $(IntroductionPage.exitButton()).getText()).toBe("Exit");
     await $(IntroductionPage.getStarted()).click();
 
-    await expect(await $(IntroInterstitialPage.saveSignOut()).getText()).toContain("Save and exit survey");
+    await expect(await $(IntroInterstitialPage.saveSignOut()).getText()).toBe("Save and exit survey");
     await click(IntroInterstitialPage.submit());
 
-    await expect(await $(SubmitPage.saveSignOut()).getText()).toContain("Save and exit survey");
+    await expect(await $(SubmitPage.saveSignOut()).getText()).toBe("Save and exit survey");
     await click(SubmitPage.submit());
 
     await expect(await $(IntroThankYouPagePage.exitButton()).isExisting()).toBe(false);
@@ -97,9 +97,9 @@ describe("Save sign out / Exit", () => {
   it("Given a Census questionnaire, when I navigate the questionnaire, then I see the correct sign out buttons", async () => {
     await browser.openQuestionnaire("test_thank_you_census_household.json");
 
-    await expect(await $(HouseHolderConfirmationPage.saveSignOut()).getText()).toContain("Save and complete later");
+    await expect(await $(HouseHolderConfirmationPage.saveSignOut()).getText()).toBe("Save and complete later");
     await click(HouseHolderConfirmationPage.submit());
 
-    await expect(await $(SubmitPage.saveSignOut()).getText()).toContain("Save and complete later");
+    await expect(await $(SubmitPage.saveSignOut()).getText()).toBe("Save and complete later");
   });
 });

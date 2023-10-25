@@ -12,9 +12,9 @@ describe("Introduction page", () => {
     await expect(await $(IntroductionPage.useOfInformation()).getText()).toContain(
       "Data should relate to all sites in England, Scotland and Wales unless otherwise stated."
     );
-    await expect(await $(IntroductionPage.legalResponse()).getText()).toContain("Your response is legally required");
-    await expect(await $(IntroductionPage.legalBasis()).getText()).toContain("Notice is given under section 999 of the Test Act 2000");
-    await expect(await $(IntroductionPage.introDescription()).getText()).toContain(
+    await expect(await $(IntroductionPage.legalResponse()).getText()).toBe("Your response is legally required");
+    await expect(await $(IntroductionPage.legalBasis()).getText()).toBe("Notice is given under section 999 of the Test Act 2000");
+    await expect(await $(IntroductionPage.introDescription()).getText()).toBe(
       "To take part, all you need to do is check that you have the information you need to answer the survey questions."
     );
   });

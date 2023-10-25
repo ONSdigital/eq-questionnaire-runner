@@ -23,11 +23,11 @@ describe('Checkbox with "other" option', () => {
     await $(MandatoryCheckboxPage.none()).click();
     await click(MandatoryCheckboxPage.submit());
     await click(NonMandatoryCheckboxPage.submit());
-    await expect(await $("body").getText()).not.toContain("Select all that apply");
+    await expect(await $("body").getText()).not.toBe("Select all that apply");
   });
 
   it('Given an "other" option is available, when the user clicks the "other" option the other input should be visible.', async () => {
-    await expect(await $(MandatoryCheckboxPage.otherLabelDescription()).getText()).toContain("Choose any other topping");
+    await expect(await $(MandatoryCheckboxPage.otherLabelDescription()).getText()).toBe("Choose any other topping");
     await $(MandatoryCheckboxPage.other()).click();
     await expect(await $(MandatoryCheckboxPage.otherDetail()).isDisplayed()).toBe(true);
   });
@@ -68,7 +68,7 @@ describe('Checkbox with "other" option', () => {
     await click(NonMandatoryCheckboxPage.submit());
     await click(singleCheckboxPage.submit());
     // Then
-    await expect(await $(SubmitPage.nonMandatoryCheckboxAnswer()).getText()).toContain("No answer provided");
+    await expect(await $(SubmitPage.nonMandatoryCheckboxAnswer()).getText()).toBe("No answer provided");
   });
 
   it('Given a non-mandatory checkbox answer, when the user selects Other but does not supply a value, then "Other" should be displayed on the summary screen', async () => {
@@ -80,7 +80,7 @@ describe('Checkbox with "other" option', () => {
     await click(NonMandatoryCheckboxPage.submit());
     await click(singleCheckboxPage.submit());
     // Then
-    await expect(await $(SubmitPage.nonMandatoryCheckboxAnswer()).getText()).toContain("Other");
+    await expect(await $(SubmitPage.nonMandatoryCheckboxAnswer()).getText()).toBe("Other");
   });
 
   it("Given a non-mandatory checkbox answer, when the user selects Other and supplies a value, then the supplied value should be displayed on the summary screen", async () => {
@@ -105,7 +105,7 @@ describe('Checkbox with "other" option', () => {
     await click(NonMandatoryCheckboxPage.submit());
     await click(singleCheckboxPage.submit());
     // Then
-    await expect(await $(SubmitPage.mandatoryCheckboxAnswer()).getText()).toContain("Ham & Cheese");
+    await expect(await $(SubmitPage.mandatoryCheckboxAnswer()).getText()).toBe("Ham & Cheese");
   });
 
   it("Given I have previously added text in other textfield and saved, when I uncheck other options and select a different checkbox as answer, then the text entered in other field must be wiped.", async () => {

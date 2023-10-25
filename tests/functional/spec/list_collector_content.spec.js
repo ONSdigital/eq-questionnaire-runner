@@ -19,7 +19,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await expect(await browser.getUrl()).toContain(HubPage.url());
       await expect(
         await $(HubPage.summaryRowState("section-list-collector-contents")).getText()
-      ).toContain("Not started");
+      ).toBe("Not started");
       await $(HubPage.submit()).click();
       await $(ResponsiblePartyQuestionPage.yes()).click();
       await $(ResponsiblePartyQuestionPage.submit()).click();
@@ -31,11 +31,11 @@ describe("List Collector Section Summary and Summary Items", () => {
       await $(ResponsiblePartyQuestionPage.yes()).click();
       await $(ResponsiblePartyQuestionPage.submit()).click();
       await expect(await $(ListCollectorContentPage.heading()).getHTML()).toContain("Companies");
-      await expect(await $("#main-content > p").getText()).toContain(
+      await expect(await $("#main-content > p").getText()).toBe(
         "You have previously reported the following companies. Press continue to updated registration and trading information."
       );
       await expect(await $("#main-content > #guidance-1").getText()).toContain("Include all companies");
-      await expect(await $("#main-content > #definition").getText()).toContain("Companies definition");
+      await expect(await $("#main-content > #definition").getText()).toBe("Companies definition");
       await expect(await $(ListCollectorContentPage.submit()).getText()).toBe("Continue");
     });
     it("When I get to list collector content block section, Then I should be able to complete repeating blocks and get to the summary.", async () => {
@@ -82,7 +82,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await $(ResponsiblePartyQuestionPage.previous()).click();
       await expect(
         await $(HubPage.summaryRowState("section-list-collector-contents")).getText()
-      ).toContain("Partially completed");
+      ).toBe("Partially completed");
     });
     it("When I fill in both items repeating blocks, Then after going back to the hub the section should be completed.", async () => {
       await fillInListCollectorSection();
@@ -113,7 +113,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await $(ResponsiblePartyQuestionPage.previous()).click();
       await expect(
         await $(HubPage.summaryRowState("section-list-collector-contents")).getText()
-      ).toContain("Completed");
+      ).toBe("Completed");
     });
   });
 });

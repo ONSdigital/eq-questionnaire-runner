@@ -15,19 +15,19 @@ describe("Textarea", () => {
 
   it('Given a textarea option, When no text is entered, Then the summary should display "No answer provided"', async () => {
     await click(TextareaBlock.submit());
-    await expect(await $(TextareaSummary.answer()).getText()).toContain("No answer provided");
+    await expect(await $(TextareaSummary.answer()).getText()).toBe("No answer provided");
   });
 
   it("Given a textarea option, When some text is entered, Then the summary should display the text", async () => {
     await $(TextareaBlock.answer()).setValue("Some text");
     await click(TextareaBlock.submit());
-    await expect(await $(TextareaSummary.answer()).getText()).toContain("Some text");
+    await expect(await $(TextareaSummary.answer()).getText()).toBe("Some text");
   });
 
   it("Given a text entered in textarea , When user submits and revisits the textarea, Then the textarea must contain the text entered previously", async () => {
     await $(TextareaBlock.answer()).setValue("'Twenty><&Five'");
     await click(TextareaBlock.submit());
-    await expect(await $(TextareaSummary.answer()).getText()).toContain("'Twenty><&Five'");
+    await expect(await $(TextareaSummary.answer()).getText()).toBe("'Twenty><&Five'");
     await $(TextareaSummary.answerEdit()).click();
     await $(TextareaBlock.answer()).getValue();
   });

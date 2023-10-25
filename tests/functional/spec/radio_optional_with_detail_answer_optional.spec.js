@@ -10,19 +10,19 @@ describe("Checkbox and Radio item descriptions", () => {
   describe("Given the user is presented with an optional radio answer with optional detail answer", () => {
     it("When no answer is provided, Then the expected answer is displayed", async () => {
       await click(RadioNonMandatoryPage.submit());
-      await expect(await $(SubmitPage.radioNonMandatoryAnswer()).getText()).toContain("No answer provided");
+      await expect(await $(SubmitPage.radioNonMandatoryAnswer()).getText()).toBe("No answer provided");
     });
 
     it("When Toast is selected and no detail answer is provided, Then the expected answer is displayed", async () => {
       await $(RadioNonMandatoryPage.toast()).click();
       await click(RadioNonMandatoryPage.submit());
-      await expect(await $(SubmitPage.radioNonMandatoryAnswer()).getText()).toContain("Toast");
+      await expect(await $(SubmitPage.radioNonMandatoryAnswer()).getText()).toBe("Toast");
     });
 
     it("When Other is selected and no detail answer is provided, Then the expected answer is displayed", async () => {
       await $(RadioNonMandatoryPage.other()).click();
       await click(RadioNonMandatoryPage.submit());
-      await expect(await $(SubmitPage.radioNonMandatoryAnswer()).getText()).toContain("Other");
+      await expect(await $(SubmitPage.radioNonMandatoryAnswer()).getText()).toBe("Other");
     });
 
     it("When Other is selected and detail answer is provided, Then the expected answer is displayed", async () => {
@@ -37,7 +37,7 @@ describe("Checkbox and Radio item descriptions", () => {
       await $(RadioNonMandatoryPage.otherDetail()).setValue("Eggs");
       await $(RadioNonMandatoryPage.toast()).click();
       await click(RadioNonMandatoryPage.submit());
-      await expect(await $(SubmitPage.radioNonMandatoryAnswer()).getText()).toContain("Toast");
+      await expect(await $(SubmitPage.radioNonMandatoryAnswer()).getText()).toBe("Toast");
     });
   });
 });

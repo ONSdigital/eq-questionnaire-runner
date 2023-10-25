@@ -13,7 +13,7 @@ describe("Textfield", () => {
     await $(TextFieldPage.name()).setValue("'Twenty><&Five'");
     await click(TextFieldPage.submit());
     await expect(await browser.getUrl()).toContain(SubmitPage.pageName);
-    await expect(await $(SubmitPage.nameAnswer()).getText()).toContain("Twenty><&Five'");
+    await expect(await $(SubmitPage.nameAnswer()).getText()).toBe("'Twenty><&Five'");
     await $(SubmitPage.nameAnswerEdit()).click();
     await $(TextFieldPage.name()).getValue();
   });
@@ -22,6 +22,6 @@ describe("Textfield", () => {
     await browser.openQuestionnaire("test_textfield.json");
     await $(TextFieldPage.name()).setValue("This string is too long");
     await click(TextFieldPage.submit());
-    await expect(await $(TextFieldPage.errorNumber(1)).getText()).toContain("You have entered too many characters. Enter up to 20 characters");
+    await expect(await $(TextFieldPage.errorNumber(1)).getText()).toBe("You have entered too many characters. Enter up to 20 characters");
   });
 });

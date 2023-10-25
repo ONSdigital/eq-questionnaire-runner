@@ -75,7 +75,7 @@ describe("Relationships", () => {
       it("And go to the first relationship, Then the 'Brother or Sister' option should have the text 'Including half brother or half sister'", async () => {
         await $(ListCollectorPage.no()).click();
         await click(ListCollectorPage.submit());
-        await expect(await $(RelationshipsPage.brotherOrSisterLabelDescription()).getText()).toContain("Including half brother or half sister");
+        await expect(await $(RelationshipsPage.brotherOrSisterLabelDescription()).getText()).toBe("Including half brother or half sister");
       });
 
       it("And go to the second relationship, Then the previous link should return to the first relationship", async () => {

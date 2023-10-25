@@ -14,7 +14,7 @@ describe("List collector with variants primary person", () => {
       it("When the user is asked questions about whether they like variant, Then they are routed to section asking if they live in the house", async () => {
         await $(VariantBlockPage.yes()).click();
         await click(VariantBlockPage.submit());
-        await expect(await $(PrimaryPersonListCollectorPage.legend()).getText()).toContain("Do you live here? (variant)");
+        await expect(await $(PrimaryPersonListCollectorPage.legend()).getText()).toBe("Do you live here? (variant)");
       });
     });
   });
@@ -84,7 +84,7 @@ describe("List collector with variants primary person", () => {
     });
 
     it("When the user attempts to submit, Then they are shown the confirmation page", async () => {
-      await expect(await $(SubmitPage.guidance()).getText()).toContain("Please submit this survey to complete it");
+      await expect(await $(SubmitPage.guidance()).getText()).toBe("Please submit this survey to complete it");
     });
 
     it("When user updates the variant answer, Then it should come back to summary screen with updated answer", async () => {
@@ -108,7 +108,7 @@ describe("Given the user starts on the 'Do you like variant' question", () => {
   it("When the user answers 'No' for variant question, Then they are routed to section asking if they live in the house", async () => {
     await $(VariantBlockPage.no()).click();
     await click(VariantBlockPage.submit());
-    await expect(await $(PrimaryPersonListCollectorPage.legend()).getText()).toContain("Do you live here?");
+    await expect(await $(PrimaryPersonListCollectorPage.legend()).getText()).toBe("Do you live here?");
   });
 
   it("When the user says they do not live there and anyone else, Then confirmation screen is displayed", async () => {
@@ -117,6 +117,6 @@ describe("Given the user starts on the 'Do you like variant' question", () => {
     await $(ListCollectorPage.no()).click();
     await click(ListCollectorPage.submit());
 
-    await expect(await $(SubmitPage.guidance()).getText()).toContain("Please submit this survey to complete it");
+    await expect(await $(SubmitPage.guidance()).getText()).toBe("Please submit this survey to complete it");
   });
 });

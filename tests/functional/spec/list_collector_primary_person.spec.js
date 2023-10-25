@@ -22,7 +22,7 @@ describe("Primary Person List Collector Survey", () => {
       await $(PrimaryPersonListCollectorPage.yesLabel()).click();
       await click(PrimaryPersonListCollectorPage.submit());
       await browser.url("questionnaire/list-collector");
-      await expect(await $(PrimaryPersonListCollectorPage.questionText()).getText()).toContain("Do you live here");
+      await expect(await $(PrimaryPersonListCollectorPage.questionText()).getText()).toBe("Do you live here");
     });
   });
 
@@ -91,7 +91,7 @@ describe("Primary Person List Collector Survey", () => {
 
     it("When the user attempts to submit, then they are shown the confirmation page", async () => {
       await click(SectionSummaryPage.submit());
-      await expect(await $(SubmitPage.guidance()).getText()).toContain("Thank you for your answers, do you wish to submit");
+      await expect(await $(SubmitPage.guidance()).getText()).toBe("Thank you for your answers, do you wish to submit");
     });
 
     it("When the user submits, then they are allowed to submit the survey", async () => {

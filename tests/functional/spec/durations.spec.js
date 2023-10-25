@@ -8,10 +8,10 @@ describe("Durations", () => {
   });
 
   it("Given the test_durations survey is selected durations suffixes are visible", async () => {
-    await expect(await $(DurationPage.yearMonthYearsSuffix()).getText()).toContain("Years");
-    await expect(await $(DurationPage.mandatoryYearMonthMonthsSuffix()).getText()).toContain("Months");
-    await expect(await $(DurationPage.yearYearsSuffix()).getText()).toContain("Years");
-    await expect(await $(DurationPage.mandatoryMonthMonthsSuffix()).getText()).toContain("Months");
+    await expect(await $(DurationPage.yearMonthYearsSuffix()).getText()).toBe("Years");
+    await expect(await $(DurationPage.mandatoryYearMonthMonthsSuffix()).getText()).toBe("Months");
+    await expect(await $(DurationPage.yearYearsSuffix()).getText()).toBe("Years");
+    await expect(await $(DurationPage.mandatoryMonthMonthsSuffix()).getText()).toBe("Months");
   });
 
   it("Given the test_durations survey is selected when durations are entered then the summary screen shows the durations entered formatted", async () => {
@@ -61,8 +61,8 @@ describe("Durations", () => {
     await $(DurationPage.mandatoryMonthMonths()).setValue(1);
     await click(DurationPage.submit());
 
-    await expect(await $(DurationPage.errorNumber(1)).getText()).toContain("Enter a valid duration");
-    await expect(await $(DurationPage.errorNumber(2)).getText()).toContain("Enter a valid duration");
+    await expect(await $(DurationPage.errorNumber(1)).getText()).toBe("Enter a valid duration");
+    await expect(await $(DurationPage.errorNumber(2)).getText()).toBe("Enter a valid duration");
   });
 
   it("Given the test_durations survey is selected when one of the units not a number an error is shown", async () => {
@@ -74,8 +74,8 @@ describe("Durations", () => {
     await $(DurationPage.mandatoryMonthMonths()).setValue(1);
     await click(DurationPage.submit());
 
-    await expect(await $(DurationPage.errorNumber(1)).getText()).toContain("Enter a valid duration");
-    await expect(await $(DurationPage.errorNumber(2)).getText()).toContain("Enter a valid duration");
+    await expect(await $(DurationPage.errorNumber(1)).getText()).toBe("Enter a valid duration");
+    await expect(await $(DurationPage.errorNumber(2)).getText()).toBe("Enter a valid duration");
   });
 
   it("Given the test_durations survey is selected when the number of months is more than 11 an error is shown", async () => {
@@ -87,8 +87,8 @@ describe("Durations", () => {
     await $(DurationPage.mandatoryMonthMonths()).setValue(1);
     await click(DurationPage.submit());
 
-    await expect(await $(DurationPage.errorNumber(1)).getText()).toContain("Enter a valid duration");
-    await expect(await $(DurationPage.errorNumber(2)).getText()).toContain("Enter a valid duration");
+    await expect(await $(DurationPage.errorNumber(1)).getText()).toBe("Enter a valid duration");
+    await expect(await $(DurationPage.errorNumber(2)).getText()).toBe("Enter a valid duration");
   });
 
   it("Given the test_durations survey is selected when the mandatory duration is missing an error is shown", async () => {
@@ -96,6 +96,6 @@ describe("Durations", () => {
     await $(DurationPage.mandatoryMonthMonths()).setValue(1);
     await click(DurationPage.submit());
 
-    await expect(await $(DurationPage.errorNumber(1)).getText()).toContain("Enter a duration");
+    await expect(await $(DurationPage.errorNumber(1)).getText()).toBe("Enter a duration");
   });
 });

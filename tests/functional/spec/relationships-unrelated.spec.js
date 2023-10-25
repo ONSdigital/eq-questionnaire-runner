@@ -29,7 +29,7 @@ describe("Unrelated Relationships", () => {
         await click(RelationshipsPage.submit());
         await $(RelationshipsPage.unrelated()).click();
         await click(RelationshipsPage.submit());
-        await expect(await $(RelatedToAnyoneElsePage.questionText()).getText()).toContain("Are any of these people related to you?");
+        await expect(await $(RelatedToAnyoneElsePage.questionText()).getText()).toBe("Are any of these people related to you?");
         await expect(await $(RelatedToAnyoneElsePage.listLabel(1)).getText()).toBe("Daniel Davis");
         await expect(await $(RelatedToAnyoneElsePage.listLabel(2)).getText()).toBe("Eve Elliot");
       });
@@ -48,7 +48,7 @@ describe("Unrelated Relationships", () => {
 
       it("When I click previous, Then I will go back to the 'related to anyone else' question", async () => {
         await $(RelationshipsPage.previous()).click();
-        await expect(await $(RelatedToAnyoneElsePage.questionText()).getText()).toContain("Are any of these people related to you?");
+        await expect(await $(RelatedToAnyoneElsePage.questionText()).getText()).toBe("Are any of these people related to you?");
         await expect(await $(RelatedToAnyoneElsePage.yes()).isSelected()).toBe(true);
       });
 
@@ -60,7 +60,7 @@ describe("Unrelated Relationships", () => {
 
       it("When I click previous, Then I will go back to the 'related to anyone else' question for the first person", async () => {
         await $(RelationshipsPage.previous()).click();
-        await expect(await $(RelatedToAnyoneElsePage.questionText()).getText()).toContain("Are any of these people related to you?");
+        await expect(await $(RelatedToAnyoneElsePage.questionText()).getText()).toBe("Are any of these people related to you?");
         await expect(await $(RelatedToAnyoneElsePage.listLabel(1)).getText()).toBe("Daniel Davis");
         await expect(await $(RelatedToAnyoneElsePage.listLabel(2)).getText()).toBe("Eve Elliot");
         await expect(await $(RelatedToAnyoneElsePage.noNoneOfThesePeopleAreRelatedToMe()).isSelected()).toBe(true);
