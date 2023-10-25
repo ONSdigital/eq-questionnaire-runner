@@ -15,9 +15,7 @@ class _SummaryWithCalculation(Content):
             data_stores=self._questionnaire_store.data_stores,
             current_location=self._current_location,
             routing_path=self._routing_path,
-            return_to=self.return_to,
-            return_to_block_id=self.return_to_block_id,
-            return_to_list_item_id=self._return_to_list_item_id,
+            return_location=self._return_location,
         )
         context = summary_context.build_view_context()
 

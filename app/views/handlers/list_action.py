@@ -2,6 +2,7 @@ from flask import url_for
 from werkzeug.datastructures import ImmutableDict
 
 from app.questionnaire.location import Location
+from app.questionnaire.return_location import ReturnLocation
 from app.questionnaire.routing_path import RoutingPath
 from app.views.handlers.question import Question
 
@@ -39,15 +40,12 @@ class ListAction(Question):
 
         block_id = self._request_args.get("previous")
         return self._get_location_url(
-            block_id=block_id,
-            return_to=self._return_to,
-            return_to_answer_id=self._return_to_answer_id,
-            return_to_block_id=self._return_to_block_id,
+            block_id=block_id, return_location=self.return_location
         )
 
     def get_section_or_final_summary_url(self) -> str | None:
         if (
-            self._return_to == "section-summary"
+            self.return_location.return_to == "section-summary"
             and self.router.can_display_section_summary(
                 self.parent_location.section_key
             )
@@ -55,11 +53,15 @@ class ListAction(Question):
             return url_for(
                 "questionnaire.get_section",
                 section_id=self.parent_location.section_id,
-                _anchor=self._return_to_answer_id,
+                _anchor=self.return_location.return_to_answer_id,
             )
-        if self._return_to == "final-summary" and self.router.is_questionnaire_complete:
+        if (
+            self.return_location.return_to == "final-summary"
+            and self.router.is_questionnaire_complete
+        ):
             return url_for(
-                "questionnaire.submit_questionnaire", _anchor=self._return_to_answer_id
+                "questionnaire.submit_questionnaire",
+                _anchor=self.return_location.return_to_answer_id,
             )
 
     def get_next_location_url(self) -> str:
@@ -74,15 +76,13 @@ class ListAction(Question):
             return self.router.get_next_location_url(
                 self.parent_location,
                 self._routing_path,
-                self._return_to,
-                self._return_to_answer_id,
-                self._return_to_block_id,
+                self.return_location,
             )
 
         return self.parent_location.url(
-            return_to=self._return_to,
-            return_to_answer_id=self._return_to_answer_id,
-            return_to_block_id=self._return_to_block_id,
+            return_to=self.return_location.return_to,
+            return_to_answer_id=self.return_location.return_to_answer_id,
+            return_to_block_id=self.return_location.return_to_block_id,
         )
 
     def handle_post(self) -> None:
@@ -101,24 +101,18 @@ class ListAction(Question):
         self,
         *,
         block_id: str | None = None,
-        return_to: str | None = None,
-        return_to_answer_id: str | None = None,
-        return_to_block_id: str | None = None,
+        return_location: ReturnLocation,
         anchor: str | None = None,
     ) -> str:
         if block_id and self._schema.is_block_valid(block_id):
             # Type ignore: the above line check that block_id exists and is valid and therefore section exists
             section_id: str = self._schema.get_section_id_for_block_id(block_id)  # type: ignore
             return Location(section_id=section_id, block_id=block_id).url(
-                return_to=return_to,
-                return_to_answer_id=return_to_answer_id,
-                return_to_block_id=return_to_block_id,
+                **return_location.to_dict(),
                 _anchor=anchor,
             )
 
         return self.parent_location.url(
-            return_to=return_to,
-            return_to_answer_id=return_to_answer_id,
-            return_to_block_id=return_to_block_id,
+            **return_location.to_dict(),
             _anchor=anchor,
         )

@@ -5,6 +5,9 @@ from app.data_models import Answer, ListStore
 from app.data_models.answer_store import AnswerStore
 from app.data_models.data_stores import DataStores
 from app.questionnaire import QuestionnaireSchema
+from app.questionnaire.return_location import ReturnLocation
+from app.questionnaire.rules.rule_evaluator import RuleEvaluator
+from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts.summary.question import Question
 
@@ -111,7 +114,10 @@ def address_question(
         schema=schema,
         location=None,
         block_id="address-block",
-        return_to=None,
+        return_location=ReturnLocation(),
+        value_source_resolver=get_value_source_resolver(
+            answer_store, list_store, schema
+        ),
         language="en",
     )
 
@@ -157,7 +163,7 @@ def test_create_question(
         data_stores=data_stores,
         location=None,
         block_id="house-type",
-        return_to=None,
+        return_location=ReturnLocation(),
         language="en",
         schema=mock_schema,
     )
@@ -290,7 +296,7 @@ def test_concatenate_number_and_checkbox_answers(
         data_stores=DataStores(answer_store=answer_store),
         location=None,
         block_id="house-type",
-        return_to=None,
+        return_location=ReturnLocation(),
         language="en",
     )
 
@@ -328,7 +334,7 @@ def test_merge_date_range_answers(
         schema=mock_schema,
         location=None,
         block_id="house-type",
-        return_to=None,
+        return_location=ReturnLocation(),
         language="en",
     )
 
@@ -371,7 +377,7 @@ def test_merge_multiple_date_range_answers(
         schema=mock_schema,
         location=None,
         block_id="house-type",
-        return_to=None,
+        return_location=ReturnLocation(),
         language="en",
     )
 
@@ -412,7 +418,7 @@ def test_create_question_with_multiple_answers(
         schema=mock_schema,
         location=None,
         block_id="house-type",
-        return_to=None,
+        return_location=ReturnLocation(),
         language="en",
     )
 
@@ -456,7 +462,7 @@ def test_checkbox_button_options(
         schema=mock_schema,
         location=None,
         block_id="house-type",
-        return_to=None,
+        return_location=ReturnLocation(),
         language="en",
     )
 
@@ -502,7 +508,7 @@ def test_checkbox_button_detail_answer_empty(
         schema=mock_schema,
         location=None,
         block_id="house-type",
-        return_to=None,
+        return_location=ReturnLocation(),
         language="en",
     )
 
@@ -583,7 +589,7 @@ def test_checkbox_answer_with_detail_answer_returns_the_value(
         schema=mock_schema,
         location=None,
         block_id="house-type",
-        return_to=None,
+        return_location=ReturnLocation(),
         language="en",
     )
 
@@ -631,7 +637,7 @@ def test_checkbox_button_other_option_text(
         schema=mock_schema,
         location=None,
         block_id="house-type",
-        return_to=None,
+        return_location=ReturnLocation(),
         language="en",
     )
 
@@ -711,7 +717,7 @@ def test_radio_answer_with_detail_answers_returns_correct_value(
         schema=mock_schema,
         location=None,
         block_id="house-type",
-        return_to=None,
+        return_location=ReturnLocation(),
         language="en",
     )
 
@@ -784,7 +790,7 @@ def test_answer_types_selected_option_label(
         schema=mock_schema,
         location=None,
         block_id="house-type",
-        return_to=None,
+        return_location=ReturnLocation(),
         language="en",
     )
 
@@ -827,7 +833,7 @@ def test_dynamic_checkbox_answer_options(
         schema=mock_schema,
         location=None,
         block_id="house-type",
-        return_to=None,
+        return_location=ReturnLocation(),
         language="en",
     )
 
@@ -895,7 +901,7 @@ def test_dynamic_answer_options(
         schema=mock_schema,
         location=None,
         block_id="house-type",
-        return_to=None,
+        return_location=ReturnLocation(),
         language="en",
     )
 
@@ -956,7 +962,7 @@ def test_get_answer(
         schema=schema,
         location=None,
         block_id="address-group",
-        return_to=None,
+        return_location=ReturnLocation(),
         language="en",
     )
 
@@ -1103,7 +1109,7 @@ def test_dynamic_answers(expected, list_store, answer_store):
         schema=schema,
         location=None,
         block_id="group",
-        return_to=None,
+        return_location=ReturnLocation(),
         language="en",
     )
 

@@ -6,6 +6,7 @@ from app.questionnaire.location import SectionKey
 from app.questionnaire.questionnaire_schema import (
     get_calculation_block_ids_for_grand_calculated_summary,
 )
+from app.questionnaire.return_location import ReturnLocation
 from app.views.contexts.calculated_summary_context import CalculatedSummaryContext
 from app.views.contexts.summary.group import Group
 
@@ -79,10 +80,12 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
                 schema=self._schema,
                 location=self.current_location,
                 language=self._language,
-                return_to="grand-calculated-summary",
-                return_to_block_id=self.current_location.block_id,
-                return_to_list_item_id=self.current_location.list_item_id,
                 summary_type="GrandCalculatedSummary",
+                return_location=ReturnLocation(
+                    return_to="grand-calculated-summary",
+                    return_to_block_id=self.current_location.block_id,
+                    return_to_list_item_id=self.current_location.list_item_id,
+                ),
             ).serialize()
             for group in section["groups"]
         ]

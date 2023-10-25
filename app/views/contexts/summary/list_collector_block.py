@@ -61,7 +61,7 @@ class ListCollectorBlock(ListCollectorBaseBlock):
             for_list=list_collector_block["for_list"],
             section_id=self._location.section_id,
             has_repeating_blocks=bool(list_collector_block.get("repeating_blocks")),
-            return_to=self._return_to,
+            return_to=self._return_location.return_to,
             edit_block_id=edit_block_id,
             remove_block_id=remove_block_id,
             primary_person_edit_block_id=primary_person_edit_block_id,
@@ -90,7 +90,7 @@ class ListCollectorBlock(ListCollectorBaseBlock):
                 "questionnaire.block",
                 list_name=summary["for_list"],
                 block_id=list_collector_block["add_block"]["id"],
-                return_to=self._return_to,
+                return_to=self._return_location.return_to,
             )
 
         if driving_question_block := self._schema.get_driving_question_for_list(
@@ -99,5 +99,5 @@ class ListCollectorBlock(ListCollectorBaseBlock):
             return url_for(
                 "questionnaire.block",
                 block_id=driving_question_block["id"],
-                return_to=self._return_to,
+                return_to=self._return_location.return_to,
             )

@@ -4,6 +4,7 @@ from app.data_models import CompletionStatus
 from app.data_models.data_stores import DataStores
 from app.data_models.progress_store import ProgressStore
 from app.questionnaire import Location
+from app.questionnaire.return_location import ReturnLocation
 from app.questionnaire.routing_path import RoutingPath
 from app.views.contexts.grand_calculated_summary_context import (
     GrandCalculatedSummaryContext,
@@ -86,8 +87,7 @@ def test_build_view_context_for_grand_calculated_summary(
         ),
         routing_path=RoutingPath(section_id="default-section", block_ids=block_ids),
         current_location=Location(section_id="default-section", block_id=block_id),
-        return_to=None,
-        return_to_block_id=None,
+        return_location=ReturnLocation(),
     )
 
     context = grand_calculated_summary_context.build_view_context()

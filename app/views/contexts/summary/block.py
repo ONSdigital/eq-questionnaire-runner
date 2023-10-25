@@ -4,6 +4,8 @@ from jsonpointer import resolve_pointer
 
 from app.data_models.data_stores import DataStores
 from app.questionnaire import QuestionnaireSchema
+from app.questionnaire.return_location import ReturnLocation
+from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.schema_utils import find_pointers_containing
 from app.questionnaire.variants import choose_variant
 from app.utilities.types import LocationType
@@ -18,9 +20,7 @@ class Block:
         data_stores: DataStores,
         schema: QuestionnaireSchema,
         location: LocationType,
-        return_to: str | None,
-        return_to_block_id: str | None = None,
-        return_to_list_item_id: str | None = None,
+        return_location: ReturnLocation,
         language: str,
     ) -> None:
         self.id = block_schema["id"]
@@ -33,9 +33,7 @@ class Block:
         self.question = self.get_question(
             block_schema=block_schema,
             data_stores=self.data_stores,
-            return_to=return_to,
-            return_to_block_id=return_to_block_id,
-            return_to_list_item_id=return_to_list_item_id,
+            return_location=return_location,
             language=language,
         )
 
@@ -44,9 +42,7 @@ class Block:
         *,
         data_stores: DataStores,
         block_schema: Mapping,
-        return_to: str | None,
-        return_to_block_id: str | None,
-        return_to_list_item_id: str | None,
+        return_location: ReturnLocation,
         language: str,
     ) -> dict[str, Question]:
         """Taking question variants into account, return the question which was displayed to the user"""
@@ -65,9 +61,7 @@ class Block:
             schema=self.schema,
             location=self.location,
             block_id=self.id,
-            return_to=return_to,
-            return_to_block_id=return_to_block_id,
-            return_to_list_item_id=return_to_list_item_id,
+            return_location=return_location,
             language=language,
         ).serialize()
 

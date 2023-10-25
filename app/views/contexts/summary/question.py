@@ -10,6 +10,7 @@ from app.data_models.data_stores import DataStores
 from app.forms.field_handlers.select_handlers import DynamicAnswerOptions
 from app.questionnaire import QuestionnaireSchema, QuestionSchemaType
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
+from app.questionnaire.return_location import ReturnLocation
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.utilities.types import LocationType
@@ -30,9 +31,7 @@ class Question:
         schema: QuestionnaireSchema,
         location: LocationType,
         block_id: str,
-        return_to: Optional[str],
-        return_to_block_id: Optional[str] = None,
-        return_to_list_item_id: Optional[str] = None,
+        return_location: ReturnLocation,
         language: str,
     ) -> None:
         self.list_item_id = location.list_item_id if location else None
@@ -72,9 +71,6 @@ class Question:
             question_schema=question_schema,
             block_id=block_id,
             list_name=location.list_name if location else None,
-            return_to=return_to,
-            return_to_block_id=return_to_block_id,
-            return_to_list_item_id=return_to_list_item_id,
             language=language,
         )
 
@@ -94,9 +90,7 @@ class Question:
         question_schema: QuestionSchemaType,
         block_id: str,
         list_name: str | None,
-        return_to: str | None,
-        return_to_block_id: str | None,
-        return_to_list_item_id: str | None,
+        return_location: ReturnLocation,
         language: str,
     ) -> list[dict[str, Any]]:
         if self.summary:
@@ -106,9 +100,9 @@ class Question:
                 list_name=list_name,
                 block_id=block_id,
                 list_item_id=self.list_item_id,
-                return_to=return_to,
-                return_to_answer_id=answer_id if return_to else None,
-                return_to_list_item_id=return_to_list_item_id,
+                return_to=return_location.return_to,
+                return_to_answer_id=answer_id if return_location.return_to else None,
+                return_to_list_item_id=return_location.return_to_list_item_id,
                 _anchor=question_schema["answers"][0]["id"],
             )
 
@@ -143,9 +137,7 @@ class Question:
                 block_id=block_id,
                 list_name=list_name,
                 list_item_id=list_item_id or self.list_item_id,
-                return_to=return_to,
-                return_to_block_id=return_to_block_id,
-                return_to_list_item_id=return_to_list_item_id,
+                return_location=return_location,
                 is_in_repeating_section=self._is_in_repeating_section,
             ).serialize()
             summary_answers.append(summary_answer)

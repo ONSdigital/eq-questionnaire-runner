@@ -9,6 +9,7 @@ from app.questionnaire.questionnaire_schema import (
     QuestionnaireSchema,
     get_calculated_summary_answer_ids,
 )
+from app.questionnaire.return_location import ReturnLocation
 from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.schema_utils import get_answer_ids_in_block
@@ -30,9 +31,7 @@ class CalculatedSummaryContext(Context):
         data_stores: DataStores,
         routing_path: RoutingPath,
         current_location: LocationType,
-        return_to: str | None = None,
-        return_to_block_id: str | None = None,
-        return_to_list_item_id: str | None = None,
+        return_location: ReturnLocation,
     ) -> None:
         super().__init__(
             language,
@@ -42,9 +41,7 @@ class CalculatedSummaryContext(Context):
         self._data_stores = data_stores
         self.routing_path_block_ids = routing_path.block_ids
         self.current_location = current_location
-        self.return_to = return_to
-        self.return_to_block_id = return_to_block_id
-        self.return_to_list_item_id = return_to_list_item_id
+        self.return_location = return_location
 
     @cached_property
     def rendered_block(self) -> dict:
@@ -69,8 +66,8 @@ class CalculatedSummaryContext(Context):
         return_to = "calculated-summary"
         # Type ignore: safe to assume block_id is not None
         return_to_block_id: str = self.current_location.block_id  # type: ignore
-        if self.return_to == "grand-calculated-summary":
-            return_to_block_id += f",{self.return_to_block_id}"
+        if self.return_location.return_to == "grand-calculated-summary":
+            return_to_block_id += f",{self.return_location.return_to_block_id}"
             return_to += ",grand-calculated-summary"
         return [
             Group(
@@ -80,10 +77,12 @@ class CalculatedSummaryContext(Context):
                 data_stores=self._data_stores,
                 location=self.current_location,
                 language=self._language,
-                return_to=return_to,
-                return_to_block_id=return_to_block_id,
-                return_to_list_item_id=self.return_to_list_item_id,
                 summary_type="CalculatedSummary",
+                return_location=ReturnLocation(
+                    return_to=return_to,
+                    return_to_block_id=return_to_block_id,
+                    return_to_list_item_id=self.return_location.return_to_list_item_id,
+                ),
             ).serialize()
             for group in section["groups"]
         ]

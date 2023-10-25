@@ -11,6 +11,7 @@ from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.questionnaire.relationship_location import RelationshipLocation
+from app.questionnaire.return_location import ReturnLocation
 from app.questionnaire.router import Router
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities import safe_content
@@ -41,10 +42,14 @@ class BlockHandler:
             self.block: ImmutableDict = self._schema.get_block(self._current_location.block_id)  # type: ignore
         self._routing_path = self._get_routing_path()
         self.page_title: Optional[str] = None
-        self._return_to = request_args.get("return_to")
-        self._return_to_answer_id = request_args.get("return_to_answer_id")
-        self._return_to_block_id = request_args.get("return_to_block_id")
-        self._return_to_list_item_id = request_args.get("return_to_list_item_id")
+
+        self._return_location = ReturnLocation(
+            return_to=request_args.get("return_to"),
+            return_to_block_id=request_args.get("return_to_block_id"),
+            return_to_answer_id=request_args.get("return_to_answer_id"),
+            return_to_list_item_id=request_args.get("return_to_list_item_id"),
+        )
+
         self.resume = "resume" in request_args
 
         if not self.is_location_valid():
@@ -57,12 +62,8 @@ class BlockHandler:
         return self._current_location
 
     @property
-    def return_to(self) -> str | None:
-        return self._return_to
-
-    @property
-    def return_to_block_id(self) -> str | None:
-        return self._return_to_block_id
+    def return_location(self) -> ReturnLocation:
+        return self._return_location
 
     @cached_property
     def questionnaire_store_updater(self) -> QuestionnaireStoreUpdater:
@@ -99,20 +100,14 @@ class BlockHandler:
         return self.router.get_previous_location_url(
             self._current_location,
             self._routing_path,
-            self._return_to,
-            self._return_to_answer_id,
-            self._return_to_block_id,
-            self._return_to_list_item_id,
+            self.return_location,
         )
 
     def get_next_location_url(self) -> str:
         return self.router.get_next_location_url(
             self._current_location,
             self._routing_path,
-            self._return_to,
-            self._return_to_answer_id,
-            self._return_to_block_id,
-            self._return_to_list_item_id,
+            self.return_location,
         )
 
     def handle_post(self) -> None:

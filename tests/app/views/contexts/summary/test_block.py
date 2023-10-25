@@ -1,4 +1,5 @@
 from app.questionnaire.location import Location
+from app.questionnaire.return_location import ReturnLocation
 from app.views.contexts.summary.block import Block
 
 
@@ -11,6 +12,8 @@ def test_create_block(mocker):
         "question": {"id": "mock_question_schema"},
     }
     location = Location(section_id="a-section")
+
+    return_location = ReturnLocation(return_to="final-summary")
 
     question = mocker.MagicMock()
     question.serialize = mocker.MagicMock(return_value="A Question")
@@ -25,7 +28,7 @@ def test_create_block(mocker):
         data_stores=mocker.MagicMock(),
         schema=mocker.MagicMock(),
         location=location,
-        return_to="final-summary",
+        return_location=return_location,
         language="en",
     )
 

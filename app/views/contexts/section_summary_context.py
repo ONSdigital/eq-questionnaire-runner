@@ -6,6 +6,7 @@ from werkzeug.datastructures import ImmutableDict
 from app.data_models.data_stores import DataStores
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.questionnaire_schema import LIST_COLLECTORS_WITH_REPEATING_BLOCKS
+from app.questionnaire.return_location import ReturnLocation
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities import safe_content
 from app.views.contexts.context import Context
@@ -134,8 +135,9 @@ class SectionSummaryContext(Context):
                     data_stores=self._data_stores,
                     location=self.current_location,
                     language=self._language,
-                    return_to=return_to,
-                    return_to_block_id=None,
+                    return_location=ReturnLocation(
+                        return_to=return_to,
+                    ),
                     view_submitted_response=view_submitted_response,
                 ).serialize()
                 for group in refactored_groups
@@ -164,7 +166,7 @@ class SectionSummaryContext(Context):
                     schema=self._schema,
                     location=self.current_location,
                     language=self._language,
-                    return_to="section-summary",
+                    return_location=ReturnLocation(return_to="section-summary"),
                 )
                 yield list_collector_block.list_summary_element(summary_element)
 

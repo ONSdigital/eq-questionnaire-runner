@@ -97,12 +97,7 @@ class Question(BlockHandler):
                 return location_url
 
         return self.router.get_next_location_url(
-            self._current_location,
-            self._routing_path,
-            self._return_to,
-            self._return_to_answer_id,
-            self._return_to_block_id,
-            self._return_to_list_item_id,
+            self._current_location, self._routing_path, self._return_location
         )
 
     def _get_answers_for_question(self, question_json: Mapping) -> dict:
