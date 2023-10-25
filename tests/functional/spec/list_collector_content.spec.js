@@ -17,9 +17,7 @@ describe("List Collector Section Summary and Summary Items", () => {
     it("When I get to the Hub, Then from there the next block in list collector content section should be list collector content page.", async () => {
       await fillInListCollectorSection();
       await expect(browser).toHaveUrlContaining(HubPage.url());
-      await expect(
-        await $(HubPage.summaryRowState("section-list-collector-contents")).getText()
-      ).toBe("Not started");
+      await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).toBe("Not started");
       await $(HubPage.submit()).click();
       await $(ResponsiblePartyQuestionPage.yes()).click();
       await $(ResponsiblePartyQuestionPage.submit()).click();
@@ -32,7 +30,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await $(ResponsiblePartyQuestionPage.submit()).click();
       await expect(await $(ListCollectorContentPage.heading()).getHTML()).toContain("Companies");
       await expect(await $("#main-content > p").getText()).toBe(
-        "You have previously reported the following companies. Press continue to updated registration and trading information."
+        "You have previously reported the following companies. Press continue to updated registration and trading information.",
       );
       await expect(await $("#main-content > #guidance-1").getText()).toContain("Include all companies");
       await expect(await $("#main-content > #definition").getText()).toBe("Companies definition");
@@ -80,9 +78,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await $(ListCollectorSecondRepeatingBlockPage.submit()).click();
       await $(ListCollectorContentPage.previous()).click();
       await $(ResponsiblePartyQuestionPage.previous()).click();
-      await expect(
-        await $(HubPage.summaryRowState("section-list-collector-contents")).getText()
-      ).toBe("Partially completed");
+      await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).toBe("Partially completed");
     });
     it("When I fill in both items repeating blocks, Then after going back to the hub the section should be completed.", async () => {
       await fillInListCollectorSection();
@@ -111,9 +107,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await $(ListCollectorContentSectionSummaryPage.previous()).click();
       await $(ListCollectorContentPage.previous()).click();
       await $(ResponsiblePartyQuestionPage.previous()).click();
-      await expect(
-        await $(HubPage.summaryRowState("section-list-collector-contents")).getText()
-      ).toBe("Completed");
+      await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).toBe("Completed");
     });
   });
 });

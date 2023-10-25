@@ -7,9 +7,7 @@ class TestCase {
       await this.checkTimeoutModal();
       await browser.pause(65000); // We are waiting for the session to expire
       await expect(browser).toHaveUrlContaining("/session-expired");
-      await expect(await $("body").getHTML()).not.toContain(
-        "To protect your information, your progress will be saved and you will be signed out in"
-      );
+      await expect(await $("body").getHTML()).not.toContain("To protect your information, your progress will be saved and you will be signed out in");
     }).timeout(140000);
   }
 
@@ -39,7 +37,7 @@ class TestCase {
   async checkTimeoutModal() {
     await $(TimeoutModalPage.timer()).waitForDisplayed({ timeout: 70000 });
     await expect(await $(TimeoutModalPage.timer()).getText()).toBe(
-      "To protect your information, your progress will be saved and you will be signed out in 59 seconds."
+      "To protect your information, your progress will be saved and you will be signed out in 59 seconds.",
     );
   }
 }

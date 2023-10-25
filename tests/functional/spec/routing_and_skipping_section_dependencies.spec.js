@@ -96,12 +96,8 @@ describe("Routing and skipping section dependencies", () => {
       await $(RepeatingIsSmokerPage.no()).click();
       await click(RepeatingIsSmokerPage.submit());
 
-      await expect(
-        await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()
-      ).toBe("Female");
-      await expect(
-        await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()
-      ).toBe("45");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).toBe("Female");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).toBe("45");
 
       await click(HouseHoldPersonalDetailsSectionSummaryPage.submit());
       await $(HubPage.summaryRowLink("household-personal-details-section-2")).click();
@@ -112,12 +108,8 @@ describe("Routing and skipping section dependencies", () => {
       await $(RepeatingIsDependentPage.yes()).click();
       await click(RepeatingIsDependentPage.submit());
 
-      await expect(
-        await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()
-      ).toBe("Male");
-      await expect(
-        await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()
-      ).toBe("10");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).toBe("Male");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).toBe("10");
     });
 
     it("When I answer 'Yes' to skipping the age question and populate the household, Then in each repeating section I am not asked their age", async () => {
@@ -130,9 +122,7 @@ describe("Routing and skipping section dependencies", () => {
       await click(RepeatingSexPage.submit());
       await $(RepeatingIsDependentPage.no()).click();
       await click(RepeatingIsDependentPage.submit());
-      await expect(
-        await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()
-      ).toBe("Female");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).toBe("Female");
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).isExisting()).toBe(false);
 
       await click(HouseHoldPersonalDetailsSectionSummaryPage.submit());
@@ -142,9 +132,7 @@ describe("Routing and skipping section dependencies", () => {
       await $(RepeatingIsDependentPage.yes()).click();
       await click(RepeatingIsDependentPage.submit());
 
-      await expect(
-        await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()
-      ).toBe("Male");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).toBe("Male");
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).isExisting()).toBe(false);
     });
   });
@@ -200,7 +188,7 @@ describe("Routing and skipping section dependencies", () => {
       await expectPersonalDetailsName();
       await expectPersonalDetailsAge();
       await expect(await $(PrimaryPersonSummaryPage.reasonNoConfirmationAnswer()).getText()).toBe(
-        "I did, but it was removed from the path as I changed my answer to No on the skip question"
+        "I did, but it was removed from the path as I changed my answer to No on the skip question",
       );
     });
   });
@@ -280,15 +268,9 @@ describe("Routing and skipping section dependencies", () => {
       await $(RepeatingIsSmokerPage.no()).click();
       await click(RepeatingIsSmokerPage.submit());
 
-      await expect(
-        await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()
-      ).toBe("Female");
-      await expect(
-        await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()
-      ).toBe("45");
-      await expect(
-        await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).getText()
-      ).toBe("No");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).toBe("Female");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).toBe("45");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).getText()).toBe("No");
 
       await click(HouseHoldPersonalDetailsSectionSummaryPage.submit());
       await $(HubPage.summaryRowLink("household-personal-details-section-2")).click();
@@ -301,15 +283,9 @@ describe("Routing and skipping section dependencies", () => {
       await $(RepeatingIsSmokerPage.no()).click();
       await click(RepeatingIsSmokerPage.submit());
 
-      await expect(
-        await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()
-      ).toBe("Male");
-      await expect(
-        await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()
-      ).toBe("19");
-      await expect(
-        await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).getText()
-      ).toBe("No");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).toBe("Male");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).toBe("19");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).getText()).toBe("No");
     });
 
     it("When I answer 'No' to skipping the age question and populate the household with Repeating Age < 18, Then in each repeating section I am not asked if they are smoker", async () => {
@@ -325,12 +301,8 @@ describe("Routing and skipping section dependencies", () => {
       await $(RepeatingIsDependentPage.yes()).click();
       await click(RepeatingIsDependentPage.submit());
 
-      await expect(
-        await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()
-      ).toBe("Female");
-      await expect(
-        await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()
-      ).toBe("15");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).toBe("Female");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).toBe("15");
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).isExisting()).toBe(false);
 
       await click(HouseHoldPersonalDetailsSectionSummaryPage.submit());
@@ -342,12 +314,8 @@ describe("Routing and skipping section dependencies", () => {
       await $(RepeatingIsDependentPage.yes()).click();
       await click(RepeatingIsDependentPage.submit());
 
-      await expect(
-        await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()
-      ).toBe("Male");
-      await expect(
-        await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()
-      ).toBe("10");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).toBe("Male");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).toBe("10");
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).isExisting()).toBe(false);
     });
 
@@ -361,9 +329,7 @@ describe("Routing and skipping section dependencies", () => {
       await click(RepeatingSexPage.submit());
       await $(RepeatingIsDependentPage.no()).click();
       await click(RepeatingIsDependentPage.submit());
-      await expect(
-        await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()
-      ).toBe("Female");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).toBe("Female");
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).isExisting()).toBe(false);
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).isExisting()).toBe(false);
 
@@ -374,9 +340,7 @@ describe("Routing and skipping section dependencies", () => {
       await $(RepeatingIsDependentPage.yes()).click();
       await click(RepeatingIsDependentPage.submit());
 
-      await expect(
-        await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()
-      ).toBe("Male");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).toBe("Male");
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).isExisting()).toBe(false);
       await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).isExisting()).toBe(false);
     });

@@ -354,7 +354,7 @@ describe("Feature: Grand Calculated Summary", () => {
       await $(InternetBreakdownBlockPage.internetPc()).setValue(60);
       await $(InternetBreakdownBlockPage.internetPhone()).setValue(60);
       await click(InternetBreakdownBlockPage.submit());
-      await expect(await $(InternetBreakdownBlockPage.errorNumber(1)).getText()).toContain("Enter answers that add up to 100");
+      await expect(await $(InternetBreakdownBlockPage.errorNumber(1)).getText()).toBe("Enter answers that add up to 100");
     });
 
     it("Given I use the grand calculated summary for validation, When I enter values with the correct sum, Then I progress to the summary page", async () => {
@@ -497,7 +497,7 @@ describe("Feature: Grand Calculated Summary", () => {
 
     it("Given I have a further section depending on the grand calculated summary section, When I return to the Hub, Then I see the new section is available", async () => {
       await click(Section6SummaryPage.submit());
-      await expect(await $(HubPage.summaryRowState("section-7")).getText()).toContain("Not started");
+      await expect(await $(HubPage.summaryRowState("section-7")).getText()).toBe("Not started");
       await click(HubPage.submit());
     });
 
@@ -507,7 +507,7 @@ describe("Feature: Grand Calculated Summary", () => {
       );
       await $(PersonalExpenditureBlockPage.personalExpenditure()).setValue(1200);
       await click(PersonalExpenditureBlockPage.submit());
-      await expect(await $(PersonalExpenditureBlockPage.errorNumber(1)).getText()).toContain("Enter an answer less than or equal to £1,199.00");
+      await expect(await $(PersonalExpenditureBlockPage.errorNumber(1)).getText()).toBe("Enter an answer less than or equal to £1,199.00");
     });
 
     it("Given I display multiple grand calculated summaries on an Interstitial page, When I reach the page, Then I see the correct values piped in", async () => {

@@ -31,9 +31,7 @@ describe("Introduction preview questions", () => {
       await $(showButton).click();
     }
     // :TODO: Add data attributes to elements below so we don't rely on tags or classes that are subject to DS changes
-    expect(await $(previewQuestion).$("h3").getText()).toBe(
-      "Are you able to report for the calendar month 1 January 2017 to 1 February 2017?"
-    );
+    expect(await $(previewQuestion).$("h3").getText()).toBe("Are you able to report for the calendar month 1 January 2017 to 1 February 2017?");
     expect(await $(previewQuestion).$(".ons-question__description").getText()).toBe("Your return should relate to the calendar year 2021.");
     expect(await $(previewQuestion).$$(".ons-panel__body")[0].getText()).toBe("Please provide figures for the period in which you were trading.");
     expect(await $(showButton).length).toBeUndefined();
@@ -63,15 +61,13 @@ describe("Introduction preview questions", () => {
     await $(answerToMonth).setValue(12);
     await $(answerToYear).setValue(2016);
     await $(submitButton).click();
-    expect(await $("h1").getText()).toBe(
-      "Are you sure you are able to report for the calendar month 5 December 2016 to 20 December 2016?"
-    );
+    expect(await $("h1").getText()).toBe("Are you sure you are able to report for the calendar month 5 December 2016 to 20 December 2016?");
     await browser.url("questionnaire/introduction/");
     await $(IntroductionPageLinear.previewQuestions()).click();
     expect(await browser.getUrl()).toContain("questionnaire/preview");
     expect(await $(previewSectionTitle).getText()).toBe("Main section");
     expect(await $$(previewQuestion)[2].$("h3").getText()).toBe(
-      "Are you sure you are able to report for the calendar month {calendar_start_date} to {calendar_end_date}?"
+      "Are you sure you are able to report for the calendar month {calendar_start_date} to {calendar_end_date}?",
     );
   });
 

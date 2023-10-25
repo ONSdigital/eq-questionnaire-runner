@@ -51,7 +51,7 @@ describe("Component: Radio", () => {
     it("When I have submitted the page without any option, Then the question text is hidden in the error message using a span element", async () => {
       await click(RadioMandatoryOverriddenPage.submit());
       await expect(await $(RadioMandatoryOverriddenPage.errorNumber(1)).getHTML()).toContain(
-        'Select an answer <span class="ons-u-vh">to ‘What do you prefer for breakfast?’</span></a>'
+        'Select an answer <span class="ons-u-vh">to ‘What do you prefer for breakfast?’</span></a>',
       );
     });
   });
@@ -66,9 +66,7 @@ describe("Component: Radio", () => {
       await $(RadioMandatoryOptionalDetailAnswerPage.otherDetail()).setValue("Hello World");
       await click(RadioMandatoryOptionalDetailAnswerPage.submit());
       await expect(browser).toHaveUrlContaining(RadioMandatoryOptionDetailAnswerSummary.pageName);
-      await expect(
-        await $(RadioMandatoryOptionDetailAnswerSummary.radioMandatoryAnswer()).getText()
-      ).toContain("Hello World");
+      await expect(await $(RadioMandatoryOptionDetailAnswerSummary.radioMandatoryAnswer()).getText()).toContain("Hello World");
     });
   });
 
@@ -92,9 +90,7 @@ describe("Component: Radio", () => {
     it("When I submit without any data in the other text field is selected, Then the selected option should be displayed in the summary", async () => {
       await click(RadioMandatoryOptionalDetailAnswerPage.submit());
       await expect(browser).toHaveUrlContaining(RadioMandatoryOptionDetailAnswerSummary.pageName);
-      await expect(
-        await $(RadioMandatoryOptionDetailAnswerSummary.radioMandatoryAnswer()).getText()
-      ).toContain("No answer provided");
+      await expect(await $(RadioMandatoryOptionDetailAnswerSummary.radioMandatoryAnswer()).getText()).toContain("No answer provided");
     });
   });
 
@@ -129,9 +125,7 @@ describe("Component: Radio", () => {
     it("When I have submitted an other option with an empty text field, Then an overridden error is displayed", async () => {
       await $(RadioNonMandatoryDetailAnswerOverriddenPage.other()).click();
       await click(RadioNonMandatoryDetailAnswerOverriddenPage.submit());
-      await expect(
-        await $(RadioNonMandatoryDetailAnswerOverriddenPage.errorNumber(1)).getText()
-      ).toBe("Test error message is overridden");
+      await expect(await $(RadioNonMandatoryDetailAnswerOverriddenPage.errorNumber(1)).getText()).toBe("Test error message is overridden");
     });
   });
 
@@ -145,9 +139,7 @@ describe("Component: Radio", () => {
       await $(RadioNonMandatoryDetailAnswerPage.otherDetail()).setValue("Hello World");
       await click(RadioNonMandatoryDetailAnswerPage.submit());
       await expect(browser).toHaveUrlContaining(RadioNonMandatoryDetailAnswerSummary.pageName);
-      await expect(
-        await $(RadioNonMandatoryDetailAnswerSummary.radioNonMandatoryAnswer()).getText()
-      ).toContain("Hello World");
+      await expect(await $(RadioNonMandatoryDetailAnswerSummary.radioNonMandatoryAnswer()).getText()).toContain("Hello World");
     });
   });
 });

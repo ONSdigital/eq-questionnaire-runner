@@ -25,20 +25,16 @@ describe("Summary Anchor Scrolling", () => {
     it("When I reach the section summary page, Then the Change link url should contain return_to, return_to_answer_id query params", async () => {
       await click(InsuranceAddressPage.submit());
       await click(AddressDurationPage.submit());
-      await expect(
-        await $(PropertyDetailsSummaryPage.insuranceAddressAnswer2Edit()).getAttribute("href")
-      ).toContain(
-        "insurance-address/?return_to=section-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2"
+      await expect(await $(PropertyDetailsSummaryPage.insuranceAddressAnswer2Edit()).getAttribute("href")).toContain(
+        "insurance-address/?return_to=section-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2",
       );
     });
 
     it("When I reach the section summary page, Then the Change link url for a concatenated answer should contain return_to, return_to_answer_id query params", async () => {
       await click(InsuranceAddressPage.submit());
       await click(AddressDurationPage.submit());
-      await expect(
-        await $(PropertyDetailsSummaryPage.summaryRowState("name-question-concatenated-answer-edit")).getAttribute("href")
-      ).toContain(
-        "name/?return_to=section-summary&return_to_answer_id=name-question-concatenated-answer#first-name"
+      await expect(await $(PropertyDetailsSummaryPage.summaryRowState("name-question-concatenated-answer-edit")).getAttribute("href")).toContain(
+        "name/?return_to=section-summary&return_to_answer_id=name-question-concatenated-answer#first-name",
       );
     });
 
@@ -73,7 +69,7 @@ describe("Summary Anchor Scrolling", () => {
       await click(HouseholdDetailsSummaryPage.submit());
       await $(SubmitPage.summaryShowAllButton()).click();
       await expect(await $(SubmitPage.insuranceAddressAnswer2Edit()).getAttribute("href")).toContain(
-        "?return_to=final-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2"
+        "?return_to=final-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2",
       );
     });
 
@@ -85,9 +81,7 @@ describe("Summary Anchor Scrolling", () => {
       await click(HouseholdDetailsSummaryPage.submit());
       await $(SubmitPage.summaryShowAllButton()).click();
       await $(SubmitPage.insuranceAddressAnswer2Edit()).click();
-      await expect(browser).toHaveUrlContaining(
-        "?return_to=final-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2"
-      );
+      await expect(browser).toHaveUrlContaining("?return_to=final-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2");
     });
   });
 });

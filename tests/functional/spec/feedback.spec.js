@@ -29,7 +29,7 @@ describe("Feedback", () => {
       await expect(browser).toHaveUrlContaining(FeedbackPage.pageName);
       await expect(await $(FeedbackPage.errorPanel()).isExisting()).toBe(true);
       await expect(await $(FeedbackPage.errorPanel()).getText()).toBe(
-        "There are 2 problems with your feedback\nSelect what your feedback is about\nEnter your feedback"
+        "There are 2 problems with your feedback\nSelect what your feedback is about\nEnter your feedback",
       );
     });
 

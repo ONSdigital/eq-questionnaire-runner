@@ -361,37 +361,30 @@ class TestCase {
   }
 
   testCrossSectionDependencies(schema) {
-    before(
-      "Get to the question containing calculated summary values with cross section dependencies",
-      async () => {
-        await browser.openQuestionnaire(schema);
-        await click(HubPage.submit());
-        await $(SkipFirstNumberBlockPageSectionOne.no()).click();
-        await click(SkipFirstNumberBlockPageSectionOne.submit());
-        await $(FirstNumberBlockPageSectionOne.firstNumber()).setValue(10);
-        await click(FirstNumberBlockPageSectionOne.submit());
-        await $(FirstAndAHalfNumberBlockPageSectionOne.firstAndAHalfNumberAlsoInTotal()).setValue(20);
-        await click(FirstAndAHalfNumberBlockPageSectionOne.submit());
-        await $(SecondNumberBlockPageSectionOne.secondNumberAlsoInTotal()).setValue(30);
-        await click(SecondNumberBlockPageSectionOne.submit());
-        await click(CalculatedSummarySectionOne.submit());
-        await click(SectionSummarySectionOne.submit());
-        await click(HubPage.submit());
-        await $(ThirdNumberBlockPageSectionTwo.thirdNumber()).setValue(20);
-        await $(ThirdNumberBlockPageSectionTwo.thirdNumberAlsoInTotal()).setValue(20);
-        await click(ThirdNumberBlockPageSectionTwo.submit());
-        await click(CalculatedSummarySectionTwo.submit());
-      }
-    );
+    before("Get to the question containing calculated summary values with cross section dependencies", async () => {
+      await browser.openQuestionnaire(schema);
+      await click(HubPage.submit());
+      await $(SkipFirstNumberBlockPageSectionOne.no()).click();
+      await click(SkipFirstNumberBlockPageSectionOne.submit());
+      await $(FirstNumberBlockPageSectionOne.firstNumber()).setValue(10);
+      await click(FirstNumberBlockPageSectionOne.submit());
+      await $(FirstAndAHalfNumberBlockPageSectionOne.firstAndAHalfNumberAlsoInTotal()).setValue(20);
+      await click(FirstAndAHalfNumberBlockPageSectionOne.submit());
+      await $(SecondNumberBlockPageSectionOne.secondNumberAlsoInTotal()).setValue(30);
+      await click(SecondNumberBlockPageSectionOne.submit());
+      await click(CalculatedSummarySectionOne.submit());
+      await click(SectionSummarySectionOne.submit());
+      await click(HubPage.submit());
+      await $(ThirdNumberBlockPageSectionTwo.thirdNumber()).setValue(20);
+      await $(ThirdNumberBlockPageSectionTwo.thirdNumberAlsoInTotal()).setValue(20);
+      await click(ThirdNumberBlockPageSectionTwo.submit());
+      await click(CalculatedSummarySectionTwo.submit());
+    });
 
     it("Given I have a placeholder displaying a calculated summary value source, When the calculated summary value is from a previous section, Then the value displayed should be correct", async () => {
       await expect(browser).toHaveUrlContaining(DependencyQuestionSectionTwo.pageName);
-      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue1Label()).getText()).toBe(
-        "60 - calculated summary answer (previous section)",
-      );
-      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2Label()).getText()).toBe(
-        "40 - calculated summary answer (current section)",
-      );
+      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue1Label()).getText()).toBe("60 - calculated summary answer (previous section)");
+      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2Label()).getText()).toBe("40 - calculated summary answer (current section)");
     });
 
     it("Given I have validation using a calculated summary value source, When the calculated summary value is from a previous section, Then the value used to validate should be correct", async () => {
@@ -417,12 +410,8 @@ class TestCase {
       await $(HubPage.summaryRowLink("calculated-summary-section")).click();
       await expect(await $("body").getText()).toContain("30 - calculated summary answer (previous section)");
       await $(SectionSummarySectionTwo.checkboxAnswerEdit()).click();
-      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue1Label()).getText()).toBe(
-        "30 - calculated summary answer (previous section)",
-      );
-      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2Label()).getText()).toBe(
-        "40 - calculated summary answer (current section)",
-      );
+      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue1Label()).getText()).toBe("30 - calculated summary answer (previous section)");
+      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2Label()).getText()).toBe("40 - calculated summary answer (current section)");
     });
   }
 

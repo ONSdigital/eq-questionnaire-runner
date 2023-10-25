@@ -33,7 +33,7 @@ describe("Difference check (months and years)", () => {
     await click(AgeBlockMonthYearPage.submit());
 
     await expect(await $(AgeTestMonthYearPage.heading()).getText()).toBe(
-      `It has been ${getYears("1990/01/01")} years since you last went on holiday. Is this correct?`
+      `It has been ${getYears("1990/01/01")} years since you last went on holiday. Is this correct?`,
     );
   });
 });

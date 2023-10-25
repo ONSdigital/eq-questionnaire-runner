@@ -415,9 +415,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue1Label()).getText()).toEqual(
         "60 - calculated summary answer (previous section)",
       );
-      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2Label()).getText()).toEqual(
-        "40 - calculated summary answer (current section)",
-      );
+      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2Label()).getText()).toEqual("40 - calculated summary answer (current section)");
     });
 
     it("Given I have validation using a calculated summary value source, When the calculated summary value is from a previous section, Then the value used to validate should be correct", async () => {
@@ -443,12 +441,8 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await $(HubPage.summaryRowLink("calculated-summary-section-1")).click();
       await expect(await $("body").getText()).toContain("30 - calculated summary answer (previous section)");
       await $(SectionSummarySectionTwo.checkboxAnswerEdit()).click();
-      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue1Label()).getText()).toBe(
-        "30 - calculated summary answer (previous section)",
-      );
-      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2Label()).getText()).toBe(
-        "40 - calculated summary answer (current section)",
-      );
+      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue1Label()).getText()).toBe("30 - calculated summary answer (previous section)");
+      await expect(await $(DependencyQuestionSectionTwo.checkboxAnswerCalcValue2Label()).getText()).toBe("40 - calculated summary answer (current section)");
     });
   });
 });

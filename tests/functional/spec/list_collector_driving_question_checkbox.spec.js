@@ -82,7 +82,9 @@ describe("Given the user says no one else lives in the house", () => {
     await $(AnyoneUsuallyLiveAtPage.exclusiveNoneOfTheseApplyNoOneUsuallyLivesHere()).click();
     await click(AnyoneUsuallyLiveAtPage.submit());
 
-    await expect(await $(ListCollectorTemporaryAwayPage.questionText()).getText()).toBe("You said 1 person lives at 12 Lovely Villas. Do you need to add anyone?");
+    await expect(await $(ListCollectorTemporaryAwayPage.questionText()).getText()).toBe(
+      "You said 1 person lives at 12 Lovely Villas. Do you need to add anyone?",
+    );
   });
 });
 
@@ -95,7 +97,9 @@ describe("Given a person does not live in the house", () => {
 
     await $(AnyoneUsuallyLiveAtPage.exclusiveNoneOfTheseApplyNoOneUsuallyLivesHere()).click();
     await click(AnyoneUsuallyLiveAtPage.submit());
-    await expect(await $(ListCollectorTemporaryAwayPage.questionText()).getText()).toBe("You said 0 people lives at 12 Lovely Villas. Do you need to add anyone?");
+    await expect(await $(ListCollectorTemporaryAwayPage.questionText()).getText()).toBe(
+      "You said 0 people lives at 12 Lovely Villas. Do you need to add anyone?",
+    );
 
     await $(ListCollectorTemporaryAwayPage.noThereAreNumberOfPeoplePeopleLivingHere()).click();
     await click(AnyoneUsuallyLiveAtPage.submit());

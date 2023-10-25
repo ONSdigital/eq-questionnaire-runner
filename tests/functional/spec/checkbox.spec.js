@@ -45,7 +45,7 @@ describe('Checkbox with "other" option', () => {
     await click(MandatoryCheckboxPage.submit());
     // Then
     await expect(await $(MandatoryCheckboxPage.error()).getHTML()).toContain(
-      'Select at least one answer <span class="ons-u-vh">to ‘Which pizza toppings would you like?’</span></a>'
+      'Select at least one answer <span class="ons-u-vh">to ‘Which pizza toppings would you like?’</span></a>',
     );
   });
 
