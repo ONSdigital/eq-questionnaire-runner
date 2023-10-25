@@ -21,7 +21,11 @@ from app.utilities.schema import load_schema_from_name
 
 class RouterTestCase:
     schema = None
-    data_stores = DataStores()
+    data_stores: DataStores
+
+    @pytest.fixture(autouse=True)
+    def setup(self):
+        self.data_stores = DataStores()
 
     @cached_property
     def router(self):
@@ -130,7 +134,6 @@ class TestRouterPathCompletion(RouterTestCase):
 
     def test_is_not_complete(self):
         self.schema = load_schema_from_name("test_textfield")
-        self.data_stores.progress_store = ProgressStore()
 
         routing_path = self.router.routing_path(SectionKey("default-section"))
         is_path_complete = self.router.is_path_complete(routing_path)
@@ -158,7 +161,6 @@ class TestRouterQuestionnaireCompletion(RouterTestCase):
 
     def test_is_not_complete(self):
         self.schema = load_schema_from_name("test_textfield")
-        self.data_stores.progress_store = ProgressStore()
 
         is_questionnaire_complete = self.router.is_questionnaire_complete
 
@@ -284,7 +286,6 @@ class TestRouterLocationValidity(RouterTestCase):
 
     def test_cant_access_section_disabled(self):
         self.schema = load_schema_from_name("test_section_enabled_checkbox")
-        self.data_stores = DataStores()
 
         current_location = Location(
             section_id="section-2", block_id="section-2-block", list_item_id=None
