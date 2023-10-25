@@ -7,7 +7,7 @@ describe("Theme Northern Ireland", () => {
     });
 
     it("When I navigate to the radio page, Then I should see Northern Ireland theme content", async () => {
-      await expect(await browser.getUrl()).toHaveUrlContaining(RadioPage.pageName);
+      await expect(browser).toHaveUrlContaining(RadioPage.pageName);
       await expect(await $("#finance-ni-logo-alt").getHTML()).toContain("Northern Ireland Department of Finance logo");
     });
   });
