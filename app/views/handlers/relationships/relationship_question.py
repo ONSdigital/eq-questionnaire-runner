@@ -107,7 +107,7 @@ class RelationshipQuestion(Question):
             return previous_location.url()
 
         return self.router.get_previous_location_url(  # type: ignore
-            self.parent_location, self._routing_path
+            self.parent_location, self._routing_path, self.return_location
         )
 
     def get_next_location_url(self) -> str:
@@ -119,5 +119,5 @@ class RelationshipQuestion(Question):
             return next_location.url()
 
         return self.router.get_next_location_url(
-            self.parent_location, self._routing_path, self._return_to
+            self.parent_location, self._routing_path, self.return_location
         )

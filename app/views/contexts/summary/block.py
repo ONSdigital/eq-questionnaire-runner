@@ -10,6 +10,7 @@ from app.data_models import (
 )
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire import QuestionnaireSchema
+from app.questionnaire.return_location import ReturnLocation
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.schema_utils import find_pointers_containing
 from app.questionnaire.value_source_resolver import ValueSourceResolver
@@ -29,9 +30,7 @@ class Block:
         response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
         location: LocationType,
-        return_to: str | None,
-        return_to_block_id: str | None = None,
-        return_to_list_item_id: str | None = None,
+        return_location: ReturnLocation,
         progress_store: ProgressStore,
         supplementary_data_store: SupplementaryDataStore,
         language: str,
@@ -72,9 +71,7 @@ class Block:
             list_store=list_store,
             metadata=metadata,
             response_metadata=response_metadata,
-            return_to=return_to,
-            return_to_block_id=return_to_block_id,
-            return_to_list_item_id=return_to_list_item_id,
+            return_location=return_location,
             progress_store=progress_store,
             supplementary_data_store=supplementary_data_store,
             language=language,
@@ -88,9 +85,7 @@ class Block:
         list_store: ListStore,
         metadata: MetadataProxy | None,
         response_metadata: MutableMapping,
-        return_to: str | None,
-        return_to_block_id: str | None,
-        return_to_list_item_id: str | None,
+        return_location: ReturnLocation,
         progress_store: ProgressStore,
         supplementary_data_store: SupplementaryDataStore,
         language: str,
@@ -121,9 +116,7 @@ class Block:
             value_source_resolver=self._value_source_resolver,
             location=self.location,
             block_id=self.id,
-            return_to=return_to,
-            return_to_block_id=return_to_block_id,
-            return_to_list_item_id=return_to_list_item_id,
+            return_location=return_location,
             metadata=metadata,
             response_metadata=response_metadata,
             language=language,

@@ -15,6 +15,7 @@ from app.questionnaire.questionnaire_schema import (
     LIST_COLLECTORS_WITH_REPEATING_BLOCKS,
     is_list_collector_block_editable,
 )
+from app.questionnaire.return_location import ReturnLocation
 from app.survey_config.link import Link
 from app.utilities.types import LocationType
 from app.views.contexts.summary.block import Block
@@ -26,7 +27,6 @@ from app.views.contexts.summary.list_collector_content_block import (
 
 
 class Group:
-    # pylint: disable=too-many-locals
     def __init__(
         self,
         *,
@@ -41,9 +41,7 @@ class Group:
         language: str,
         progress_store: ProgressStore,
         supplementary_data_store: SupplementaryDataStore,
-        return_to: str | None,
-        return_to_block_id: str | None = None,
-        return_to_list_item_id: str | None = None,
+        return_location: ReturnLocation,
         summary_type: str | None = None,
         view_submitted_response: bool | None = False,
     ) -> None:
@@ -63,11 +61,9 @@ class Group:
             response_metadata=response_metadata,
             schema=schema,
             location=self.location,
-            return_to=return_to,
+            return_location=return_location,
             progress_store=progress_store,
             language=language,
-            return_to_block_id=return_to_block_id,
-            return_to_list_item_id=return_to_list_item_id,
             view_submitted_response=view_submitted_response,
             summary_type=summary_type,
             supplementary_data_store=supplementary_data_store,
@@ -97,12 +93,10 @@ class Group:
         response_metadata: MutableMapping,
         schema: QuestionnaireSchema,
         location: LocationType,
-        return_to: str | None,
+        return_location: ReturnLocation,
         progress_store: ProgressStore,
         supplementary_data_store: SupplementaryDataStore,
         language: str,
-        return_to_block_id: str | None,
-        return_to_list_item_id: str | None,
         view_submitted_response: bool | None = False,
         summary_type: str | None = None,
     ) -> list[dict[str, Block]]:
@@ -139,8 +133,7 @@ class Group:
                     location=location,
                     language=language,
                     supplementary_data_store=supplementary_data_store,
-                    return_to=return_to,
-                    return_to_block_id=return_to_block_id,
+                    return_location=return_location,
                 )
                 repeating_answer_blocks = (
                     list_collector_block.get_repeating_block_related_answer_blocks(
@@ -165,9 +158,7 @@ class Group:
                             response_metadata=response_metadata,
                             schema=schema,
                             location=location,
-                            return_to=return_to,
-                            return_to_block_id=return_to_block_id,
-                            return_to_list_item_id=return_to_list_item_id,
+                            return_location=return_location,
                             progress_store=progress_store,
                             language=language,
                             supplementary_data_store=supplementary_data_store,
@@ -187,9 +178,7 @@ class Group:
                             response_metadata=response_metadata,
                             schema=schema,
                             location=location,
-                            return_to=return_to,
-                            return_to_block_id=return_to_block_id,
-                            return_to_list_item_id=return_to_list_item_id,
+                            return_location=return_location,
                             progress_store=progress_store,
                             routing_path_block_ids=routing_path_block_ids,
                             supplementary_data_store=supplementary_data_store,
@@ -221,9 +210,8 @@ class Group:
                         schema=schema,
                         location=location,
                         language=language,
-                        return_to=return_to,
+                        return_location=return_location,
                         supplementary_data_store=supplementary_data_store,
-                        return_to_block_id=return_to_block_id,
                     )
                     list_summary_element = list_collector_block.list_summary_element(
                         summary_item

@@ -12,6 +12,7 @@ from app.data_models.progress import ProgressDict
 from app.data_models.progress_store import ProgressStore
 from app.data_models.supplementary_data_store import SupplementaryDataStore
 from app.questionnaire.location import Location, SectionKey
+from app.questionnaire.return_location import ReturnLocation
 from app.questionnaire.router import Router
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
@@ -362,8 +363,12 @@ class TestRouterNextLocation(RouterTestCase):
             ],
             section_id="default-section",
         )
+        return_location = ReturnLocation()
+
         next_location = self.router.get_next_location_url(
-            current_location, routing_path
+            current_location,
+            routing_path,
+            return_location,
         )
 
         expected_location = Location(
@@ -393,8 +398,12 @@ class TestRouterNextLocation(RouterTestCase):
         routing_path = RoutingPath(
             block_ids=["block-1", "block-2", "block-1"], section_id="section-1"
         )
+        return_location = ReturnLocation()
+
         next_location = self.router.get_next_location_url(
-            current_location, routing_path
+            current_location,
+            routing_path,
+            return_location,
         )
 
         assert "questionnaire/block-2/" in next_location
@@ -424,8 +433,10 @@ class TestRouterNextLocation(RouterTestCase):
             block_ids=["insurance-type", "insurance-address", "listed"],
             section_id="property-details-section",
         )
+        return_location = ReturnLocation(return_to="section-summary")
+
         next_location = self.router.get_next_location_url(
-            current_location, routing_path, return_to="section-summary"
+            current_location, routing_path, return_location
         )
 
         assert "/questionnaire/sections/property-details-section/" in next_location
@@ -462,8 +473,10 @@ class TestRouterNextLocation(RouterTestCase):
             ],
             section_id="property-details-section",
         )
+        return_location = ReturnLocation(return_to="section-summary")
+
         next_location = self.router.get_next_location_url(
-            current_location, routing_path, return_to="section-summary"
+            current_location, routing_path, return_location
         )
 
         assert (
@@ -488,8 +501,11 @@ class TestRouterNextLocation(RouterTestCase):
             section_id="accommodation-section", block_id="proxy"
         )
         routing_path = RoutingPath(block_ids=["proxy"], section_id="default-section")
+
+        return_location = ReturnLocation()
+
         next_location = self.router.get_next_location_url(
-            current_location, routing_path
+            current_location, routing_path, return_location
         )
 
         assert "questionnaire/sections/accommodation-section/" in next_location
@@ -514,8 +530,10 @@ class TestRouterNextLocation(RouterTestCase):
             block_ids=["employment-status", "employment-type"],
             section_id="employment-section",
         )
+        return_location = ReturnLocation()
+
         next_location = self.router.get_next_location_url(
-            current_location, routing_path
+            current_location, routing_path, return_location
         )
         expected_location_url = url_for("questionnaire.get_questionnaire")
 
@@ -560,13 +578,16 @@ class TestRouterNextLocation(RouterTestCase):
             section_id="default-section",
         )
 
-        next_location_url = self.router.get_next_location_url(
-            current_location,
-            routing_path,
+        return_location = ReturnLocation(
             return_to_answer_id="first-number-answer",
             return_to="calculated-summary",
             return_to_block_id="currency-total-playback",
         )
+
+        next_location_url = self.router.get_next_location_url(
+            current_location, routing_path, return_location
+        )
+
         expected_location = Location(
             section_id="default-section",
             block_id="currency-total-playback",
@@ -617,12 +638,16 @@ class TestRouterNextLocation(RouterTestCase):
             section_id="default-section",
         )
 
-        next_location_url = self.router.get_next_location_url(
-            current_location,
-            routing_path,
+        return_location = ReturnLocation(
             return_to_answer_id="answer-3",
             return_to="calculated-summary",
             return_to_block_id="calculated-summary-block",
+        )
+
+        next_location_url = self.router.get_next_location_url(
+            current_location,
+            routing_path,
+            return_location,
         )
 
         expected_location = Location(
@@ -634,8 +659,9 @@ class TestRouterNextLocation(RouterTestCase):
             "questionnaire.block",
             list_item_id=expected_location.list_item_id,
             block_id=expected_location.block_id,
-            return_to="calculated-summary",
-            return_to_block_id="calculated-summary-block",
+            return_to=return_location.return_to,
+            return_to_block_id=return_location.return_to_block_id,
+            return_to_answer_id=return_location.return_to_answer_id,
         )
 
         assert expected_location_url == next_location_url
@@ -678,11 +704,15 @@ class TestRouterNextLocation(RouterTestCase):
             block_ids=["fifth-number-block", "sixth-number-block"],
             section_id="default-section",
         )
+
+        return_location = ReturnLocation(
+            return_to="calculated-summary",
+            return_to_block_id=return_to_block_id,
+        )
         next_location_url = self.router.get_next_location_url(
             current_location,
             routing_path,
-            return_to="calculated-summary",
-            return_to_block_id=return_to_block_id,
+            return_location,
         )
 
         assert expected_url == next_location_url
@@ -712,11 +742,14 @@ class TestRouterNextLocation(RouterTestCase):
             block_ids=["fifth-number-block", "sixth-number-block"],
             section_id="default-section",
         )
-        next_location_url = self.router.get_next_location_url(
-            current_location,
-            routing_path,
+
+        return_location = ReturnLocation(
             return_to="calculated-summary",
             return_to_block_id="fourth-number-block",
+        )
+
+        next_location_url = self.router.get_next_location_url(
+            current_location, routing_path, return_location
         )
 
         # return_to_block_id is still passed here as although it is not currently on the path it may be in future once incomplete questions are
@@ -744,12 +777,15 @@ class TestRouterNextLocation(RouterTestCase):
             block_ids=["distance-calculated-summary-1"],
             section_id="section-1",
         )
-        next_location_url = self.router.get_next_location_url(
-            current_location,
-            routing_path,
+
+        return_location = ReturnLocation(
             return_to="calculated-summary,grand-calculated-summary",
             return_to_answer_id="distance-calculated-summary-1",
             return_to_block_id="distance-calculated-summary-1,distance-grand-calculated-summary",
+        )
+
+        next_location_url = self.router.get_next_location_url(
+            current_location, routing_path, return_location
         )
 
         expected_previous_url = url_for(
@@ -780,12 +816,16 @@ class TestRouterNextLocation(RouterTestCase):
             block_ids=["distance-calculated-summary-1"],
             section_id="section-1",
         )
-        next_location_url = self.router.get_next_location_url(
-            current_location,
-            routing_path,
+
+        return_location = ReturnLocation(
             return_to="grand-calculated-summary",
             return_to_answer_id="distance-calculated-summary-1",
             return_to_block_id="distance-grand-calculated-summary",
+        )
+        next_location_url = self.router.get_next_location_url(
+            current_location,
+            routing_path,
+            return_location,
         )
 
         expected_previous_url = url_for(
@@ -874,12 +914,13 @@ class TestRouterNextLocation(RouterTestCase):
             list_name="vehicles",
             list_item_id="ZIrqqR",
         )
-        next_location_url = self.router.get_next_location_url(
-            current_location,
-            routing_path,
+        return_location = ReturnLocation(
             return_to="grand-calculated-summary",
             return_to_block_id="grand-calculated-summary-vehicle",
             return_to_list_item_id=return_to_list_item_id,
+        )
+        next_location_url = self.router.get_next_location_url(
+            current_location, routing_path, return_location
         )
         expected_next_url = url_for(
             "questionnaire.block",
@@ -918,7 +959,7 @@ class TestRouterNextLocation(RouterTestCase):
                         "block-3",
                         "calculated-summary-2",
                     ],
-                    status="IN_PROGRESS",
+                    status=CompletionStatus.IN_PROGRESS,
                 )
             ]
         )
@@ -936,12 +977,15 @@ class TestRouterNextLocation(RouterTestCase):
             ],
             section_id="section-1",
         )
-        next_location_url = self.router.get_next_location_url(
-            current_location,
-            routing_path,
+        return_location = ReturnLocation(
             return_to="grand-calculated-summary",
             return_to_answer_id="calculated-summary-1",
             return_to_block_id=return_to_block_id,
+        )
+        next_location_url = self.router.get_next_location_url(
+            current_location,
+            routing_path,
+            return_location,
         )
 
         # because calculated summary 3 isn't done, should go there before jumping to the grand calculated summary
@@ -950,6 +994,7 @@ class TestRouterNextLocation(RouterTestCase):
             "questionnaire.block",
             return_to="grand-calculated-summary",
             return_to_block_id=return_to_block_id,
+            return_to_answer_id=return_location.return_to_answer_id,
             block_id="calculated-summary-3",
         )
 
@@ -990,13 +1035,16 @@ class TestRouterNextLocation(RouterTestCase):
             ],
             section_id="section-1",
         )
+        return_location = ReturnLocation(
+            return_to="calculated-summary,grand-calculated-summary",
+            return_to_answer_id="first-number-block",
+            return_to_block_id="distance-calculated-summary-1,distance-grand-calculated-summary",
+        )
         # the test is being done as part of a two-step return to but its identical functionally
         next_location_url = self.router.get_next_location_url(
             current_location,
             routing_path,
-            return_to="calculated-summary,grand-calculated-summary",
-            return_to_answer_id="first-number-block",
-            return_to_block_id="distance-calculated-summary-1,distance-grand-calculated-summary",
+            return_location,
         )
 
         # should take you to the second-number-block before going back to the calculated summary
@@ -1004,6 +1052,7 @@ class TestRouterNextLocation(RouterTestCase):
             "questionnaire.block",
             return_to="calculated-summary,grand-calculated-summary",
             return_to_block_id="distance-calculated-summary-1,distance-grand-calculated-summary",
+            return_to_answer_id="first-number-block",
             block_id="second-number-block",
         )
 
@@ -1108,11 +1157,13 @@ class TestRouterNextLocation(RouterTestCase):
             ]
         )
 
-        next_location_url = self.router.get_next_location_url(
-            current_location,
-            routing_path,
+        return_location = ReturnLocation(
             return_to=return_to,
             return_to_block_id=return_to_block_id,
+        )
+
+        next_location_url = self.router.get_next_location_url(
+            current_location, routing_path, return_location
         )
 
         expected_next_url = url_for(
@@ -1146,8 +1197,9 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
         routing_path = RoutingPath(
             block_ids=["name-block"], section_id="default-section"
         )
+        return_location = ReturnLocation()
         next_location = self.router.get_next_location_url(
-            current_location, routing_path
+            current_location, routing_path, return_location
         )
 
         assert url_for("questionnaire.submit_questionnaire") == next_location
@@ -1169,8 +1221,9 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
         )
         current_location = Location(section_id="test-section", block_id="test-forced")
         routing_path = RoutingPath(block_ids=["test-forced"], section_id="test-section")
+        return_location = ReturnLocation(return_to="final-summary")
         next_location = self.router.get_next_location_url(
-            current_location, routing_path, return_to="final-summary"
+            current_location, routing_path, return_location
         )
 
         assert url_for("questionnaire.submit_questionnaire") == next_location
@@ -1195,8 +1248,9 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
             block_ids=["radio", "dessert", "dessert-confirmation", "numbers"],
             section_id="default-section",
         )
+        return_location = ReturnLocation(return_to="final-summary")
         next_location = self.router.get_next_location_url(
-            current_location, routing_path, return_to="final-summary"
+            current_location, routing_path, return_location
         )
 
         assert "/questionnaire/numbers/?return_to=final-summary" in next_location
@@ -1220,8 +1274,9 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
 
         current_location = Location(section_id="test-section", block_id="test-forced")
         routing_path = RoutingPath(block_ids=["test-forced"], section_id="test-section")
+        return_location = ReturnLocation(return_to="final-summary")
         next_location = self.router.get_next_location_url(
-            current_location, routing_path, return_to="final-summary"
+            current_location, routing_path, return_location
         )
         expected_location = Location(
             section_id="test-section-2",
@@ -1245,8 +1300,9 @@ class TestRouterPreviousLocation(RouterTestCase):
             block_ids=["mandatory-checkbox", "non-mandatory-checkbox"],
             section_id="default-section",
         )
+        return_location = ReturnLocation()
         previous_location_url = self.router.get_previous_location_url(
-            current_location, routing_path
+            current_location, routing_path, return_location
         )
         expected_location_url = Location(
             section_id="default-section", block_id="mandatory-checkbox"
@@ -1268,12 +1324,17 @@ class TestRouterPreviousLocation(RouterTestCase):
             ],
             section_id="default-section",
         )
-        previous_location_url = self.router.get_previous_location_url(
-            current_location,
-            routing_path,
+
+        return_location = ReturnLocation(
             return_to="calculated-summary",
             return_to_answer_id="first-number-answer",
             return_to_block_id="currency-total-playback-skipped-fourth",
+        )
+
+        previous_location_url = self.router.get_previous_location_url(
+            current_location,
+            routing_path,
+            return_location,
         )
 
         expected_location = Location(
@@ -1328,12 +1389,16 @@ class TestRouterPreviousLocation(RouterTestCase):
             ],
             section_id="section-1",
         )
-        previous_location_url = self.router.get_previous_location_url(
-            current_location,
-            routing_path,
+
+        return_location = ReturnLocation(
             return_to="calculated-summary,grand-calculated-summary",
             return_to_answer_id="second-number-block",
             return_to_block_id="number-calculated-summary-1,number-grand-calculated-summary",
+        )
+        previous_location_url = self.router.get_previous_location_url(
+            current_location,
+            routing_path,
+            return_location,
         )
         # return to can't go to the distance calculated summary, so go to previous block with return params preserved
         expected_previous_url = url_for(
@@ -1384,12 +1449,14 @@ class TestRouterPreviousLocation(RouterTestCase):
             ],
             section_id="section-1",
         )
-        previous_location_url = self.router.get_previous_location_url(
-            current_location,
-            routing_path,
+
+        return_location = ReturnLocation(
             return_to="grand-calculated-summary",
             return_to_answer_id="distance-calculated-summary-1",
             return_to_block_id="distance-grand-calculated-summary",
+        )
+        previous_location_url = self.router.get_previous_location_url(
+            current_location, routing_path, return_location
         )
         # return to can't go to the grand calculated summary, so routing is just to the previous block in the section with return params preserved
         expected_previous_url = url_for(
@@ -1447,12 +1514,16 @@ class TestRouterPreviousLocation(RouterTestCase):
             ],
             section_id="section-1",
         )
-        previous_location_url = self.router.get_previous_location_url(
-            current_location,
-            routing_path,
+
+        return_location = ReturnLocation(
             return_to=return_to,
             return_to_answer_id="distance-calculated-summary-1",
             return_to_block_id=return_to_block_id,
+        )
+        previous_location_url = self.router.get_previous_location_url(
+            current_location,
+            routing_path,
+            return_location,
         )
 
         assert expected_url == previous_location_url
@@ -1478,12 +1549,16 @@ class TestRouterPreviousLocation(RouterTestCase):
             block_ids=["calculated-summary-6"],
             section_id="section-5",
         )
-        next_location_url = self.router.get_previous_location_url(
-            parent_location,
-            routing_path,
+
+        return_location = ReturnLocation(
             return_to="calculated-summary,grand-calculated-summary",
             return_to_answer_id="calculated-summary-6",
             return_to_block_id="calculated-summary-6,grand-calculated-summary-3",
+        )
+        next_location_url = self.router.get_previous_location_url(
+            parent_location,
+            routing_path,
+            return_location,
         )
 
         expected_previous_url = url_for(
@@ -1517,11 +1592,14 @@ class TestRouterPreviousLocation(RouterTestCase):
             block_ids=["insurance-type", "insurance-address", "listed"],
             section_id="default-section",
         )
+        return_location = ReturnLocation(
+            return_to="section-summary",
+            return_to_answer_id="insurance-address-answer",
+        )
         previous_location_url = self.router.get_previous_location_url(
             current_location,
             routing_path,
-            return_to="section-summary",
-            return_to_answer_id="insurance-address-answer",
+            return_location,
         )
 
         assert (
@@ -1550,11 +1628,14 @@ class TestRouterPreviousLocation(RouterTestCase):
             block_ids=["insurance-type", "insurance-address", "listed"],
             section_id="default-section",
         )
+        return_location = ReturnLocation(
+            return_to="section-summary",
+            return_to_answer_id="insurance-address-answer",
+        )
         previous_location_url = self.router.get_previous_location_url(
             current_location,
             routing_path,
-            return_to="section-summary",
-            return_to_answer_id="insurance-address-answer",
+            return_location,
         )
 
         assert (
@@ -1586,11 +1667,14 @@ class TestRouterPreviousLocation(RouterTestCase):
             block_ids=["radio", "dessert", "dessert-confirmation", "numbers"],
             section_id="default-section",
         )
+        return_location = ReturnLocation(
+            return_to="final-summary",
+            return_to_answer_id="dessert-answer",
+        )
         previous_location = self.router.get_previous_location_url(
             current_location,
             routing_path,
-            return_to="final-summary",
-            return_to_answer_id="dessert-answer",
+            return_location,
         )
 
         assert "/questionnaire/submit/#dessert-answer" in previous_location
@@ -1619,11 +1703,14 @@ class TestRouterPreviousLocation(RouterTestCase):
             block_ids=["radio", "dessert", "dessert-confirmation", "numbers"],
             section_id="default-section",
         )
+        return_location = ReturnLocation(
+            return_to="final-summary",
+            return_to_answer_id="dessert-answer",
+        )
         previous_location = self.router.get_previous_location_url(
             current_location,
             routing_path,
-            return_to="final-summary",
-            return_to_answer_id="dessert-answer",
+            return_location,
         )
 
         assert (
@@ -1658,8 +1745,12 @@ class TestRouterPreviousLocationLinearFlow(RouterTestCase):
         current_location = Location(
             section_id="default-section", block_id="mandatory-checkbox"
         )
+        return_location = ReturnLocation()
+
         previous_location_url = self.router.get_previous_location_url(
-            current_location, routing_path
+            current_location,
+            routing_path,
+            return_location,
         )
 
         assert previous_location_url is None
@@ -1688,8 +1779,12 @@ class TestRouterPreviousLocationLinearFlow(RouterTestCase):
         routing_path = RoutingPath(
             block_ids=["house-type"], section_id="house-details-section"
         )
+        return_location = ReturnLocation()
+
         previous_location_url = self.router.get_previous_location_url(
-            current_location, routing_path
+            current_location,
+            routing_path,
+            return_location,
         )
 
         assert previous_location_url is None
@@ -1708,8 +1803,13 @@ class TestRouterPreviousLocationHubFlow(RouterTestCase):
             block_ids=["employment-status", "employment-type"],
             section_id="employment-section",
         )
+
+        return_location = ReturnLocation()
+
         previous_location_url = self.router.get_previous_location_url(
-            current_location, routing_path
+            current_location,
+            routing_path,
+            return_location,
         )
 
         assert url_for("questionnaire.get_questionnaire") == previous_location_url
