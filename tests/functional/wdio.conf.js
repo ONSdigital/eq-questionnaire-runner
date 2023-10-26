@@ -22,7 +22,7 @@ export const config = {
     timeout_modal_extended: ["./spec/timeout/timeout_modal_extended/*.js"],
     timeout_modal_extended_new_window: ["./spec/timeout/timeout_modal_extended_new_window/*.js"],
     components: ["./spec/components/**/*.js"],
-    features: ["./spec/timeout/**/*.js"],
+    features: ["./spec/features/**/*.js"],
     general: ["./spec/*.spec.js"],
   },
   // Patterns to exclude.
