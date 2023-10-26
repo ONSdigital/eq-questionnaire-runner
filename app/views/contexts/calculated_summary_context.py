@@ -227,8 +227,7 @@ class CalculatedSummaryContext(Context):
             data_stores=self._data_stores,
             schema=self._schema,
             routing_path_block_ids=routing_path_block_ids,
-            # Type ignore: location in rule_evaluator can be both Location or RelationshipLocation type but is only Location type here
-            location=self.current_location,  # type: ignore
+            location=self.current_location,
         )
         # Type ignore: in the case of a calculated summation it will always be a numeric type
         calculated_total: NumericType = evaluate_calculated_summary.evaluate(calculation)  # type: ignore
