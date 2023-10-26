@@ -3,13 +3,6 @@
 {% from "components/skip-to-content/_macro.njk" import onsSkipToContent %}
 {% from "components/timeout-modal/_macro.njk" import onsTimeoutModal %}
 
-{% set form = {
-  "attributes": {
-    "autocomplete": "off",
-    "novalidate": null
-  }
-} %}
-
 {% if previous_location_url %}
   {% set breadcrumbs = {
     "ariaLabel": 'Previous',
@@ -109,6 +102,9 @@
   {% endif %}
 {% endblock %}
 
+{% block bodyStart %}
+  <form class="form-class" method="POST" autocomplete="off" novalidate>
+{% endblock %}
 
 {% block skipLink %}
   {{
@@ -119,6 +115,9 @@
   }}
 {% endblock %}
 
+{% block bodyEnd %}
+  </form>
+{% endblock %}
 
 {% block scripts %}
   {% if config['EQ_ENABLE_LIVE_RELOAD'] %}
