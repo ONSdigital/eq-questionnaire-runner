@@ -2,18 +2,21 @@
     "language": "en",
     "mime_type": "application/json/ons/eq",
     "schema_version": "0.0.1",
-    "data_version": "0.0.1",
-    "survey_id": "017",
-    "form_type": "0070",
-    "theme": "business",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "theme": "default",
     "legal_basis": "Notice is given under section 1 of the Statistics of Trade Act 1947.",
-    "title": "Quarterly Stocks Survey",
+    "title": "Benchmark-Survey",
     "questionnaire_flow": {
-        "type": "Linear",
+        "type": "Hub",
         "options": {
-            "summary": {
-                "collapsible": false
-            }
+            "required_completed_sections": [
+                "stock-section",
+                "household-section",
+                "questions-section",
+                "section-companies",
+                "grand-calculated-summary-section-1"
+            ]
         }
     },
     "post_submission": {
@@ -22,8 +25,9 @@
     },
     "sections": [
         {
-            "id": "section91",
+            "id": "stock-section",
             "title": "Quarterly Stocks Survey",
+            "show_on_hub": true,
             "groups": [
                 {
                     "id": "group-questionnaire-introduction",
@@ -123,13 +127,13 @@
                     ]
                 },
                 {
-                    "id": "group91",
+                    "id": "group-91",
                     "blocks": [
                         {
-                            "id": "block379",
+                            "id": "block-379",
                             "type": "Question",
                             "question": {
-                                "id": "question379",
+                                "id": "question-379",
                                 "title": {
                                     "text": "Are you able to report for the period {ref_p_start_date} to {ref_p_end_date}?",
                                     "placeholders": [
@@ -168,8 +172,7 @@
                                 "type": "General",
                                 "answers": [
                                     {
-                                        "id": "answer434",
-                                        "q_code": "123",
+                                        "id": "answer-434",
                                         "mandatory": true,
                                         "type": "Radio",
                                         "options": [
@@ -187,30 +190,35 @@
                             },
                             "routing_rules": [
                                 {
-                                    "block": "block381",
+                                    "block": "block-381",
                                     "when": {
-                                        "==": [{ "identifier": "answer434", "source": "answers" }, "Yes"]
+                                        "==": [
+                                            {
+                                                "identifier": "answer-434",
+                                                "source": "answers"
+                                            },
+                                            "Yes"
+                                        ]
                                     }
                                 },
                                 {
-                                    "block": "block380"
+                                    "block": "block-380"
                                 }
                             ]
                         },
                         {
-                            "id": "block380",
+                            "id": "block-380",
                             "type": "Question",
                             "question": {
-                                "id": "question380",
+                                "id": "question-380",
                                 "title": "For which period are you able to report?",
                                 "type": "DateRange",
                                 "answers": [
                                     {
-                                        "id": "answerfrom",
+                                        "id": "answer-from",
                                         "type": "Date",
                                         "mandatory": true,
                                         "label": "Period from",
-                                        "q_code": "11",
                                         "minimum": {
                                             "value": {
                                                 "source": "metadata",
@@ -222,11 +230,10 @@
                                         }
                                     },
                                     {
-                                        "id": "answerto",
+                                        "id": "answer-to",
                                         "type": "Date",
                                         "mandatory": true,
                                         "label": "Period to",
-                                        "q_code": "12",
                                         "maximum": {
                                             "value": {
                                                 "source": "metadata",
@@ -249,10 +256,10 @@
                             }
                         },
                         {
-                            "id": "block381",
+                            "id": "block-381",
                             "type": "Question",
                             "question": {
-                                "id": "question381",
+                                "id": "question-381",
                                 "title": "What was the <em>total value</em> of stocks held (net of progress payments on long-term contracts)?",
                                 "guidance": {
                                     "contents": [
@@ -286,22 +293,20 @@
                                 "type": "General",
                                 "answers": [
                                     {
-                                        "id": "answer436",
+                                        "id": "answer-436",
                                         "mandatory": true,
                                         "type": "Currency",
                                         "label": "Total value of stocks held at start of period",
                                         "description": "Enter the full value (e.g. 56,234.33) or a value to the nearest £thousand (e.g. 56,000). Do not enter ‘56’ for £56,000.",
-                                        "q_code": "598",
                                         "decimal_places": 2,
                                         "currency": "GBP"
                                     },
                                     {
-                                        "id": "answer437",
+                                        "id": "answer-437",
                                         "mandatory": true,
                                         "type": "Currency",
                                         "label": "Total value of stocks held at end of period",
                                         "description": "Enter the full value (e.g. 56,234.33) or a value to the nearest £thousand (e.g. 56,000). Do not enter ‘56’ for £56,000.",
-                                        "q_code": "599",
                                         "decimal_places": 2,
                                         "currency": "GBP"
                                     }
@@ -309,18 +314,17 @@
                             }
                         },
                         {
-                            "id": "block4616",
+                            "id": "block-4616",
                             "type": "Question",
                             "question": {
-                                "id": "question4616",
+                                "id": "question-4616",
                                 "title": "Are the end of period figures you have provided estimated?",
                                 "type": "General",
                                 "answers": [
                                     {
-                                        "id": "answer5873",
+                                        "id": "answer-5873",
                                         "mandatory": true,
                                         "type": "Radio",
-                                        "q_code": "15",
                                         "options": [
                                             {
                                                 "label": "Yes",
@@ -336,10 +340,10 @@
                             }
                         },
                         {
-                            "id": "block4952",
+                            "id": "block-4952",
                             "type": "Question",
                             "question": {
-                                "id": "question4952",
+                                "id": "question-4952",
                                 "title": {
                                     "text": "Did any significant changes occur to the total value of stocks for {trad_as}?",
                                     "placeholders": [
@@ -395,10 +399,9 @@
                                 "type": "General",
                                 "answers": [
                                     {
-                                        "id": "answer6287",
+                                        "id": "answer-6287",
                                         "mandatory": true,
                                         "type": "Radio",
-                                        "q_code": "146a",
                                         "options": [
                                             {
                                                 "label": "Yes",
@@ -414,21 +417,27 @@
                             },
                             "routing_rules": [
                                 {
-                                    "block": "block4953",
+                                    "block": "block-4953",
                                     "when": {
-                                        "==": [{ "identifier": "answer6287", "source": "answers" }, "Yes"]
+                                        "==": [
+                                            {
+                                                "identifier": "answer-6287",
+                                                "source": "answers"
+                                            },
+                                            "Yes"
+                                        ]
                                     }
                                 },
                                 {
-                                    "block": "block383"
+                                    "block": "block-383"
                                 }
                             ]
                         },
                         {
-                            "id": "block4953",
+                            "id": "block-4953",
                             "type": "Question",
                             "question": {
-                                "id": "question4953",
+                                "id": "question-4953",
                                 "title": {
                                     "text": "Please indicate the reasons for any changes in the total value of stocks for {trad_as}",
                                     "placeholders": [
@@ -457,44 +466,37 @@
                                 "type": "General",
                                 "answers": [
                                     {
-                                        "id": "answer6288",
+                                        "id": "answer-6288",
                                         "mandatory": true,
                                         "type": "Checkbox",
                                         "options": [
                                             {
                                                 "label": "Change of business structure, merger or takeover",
-                                                "value": "Change of business structure, merger or takeover",
-                                                "q_code": "146e"
+                                                "value": "Change of business structure, merger or takeover"
                                             },
                                             {
                                                 "label": "End of accounting period or financial year",
-                                                "value": "End of accounting period or financial year",
-                                                "q_code": "146c"
+                                                "value": "End of accounting period or financial year"
                                             },
                                             {
                                                 "label": "Introduction or removal of new legislation or incentive",
-                                                "value": "Introduction or removal of new legislation or incentive",
-                                                "q_code": "146g"
+                                                "value": "Introduction or removal of new legislation or incentive"
                                             },
                                             {
                                                 "label": "Normal movement for the time of year",
-                                                "value": "Normal movement for the time of year",
-                                                "q_code": "146d"
+                                                "value": "Normal movement for the time of year"
                                             },
                                             {
                                                 "label": "One-off increase in stocks",
-                                                "value": "One-off increase in stocks",
-                                                "q_code": "146f"
+                                                "value": "One-off increase in stocks"
                                             },
                                             {
                                                 "label": "Start or end of long term project",
-                                                "value": "Start or end of long term project",
-                                                "q_code": "146b"
+                                                "value": "Start or end of long term project"
                                             },
                                             {
                                                 "label": "Other (for example, end of the EU transition period, leaving the EU or other global economic conditions.",
-                                                "value": "Other (for example, end of the EU transition period, leaving the EU or other global economic conditions.",
-                                                "q_code": "146h"
+                                                "value": "Other (for example, end of the EU transition period, leaving the EU or other global economic conditions."
                                             }
                                         ]
                                     }
@@ -502,21 +504,1583 @@
                             }
                         },
                         {
-                            "id": "block383",
+                            "id": "block-383",
                             "type": "Question",
                             "question": {
-                                "id": "question383",
+                                "id": "question-383",
                                 "title": "Explain any differences between this quarter&apos;s opening value and the previously returned closing value",
                                 "description": ["<p>Include any unusual fluctuations in figures</p>"],
                                 "type": "General",
                                 "answers": [
                                     {
-                                        "id": "answer439",
+                                        "id": "answer-439",
                                         "mandatory": false,
                                         "type": "TextArea",
                                         "label": "Comments",
-                                        "q_code": "146",
                                         "max_length": 2000
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "household-section",
+            "title": "Household",
+            "show_on_hub": true,
+            "groups": [
+                {
+                    "id": "group",
+                    "title": "List",
+                    "blocks": [
+                        {
+                            "id": "primary-person-list-collector",
+                            "type": "PrimaryPersonListCollector",
+                            "for_list": "people",
+                            "add_or_edit_block": {
+                                "id": "add-or-edit-primary-person",
+                                "type": "PrimaryPersonListAddOrEditQuestion",
+                                "question": {
+                                    "id": "primary-person-add-or-edit-question",
+                                    "type": "General",
+                                    "title": "What is your name?",
+                                    "answers": [
+                                        {
+                                            "id": "first-name",
+                                            "label": "First name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "last-name",
+                                            "label": "Last name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "question": {
+                                "id": "primary-confirmation-question",
+                                "type": "General",
+                                "title": "Do you live here?",
+                                "answers": [
+                                    {
+                                        "id": "you-live-here",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "list-collector",
+                            "type": "ListCollector",
+                            "for_list": "people",
+                            "question": {
+                                "id": "confirmation-question",
+                                "type": "General",
+                                "title": "Does anyone else live here?",
+                                "answers": [
+                                    {
+                                        "id": "anyone-else",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "add_block": {
+                                "id": "add-person",
+                                "type": "ListAddQuestion",
+                                "question": {
+                                    "id": "add-question",
+                                    "type": "General",
+                                    "title": "What is the name of the person?",
+                                    "answers": [
+                                        {
+                                            "id": "first-name",
+                                            "label": "First name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "last-name",
+                                            "label": "Last name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "edit_block": {
+                                "id": "edit-person",
+                                "type": "ListEditQuestion",
+                                "question": {
+                                    "id": "edit-question",
+                                    "type": "General",
+                                    "title": "What is the name of the person?",
+                                    "answers": [
+                                        {
+                                            "id": "first-name",
+                                            "label": "First name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "last-name",
+                                            "label": "Last name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "remove_block": {
+                                "id": "remove-person",
+                                "type": "ListRemoveQuestion",
+                                "question": {
+                                    "id": "remove-question",
+                                    "type": "General",
+                                    "title": "Are you sure you want to remove this person?",
+                                    "answers": [
+                                        {
+                                            "id": "remove-confirmation",
+                                            "mandatory": true,
+                                            "type": "Radio",
+                                            "options": [
+                                                {
+                                                    "label": "Yes",
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
+                                                },
+                                                {
+                                                    "label": "No",
+                                                    "value": "No"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "summary": {
+                                "title": "Household members",
+                                "item_title": {
+                                    "text": "{person_name}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "person_name",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "last-name"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "questions-section",
+            "title": "Questions",
+            "summary": {
+                "show_on_completion": true
+            },
+            "show_on_hub": true,
+            "groups": [
+                {
+                    "id": "radio",
+                    "title": "Questions",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "skip-first-block",
+                            "question": {
+                                "type": "General",
+                                "id": "skip-first-block-question",
+                                "title": "Skip First Block so it doesn’t appear in Total?",
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "skip-first-block-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
+                                        {
+                                            "identifier": "skip-first-block-answer",
+                                            "source": "answers"
+                                        },
+                                        "Yes"
+                                    ]
+                                }
+                            },
+                            "type": "Question",
+                            "id": "first-number-block",
+                            "question": {
+                                "id": "first-number-question",
+                                "title": "First Number Question Title",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "first-number-answer",
+                                        "label": "First answer label (optional)",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
+                                        {
+                                            "identifier": "skip-first-block-answer",
+                                            "source": "answers"
+                                        },
+                                        "Yes"
+                                    ]
+                                }
+                            },
+                            "type": "Question",
+                            "id": "first-and-a-half-number-block",
+                            "question": {
+                                "id": "first-and-a-half-number-question-also-in-total",
+                                "title": "First Number Additional Question Title",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "first-and-a-half-number-answer-also-in-total",
+                                        "label": "First answer label also in total (optional)",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "second-number-block",
+                            "question": {
+                                "id": "second-number-question-also-in-total",
+                                "title": "Second Number Additional Question Title",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "second-number-answer-also-in-total",
+                                        "label": "Second answer label also in total (optional)",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "currency-total-playback-1",
+                            "title": "We calculate the total of currency values entered to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "first-number-answer"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "first-and-a-half-number-answer-also-in-total"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "second-number-answer-also-in-total"
+                                        }
+                                    ]
+                                },
+                                "title": "Grand total of previous values"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "calculated-summary-section",
+            "title": "Calculated Summary",
+            "summary": {
+                "show_on_completion": true
+            },
+            "repeat": {
+                "for_list": "people",
+                "title": {
+                    "text": "{person_name}",
+                    "placeholders": [
+                        {
+                            "placeholder": "person_name",
+                            "transforms": [
+                                {
+                                    "transform": "concatenate_list",
+                                    "arguments": {
+                                        "list_to_concatenate": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "first-name"
+                                            },
+                                            {
+                                                "source": "answers",
+                                                "identifier": "last-name"
+                                            }
+                                        ],
+                                        "delimiter": " "
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "grand-calculated-summary-third-number-block",
+                            "question": {
+                                "id": "grand-calculated-summary-third-number-question",
+                                "title": "Third Number Question Title",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "third-number-answer",
+                                        "label": "Third answer in currency label",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "third-number-answer-also-in-total",
+                                        "label": "Third answer label also in currency total (optional)",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "currency-total-playback-2",
+                            "title": "We calculate the total of currency values entered to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "third-number-answer"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "third-number-answer-also-in-total"
+                                        }
+                                    ]
+                                },
+                                "title": "Grand total of previous values"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "mutually-exclusive-checkbox",
+                            "question": {
+                                "id": "mutually-exclusive-checkbox-question",
+                                "type": "MutuallyExclusive",
+                                "title": "Which answer did you give to question 4 and a half?",
+                                "mandatory": false,
+                                "answers": [
+                                    {
+                                        "id": "checkbox-answer",
+                                        "instruction": "Select an answer",
+                                        "type": "Checkbox",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": {
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "answer_value_1",
+                                                            "value": {
+                                                                "identifier": "first-and-a-half-number-answer-also-in-total",
+                                                                "source": "answers"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "text": "{answer_value_1} - first and a half answer"
+                                                },
+                                                "value": "{answer_value_1}"
+                                            },
+                                            {
+                                                "label": {
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "calc_value_1",
+                                                            "value": {
+                                                                "identifier": "currency-total-playback-1",
+                                                                "source": "calculated_summary"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "text": "{calc_value_1} - calculated summary answer (previous section)"
+                                                },
+                                                "value": "{calc_value_1}"
+                                            },
+                                            {
+                                                "label": {
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "calc_value_2",
+                                                            "value": {
+                                                                "identifier": "currency-total-playback-2",
+                                                                "source": "calculated_summary"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "text": "{calc_value_2} - calculated summary answer (current section)"
+                                                },
+                                                "value": "{calc_value_2}"
+                                            },
+                                            {
+                                                "label": {
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "third_answer_value",
+                                                            "value": {
+                                                                "identifier": "third-number-answer",
+                                                                "source": "answers"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "text": "{third_answer_value} - third answer"
+                                                },
+                                                "value": "{third_answer_value}"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "id": "checkbox-exclusive-answer",
+                                        "mandatory": false,
+                                        "type": "Checkbox",
+                                        "options": [
+                                            {
+                                                "label": "I prefer not to say",
+                                                "description": "Some description",
+                                                "value": "I prefer not to say"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "set-min-max-block",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "set-minimum-answer",
+                                        "label": "Set a value greater than the total above",
+                                        "mandatory": true,
+                                        "description": "This is a description of the minimum value",
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2,
+                                        "minimum": {
+                                            "value": {
+                                                "source": "calculated_summary",
+                                                "identifier": "currency-total-playback-1"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "set-maximum-answer",
+                                        "description": "This is a description of the maximum value",
+                                        "label": "Set a value less than the total above",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2,
+                                        "maximum": {
+                                            "value": {
+                                                "source": "calculated_summary",
+                                                "identifier": "currency-total-playback-1"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "id": "set-min-question",
+                                "title": {
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "calculated_summary_answer",
+                                            "value": {
+                                                "identifier": "currency-total-playback-1",
+                                                "source": "calculated_summary"
+                                            }
+                                        }
+                                    ],
+                                    "text": "Set minimum and maximum values based on your calculated summary total of £{calculated_summary_answer}"
+                                },
+                                "type": "General"
+                            }
+                        }
+                    ],
+                    "id": "calculated-summary"
+                }
+            ]
+        },
+        {
+            "id": "grand-calculated-summary-section-1",
+            "title": "Commuting",
+            "show_on_hub": true,
+            "summary": {
+                "show_on_completion": true
+            },
+            "groups": [
+                {
+                    "id": "grand-calculated-summary-group",
+                    "title": "Commuting",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "grand-calculated-summary-first-number-block",
+                            "question": {
+                                "id": "grand-calculated-summary-first-number-question",
+                                "title": "How much do you walk per week?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "q1-a1",
+                                        "label": "Weekly distance travelled on foot",
+                                        "mandatory": true,
+                                        "type": "Unit",
+                                        "unit_length": "short",
+                                        "unit": "length-mile",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "q1-a2",
+                                        "label": "Number of walks per week",
+                                        "mandatory": true,
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "grand-calculated-summary-second-number-block",
+                            "question": {
+                                "id": "grand-calculated-summary-second-number-question",
+                                "title": "How much do you drive per week?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "q2-a1",
+                                        "label": "Weekly distance travelled by car",
+                                        "mandatory": true,
+                                        "type": "Unit",
+                                        "unit_length": "short",
+                                        "unit": "length-mile",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "q2-a2",
+                                        "label": "Number of car journeys per week",
+                                        "mandatory": true,
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "distance-calculated-summary-1",
+                            "title": "We calculate the total of distance travelled by foot and car to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q1-a1"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q2-a1"
+                                        }
+                                    ]
+                                },
+                                "title": "Calculated distance on foot and driving"
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "number-calculated-summary-1",
+                            "title": "We calculate the total number of journeys on foot and in a car to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q1-a2"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q2-a2"
+                                        }
+                                    ]
+                                },
+                                "title": "Calculated journeys on foot and driving"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "grand-calculated-summary-section-2",
+            "title": "Alternative Transport",
+            "groups": [
+                {
+                    "id": "transport-group",
+                    "title": "Alternative Transport",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "third-number-block",
+                            "question": {
+                                "id": "third-number-question",
+                                "title": "How much do you cycle per week?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "q3-a1",
+                                        "label": "Weekly distance travelled by bike",
+                                        "mandatory": true,
+                                        "type": "Unit",
+                                        "unit_length": "short",
+                                        "unit": "length-mile",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "q3-a2",
+                                        "label": "Number of bicycle journeys per week",
+                                        "mandatory": true,
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "fourth-number-block",
+                            "question": {
+                                "id": "fourth-number-question",
+                                "title": "How much do you voi per week?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "q4-a1",
+                                        "label": "Weekly distance travelled on a Voi",
+                                        "mandatory": true,
+                                        "type": "Unit",
+                                        "unit_length": "short",
+                                        "unit": "length-mile",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "q4-a2",
+                                        "label": "Number of scooter trips per week",
+                                        "mandatory": true,
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "distance-calculated-summary-2",
+                            "title": "We calculate the total of distance travelled by bike and voi to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q3-a1"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q4-a1"
+                                        }
+                                    ]
+                                },
+                                "title": "Calculated weekly distance on bike and scooter"
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "number-calculated-summary-2",
+                            "title": "We calculate the total number of journeys on bike and on a voi to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q3-a2"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "q4-a2"
+                                        }
+                                    ]
+                                },
+                                "title": "Calculated journeys on bike and scooter"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "grand-calculated-summary-section-3",
+            "title": "Grand calculated summaries",
+            "groups": [
+                {
+                    "id": "summary-group",
+                    "title": "Grand calculated summary group",
+                    "blocks": [
+                        {
+                            "type": "GrandCalculatedSummary",
+                            "id": "distance-grand-calculated-summary",
+                            "title": "We calculate the grand total weekly distance travelled to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "distance-calculated-summary-1"
+                                        },
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "distance-calculated-summary-2"
+                                        }
+                                    ]
+                                },
+                                "title": "Grand calculated summary of distance travelled"
+                            }
+                        },
+                        {
+                            "type": "GrandCalculatedSummary",
+                            "id": "number-grand-calculated-summary",
+                            "title": "We calculate the grand total journeys per week to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "number-calculated-summary-1"
+                                        },
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "number-calculated-summary-2"
+                                        }
+                                    ]
+                                },
+                                "title": "Grand calculated summary of journeys"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-companies",
+            "title": "General insurance companies",
+            "summary": {
+                "show_on_completion": true,
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "companies",
+                        "title": "Companies or UK branches",
+                        "item_anchor_answer_id": "company-or-branch-name",
+                        "item_label": "Name of UK company or branch",
+                        "add_link_text": "Add another UK company or branch",
+                        "empty_list_text": "No UK company or branch added"
+                    }
+                ],
+                "show_non_item_answers": true
+            },
+            "groups": [
+                {
+                    "id": "group-companies",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "responsible-party",
+                            "question": {
+                                "type": "General",
+                                "id": "responsible-party-question",
+                                "title": "Are you the responsible party for reporting trading details for a company of branch?",
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "responsible-party-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "block": "any-companies-or-branches",
+                                    "when": {
+                                        "==": [
+                                            "Yes",
+                                            {
+                                                "source": "answers",
+                                                "identifier": "responsible-party-answer"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "section": "End"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "ListCollectorDrivingQuestion",
+                            "id": "any-companies-or-branches",
+                            "for_list": "companies",
+                            "question": {
+                                "type": "General",
+                                "id": "any-companies-or-branches-question",
+                                "title": "Do any companies or branches within your United Kingdom group undertake general insurance business?",
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "any-companies-or-branches-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock",
+                                                    "params": {
+                                                        "block_id": "add-company",
+                                                        "list_name": "companies"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "any-companies-or-branches-answer"
+                                            },
+                                            "Yes"
+                                        ]
+                                    },
+                                    "block": "any-other-companies-or-branches"
+                                },
+                                {
+                                    "section": "End"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "any-other-companies-or-branches",
+                            "type": "ListCollector",
+                            "for_list": "companies",
+                            "question": {
+                                "id": "any-other-companies-or-branches-question",
+                                "type": "General",
+                                "title": "Do you need to add any other UK companies or branches that undertake general insurance business?",
+                                "answers": [
+                                    {
+                                        "id": "any-other-companies-or-branches-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "add_block": {
+                                "id": "add-company",
+                                "type": "ListAddQuestion",
+                                "question": {
+                                    "id": "add-question-companies",
+                                    "type": "General",
+                                    "title": "What is the name and registration number of the company?",
+                                    "answers": [
+                                        {
+                                            "id": "company-or-branch-name",
+                                            "label": "Name of UK company or branch (Mandatory)",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "repeating_blocks": [
+                                {
+                                    "id": "companies-repeating-block-1",
+                                    "type": "ListRepeatingQuestion",
+                                    "question": {
+                                        "id": "companies-repeating-block-1-question",
+                                        "type": "General",
+                                        "title": {
+                                            "text": "Give details about {company_name}",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "company_name",
+                                                    "value": {
+                                                        "source": "answers",
+                                                        "identifier": "company-or-branch-name"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "answers": [
+                                            {
+                                                "id": "registration-number",
+                                                "label": "Registration number (Mandatory)",
+                                                "mandatory": true,
+                                                "type": "Number",
+                                                "maximum": {
+                                                    "value": 999,
+                                                    "exclusive": false
+                                                },
+                                                "decimal_places": 0
+                                            },
+                                            {
+                                                "id": "registration-date",
+                                                "label": "Date of Registration (Mandatory)",
+                                                "mandatory": true,
+                                                "type": "Date",
+                                                "maximum": {
+                                                    "value": "now"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "companies-repeating-block-2",
+                                    "type": "ListRepeatingQuestion",
+                                    "question": {
+                                        "id": "companies-repeating-block-2-question",
+                                        "type": "General",
+                                        "title": {
+                                            "text": "Give details about how {company_name} has been trading over the past {date_difference}.",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "company_name",
+                                                    "value": {
+                                                        "source": "answers",
+                                                        "identifier": "company-or-branch-name"
+                                                    }
+                                                },
+                                                {
+                                                    "placeholder": "date_difference",
+                                                    "transforms": [
+                                                        {
+                                                            "transform": "calculate_date_difference",
+                                                            "arguments": {
+                                                                "first_date": {
+                                                                    "source": "answers",
+                                                                    "identifier": "registration-date"
+                                                                },
+                                                                "second_date": {
+                                                                    "value": "now"
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "answers": [
+                                            {
+                                                "type": "Radio",
+                                                "label": "Has this company been trading in the UK? (Mandatory)",
+                                                "id": "authorised-trader-uk-radio",
+                                                "mandatory": true,
+                                                "options": [
+                                                    {
+                                                        "label": "Yes",
+                                                        "value": "Yes"
+                                                    },
+                                                    {
+                                                        "label": "No",
+                                                        "value": "No"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "Radio",
+                                                "label": "Has this company been trading in the EU? (Not mandatory)",
+                                                "id": "authorised-trader-eu-radio",
+                                                "mandatory": false,
+                                                "options": [
+                                                    {
+                                                        "label": "Yes",
+                                                        "value": "Yes"
+                                                    },
+                                                    {
+                                                        "label": "No",
+                                                        "value": "No"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "edit_block": {
+                                "id": "edit-company",
+                                "type": "ListEditQuestion",
+                                "question": {
+                                    "id": "edit-question-companies",
+                                    "type": "General",
+                                    "title": "What is the name and registration number of the company?",
+                                    "answers": [
+                                        {
+                                            "id": "company-or-branch-name",
+                                            "label": "Name of UK company or branch (Mandatory)",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "remove_block": {
+                                "id": "remove-company",
+                                "type": "ListRemoveQuestion",
+                                "question": {
+                                    "id": "remove-question-companies",
+                                    "type": "General",
+                                    "title": "Are you sure you want to remove this company or UK branch?",
+                                    "answers": [
+                                        {
+                                            "id": "remove-confirmation",
+                                            "mandatory": true,
+                                            "type": "Radio",
+                                            "options": [
+                                                {
+                                                    "label": "Yes",
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
+                                                },
+                                                {
+                                                    "label": "No",
+                                                    "value": "No"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "summary": {
+                                "title": "Companies or UK branches",
+                                "item_title": {
+                                    "text": "{company_name}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "company_name",
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "company-or-branch-name"
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "id": "any-other-trading-details",
+                            "type": "Question",
+                            "question": {
+                                "id": "any-other-trading-details-question",
+                                "type": "General",
+                                "title": "Do you have any other details about the trading you have reported for?",
+                                "answers": [
+                                    {
+                                        "id": "any-other-trading-details-answer",
+                                        "label": "Additional details",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-businesses",
+            "title": "General insurance business",
+            "summary": {
+                "show_on_completion": true,
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "businesses",
+                        "title": "Businesses or UK branches",
+                        "item_anchor_answer_id": "business-or-branch-name",
+                        "item_label": "Name of UK business or branch",
+                        "add_link_text": "Add another UK business or branch",
+                        "empty_list_text": "No UK business or branch added"
+                    }
+                ],
+                "show_non_item_answers": true
+            },
+            "groups": [
+                {
+                    "id": "group-businesses",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "responsible-party-business",
+                            "question": {
+                                "type": "General",
+                                "id": "responsible-party-business-question",
+                                "title": "Are you the responsible party for reporting trading details for a business of branch?",
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "responsible-party-business-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "block": "any-businesses-or-branches",
+                                    "when": {
+                                        "==": [
+                                            "Yes",
+                                            {
+                                                "source": "answers",
+                                                "identifier": "responsible-party-business-answer"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "section": "End"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "ListCollectorDrivingQuestion",
+                            "id": "any-businesses-or-branches",
+                            "for_list": "businesses",
+                            "question": {
+                                "type": "General",
+                                "id": "any-businesses-or-branches-question",
+                                "title": "Do any businesses or branches within your United Kingdom group undertake general insurance business?",
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "any-businesses-or-branches-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock",
+                                                    "params": {
+                                                        "block_id": "add-business",
+                                                        "list_name": "businesses"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "any-businesses-or-branches-answer"
+                                            },
+                                            "Yes"
+                                        ]
+                                    },
+                                    "block": "any-other-business-businesses-or-branches"
+                                },
+                                {
+                                    "section": "End"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "any-other-business-businesses-or-branches",
+                            "type": "ListCollector",
+                            "for_list": "businesses",
+                            "question": {
+                                "id": "any-other-business-businesses-or-branches-question",
+                                "type": "General",
+                                "title": "Do you need to add any other UK businesses or branches that undertake general insurance business?",
+                                "answers": [
+                                    {
+                                        "id": "any-other-business-businesses-or-branches-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "add_block": {
+                                "id": "add-business",
+                                "type": "ListAddQuestion",
+                                "question": {
+                                    "id": "add-question-businesses",
+                                    "type": "General",
+                                    "title": "What is the name and registration number of the business?",
+                                    "answers": [
+                                        {
+                                            "id": "business-or-branch-name",
+                                            "label": "Name of UK business or branch (Mandatory)",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "repeating_blocks": [
+                                {
+                                    "id": "businesses-repeating-block-1",
+                                    "type": "ListRepeatingQuestion",
+                                    "question": {
+                                        "id": "businesses-repeating-block-1-question",
+                                        "type": "General",
+                                        "title": {
+                                            "text": "Give details about {business_name}",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "business_name",
+                                                    "value": {
+                                                        "source": "answers",
+                                                        "identifier": "business-or-branch-name"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "answers": [
+                                            {
+                                                "id": "registration-business-number",
+                                                "label": "Registration number (Mandatory)",
+                                                "mandatory": true,
+                                                "type": "Number",
+                                                "maximum": {
+                                                    "value": 999,
+                                                    "exclusive": false
+                                                },
+                                                "decimal_places": 0
+                                            },
+                                            {
+                                                "id": "registration-business-date",
+                                                "label": "Date of Registration (Mandatory)",
+                                                "mandatory": true,
+                                                "type": "Date",
+                                                "maximum": {
+                                                    "value": "now"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "businesses-repeating-block-2",
+                                    "type": "ListRepeatingQuestion",
+                                    "question": {
+                                        "id": "businesses-repeating-block-2-question",
+                                        "type": "General",
+                                        "title": {
+                                            "text": "Give details about how {business_name} has been trading over the past {date_difference}.",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "business_name",
+                                                    "value": {
+                                                        "source": "answers",
+                                                        "identifier": "business-or-branch-name"
+                                                    }
+                                                },
+                                                {
+                                                    "placeholder": "date_difference",
+                                                    "transforms": [
+                                                        {
+                                                            "transform": "calculate_date_difference",
+                                                            "arguments": {
+                                                                "first_date": {
+                                                                    "source": "answers",
+                                                                    "identifier": "registration-business-date"
+                                                                },
+                                                                "second_date": {
+                                                                    "value": "now"
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "answers": [
+                                            {
+                                                "type": "Radio",
+                                                "label": "Has this business been trading in the UK? (Mandatory)",
+                                                "id": "authorised-business-trader-uk-radio",
+                                                "mandatory": true,
+                                                "options": [
+                                                    {
+                                                        "label": "Yes",
+                                                        "value": "Yes"
+                                                    },
+                                                    {
+                                                        "label": "No",
+                                                        "value": "No"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "Radio",
+                                                "label": "Has this business been trading in the EU? (Not mandatory)",
+                                                "id": "authorised-business-trader-eu-radio",
+                                                "mandatory": false,
+                                                "options": [
+                                                    {
+                                                        "label": "Yes",
+                                                        "value": "Yes"
+                                                    },
+                                                    {
+                                                        "label": "No",
+                                                        "value": "No"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "edit_block": {
+                                "id": "edit-business",
+                                "type": "ListEditQuestion",
+                                "question": {
+                                    "id": "edit-question-businesses",
+                                    "type": "General",
+                                    "title": "What is the name and registration number of the business?",
+                                    "answers": [
+                                        {
+                                            "id": "business-or-branch-name",
+                                            "label": "Name of UK business or branch (Mandatory)",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "remove_block": {
+                                "id": "remove-business",
+                                "type": "ListRemoveQuestion",
+                                "question": {
+                                    "id": "remove-question-businesses",
+                                    "type": "General",
+                                    "title": "Are you sure you want to remove this business or UK branch?",
+                                    "answers": [
+                                        {
+                                            "id": "remove-confirmation-business",
+                                            "mandatory": true,
+                                            "type": "Radio",
+                                            "options": [
+                                                {
+                                                    "label": "Yes",
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
+                                                },
+                                                {
+                                                    "label": "No",
+                                                    "value": "No"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "summary": {
+                                "title": "Businesses or UK branches",
+                                "item_title": {
+                                    "text": "{business_name}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "business_name",
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "business-or-branch-name"
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "id": "any-other-business-trading-details",
+                            "type": "Question",
+                            "question": {
+                                "id": "any-other-business-trading-details-question",
+                                "type": "General",
+                                "title": "Do you have any other details about the trading you have reported for?",
+                                "answers": [
+                                    {
+                                        "id": "any-other-business-trading-details-answer",
+                                        "label": "Additional details",
+                                        "mandatory": false,
+                                        "type": "TextField"
                                     }
                                 ]
                             }
