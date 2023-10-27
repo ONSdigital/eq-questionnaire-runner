@@ -597,6 +597,7 @@ class TestRouterNextLocation(RouterTestCase):
             "questionnaire.block",
             list_item_id=expected_location.list_item_id,
             block_id=expected_location.block_id,
+            return_to_answer_id="first-number-answer,currency-total-playback",
             _anchor="first-number-answer",
         )
 
@@ -793,6 +794,7 @@ class TestRouterNextLocation(RouterTestCase):
             return_to="grand-calculated-summary",
             block_id="distance-calculated-summary-1",
             return_to_block_id="distance-grand-calculated-summary",
+            return_to_answer_id="distance-calculated-summary-1,distance-calculated-summary-1",
             _anchor="distance-calculated-summary-1",
         )
 
@@ -1346,6 +1348,7 @@ class TestRouterPreviousLocation(RouterTestCase):
             "questionnaire.block",
             list_item_id=expected_location.list_item_id,
             block_id=expected_location.block_id,
+            return_to_answer_id="first-number-answer,currency-total-playback-skipped-fourth",
             _anchor="first-number-answer",
         )
 
@@ -1566,6 +1569,7 @@ class TestRouterPreviousLocation(RouterTestCase):
             return_to="grand-calculated-summary",
             block_id="calculated-summary-6",
             return_to_block_id="grand-calculated-summary-3",
+            return_to_answer_id="calculated-summary-6,calculated-summary-6",
             _anchor="calculated-summary-6",
         )
 
