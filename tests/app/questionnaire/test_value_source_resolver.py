@@ -68,6 +68,7 @@ def get_value_source_resolver(
     use_default_answer=False,
     escape_answer_values=False,
 ):
+    data_stores = data_stores or DataStores()
     if not schema:
         schema = get_mock_schema()
         schema.is_repeating_answer = Mock(return_value=bool(list_item_id))
@@ -367,7 +368,6 @@ def test_answer_source_default_answer(use_default_answer):
         schema.get_default_answer = Mock(return_value=None)
 
     value_source_resolver = get_value_source_resolver(
-        data_stores=DataStores(),
         schema=schema,
         use_default_answer=use_default_answer,
     )
@@ -479,7 +479,7 @@ def test_metadata_source(metadata_identifier, expected_result):
 
 
 def test_resolve_metadata_source_with_no_metadata_raises_exception():
-    value_source_resolver = get_value_source_resolver(data_stores=DataStores())
+    value_source_resolver = get_value_source_resolver()
 
     source = {"source": "metadata", "identifier": "identifier"}
 
@@ -606,9 +606,7 @@ def test_list_source_id_selector_primary_person(primary_person_list_item_id):
 
 
 def test_location_source():
-    value_source_resolver = get_value_source_resolver(
-        data_stores=DataStores(), list_item_id="item-1"
-    )
+    value_source_resolver = get_value_source_resolver(list_item_id="item-1")
     assert (
         value_source_resolver.resolve(
             {"source": "location", "identifier": "list_item_id"}
