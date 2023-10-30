@@ -136,7 +136,7 @@
                                         "answers": [
                                             {
                                                 "id": "age-answer",
-                                                "mandatory": false,
+                                                "mandatory": true,
                                                 "type": "Number",
                                                 "label": "Age"
                                             }
