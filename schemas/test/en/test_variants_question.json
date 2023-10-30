@@ -441,23 +441,6 @@
                                         ]
                                     }
                                 }
-                            ],
-                            "routing_rules": [
-                                {
-                                    "block": "age-block",
-                                    "when": {
-                                        "==": [
-                                            {
-                                                "source": "answers",
-                                                "identifier": "age-confirm-answer"
-                                            },
-                                            "No"
-                                        ]
-                                    }
-                                },
-                                {
-                                    "section": "End"
-                                }
                             ]
                         }
                     ]
