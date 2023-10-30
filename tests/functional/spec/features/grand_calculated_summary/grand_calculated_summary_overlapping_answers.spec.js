@@ -10,7 +10,6 @@ import GrandCalculatedSummaryShoppingPage from "../../../generated_pages/grand_c
 import Section1SummaryPage from "../../../generated_pages/grand_calculated_summary_overlapping_answers/section-1-summary.page";
 import { click } from "../../../helpers";
 import { expect } from "@wdio/globals";
-import DropdownMandatoryPage from "../../../generated_pages/dropdown_mandatory/dropdown-mandatory.page";
 
 describe("Feature: Grand Calculated Summary", () => {
   describe("Given I have a Grand Calculated Summary with overlapping answers", () => {
