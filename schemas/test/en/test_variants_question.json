@@ -441,6 +441,11 @@
                                         ]
                                     }
                                 }
+                            ],
+                            "routing_rules": [
+                                {
+                                    "section": "End"
+                                }
                             ]
                         }
                     ]
