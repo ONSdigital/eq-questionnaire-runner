@@ -451,7 +451,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def _populate_answer_and_list_dependencies(self) -> None:
         for block in self.get_blocks():
             if block["type"] in {"CalculatedSummary", "GrandCalculatedSummary"}:
-                self._update_answer_dependencies_for_summary(block)
+                self._update_dependencies_for_summary(block)
                 continue
 
             for question in self.get_all_questions_for_block(block):
@@ -460,43 +460,38 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 )
 
                 if question["type"] == "Calculated":
-                    self._update_answer_dependencies_for_calculations(
+                    self._update_dependencies_for_calculations(
                         question["calculations"], block_id=block["id"]
                     )
                     continue
 
                 for answer in question.get("answers", []):
-                    self._update_answer_dependencies_for_answer(
-                        answer, block_id=block["id"]
-                    )
+                    self._update_dependencies_for_answer(answer, block_id=block["id"])
                     for option in answer.get("options", []):
                         if "detail_answer" in option:
-                            self._update_answer_dependencies_for_answer(
+                            self._update_dependencies_for_answer(
                                 option["detail_answer"], block_id=block["id"]
                             )
 
-    def _update_answer_dependencies_for_summary(self, block: ImmutableDict) -> None:
+    def _update_dependencies_for_summary(self, block: ImmutableDict) -> None:
         if block["type"] == "CalculatedSummary":
-            self._update_answer_dependencies_for_calculated_summary_dependency(
+            self._update_dependencies_for_calculated_summary_dependency(
                 calculated_summary_block=block, dependent_block=block
             )
         elif block["type"] == "GrandCalculatedSummary":
-            self._update_answer_dependencies_for_grand_calculated_summary(block)
+            self._update_dependencies_for_grand_calculated_summary(block)
 
-    def _update_answer_dependencies_for_calculated_summary_dependency(
+    def _update_dependencies_for_calculated_summary_dependency(
         self, *, calculated_summary_block: ImmutableDict, dependent_block: ImmutableDict
     ) -> None:
         """
-        update all calculated summary answers to be dependencies of the dependent block
-
-        in the case that one of the calculated summary answers is dynamic/repeating, so has multiple answers for a particular list
-        the calculated summary block needs to depend on the `remove_block` and `add_block` for the list
-        so that adding/removing items requires re-confirming the calculated summary
+        For a block that depends on a calculated summary block, add the block as a dependency of each of the calculated summary answers
+        Similarly if the calculated summary depends on a list, then add the block as a dependency of the list
         """
         calculated_summary_answer_ids = get_calculated_summary_answer_ids(
             calculated_summary_block
         )
-        answer_dependent = self._get_answer_dependent_for_block_id(
+        answer_dependent = self._get_dependent_for_block_id(
             block_id=dependent_block["id"]
         )
         for answer_id in calculated_summary_answer_ids:
@@ -505,7 +500,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 self._list_dependencies_map[list_name].add(answer_dependent)
             self._answer_dependencies_map[answer_id].add(answer_dependent)
 
-    def _update_answer_dependencies_for_grand_calculated_summary(
+    def _update_dependencies_for_grand_calculated_summary(
         self, grand_calculated_summary_block: ImmutableDict
     ) -> None:
         grand_calculated_summary_calculated_summary_ids = (
@@ -516,18 +511,18 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         for calculated_summary_id in grand_calculated_summary_calculated_summary_ids:
             # Type ignore: safe to assume block exists
             calculated_summary_block: ImmutableDict = self.get_block(calculated_summary_id)  # type: ignore
-            self._update_answer_dependencies_for_calculated_summary_dependency(
+            self._update_dependencies_for_calculated_summary_dependency(
                 calculated_summary_block=calculated_summary_block,
                 dependent_block=grand_calculated_summary_block,
             )
 
-    def _update_answer_dependencies_for_calculations(
+    def _update_dependencies_for_calculations(
         self, calculations: tuple[ImmutableDict, ...], *, block_id: str
     ) -> None:
         for calculation in calculations:
             if source_answer_id := calculation.get("answer_id"):
                 dependents = {
-                    self._get_answer_dependent_for_block_id(
+                    self._get_dependent_for_block_id(
                         block_id=self.get_block_for_answer_id(answer_id)["id"]  # type: ignore
                     )
                     for answer_id in calculation["answers_to_calculate"]
@@ -535,28 +530,28 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 self._answer_dependencies_map[source_answer_id] |= dependents
 
             elif isinstance(calculation.get("value"), dict):
-                self._update_answer_dependencies_for_value_source(
+                self._update_dependencies_for_value_source(
                     calculation["value"],
                     block_id=block_id,
                 )
 
-    def _update_answer_dependencies_for_answer(
+    def _update_dependencies_for_answer(
         self, answer: Mapping, *, block_id: str
     ) -> None:
         for key in ["minimum", "maximum"]:
             value = answer.get(key, {}).get("value")
             if isinstance(value, dict):
-                self._update_answer_dependencies_for_value_source(
+                self._update_dependencies_for_value_source(
                     value,
                     block_id=block_id,
                 )
 
         if dynamic_options_values := answer.get("dynamic_options", {}).get("values"):
-            self._update_answer_dependencies_for_dynamic_options(
+            self._update_dependencies_for_dynamic_options(
                 dynamic_options_values, block_id=block_id, answer_id=answer["id"]
             )
 
-    def _update_answer_dependencies_for_dynamic_options(
+    def _update_dependencies_for_dynamic_options(
         self,
         dynamic_options_values: Mapping,
         *,
@@ -565,11 +560,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     ) -> None:
         value_sources = get_mappings_with_key("source", dynamic_options_values)
         for value_source in value_sources:
-            self._update_answer_dependencies_for_value_source(
+            self._update_dependencies_for_value_source(
                 value_source, block_id=block_id, answer_id=answer_id
             )
 
-    def _update_answer_dependencies_for_value_source(
+    def _update_dependencies_for_value_source(
         self,
         value_source: Mapping,
         *,
@@ -582,9 +577,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         """
         if value_source["source"] == "answers":
             self._answer_dependencies_map[value_source["identifier"]] |= {
-                self._get_answer_dependent_for_block_id(
-                    block_id=block_id, answer_id=answer_id
-                )
+                self._get_dependent_for_block_id(block_id=block_id, answer_id=answer_id)
             }
         if value_source["source"] == "calculated_summary":
             identifier = value_source["identifier"]
@@ -595,7 +588,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
                 for answer_id_for_block in answer_ids_for_block:
                     self._answer_dependencies_map[answer_id_for_block].add(
-                        dependent := self._get_answer_dependent_for_block_id(
+                        dependent := self._get_dependent_for_block_id(
                             block_id=block_id, answer_id=answer_id
                         )
                     )
@@ -606,19 +599,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                         self._list_dependencies_map[list_name].add(dependent)
 
         if value_source["source"] == "list":
-            self._update_answer_dependencies_for_list_source(
-                block_id=block_id, list_name=value_source["identifier"]
+            self._list_dependencies_map[value_source["identifier"]].add(
+                self._get_dependent_for_block_id(block_id=block_id)
             )
 
-    def _update_answer_dependencies_for_list_source(
-        self, *, block_id: str, list_name: str
-    ) -> None:
-        """Store the given block as a dependency of the list"""
-        self._list_dependencies_map[list_name].add(
-            self._get_answer_dependent_for_block_id(block_id=block_id)
-        )
-
-    def _get_answer_dependent_for_block_id(
+    def _get_dependent_for_block_id(
         self,
         *,
         block_id: str,
@@ -841,6 +826,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         """
         Returns the name of the list if the answer is dynamic/repeating and none otherwise
         """
+        # Type ignore: safe to assume block exists, same for section below.
         block_id: str = self.get_block_for_answer_id(answer_id)["id"]  # type: ignore
         if self.is_answer_dynamic(answer_id):
             return self.get_list_name_for_dynamic_answer(block_id)
@@ -1447,7 +1433,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             self.dynamic_answers_parent_block_ids.add(block_id)
             for answer in dynamic_answers["answers"]:
                 value_source = dynamic_answers["values"]
-                self._update_answer_dependencies_for_value_source(
+                self._update_dependencies_for_value_source(
                     value_source,
                     block_id=block_id,
                     answer_id=answer["id"],
@@ -1455,7 +1441,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
                 self._dynamic_answer_ids.add(answer["id"])
 
-                self._update_answer_dependencies_for_answer(answer, block_id=block_id)
+                self._update_dependencies_for_answer(answer, block_id=block_id)
 
 
 def is_summary_with_calculation(summary_type: str) -> bool:
