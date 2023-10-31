@@ -331,7 +331,7 @@ class Router:
                 block_id=return_location.return_to_block_id,
                 list_item_id=list_item_id,
                 list_name=list_name,
-                _anchor=str(return_to_answer_id)
+                _anchor=return_to_answer_id
                 if return_to_answer_id
                 else return_location.return_to_answer_id,
             )
