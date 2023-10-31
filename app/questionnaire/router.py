@@ -377,7 +377,7 @@ class Router:
 
             # remove first item and return the remaining ones
             # Type ignore: return_location.return_to and return_location.return_to_answer_id will always be populated at this point
-            return_to_remaining = ",".join(return_location.return_to.split(",")[1:]) or None  # type: ignore
+            return_to = ",".join(return_location.return_to.split(",")[1:]) or None  # type: ignore
             return_to_answer_id = (
                 ",".join(
                     [return_location.return_to_answer_id, block_id]  # type: ignore
@@ -391,7 +391,7 @@ class Router:
                 block_id=block_id,
                 list_name=location.list_name,
                 list_item_id=location.list_item_id,
-                return_to=return_to_remaining,
+                return_to=return_to,
                 return_to_block_id=return_to_block_id,
                 return_to_list_item_id=return_location.return_to_list_item_id,
                 return_to_answer_id=return_to_answer_id,

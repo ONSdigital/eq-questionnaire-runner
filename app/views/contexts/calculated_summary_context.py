@@ -102,6 +102,9 @@ class CalculatedSummaryContext(Context):
                     return_to=return_to,
                     return_to_block_id=return_to_block_id,
                     return_to_list_item_id=self.return_location.return_to_list_item_id,
+                    return_to_answer_id=self.return_location.return_to_answer_id
+                    if self.return_location.return_to == "grand-calculated-summary"
+                    else None,
                 ),
             ).serialize()
             for group in section["groups"]
