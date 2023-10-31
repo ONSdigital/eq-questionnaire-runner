@@ -323,15 +323,17 @@ class Router:
         ):
             return_to_answer_id = None
             if return_location.return_to_answer_id:
-                return_to_answer_id = return_location.return_to_answer_id.split(",")
-                return_to_answer_id = "".join(return_to_answer_id.pop())  # type: ignore
+                return_to_answer_ids = return_location.return_to_answer_id.split(",")
+                return_to_answer_id = "".join(return_to_answer_ids.pop())
 
             return url_for(
                 "questionnaire.block",
                 block_id=return_location.return_to_block_id,
                 list_item_id=list_item_id,
                 list_name=list_name,
-                _anchor=return_to_answer_id or return_location.return_to_answer_id,  # type: ignore
+                _anchor=str(return_to_answer_id)
+                if return_to_answer_id
+                else return_location.return_to_answer_id,
             )
         # since the above may define a different routing_path,
         # retrieval of the next incomplete block needs to be here instead of returning None and allowing default behaviour
@@ -374,7 +376,7 @@ class Router:
             return_to_block_id = ",".join(remaining) if remaining else None
 
             # remove first item and return the remaining ones
-            # Type ignore: return_location.return_to will always be populated at this point
+            # Type ignore: return_location.return_to and return_location.return_to_answer_id will always be populated at this point
             return_to_remaining = ",".join(return_location.return_to.split(",")[1:]) or None  # type: ignore
             return_to_answer_id = (
                 ",".join(
