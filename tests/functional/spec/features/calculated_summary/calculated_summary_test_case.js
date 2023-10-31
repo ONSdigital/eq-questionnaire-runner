@@ -113,17 +113,13 @@ class TestCase {
     it("Given I edit an answer from the calculated summary page and click the Previous button, Then I am taken to the calculated summary page that I clicked the change link from and the browser url should contain an anchor referencing the answer id of the answer I am changing", async () => {
       await $(CurrencyTotalPlaybackPage.thirdNumberAnswerEdit()).click();
       await $(ThirdNumberBlockPage.previous()).click();
-      await expect(await browser.getUrl()).toContain(
-        "currency-total-playback/?return_to_answer_id=third-number-answer,currency-total-playback#third-number-answer",
-      );
+      await expect(await browser.getUrl()).toContain("currency-total-playback/#third-number-answer");
     });
 
     it("Given I edit an answer from the calculated summary page and click the Submit button, Then I am taken to the calculated summary page that I clicked the change link from and the browser url should contain an anchor referencing the answer id of the answer I am changing", async () => {
       await $(CurrencyTotalPlaybackPage.thirdNumberAnswerEdit()).click();
       await click(ThirdNumberBlockPage.submit());
-      await expect(await browser.getUrl()).toContain(
-        "currency-total-playback/?return_to_answer_id=third-number-answer,currency-total-playback#third-number-answer",
-      );
+      await expect(await browser.getUrl()).toContain("currency-total-playback/#third-number-answer");
     });
 
     it("Given I change an answer, When I get to the currency summary, Then I should see the new total", async () => {

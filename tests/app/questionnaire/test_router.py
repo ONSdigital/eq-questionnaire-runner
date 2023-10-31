@@ -597,7 +597,6 @@ class TestRouterNextLocation(RouterTestCase):
             "questionnaire.block",
             list_item_id=expected_location.list_item_id,
             block_id=expected_location.block_id,
-            return_to_answer_id="first-number-answer,currency-total-playback",
             _anchor="first-number-answer",
         )
 
@@ -1348,7 +1347,6 @@ class TestRouterPreviousLocation(RouterTestCase):
             "questionnaire.block",
             list_item_id=expected_location.list_item_id,
             block_id=expected_location.block_id,
-            return_to_answer_id="first-number-answer,currency-total-playback-skipped-fourth",
             _anchor="first-number-answer",
         )
 

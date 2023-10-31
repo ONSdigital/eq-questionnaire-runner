@@ -382,8 +382,8 @@ class Router:
                 ",".join(
                     [return_location.return_to_answer_id, block_id]  # type: ignore
                 )
-                if block_id
-                else [return_location.return_to_answer_id]
+                if remaining
+                else None
             )
 
             return url_for(
