@@ -395,7 +395,8 @@ class Router:
                 return_to_block_id=return_to_block_id,
                 return_to_list_item_id=return_location.return_to_list_item_id,
                 return_to_answer_id=return_to_answer_id,
-                _anchor=return_location.return_to_answer_id.split(",")[0],
+                # Type ignore: return_location.return_to_answer_id will always be populated at this point
+                _anchor=return_location.return_to_answer_id.split(",")[0],  # type: ignore
             )
 
     def _get_return_url_for_inaccessible_location(
