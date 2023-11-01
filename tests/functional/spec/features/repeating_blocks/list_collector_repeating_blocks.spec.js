@@ -76,7 +76,7 @@ describe("List Collector Repeating Blocks", () => {
     });
   });
 
-  describe("Given a journey through the list collector with repeating blocks", () => {
+  describe("Given a journey through the list collector with repeating blocks where items need to be updated", () => {
     before("Load the survey", async () => {
       await browser.openQuestionnaire("test_list_collector_repeating_blocks_section_summary.json");
     });
@@ -126,7 +126,7 @@ describe("List Collector Repeating Blocks", () => {
     });
   });
 
-  describe("Given a journey through the list collector with repeating blocks, any incomplete repeating_block will be revisited before navigating to the next block after the list collector.", () => {
+  describe("Given a journey that test routes through the list collector with repeating blocks.", () => {
     before("Load the survey", async () => {
       await browser.openQuestionnaire("test_list_collector_repeating_blocks_section_summary.json");
     });
