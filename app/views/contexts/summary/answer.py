@@ -69,7 +69,11 @@ class Answer:
             list_item_id=list_item_id,
             is_in_repeating_section=is_in_repeating_section,
         )
-        if return_location.return_to_answer_id:
+        if (
+            return_location.return_to_answer_id
+            and return_to_answer_id
+            not in return_location.return_to_answer_id.split(",")
+        ):
             return_to_answer_id += f",{return_location.return_to_answer_id}"  # type: ignore
         return url_for(
             endpoint="questionnaire.block",

@@ -380,7 +380,7 @@ class Router:
             return_to = ",".join(return_location.return_to.split(",")[1:]) or None  # type: ignore
             return_to_answer_id = (
                 ",".join(
-                    [return_location.return_to_answer_id, block_id]  # type: ignore
+                    [return_location.return_to_answer_id.split(",")[0], block_id]  # type: ignore
                 )
                 if remaining
                 else None
@@ -395,7 +395,7 @@ class Router:
                 return_to_block_id=return_to_block_id,
                 return_to_list_item_id=return_location.return_to_list_item_id,
                 return_to_answer_id=return_to_answer_id,
-                _anchor=return_location.return_to_answer_id,
+                _anchor=return_location.return_to_answer_id.split(",")[0],
             )
 
     def _get_return_url_for_inaccessible_location(
