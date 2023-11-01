@@ -12,6 +12,7 @@ from app.setup import create_app
 from app.utilities.schema import (
     SCHEMA_REQUEST_MAX_RETRIES,
     SchemaRequestFailed,
+    _load_schema_from_instrument_id,
     _load_schema_from_name,
     cache_questionnaire_schemas,
     get_allowed_languages,
@@ -25,6 +26,7 @@ from app.utilities.schema import (
 from tests.app.questionnaire.conftest import get_metadata
 
 TEST_SCHEMA_URL = "http://test.domain/schema.json"
+TEST_CIR_URL = "http://test.domain/cir"
 
 
 def test_valid_schema_names_from_params():
@@ -247,6 +249,32 @@ def test_load_schema_from_metadata_with_schema_url_and_override_language_code():
 
     assert loaded_schema.json == mock_schema.json
     assert loaded_schema.language_code == language_code
+
+
+@responses.activate
+def test_load_schema_from_metadata_with_cir_instrument_id(app):
+    _load_schema_from_instrument_id.cache_clear()
+
+    metadata = get_metadata(
+        {
+            "cir_instrument_id": "f0519981-426c-8b93-75c0-bfc40c66fe25",
+            "language_code": "cy",
+        },
+    )
+    mock_schema = QuestionnaireSchema({}, language_code="cy")
+    responses.add(
+        responses.GET,
+        f"{TEST_CIR_URL}/v2/retrieve_collection_instrument",
+        json=mock_schema.json,
+        status=200,
+    )
+
+    with app.app_context():
+        app.config["CIR_API_BASE_URL"] = TEST_CIR_URL
+        loaded_schema = load_schema_from_metadata(metadata=metadata, language_code="cy")
+
+    assert loaded_schema.json == mock_schema.json
+    assert loaded_schema.language_code == mock_schema.language_code
 
 
 def get_mocked_make_request(mocker, status_codes):

@@ -13,6 +13,7 @@ from app.questionnaire.questionnaire_schema import (
     DEFAULT_LANGUAGE_CODE,
     QuestionnaireSchema,
 )
+from app.services.collection_instrument_registry import get_collection_instrument_v1
 from app.utilities.json import json_load, json_loads
 from app.utilities.request_session import get_retryable_session
 
@@ -130,6 +131,9 @@ def load_schema_from_metadata(
         )
         return schema
 
+    if cir_instrument_id := metadata.cir_instrument_id:
+        return _load_schema_from_instrument_id(cir_instrument_id, language_code)
+
     return load_schema_from_name(
         # Type ignore: Metadata is validated to have either schema_name or schema_url populated.
         # This code runs only if schema_url was not present, thus schema_name is present (not None).
@@ -143,6 +147,16 @@ def load_schema_from_name(
 ) -> QuestionnaireSchema:
     language_code = language_code or DEFAULT_LANGUAGE_CODE
     return _load_schema_from_name(schema_name, language_code)
+
+
+@lru_cache(maxsize=None)
+def _load_schema_from_instrument_id(
+    cir_instrument_id: str, language_code: str | None
+) -> QuestionnaireSchema:
+    schema_json = get_collection_instrument_v1(cir_instrument_id)
+    language_code = language_code or DEFAULT_LANGUAGE_CODE
+
+    return QuestionnaireSchema(schema_json, language_code)
 
 
 @lru_cache(maxsize=None)

@@ -81,6 +81,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     )  # type:ignore
     schema_name = VALIDATORS["string"](required=False)  # type:ignore
     schema_url = VALIDATORS["url"](required=False)  # type:ignore
+    cir_instrument_id = VALIDATORS["uuid"](required=False)  # type:ignore
     response_id = VALIDATORS["string"](required=True)  # type:ignore
     account_service_url = VALIDATORS["url"](required=True)  # type:ignore
 
@@ -102,9 +103,13 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     @validates_schema
     def validate_schema_name_is_set(self, data, **kwargs):
         # pylint: disable=no-self-use, unused-argument
-        if data and not (data.get("schema_name") or data.get("schema_url")):
+        if data and not (
+            data.get("schema_name")
+            or data.get("schema_url")
+            or data.get("cir_instrument_id")
+        ):
             raise ValidationError(
-                "Neither schema_name or schema_url has been set in metadata"
+                "Neither schema_name, schema_url or cir_instrument_id has been set in metadata"
             )
 
 
