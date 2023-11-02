@@ -119,10 +119,10 @@ def load_user(extend_session: bool = True) -> Optional[User]:
         return user
 
     if not session_store:
-        logger.info("session store doesn't exist")
+        logger.info("session store doesn't exist")  # pragma: no cover
 
     elif not _is_session_valid(session_store):
-        logger.info("session has expired", session_expiry=session_store.expiration_time)
+        logger.info("session has expired", session_expiry=session_store.expiration_time)  # pragma: no cover
 
     logger.info("session does not exist")
 

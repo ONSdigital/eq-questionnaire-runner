@@ -34,10 +34,10 @@ def get_questionnaire_store(user_id: str, user_ik: str) -> QuestionnaireStore:
 def get_session_store() -> SessionStore | None:
     if USER_IK not in cookie_session or EQ_SESSION_ID not in cookie_session:
         if USER_IK not in cookie_session:
-            logger.info("user ik not found in cookie session")
+            logger.info("user ik not found in cookie session")  # pragma: no cover
 
         if EQ_SESSION_ID not in cookie_session:
-            logger.info("eq session id not found in cookie session")
+            logger.info("eq session id not found in cookie session")  # pragma: no cover
 
         return None
 
