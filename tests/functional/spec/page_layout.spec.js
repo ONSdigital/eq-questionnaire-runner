@@ -5,6 +5,6 @@ describe("Page Layout", () => {
     await browser.url(HubPage.url());
 
     const cssWidthSelector = await $('div[class*="ons-col-"][class*="@m"]').getAttribute("class");
-    await expect(cssWidthSelector).to.contain("ons-col-8@m");
+    await expect(cssWidthSelector).toContain("ons-col-8@m");
   });
 });

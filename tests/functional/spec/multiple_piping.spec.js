@@ -20,7 +20,7 @@ describe("Piping", () => {
       await $(TextfieldPage.firstText()).setValue("Fireman");
       await $(TextfieldPage.secondText()).setValue("Sam");
       await click(TextfieldPage.submit());
-      await expect(await $(MultiplePipingPage.answerAddressLabel()).getText()).to.contain("1 The ONS, Newport, NP10 8XG, Wales");
+      await expect(await $(MultiplePipingPage.answerAddressLabel()).getText()).toBe("1 The ONS, Newport, NP10 8XG, Wales");
     });
 
     it("Given I enter values in multiple questions, When I navigate to the multiple piping question, Then I should see both values piped into the question", async () => {
@@ -29,7 +29,7 @@ describe("Piping", () => {
       await $(TextfieldPage.firstText()).setValue("Fireman");
       await $(TextfieldPage.secondText()).setValue("Sam");
       await click(TextfieldPage.submit());
-      await expect(await $(MultiplePipingPage.questionText()).getText()).to.contain("Does Fireman Sam live at 1 The ONS");
+      await expect(await $(MultiplePipingPage.questionText()).getText()).toBe("Does Fireman Sam live at 1 The ONS");
     });
   });
 });

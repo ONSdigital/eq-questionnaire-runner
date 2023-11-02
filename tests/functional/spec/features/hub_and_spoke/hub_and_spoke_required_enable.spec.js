@@ -9,13 +9,13 @@ describe("Hub and spoke section required and enabled", () => {
   it("Given a relationship question in household, When I answer 'Yes', meaning the second section is enabled, Then I am routed to second section", async () => {
     await $(HouseholdRelationshipsBlockPage.yes()).click();
     await click(HouseholdRelationshipsBlockPage.submit());
-    await expect(await $(RelationshipsCountPage.legend()).getText()).to.contain("How many people are related");
+    await expect(await $(RelationshipsCountPage.legend()).getText()).toBe("How many people are related?");
   });
   it("Given a relationship question in household, When I answer 'No', Then I am redirected to the hub and can submit my answers without completing the other section", async () => {
     await $(HouseholdRelationshipsBlockPage.no()).click();
     await click(HouseholdRelationshipsBlockPage.submit());
-    await expect(await $("body").getText()).to.contain("Submit survey");
+    await expect(await $("body").getText()).toContain("Submit survey");
     await click(SubmitPage.submit());
-    await expect(await browser.getUrl()).to.contain("thank-you");
+    await expect(browser).toHaveUrlContaining("thank-you");
   });
 });

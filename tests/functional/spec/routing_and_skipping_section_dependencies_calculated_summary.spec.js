@@ -18,9 +18,9 @@ describe("Routing and skipping section dependencies based on calculated summarie
     });
 
     it("When the calculated summary total has not been set, Then the dependent section should not be enabled", async () => {
-      await expect(await $(HubPage.summaryRowLink("calculated-summary-section")).isExisting()).to.be.true;
-      await expect(await $(HubPage.summaryRowLink("dependent-question-section")).isExisting()).to.be.true;
-      await expect(await $(HubPage.summaryRowLink("dependent-enabled-section")).isExisting()).to.be.false;
+      await expect(await $(HubPage.summaryRowLink("calculated-summary-section")).isExisting()).toBe(true);
+      await expect(await $(HubPage.summaryRowLink("dependent-question-section")).isExisting()).toBe(true);
+      await expect(await $(HubPage.summaryRowLink("dependent-enabled-section")).isExisting()).toBe(false);
     });
 
     it("When the calculated summary total is equal to £100, Then the dependent section should be enabled", async () => {
@@ -35,9 +35,9 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await click(CurrencyTotalPlaybackPage.submit());
       await click(CalculatedSummarySectionSummaryPage.submit());
 
-      await expect(await $(HubPage.summaryRowLink("calculated-summary-section")).isExisting()).to.be.true;
-      await expect(await $(HubPage.summaryRowLink("dependent-question-section")).isExisting()).to.be.true;
-      await expect(await $(HubPage.summaryRowLink("dependent-enabled-section")).isExisting()).to.be.true;
+      await expect(await $(HubPage.summaryRowLink("calculated-summary-section")).isExisting()).toBe(true);
+      await expect(await $(HubPage.summaryRowLink("dependent-question-section")).isExisting()).toBe(true);
+      await expect(await $(HubPage.summaryRowLink("dependent-enabled-section")).isExisting()).toBe(true);
     });
 
     it("When a question in another section has a skip condition dependency on a calculated summary total, and the skip condition is not met (total less than £10), then the dependent question should be displayed", async () => {
@@ -53,7 +53,7 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await click(CalculatedSummarySectionSummaryPage.submit());
 
       await $(HubPage.summaryRowLink("dependent-question-section")).click();
-      await expect(await browser.getUrl()).to.contain(FruitPage.pageName);
+      await expect(browser).toHaveUrlContaining(FruitPage.pageName);
     });
 
     it("When a question in another section has a skip condition dependency on a calculated summary total, and the skip condition is met (total greater than £10), then the dependent question should not be displayed", async () => {
@@ -69,7 +69,7 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await click(CalculatedSummarySectionSummaryPage.submit());
 
       await $(HubPage.summaryRowLink("dependent-question-section")).click();
-      await expect(await browser.getUrl()).to.contain(VegetablesPage.pageName);
+      await expect(browser).toHaveUrlContaining(VegetablesPage.pageName);
     });
 
     it("When a question in another section has a routing rule dependency on a calculated summary total, and the calculated summary total is greater than £100, then we should be routed to the second question block", async () => {
@@ -87,7 +87,7 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await $(HubPage.summaryRowLink("dependent-question-section")).click();
       await $(VegetablesPage.yes()).click();
       await click(VegetablesPage.submit());
-      await expect(await browser.getUrl()).to.contain(SecondQuestionBlockPage.pageName);
+      await expect(browser).toHaveUrlContaining(SecondQuestionBlockPage.pageName);
     });
 
     it("When a question in another section has a routing rule dependency on a calculated summary total, and the calculated summary total is less than £100, then we should be routed to the section summary", async () => {
@@ -105,7 +105,7 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await $(HubPage.summaryRowLink("dependent-question-section")).click();
       await $(VegetablesPage.yes()).click();
       await click(VegetablesPage.submit());
-      await expect(await browser.getUrl()).to.contain(DependentQuestionSectionSummaryPage.pageName);
+      await expect(browser).toHaveUrlContaining(DependentQuestionSectionSummaryPage.pageName);
     });
 
     it("When a question in another section has a dependency on a calculated summary total, and both sections are complete, and I go back and edit the calculated summary total, then the dependent section status should be in progress", async () => {
@@ -124,16 +124,16 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await $(VegetablesPage.yes()).click();
       await click(VegetablesPage.submit());
       await click(DependentQuestionSectionSummaryPage.submit());
-      await expect(await $(HubPage.summaryRowState("dependent-question-section")).getText()).to.equal("Completed");
+      await expect(await $(HubPage.summaryRowState("dependent-question-section")).getText()).toBe("Completed");
 
       await $(HubPage.summaryRowLink("calculated-summary-section")).click();
       await $(CurrencyTotalPlaybackPage.milkAnswerEdit()).click();
       await $(FirstQuestionBlockPage.milk()).setValue(100);
       await click(FirstQuestionBlockPage.submit());
-      await expect(await browser.getUrl()).to.contain(CurrencyTotalPlaybackPage.pageName);
+      await expect(browser).toHaveUrlContaining(CurrencyTotalPlaybackPage.pageName);
       await click(CurrencyTotalPlaybackPage.submit());
       await click(CalculatedSummarySectionSummaryPage.submit());
-      await expect(await $(HubPage.summaryRowState("dependent-question-section")).getText()).to.equal("Partially completed");
+      await expect(await $(HubPage.summaryRowState("dependent-question-section")).getText()).toBe("Partially completed");
     });
 
     it("When the calculated summary total is less than £100 but additional answers on the path are opened up as a result of editing an answer, Then the dependent section should be enabled", async () => {
@@ -148,9 +148,9 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await click(CurrencyTotalPlaybackPage.submit());
       await click(CalculatedSummarySectionSummaryPage.submit());
 
-      await expect(await $(HubPage.summaryRowLink("calculated-summary-section")).isExisting()).to.be.true;
-      await expect(await $(HubPage.summaryRowLink("dependent-question-section")).isExisting()).to.be.true;
-      await expect(await $(HubPage.summaryRowLink("dependent-enabled-section")).isExisting()).to.be.false;
+      await expect(await $(HubPage.summaryRowLink("calculated-summary-section")).isExisting()).toBe(true);
+      await expect(await $(HubPage.summaryRowLink("dependent-question-section")).isExisting()).toBe(true);
+      await expect(await $(HubPage.summaryRowLink("dependent-enabled-section")).isExisting()).toBe(false);
 
       await $(HubPage.summaryRowLink("calculated-summary-section")).click();
       await $(CalculatedSummarySectionSummaryPage.skipButterBlockAnswerEdit()).click();
@@ -161,9 +161,9 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await click(CurrencyTotalPlaybackPage.submit());
       await click(CalculatedSummarySectionSummaryPage.submit());
 
-      await expect(await $(HubPage.summaryRowLink("calculated-summary-section")).isExisting()).to.be.true;
-      await expect(await $(HubPage.summaryRowLink("dependent-question-section")).isExisting()).to.be.true;
-      await expect(await $(HubPage.summaryRowLink("dependent-enabled-section")).isExisting()).to.be.true;
+      await expect(await $(HubPage.summaryRowLink("calculated-summary-section")).isExisting()).toBe(true);
+      await expect(await $(HubPage.summaryRowLink("dependent-question-section")).isExisting()).toBe(true);
+      await expect(await $(HubPage.summaryRowLink("dependent-enabled-section")).isExisting()).toBe(true);
     });
 
     it("When the calculated summary total is equal to £100 but answers on the path are remove as a result of an answer edit, Then the dependent section should be enabled", async () => {
@@ -180,9 +180,9 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await click(CurrencyTotalPlaybackPage.submit());
       await click(CalculatedSummarySectionSummaryPage.submit());
 
-      await expect(await $(HubPage.summaryRowLink("calculated-summary-section")).isExisting()).to.be.true;
-      await expect(await $(HubPage.summaryRowLink("dependent-question-section")).isExisting()).to.be.true;
-      await expect(await $(HubPage.summaryRowLink("dependent-enabled-section")).isExisting()).to.be.true;
+      await expect(await $(HubPage.summaryRowLink("calculated-summary-section")).isExisting()).toBe(true);
+      await expect(await $(HubPage.summaryRowLink("dependent-question-section")).isExisting()).toBe(true);
+      await expect(await $(HubPage.summaryRowLink("dependent-enabled-section")).isExisting()).toBe(true);
 
       await $(HubPage.summaryRowLink("calculated-summary-section")).click();
       await $(CalculatedSummarySectionSummaryPage.skipButterBlockAnswerEdit()).click();
@@ -190,9 +190,9 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await click(SkipQuestionPage.submit());
       await click(CalculatedSummarySectionSummaryPage.submit());
 
-      await expect(await $(HubPage.summaryRowLink("calculated-summary-section")).isExisting()).to.be.true;
-      await expect(await $(HubPage.summaryRowLink("dependent-question-section")).isExisting()).to.be.true;
-      await expect(await $(HubPage.summaryRowLink("dependent-enabled-section")).isExisting()).to.be.false;
+      await expect(await $(HubPage.summaryRowLink("calculated-summary-section")).isExisting()).toBe(true);
+      await expect(await $(HubPage.summaryRowLink("dependent-question-section")).isExisting()).toBe(true);
+      await expect(await $(HubPage.summaryRowLink("dependent-enabled-section")).isExisting()).toBe(false);
     });
   });
 });

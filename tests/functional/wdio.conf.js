@@ -194,10 +194,7 @@ export const config = {
    * @param {Array} args arguments that command would receive
    */
   before: async function (capabilities, specs) {
-    const chai = require("chai");
     const JwtHelper = require("./jwt_helper");
-
-    global.expect = chai.expect;
 
     await browser.addCommand(
       "openQuestionnaire",

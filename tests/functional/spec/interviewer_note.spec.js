@@ -10,20 +10,20 @@ describe("Given I start a survey", () => {
   });
 
   it("When I view interstitial page and the interviewer_note is set to true then I should be able to see interviewer note", async () => {
-    await expect(await $(InitialInterstitialPage.questionText()).getText()).to.contain("Interviewer note");
+    await expect(await $(InitialInterstitialPage.questionText()).getText()).toContain("Interviewer note");
   });
   it("When I view question page and the interviewer_note is set to true then I should be able to see interviewer note", async () => {
     await click(InitialInterstitialPage.submit());
-    await expect(await $(FavouriteTeamPage.questionText()).getText()).to.contain("Interviewer note");
+    await expect(await $(FavouriteTeamPage.questionText()).getText()).toContain("Interviewer note");
   });
   it("When I view question page and the interviewer_note is set to false then I should not be able to see interviewer note", async () => {
     await $(FavouriteTeamPage.favouriteTeam()).setValue("TNS");
     await click(FavouriteTeamPage.submit());
-    await expect(await $(ConfirmPage.questionText()).getText()).to.not.contain("Interviewer note");
+    await expect(await $(ConfirmPage.questionText()).getText()).not.toBe("Interviewer note");
   });
   it("When I view interstitial page and the interviewer_note is not set then I should not be able to see interviewer note", async () => {
     await $(ConfirmPage.yes()).click();
     await click(ConfirmPage.submit());
-    await expect(await $(FinalInterstitialPage.questionText()).getText()).to.not.contain("Interviewer note");
+    await expect(await $(FinalInterstitialPage.questionText()).getText()).not.toBe("Interviewer note");
   });
 });
