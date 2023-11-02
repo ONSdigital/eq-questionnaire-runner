@@ -12,20 +12,20 @@ describe("Submit Page with Summary", () => {
   it("Given a questionnaire with a summary has been completed when the submit page is displayed, then it should contain a summary of all answers", async () => {
     await completeAllQuestions();
 
-    await expect(await $(SubmitPage.radioAnswer()).getText()).to.contain("Bacon");
-    await expect(await $(SubmitPage.dessertGroupTitle()).getText()).to.contain("Dessert");
-    await expect(await $(SubmitPage.dessertAnswer()).getText()).to.contain("Crème Brûlée");
-    await expect(await $(SubmitPage.dessertConfirmationAnswer()).getText()).to.contain("Yes");
-    await expect(await $(SubmitPage.numbersCurrencyAnswer()).getText()).to.contain("£1,234.00");
-    await expect(await $(SubmitPage.numbersUnitAnswer()).getText()).to.contain("123,456 km²");
-    await expect(await $(SubmitPage.numbersDecimalAnswer()).getText()).to.contain("123,456.78");
+    await expect(await $(SubmitPage.radioAnswer()).getText()).toBe("Bacon");
+    await expect(await $(SubmitPage.dessertGroupTitle()).getText()).toBe("Dessert");
+    await expect(await $(SubmitPage.dessertAnswer()).getText()).toBe("Crème Brûlée");
+    await expect(await $(SubmitPage.dessertConfirmationAnswer()).getText()).toBe("Yes");
+    await expect(await $(SubmitPage.numbersCurrencyAnswer()).getText()).toBe("£1,234.00");
+    await expect(await $(SubmitPage.numbersUnitAnswer()).getText()).toBe("123,456 km²");
+    await expect(await $(SubmitPage.numbersDecimalAnswer()).getText()).toBe("123,456.78");
   });
 
   it("Given a questionnaire with a summary has been completed when the submit page is displayed then I should be able to submit the answers", async () => {
     await completeAllQuestions();
 
     await click(SubmitPage.submit());
-    await expect(await browser.getUrl()).to.contain("thank-you");
+    await expect(browser).toHaveUrlContaining("thank-you");
   });
 
   it("Given a questionnaire with a summary has been completed when a summary page edit link is clicked then it should return to that question", async () => {
@@ -33,7 +33,7 @@ describe("Submit Page with Summary", () => {
 
     await $(SubmitPage.radioAnswerEdit()).click();
 
-    await expect(await $(RadioPage.bacon()).isSelected()).to.be.true;
+    await expect(await $(RadioPage.bacon()).isSelected()).toBe(true);
   });
 
   it("Given a questionnaire with a summary has been completed and a summary page edit link is clicked, when I click previous, then it should return to the summary", async () => {
@@ -42,7 +42,7 @@ describe("Submit Page with Summary", () => {
     await $(SubmitPage.radioAnswerEdit()).click();
     await $(RadioPage.previous()).click();
 
-    await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
+    await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
   });
 
   it("Given a questionnaire with a summary has been completed when a summary page edit link is clicked then it should return to that question then back to summary", async () => {
@@ -51,17 +51,17 @@ describe("Submit Page with Summary", () => {
     await $(SubmitPage.radioAnswerEdit()).click();
     await $(RadioPage.sausage()).click();
     await click(RadioPage.submit());
-    await expect(await $(SubmitPage.radioAnswer()).getText()).to.contain("Sausage");
+    await expect(await $(SubmitPage.radioAnswer()).getText()).toBe("Sausage");
   });
 
   it("Given the edit link is used when a question is updated then the submit page summary should show the new answer", async () => {
     await completeAllQuestions();
 
     await $(SubmitPage.numbersUnitAnswerEdit()).click();
-    await expect(await $(NumbersPage.unit()).isFocused()).to.be.true;
+    await expect(await $(NumbersPage.unit()).isFocused()).toBe(true);
     await $(NumbersPage.unit()).setValue("654321");
     await click(NumbersPage.submit());
-    await expect(await $(SubmitPage.numbersUnitAnswer()).getText()).to.contain("654,321 km²");
+    await expect(await $(SubmitPage.numbersUnitAnswer()).getText()).toBe("654,321 km²");
   });
 
   it("Given a number value of zero is entered when on the submit page then formatted 0 should be displayed on the summary", async () => {
@@ -72,7 +72,7 @@ describe("Submit Page with Summary", () => {
     await click(DessertConfirmationPage.submit());
     await $(NumbersPage.currency()).setValue("0");
     await click(NumbersPage.submit());
-    await expect(await $(SubmitPage.numbersCurrencyAnswer()).getText()).to.contain("£0.00");
+    await expect(await $(SubmitPage.numbersCurrencyAnswer()).getText()).toBe("£0.00");
   });
 
   it("Given no value is entered when on the submit page summary then the correct response should be displayed", async () => {
@@ -82,14 +82,14 @@ describe("Submit Page with Summary", () => {
     await $(DessertConfirmationPage.yes()).click();
     await click(DessertConfirmationPage.submit());
     await click(NumbersPage.submit());
-    await expect(await $(SubmitPage.numbersCurrencyAnswer()).getText()).to.contain("No answer provided");
+    await expect(await $(SubmitPage.numbersCurrencyAnswer()).getText()).toBe("No answer provided");
   });
 
   it("Given a questionnaire with a summary has been completed, when submission content has not been set in the schema, then the default content should be displayed", async () => {
     await completeAllQuestions();
 
-    await expect(await $(SubmitPage.heading()).getText()).to.contain("Check your answers and submit");
-    await expect(await $(SubmitPage.submit()).getText()).to.contain("Submit answers");
+    await expect(await $(SubmitPage.heading()).getText()).toBe("Check your answers and submit");
+    await expect(await $(SubmitPage.submit()).getText()).toBe("Submit answers");
   });
 
   async function completeAllQuestions() {
@@ -104,6 +104,6 @@ describe("Submit Page with Summary", () => {
     await $(NumbersPage.decimal()).setValue("123456.78");
     await click(NumbersPage.submit());
 
-    await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
+    await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
   }
 });

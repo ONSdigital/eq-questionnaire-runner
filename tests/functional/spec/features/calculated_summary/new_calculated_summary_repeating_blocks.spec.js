@@ -222,7 +222,7 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
     await $(SectionOnePage.previous()).click();
     // other calculated summary should not be on the path, so go straight back to the spending one which now has none of the list items
     await expect(browser).toHaveUrlContaining(CalculatedSummarySpendingPage.pageName);
-    await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).toContain(
+    await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).toBe(
       "We calculate the total monthly expenditure on transport to be £100.00. Is this correct?",
     );
     await assertSummaryValues(["£100.00"]);

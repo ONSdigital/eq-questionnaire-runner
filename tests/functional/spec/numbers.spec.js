@@ -14,8 +14,8 @@ describe("Number validation", () => {
   });
   describe("Given I am completing the test numbers questionnaire,", () => {
     it("When I am on the set minimum and maximum page, Then each field has a label", async () => {
-      await expect(await $(SetMinMax.setMinimumLabelDescription()).getText()).to.contain("This is a description of the minimum value");
-      await expect(await $(SetMinMax.setMaximumLabelDescription()).getText()).to.contain("This is a description of the maximum value");
+      await expect(await $(SetMinMax.setMinimumLabelDescription()).getText()).toBe("This is a description of the minimum value");
+      await expect(await $(SetMinMax.setMaximumLabelDescription()).getText()).toBe("This is a description of the maximum value");
     });
 
     it("When I enter values outside of the set range, Then the correct error messages are displayed", async () => {
@@ -33,14 +33,14 @@ describe("Number validation", () => {
       await $(TestMinMax.testDecimal()).setValue("5.4");
       await click(TestMinMax.submit());
 
-      await expect(await $(TestMinMax.errorNumber(1)).getText()).to.contain("Enter an answer more than or equal to 10");
-      await expect(await $(TestMinMax.errorNumber(2)).getText()).to.contain("Enter an answer more than 10");
-      await expect(await $(TestMinMax.errorNumber(3)).getText()).to.contain("Enter an answer more than or equal to -123");
-      await expect(await $(TestMinMax.errorNumber(4)).getText()).to.contain("Enter an answer less than or equal to 1,234");
-      await expect(await $(TestMinMax.errorNumber(5)).getText()).to.contain("Enter an answer more than 123");
-      await expect(await $(TestMinMax.errorNumber(6)).getText()).to.contain("Enter an answer less than 1,234");
-      await expect(await $(TestMinMax.errorNumber(7)).getText()).to.contain("Enter an answer less than or equal to 100");
-      await expect(await $(TestMinMax.errorNumber(8)).getText()).to.contain("Enter an answer more than or equal to £10.00");
+      await expect(await $(TestMinMax.errorNumber(1)).getText()).toBe("Enter an answer more than or equal to 10");
+      await expect(await $(TestMinMax.errorNumber(2)).getText()).toBe("Enter an answer more than 10");
+      await expect(await $(TestMinMax.errorNumber(3)).getText()).toBe("Enter an answer more than or equal to -123");
+      await expect(await $(TestMinMax.errorNumber(4)).getText()).toBe("Enter an answer less than or equal to 1,234");
+      await expect(await $(TestMinMax.errorNumber(5)).getText()).toBe("Enter an answer more than 123");
+      await expect(await $(TestMinMax.errorNumber(6)).getText()).toBe("Enter an answer less than 1,234");
+      await expect(await $(TestMinMax.errorNumber(7)).getText()).toBe("Enter an answer less than or equal to 100");
+      await expect(await $(TestMinMax.errorNumber(8)).getText()).toBe("Enter an answer more than or equal to £10.00");
     });
 
     it("When I enter values inside the set range but provide too many decimal places, Then the correct error messages are displayed", async () => {
@@ -55,8 +55,8 @@ describe("Number validation", () => {
       await $(TestMinMax.testDecimal()).setValue("11.123456");
       await click(TestMinMax.submit());
 
-      await expect(await $(TestMinMax.errorNumber(1)).getText()).to.contain("Enter a number rounded to 2 decimal places");
-      await expect(await $(TestMinMax.errorNumber(2)).getText()).to.contain("Enter a number rounded to 5 decimal places");
+      await expect(await $(TestMinMax.errorNumber(1)).getText()).toBe("Enter a number rounded to 2 decimal places");
+      await expect(await $(TestMinMax.errorNumber(2)).getText()).toBe("Enter a number rounded to 5 decimal places");
     });
 
     it("When I enter values inside the set range, Then I should be able to submit the survey", async () => {
@@ -75,7 +75,7 @@ describe("Number validation", () => {
       await click(secondNumberBlock.submit());
       await click(currencySectionSummary.submit());
 
-      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
     });
 
     it("When I edit and change the maximum value, Then I must re-validate and submit any dependent answers before I can return to the summary", async () => {
@@ -86,14 +86,14 @@ describe("Number validation", () => {
       await click(TestMinMax.submit());
       await click(DetailAnswer.submit());
 
-      await expect(await $(DetailAnswer.errorNumber(1)).getText()).to.contain("Enter an answer less than or equal to 1,018");
+      await expect(await $(DetailAnswer.errorNumber(1)).getText()).toBe("Enter an answer less than or equal to 1,018");
 
       await $(DetailAnswer.otherDetail()).setValue("1001");
       await click(DetailAnswer.submit());
       await click(secondNumberBlock.submit());
       await click(currencySectionSummary.submit());
 
-      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
     });
 
     it("When I edit and change the minimum value, Then I must re-validate and submit any dependent answers again before I can return to the summary", async () => {
@@ -102,16 +102,16 @@ describe("Number validation", () => {
       await click(SetMinMax.submit());
       await click(TestMinMax.submit());
 
-      await expect(await $(TestMinMax.errorNumber(1)).getText()).to.contain("Enter an answer more than 11");
+      await expect(await $(TestMinMax.errorNumber(1)).getText()).toBe("Enter an answer more than 11");
 
       await $(TestMinMax.testRangeExclusive()).setValue("12");
       await click(TestMinMax.submit());
 
-      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
     });
 
     it("When a number with more than 3 decimal places has been entered, Then it should be displayed correctly on the summary", async () => {
-      await expect(await $(SubmitPage.testDecimal()).getText()).to.equal("£11.10000");
+      await expect(await $(SubmitPage.testDecimal()).getText()).toBe("£11.10000");
     });
   });
 });

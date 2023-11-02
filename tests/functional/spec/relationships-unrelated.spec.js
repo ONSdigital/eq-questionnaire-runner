@@ -29,41 +29,41 @@ describe("Unrelated Relationships", () => {
         await click(RelationshipsPage.submit());
         await $(RelationshipsPage.unrelated()).click();
         await click(RelationshipsPage.submit());
-        await expect(await $(RelatedToAnyoneElsePage.questionText()).getText()).to.contain("Are any of these people related to you?");
-        await expect(await $(RelatedToAnyoneElsePage.listLabel(1)).getText()).to.equal("Daniel Davis");
-        await expect(await $(RelatedToAnyoneElsePage.listLabel(2)).getText()).to.equal("Eve Elliot");
+        await expect(await $(RelatedToAnyoneElsePage.questionText()).getText()).toBe("Are any of these people related to you?");
+        await expect(await $(RelatedToAnyoneElsePage.listLabel(1)).getText()).toBe("Daniel Davis");
+        await expect(await $(RelatedToAnyoneElsePage.listLabel(2)).getText()).toBe("Eve Elliot");
       });
 
       it("When I click previous, Then I will go back to the previous relationship", async () => {
         await $(RelatedToAnyoneElsePage.previous()).click();
-        await expect(await $(RelationshipsPage.questionText()).getText()).to.contain("Carla Clark is unrelated to Andrew Austin");
+        await expect(await $(RelationshipsPage.questionText()).getText()).toContain("Carla Clark is unrelated to Andrew Austin");
       });
 
       it("When I return to the 'related to anyone else' question and select 'Yes', Then I will be taken to the next relationship for the first person", async () => {
         await click(RelationshipsPage.submit());
         await $(RelatedToAnyoneElsePage.yes()).click();
         await click(RelatedToAnyoneElsePage.submit());
-        await expect(await $(RelationshipsPage.questionText()).getText()).to.contain("Thinking about Andrew Austin, Daniel Davis is their");
+        await expect(await $(RelationshipsPage.questionText()).getText()).toContain("Thinking about Andrew Austin, Daniel Davis is their");
       });
 
       it("When I click previous, Then I will go back to the 'related to anyone else' question", async () => {
         await $(RelationshipsPage.previous()).click();
-        await expect(await $(RelatedToAnyoneElsePage.questionText()).getText()).to.contain("Are any of these people related to you?");
-        await expect(await $(RelatedToAnyoneElsePage.yes()).isSelected()).to.be.true;
+        await expect(await $(RelatedToAnyoneElsePage.questionText()).getText()).toBe("Are any of these people related to you?");
+        await expect(await $(RelatedToAnyoneElsePage.yes()).isSelected()).toBe(true);
       });
 
       it("When I select 'No' to the 'related to anyone else' question, Then I will be taken to the first relationship for the second person", async () => {
         await $(RelatedToAnyoneElsePage.noNoneOfThesePeopleAreRelatedToMe()).click();
         await click(RelatedToAnyoneElsePage.submit());
-        await expect(await $(RelationshipsPage.questionText()).getText()).to.contain("Thinking about Betty Burns, Carla Clark is their");
+        await expect(await $(RelationshipsPage.questionText()).getText()).toContain("Thinking about Betty Burns, Carla Clark is their");
       });
 
       it("When I click previous, Then I will go back to the 'related to anyone else' question for the first person", async () => {
         await $(RelationshipsPage.previous()).click();
-        await expect(await $(RelatedToAnyoneElsePage.questionText()).getText()).to.contain("Are any of these people related to you?");
-        await expect(await $(RelatedToAnyoneElsePage.listLabel(1)).getText()).to.equal("Daniel Davis");
-        await expect(await $(RelatedToAnyoneElsePage.listLabel(2)).getText()).to.equal("Eve Elliot");
-        await expect(await $(RelatedToAnyoneElsePage.noNoneOfThesePeopleAreRelatedToMe()).isSelected()).to.be.true;
+        await expect(await $(RelatedToAnyoneElsePage.questionText()).getText()).toBe("Are any of these people related to you?");
+        await expect(await $(RelatedToAnyoneElsePage.listLabel(1)).getText()).toBe("Daniel Davis");
+        await expect(await $(RelatedToAnyoneElsePage.listLabel(2)).getText()).toBe("Eve Elliot");
+        await expect(await $(RelatedToAnyoneElsePage.noNoneOfThesePeopleAreRelatedToMe()).isSelected()).toBe(true);
       });
 
       it("When I click complete the remaining relationships, Then I will go to the relationships section complete page", async () => {
@@ -80,7 +80,7 @@ describe("Unrelated Relationships", () => {
         await click(RelationshipsPage.submit());
         await $(RelationshipsPage.unrelated()).click();
         await click(RelationshipsPage.submit());
-        await expect(await browser.getUrl()).to.contain(RelationshipsInterstitialPage.pageName);
+        await expect(browser).toHaveUrlContaining(RelationshipsInterstitialPage.pageName);
       });
     });
 
