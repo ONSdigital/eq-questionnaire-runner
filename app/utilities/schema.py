@@ -4,7 +4,9 @@ from functools import lru_cache
 from glob import glob
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlencode
 
+from flask import current_app
 from requests import RequestException
 from structlog import get_logger
 
@@ -13,7 +15,6 @@ from app.questionnaire.questionnaire_schema import (
     DEFAULT_LANGUAGE_CODE,
     QuestionnaireSchema,
 )
-from app.services.collection_instrument_registry import get_collection_instrument_v1
 from app.utilities.json import json_load, json_loads
 from app.utilities.request_session import get_retryable_session
 
@@ -115,7 +116,9 @@ def load_schema_from_metadata(
         # This should not be used in production.
 
         start = time.time()
-        schema = load_schema_from_url(schema_url, language_code)
+        schema = load_schema_from_url(
+            schema_url=schema_url, language_code=language_code
+        )
         duration_in_milliseconds = (time.time() - start) * 1_000
 
         cache_info = (
@@ -132,7 +135,9 @@ def load_schema_from_metadata(
         return schema
 
     if cir_instrument_id := metadata.cir_instrument_id:
-        return _load_schema_from_instrument_id(cir_instrument_id, language_code)
+        return load_schema_from_instrument_id(
+            cir_instrument_id=cir_instrument_id, language_code=language_code
+        )
 
     return load_schema_from_name(
         # Type ignore: Metadata is validated to have either schema_name or schema_url populated.
@@ -149,14 +154,17 @@ def load_schema_from_name(
     return _load_schema_from_name(schema_name, language_code)
 
 
-@lru_cache(maxsize=None)
-def _load_schema_from_instrument_id(
-    cir_instrument_id: str, language_code: str | None
+def load_schema_from_instrument_id(
+    *, cir_instrument_id: str, language_code: str | None
 ) -> QuestionnaireSchema:
-    schema_json = get_collection_instrument_v1(cir_instrument_id)
-    language_code = language_code or DEFAULT_LANGUAGE_CODE
-
-    return QuestionnaireSchema(schema_json, language_code)
+    cir_url = (
+        f"{current_app.config['CIR_API_BASE_URL']}/v2/retrieve_collection_instrument"
+    )
+    return load_schema_from_url(
+        schema_url=cir_url,
+        language_code=language_code,
+        cir_instrument_id=cir_instrument_id,
+    )
 
 
 @lru_cache(maxsize=None)
@@ -210,8 +218,15 @@ def _load_schema_file(schema_name: str, language_code: str) -> Any:
 
 @lru_cache(maxsize=None)
 def load_schema_from_url(
-    schema_url: str, language_code: str | None
+    *,
+    schema_url: str,
+    language_code: str | None,
+    cir_instrument_id: str | None = None,
 ) -> QuestionnaireSchema:
+    """
+    Fetches a schema from the provided url. if a cir_instrument_id is provided
+    this is used for the parameters instead of the language_code
+    """
     language_code = language_code or DEFAULT_LANGUAGE_CODE
     pid = os.getpid()
     logger.info(
@@ -220,8 +235,12 @@ def load_schema_from_url(
         language_code=language_code,
         pid=pid,
     )
+    if cir_instrument_id:
+        parameters = {"guid": cir_instrument_id}
+    else:
+        parameters = {"language": language_code}
 
-    constructed_schema_url = f"{schema_url}?language={language_code}"
+    constructed_schema_url = f"{schema_url}?{urlencode(parameters)}"
 
     session = get_retryable_session(
         max_retries=SCHEMA_REQUEST_MAX_RETRIES,
