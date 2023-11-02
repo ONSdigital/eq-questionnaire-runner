@@ -82,7 +82,7 @@ describe("Given the user says no one else lives in the house", () => {
     await $(AnyoneUsuallyLiveAtPage.exclusiveNoneOfTheseApplyNoOneUsuallyLivesHere()).click();
     await click(AnyoneUsuallyLiveAtPage.submit());
 
-    await expect(await $(ListCollectorTemporaryAwayPage.questionText()).getText()).to.equal(
+    await expect(await $(ListCollectorTemporaryAwayPage.questionText()).getText()).toBe(
       "You said 1 person lives at 12 Lovely Villas. Do you need to add anyone?",
     );
   });
@@ -93,11 +93,11 @@ describe("Given a person does not live in the house", () => {
   it("The user is asked whether they live there", async () => {
     await $(PrimaryPersonListCollectorPage.noIDonTUsuallyLiveHere()).click();
     await click(PrimaryPersonListCollectorPage.submit());
-    await expect(await $(AnyoneUsuallyLiveAtPage.questionText()).getText()).to.equal("Do any of the following usually live at 12 Lovely Villas on 21 March?");
+    await expect(await $(AnyoneUsuallyLiveAtPage.questionText()).getText()).toBe("Do any of the following usually live at 12 Lovely Villas on 21 March?");
 
     await $(AnyoneUsuallyLiveAtPage.exclusiveNoneOfTheseApplyNoOneUsuallyLivesHere()).click();
     await click(AnyoneUsuallyLiveAtPage.submit());
-    await expect(await $(ListCollectorTemporaryAwayPage.questionText()).getText()).to.equal(
+    await expect(await $(ListCollectorTemporaryAwayPage.questionText()).getText()).toBe(
       "You said 0 people lives at 12 Lovely Villas. Do you need to add anyone?",
     );
 

@@ -8,15 +8,15 @@ describe('Radio with a numeric "detail_answer" option', () => {
   });
 
   it("Given a numeric detail answer options are available, When the user clicks an option, Then the detail answer input should be visible.", async () => {
-    await expect(await $(RadioNumericDetailPage.otherDetail()).isDisplayed()).to.be.true;
+    await expect(await $(RadioNumericDetailPage.otherDetail()).isDisplayed()).toBe(true);
   });
 
   it("Given a numeric detail answer, When the user does not provide any text, Then just the option value should be displayed on the summary screen", async () => {
     // When
-    await expect(await $(RadioNumericDetailPage.otherDetail()).isDisplayed()).to.be.true;
+    await expect(await $(RadioNumericDetailPage.otherDetail()).isDisplayed()).toBe(true);
     await click(RadioNumericDetailPage.submit());
     // Then
-    await expect(await $(SubmitPage.radioAnswerNumericDetail()).getText()).to.contain("Other");
+    await expect(await $(SubmitPage.radioAnswerNumericDetail()).getText()).toBe("Other");
   });
 
   it("Given a numeric detail answer, When the user provides text, Then that text should be displayed on the summary screen", async () => {
@@ -24,7 +24,7 @@ describe('Radio with a numeric "detail_answer" option', () => {
     await $(RadioNumericDetailPage.otherDetail()).setValue("15");
     await click(RadioNumericDetailPage.submit());
     // Then
-    await expect(await $(SubmitPage.radioAnswerNumericDetail()).getText()).to.contain("15");
+    await expect(await $(SubmitPage.radioAnswerNumericDetail()).getText()).toContain("15");
   });
 
   it("Given a numeric detail answer, When the user provides text, An error should be displayed", async () => {
@@ -32,8 +32,8 @@ describe('Radio with a numeric "detail_answer" option', () => {
     await $(RadioNumericDetailPage.otherDetail()).setValue("fhdjkshfjkds");
     await click(RadioNumericDetailPage.submit());
     // Then
-    await expect(await $(RadioNumericDetailPage.error()).isDisplayed()).to.be.true;
-    await expect(await $(RadioNumericDetailPage.errorNumber(1)).getText()).to.contain("Please enter an integer");
+    await expect(await $(RadioNumericDetailPage.error()).isDisplayed()).toBe(true);
+    await expect(await $(RadioNumericDetailPage.errorNumber(1)).getText()).toBe("Please enter an integer");
   });
 
   it("Given a numeric detail answer, When the user provides a number larger than 20, An error should be displayed", async () => {
@@ -41,8 +41,8 @@ describe('Radio with a numeric "detail_answer" option', () => {
     await $(RadioNumericDetailPage.otherDetail()).setValue("250");
     await click(RadioNumericDetailPage.submit());
     // Then
-    await expect(await $(RadioNumericDetailPage.error()).isDisplayed()).to.be.true;
-    await expect(await $(RadioNumericDetailPage.errorNumber(1)).getText()).to.contain("Number is too large");
+    await expect(await $(RadioNumericDetailPage.error()).isDisplayed()).toBe(true);
+    await expect(await $(RadioNumericDetailPage.errorNumber(1)).getText()).toBe("Number is too large");
   });
 
   it("Given a numeric detail answer, When the user provides a number less than 0, An error should be displayed", async () => {
@@ -50,8 +50,8 @@ describe('Radio with a numeric "detail_answer" option', () => {
     await $(RadioNumericDetailPage.otherDetail()).setValue("-1");
     await click(RadioNumericDetailPage.submit());
     // Then
-    await expect(await $(RadioNumericDetailPage.error()).isDisplayed()).to.be.true;
-    await expect(await $(RadioNumericDetailPage.errorNumber(1)).getText()).to.contain("Number cannot be less than zero");
+    await expect(await $(RadioNumericDetailPage.error()).isDisplayed()).toBe(true);
+    await expect(await $(RadioNumericDetailPage.errorNumber(1)).getText()).toBe("Number cannot be less than zero");
   });
 
   it("Given a numeric detail answer, When the user provides text, An error should be displayed and the text in the textbox should be kept", async () => {
@@ -59,9 +59,9 @@ describe('Radio with a numeric "detail_answer" option', () => {
     await $(RadioNumericDetailPage.otherDetail()).setValue("biscuits");
     await click(RadioNumericDetailPage.submit());
     // Then
-    await expect(await $(RadioNumericDetailPage.error()).isDisplayed()).to.be.true;
-    await expect(await $(RadioNumericDetailPage.errorNumber(1)).getText()).to.contain("Please enter an integer");
-    await expect(await $(RadioNumericDetailPage.otherDetail()).getValue()).to.contain("biscuits");
+    await expect(await $(RadioNumericDetailPage.error()).isDisplayed()).toBe(true);
+    await expect(await $(RadioNumericDetailPage.errorNumber(1)).getText()).toBe("Please enter an integer");
+    await expect(await $(RadioNumericDetailPage.otherDetail()).getValue()).toBe("biscuits");
   });
 
   it('Given a numeric detail answer, When the user enters "0" and submits, Then "0" should be displayed on the summary screen', async () => {
@@ -69,6 +69,6 @@ describe('Radio with a numeric "detail_answer" option', () => {
     await $(RadioNumericDetailPage.otherDetail()).setValue("0");
     await click(RadioNumericDetailPage.submit());
     // Then
-    await expect(await $(SubmitPage.radioAnswerNumericDetail()).getText()).to.contain("0");
+    await expect(await $(SubmitPage.radioAnswerNumericDetail()).getText()).toContain("0");
   });
 });

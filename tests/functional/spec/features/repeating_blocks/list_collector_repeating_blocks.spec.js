@@ -108,7 +108,7 @@ describe("List Collector Repeating Blocks", () => {
     });
 
     it("The list collector does not show 'GOV' anymore.", async () => {
-      await expect(await $(AnyOtherCompaniesOrBranchesPage.listLabel(2)).getText()).not.toContain("Government");
+      await expect(await $(AnyOtherCompaniesOrBranchesPage.listLabel(2)).getText()).not.toBe("Government");
       await expect(await $(AnyOtherCompaniesOrBranchesPage.listLabel(2)).getText()).toBe("MOD");
     });
 
@@ -209,18 +209,18 @@ describe("List Collector Repeating Blocks", () => {
 
       await $(SectionCompaniesPage.anyOtherTradingDetailsAnswerEdit()).click();
       await click(AnyOtherTradingDetailsPage.submit());
-      await expect(await browser.getUrl()).toContain("section-companies/#any-other-trading-details-answer");
+      await expect(browser).toHaveUrlContaining("section-companies/#any-other-trading-details-answer");
 
       await $(SectionCompaniesPage.anyOtherTradingDetailsAnswerEdit()).click();
       await $(AnyOtherTradingDetailsPage.previous()).click();
-      await expect(await browser.getUrl()).toContain("section-companies/#any-other-trading-details-answer");
+      await expect(browser).toHaveUrlContaining("section-companies/#any-other-trading-details-answer");
     });
 
     it("Editing an answer from the section summary which does not affect progress and pressing continue returns the user to the section summary anchored to the answer they edited", async () => {
       await $(SectionCompaniesPage.anyOtherTradingDetailsAnswerEdit()).click();
       await $(AnyOtherTradingDetailsPage.answer()).setValue("No");
       await click(AnyOtherTradingDetailsPage.submit());
-      await expect(await browser.getUrl()).toContain("section-companies/#any-other-trading-details-answer");
+      await expect(browser).toHaveUrlContaining("section-companies/#any-other-trading-details-answer");
     });
 
     it("Clicking a change link from the final summary and pressing previous or submit without changing an answer returns the user to the final summary anchored to the answer they clicked on", async () => {
@@ -228,18 +228,18 @@ describe("List Collector Repeating Blocks", () => {
 
       await $(SubmitPage.anyOtherTradingDetailsAnswerEdit()).click();
       await click(AnyOtherTradingDetailsPage.submit());
-      await expect(await browser.getUrl()).toContain("submit/#any-other-trading-details-answer");
+      await expect(browser).toHaveUrlContaining("submit/#any-other-trading-details-answer");
 
       await $(SubmitPage.anyOtherTradingDetailsAnswerEdit()).click();
       await $(AnyOtherTradingDetailsPage.previous()).click();
-      await expect(await browser.getUrl()).toContain("submit/#any-other-trading-details-answer");
+      await expect(browser).toHaveUrlContaining("submit/#any-other-trading-details-answer");
     });
 
     it("Editing an answer from the final summary which does not affect progress and pressing continue returns the user to the final summary anchored to the answer they edited", async () => {
       await $(SectionCompaniesPage.anyOtherTradingDetailsAnswerEdit()).click();
       await $(AnyOtherTradingDetailsPage.answer()).setValue("Yes");
       await click(AnyOtherTradingDetailsPage.submit());
-      await expect(await browser.getUrl()).toContain("submit/#any-other-trading-details-answer");
+      await expect(browser).toHaveUrlContaining("submit/#any-other-trading-details-answer");
     });
 
     it("The list collector can now be submitted.", async () => {
@@ -264,30 +264,30 @@ describe("List Collector Repeating Blocks", () => {
     });
 
     it("Edit each type of answer on different items from the section summary.", async () => {
-      await expect(await $$(summaryValues)[8].getText()).toContain("456");
+      await expect(await $$(summaryValues)[8].getText()).toBe("456");
       await repeatingAnswerChangeLink(8).click();
       await $(CompaniesRepeatingBlock1Page.registrationNumber()).setValue("789");
       await click(CompaniesRepeatingBlock1Page.submit());
-      await expect(await $$(summaryValues)[8].getText()).toContain("789");
+      await expect(await $$(summaryValues)[8].getText()).toBe("789");
 
-      await expect(await $$(summaryValues)[4].getText()).toContain("1 January 2023");
+      await expect(await $$(summaryValues)[4].getText()).toBe("1 January 2023");
       await repeatingAnswerChangeLink(4).click();
       await $(CompaniesRepeatingBlock1Page.registrationDateday()).setValue("4");
       await $(CompaniesRepeatingBlock1Page.registrationDatemonth()).setValue("4");
       await click(CompaniesRepeatingBlock1Page.submit());
-      await expect(await $$(summaryValues)[4].getText()).toContain("4 April 2023");
+      await expect(await $$(summaryValues)[4].getText()).toBe("4 April 2023");
 
-      await expect(await $$(summaryValues)[5].getText()).toContain("Yes");
+      await expect(await $$(summaryValues)[5].getText()).toBe("Yes");
       await repeatingAnswerChangeLink(5).click();
       await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioNo()).click();
       await click(CompaniesRepeatingBlock2Page.submit());
-      await expect(await $$(summaryValues)[5].getText()).toContain("No");
+      await expect(await $$(summaryValues)[5].getText()).toBe("No");
 
-      await expect(await $$(summaryValues)[11].getText()).toContain("No answer provided");
+      await expect(await $$(summaryValues)[11].getText()).toBe("No answer provided");
       await repeatingAnswerChangeLink(11).click();
       await $(CompaniesRepeatingBlock2Page.authorisedTraderEuRadioYes()).click();
       await click(CompaniesRepeatingBlock2Page.submit());
-      await expect(await $$(summaryValues)[11].getText()).toContain("Yes");
+      await expect(await $$(summaryValues)[11].getText()).toBe("Yes");
     });
 
     it("The list collector can then be submitted", async () => {
@@ -313,7 +313,7 @@ describe("Given a journey through the list collector with repeating blocks, in a
 
   it("Navigating to the root of the questionnaire will redirect to the incomplete list collector, which we can then complete.", async () => {
     await browser.url("questionnaire/");
-    await expect(await browser.getUrl()).toContain(AnyOtherCompaniesOrBranchesPage.url());
+    await expect(browser).toHaveUrlContaining(AnyOtherCompaniesOrBranchesPage.url());
 
     await $(AnyOtherCompaniesOrBranchesPage.no()).click();
     await click(AnyOtherCompaniesOrBranchesPage.submit());
@@ -338,7 +338,7 @@ describe("Given a journey through the list collector with repeating blocks, in a
 
   it("Navigating to the submit page of the section will redirect to the incomplete list collector, which we can then complete.", async () => {
     await browser.url("questionnaire/sections/section-companies/");
-    await expect(await browser.getUrl()).toContain(AnyOtherCompaniesOrBranchesPage.url());
+    await expect(browser).toHaveUrlContaining(AnyOtherCompaniesOrBranchesPage.url());
 
     await $(AnyOtherCompaniesOrBranchesPage.no()).click();
     await click(AnyOtherCompaniesOrBranchesPage.submit());
