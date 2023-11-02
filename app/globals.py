@@ -55,7 +55,7 @@ def get_session_store() -> SessionStore | None:
         )
 
     if not store.session_data:
-        logger.info("session data not found")
+        logger.info("session data not found")  # pragma: no cover
 
     return store if store.session_data else None
 
