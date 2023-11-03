@@ -50,7 +50,7 @@ describe("Feature: Grand Calculated Summary", () => {
       // taken back to calculated summary
       await expect(browser).toHaveUrlContaining(CalculatedSummary2Page.pageName);
       await expect(await browser.getUrl()).toContain(
-        "/questionnaire/calculated-summary-2/?return_to=grand-calculated-summary&return_to_block_id=grand-calculated-summary-shopping&return_to_answer_id=q1-a2,calculated-summary-2#q1-a2",
+        "/questionnaire/calculated-summary-2/?return_to=grand-calculated-summary&return_to_block_id=grand-calculated-summary-shopping&return_to_answer_id=calculated-summary-2#q1-a2",
       );
       await click(CalculatedSummary2Page.submit());
 

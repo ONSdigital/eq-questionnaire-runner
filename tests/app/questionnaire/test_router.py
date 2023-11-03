@@ -793,7 +793,6 @@ class TestRouterNextLocation(RouterTestCase):
             return_to="grand-calculated-summary",
             block_id="distance-calculated-summary-1",
             return_to_block_id="distance-grand-calculated-summary",
-            return_to_answer_id="distance-calculated-summary-1,distance-calculated-summary-1",
             _anchor="distance-calculated-summary-1",
         )
 
@@ -1567,7 +1566,6 @@ class TestRouterPreviousLocation(RouterTestCase):
             return_to="grand-calculated-summary",
             block_id="calculated-summary-6",
             return_to_block_id="grand-calculated-summary-3",
-            return_to_answer_id="calculated-summary-6,calculated-summary-6",
             _anchor="calculated-summary-6",
         )
 
