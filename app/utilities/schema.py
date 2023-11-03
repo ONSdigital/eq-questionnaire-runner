@@ -122,7 +122,7 @@ def load_schema_from_metadata(
         duration_in_milliseconds = (time.time() - start) * 1_000
 
         cache_info = (
-            load_schema_from_url.cache_info()  # pylint: disable=no-value-for-parameter
+            load_schema_from_url.cache_info()  # pylint: disable=missing-kwoa,too-many-function-args
         )
         logger.info(
             f"load_schema_from_url took {duration_in_milliseconds:.6f} milliseconds",

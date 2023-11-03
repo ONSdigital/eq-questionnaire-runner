@@ -70,7 +70,7 @@ def test_get_schema_list():
     assert get_schema_list() == expected_output
 
 
-# pylint: disable=no-value-for-parameter
+# pylint: disable=no-value-for-parameter,missing-kwoa,too-many-function-args
 def test_schema_cache_on_function_call():
     _load_schema_from_name.cache_clear()
 
