@@ -1,6 +1,4 @@
-from datetime import datetime
 from typing import Any
-from uuid import UUID
 
 from marshmallow import fields, validate
 
@@ -34,8 +32,8 @@ class DateString(fields.DateTime):
 
     def _deserialize(self, *args: Any, **kwargs: Any) -> str:  # type: ignore # pylint: disable=arguments-differ
         date = super()._deserialize(*args, **kwargs)
-        format = self.format or self.DEFAULT_FORMAT
-        if format == "iso8601":
+        date_format = self.format or self.DEFAULT_FORMAT
+        if date_format == "iso8601":
             return date.isoformat()
 
-        return date.strftime(format)
+        return date.strftime(date_format)
