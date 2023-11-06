@@ -1,4 +1,4 @@
-from typing import Mapping
+from typing import Mapping, Any
 
 from marshmallow import (
     INCLUDE,
@@ -18,7 +18,7 @@ class ItemsSchema(Schema):
     identifier = fields.Field(required=True)
 
     @validates("identifier")
-    def validate_identifier(self, identifier):
+    def validate_identifier(self, identifier: fields.Field) -> None:
         # pylint: disable=no-self-use
         if not (isinstance(identifier, str) and identifier.strip()) and not (
             isinstance(identifier, int) and identifier >= 0
@@ -40,7 +40,7 @@ class SupplementaryData(Schema, StripWhitespaceMixin):
     items = fields.Nested(ItemsData, required=False, unknown=INCLUDE)
 
     @validates_schema()
-    def validate_identifier(self, data, **kwargs):
+    def validate_identifier(self, data: dict, **kwargs: Any) -> None:
         # pylint: disable=no-self-use, unused-argument
         if data and data["identifier"] != self.context["identifier"]:
             raise ValidationError(
@@ -59,7 +59,7 @@ class SupplementaryDataMetadataSchema(Schema, StripWhitespaceMixin):
     )
 
     @validates_schema()
-    def validate_dataset_and_survey_id(self, data, **kwargs):
+    def validate_dataset_and_survey_id(self, data: dict, **kwargs: Any) -> None:
         # pylint: disable=no-self-use, unused-argument
         if data:
             if data["dataset_id"] != self.context["dataset_id"]:
@@ -97,4 +97,5 @@ def validate_supplementary_data_v1(
             items = [ItemsSchema(unknown=INCLUDE).load(value) for value in values]
             validated_supplementary_data["data"]["items"][key] = items
 
-    return validated_supplementary_data
+    # Type ignore: the load method in the Marshmallow parent schema class doesn't have type hints for return
+    return validated_supplementary_data  # type: ignore
