@@ -10,7 +10,6 @@ from app.data_models.supplementary_data_store import SupplementaryDataStore
 
 @dataclass
 class DataStores:
-    # self.metadata is a read-only view over QuestionnaireStore's self._metadata
     metadata: MetadataProxy | None = None
     response_metadata: MutableMapping = field(default_factory=dict)
     list_store: ListStore = field(default_factory=ListStore)
