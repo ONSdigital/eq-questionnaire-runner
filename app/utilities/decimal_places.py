@@ -1,5 +1,5 @@
 from decimal import Decimal
-from typing import Literal, TypeAlias
+from typing import Literal, TypeAlias, Any
 
 import flask_babel
 from babel import Locale, numbers, units
@@ -80,7 +80,7 @@ def custom_format_unit(
     measurement_unit: str,
     locale: Locale | str,
     length: UnitLengthType = "short",
-):
+) -> str:
     """
     This function provides a wrapper for the numbers `format_unit` method, generating the
     number format (including the desired number of decimals), based on the value entered by the user and
@@ -99,7 +99,7 @@ def custom_format_unit(
     return formatted_unit
 
 
-def get_number_format(value: int | float | Decimal, locale: Locale | str) -> str:
+def get_number_format(value: int | float | Decimal, locale: Locale | str) -> Any:
     """
     Generates the number format based on the value entered by the user and the locale
 
