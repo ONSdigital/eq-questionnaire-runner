@@ -1,6 +1,6 @@
 import functools
 from datetime import datetime, timezone
-from typing import Callable, Iterable, Mapping
+from typing import Callable, Iterable, Mapping, Any
 
 from marshmallow import (
     EXCLUDE,
@@ -35,8 +35,8 @@ VALIDATORS: Mapping[str, Callable] = {
 class StripWhitespaceMixin:
     @pre_load()
     def strip_whitespace(
-        self, items, **kwargs
-    ):  # pylint: disable=no-self-use, unused-argument
+        self, items: dict, **kwargs: Any
+    ) -> dict:  # pylint: disable=no-self-use, unused-argument
         for key, value in items.items():
             if isinstance(value, str):
                 items[key] = value.strip()
@@ -52,7 +52,7 @@ class SurveyMetadata(Schema, StripWhitespaceMixin):
     receipting_keys = fields.List(fields.String)
 
     @validates_schema
-    def validate_receipting_keys(self, data, **kwargs):
+    def validate_receipting_keys(self, data: dict, **kwargs: Any) -> None:
         # pylint: disable=no-self-use, unused-argument
         if data and (receipting_keys := data.get("receipting_keys", {})):
             missing_receipting_keys = [
@@ -100,7 +100,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     survey_metadata = fields.Nested(SurveyMetadata, required=False)
 
     @validates_schema
-    def validate_schema_name_is_set(self, data, **kwargs):
+    def validate_schema_name_is_set(self, data: dict[str, str], **kwargs: Any) -> None:
         # pylint: disable=no-self-use, unused-argument
         if data and not (data.get("schema_name") or data.get("schema_url")):
             raise ValidationError(
@@ -111,7 +111,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
 def validate_questionnaire_claims(
     claims: Mapping,
     questionnaire_specific_metadata: Iterable[Mapping],
-    unknown=EXCLUDE,
+    unknown: str = EXCLUDE,
 ) -> dict:
     """Validate any survey specific claims required for a questionnaire"""
     dynamic_fields = {}
@@ -144,10 +144,12 @@ def validate_questionnaire_claims(
     )(unknown=unknown)
 
     # The load method performs validation.
-    return questionnaire_metadata_schema.load(claims)
+    # Type ignore: the load method in the Marshmallow parent schema class doesn't have type hints for return
+    return questionnaire_metadata_schema.load(claims)  # type: ignore
 
 
 def validate_runner_claims_v2(claims: Mapping) -> dict:
     """Validate claims required for runner to function"""
     runner_metadata_schema = RunnerMetadataSchema(unknown=EXCLUDE)
-    return runner_metadata_schema.load(claims)
+    # Type ignore: the load method in the Marshmallow parent schema class doesn't have type hints for return
+    return runner_metadata_schema.load(claims)  # type: ignore
