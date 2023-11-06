@@ -1,6 +1,6 @@
 import functools
 from datetime import datetime, timezone
-from typing import Mapping
+from typing import Mapping, Any
 
 from marshmallow import (
     EXCLUDE,
@@ -35,8 +35,8 @@ VALIDATORS = {
 class StripWhitespaceMixin:
     @pre_load()
     def strip_whitespace(
-        self, items, **kwargs
-    ):  # pylint: disable=no-self-use, unused-argument
+        self, items: dict, **kwargs: Any
+    ) -> dict:  # pylint: disable=no-self-use, unused-argument
         for key, value in items.items():
             if isinstance(value, str):
                 items[key] = value.strip()
@@ -87,7 +87,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     eq_id = VALIDATORS["string"](required=False)  # type:ignore
 
     @validates_schema
-    def validate_schema_name(self, data, **kwargs):
+    def validate_schema_name(self, data: dict[str, str], **kwargs: Any) -> None:
         # pylint: disable=no-self-use, unused-argument
         """Function to validate the business schema parameters"""
         if not data.get("schema_name"):
@@ -101,7 +101,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
                 )
 
     @post_load
-    def update_schema_name(self, data, **kwargs):
+    def update_schema_name(self, data: dict[str, str], **kwargs: Any) -> dict:
         # pylint: disable=no-self-use, unused-argument
         """Function to transform parameters into a business schema"""
         if data.get("schema_name"):
@@ -116,8 +116,8 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
 
     @post_load
     def update_response_id(
-        self, data, **kwargs
-    ):  # pylint: disable=no-self-use, unused-argument
+        self, data: dict[str, str], **kwargs: Any
+    ) -> dict:  # pylint: disable=no-self-use, unused-argument
         """
         If response_id is present : return as it is
         If response_id is not present : Build response_id from ru_ref,collection_exercise_sid,eq_id and form_type
@@ -146,5 +146,6 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
 
 def validate_runner_claims(claims: Mapping) -> dict:
     """Validate claims required for runner to function"""
-    runner_metadata_schema = RunnerMetadataSchema(unknown=EXCLUDE)
-    return runner_metadata_schema.load(claims)
+    runner_metadata_schema= RunnerMetadataSchema(unknown=EXCLUDE)
+    # Type ignore: the load method in the Marshmallow parent schema class doesn't have type hints for return
+    return runner_metadata_schema.load(claims)  # type: ignore
