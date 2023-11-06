@@ -52,7 +52,7 @@ class ListCollector(Question):
         list_context = ListContext(
             self._language,
             self._schema,
-            self._questionnaire_store.stores,
+            self._questionnaire_store.data_stores,
         )
 
         return list_context(

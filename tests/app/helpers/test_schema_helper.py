@@ -11,7 +11,7 @@ def test_questionnaire_schema_passed_into_function(
 ):
     mocker.patch(
         "app.helpers.schema_helpers.get_metadata",
-        return_value=fake_questionnaire_store.stores.metadata,
+        return_value=fake_questionnaire_store.data_stores.metadata,
     )
 
     mocker.patch(

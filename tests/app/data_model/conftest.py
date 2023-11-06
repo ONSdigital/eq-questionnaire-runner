@@ -165,15 +165,15 @@ def questionnaire_store_with_supplementary_data(
     questionnaire_store, supplementary_data_store_with_data
 ):
     questionnaire_store = QuestionnaireStore(questionnaire_store.storage)
-    questionnaire_store.stores.supplementary_data_store = (
+    questionnaire_store.data_stores.supplementary_data_store = (
         supplementary_data_store_with_data
     )
-    questionnaire_store.stores.list_store = ListStore(
+    questionnaire_store.data_stores.list_store = ListStore(
         [{"items": ["item-1", "item-2"], "name": "products"}]
     )
     # Mock the identifier generation in list store so the ids are item-1, item-2, ...
     # pylint: disable=protected-access
-    questionnaire_store.stores.list_store._generate_identifier = Mock(
+    questionnaire_store.data_stores.list_store._generate_identifier = Mock(
         side_effect=(f"item-{i}" for i in range(3, 100))
     )
     return questionnaire_store

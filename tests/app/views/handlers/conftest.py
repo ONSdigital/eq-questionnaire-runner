@@ -204,7 +204,7 @@ def mock_questionnaire_store(mocker):
     storage_ = mocker.Mock()
     storage_.get_user_data = mocker.Mock(return_value=("{}", "ce_id", 1, None))
     questionnaire_store = QuestionnaireStore(storage_)
-    questionnaire_store.stores = DataStores(
+    questionnaire_store.data_stores = DataStores(
         metadata=MetadataProxy.from_dict(
             {
                 "tx_id": "tx_id",
@@ -228,7 +228,7 @@ def mock_questionnaire_store_v2(mocker):
     storage_ = mocker.Mock()
     storage_.get_user_data = mocker.Mock(return_value=("{}", "ce_id", 1, None))
     questionnaire_store = QuestionnaireStore(storage_)
-    questionnaire_store.stores = DataStores(
+    questionnaire_store.data_stores = DataStores(
         metadata=MetadataProxy.from_dict(
             {
                 "version": AuthPayloadVersion.V2,

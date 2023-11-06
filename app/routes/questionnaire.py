@@ -130,7 +130,7 @@ def before_post_submission_request() -> None:
     if not questionnaire_store.submitted_at:
         raise NotFound
 
-    handle_language(questionnaire_store.stores.metadata)
+    handle_language(questionnaire_store.data_stores.metadata)
 
     # pylint: disable=assigning-non-slot
     g.schema = load_schema_from_metadata(
@@ -158,7 +158,7 @@ def get_questionnaire(
 ) -> Response | str:
     router = Router(
         schema=schema,
-        data_stores=questionnaire_store.stores,
+        data_stores=questionnaire_store.data_stores,
     )
 
     if not router.can_access_hub():
@@ -179,7 +179,7 @@ def get_questionnaire(
     hub_context = HubContext(
         language=flask_babel.get_locale().language,
         schema=schema,
-        data_stores=questionnaire_store.stores,
+        data_stores=questionnaire_store.data_stores,
     )
     context = hub_context(
         survey_complete=router.is_questionnaire_complete,
@@ -233,7 +233,7 @@ def get_preview(
         preview_context = PreviewContext(
             language=flask_babel.get_locale().language,
             schema=schema,
-            data_stores=questionnaire_store.stores,
+            data_stores=questionnaire_store.data_stores,
         )
     except PreviewNotEnabledException as exc:
         raise NotFound from exc

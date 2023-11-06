@@ -197,7 +197,7 @@ def individual_response_post_address_confirmation(
         return redirect(url_for("questionnaire.get_questionnaire"))
 
     # Type ignore: @with_schema guarantees that metadata is present via QuestionnaireStore
-    metadata: MetadataProxy = questionnaire_store.stores.metadata  # type: ignore
+    metadata: MetadataProxy = questionnaire_store.data_stores.metadata  # type: ignore
 
     return render_template(
         template="individual_response/confirmation-post",

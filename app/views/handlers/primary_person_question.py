@@ -23,7 +23,7 @@ class PrimaryPersonQuestion(Question):
         return self.router.routing_path(self.parent_location.section_key)
 
     def is_location_valid(self) -> bool:
-        primary_person_list_item_id = self._questionnaire_store.stores.list_store[
+        primary_person_list_item_id = self._questionnaire_store.data_stores.list_store[
             # Type ignore: list_name will exist by this point
             self.current_location.list_name  # type: ignore
         ].primary_person

@@ -21,7 +21,7 @@ class ViewPreviewQuestions:
         preview_context = PreviewContext(
             language=self._language,
             schema=self._schema,
-            data_stores=self._questionnaire_store.stores,
+            data_stores=self._questionnaire_store.data_stores,
         )
         context = {
             "hide_sign_out_button": True,

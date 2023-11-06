@@ -34,7 +34,7 @@ def dump_routing(
 ) -> tuple[str, int]:
     router = Router(
         schema=schema,
-        data_stores=questionnaire_store.stores,
+        data_stores=questionnaire_store.data_stores,
     )
 
     response = [
@@ -59,7 +59,7 @@ def dump_submission(
 ) -> tuple[str, int]:
     router = Router(
         schema=schema,
-        data_stores=questionnaire_store.stores,
+        data_stores=questionnaire_store.data_stores,
     )
 
     routing_path = router.full_routing_path()

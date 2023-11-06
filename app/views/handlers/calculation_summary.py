@@ -12,7 +12,7 @@ class _SummaryWithCalculation(Content):
         summary_context = self.summary_class(
             language=self._language,
             schema=self._schema,
-            data_stores=self._questionnaire_store.stores,
+            data_stores=self._questionnaire_store.data_stores,
             current_location=self._current_location,
             routing_path=self._routing_path,
             return_location=self._return_location,

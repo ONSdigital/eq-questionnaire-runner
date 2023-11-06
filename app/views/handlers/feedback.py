@@ -65,7 +65,7 @@ class Feedback:
         return generate_form(
             schema=self._schema,
             question_schema=self.question_schema,
-            data_stores=self._questionnaire_store.stores,
+            data_stores=self._questionnaire_store.data_stores,
             data=None,
             form_data=self._form_data,
         )
@@ -87,7 +87,7 @@ class Feedback:
         session_data: SessionData = self._session_store.session_data  # type: ignore
         session_data.feedback_count += 1
 
-        metadata = self._questionnaire_store.stores.metadata
+        metadata = self._questionnaire_store.data_stores.metadata
         if not metadata:
             raise NoMetadataException  # pragma: no cover
 
@@ -103,7 +103,7 @@ class Feedback:
         )
         feedback_message = feedback_converter(
             metadata=metadata,
-            response_metadata=self._questionnaire_store.stores.response_metadata,
+            response_metadata=self._questionnaire_store.data_stores.response_metadata,
             schema=self._schema,
             case_id=case_id,
             submission_language_code=session_data.language_code,

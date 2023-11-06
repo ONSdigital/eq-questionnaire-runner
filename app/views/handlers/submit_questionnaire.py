@@ -28,14 +28,14 @@ class SubmitQuestionnaireHandler:
     def router(self) -> Router:
         return Router(
             schema=self._schema,
-            data_stores=self._questionnaire_store.stores,
+            data_stores=self._questionnaire_store.data_stores,
         )
 
     def get_context(self) -> dict[str, str | dict]:
         submit_questionnaire_context = SubmitQuestionnaireContext(
             language=self._language,
             schema=self._schema,
-            data_stores=self._questionnaire_store.stores,
+            data_stores=self._questionnaire_store.data_stores,
         )
         return submit_questionnaire_context()
 

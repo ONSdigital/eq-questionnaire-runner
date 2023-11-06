@@ -24,7 +24,7 @@ def individual_response_url(
     if individual_response_for_list:
         if (
             list_item_id
-            != questionnaire_store.stores.list_store[
+            != questionnaire_store.data_stores.list_store[
                 individual_response_for_list
             ].primary_person
         ):

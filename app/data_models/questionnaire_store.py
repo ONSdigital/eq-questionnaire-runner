@@ -30,7 +30,8 @@ class QuestionnaireStore:
             version = self.get_latest_version_number()
         self.version = version
         self._metadata: MutableMapping = {}
-        self.stores = DataStores()
+        self._stores = DataStores()
+        self.data_stores = self._stores
         self.submitted_at: Optional[datetime]
         self.collection_exercise_sid: Optional[str]
 
@@ -55,7 +56,7 @@ class QuestionnaireStore:
         Metadata should normally be read only.
         """
         self._metadata = to_set
-        self.stores.metadata = MetadataProxy.from_dict(self._metadata)
+        self._stores.metadata = MetadataProxy.from_dict(self._metadata)
 
         return self
 
@@ -67,7 +68,7 @@ class QuestionnaireStore:
         this updates ListStore to add/update any lists for supplementary data and stores the
         identifier -> list_item_id mappings in the supplementary data store to use in the payload at the end
         """
-        if self.stores.supplementary_data_store.list_mappings:
+        if self._stores.supplementary_data_store.list_mappings:
             self._remove_old_supplementary_lists_and_answers(new_data=to_set)
 
         list_mappings = {
@@ -77,7 +78,7 @@ class QuestionnaireStore:
             for list_name, list_data in to_set.get("items", {}).items()
         }
 
-        self.stores.supplementary_data_store = SupplementaryDataStore(
+        self._stores.supplementary_data_store = SupplementaryDataStore(
             supplementary_data=to_set, list_mappings=list_mappings
         )
 
@@ -94,11 +95,11 @@ class QuestionnaireStore:
             # if any pre-existing supplementary data already has a mapping for this list item
             # then its already in the list store and doesn't require adding
             if not (
-                list_item_id := self.stores.supplementary_data_store.list_lookup.get(
+                list_item_id := self._stores.supplementary_data_store.list_lookup.get(
                     list_name, {}
                 ).get(identifier)
             ):
-                list_item_id = self.stores.list_store.add_list_item(list_name)
+                list_item_id = self._stores.list_store.add_list_item(list_name)
             list_mappings.append(
                 SupplementaryDataListMapping(
                     identifier=identifier, list_item_id=list_item_id
@@ -118,50 +119,52 @@ class QuestionnaireStore:
         for (
             list_name,
             mappings,
-        ) in self.stores.supplementary_data_store.list_lookup.items():
+        ) in self._stores.supplementary_data_store.list_lookup.items():
             if list_name in new_data.get("items", {}):
                 new_identifiers = [
                     item["identifier"] for item in new_data["items"][list_name]
                 ]
                 for identifier, list_item_id in mappings.items():
                     if identifier not in new_identifiers:
-                        self.stores.list_store.delete_list_item(list_name, list_item_id)
+                        self._stores.list_store.delete_list_item(
+                            list_name, list_item_id
+                        )
                         deleted_list_item_ids.add(list_item_id)
             else:
-                self.stores.list_store.delete_list(list_name)
+                self._stores.list_store.delete_list(list_name)
                 deleted_list_item_ids.update(mappings.values())
-        self.stores.answer_store.remove_all_answers_for_list_item_ids(
+        self._stores.answer_store.remove_all_answers_for_list_item_ids(
             *deleted_list_item_ids
         )
 
     def _deserialize(self, data: str) -> None:
         json_data = json_loads(data)
-        self.stores.progress_store = ProgressStore(json_data.get("PROGRESS"))
+        self._stores.progress_store = ProgressStore(json_data.get("PROGRESS"))
         self.set_metadata(json_data.get("METADATA", {}))
-        self.stores.supplementary_data_store = SupplementaryDataStore.deserialize(
+        self._stores.supplementary_data_store = SupplementaryDataStore.deserialize(
             json_data.get("SUPPLEMENTARY_DATA", {})
         )
-        self.stores.answer_store = AnswerStore(json_data.get("ANSWERS"))
-        self.stores.list_store = ListStore.deserialize(json_data.get("LISTS"))
-        self.stores.response_metadata = json_data.get("RESPONSE_METADATA", {})
+        self._stores.answer_store = AnswerStore(json_data.get("ANSWERS"))
+        self._stores.list_store = ListStore.deserialize(json_data.get("LISTS"))
+        self._stores.response_metadata = json_data.get("RESPONSE_METADATA", {})
 
     def serialize(self) -> str:
         data = {
             "METADATA": self._metadata,
-            "ANSWERS": list(self.stores.answer_store),
-            "SUPPLEMENTARY_DATA": self.stores.supplementary_data_store.serialize(),
-            "LISTS": self.stores.list_store.serialize(),
-            "PROGRESS": self.stores.progress_store.serialize(),
-            "RESPONSE_METADATA": self.stores.response_metadata,
+            "ANSWERS": list(self._stores.answer_store),
+            "SUPPLEMENTARY_DATA": self._stores.supplementary_data_store.serialize(),
+            "LISTS": self._stores.list_store.serialize(),
+            "PROGRESS": self._stores.progress_store.serialize(),
+            "RESPONSE_METADATA": self._stores.response_metadata,
         }
         return json_dumps(data)
 
     def delete(self) -> None:
         self._storage.delete()
         self._metadata.clear()
-        self.stores.response_metadata = {}
-        self.stores.answer_store.clear()
-        self.stores.progress_store.clear()
+        self._stores.response_metadata = {}
+        self._stores.answer_store.clear()
+        self._stores.progress_store.clear()
 
     def save(self) -> None:
         data = self.serialize()

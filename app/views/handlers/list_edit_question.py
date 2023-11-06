@@ -16,7 +16,7 @@ class ListEditQuestion(ListAction):
     def is_location_valid(self) -> bool:
         list_item_doesnt_exist = (
             self._current_location.list_item_id
-            not in self._questionnaire_store.stores.list_store[
+            not in self._questionnaire_store.data_stores.list_store[
                 # Type ignore: list_name/list_item_id already exist
                 self._current_location.list_name  # type: ignore
             ].items

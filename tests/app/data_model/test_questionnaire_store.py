@@ -23,9 +23,11 @@ def test_questionnaire_store_json_loads(
     # When
     store = QuestionnaireStore(questionnaire_store.storage)
     # Then
-    assert store.stores.metadata == MetadataProxy.from_dict(basic_input["METADATA"])
-    assert store.stores.response_metadata == basic_input["RESPONSE_METADATA"]
-    assert store.stores.answer_store == AnswerStore(basic_input["ANSWERS"])
+    assert store.data_stores.metadata == MetadataProxy.from_dict(
+        basic_input["METADATA"]
+    )
+    assert store.data_stores.response_metadata == basic_input["RESPONSE_METADATA"]
+    assert store.data_stores.answer_store == AnswerStore(basic_input["ANSWERS"])
     assert not hasattr(store, "NOT_A_LEGAL_TOP_LEVEL_KEY")
     assert not hasattr(store, "not_a_legal_top_level_key")
 
@@ -33,14 +35,14 @@ def test_questionnaire_store_json_loads(
 
     assert (
         len(
-            store.stores.progress_store.get_completed_block_ids(
+            store.data_stores.progress_store.get_completed_block_ids(
                 SectionKey("a-test-section", "abc123")
             )
         )
         == 1
     )
     assert (
-        store.stores.progress_store.get_completed_block_ids(
+        store.data_stores.progress_store.get_completed_block_ids(
             SectionKey("a-test-section", "abc123")
         )[0]
         == expected_completed_block_ids
@@ -54,19 +56,21 @@ def test_questionnaire_store_missing_keys(questionnaire_store, basic_input):
     # When
     store = QuestionnaireStore(questionnaire_store.storage)
     # Then
-    assert store.stores.metadata == MetadataProxy.from_dict(basic_input["METADATA"])
-    assert store.stores.response_metadata == basic_input["RESPONSE_METADATA"]
-    assert store.stores.answer_store == AnswerStore(basic_input["ANSWERS"])
-    assert not store.stores.progress_store.serialize()
+    assert store.data_stores.metadata == MetadataProxy.from_dict(
+        basic_input["METADATA"]
+    )
+    assert store.data_stores.response_metadata == basic_input["RESPONSE_METADATA"]
+    assert store.data_stores.answer_store == AnswerStore(basic_input["ANSWERS"])
+    assert not store.data_stores.progress_store.serialize()
 
 
 def test_questionnaire_store_updates_storage(questionnaire_store, basic_input):
     # Given
     store = QuestionnaireStore(questionnaire_store.storage)
     store.set_metadata(basic_input["METADATA"])
-    store.stores.answer_store = AnswerStore(basic_input["ANSWERS"])
-    store.stores.response_metadata = basic_input["RESPONSE_METADATA"]
-    store.stores.progress_store = ProgressStore(basic_input["PROGRESS"])
+    store.data_stores.answer_store = AnswerStore(basic_input["ANSWERS"])
+    store.data_stores.response_metadata = basic_input["RESPONSE_METADATA"]
+    store.data_stores.progress_store = ProgressStore(basic_input["PROGRESS"])
     store.supplementary_data_store = SupplementaryDataStore.deserialize(
         basic_input["SUPPLEMENTARY_DATA"]
     )
@@ -87,9 +91,9 @@ def test_questionnaire_store_errors_on_invalid_object(questionnaire_store, basic
 
     store = QuestionnaireStore(questionnaire_store.storage)
     store.set_metadata(non_serializable_metadata)
-    store.stores.response_metadata = basic_input["RESPONSE_METADATA"]
-    store.stores.answer_store = AnswerStore(basic_input["ANSWERS"])
-    store.stores.progress_store = ProgressStore(basic_input["PROGRESS"])
+    store.data_stores.response_metadata = basic_input["RESPONSE_METADATA"]
+    store.data_stores.answer_store = AnswerStore(basic_input["ANSWERS"])
+    store.data_stores.progress_store = ProgressStore(basic_input["PROGRESS"])
 
     # When / Then
     with pytest.raises(TypeError):
@@ -100,24 +104,24 @@ def test_questionnaire_store_deletes(questionnaire_store, basic_input):
     # Given
     store = QuestionnaireStore(questionnaire_store.storage)
     store.set_metadata(basic_input["METADATA"])
-    store.stores.response_metadata = basic_input["RESPONSE_METADATA"]
-    store.stores.answer_store = AnswerStore(basic_input["ANSWERS"])
-    store.stores.progress_store = ProgressStore(basic_input["PROGRESS"])
+    store.data_stores.response_metadata = basic_input["RESPONSE_METADATA"]
+    store.data_stores.answer_store = AnswerStore(basic_input["ANSWERS"])
+    store.data_stores.progress_store = ProgressStore(basic_input["PROGRESS"])
 
     # When
     store.delete()
 
     # Then
-    assert "a-test-section" not in store.stores.progress_store
-    assert len(store.stores.answer_store) == 0
-    assert store.stores.response_metadata == {}
+    assert "a-test-section" not in store.data_stores.progress_store
+    assert len(store.data_stores.answer_store) == 0
+    assert store.data_stores.response_metadata == {}
 
 
 def test_questionnaire_store_raises_when_writing_to_metadata(questionnaire_store):
     store = QuestionnaireStore(questionnaire_store.storage)
 
     with pytest.raises(TypeError):
-        store.stores.metadata["no"] = "writing"
+        store.data_stores.metadata["no"] = "writing"
 
 
 class TestQuestionnaireStoreWithSupplementaryData:
@@ -125,9 +129,9 @@ class TestQuestionnaireStoreWithSupplementaryData:
 
     def assert_list_store_data(self, list_name: str, list_item_ids: list[str]):
         """Helper function to check that ListStore contains the given list with matching list_item_ids"""
-        lists = [list_model.name for list_model in self.store.stores.list_store]
+        lists = [list_model.name for list_model in self.store.data_stores.list_store]
         assert list_name in lists
-        assert self.store.stores.list_store[list_name].items == list_item_ids
+        assert self.store.data_stores.list_store[list_name].items == list_item_ids
 
     def test_adding_new_supplementary_data(
         self, questionnaire_store, supplementary_data
@@ -137,9 +141,11 @@ class TestQuestionnaireStoreWithSupplementaryData:
         """
         self.store = QuestionnaireStore(questionnaire_store.storage)
         self.store.set_supplementary_data(supplementary_data)
-        assert "products" in self.store.stores.supplementary_data_store.list_lookup
+        assert "products" in self.store.data_stores.supplementary_data_store.list_lookup
         supplementary_list_item_ids = list(
-            self.store.stores.supplementary_data_store.list_lookup["products"].values()
+            self.store.data_stores.supplementary_data_store.list_lookup[
+                "products"
+            ].values()
         )
         # check list mapping ids match list store ids
         self.assert_list_store_data("products", supplementary_list_item_ids)
@@ -156,7 +162,7 @@ class TestQuestionnaireStoreWithSupplementaryData:
         self.store.set_supplementary_data(supplementary_data)
 
         assert (
-            self.store.stores.supplementary_data_store.list_mappings
+            self.store.data_stores.supplementary_data_store.list_mappings
             == make_immutable(
                 {
                     "products": [
@@ -193,7 +199,7 @@ class TestQuestionnaireStoreWithSupplementaryData:
         """Checks that removing all supplementary data clears out the list store"""
         self.store = questionnaire_store_with_supplementary_data
         self.store.set_supplementary_data({})
-        assert len(list(self.store.stores.list_store)) == 0
+        assert len(list(self.store.data_stores.list_store)) == 0
 
     def test_removing_supplementary_lists_with_answers(
         self, questionnaire_store_with_supplementary_data, supplementary_data
@@ -203,7 +209,7 @@ class TestQuestionnaireStoreWithSupplementaryData:
         self.store = questionnaire_store_with_supplementary_data
 
         # add some answers for the supplementary list items
-        self.store.stores.answer_store = AnswerStore(
+        self.store.data_stores.answer_store = AnswerStore(
             [
                 {
                     "answer_id": "product-sales-answer",
@@ -225,13 +231,13 @@ class TestQuestionnaireStoreWithSupplementaryData:
         # item-1 should be gone
         self.assert_list_store_data("products", ["item-2"])
         # the answer for it should be too
-        answers = list(self.store.stores.answer_store.answer_map.keys())
+        answers = list(self.store.data_stores.answer_store.answer_map.keys())
         assert len(answers) == 1
         assert answers[0] == ("product-sales-answer", "item-2")
 
         # remove all answers
         self.store.set_supplementary_data({})
-        assert not self.store.stores.answer_store.answer_map
+        assert not self.store.data_stores.answer_store.answer_map
 
     def test_removing_supplementary_data_ignores_non_supplementary_data(
         self, questionnaire_store_with_supplementary_data
@@ -239,7 +245,7 @@ class TestQuestionnaireStoreWithSupplementaryData:
         """Tests that removing supplementary data does not affect other lists and answers"""
         self.store = questionnaire_store_with_supplementary_data
         # unrelated
-        self.store.stores.answer_store = AnswerStore(
+        self.store.data_stores.answer_store = AnswerStore(
             [
                 {
                     "answer_id": "unrelated-answer",
@@ -252,11 +258,11 @@ class TestQuestionnaireStoreWithSupplementaryData:
                 },
             ]
         )
-        self.store.stores.list_store.add_list_item("supermarkets")
+        self.store.data_stores.list_store.add_list_item("supermarkets")
         self.assert_list_store_data("products", ["item-1", "item-2"])
         self.assert_list_store_data("supermarkets", ["item-3"])
 
         self.store.set_supplementary_data({})
         self.assert_list_store_data("supermarkets", ["item-3"])
-        answers = list(self.store.stores.answer_store.answer_map.keys())
+        answers = list(self.store.data_stores.answer_store.answer_map.keys())
         assert answers == [("unrelated-answer", "JxSW21"), ("sales", None)]

@@ -101,7 +101,7 @@ def fake_questionnaire_store():
     storage.get_user_data = MagicMock(return_value=("{}", "ce_sid", 1, None))
     storage.add_or_update = MagicMock()
     store = QuestionnaireStore(storage)
-    store.stores.metadata = MetadataProxy.from_dict(
+    store.data_stores.metadata = MetadataProxy.from_dict(
         {
             "schema_name": "test_checkbox",
             "display_address": "68 Abingdon Road, Goathill",

@@ -45,7 +45,7 @@ class SubmissionHandler:
         self._full_routing_path = full_routing_path
         self._session_store = get_session_store()
         # Type ignore: It isn't possible to not have metadata at this point
-        self._metadata: MetadataProxy = questionnaire_store.stores.metadata  # type: ignore
+        self._metadata: MetadataProxy = questionnaire_store.data_stores.metadata  # type: ignore
 
     @cached_property
     def submitted_at(self) -> datetime:
