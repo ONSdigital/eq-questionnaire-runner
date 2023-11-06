@@ -63,7 +63,7 @@ class ListAddQuestion(ListAction):
         # For list add blocks, no list item id is yet available. Instead, we resolve
         # `list_item_position` to the position in the list it would be if added.
         list_length = len(
-            self._questionnaire_store.data_stores.list_store[self._current_location.list_name]  # type: ignore
+            self._questionnaire_store.stores.list_store[self._current_location.list_name]  # type: ignore
         )
 
         return {"list_item_position": list_length + 1}

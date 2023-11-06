@@ -125,23 +125,21 @@ class IndividualResponseHandler:
         # Type ignore: in individual_response for_list is required which is where list_name comes from
         self._list_name: str = self._schema.get_individual_response_list()  # type: ignore
 
-        self._metadata = self._questionnaire_store.data_stores.metadata
+        self._metadata = self._questionnaire_store.stores.metadata
 
-        self._response_metadata = (
-            self._questionnaire_store.data_stores.response_metadata
-        )
+        self._response_metadata = self._questionnaire_store.stores.response_metadata
 
         if not self._is_location_valid():
             raise NotFound
 
     @cached_property
     def _list_model(self) -> ListModel:
-        return self._questionnaire_store.data_stores.list_store[self._list_name]
+        return self._questionnaire_store.stores.list_store[self._list_name]
 
     @cached_property
     def _list_item_position(self) -> int:
         # Type ignore: Current usages of this cached property occur when List Name and List Item ID exist and be not None
-        return self._questionnaire_store.data_stores.list_store.list_item_position(
+        return self._questionnaire_store.stores.list_store.list_item_position(
             self._list_name, self._list_item_id  # type: ignore
         )
 
@@ -176,7 +174,7 @@ class IndividualResponseHandler:
         return PlaceholderRenderer(
             # Type ignore: Language is defaulted via handle_language in the individual_response blueprint before_request which triggers this
             language=self._language,  # type: ignore
-            data_stores=self._questionnaire_store.data_stores,
+            data_stores=self._questionnaire_store.stores,
             schema=self._schema,
             location=None,
         )
@@ -185,7 +183,7 @@ class IndividualResponseHandler:
     def router(self) -> Router:
         return Router(
             schema=self._schema,
-            data_stores=self._questionnaire_store.data_stores,
+            data_stores=self._questionnaire_store.stores,
         )
 
     @cached_property
@@ -198,7 +196,7 @@ class IndividualResponseHandler:
         return generate_form(
             schema=self._schema,
             question_schema=self.rendered_block["question"],
-            data_stores=self._questionnaire_store.data_stores,
+            data_stores=self._questionnaire_store.stores,
             data=self._answers,
             form_data=self._form_data,
         )
@@ -226,7 +224,7 @@ class IndividualResponseHandler:
 
     def _check_individual_response_count(self) -> None:
         if (
-            self._questionnaire_store.data_stores.response_metadata.get(
+            self._questionnaire_store.stores.response_metadata.get(
                 "individual_response_count", 0
             )
             >= current_app.config["EQ_INDIVIDUAL_RESPONSE_LIMIT"]
@@ -236,7 +234,7 @@ class IndividualResponseHandler:
             )
 
     def _update_individual_response_count(self) -> None:
-        response_metadata = self._questionnaire_store.data_stores.response_metadata
+        response_metadata = self._questionnaire_store.stores.response_metadata
 
         # Type ignore:
         if response_metadata.get("individual_response_count"):
@@ -262,7 +260,7 @@ class IndividualResponseHandler:
 
     def _get_next_location_url(self) -> str:
         # Type ignore: Current usages of this method occur when List Name exists and is not None
-        list_model = self._questionnaire_store.data_stores.list_store[self._list_name]  # type: ignore
+        list_model = self._questionnaire_store.stores.list_store[self._list_name]  # type: ignore
 
         if self._list_item_id:
             return url_for(
@@ -310,7 +308,7 @@ class IndividualResponseHandler:
         )
 
     def _update_section_status(self, status: CompletionStatus) -> None:
-        self._questionnaire_store.data_stores.progress_store.update_section_status(
+        self._questionnaire_store.stores.progress_store.update_section_status(
             status,
             SectionKey(self.individual_section_id, self._list_item_id),
         )
@@ -574,7 +572,7 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
             )
 
     def _update_section_completeness(self) -> None:
-        if not self._questionnaire_store.data_stores.progress_store.get_completed_block_ids(
+        if not self._questionnaire_store.stores.progress_store.get_completed_block_ids(
             section_key := SectionKey(
                 section_id=self.individual_section_id, list_item_id=self._list_item_id
             )
@@ -588,7 +586,7 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
                 else CompletionStatus.IN_PROGRESS
             )
         self._update_section_status(status)
-        if self._questionnaire_store.data_stores.progress_store.is_dirty:
+        if self._questionnaire_store.stores.progress_store.is_dirty:
             self._questionnaire_store.save()
 
 
@@ -712,7 +710,7 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
         form_data: ImmutableMultiDict[str, str],
     ):
         self._list_name: str = schema.get_individual_response_list()  # type: ignore
-        list_model = questionnaire_store.data_stores.list_store[self._list_name]
+        list_model = questionnaire_store.stores.list_store[self._list_name]
         self.non_primary_people_names = {}
 
         if list_model.same_name_items:
@@ -722,7 +720,7 @@ class IndividualResponseWhoHandler(IndividualResponseHandler):
 
         for list_item_id in list_model.non_primary_people:
             name_answers = (
-                questionnaire_store.data_stores.answer_store.get_answers_by_answer_id(
+                questionnaire_store.stores.answer_store.get_answers_by_answer_id(
                     name_answer_ids, list_item_id=list_item_id
                 )
             )

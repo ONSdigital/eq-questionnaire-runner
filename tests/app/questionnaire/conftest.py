@@ -1186,7 +1186,7 @@ def mock_questionnaire_store(
     return mocker.MagicMock(
         spec=QuestionnaireStore,
         completed_blocks=[],
-        data_stores=DataStores(
+        stores=DataStores(
             answer_store=mock_empty_answer_store,
             list_store=populated_list_store,
             progress_store=mock_empty_progress_store,

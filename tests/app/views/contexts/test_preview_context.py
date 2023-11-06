@@ -18,9 +18,9 @@ def test_build_preview_rendering_context(
         "en",
         test_introduction_preview_linear_schema,
         data_stores=DataStores(
-            supplementary_data_store=questionnaire_store.data_stores.supplementary_data_store,
-            metadata=questionnaire_store.data_stores.metadata,
-            response_metadata=questionnaire_store.data_stores.response_metadata,
+            supplementary_data_store=questionnaire_store.stores.supplementary_data_store,
+            metadata=questionnaire_store.stores.metadata,
+            response_metadata=questionnaire_store.stores.response_metadata,
         ),
     )
 
@@ -37,9 +37,9 @@ def test_build_preview_context(
         "en",
         test_introduction_preview_linear_schema,
         data_stores=DataStores(
-            supplementary_data_store=questionnaire_store.data_stores.supplementary_data_store,
-            metadata=questionnaire_store.data_stores.metadata,
-            response_metadata=questionnaire_store.data_stores.response_metadata,
+            supplementary_data_store=questionnaire_store.stores.supplementary_data_store,
+            metadata=questionnaire_store.stores.metadata,
+            response_metadata=questionnaire_store.stores.response_metadata,
         ),
     )
     context = preview_context()

@@ -29,7 +29,7 @@ def create_answer(answer_id, value):
 def test_convert_answers_v2_to_payload_0_0_1_with_key_error(version):
     questionnaire_store = get_questionnaire_store(version)
 
-    questionnaire_store.data_stores.answer_store = AnswerStore(
+    questionnaire_store.stores.answer_store = AnswerStore(
         [
             Answer("ABC", "2016-01-01").to_dict(),
             Answer("DEF", "2016-03-30").to_dict(),
@@ -53,7 +53,7 @@ def test_convert_answers_v2_to_payload_0_0_1_with_key_error(version):
         RoutingPath(block_ids=["block-1"], section_id="section-1", list_item_id=None)
     ]
     answer_object = convert_answers_to_payload_0_0_1(
-        data_stores=questionnaire_store.data_stores,
+        data_stores=questionnaire_store.stores,
         schema=QuestionnaireSchema(questionnaire),
         full_routing_path=full_routing_path,
     )
@@ -71,9 +71,7 @@ def test_convert_answers_v2_to_payload_0_0_1_with_key_error(version):
 def test_answer_with_zero(version):
     questionnaire_store = get_questionnaire_store(version)
 
-    questionnaire_store.data_stores.answer_store = AnswerStore(
-        [Answer("GHI", 0).to_dict()]
-    )
+    questionnaire_store.stores.answer_store = AnswerStore([Answer("GHI", 0).to_dict()])
 
     question = {
         "id": "question-2",
@@ -90,7 +88,7 @@ def test_answer_with_zero(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores,
+        questionnaire_store.stores,
         schema,
         full_routing_path,
     )
@@ -108,7 +106,7 @@ def test_answer_with_zero(version):
 def test_answer_with_float(version):
     questionnaire_store = get_questionnaire_store(version)
 
-    questionnaire_store.data_stores.answer_store = AnswerStore(
+    questionnaire_store.stores.answer_store = AnswerStore(
         [Answer("GHI", 10.02).to_dict()]
     )
 
@@ -127,7 +125,7 @@ def test_answer_with_float(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores,
+        questionnaire_store.stores,
         schema,
         full_routing_path,
     )
@@ -146,7 +144,7 @@ def test_answer_with_float(version):
 def test_answer_with_string(version):
     questionnaire_store = get_questionnaire_store(version)
 
-    questionnaire_store.data_stores.answer_store = AnswerStore(
+    questionnaire_store.stores.answer_store = AnswerStore(
         [Answer("GHI", "String test + !").to_dict()]
     )
 
@@ -165,7 +163,7 @@ def test_answer_with_string(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores,
+        questionnaire_store.stores,
         schema,
         full_routing_path,
     )
@@ -184,7 +182,7 @@ def test_answer_with_string(version):
 def test_answer_without_qcode(version):
     questionnaire_store = get_questionnaire_store(version)
 
-    questionnaire_store.data_stores.answer_store = AnswerStore(
+    questionnaire_store.stores.answer_store = AnswerStore(
         [Answer("GHI", "String test + !").to_dict()]
     )
 
@@ -203,7 +201,7 @@ def test_answer_without_qcode(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores,
+        questionnaire_store.stores,
         schema,
         full_routing_path,
     )
@@ -222,7 +220,7 @@ def test_converter_checkboxes_with_q_codes(version):
     questionnaire_store = get_questionnaire_store(version)
 
     full_routing_path = [RoutingPath(block_ids=["crisps"], section_id="food")]
-    questionnaire_store.data_stores.answer_store = AnswerStore(
+    questionnaire_store.stores.answer_store = AnswerStore(
         [Answer("crisps-answer", ["Ready salted", "Sweet chilli"]).to_dict()]
     )
 
@@ -266,7 +264,7 @@ def test_converter_checkboxes_with_q_codes(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores,
+        questionnaire_store.stores,
         schema,
         full_routing_path,
     )
@@ -293,7 +291,7 @@ def test_converter_checkboxes_with_q_codes_and_other_value(
 
     full_routing_path = [RoutingPath(block_ids=["crisps"], section_id="food")]
 
-    questionnaire_store.data_stores.answer_store = AnswerStore(
+    questionnaire_store.stores.answer_store = AnswerStore(
         [
             Answer("crisps-answer", ["Ready salted", "Other"]).to_dict(),
             Answer("other-answer-mandatory", "Bacon").to_dict(),
@@ -341,7 +339,7 @@ def test_converter_checkboxes_with_q_codes_and_other_value(
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores,
+        questionnaire_store.stores,
         schema,
         full_routing_path,
     )
@@ -368,7 +366,7 @@ def test_converter_checkboxes_with_missing_detail_answer_value_in_answer_store(v
 
     full_routing_path = [RoutingPath(block_ids=["crisps"], section_id="food")]
 
-    questionnaire_store.data_stores.answer_store = AnswerStore(
+    questionnaire_store.stores.answer_store = AnswerStore(
         [
             Answer("crisps-answer", ["Ready salted", "Other"]).to_dict(),
         ]
@@ -414,7 +412,7 @@ def test_converter_checkboxes_with_missing_detail_answer_value_in_answer_store(v
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores,
+        questionnaire_store.stores,
         schema,
         full_routing_path,
     )
@@ -437,7 +435,7 @@ def test_converter_checkboxes_with_missing_q_codes_uses_answer_q_code(version):
 
     full_routing_path = [RoutingPath(block_ids=["crisps"], section_id="food")]
 
-    questionnaire_store.data_stores.answer_store = AnswerStore(
+    questionnaire_store.stores.answer_store = AnswerStore(
         [Answer("crisps-answer", ["Ready salted", "Sweet chilli"]).to_dict()]
     )
 
@@ -482,7 +480,7 @@ def test_converter_checkboxes_with_missing_q_codes_uses_answer_q_code(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores,
+        questionnaire_store.stores,
         schema,
         full_routing_path,
     )
@@ -503,7 +501,7 @@ def test_converter_q_codes_for_empty_strings(version):
     questionnaire_store = get_questionnaire_store(version)
 
     full_routing_path = [RoutingPath(block_ids=["crisps"], section_id="food")]
-    questionnaire_store.data_stores.answer_store = AnswerStore(
+    questionnaire_store.stores.answer_store = AnswerStore(
         [
             Answer("crisps-answer", "").to_dict(),
             Answer("other-crisps-answer", "Ready salted").to_dict(),
@@ -532,7 +530,7 @@ def test_converter_q_codes_for_empty_strings(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores,
+        questionnaire_store.stores,
         schema,
         full_routing_path,
     )
@@ -557,7 +555,7 @@ def test_radio_answer(version):
             block_ids=["radio-block"], section_id="section-1", list_item_id=None
         )
     ]
-    questionnaire_store.data_stores.answer_store = AnswerStore(
+    questionnaire_store.stores.answer_store = AnswerStore(
         [
             Answer("radio-answer", "Coffee").to_dict(),
             Answer("other-answer-mandatory", "Water").to_dict(),
@@ -598,7 +596,7 @@ def test_radio_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores,
+        questionnaire_store.stores,
         schema,
         full_routing_path,
     )
@@ -624,7 +622,7 @@ def test_number_answer(version):
             block_ids=["number-block"], section_id="section-1", list_item_id=None
         )
     ]
-    questionnaire_store.data_stores.answer_store = AnswerStore(
+    questionnaire_store.stores.answer_store = AnswerStore(
         [Answer("number-answer", 0.9999).to_dict()]
     )
 
@@ -642,7 +640,7 @@ def test_number_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores,
+        questionnaire_store.stores,
         schema,
         full_routing_path,
     )
@@ -667,7 +665,7 @@ def test_percentage_answer(version):
             block_ids=["percentage-block"], section_id="section-1", list_item_id=None
         )
     ]
-    questionnaire_store.data_stores.answer_store = AnswerStore(
+    questionnaire_store.stores.answer_store = AnswerStore(
         [Answer("percentage-answer", 100).to_dict()]
     )
 
@@ -685,7 +683,7 @@ def test_percentage_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores,
+        questionnaire_store.stores,
         schema,
         full_routing_path,
     )
@@ -710,7 +708,7 @@ def test_textarea_answer(version):
             block_ids=["textarea-block"], section_id="section-1", list_item_id=None
         )
     ]
-    questionnaire_store.data_stores.answer_store = AnswerStore(
+    questionnaire_store.stores.answer_store = AnswerStore(
         [Answer("textarea-answer", "example text.").to_dict()]
     )
 
@@ -728,7 +726,7 @@ def test_textarea_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores,
+        questionnaire_store.stores,
         schema,
         full_routing_path,
     )
@@ -753,7 +751,7 @@ def test_currency_answer(version):
             block_ids=["currency-block"], section_id="section-1", list_item_id=None
         )
     ]
-    questionnaire_store.data_stores.answer_store = AnswerStore(
+    questionnaire_store.stores.answer_store = AnswerStore(
         [Answer("currency-answer", 99.99).to_dict()]
     )
 
@@ -771,7 +769,7 @@ def test_currency_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores,
+        questionnaire_store.stores,
         schema,
         full_routing_path,
     )
@@ -796,7 +794,7 @@ def test_dropdown_answer(version):
             block_ids=["dropdown-block"], section_id="section-1", list_item_id=None
         )
     ]
-    questionnaire_store.data_stores.answer_store = AnswerStore(
+    questionnaire_store.stores.answer_store = AnswerStore(
         [Answer("dropdown-answer", "Liverpool").to_dict()]
     )
 
@@ -825,7 +823,7 @@ def test_dropdown_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores,
+        questionnaire_store.stores,
         schema,
         full_routing_path,
     )
@@ -847,7 +845,7 @@ def test_date_answer(version):
 
     full_routing_path = [RoutingPath(block_ids=["date-block"], section_id="section-1")]
 
-    questionnaire_store.data_stores.answer_store = AnswerStore(
+    questionnaire_store.stores.answer_store = AnswerStore(
         [
             create_answer("single-date-answer", "1990-02-01"),
             create_answer("month-year-answer", "1990-01"),
@@ -871,7 +869,7 @@ def test_date_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores,
+        questionnaire_store.stores,
         schema,
         full_routing_path,
     )
@@ -893,7 +891,7 @@ def test_unit_answer(version):
     questionnaire_store = get_questionnaire_store(version)
 
     full_routing_path = [RoutingPath(block_ids=["unit-block"], section_id="section-1")]
-    questionnaire_store.data_stores.answer_store = AnswerStore(
+    questionnaire_store.stores.answer_store = AnswerStore(
         [Answer("unit-answer", 10).to_dict()]
     )
 
@@ -911,7 +909,7 @@ def test_unit_answer(version):
     schema = QuestionnaireSchema(questionnaire)
 
     data_payload = get_payload_data(
-        questionnaire_store.data_stores,
+        questionnaire_store.stores,
         schema,
         full_routing_path,
     )

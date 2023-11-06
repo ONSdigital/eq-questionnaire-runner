@@ -23,7 +23,7 @@ class SectionHandler:
         self._language = language
         self._router = Router(
             schema=schema,
-            data_stores=self._questionnaire_store.data_stores,
+            data_stores=self._questionnaire_store.stores,
         )
         if not self._is_valid_location():
             raise InvalidLocationException(f"location {self._section_id} is not valid")
@@ -42,7 +42,7 @@ class SectionHandler:
         section_summary_context = SectionSummaryContext(
             self._language,
             self._schema,
-            self._questionnaire_store.data_stores,
+            self._questionnaire_store.stores,
             self._routing_path,
             self.current_location,
         )

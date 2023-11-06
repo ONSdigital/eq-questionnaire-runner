@@ -78,7 +78,7 @@ class ConfirmEmail:
         return generate_form(
             schema=self._schema,
             question_schema=self.question_schema,
-            data_stores=self._questionnaire_store.data_stores,
+            data_stores=self._questionnaire_store.stores,
             form_data=self._form_data,
         )
 
@@ -146,7 +146,7 @@ class ConfirmEmail:
             # Type ignore: session data would be populated at this point
             self._session_store.session_data,  # type: ignore
             # Type ignore: metadata will be populated as we reach this stage
-            self._questionnaire_store.data_stores.metadata,  # type: ignore
+            self._questionnaire_store.stores.metadata,  # type: ignore
             self._schema,
         )
 

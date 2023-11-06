@@ -13,7 +13,7 @@ class Content(BlockHandler):
         transformed_block = transform_variants(
             self.block,
             self._schema,
-            self._questionnaire_store.data_stores,
+            self._questionnaire_store.stores,
             self._current_location,
         )
 

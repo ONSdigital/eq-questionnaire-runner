@@ -28,7 +28,7 @@ class Question(BlockHandler):
             return generate_form(
                 schema=self._schema,
                 question_schema=question_json,
-                data_stores=self._questionnaire_store.data_stores,
+                data_stores=self._questionnaire_store.stores,
                 location=self._current_location,
                 form_data=self._form_data,
             )
@@ -37,7 +37,7 @@ class Question(BlockHandler):
         return generate_form(
             schema=self._schema,
             question_schema=question_json,
-            data_stores=self._questionnaire_store.data_stores,
+            data_stores=self._questionnaire_store.stores,
             location=self._current_location,
             data=answers,
         )
@@ -57,7 +57,7 @@ class Question(BlockHandler):
         transformed_block = transform_variants(
             self.block,
             self._schema,
-            self._questionnaire_store.data_stores,
+            self._questionnaire_store.stores,
             self._current_location,
         )
         page_title = transformed_block.get("page_title") or self._get_safe_page_title(
@@ -84,7 +84,7 @@ class Question(BlockHandler):
         return ListContext(
             language=self._language,
             schema=self._schema,
-            data_stores=self._questionnaire_store.data_stores,
+            data_stores=self._questionnaire_store.stores,
         )
 
     def get_next_location_url(self) -> str:
@@ -112,7 +112,7 @@ class Question(BlockHandler):
                 or self._current_location.list_item_id
             )
             answer_id_to_use = resolved_answer.get("original_answer_id") or answer_id
-            if answer := self._questionnaire_store.data_stores.answer_store.get_answer(
+            if answer := self._questionnaire_store.stores.answer_store.get_answer(
                 answer_id=answer_id_to_use, list_item_id=list_item_id
             ):
                 answer_value_by_answer_id[answer_id] = answer.value
@@ -122,7 +122,7 @@ class Question(BlockHandler):
     def _get_list_add_question_url(self, params: dict) -> str | None:
         block_id = params["block_id"]
         list_name = params["list_name"]
-        list_items = self._questionnaire_store.data_stores.list_store[list_name].items
+        list_items = self._questionnaire_store.stores.list_store[list_name].items
         section_id = self._schema.get_section_id_for_block_id(block_id)
 
         if self._is_list_just_primary(list_items, list_name) or not list_items:
@@ -137,9 +137,7 @@ class Question(BlockHandler):
         return (
             len(list_items) == 1
             and list_items[0]
-            == self._questionnaire_store.data_stores.list_store[
-                list_name
-            ].primary_person
+            == self._questionnaire_store.stores.list_store[list_name].primary_person
         )
 
     def _get_answer_action(self) -> dict | None:
@@ -260,7 +258,7 @@ class Question(BlockHandler):
         if not repeating_block_ids:
             return None
 
-        list_model = self._questionnaire_store.data_stores.list_store.get(list_name)
+        list_model = self._questionnaire_store.stores.list_store.get(list_name)
         for list_item_id in list_model.items:
             if incomplete_location := self.get_first_incomplete_list_repeating_block_location_for_list_item(
                 repeating_block_ids=repeating_block_ids,
@@ -276,13 +274,13 @@ class Question(BlockHandler):
         section_key: SectionKey,
         list_name: str,
     ) -> Location | None:
-        if self._questionnaire_store.data_stores.progress_store.is_section_complete(
+        if self._questionnaire_store.stores.progress_store.is_section_complete(
             section_key
         ):
             return None
 
         for repeating_block_id in repeating_block_ids:
-            if not self._questionnaire_store.data_stores.progress_store.is_block_complete(
+            if not self._questionnaire_store.stores.progress_store.is_block_complete(
                 block_id=repeating_block_id,
                 section_key=section_key,
             ):

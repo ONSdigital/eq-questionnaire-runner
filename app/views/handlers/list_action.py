@@ -68,7 +68,7 @@ class ListAction(Question):
         if url := self.get_section_or_final_summary_url():
             return url
 
-        if self._questionnaire_store.data_stores.progress_store.is_block_complete(
+        if self._questionnaire_store.stores.progress_store.is_block_complete(
             # Type ignore: block_id would exist at this point
             block_id=self.parent_location.block_id,  # type: ignore
             section_key=self.parent_location.section_key,

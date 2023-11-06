@@ -480,8 +480,8 @@ def questionnaire_store():
 
     store = QuestionnaireStore(storage)
 
-    store.data_stores.answer_store = AnswerStore()
-    store.data_stores.metadata = {
+    store.stores.answer_store = AnswerStore()
+    store.stores.metadata = {
         "ru_name": "ESSENTIAL ENTERPRISE LTD.",
         "ref_p_start_date": "2016-02-02",
         "ref_p_end_date": "2016-03-03",
@@ -490,8 +490,6 @@ def questionnaire_store():
         "ru_ref": "12346789012A",
     }
 
-    store.data_stores.response_metadata = {
-        "started_at": "2018-07-04T14:49:33.448608+00:00"
-    }
+    store.stores.response_metadata = {"started_at": "2018-07-04T14:49:33.448608+00:00"}
 
     return store

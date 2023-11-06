@@ -88,7 +88,7 @@ def test_started_at_should_be_set_in_payload_if_present_in_response_metadata(
 
     assert (
         answer_object["started_at"]
-        == questionnaire_store.data_stores.response_metadata["started_at"]
+        == questionnaire_store.stores.response_metadata["started_at"]
     )
 
 
@@ -104,7 +104,7 @@ def test_started_at_should_not_be_set_in_payload_if_absent_in_response_metadata(
 ):
     del fake_response_metadata["started_at"]
     questionnaire_store = get_questionnaire_store(version)
-    questionnaire_store.data_stores.response_metadata = fake_response_metadata
+    questionnaire_store.stores.response_metadata = fake_response_metadata
 
     converter = (
         convert_answers_v2 if version is AuthPayloadVersion.V2 else convert_answers
@@ -156,7 +156,7 @@ def test_case_id_should_be_set_in_payload(fake_questionnaire_schema, version):
         fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
     )
 
-    assert answer_object["case_id"] == questionnaire_store.data_stores.metadata.case_id
+    assert answer_object["case_id"] == questionnaire_store.stores.metadata.case_id
 
 
 @pytest.mark.parametrize(
@@ -180,11 +180,9 @@ def test_case_ref_should_be_set_in_payload(fake_questionnaire_schema, version):
     if version is AuthPayloadVersion.V2:
         assert answer_object["survey_metadata"][
             "case_ref"
-        ], questionnaire_store.data_stores.metadata["survey_metadata"]["data"][
-            "case_ref"
-        ]
+        ], questionnaire_store.stores.metadata["survey_metadata"]["data"]["case_ref"]
     else:
-        assert answer_object["case_ref"], questionnaire_store.data_stores.metadata[
+        assert answer_object["case_ref"], questionnaire_store.stores.metadata[
             "case_ref"
         ]
 
@@ -212,13 +210,13 @@ def test_display_address_should_be_set_in_payload_metadata(
     if version is AuthPayloadVersion.V2:
         assert payload["survey_metadata"][
             "display_address"
-        ], questionnaire_store.data_stores.metadata["survey_metadata"]["data"][
+        ], questionnaire_store.stores.metadata["survey_metadata"]["data"][
             "display_address"
         ]
     else:
         assert payload["metadata"][
             "display_address"
-        ], questionnaire_store.data_stores.metadata["display_address"]
+        ], questionnaire_store.stores.metadata["display_address"]
 
 
 @pytest.mark.parametrize(
@@ -258,7 +256,7 @@ def test_converter_language_code_not_set_in_payload(
     fake_questionnaire_schema, fake_response_metadata, version
 ):
     questionnaire_store = get_questionnaire_store(version)
-    questionnaire_store.data_stores.response_metadata = fake_response_metadata
+    questionnaire_store.stores.response_metadata = fake_response_metadata
 
     converter = (
         convert_answers_v2 if version is AuthPayloadVersion.V2 else convert_answers
@@ -268,7 +266,7 @@ def test_converter_language_code_not_set_in_payload(
         fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
     )
 
-    assert questionnaire_store.data_stores.metadata["language_code"] is None
+    assert questionnaire_store.stores.metadata["language_code"] is None
 
     assert answer_object["launch_language_code"] == "en"
 
@@ -284,8 +282,8 @@ def test_converter_language_code_set_in_payload(
     fake_questionnaire_schema, fake_response_metadata, version
 ):
     questionnaire_store = get_questionnaire_store(version)
-    questionnaire_store.data_stores.metadata = get_metadata({"language_code": "ga"})
-    questionnaire_store.data_stores.response_metadata = fake_response_metadata
+    questionnaire_store.stores.metadata = get_metadata({"language_code": "ga"})
+    questionnaire_store.stores.response_metadata = fake_response_metadata
 
     converter = (
         convert_answers_v2 if version is AuthPayloadVersion.V2 else convert_answers
@@ -308,7 +306,7 @@ def test_converter_language_code_set_in_payload(
 def test_no_metadata_raises_exception(fake_questionnaire_schema, version):
     questionnaire_store = get_questionnaire_store(version)
 
-    questionnaire_store.data_stores.metadata = None
+    questionnaire_store.stores.metadata = None
 
     converter = (
         convert_answers_v2 if version is AuthPayloadVersion.V2 else convert_answers
@@ -329,7 +327,7 @@ def test_data_object_set_in_payload(
     fake_questionnaire_schema, fake_response_metadata, version
 ):
     questionnaire_store = get_questionnaire_store(version)
-    questionnaire_store.data_stores.response_metadata = fake_response_metadata
+    questionnaire_store.stores.response_metadata = fake_response_metadata
 
     converter = (
         convert_answers_v2 if version is AuthPayloadVersion.V2 else convert_answers
@@ -347,7 +345,7 @@ def test_instrument_id_is_not_in_payload_collection_if_form_type_absent_in_metad
 ):
     questionnaire_store = get_questionnaire_store("v1")
 
-    questionnaire_store.data_stores.metadata = get_metadata({"form_type": None})
+    questionnaire_store.stores.metadata = get_metadata({"form_type": None})
 
     payload = convert_answers(
         fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT

@@ -138,7 +138,7 @@ def test_no_metadata_raises_error(
     with app.app_context():
         questionnaire_store = fake_questionnaire_store({}, SUBMITTED_AT)
 
-        questionnaire_store.data_stores.metadata = None
+        questionnaire_store.stores.metadata = None
 
         with pytest.raises(NoMetadataException):
             build_view_submitted_response_context(
@@ -150,9 +150,9 @@ def fake_questionnaire_store(metadata, submitted_at):
     storage = Mock()
     storage.get_user_data = Mock(return_value=("{}", "ce_sid", 1, None))
     questionnaire_store = QuestionnaireStore(storage)
-    questionnaire_store.data_stores.metadata = get_metadata(metadata)
+    questionnaire_store.stores.metadata = get_metadata(metadata)
     questionnaire_store.submitted_at = submitted_at
-    questionnaire_store.data_stores.answer_store = AnswerStore(
+    questionnaire_store.stores.answer_store = AnswerStore(
         [
             Answer("name-answer", "John Smith", None).to_dict(),
             Answer("address-answer", "NP10 8XG", None).to_dict(),

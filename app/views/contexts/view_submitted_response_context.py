@@ -25,7 +25,7 @@ def build_view_submitted_response_context(
         questionnaire_store.submitted_at  # type: ignore
     )
 
-    metadata = questionnaire_store.data_stores.metadata
+    metadata = questionnaire_store.stores.metadata
     if not metadata:
         raise NoMetadataException
 
@@ -58,7 +58,7 @@ def build_view_submitted_response_context(
         summary_context = SummaryContext(
             language=language,
             schema=schema,
-            data_stores=questionnaire_store.data_stores,
+            data_stores=questionnaire_store.stores,
             view_submitted_response=True,
         )
         context["summary"] = summary_context()
