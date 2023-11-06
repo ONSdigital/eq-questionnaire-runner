@@ -29,6 +29,7 @@ class DateString(fields.DateTime):
     Since all metadata is serialized and deserialized to JSON.
     This custom field deserializes Dates to strings.
     """
+
     DEFAULT_FORMAT = "iso8601"
 
     def _deserialize(self, *args: Any, **kwargs: Any) -> str:  # type: ignore # pylint: disable=arguments-differ

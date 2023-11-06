@@ -1,5 +1,5 @@
 from decimal import Decimal
-from typing import Literal, TypeAlias, Any
+from typing import Any, Literal, TypeAlias
 
 import flask_babel
 from babel import Locale, numbers, units

@@ -1,6 +1,6 @@
 import functools
 from datetime import datetime, timezone
-from typing import Mapping, Any
+from typing import Any, Mapping
 
 from marshmallow import (
     EXCLUDE,
@@ -146,6 +146,6 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
 
 def validate_runner_claims(claims: Mapping) -> dict:
     """Validate claims required for runner to function"""
-    runner_metadata_schema= RunnerMetadataSchema(unknown=EXCLUDE)
+    runner_metadata_schema = RunnerMetadataSchema(unknown=EXCLUDE)
     # Type ignore: the load method in the Marshmallow parent schema class doesn't have type hints for return
     return runner_metadata_schema.load(claims)  # type: ignore

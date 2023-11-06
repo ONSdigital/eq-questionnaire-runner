@@ -1,6 +1,6 @@
 import functools
 from datetime import datetime, timezone
-from typing import Callable, Iterable, Mapping, Any
+from typing import Any, Callable, Iterable, Mapping
 
 from marshmallow import (
     EXCLUDE,
