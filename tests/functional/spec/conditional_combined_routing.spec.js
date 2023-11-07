@@ -14,7 +14,7 @@ describe("Conditional combined routing.", () => {
     await $(ConditionalCombinedRoutingPage.yes()).click();
     await click(ConditionalCombinedRoutingPage.submit());
     // Then
-    await expect(await browser.getUrl()).to.contain(ResponseAny.pageName);
+    await expect(browser).toHaveUrlContaining(ResponseAny.pageName);
 
     // Or
     await $(ResponseAny.previous()).click();
@@ -24,7 +24,7 @@ describe("Conditional combined routing.", () => {
     await click(ConditionalCombinedRoutingPage.submit());
 
     // Then
-    await expect(await browser.getUrl()).to.contain(ResponseAny.pageName);
+    await expect(browser).toHaveUrlContaining(ResponseAny.pageName);
   });
 
   it('Given a list of radio options, when I choose the option "No, I prefer tea" then I should be routed to the relevant page', async () => {
@@ -32,7 +32,7 @@ describe("Conditional combined routing.", () => {
     await $(ConditionalCombinedRoutingPage.noIPreferTea()).click();
     await click(ConditionalCombinedRoutingPage.submit());
     // Then
-    await expect(await browser.getUrl()).to.contain(ResponseNotAny.pageName);
+    await expect(browser).toHaveUrlContaining(ResponseNotAny.pageName);
   });
 
   it('Given a list of radio options, when I choose the option "No, I don\'t drink any hot drinks" then I should be routed to the submit page', async () => {
@@ -40,6 +40,6 @@ describe("Conditional combined routing.", () => {
     await $(ConditionalCombinedRoutingPage.noIDonTDrinkAnyHotDrinks()).click();
     await click(ConditionalCombinedRoutingPage.submit());
     // Then
-    await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
+    await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
   });
 });

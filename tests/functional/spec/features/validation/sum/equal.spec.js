@@ -22,7 +22,7 @@ describe("Feature: Sum of grouped answers equal to validation against total ", (
 
       await answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
 
-      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
     });
   });
 
@@ -37,14 +37,14 @@ describe("Feature: Sum of grouped answers equal to validation against total ", (
       await click(TotalAnswerPage.submit());
 
       await browser.url(SubmitPage.url());
-      await expect(await browser.getUrl()).to.contain(BreakdownAnswerPage.pageName);
+      await expect(browser).toHaveUrlContaining(BreakdownAnswerPage.pageName);
 
       await click(BreakdownAnswerPage.submit());
-      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 15");
+      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toBe("Enter answers that add up to 15");
 
       await answerAndSubmitBreakdownQuestion("6", "3", "3", "3");
 
-      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
     });
   });
 
@@ -54,7 +54,7 @@ describe("Feature: Sum of grouped answers equal to validation against total ", (
       await click(TotalAnswerPage.submit());
       await answerAndSubmitBreakdownQuestion("5", "", "", "");
 
-      await expect(await browser.getUrl()).to.contain(SubmitPage.pageName);
+      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
     });
   });
 
@@ -64,7 +64,7 @@ describe("Feature: Sum of grouped answers equal to validation against total ", (
       await click(TotalAnswerPage.submit());
       await answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
 
-      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).to.contain("Enter answers that add up to 5");
+      await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toBe("Enter answers that add up to 5");
     });
   });
 });

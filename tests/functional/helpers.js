@@ -2,24 +2,24 @@ export const checkItemsInList = async (itemsExpected, listLabel) => {
   await $(listLabel(1)).waitForDisplayed();
 
   for (let i = 1; i <= itemsExpected.length; i++) {
-    await expect(await $(listLabel(i)).getText()).to.equal(itemsExpected[i - 1]);
+    await expect(await $(listLabel(i)).getText()).toEqual(itemsExpected[i - 1]);
   }
 };
 
 export const checkListItemComplete = async (listItemLabel) => {
-  await expect(await $(listItemLabel).$(`.ons-summary__item-title-icon.ons-summary__item-title-icon--check`).isExisting()).to.be.true;
+  await expect(await $(listItemLabel).$(`.ons-summary__item-title-icon.ons-summary__item-title-icon--check`).isExisting()).toBe(true);
 };
 export const checkListItemIncomplete = async (listItemLabel) => {
-  await expect(await $(listItemLabel).$(`.ons-summary__item-title-icon.ons-summary__item-title-icon--check`).isExisting()).to.be.false;
+  await expect(await $(listItemLabel).$(`.ons-summary__item-title-icon.ons-summary__item-title-icon--check`).isExisting()).toBe(false);
 };
 
 const assertSummaryFunction = (selector) => {
   return async (entities) => {
     // check each summary value/item/title is present and that the number of them matches what is on the page
     await entities.map(async (entity, index) => {
-      await expect(await $$(selector)[index].getText()).to.equal(entity);
+      await expect(await $$(selector)[index].getText()).toEqual(entity);
     });
-    await expect(await $$(selector).length).to.equal(entities.length);
+    await expect(await $$(selector).length).toEqual(entities.length);
   };
 };
 

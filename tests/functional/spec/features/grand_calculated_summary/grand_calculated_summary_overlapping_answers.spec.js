@@ -34,8 +34,8 @@ describe("Feature: Grand Calculated Summary", () => {
       await click(CalculatedSummary4Page.submit());
       await click(Section1SummaryPage.submit());
       await click(HubPage.submit());
-      await expect(await $(GrandCalculatedSummaryShoppingPage.grandCalculatedSummaryTitle()).getText()).toContain(
-        "Grand Calculated Summary of purchases this week comes to £360.00. Is this correct?",
+      await expect(await $(GrandCalculatedSummaryShoppingPage.grandCalculatedSummaryTitle()).getText()).toBe(
+        "Grand Calculated Summary of purchases this week comes to £360.00. Is this correct?.",
       );
       await click(GrandCalculatedSummaryShoppingPage.submit());
     });
@@ -56,8 +56,8 @@ describe("Feature: Grand Calculated Summary", () => {
 
       // then grand calculated summary
       await expect(browser).toHaveUrlContaining(GrandCalculatedSummaryShoppingPage.pageName);
-      await expect(await $(GrandCalculatedSummaryShoppingPage.grandCalculatedSummaryTitle()).getText()).toContain(
-        "Grand Calculated Summary of purchases this week comes to £460.00. Is this correct?",
+      await expect(await $(GrandCalculatedSummaryShoppingPage.grandCalculatedSummaryTitle()).getText()).toBe(
+        "Grand Calculated Summary of purchases this week comes to £460.00. Is this correct?.",
       );
       await expect(await browser.getUrl()).toContain("/questionnaire/grand-calculated-summary-shopping/#calculated-summary-2");
     });
@@ -70,7 +70,7 @@ describe("Feature: Grand Calculated Summary", () => {
 
       // taken back to the FIRST calculated summary which uses it
       await expect(browser).toHaveUrlContaining(CalculatedSummary2Page.pageName);
-      await expect(await $(CalculatedSummary2Page.calculatedSummaryTitle()).getText()).toContain(
+      await expect(await $(CalculatedSummary2Page.calculatedSummaryTitle()).getText()).toBe(
         "Total of eggs and cheese is calculated to be £700.00. Is this correct?",
       );
       await click(CalculatedSummary2Page.submit());
@@ -97,7 +97,7 @@ describe("Feature: Grand Calculated Summary", () => {
 
       // taken back to the FIRST calculated summary which uses it
       await expect(browser).toHaveUrlContaining(CalculatedSummary2Page.pageName);
-      await expect(await $(CalculatedSummary2Page.calculatedSummaryTitle()).getText()).toContain(
+      await expect(await $(CalculatedSummary2Page.calculatedSummaryTitle()).getText()).toBe(
         "Total of eggs and cheese is calculated to be £800.00. Is this correct?",
       );
       await click(CalculatedSummary2Page.submit());

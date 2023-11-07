@@ -8,15 +8,15 @@ describe('Checkbox with a numeric "detail_answer" option', () => {
   });
 
   it("Given a numeric detail answer options are available, When the user clicks an option, Then the detail answer input should be visible.", async () => {
-    await expect(await $(CheckboxNumericDetailPage.otherDetail()).isDisplayed()).to.be.true;
+    await expect(await $(CheckboxNumericDetailPage.otherDetail()).isDisplayed()).toBe(true);
   });
 
   it("Given a numeric detail answer, When the user does not provide any text, Then just the option value should be displayed on the summary screen", async () => {
     // When
-    await expect(await $(CheckboxNumericDetailPage.otherDetail()).isDisplayed()).to.be.true;
+    await expect(await $(CheckboxNumericDetailPage.otherDetail()).isDisplayed()).toBe(true);
     await click(CheckboxNumericDetailPage.submit());
     // Then
-    await expect(await $(SubmitPage.checkboxNumericDetailAnswer()).getText()).to.contain("Other");
+    await expect(await $(SubmitPage.checkboxNumericDetailAnswer()).getText()).toBe("Other");
   });
 
   it("Given a numeric detail answer, When the user provides text, Then that text should be displayed on the summary screen", async () => {
@@ -24,7 +24,7 @@ describe('Checkbox with a numeric "detail_answer" option', () => {
     await $(CheckboxNumericDetailPage.otherDetail()).setValue("15");
     await click(CheckboxNumericDetailPage.submit());
     // Then
-    await expect(await $(SubmitPage.checkboxNumericDetailAnswer()).getText()).to.contain("15");
+    await expect(await $(SubmitPage.checkboxNumericDetailAnswer()).getText()).toContain("15");
   });
 
   it("Given a numeric detail answer, When the user provides text, An error should be displayed", async () => {
@@ -32,8 +32,8 @@ describe('Checkbox with a numeric "detail_answer" option', () => {
     await $(CheckboxNumericDetailPage.otherDetail()).setValue("fhdjkshfjkds");
     await click(CheckboxNumericDetailPage.submit());
     // Then
-    await expect(await $(CheckboxNumericDetailPage.error()).isDisplayed()).to.be.true;
-    await expect(await $(CheckboxNumericDetailPage.errorNumber(1)).getText()).to.contain("Please enter an integer");
+    await expect(await $(CheckboxNumericDetailPage.error()).isDisplayed()).toBe(true);
+    await expect(await $(CheckboxNumericDetailPage.errorNumber(1)).getText()).toBe("Please enter an integer");
   });
 
   it("Given a numeric detail answer, When the user provides a number larger than 20, An error should be displayed", async () => {
@@ -41,8 +41,8 @@ describe('Checkbox with a numeric "detail_answer" option', () => {
     await $(CheckboxNumericDetailPage.otherDetail()).setValue("250");
     await click(CheckboxNumericDetailPage.submit());
     // Then
-    await expect(await $(CheckboxNumericDetailPage.error()).isDisplayed()).to.be.true;
-    await expect(await $(CheckboxNumericDetailPage.errorNumber(1)).getText()).to.contain("Number is too large");
+    await expect(await $(CheckboxNumericDetailPage.error()).isDisplayed()).toBe(true);
+    await expect(await $(CheckboxNumericDetailPage.errorNumber(1)).getText()).toBe("Number is too large");
   });
 
   it("Given a numeric detail answer, When the user provides a number less than 0, An error should be displayed", async () => {
@@ -50,8 +50,8 @@ describe('Checkbox with a numeric "detail_answer" option', () => {
     await $(CheckboxNumericDetailPage.otherDetail()).setValue("-1");
     await click(CheckboxNumericDetailPage.submit());
     // Then
-    await expect(await $(CheckboxNumericDetailPage.error()).isDisplayed()).to.be.true;
-    await expect(await $(CheckboxNumericDetailPage.errorNumber(1)).getText()).to.contain("Number cannot be less than zero");
+    await expect(await $(CheckboxNumericDetailPage.error()).isDisplayed()).toBe(true);
+    await expect(await $(CheckboxNumericDetailPage.errorNumber(1)).getText()).toBe("Number cannot be less than zero");
   });
 
   it("Given a numeric detail answer, When the user provides text, An error should be displayed and the text in the textbox should be kept", async () => {
@@ -59,10 +59,10 @@ describe('Checkbox with a numeric "detail_answer" option', () => {
     await $(CheckboxNumericDetailPage.otherDetail()).setValue("biscuits");
     await click(CheckboxNumericDetailPage.submit());
     // Then
-    await expect(await $(CheckboxNumericDetailPage.error()).isDisplayed()).to.be.true;
-    await expect(await $(CheckboxNumericDetailPage.errorNumber(1)).getText()).to.contain("Please enter an integer");
+    await expect(await $(CheckboxNumericDetailPage.error()).isDisplayed()).toBe(true);
+    await expect(await $(CheckboxNumericDetailPage.errorNumber(1)).getText()).toBe("Please enter an integer");
     await browser.pause(1000);
-    await expect(await $(CheckboxNumericDetailPage.otherDetail()).getValue()).to.equal("biscuits");
+    await expect(await $(CheckboxNumericDetailPage.otherDetail()).getValue()).toBe("biscuits");
   });
 
   it('Given a numeric detail answer, When the user enters "0" and submits, Then "0" should be displayed on the summary screen', async () => {
@@ -70,6 +70,6 @@ describe('Checkbox with a numeric "detail_answer" option', () => {
     await $(CheckboxNumericDetailPage.otherDetail()).setValue("0");
     await click(CheckboxNumericDetailPage.submit());
     // Then
-    await expect(await $(SubmitPage.checkboxNumericDetailAnswer()).getText()).to.contain("0");
+    await expect(await $(SubmitPage.checkboxNumericDetailAnswer()).getText()).toContain("0");
   });
 });
