@@ -69,7 +69,7 @@ def get_schema_path(language_code: str, schema_name: str) -> str | None:
 def get_schema_path_map(
     include_test_schemas: bool = False,
 ) -> dict[str, dict[str, dict[str, str]]]:
-    schemas = {}
+    schemas: dict[str, dict[str, dict[str, str]]] = {}
     for survey_type in os.listdir(SCHEMA_DIR):
         if not include_test_schemas and survey_type == "test":
             continue

@@ -119,8 +119,8 @@ def validate_questionnaire_claims(
     dynamic_fields = {}
 
     for metadata_field in questionnaire_specific_metadata:
-        field_arguments = {}
-        validators = []
+        field_arguments: dict[str, bool] = {}
+        validators: list[validate.Validator] = []
 
         if metadata_field.get("optional"):
             field_arguments["required"] = False
