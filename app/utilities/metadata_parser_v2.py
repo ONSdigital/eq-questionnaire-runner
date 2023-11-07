@@ -34,9 +34,9 @@ VALIDATORS: Mapping[str, Callable] = {
 
 class StripWhitespaceMixin:
     @pre_load()
-    def strip_whitespace(
+    def strip_whitespace(  # pylint: disable=no-self-use, unused-argument
         self, items: dict, **kwargs: Any
-    ) -> dict:  # pylint: disable=no-self-use, unused-argument
+    ) -> dict:
         for key, value in items.items():
             if isinstance(value, str):
                 items[key] = value.strip()
@@ -52,8 +52,9 @@ class SurveyMetadata(Schema, StripWhitespaceMixin):
     receipting_keys = fields.List(fields.String)
 
     @validates_schema
-    def validate_receipting_keys(self, data: dict, **kwargs: Any) -> None:
-        # pylint: disable=no-self-use, unused-argument
+    def validate_receipting_keys(  # pylint: disable=no-self-use, unused-argument
+        self, data: dict, **kwargs: Any
+    ) -> None:
         if data and (receipting_keys := data.get("receipting_keys", {})):
             missing_receipting_keys = [
                 receipting_key
@@ -100,8 +101,9 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     survey_metadata = fields.Nested(SurveyMetadata, required=False)
 
     @validates_schema
-    def validate_schema_name_is_set(self, data: dict[str, str], **kwargs: Any) -> None:
-        # pylint: disable=no-self-use, unused-argument
+    def validate_schema_name_is_set(  # pylint: disable=no-self-use, unused-argument
+        self, data: dict[str, str], **kwargs: Any
+    ) -> None:
         if data and not (data.get("schema_name") or data.get("schema_url")):
             raise ValidationError(
                 "Neither schema_name or schema_url has been set in metadata"

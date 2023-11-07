@@ -34,9 +34,9 @@ VALIDATORS = {
 
 class StripWhitespaceMixin:
     @pre_load()
-    def strip_whitespace(
+    def strip_whitespace(  # pylint: disable=no-self-use, unused-argument
         self, items: dict, **kwargs: Any
-    ) -> dict:  # pylint: disable=no-self-use, unused-argument
+    ) -> dict:
         for key, value in items.items():
             if isinstance(value, str):
                 items[key] = value.strip()
@@ -87,8 +87,9 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     eq_id = VALIDATORS["string"](required=False)  # type:ignore
 
     @validates_schema
-    def validate_schema_name(self, data: dict[str, str], **kwargs: Any) -> None:
-        # pylint: disable=no-self-use, unused-argument
+    def validate_schema_name(  # pylint: disable=no-self-use, unused-argument
+        self, data: dict[str, str], **kwargs: Any
+    ) -> None:
         """Function to validate the business schema parameters"""
         if not data.get("schema_name"):
             business_schema_claims = (
@@ -101,8 +102,9 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
                 )
 
     @post_load
-    def update_schema_name(self, data: dict[str, str], **kwargs: Any) -> dict:
-        # pylint: disable=no-self-use, unused-argument
+    def update_schema_name(  # pylint: disable=no-self-use, unused-argument
+        self, data: dict[str, str], **kwargs: Any
+    ) -> dict:
         """Function to transform parameters into a business schema"""
         if data.get("schema_name"):
             logger.info(
@@ -115,9 +117,9 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
         return data
 
     @post_load
-    def update_response_id(
+    def update_response_id(  # pylint: disable=no-self-use, unused-argument
         self, data: dict[str, str], **kwargs: Any
-    ) -> dict:  # pylint: disable=no-self-use, unused-argument
+    ) -> dict:
         """
         If response_id is present : return as it is
         If response_id is not present : Build response_id from ru_ref,collection_exercise_sid,eq_id and form_type
