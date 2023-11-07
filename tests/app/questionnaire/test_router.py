@@ -799,6 +799,131 @@ class TestRouterNextLocation(RouterTestCase):
         assert expected_previous_url == next_location_url
 
     @pytest.mark.usefixtures("app")
+    def test_return_to_calculated_summary_from_answer_when_multiple_answers(self):
+        """
+        If going from GCS ->  CS -> answer -> CS -> GCS this tests going from CS -> GCS having just come from an answer
+        """
+        self.schema = load_schema_from_name(
+            "test_grand_calculated_summary_overlapping_answers"
+        )
+        self.progress_store = ProgressStore(
+            [
+                ProgressDict(
+                    section_id="introduction-section",
+                    block_ids=[
+                        "introduction-block",
+                    ],
+                    status=CompletionStatus.COMPLETED,
+                ),
+                ProgressDict(
+                    section_id="section-1",
+                    block_ids=[
+                        "block-1",
+                        "block-2",
+                        "calculated-summary-1",
+                        "calculated-summary-2",
+                        "block-3",
+                        "calculated-summary-3",
+                    ],
+                    status=CompletionStatus.COMPLETED,
+                ),
+            ]
+        )
+
+        current_location = Location(section_id="section-1", block_id="block-1")
+
+        routing_path = RoutingPath(
+            block_ids=[
+                "block-1",
+                "block-2",
+                "calculated-summary-1",
+                "calculated-summary-2",
+                "block-3",
+                "calculated-summary-3",
+            ],
+            section_id="section-1",
+        )
+
+        return_location = ReturnLocation(
+            return_to="calculated-summary,grand-calculated-summary",
+            return_to_answer_id="q1-a1,calculated-summary-1",
+            return_to_block_id="calculated-summary-1,grand-calculated-summary-shopping",
+        )
+
+        next_location_url = self.router.get_next_location_url(
+            current_location, routing_path, return_location
+        )
+
+        assert (
+            next_location_url
+            == "/questionnaire/calculated-summary-1/?return_to=grand-calculated-summary&return_to_block_id=grand-calculated-summary-shopping&"
+               "return_to_answer_id=calculated-summary-1#q1-a1"
+        )
+
+    @pytest.mark.usefixtures("app")
+    def test_return_to_grand_calculated_summary_from_answer_when_multiple_answers(self):
+        """
+        If going from GCS ->  CS -> answer -> CS -> GCS this tests going from CS -> GCS having just come from an answer
+        """
+        self.schema = load_schema_from_name(
+            "test_grand_calculated_summary_overlapping_answers"
+        )
+        self.progress_store = ProgressStore(
+            [
+                ProgressDict(
+                    section_id="introduction-section",
+                    block_ids=[
+                        "introduction-block",
+                    ],
+                    status=CompletionStatus.COMPLETED,
+                ),
+                ProgressDict(
+                    section_id="section-1",
+                    block_ids=[
+                        "block-1",
+                        "block-2",
+                        "calculated-summary-1",
+                        "calculated-summary-2",
+                        "block-3",
+                        "calculated-summary-3",
+                    ],
+                    status=CompletionStatus.COMPLETED,
+                ),
+            ]
+        )
+
+        current_location = Location(
+            section_id="section-1", block_id="calculated-summary-1"
+        )
+
+        routing_path = RoutingPath(
+            block_ids=[
+                "block-1",
+                "block-2",
+                "calculated-summary-1",
+                "calculated-summary-2",
+                "block-3",
+                "calculated-summary-3",
+            ],
+            section_id="section-1",
+        )
+
+        return_location = ReturnLocation(
+            return_to="grand-calculated-summary",
+            return_to_answer_id="calculated-summary-1",
+            return_to_block_id="grand-calculated-summary-shopping",
+        )
+
+        next_location_url = self.router.get_next_location_url(
+            current_location, routing_path, return_location
+        )
+
+        assert (
+            next_location_url
+            == "/questionnaire/grand-calculated-summary-shopping/#calculated-summary-1"
+        )
+
+    @pytest.mark.usefixtures("app")
     def test_return_to_grand_calculated_summary_from_calculated_summary(
         self, grand_calculated_summary_progress_store, grand_calculated_summary_schema
     ):
