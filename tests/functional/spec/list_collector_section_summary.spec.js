@@ -21,24 +21,24 @@ describe("List Collector Section Summary and Summary Items", () => {
       await drivingQuestionYes();
       await addCompany("Company A", "123", true);
       await anyMoreCompaniesNo();
-      await expect(await browser.getUrl()).to.contain(SectionSummaryPage.url());
-      await expect(await $(SectionSummaryPage.anyCompaniesOrBranchesQuestion()).isExisting()).to.be.true;
-      await expect(await $(SectionSummaryPage.anyCompaniesOrBranchesAnswer()).getText()).to.contain("Yes");
+      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(await $(SectionSummaryPage.anyCompaniesOrBranchesQuestion()).isExisting()).toBe(true);
+      await expect(await $(SectionSummaryPage.anyCompaniesOrBranchesAnswer()).getText()).toBe("Yes");
     });
     it("When I add my own item, Then the item should be visible on the section summary and have correct values", async () => {
       await drivingQuestionYes();
       await addCompany("Company A", "123", true);
       await anyMoreCompaniesNo();
-      await expect(await $(SectionSummaryPage.companiesListLabel(1)).getText()).to.contain("Name of UK company or branch");
-      await expect(await $(companiesListRowItem(1, 1)).getText()).to.contain("Company A");
-      await expect(await $(companiesListRowItem(1, 2)).getText()).to.contain("123");
-      await expect(await $(companiesListRowItem(1, 3)).getText()).to.contain("Yes");
+      await expect(await $(SectionSummaryPage.companiesListLabel(1)).getText()).toContain("Name of UK company or branch");
+      await expect(await $(companiesListRowItem(1, 1)).getText()).toContain("Company A");
+      await expect(await $(companiesListRowItem(1, 2)).getText()).toContain("123");
+      await expect(await $(companiesListRowItem(1, 3)).getText()).toContain("Yes");
       const listItemId = (await listItemIds())[0];
-      await expect(await $(companiesListRowItemAnchor(1)).getHTML()).to.contain(
+      await expect(await $(companiesListRowItemAnchor(1)).getHTML()).toContain(
         `return_to=section-summary&amp;return_to_answer_id=${listItemId}#company-or-branch-name`,
       );
-      await expect(await $(companiesListRowItemAnchor(2)).getHTML()).to.contain(`return_to_answer_id=registration-number-${listItemId}#registration-number`);
-      await expect(await $(companiesListRowItemAnchor(3)).getHTML()).to.contain(
+      await expect(await $(companiesListRowItemAnchor(2)).getHTML()).toContain(`return_to_answer_id=registration-number-${listItemId}#registration-number`);
+      await expect(await $(companiesListRowItemAnchor(3)).getHTML()).toContain(
         `return_to_answer_id=authorised-insurer-radio-${listItemId}#authorised-insurer-radio`,
       );
     });
@@ -51,33 +51,33 @@ describe("List Collector Section Summary and Summary Items", () => {
       await addCompany("Company C", "789", true);
       await anyMoreCompaniesNo();
       await answerUkBasedQuestion();
-      await expect(await $(companiesListRowItem(1, 1)).getText()).to.contain("Company A");
-      await expect(await $(companiesListRowItem(1, 2)).getText()).to.contain("123");
-      await expect(await $(companiesListRowItem(1, 3)).getText()).to.contain("Yes");
-      await expect(await $(companiesListRowItem(2, 1)).getText()).to.contain("Company B");
-      await expect(await $(companiesListRowItem(2, 2)).getText()).to.contain("456");
-      await expect(await $(companiesListRowItem(2, 3)).getText()).to.contain("No");
-      await expect(await $(companiesListRowItem(3, 1)).getText()).to.contain("Company C");
-      await expect(await $(companiesListRowItem(3, 2)).getText()).to.contain("789");
-      await expect(await $(companiesListRowItem(3, 3)).getText()).to.contain("Yes");
+      await expect(await $(companiesListRowItem(1, 1)).getText()).toContain("Company A");
+      await expect(await $(companiesListRowItem(1, 2)).getText()).toContain("123");
+      await expect(await $(companiesListRowItem(1, 3)).getText()).toContain("Yes");
+      await expect(await $(companiesListRowItem(2, 1)).getText()).toContain("Company B");
+      await expect(await $(companiesListRowItem(2, 2)).getText()).toContain("456");
+      await expect(await $(companiesListRowItem(2, 3)).getText()).toContain("No");
+      await expect(await $(companiesListRowItem(3, 1)).getText()).toContain("Company C");
+      await expect(await $(companiesListRowItem(3, 2)).getText()).toContain("789");
+      await expect(await $(companiesListRowItem(3, 3)).getText()).toContain("Yes");
     });
     it("When I remove an item, Then the list of answers should no longer be visible on the section summary.", async () => {
       await drivingQuestionYes();
       await addCompany("Company A", "123", true);
       await anyMoreCompaniesNo();
       await removeFirstCompany();
-      await expect(await browser.getUrl()).to.contain(SectionSummaryPage.url());
-      await expect(await $("body").getText()).to.not.have.string("Company A");
-      await expect(await $(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.false;
-      await expect(await $(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.false;
+      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(await $("body").getText()).not.toBe("Company A");
+      await expect(await $(SectionSummaryPage.companiesListEditLink(1)).isExisting()).toBe(false);
+      await expect(await $(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).toBe(false);
     });
     it("When I remove an item but the list collector is still on the path, Then the placeholder text should be visible on the section summary.", async () => {
       await drivingQuestionYes();
       await addCompany("Company A", "123", true);
       await anyMoreCompaniesNo();
       await removeFirstCompany();
-      await expect(await browser.getUrl()).to.contain(SectionSummaryPage.url());
-      await expect(await $("body").getText()).to.contain("No UK company or branch added");
+      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(await $("body").getText()).toContain("No UK company or branch added");
     });
     it("When I have multiple items in the list and I remove the first item, Then only the item that was not deleted should be visible on the section summary.", async () => {
       await drivingQuestionYes();
@@ -86,25 +86,25 @@ describe("List Collector Section Summary and Summary Items", () => {
       await addCompany("Company B", "234", true);
       await anyMoreCompaniesNo();
       await removeFirstCompany();
-      await expect(await browser.getUrl()).to.contain(SectionSummaryPage.url());
-      await expect(await $("body").getText()).to.not.have.string("Company A");
-      await expect(await $("body").getText()).to.contain("Company B");
+      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(await $("body").getText()).not.toBe("Company A");
+      await expect(await $("body").getText()).toContain("Company B");
     });
     it("When I add an item and relevant data and answer No on the additional items page, Then I should get to the section summary page.", async () => {
       await drivingQuestionYes();
       await addCompany("Company A", "123", true);
       await anyMoreCompaniesNo();
-      await expect(await browser.getUrl()).to.contain(SectionSummaryPage.url());
-      await expect(await $(SectionSummaryPage.companiesListAddLink()).isExisting()).to.be.true;
+      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(await $(SectionSummaryPage.companiesListAddLink()).isExisting()).toBe(true);
     });
     it("When I add an item and relevant data and answer Yes on the additional items page, Then I should be able to and add a new item and relevant data.", async () => {
       await drivingQuestionYes();
       await addCompany("Company A", "123", true);
       await anyMoreCompaniesYes();
-      await expect(await $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).isExisting()).to.be.true;
-      await expect(await $(AnyCompaniesOrBranchesAddPage.registrationNumber()).isExisting()).to.be.true;
-      await expect(await $(AnyCompaniesOrBranchesAddPage.authorisedInsurerRadioYes()).isExisting()).to.be.true;
-      await expect(await $(AnyCompaniesOrBranchesAddPage.heading()).getText()).to.contain(
+      await expect(await $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).isExisting()).toBe(true);
+      await expect(await $(AnyCompaniesOrBranchesAddPage.registrationNumber()).isExisting()).toBe(true);
+      await expect(await $(AnyCompaniesOrBranchesAddPage.authorisedInsurerRadioYes()).isExisting()).toBe(true);
+      await expect(await $(AnyCompaniesOrBranchesAddPage.heading()).getText()).toBe(
         "Give details about the company or branch that undertakes general insurance business",
       );
     });
@@ -112,70 +112,70 @@ describe("List Collector Section Summary and Summary Items", () => {
       await drivingQuestionYes();
       await addCompany("Company A", "123", true);
       await anyMoreCompaniesNo();
-      await expect(await $(companiesListRowItem(1, 1)).getText()).to.contain("Company A");
+      await expect(await $(companiesListRowItem(1, 1)).getText()).toContain("Company A");
       await $(SectionSummaryPage.companiesListEditLink(1)).click();
-      await expect(await browser.getUrl()).to.contain("edit-company/?return_to=section-summary");
-      await expect(await $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).getValue()).to.equal("Company A");
+      await expect(browser).toHaveUrlContaining("edit-company/?return_to=section-summary");
+      await expect(await $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).getValue()).toBe("Company A");
     });
     it("When I edit an item after adding it, Then I should be redirected to the summary page", async () => {
       await drivingQuestionYes();
       await addCompany("Company A", "123", true);
       await anyMoreCompaniesNo();
-      await expect(await $(companiesListRowItem(1, 1)).getText()).to.contain("Company A");
+      await expect(await $(companiesListRowItem(1, 1)).getText()).toContain("Company A");
       await $(SectionSummaryPage.companiesListEditLink(1)).click();
       await $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).setValue("Changed Company");
       await click(AnyCompaniesOrBranchesAddPage.submit());
-      await expect(await browser.getUrl()).to.contain(SectionSummaryPage.url());
-      await expect(await $(companiesListRowItem(1, 1)).getText()).to.contain("Changed Company");
+      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(await $(companiesListRowItem(1, 1)).getText()).toContain("Changed Company");
     });
     it("When no item is added but I change my answer to the driving question to Yes, Then I should be able to add a new item.", async () => {
       await drivingQuestionNo();
-      await expect(await browser.getUrl()).to.contain(SectionSummaryPage.url());
-      await expect(await $(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.false;
-      await expect(await $(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.false;
-      await expect(await $(SectionSummaryPage.companiesListAddLink()).isExisting()).to.be.false;
+      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(await $(SectionSummaryPage.companiesListEditLink(1)).isExisting()).toBe(false);
+      await expect(await $(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).toBe(false);
+      await expect(await $(SectionSummaryPage.companiesListAddLink()).isExisting()).toBe(false);
       await $(SectionSummaryPage.anyCompaniesOrBranchesAnswerEdit()).click();
       await drivingQuestionYes();
       await addCompany("Company A", "123", true);
       await anyMoreCompaniesNo();
-      await expect(await browser.getUrl()).to.contain(SectionSummaryPage.url());
-      await expect(await $(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.true;
-      await expect(await $(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.true;
-      await expect(await $(SectionSummaryPage.companiesListAddLink()).isExisting()).to.be.true;
+      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(await $(SectionSummaryPage.companiesListEditLink(1)).isExisting()).toBe(true);
+      await expect(await $(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).toBe(true);
+      await expect(await $(SectionSummaryPage.companiesListAddLink()).isExisting()).toBe(true);
     });
     it("When I add an item and relevant data but change my answer to the driving question to No, Then I should see the original item on the summary if change the answer back to Yes.", async () => {
       await drivingQuestionYes();
       await addCompany("Company A", "123", true);
       await anyMoreCompaniesNo();
-      await expect(await $(companiesListRowItem(1, 1)).getText()).to.contain("Company A");
+      await expect(await $(companiesListRowItem(1, 1)).getText()).toContain("Company A");
       await $(SectionSummaryPage.anyCompaniesOrBranchesAnswerEdit()).click();
       await drivingQuestionNo();
-      await expect(await browser.getUrl()).to.contain(SectionSummaryPage.url());
-      await expect(await $(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.false;
-      await expect(await $(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.false;
-      await expect(await $("body").getText()).to.not.have.string("No UK company or branch added");
-      await expect(await $(SectionSummaryPage.companiesListAddLink()).isExisting()).to.be.false;
+      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(await $(SectionSummaryPage.companiesListEditLink(1)).isExisting()).toBe(false);
+      await expect(await $(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).toBe(false);
+      await expect(await $("body").getText()).not.toBe("No UK company or branch added");
+      await expect(await $(SectionSummaryPage.companiesListAddLink()).isExisting()).toBe(false);
       await $(SectionSummaryPage.anyCompaniesOrBranchesAnswerEdit()).click();
       await drivingQuestionYes();
-      await expect(await browser.getUrl()).to.contain(SectionSummaryPage.url());
-      await expect(await $(companiesListRowItem(1, 1)).getText()).to.contain("Company A");
-      await expect(await $(SectionSummaryPage.companiesListEditLink(1)).isExisting()).to.be.true;
-      await expect(await $(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).to.be.true;
-      await expect(await $(SectionSummaryPage.companiesListAddLink()).isExisting()).to.be.true;
+      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(await $(companiesListRowItem(1, 1)).getText()).toContain("Company A");
+      await expect(await $(SectionSummaryPage.companiesListEditLink(1)).isExisting()).toBe(true);
+      await expect(await $(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).toBe(true);
+      await expect(await $(SectionSummaryPage.companiesListAddLink()).isExisting()).toBe(true);
     });
     it("When I add another company from the summary page, Then I am asked if I want to add any more company before accessing the section summary", async () => {
       await drivingQuestionYes();
       await addCompany("Company A", "123", true);
       await anyMoreCompaniesNo();
       await $(SectionSummaryPage.companiesListAddLink()).click();
-      await expect(await browser.getUrl()).to.contain("/questionnaire/companies/add-company");
-      await expect(await browser.getUrl()).to.contain("?return_to=section-summary");
+      await expect(browser).toHaveUrlContaining("/questionnaire/companies/add-company");
+      await expect(browser).toHaveUrlContaining("?return_to=section-summary");
       await addCompany("Company B", "456", true);
-      await expect(await browser.getUrl()).to.contain(AnyCompaniesOrBranchesPage.url());
-      await expect(await $("body").getText()).to.have.string("Company A");
-      await expect(await $("body").getText()).to.have.string("Company B");
+      await expect(browser).toHaveUrlContaining(AnyCompaniesOrBranchesPage.url());
+      await expect(await $("body").getText()).toContain("Company A");
+      await expect(await $("body").getText()).toContain("Company B");
       await anyMoreCompaniesNo();
-      await expect(await browser.getUrl()).to.contain(SectionSummaryPage.url());
+      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
     });
     it("When I add three companies, Then I am prompted with the confirmation question", async () => {
       await drivingQuestionYes();
@@ -185,7 +185,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await anyMoreCompaniesYes();
       await addCompany("Company C", "789", true);
       await anyMoreCompaniesNo();
-      await expect(await browser.getUrl()).to.contain(UkBasedPage.url());
+      await expect(browser).toHaveUrlContaining(UkBasedPage.url());
     });
     it("When I add less than 3 companies, Then I am not prompted with the confirmation question", async () => {
       await drivingQuestionYes();
@@ -193,7 +193,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await anyMoreCompaniesYes();
       await addCompany("Company B", "456", true);
       await anyMoreCompaniesNo();
-      await expect(await browser.getUrl()).to.contain(SectionSummaryPage.url());
+      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
     });
     it("When I add more than 3 companies, Then I am not prompted with the confirmation question", async () => {
       await drivingQuestionYes();
@@ -205,7 +205,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await anyMoreCompaniesYes();
       await addCompany("Company D", "135", true);
       await anyMoreCompaniesNo();
-      await expect(await browser.getUrl()).to.contain(SectionSummaryPage.url());
+      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
     });
     it("When I add another company from the summary page, and the amount then totals to 3, and the confirmation question hasn't been previously answered, Then I am prompted with the confirmation question", async () => {
       await drivingQuestionYes();
@@ -213,15 +213,15 @@ describe("List Collector Section Summary and Summary Items", () => {
       await anyMoreCompaniesYes();
       await addCompany("Company B", "456", true);
       await anyMoreCompaniesNo();
-      await expect(await browser.getUrl()).to.contain(SectionSummaryPage.url());
+      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
       await $(SectionSummaryPage.companiesListAddLink()).click();
-      await expect(await browser.getUrl()).to.contain("/questionnaire/companies/add-company");
-      await expect(await browser.getUrl()).to.contain("?return_to=section-summary");
+      await expect(browser).toHaveUrlContaining("/questionnaire/companies/add-company");
+      await expect(browser).toHaveUrlContaining("?return_to=section-summary");
       await addCompany("Company C", "234", true);
       await anyMoreCompaniesNo();
-      await expect(await browser.getUrl()).to.contain(UkBasedPage.url());
+      await expect(browser).toHaveUrlContaining(UkBasedPage.url());
       await answerUkBasedQuestion();
-      await expect(await browser.getUrl()).to.contain(SectionSummaryPage.url());
+      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
     });
     it("When I remove a company from the summary page, and the amount then totals to 3, and the confirmation question hasn't been previously answered, Then I am prompted with the confirmation question", async () => {
       await drivingQuestionYes();
@@ -233,11 +233,11 @@ describe("List Collector Section Summary and Summary Items", () => {
       await anyMoreCompaniesYes();
       await addCompany("Company D", "345", true);
       await anyMoreCompaniesNo();
-      await expect(await browser.getUrl()).to.contain(SectionSummaryPage.url());
+      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
       await removeFirstCompany();
-      await expect(await browser.getUrl()).to.contain(UkBasedPage.url());
+      await expect(browser).toHaveUrlContaining(UkBasedPage.url());
       await answerUkBasedQuestion();
-      await expect(await browser.getUrl()).to.contain(SectionSummaryPage.url());
+      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
     });
 
     it("When I get to the summary page, Then the summary should be displayed as expected with change links", async () => {
@@ -248,9 +248,9 @@ describe("List Collector Section Summary and Summary Items", () => {
       await anyMoreCompaniesYes();
       await addCompany("Company C", "234", true);
       await anyMoreCompaniesNo();
-      await expect(await browser.getUrl()).to.contain(UkBasedPage.url());
+      await expect(browser).toHaveUrlContaining(UkBasedPage.url());
       await answerUkBasedQuestion();
-      await expect(await browser.getUrl()).to.contain(SectionSummaryPage.url());
+      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
       await click(SectionSummaryPage.submit());
       await $(ListCollectorPage.no()).click();
       await click(ListCollectorPage.submit());
@@ -258,19 +258,19 @@ describe("List Collector Section Summary and Summary Items", () => {
       await click(HouseholderCheckboxPage.submit());
       await click(SectionSummaryTwoPage.submit());
 
-      await expect(await browser.getUrl()).to.contain(SubmitPage.url());
-      await expect(await $(companiesListRowItem(1, 1)).getText()).to.contain("Company A");
-      await expect(await $(companiesListRowItem(1, 2)).getText()).to.contain("123");
-      await expect(await $(companiesListRowItem(1, 3)).getText()).to.contain("Change");
-      await expect(await $(companiesListRowItem(2, 1)).getText()).to.contain("Company B");
-      await expect(await $(companiesListRowItem(2, 2)).getText()).to.contain("456");
-      await expect(await $(companiesListRowItem(2, 3)).getText()).to.contain("Change");
-      await expect(await $(companiesListRowItem(3, 1)).getText()).to.contain("Company C");
-      await expect(await $(companiesListRowItem(3, 2)).getText()).to.contain("234");
-      await expect(await $(companiesListRowItem(3, 3)).getText()).to.contain("Change");
-      await expect(await $(SubmitPage.householderCheckboxAnswer()).getText()).to.contain("No");
-      await expect(await $("body").getHTML()).to.contain("Add another UK company or branch");
-      await expect(await $("body").getHTML()).to.contain("Remove");
+      await expect(browser).toHaveUrlContaining(SubmitPage.url());
+      await expect(await $(companiesListRowItem(1, 1)).getText()).toContain("Company A");
+      await expect(await $(companiesListRowItem(1, 2)).getText()).toContain("123");
+      await expect(await $(companiesListRowItem(1, 3)).getText()).toContain("Change");
+      await expect(await $(companiesListRowItem(2, 1)).getText()).toContain("Company B");
+      await expect(await $(companiesListRowItem(2, 2)).getText()).toContain("456");
+      await expect(await $(companiesListRowItem(2, 3)).getText()).toContain("Change");
+      await expect(await $(companiesListRowItem(3, 1)).getText()).toContain("Company C");
+      await expect(await $(companiesListRowItem(3, 2)).getText()).toContain("234");
+      await expect(await $(companiesListRowItem(3, 3)).getText()).toContain("Change");
+      await expect(await $(SubmitPage.householderCheckboxAnswer()).getText()).toContain("No");
+      await expect(await $("body").getHTML()).toContain("Add another UK company or branch");
+      await expect(await $("body").getHTML()).toContain("Remove");
     });
 
     it("When I get to the view submitted response page, Then the summary should be displayed as expected without any change or remove links", async () => {
@@ -281,9 +281,9 @@ describe("List Collector Section Summary and Summary Items", () => {
       await anyMoreCompaniesYes();
       await addCompany("Company C", "234", true);
       await anyMoreCompaniesNo();
-      await expect(await browser.getUrl()).to.contain(UkBasedPage.url());
+      await expect(browser).toHaveUrlContaining(UkBasedPage.url());
       await answerUkBasedQuestion();
-      await expect(await browser.getUrl()).to.contain(SectionSummaryPage.url());
+      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
       await click(SectionSummaryPage.submit());
       await $(ListCollectorPage.no()).click();
       await click(ListCollectorPage.submit());
@@ -291,19 +291,19 @@ describe("List Collector Section Summary and Summary Items", () => {
       await click(HouseholderCheckboxPage.submit());
       await click(SectionSummaryTwoPage.submit());
       await click(SubmitPage.submit());
-      await expect(await $(ThankYouPage.title()).getHTML()).to.contain("Thank you for completing the Test");
+      await expect(await $(ThankYouPage.title()).getHTML()).toContain("Thank you for completing the Test");
       await $(ThankYouPage.savePrintAnswersLink()).click();
 
-      await expect(await browser.getUrl()).to.contain(ViewSubmittedResponsePage.pageName);
-      await expect(await $(companiesListRowItem(1, 1)).getText()).to.contain("Company A");
-      await expect(await $(companiesListRowItem(1, 2)).getText()).to.contain("123");
-      await expect(await $(companiesListRowItem(2, 1)).getText()).to.contain("Company B");
-      await expect(await $(companiesListRowItem(2, 2)).getText()).to.contain("456");
-      await expect(await $(companiesListRowItem(3, 1)).getText()).to.contain("Company C");
-      await expect(await $(companiesListRowItem(3, 2)).getText()).to.contain("234");
-      await expect(await $("body").getHTML()).to.not.contain("Change");
-      await expect(await $("body").getHTML()).to.not.contain("Remove");
-      await expect(await $("body").getHTML()).to.not.contain("Add another UK company or branch");
+      await expect(browser).toHaveUrlContaining(ViewSubmittedResponsePage.pageName);
+      await expect(await $(companiesListRowItem(1, 1)).getText()).toContain("Company A");
+      await expect(await $(companiesListRowItem(1, 2)).getText()).toContain("123");
+      await expect(await $(companiesListRowItem(2, 1)).getText()).toContain("Company B");
+      await expect(await $(companiesListRowItem(2, 2)).getText()).toContain("456");
+      await expect(await $(companiesListRowItem(3, 1)).getText()).toContain("Company C");
+      await expect(await $(companiesListRowItem(3, 2)).getText()).toContain("234");
+      await expect(await $("body").getHTML()).not.toContain("Change");
+      await expect(await $("body").getHTML()).not.toContain("Remove");
+      await expect(await $("body").getHTML()).not.toContain("Add another UK company or branch");
     });
   });
 });

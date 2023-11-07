@@ -18,21 +18,21 @@ describe("Feature: Hub and Spoke", () => {
     });
 
     it("When a user first views the Hub, The Hub should be in a continue state", async () => {
-      await expect(await $(HubPage.submit()).getText()).to.contain("Continue");
-      await expect(await $(HubPage.heading()).getText()).to.contain("Choose another section to complete");
-      await expect(await $(HubPage.summaryRowState("employment-section")).getText()).to.contain("Not started");
-      await expect(await $(HubPage.summaryRowState("accommodation-section")).getText()).to.contain("Not started");
-      await expect(await $(HubPage.summaryRowState("household-section")).getText()).to.contain("Not started");
+      await expect(await $(HubPage.submit()).getText()).toBe("Continue");
+      await expect(await $(HubPage.heading()).getText()).toBe("Choose another section to complete");
+      await expect(await $(HubPage.summaryRowState("employment-section")).getText()).toBe("Not started");
+      await expect(await $(HubPage.summaryRowState("accommodation-section")).getText()).toBe("Not started");
+      await expect(await $(HubPage.summaryRowState("household-section")).getText()).toBe("Not started");
     });
 
     it("When a user views the Hub, any section with show_on_hub set to true should appear", async () => {
-      await expect(await $(HubPage.summaryItems()).getText()).to.contain("Employment");
-      await expect(await $(HubPage.summaryItems()).getText()).to.contain("Accommodation");
-      await expect(await $(HubPage.summaryItems()).getText()).to.contain("Household residents");
+      await expect(await $(HubPage.summaryItems()).getText()).toContain("Employment");
+      await expect(await $(HubPage.summaryItems()).getText()).toContain("Accommodation");
+      await expect(await $(HubPage.summaryItems()).getText()).toContain("Household residents");
     });
 
     it("When a user views the Hub, any section with show_on_hub set to false should not appear", async () => {
-      await expect(await $(HubPage.summaryItems()).getText()).not.to.contain("Relationships");
+      await expect(await $(HubPage.summaryItems()).getText()).not.toBe("Relationships");
     });
 
     it("When the user click the 'Save and sign out' button then they should be redirected to the correct log out url", async () => {
@@ -40,34 +40,34 @@ describe("Feature: Hub and Spoke", () => {
 
       const expectedUrl = await browser.getUrl();
 
-      await expect(expectedUrl).to.contain("/signed-out");
+      await expect(expectedUrl).toContain("/signed-out");
     });
 
     it("When a user views the Hub, Then the page title should be Choose another section to complete", async () => {
       const pageTitle = await browser.getTitle();
-      await expect(pageTitle).to.equal("Choose another section to complete - Hub & Spoke");
+      await expect(pageTitle).toBe("Choose another section to complete - Hub & Spoke");
     });
   });
 
   describe("Given a user has not started a section", () => {
     beforeEach("Open survey", async () => {
       await browser.openQuestionnaire(hubAndSpokeSchema);
-      await expect(await $(HubPage.summaryRowState("employment-section")).getText()).to.contain("Not started");
-      await expect(await $(HubPage.summaryRowState("accommodation-section")).getText()).to.contain("Not started");
-      await expect(await $(HubPage.summaryRowState("household-section")).getText()).to.contain("Not started");
+      await expect(await $(HubPage.summaryRowState("employment-section")).getText()).toBe("Not started");
+      await expect(await $(HubPage.summaryRowState("accommodation-section")).getText()).toBe("Not started");
+      await expect(await $(HubPage.summaryRowState("household-section")).getText()).toBe("Not started");
     });
 
     it("When the user starts a section, Then the first question in the section should be displayed", async () => {
       await click(HubPage.submit());
       const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).to.contain(EmploymentStatusBlockPage.url());
+      await expect(expectedUrl).toContain(EmploymentStatusBlockPage.url());
     });
 
     it("When the user starts a section and clicks the Previous link on the first question, Then they should be taken back to the Hub", async () => {
       await click(HubPage.submit());
       await $(EmploymentStatusBlockPage.previous()).click();
       const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).to.contain(HubPage.url());
+      await expect(expectedUrl).toContain(HubPage.url());
     });
   });
 
@@ -81,20 +81,20 @@ describe("Feature: Hub and Spoke", () => {
 
     it("When the user returns to the Hub, Then the Hub should be in a continue state", async () => {
       await browser.url(HubPage.url());
-      await expect(await $(HubPage.submit()).getText()).to.contain("Continue");
-      await expect(await $(HubPage.heading()).getText()).to.contain("Choose another section to complete");
+      await expect(await $(HubPage.submit()).getText()).toBe("Continue");
+      await expect(await $(HubPage.heading()).getText()).toBe("Choose another section to complete");
     });
 
     it("When the user returns to the Hub, Then the section should be marked as 'Partially completed'", async () => {
       await browser.url(HubPage.url());
-      await expect(await $(HubPage.summaryRowState("employment-section")).getText()).to.contain("Partially completed");
+      await expect(await $(HubPage.summaryRowState("employment-section")).getText()).toBe("Partially completed");
     });
 
     it("When the user returns to the Hub and restarts the same section, Then they should be redirected to the first incomplete block", async () => {
       await browser.url(HubPage.url());
       await $(HubPage.summaryRowLink("employment-section")).click();
       const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).to.contain(EmploymentTypeBlockPage.url());
+      await expect(expectedUrl).toContain(EmploymentTypeBlockPage.url());
     });
   });
 
@@ -110,33 +110,33 @@ describe("Feature: Hub and Spoke", () => {
     it("When the user clicks the 'Continue' button, it should return them to the hub", async () => {
       await click(EmploymentTypeBlockPage.submit());
       const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).to.contain(HubPage.url());
+      await expect(expectedUrl).toContain(HubPage.url());
     });
 
     it("When the user returns to the Hub, Then the Hub should be in a continue state", async () => {
       await click(EmploymentTypeBlockPage.submit());
-      await expect(await $(HubPage.submit()).getText()).to.contain("Continue");
-      await expect(await $(HubPage.heading()).getText()).to.contain("Choose another section to complete");
+      await expect(await $(HubPage.submit()).getText()).toBe("Continue");
+      await expect(await $(HubPage.heading()).getText()).toBe("Choose another section to complete");
     });
 
     it("When the user returns to the Hub, Then the section should be marked as 'Completed'", async () => {
       await click(EmploymentTypeBlockPage.submit());
-      await expect(await $(HubPage.summaryRowState("employment-section")).getText()).to.contain("Completed");
+      await expect(await $(HubPage.summaryRowState("employment-section")).getText()).toBe("Completed");
     });
 
     it("When the user returns to the Hub and clicks the 'View answers' link on the Hub, if this no summary they are returned to the first block", async () => {
       await click(EmploymentTypeBlockPage.submit());
       await $(HubPage.summaryRowLink("employment-section")).click();
       const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).to.contain(EmploymentStatusBlockPage.url());
+      await expect(expectedUrl).toContain(EmploymentStatusBlockPage.url());
     });
 
     it("When the user returns to the Hub and continues, Then they should progress to the next section", async () => {
       await click(EmploymentTypeBlockPage.submit());
-      await expect(await browser.getUrl()).to.contain(HubPage.url());
+      await expect(browser).toHaveUrlContaining(HubPage.url());
       await click(HubPage.submit());
       const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).to.contain(ProxyPage.url());
+      await expect(expectedUrl).toContain(ProxyPage.url());
     });
   });
 
@@ -147,27 +147,27 @@ describe("Feature: Hub and Spoke", () => {
       await $(EmploymentStatusBlockPage.workingAsAnEmployee()).click();
       await click(EmploymentStatusBlockPage.submit());
 
-      await expect(await $(HubPage.summaryRowState("employment-section")).getText()).to.contain("Completed");
+      await expect(await $(HubPage.summaryRowState("employment-section")).getText()).toBe("Completed");
     });
 
     it("When the user clicks the 'View answers' link and incompletes the section, Then they the should be taken to the next incomplete question on 'Continue", async () => {
       await $(HubPage.summaryRowLink("employment-section")).click();
-      await expect(await browser.getUrl()).to.contain(EmploymentStatusBlockPage.url());
+      await expect(browser).toHaveUrlContaining(EmploymentStatusBlockPage.url());
       await $(EmploymentStatusBlockPage.exclusiveNoneOfTheseApply()).click();
       await click(EmploymentStatusBlockPage.submit());
       const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).to.contain(EmploymentTypeBlockPage.url());
+      await expect(expectedUrl).toContain(EmploymentTypeBlockPage.url());
     });
 
     it("When the user clicks the 'View answers' link and incompletes the section and returns to the hub, Then the section should be marked as 'Partially completed'", async () => {
       await $(HubPage.summaryRowLink("employment-section")).click();
-      await expect(await browser.getUrl()).to.contain(EmploymentStatusBlockPage.url());
+      await expect(browser).toHaveUrlContaining(EmploymentStatusBlockPage.url());
       await $(EmploymentStatusBlockPage.exclusiveNoneOfTheseApply()).click();
       await click(EmploymentStatusBlockPage.submit());
       await browser.url(HubPage.url());
       const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).to.contain(HubPage.url());
-      await expect(await $(HubPage.summaryRowState("employment-section")).getText()).to.contain("Partially completed");
+      await expect(expectedUrl).toContain(HubPage.url());
+      await expect(await $(HubPage.summaryRowState("employment-section")).getText()).toBe("Partially completed");
     });
   });
 
@@ -195,18 +195,18 @@ describe("Feature: Hub and Spoke", () => {
 
     it("It should return them to the hub", async () => {
       const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).to.contain(HubPage.url());
+      await expect(expectedUrl).toContain(HubPage.url());
     });
 
     it("When the user returns to the Hub, Then the Hub should be in a completed state", async () => {
-      await expect(await $(HubPage.submit()).getText()).to.contain("Submit survey");
-      await expect(await $(HubPage.heading()).getText()).to.contain("Submit survey");
+      await expect(await $(HubPage.submit()).getText()).toBe("Submit survey");
+      await expect(await $(HubPage.heading()).getText()).toBe("Submit survey");
     });
 
     it("When the user submits, it should show the thankyou page", async () => {
       await click(HubPage.submit());
       const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).to.contain("thank-you");
+      await expect(expectedUrl).toContain("thank-you");
     });
   });
 
@@ -216,7 +216,7 @@ describe("Feature: Hub and Spoke", () => {
     });
 
     it("The hub should not show first of all", async () => {
-      await expect(await browser.getUrl()).to.contain(EmploymentStatusBlockPage.url());
+      await expect(browser).toHaveUrlContaining(EmploymentStatusBlockPage.url());
     });
 
     it("The hub should only display when required sections are complete", async () => {
@@ -224,7 +224,7 @@ describe("Feature: Hub and Spoke", () => {
       await click(EmploymentStatusBlockPage.submit());
       await $(EmploymentTypeBlockPage.studying()).click();
       await click(EmploymentTypeBlockPage.submit());
-      await expect(await browser.getUrl()).to.contain(HubPage.url());
+      await expect(browser).toHaveUrlContaining(HubPage.url());
     });
   });
 
@@ -241,7 +241,7 @@ describe("Feature: Hub and Spoke", () => {
       await $(HubPage.summaryRowLink("household-section")).click();
       await click(HouseholdSummary.submit());
       const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).to.contain(HubPage.url());
+      await expect(expectedUrl).toContain(HubPage.url());
     });
 
     it("When there are changes, which would set the section to in_progress it routes accordingly", async () => {
@@ -251,7 +251,7 @@ describe("Feature: Hub and Spoke", () => {
       await click(DoesAnyoneLiveHere.submit());
       await click(HouseholdSummary.submit());
       const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).to.contain(HowManyPeopleLiveHere.url());
+      await expect(expectedUrl).toContain(HowManyPeopleLiveHere.url());
     });
   });
 });

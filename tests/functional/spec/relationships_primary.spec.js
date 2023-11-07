@@ -18,7 +18,7 @@ describe("Relationships - Primary Person", () => {
 
       await $(ListCollectorPage.no()).click();
       await click(ListCollectorPage.submit());
-      await expect(await $(RelationshipsPage.questionText()).getText()).to.contain("is your");
+      await expect(await $(RelationshipsPage.questionText()).getText()).toContain("is your");
     });
 
     it("When I add household members, Then non-primary relationships will be asked as a non primary person", async () => {
@@ -30,7 +30,7 @@ describe("Relationships - Primary Person", () => {
       await click(RelationshipsPage.submit());
       await $(RelationshipsPage.relationshipSonOrDaughter()).click();
       await click(RelationshipsPage.submit());
-      await expect(await $(RelationshipsPage.questionText()).getText()).to.contain("is their");
+      await expect(await $(RelationshipsPage.questionText()).getText()).toContain("is their");
     });
 
     it("When I add household members And add their relationships And remove the primary person And add a new primary person then I will be asked for the relationships again", async () => {
@@ -51,7 +51,7 @@ describe("Relationships - Primary Person", () => {
       await $(ListCollectorPage.no()).click();
       await click(ListCollectorPage.submit());
 
-      await expect(await $(RelationshipsPage.questionText()).getText()).to.contain("Samuel Clemens is your");
+      await expect(await $(RelationshipsPage.questionText()).getText()).toContain("Samuel Clemens is your");
     });
 
     async function addPrimaryAndTwoOthersAndCompleteRelationships() {

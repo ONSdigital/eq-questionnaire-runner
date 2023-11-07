@@ -13,19 +13,19 @@ describe("Component: Mutually Exclusive Unit With Single Checkbox Override", () 
     it("When then user clicks the mutually exclusive checkbox answer, Then only the mutually exclusive checkbox should be answered.", async () => {
       // Given
       await $(UnitPage.unit()).setValue("10");
-      await expect(await $(UnitPage.unit()).getValue()).to.contain("10");
+      await expect(await $(UnitPage.unit()).getValue()).toBe("10");
 
       // When
       await $(UnitPage.unitExclusiveIPreferNotToSay()).click();
 
       // Then
-      await expect(await $(UnitPage.unitExclusiveIPreferNotToSay()).isSelected()).to.be.true;
-      await expect(await $(UnitPage.unit()).getValue()).to.contain("");
+      await expect(await $(UnitPage.unitExclusiveIPreferNotToSay()).isSelected()).toBe(true);
+      await expect(await $(UnitPage.unit()).getValue()).toBe("");
 
       await click(UnitPage.submit());
 
-      await expect(await $(SummaryPage.unitExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
-      await expect(await $(SummaryPage.unitExclusiveAnswer()).getText()).to.not.have.string("10");
+      await expect(await $(SummaryPage.unitExclusiveAnswer()).getText()).toBe("I prefer not to say");
+      await expect(await $(SummaryPage.unitExclusiveAnswer()).getText()).not.toBe("10");
     });
   });
 
@@ -33,69 +33,69 @@ describe("Component: Mutually Exclusive Unit With Single Checkbox Override", () 
     it("When the user enters a value for the non-exclusive unit answer and removes focus, Then only the non-exclusive unit answer should be answered.", async () => {
       // Given
       await $(UnitPage.unitExclusiveIPreferNotToSay()).click();
-      await expect(await $(UnitPage.unitExclusiveIPreferNotToSay()).isSelected()).to.be.true;
+      await expect(await $(UnitPage.unitExclusiveIPreferNotToSay()).isSelected()).toBe(true);
 
       // When
       await $(UnitPage.unit()).setValue("10");
 
       // Then
-      await expect(await $(UnitPage.unit()).getValue()).to.contain("10");
-      await expect(await $(UnitPage.unitExclusiveIPreferNotToSay()).isSelected()).to.be.false;
+      await expect(await $(UnitPage.unit()).getValue()).toContain("10");
+      await expect(await $(UnitPage.unitExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       await click(UnitPage.submit());
 
-      await expect(await $(SummaryPage.unitAnswer()).getText()).to.have.string("10");
-      await expect(await $(SummaryPage.unitAnswer()).getText()).to.not.have.string("I prefer not to say");
+      await expect(await $(SummaryPage.unitAnswer()).getText()).toContain("10");
+      await expect(await $(SummaryPage.unitAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });
 
   describe("Given the user has not clicked the mutually exclusive checkbox answer", () => {
     it("When the user enters a value for the non-exclusive unit answer, Then only the non-exclusive unit answer should be answered.", async () => {
       // Given
-      await expect(await $(UnitPage.unitExclusiveIPreferNotToSay()).isSelected()).to.be.false;
+      await expect(await $(UnitPage.unitExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       // When
       await $(UnitPage.unit()).setValue("10");
 
       // Then
-      await expect(await $(UnitPage.unit()).getValue()).to.contain("10");
-      await expect(await $(UnitPage.unitExclusiveIPreferNotToSay()).isSelected()).to.be.false;
+      await expect(await $(UnitPage.unit()).getValue()).toBe("10");
+      await expect(await $(UnitPage.unitExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       await click(UnitPage.submit());
 
-      await expect(await $(SummaryPage.unitAnswer()).getText()).to.have.string("10");
-      await expect(await $(SummaryPage.unitAnswer()).getText()).to.not.have.string("I prefer not to say");
+      await expect(await $(SummaryPage.unitAnswer()).getText()).toContain("10");
+      await expect(await $(SummaryPage.unitAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });
 
   describe("Given the user has not answered the non-exclusive unit answer", () => {
     it("When the user clicks the mutually exclusive checkbox answer, Then only the exclusive checkbox should be answered.", async () => {
       // Given
-      await expect(await $(UnitPage.unit()).getValue()).to.contain("");
+      await expect(await $(UnitPage.unit()).getValue()).toBe("");
 
       // When
       await $(UnitPage.unitExclusiveIPreferNotToSay()).click();
-      await expect(await $(UnitPage.unitExclusiveIPreferNotToSay()).isSelected()).to.be.true;
+      await expect(await $(UnitPage.unitExclusiveIPreferNotToSay()).isSelected()).toBe(true);
 
       // Then
       await click(UnitPage.submit());
 
-      await expect(await $(SummaryPage.unitExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
-      await expect(await $(SummaryPage.unitExclusiveAnswer()).getText()).to.not.have.string("10");
+      await expect(await $(SummaryPage.unitExclusiveAnswer()).getText()).toBe("I prefer not to say");
+      await expect(await $(SummaryPage.unitExclusiveAnswer()).getText()).not.toBe("10");
     });
   });
 
   describe("Given the user has not answered the question and the question is optional", () => {
     it("When the user clicks the Continue button, Then it should display `No answer provided`", async () => {
       // Given
-      await expect(await $(UnitPage.unit()).getValue()).to.contain("");
-      await expect(await $(UnitPage.unitExclusiveIPreferNotToSay()).isSelected()).to.be.false;
+      await expect(await $(UnitPage.unit()).getValue()).toBe("");
+      await expect(await $(UnitPage.unitExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       // When
       await click(UnitPage.submit());
 
       // Then
-      await expect(await $(SummaryPage.unitAnswer()).getText()).to.contain("No answer provided");
+      await expect(await $(SummaryPage.unitAnswer()).getText()).toBe("No answer provided");
     });
   });
 });

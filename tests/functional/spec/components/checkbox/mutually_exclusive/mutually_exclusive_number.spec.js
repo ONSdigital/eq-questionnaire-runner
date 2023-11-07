@@ -13,19 +13,19 @@ describe("Component: Mutually Exclusive Number With Single Checkbox Override", (
     it("When then user clicks the mutually exclusive checkbox answer, Then only the mutually exclusive checkbox should be answered.", async () => {
       // Given
       await $(NumberPage.number()).setValue("123");
-      await expect(await $(NumberPage.number()).getValue()).to.contain("123");
+      await expect(await $(NumberPage.number()).getValue()).toBe("123");
 
       // When
       await $(NumberPage.numberExclusiveIPreferNotToSay()).click();
 
       // Then
-      await expect(await $(NumberPage.numberExclusiveIPreferNotToSay()).isSelected()).to.be.true;
-      await expect(await $(NumberPage.number()).getValue()).to.contain("");
+      await expect(await $(NumberPage.numberExclusiveIPreferNotToSay()).isSelected()).toBe(true);
+      await expect(await $(NumberPage.number()).getValue()).toBe("");
 
       await click(NumberPage.submit());
 
-      await expect(await $(SummaryPage.numberExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
-      await expect(await $(SummaryPage.numberExclusiveAnswer()).getText()).to.not.have.string("123");
+      await expect(await $(SummaryPage.numberExclusiveAnswer()).getText()).toBe("I prefer not to say");
+      await expect(await $(SummaryPage.numberExclusiveAnswer()).getText()).not.toBe("123");
     });
   });
 
@@ -33,69 +33,69 @@ describe("Component: Mutually Exclusive Number With Single Checkbox Override", (
     it("When the user enters a value for the non-exclusive number answer and removes focus, Then only the non-exclusive number answer should be answered.", async () => {
       // Given
       await $(NumberPage.numberExclusiveIPreferNotToSay()).click();
-      await expect(await $(NumberPage.numberExclusiveIPreferNotToSay()).isSelected()).to.be.true;
+      await expect(await $(NumberPage.numberExclusiveIPreferNotToSay()).isSelected()).toBe(true);
 
       // When
       await $(NumberPage.number()).setValue("123");
 
       // Then
-      await expect(await $(NumberPage.number()).getValue()).to.contain("123");
-      await expect(await $(NumberPage.numberExclusiveIPreferNotToSay()).isSelected()).to.be.false;
+      await expect(await $(NumberPage.number()).getValue()).toBe("123");
+      await expect(await $(NumberPage.numberExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       await click(NumberPage.submit());
 
-      await expect(await $(SummaryPage.numberAnswer()).getText()).to.have.string("123");
-      await expect(await $(SummaryPage.numberAnswer()).getText()).to.not.have.string("I prefer not to say");
+      await expect(await $(SummaryPage.numberAnswer()).getText()).toBe("123");
+      await expect(await $(SummaryPage.numberAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });
 
   describe("Given the user has not clicked the mutually exclusive checkbox answer", () => {
     it("When the user enters a value for the non-exclusive number answer, Then only the non-exclusive number answer should be answered.", async () => {
       // Given
-      await expect(await $(NumberPage.numberExclusiveIPreferNotToSay()).isSelected()).to.be.false;
+      await expect(await $(NumberPage.numberExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       // When
       await $(NumberPage.number()).setValue("123");
 
       // Then
-      await expect(await $(NumberPage.number()).getValue()).to.contain("123");
-      await expect(await $(NumberPage.numberExclusiveIPreferNotToSay()).isSelected()).to.be.false;
+      await expect(await $(NumberPage.number()).getValue()).toBe("123");
+      await expect(await $(NumberPage.numberExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       await click(NumberPage.submit());
 
-      await expect(await $(SummaryPage.numberAnswer()).getText()).to.have.string("123");
-      await expect(await $(SummaryPage.numberAnswer()).getText()).to.not.have.string("I prefer not to say");
+      await expect(await $(SummaryPage.numberAnswer()).getText()).toBe("123");
+      await expect(await $(SummaryPage.numberAnswer()).getText()).not.toBe("I prefer not to say");
     });
   });
 
   describe("Given the user has not answered the non-exclusive number answer", () => {
     it("When the user clicks the mutually exclusive checkbox answer, Then only the exclusive checkbox should be answered.", async () => {
       // Given
-      await expect(await $(NumberPage.number()).getValue()).to.contain("");
+      await expect(await $(NumberPage.number()).getValue()).toBe("");
 
       // When
       await $(NumberPage.numberExclusiveIPreferNotToSay()).click();
-      await expect(await $(NumberPage.numberExclusiveIPreferNotToSay()).isSelected()).to.be.true;
+      await expect(await $(NumberPage.numberExclusiveIPreferNotToSay()).isSelected()).toBe(true);
 
       // Then
       await click(NumberPage.submit());
 
-      await expect(await $(SummaryPage.numberExclusiveAnswer()).getText()).to.have.string("I prefer not to say");
-      await expect(await $(SummaryPage.numberExclusiveAnswer()).getText()).to.not.have.string("123");
+      await expect(await $(SummaryPage.numberExclusiveAnswer()).getText()).toBe("I prefer not to say");
+      await expect(await $(SummaryPage.numberExclusiveAnswer()).getText()).not.toBe("123");
     });
   });
 
   describe("Given the user has not answered the question and the question is optional", () => {
     it("When the user clicks the Continue button, Then it should display `No answer provided`", async () => {
       // Given
-      await expect(await $(NumberPage.number()).getValue()).to.contain("");
-      await expect(await $(NumberPage.numberExclusiveIPreferNotToSay()).isSelected()).to.be.false;
+      await expect(await $(NumberPage.number()).getValue()).toBe("");
+      await expect(await $(NumberPage.numberExclusiveIPreferNotToSay()).isSelected()).toBe(false);
 
       // When
       await click(NumberPage.submit());
 
       // Then
-      await expect(await $(SummaryPage.numberAnswer()).getText()).to.contain("No answer provided");
+      await expect(await $(SummaryPage.numberAnswer()).getText()).toBe("No answer provided");
     });
   });
 });

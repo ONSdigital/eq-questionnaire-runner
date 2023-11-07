@@ -96,8 +96,8 @@ describe("Routing and skipping section dependencies", () => {
       await $(RepeatingIsSmokerPage.no()).click();
       await click(RepeatingIsSmokerPage.submit());
 
-      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Female");
-      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).to.contain("45");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).toBe("Female");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).toBe("45");
 
       await click(HouseHoldPersonalDetailsSectionSummaryPage.submit());
       await $(HubPage.summaryRowLink("household-personal-details-section-2")).click();
@@ -108,8 +108,8 @@ describe("Routing and skipping section dependencies", () => {
       await $(RepeatingIsDependentPage.yes()).click();
       await click(RepeatingIsDependentPage.submit());
 
-      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Male");
-      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).to.contain("10");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).toBe("Male");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).toBe("10");
     });
 
     it("When I answer 'Yes' to skipping the age question and populate the household, Then in each repeating section I am not asked their age", async () => {
@@ -122,8 +122,8 @@ describe("Routing and skipping section dependencies", () => {
       await click(RepeatingSexPage.submit());
       await $(RepeatingIsDependentPage.no()).click();
       await click(RepeatingIsDependentPage.submit());
-      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Female");
-      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).isExisting()).to.be.false;
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).toBe("Female");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).isExisting()).toBe(false);
 
       await click(HouseHoldPersonalDetailsSectionSummaryPage.submit());
       await $(HubPage.summaryRowLink("household-personal-details-section-2")).click();
@@ -132,8 +132,8 @@ describe("Routing and skipping section dependencies", () => {
       await $(RepeatingIsDependentPage.yes()).click();
       await click(RepeatingIsDependentPage.submit());
 
-      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Male");
-      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).isExisting()).to.be.false;
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).toBe("Male");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).isExisting()).toBe(false);
     });
   });
 
@@ -144,12 +144,12 @@ describe("Routing and skipping section dependencies", () => {
     it("When I answer 'No' to skipping the section question and 'Yes' to enable the section question, Then the household summary will be visible on the hub", async () => {
       await answerNoToSkipEnableQuestionAndYesToEnableSection();
 
-      await expect(await $(HubPage.summaryRowLink("household-section")).isExisting()).to.be.true;
+      await expect(await $(HubPage.summaryRowLink("household-section")).isExisting()).toBe(true);
     });
     it("When I answer 'No' to skipping the section question and 'No' to enable the section question, Then the household summary will not be visible on the hub", async () => {
       await answerNoToSkipEnableQuestionAndNoToEnableSection();
 
-      await expect(await $(HubPage.summaryRowLink("household-section")).isExisting()).to.be.false;
+      await expect(await $(HubPage.summaryRowLink("household-section")).isExisting()).toBe(false);
     });
   });
 
@@ -161,7 +161,7 @@ describe("Routing and skipping section dependencies", () => {
       await answerNoToSkipEnableQuestionAndYesToEnableSection();
       await changeSkipEnableQuestionToYes();
 
-      await expect(await $(HubPage.summaryRowLink("household-section")).isExisting()).to.be.false;
+      await expect(await $(HubPage.summaryRowLink("household-section")).isExisting()).toBe(false);
     });
   });
 
@@ -187,7 +187,7 @@ describe("Routing and skipping section dependencies", () => {
 
       await expectPersonalDetailsName();
       await expectPersonalDetailsAge();
-      await expect(await $(PrimaryPersonSummaryPage.reasonNoConfirmationAnswer()).getText()).to.contain(
+      await expect(await $(PrimaryPersonSummaryPage.reasonNoConfirmationAnswer()).getText()).toBe(
         "I did, but it was removed from the path as I changed my answer to No on the skip question",
       );
     });
@@ -205,17 +205,17 @@ describe("Routing and skipping section dependencies", () => {
       await answerAndSubmitReasonForNoConfirmationQuestion();
       await click(PrimaryPersonSummaryPage.submit());
 
-      await expect(await $(HubPage.summaryRowState("primary-person")).getText()).to.equal("Completed");
+      await expect(await $(HubPage.summaryRowState("primary-person")).getText()).toBe("Completed");
 
       await editNoToSkipAgeQuestion();
 
-      await expect(await $(HubPage.summaryRowState("primary-person")).getText()).to.equal("Partially completed");
+      await expect(await $(HubPage.summaryRowState("primary-person")).getText()).toBe("Partially completed");
     });
 
     it("When I change my answer back to skipping age to 'Yes', Then the Primary Person section status is changed back to Completed", async () => {
       await editYesToSkipAgeQuestion();
 
-      await expect(await $(HubPage.summaryRowState("primary-person")).getText()).to.equal("Completed");
+      await expect(await $(HubPage.summaryRowState("primary-person")).getText()).toBe("Completed");
     });
   });
 
@@ -236,15 +236,15 @@ describe("Routing and skipping section dependencies", () => {
 
       await editNoToSkipAgeQuestion();
 
-      await expect(await $(HubPage.summaryRowState("household-personal-details-section-1")).getText()).to.equal("Partially completed");
-      await expect(await $(HubPage.summaryRowState("household-personal-details-section-2")).getText()).to.equal("Not started");
+      await expect(await $(HubPage.summaryRowState("household-personal-details-section-1")).getText()).toBe("Partially completed");
+      await expect(await $(HubPage.summaryRowState("household-personal-details-section-2")).getText()).toBe("Not started");
     });
 
     it("When I change my answer back to skipping age to 'Yes', Then the Partially completed household member status is changed back to Completed and the other stays as not started", async () => {
       await editYesToSkipAgeQuestion();
 
-      await expect(await $(HubPage.summaryRowState("household-personal-details-section-1")).getText()).to.equal("Completed");
-      await expect(await $(HubPage.summaryRowState("household-personal-details-section-2")).getText()).to.equal("Not started");
+      await expect(await $(HubPage.summaryRowState("household-personal-details-section-1")).getText()).toBe("Completed");
+      await expect(await $(HubPage.summaryRowState("household-personal-details-section-2")).getText()).toBe("Not started");
     });
   });
 
@@ -268,9 +268,9 @@ describe("Routing and skipping section dependencies", () => {
       await $(RepeatingIsSmokerPage.no()).click();
       await click(RepeatingIsSmokerPage.submit());
 
-      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Female");
-      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).to.contain("45");
-      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).getText()).to.contain("No");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).toBe("Female");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).toBe("45");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).getText()).toBe("No");
 
       await click(HouseHoldPersonalDetailsSectionSummaryPage.submit());
       await $(HubPage.summaryRowLink("household-personal-details-section-2")).click();
@@ -283,9 +283,9 @@ describe("Routing and skipping section dependencies", () => {
       await $(RepeatingIsSmokerPage.no()).click();
       await click(RepeatingIsSmokerPage.submit());
 
-      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Male");
-      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).to.contain("19");
-      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).getText()).to.contain("No");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).toBe("Male");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).toBe("19");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).getText()).toBe("No");
     });
 
     it("When I answer 'No' to skipping the age question and populate the household with Repeating Age < 18, Then in each repeating section I am not asked if they are smoker", async () => {
@@ -301,9 +301,9 @@ describe("Routing and skipping section dependencies", () => {
       await $(RepeatingIsDependentPage.yes()).click();
       await click(RepeatingIsDependentPage.submit());
 
-      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Female");
-      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).to.contain("15");
-      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).isExisting()).to.be.false;
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).toBe("Female");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).toBe("15");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).isExisting()).toBe(false);
 
       await click(HouseHoldPersonalDetailsSectionSummaryPage.submit());
       await $(HubPage.summaryRowLink("household-personal-details-section-2")).click();
@@ -314,9 +314,9 @@ describe("Routing and skipping section dependencies", () => {
       await $(RepeatingIsDependentPage.yes()).click();
       await click(RepeatingIsDependentPage.submit());
 
-      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Male");
-      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).to.contain("10");
-      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).isExisting()).to.be.false;
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).toBe("Male");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).getText()).toBe("10");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).isExisting()).toBe(false);
     });
 
     it("When I answer 'Yes' to skipping the age question and populate the household, Then in each repeating section I am not asked if they are smoker", async () => {
@@ -329,9 +329,9 @@ describe("Routing and skipping section dependencies", () => {
       await click(RepeatingSexPage.submit());
       await $(RepeatingIsDependentPage.no()).click();
       await click(RepeatingIsDependentPage.submit());
-      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Female");
-      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).isExisting()).to.be.false;
-      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).isExisting()).to.be.false;
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).toBe("Female");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).isExisting()).toBe(false);
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).isExisting()).toBe(false);
 
       await click(HouseHoldPersonalDetailsSectionSummaryPage.submit());
       await $(HubPage.summaryRowLink("household-personal-details-section-2")).click();
@@ -340,9 +340,9 @@ describe("Routing and skipping section dependencies", () => {
       await $(RepeatingIsDependentPage.yes()).click();
       await click(RepeatingIsDependentPage.submit());
 
-      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).to.contain("Male");
-      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).isExisting()).to.be.false;
-      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).isExisting()).to.be.false;
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingSexAnswer()).getText()).toBe("Male");
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingAgeAnswer()).isExisting()).toBe(false);
+      await expect(await $(HouseHoldPersonalDetailsSectionSummaryPage.repeatingIsSmokerAnswer()).isExisting()).toBe(false);
     });
   });
 });
@@ -470,23 +470,21 @@ const answerAndSubmitReasonForNoConfirmationQuestion = async () => {
 };
 
 const expectPersonalDetailsName = async () => {
-  await expect(await $(PrimaryPersonSummaryPage.nameAnswer()).getText()).to.contain("John Smith");
+  await expect(await $(PrimaryPersonSummaryPage.nameAnswer()).getText()).toBe("John Smith");
 };
 
 const expectPersonalDetailsAge = async () => {
-  await expect(await $(PrimaryPersonSummaryPage.ageAnswer()).getText()).to.contain("50");
+  await expect(await $(PrimaryPersonSummaryPage.ageAnswer()).getText()).toBe("50");
 };
 
 const expectReasonNoConfirmationAnswer = async () => {
-  await expect(await $(PrimaryPersonSummaryPage.reasonNoConfirmationAnswer()).getText()).to.contain(
-    "I did not visit section 2, so confirmation was not needed",
-  );
+  await expect(await $(PrimaryPersonSummaryPage.reasonNoConfirmationAnswer()).getText()).toBe("I did not visit section 2, so confirmation was not needed");
 };
 
 const expectPersonalDetailsAgeExistingFalse = async () => {
-  await expect(await $(PrimaryPersonSummaryPage.ageAnswer()).isExisting()).to.be.false;
+  await expect(await $(PrimaryPersonSummaryPage.ageAnswer()).isExisting()).toBe(false);
 };
 
 const expectReasonNoConfirmationExistingFalse = async () => {
-  await expect(await $(PrimaryPersonSummaryPage.reasonNoConfirmationAnswer()).isExisting()).to.be.false;
+  await expect(await $(PrimaryPersonSummaryPage.reasonNoConfirmationAnswer()).isExisting()).toBe(false);
 };

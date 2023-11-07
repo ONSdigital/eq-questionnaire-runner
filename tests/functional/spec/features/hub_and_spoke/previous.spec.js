@@ -10,25 +10,25 @@ describe("Choose another section link", () => {
   });
 
   it("When a user gets to initial question, then the previous location link should not be displayed", async () => {
-    await expect(await $(EmploymentStatusBlockPage.previous()).isExisting()).to.be.false;
+    await expect(await $(EmploymentStatusBlockPage.previous()).isExisting()).toBe(false);
   });
 
   it("When a user gets to the hub, then the previous location link should not be displayed", async () => {
     await $(EmploymentStatusBlockPage.workingAsAnEmployee()).click();
     await click(EmploymentStatusBlockPage.submit());
-    await expect(await $(HubPage.previous()).isExisting()).to.be.false;
+    await expect(await $(HubPage.previous()).isExisting()).toBe(false);
   });
 
   it("When a user gets to subsequent question, then the previous location link should be displayed", async () => {
     await $(EmploymentStatusBlockPage.exclusiveNoneOfTheseApply()).click();
     await click(EmploymentStatusBlockPage.submit());
-    await expect(await $(EmploymentTypePage.previous()).isExisting()).to.be.true;
+    await expect(await $(EmploymentTypePage.previous()).isExisting()).toBe(true);
   });
 
   it("When a user gets to subsequent questions past the hub, then the previous location link should be displayed", async () => {
     await $(EmploymentStatusBlockPage.workingAsAnEmployee()).click();
     await click(EmploymentStatusBlockPage.submit());
     await $(HubPage.summaryRowLink("accommodation-section")).click();
-    await expect(await $(ProxyPage.previous()).isExisting()).to.be.true;
+    await expect(await $(ProxyPage.previous()).isExisting()).toBe(true);
   });
 });

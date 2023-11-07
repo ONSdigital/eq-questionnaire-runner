@@ -136,7 +136,7 @@
                                         "answers": [
                                             {
                                                 "id": "age-answer",
-                                                "mandatory": false,
+                                                "mandatory": true,
                                                 "type": "Number",
                                                 "label": "Age"
                                             }
@@ -443,18 +443,6 @@
                                 }
                             ],
                             "routing_rules": [
-                                {
-                                    "block": "age-block",
-                                    "when": {
-                                        "==": [
-                                            {
-                                                "source": "answers",
-                                                "identifier": "age-confirm-answer"
-                                            },
-                                            "No"
-                                        ]
-                                    }
-                                },
                                 {
                                     "section": "End"
                                 }
