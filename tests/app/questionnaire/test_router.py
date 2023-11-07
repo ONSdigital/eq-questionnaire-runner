@@ -857,7 +857,7 @@ class TestRouterNextLocation(RouterTestCase):
         assert (
             next_location_url
             == "/questionnaire/calculated-summary-1/?return_to=grand-calculated-summary&return_to_block_id=grand-calculated-summary-shopping&"
-               "return_to_answer_id=calculated-summary-1#q1-a1"
+            "return_to_answer_id=calculated-summary-1#q1-a1"
         )
 
     @pytest.mark.usefixtures("app")
