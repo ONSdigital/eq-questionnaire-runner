@@ -105,7 +105,7 @@ class Answer:
             else:
                 answer_id = self.id
 
-        if return_to_answer_id:
-            # Type ignore: return_to_answer_id will always be populated at this point
-            answer_id += f",{return_to_answer_id}"  # type: ignore
+            if return_to_answer_id:
+                answer_id += f",{return_to_answer_id}"
+
         return answer_id

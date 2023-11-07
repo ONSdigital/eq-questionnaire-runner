@@ -17,7 +17,7 @@ from app.views.contexts.summary.answer import Answer
         ("calculated-summary", "total", True, "calculated-summary-1"),
     ],
 )
-def test_create_answer2(
+def test_create_answer(
     return_to, return_to_block_id, is_in_repeating_section, return_to_answer_id
 ):
     return_location = ReturnLocation(
