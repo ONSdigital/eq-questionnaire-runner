@@ -116,7 +116,7 @@ def validate_questionnaire_claims(
     unknown: str = EXCLUDE,
 ) -> dict:
     """Validate any survey specific claims required for a questionnaire"""
-    dynamic_fields = {}
+    dynamic_fields: dict[str, fields.String | DateString] = {}
 
     for metadata_field in questionnaire_specific_metadata:
         field_arguments: dict[str, bool] = {}

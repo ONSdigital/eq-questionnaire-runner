@@ -104,7 +104,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     @post_load
     def update_schema_name(  # pylint: disable=no-self-use, unused-argument
         self, data: dict[str, str], **kwargs: Any
-    ) -> dict[str, str]:
+    ) -> dict:
         """Function to transform parameters into a business schema"""
         if data.get("schema_name"):
             logger.info(
@@ -119,7 +119,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     @post_load
     def update_response_id(  # pylint: disable=no-self-use, unused-argument
         self, data: dict[str, str], **kwargs: Any
-    ) -> dict[str, str]:
+    ) -> dict:
         """
         If response_id is present : return as it is
         If response_id is not present : Build response_id from ru_ref,collection_exercise_sid,eq_id and form_type
