@@ -103,7 +103,7 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
       await click(DynamicAnswerPage.submit());
       await click(DynamicAnswerOnlyPage.submit());
       await expect(browser).toHaveUrlContaining(SectionSummaryPage.pageName);
-      await $(SectionSummaryPage.groupContent(2)).waitForExist({ timeout: 2000 });
+      // await $(SectionSummaryPage.groupContent(2)).waitForExist({ timeout: 2000 });
       await expect(await $(SectionSummaryPage.groupContent(2)).$$(summaryTitles)[0].getText()).toBe("Percentage of shopping at Aldi");
     });
   });
