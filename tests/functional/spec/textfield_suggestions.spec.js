@@ -14,7 +14,6 @@ describe("Suggestions", () => {
 describe("Suggestions", () => {
   it("Given I open a textfield with a suggestions url that allows multiple suggestions, when I have entered text and picked suggestion from a list, then after typing more text it will show new suggestions", async () => {
     await browser.openQuestionnaire("test_textfield_suggestions.json");
-    const suggestionsList = $("#multiple-country-answer-listbox li");
     const suggestionsOption = $("#multiple-country-answer-listbox__option--0");
 
     await $(SuggestionsPage.country()).setValue("United States of America");
@@ -23,13 +22,11 @@ describe("Suggestions", () => {
     // Browser needs to pause before typing starts to allow for the autosuggest Javascript to initialise
     await browser.pause(500);
     await browser.keys("Ita");
-    // await suggestionsList.waitForExist();
     await suggestionsOption.click();
     await $(MultipleSuggestionsPage.multipleCountry()).click();
     // Browser needs to pause before typing starts to allow for the autosuggest Javascript to initialise
     await browser.pause(500);
     await browser.keys(" United");
-    // await suggestionsList.waitForExist();
     await expect(await $$(".ons-js-autosuggest-listbox li").length).not.toBe(0);
     await suggestionsOption.click();
     await click(MultipleSuggestionsPage.submit());
