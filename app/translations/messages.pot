@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-11-09 11:13+0000\n"
+"POT-Creation-Date: 2023-11-09 13:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -728,65 +728,12 @@ msgstr ""
 msgid "Confirm mobile number"
 msgstr ""
 
-#: app/views/handlers/thank_you.py:24 templates/census-thank-you.html:24
+#: app/views/handlers/thank_you.py:24
 msgid "Thank you for completing the census"
 msgstr ""
 
 #: app/views/handlers/view_submitted_response.py:52
 msgid "View Submitted Response"
-msgstr ""
-
-#: templates/census-thank-you.html:9 templates/confirmation-email.html:8
-msgid "There is a problem with this page"
-msgstr ""
-
-#: templates/census-thank-you.html:22
-msgid "Thank you for completing your census"
-msgstr ""
-
-#: templates/census-thank-you.html:26
-msgid "Thank you for completing the survey"
-msgstr ""
-
-#: templates/census-thank-you.html:32
-msgid ""
-"Your individual census has been submitted for "
-"<strong>{display_address}</strong>"
-msgstr ""
-
-#: templates/census-thank-you.html:34
-msgid ""
-"Your census has been submitted for the household at "
-"<strong>{display_address}</strong>"
-msgstr ""
-
-#: templates/census-thank-you.html:36
-msgid ""
-"Your census has been submitted for the accommodation at "
-"<strong>{display_address}</strong>"
-msgstr ""
-
-#: templates/census-thank-you.html:37
-msgid ""
-"Anyone staying at this accommodation for at least 6 months needs to fill "
-"in their own individual census, including staff. Your Census Officer will"
-" provide you with census forms for your residents."
-msgstr ""
-
-#: templates/census-thank-you.html:49
-msgid ""
-"Your personal information is protected by law and will be kept "
-"confidential"
-msgstr ""
-
-#: templates/census-thank-you.html:55 templates/thank-you.html:87
-msgid "Get confirmation email"
-msgstr ""
-
-#: templates/census-thank-you.html:56
-msgid ""
-"If you would like to be sent confirmation that you have completed your "
-"census, enter your email address"
 msgstr ""
 
 #: templates/confirm-email.html:12 templates/partials/answers/address.html:55
@@ -820,6 +767,10 @@ msgid ""
 "It can take a few minutes for the email to arrive. If it doesn't arrive, "
 "check your junk mail, or you can <a href='{send_confirmation_email_url}' "
 "id='send-another-email'>send another confirmation email</a>."
+msgstr ""
+
+#: templates/confirmation-email.html:8
+msgid "There is a problem with this page"
 msgstr ""
 
 #: templates/confirmation-email.html:12
@@ -1012,6 +963,10 @@ msgstr ""
 
 #: templates/thank-you.html:76
 msgid "For security, your answers will only be available to view for 45 minutes"
+msgstr ""
+
+#: templates/thank-you.html:87
+msgid "Get confirmation email"
 msgstr ""
 
 #: templates/thank-you.html:88
