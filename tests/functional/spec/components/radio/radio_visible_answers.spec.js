@@ -8,18 +8,18 @@ describe("Given I start a Radio survey with a write-in option", () => {
   });
 
   it("When I view a write-in radio and the visible option is set to true, Then the detail answer label should be displayed", async () => {
-    await expect(await $(RadioVisibleTruePage.otherDetail()).isDisplayed()).to.equal(true);
+    await expect(await $(RadioVisibleTruePage.otherDetail()).isDisplayed()).toBe(true);
   });
 
   it("When I view a write-in radio and the visible option is set to true, Then after choosing non write-in option the detail answer label should be displayed", async () => {
     await $(RadioVisibleTruePage.coffee()).click();
-    await expect(await $(RadioVisibleTruePage.otherDetail()).isDisplayed()).to.equal(true);
+    await expect(await $(RadioVisibleTruePage.otherDetail()).isDisplayed()).toBe(true);
   });
 
   it("When I view a write-in radio and the visible option is set to false, Then the detail answer label should not be displayed", async () => {
     await $(RadioVisibleTruePage.coffee()).click();
     await click(RadioVisibleTruePage.submit());
-    await expect(await $(RadioVisibleFalsePage.otherDetail()).isDisplayed()).to.equal(false);
+    await expect(await $(RadioVisibleFalsePage.otherDetail()).isDisplayed()).toBe(false);
   });
 
   it("When I view a write-in radio and the visible option is not set, Then the detail answer label should not be displayed", async () => {
@@ -27,6 +27,6 @@ describe("Given I start a Radio survey with a write-in option", () => {
     await click(RadioVisibleFalsePage.submit());
     await $(RadioVisibleFalsePage.iceCream()).click();
     await click(RadioVisibleFalsePage.submit());
-    await expect(await $(RadioVisibleNonePage.otherDetail()).isDisplayed()).to.equal(false);
+    await expect(await $(RadioVisibleNonePage.otherDetail()).isDisplayed()).toBe(false);
   });
 });
