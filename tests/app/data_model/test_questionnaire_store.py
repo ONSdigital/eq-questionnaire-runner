@@ -22,12 +22,11 @@ def test_questionnaire_store_json_loads(
     questionnaire_store.input_data = json_dumps(basic_input)
     # When
     store = QuestionnaireStore(questionnaire_store.storage)
+    data_stores = store.data_stores
     # Then
-    assert store.data_stores.metadata == MetadataProxy.from_dict(
-        basic_input["METADATA"]
-    )
-    assert store.data_stores.response_metadata == basic_input["RESPONSE_METADATA"]
-    assert store.data_stores.answer_store == AnswerStore(basic_input["ANSWERS"])
+    assert data_stores.metadata == MetadataProxy.from_dict(basic_input["METADATA"])
+    assert data_stores.response_metadata == basic_input["RESPONSE_METADATA"]
+    assert data_stores.answer_store == AnswerStore(basic_input["ANSWERS"])
     assert not hasattr(store, "NOT_A_LEGAL_TOP_LEVEL_KEY")
     assert not hasattr(store, "not_a_legal_top_level_key")
 
@@ -35,14 +34,14 @@ def test_questionnaire_store_json_loads(
 
     assert (
         len(
-            store.data_stores.progress_store.get_completed_block_ids(
+            data_stores.progress_store.get_completed_block_ids(
                 SectionKey("a-test-section", "abc123")
             )
         )
         == 1
     )
     assert (
-        store.data_stores.progress_store.get_completed_block_ids(
+        data_stores.progress_store.get_completed_block_ids(
             SectionKey("a-test-section", "abc123")
         )[0]
         == expected_completed_block_ids
@@ -55,22 +54,22 @@ def test_questionnaire_store_missing_keys(questionnaire_store, basic_input):
     questionnaire_store.input_data = json_dumps(basic_input)
     # When
     store = QuestionnaireStore(questionnaire_store.storage)
+    data_stores = store.data_stores
     # Then
-    assert store.data_stores.metadata == MetadataProxy.from_dict(
-        basic_input["METADATA"]
-    )
-    assert store.data_stores.response_metadata == basic_input["RESPONSE_METADATA"]
-    assert store.data_stores.answer_store == AnswerStore(basic_input["ANSWERS"])
-    assert not store.data_stores.progress_store.serialize()
+    assert data_stores.metadata == MetadataProxy.from_dict(basic_input["METADATA"])
+    assert data_stores.response_metadata == basic_input["RESPONSE_METADATA"]
+    assert data_stores.answer_store == AnswerStore(basic_input["ANSWERS"])
+    assert not data_stores.progress_store.serialize()
 
 
 def test_questionnaire_store_updates_storage(questionnaire_store, basic_input):
     # Given
     store = QuestionnaireStore(questionnaire_store.storage)
+    data_stores = store.data_stores
     store.set_metadata(basic_input["METADATA"])
-    store.data_stores.answer_store = AnswerStore(basic_input["ANSWERS"])
-    store.data_stores.response_metadata = basic_input["RESPONSE_METADATA"]
-    store.data_stores.progress_store = ProgressStore(basic_input["PROGRESS"])
+    data_stores.answer_store = AnswerStore(basic_input["ANSWERS"])
+    data_stores.response_metadata = basic_input["RESPONSE_METADATA"]
+    data_stores.progress_store = ProgressStore(basic_input["PROGRESS"])
     store.supplementary_data_store = SupplementaryDataStore.deserialize(
         basic_input["SUPPLEMENTARY_DATA"]
     )
@@ -91,9 +90,10 @@ def test_questionnaire_store_errors_on_invalid_object(questionnaire_store, basic
 
     store = QuestionnaireStore(questionnaire_store.storage)
     store.set_metadata(non_serializable_metadata)
-    store.data_stores.response_metadata = basic_input["RESPONSE_METADATA"]
-    store.data_stores.answer_store = AnswerStore(basic_input["ANSWERS"])
-    store.data_stores.progress_store = ProgressStore(basic_input["PROGRESS"])
+    data_stores = store.data_stores
+    data_stores.response_metadata = basic_input["RESPONSE_METADATA"]
+    data_stores.answer_store = AnswerStore(basic_input["ANSWERS"])
+    data_stores.progress_store = ProgressStore(basic_input["PROGRESS"])
 
     # When / Then
     with pytest.raises(TypeError):
@@ -104,17 +104,18 @@ def test_questionnaire_store_deletes(questionnaire_store, basic_input):
     # Given
     store = QuestionnaireStore(questionnaire_store.storage)
     store.set_metadata(basic_input["METADATA"])
-    store.data_stores.response_metadata = basic_input["RESPONSE_METADATA"]
-    store.data_stores.answer_store = AnswerStore(basic_input["ANSWERS"])
-    store.data_stores.progress_store = ProgressStore(basic_input["PROGRESS"])
+    data_stores = store.data_stores
+    data_stores.response_metadata = basic_input["RESPONSE_METADATA"]
+    data_stores.answer_store = AnswerStore(basic_input["ANSWERS"])
+    data_stores.progress_store = ProgressStore(basic_input["PROGRESS"])
 
     # When
     store.delete()
 
     # Then
-    assert "a-test-section" not in store.data_stores.progress_store
-    assert len(store.data_stores.answer_store) == 0
-    assert store.data_stores.response_metadata == {}
+    assert "a-test-section" not in data_stores.progress_store
+    assert len(data_stores.answer_store) == 0
+    assert data_stores.response_metadata == {}
 
 
 def test_questionnaire_store_raises_when_writing_to_metadata(questionnaire_store):

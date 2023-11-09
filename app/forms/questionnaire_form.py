@@ -321,8 +321,7 @@ class QuestionnaireForm(FlaskForm):
         rule_evaluator = RuleEvaluator(
             data_stores=self.data_stores,
             schema=self.schema,
-            # Type ignore: location in rule_evaluator can be both Location or RelationshipLocation type but is only Location type here
-            location=self.location,  # type: ignore
+            location=self.location,
         )
 
         handler = DateHandler(
