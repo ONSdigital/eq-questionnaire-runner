@@ -212,7 +212,7 @@ class PlaceholderParser:
 
     @staticmethod
     def _all_value_sources_metadata(placeholder: Mapping) -> bool:
-        sources = get_values_for_key("source", placeholder)
+        sources = get_values_for_key(key="source", data=placeholder)
         return all(source == "metadata" for source in sources)
 
     def _get_value_source_resolver_for_transform(

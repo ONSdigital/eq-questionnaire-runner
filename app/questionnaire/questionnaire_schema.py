@@ -491,14 +491,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         calculated_summary_answer_ids = get_calculated_summary_answer_ids(
             calculated_summary_block
         )
-        answer_dependent = self._get_dependent_for_block_id(
-            block_id=dependent_block["id"]
-        )
+        dependent = self._get_dependent_for_block_id(block_id=dependent_block["id"])
         for answer_id in calculated_summary_answer_ids:
             if list_name := self.get_list_name_for_answer_id(answer_id):
                 # dynamic/repeating answers means the calculated summary also depends on the list those answers loop over
-                self._list_dependencies_map[list_name].add(answer_dependent)
-            self._answer_dependencies_map[answer_id].add(answer_dependent)
+                self._list_dependencies_map[list_name].add(dependent)
+            self._answer_dependencies_map[answer_id].add(dependent)
 
     def _update_dependencies_for_grand_calculated_summary(
         self, grand_calculated_summary_block: ImmutableDict
@@ -558,7 +556,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         block_id: str,
         answer_id: str,
     ) -> None:
-        value_sources = get_mappings_with_key("source", dynamic_options_values)
+        value_sources = get_mappings_with_key(key="source", data=dynamic_options_values)
         for value_source in value_sources:
             self._update_dependencies_for_value_source(
                 value_source, block_id=block_id, answer_id=answer_id
@@ -585,13 +583,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 answer_ids_for_block = get_calculated_summary_answer_ids(
                     calculated_summary_block
                 )
-
+                dependent = self._get_dependent_for_block_id(
+                    block_id=block_id, answer_id=answer_id
+                )
                 for answer_id_for_block in answer_ids_for_block:
-                    self._answer_dependencies_map[answer_id_for_block].add(
-                        dependent := self._get_dependent_for_block_id(
-                            block_id=block_id, answer_id=answer_id
-                        )
-                    )
+                    self._answer_dependencies_map[answer_id_for_block].add(dependent)
                     # if the answer is repeating, then the calculated summary also depends on the list it loops over
                     if list_name := self.get_list_name_for_answer_id(
                         answer_id_for_block
@@ -824,7 +820,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def get_list_name_for_answer_id(self, answer_id: str) -> str | None:
         """
-        Returns the name of the list if the answer is dynamic/repeating and none otherwise
+        if the answer is dynamic or in a repeating block or section, return the name of the list it repeats over, otherwise None.
         """
         # Type ignore: safe to assume block exists, same for section below.
         block_id: str = self.get_block_for_answer_id(answer_id)["id"]  # type: ignore
@@ -1155,7 +1151,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         )
 
         for section in self.get_sections():
-            when_rules = get_values_for_key("when", section)
+            when_rules = get_values_for_key(key="when", data=section)
             rules: list = list(when_rules)
 
             (
@@ -1354,15 +1350,15 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         """
         for section in self.get_sections():
             for block in self.get_blocks_for_section(section):
-                sources = get_mappings_with_key("source", block, ignore_keys=["when"])
-                section_dependencies: set[str] = set()
-                for source in sources:
-                    if source["source"] == "calculated_summary":
-                        section_dependencies.add(
-                            # Type ignore: Validator ensures a valid identifier so section will exist
-                            self.get_section_id_for_block_id(source["identifier"])  # type: ignore
-                        )
-
+                sources = get_mappings_with_key(
+                    key="source", data=block, ignore_keys=["when"]
+                )
+                section_dependencies: set[str] = {
+                    # Type ignore: Validator ensures a valid identifier so section will exist
+                    self.get_section_id_for_block_id(source["identifier"])  # type: ignore
+                    for source in sources
+                    if source["source"] == "calculated_summary"
+                }
                 self.calculated_summary_section_dependencies_by_block[section["id"]][
                     block["id"]
                 ].update(section_dependencies)
@@ -1406,7 +1402,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _populate_placeholder_transform_section_dependencies(self) -> None:
         for block in self.get_blocks():
-            transforms = get_mappings_with_key("transform", block)
+            transforms = get_mappings_with_key(key="transform", data=block)
             placeholder_answer_ids = {
                 item["identifier"]
                 for transform in transforms
@@ -1454,7 +1450,7 @@ def get_sources_for_type_from_data(
     data: MultiDict | Mapping | Sequence,
     ignore_keys: list | None = None,
 ) -> list:
-    sources = get_mappings_with_key("source", data, ignore_keys=ignore_keys)
+    sources = get_mappings_with_key(key="source", data=data, ignore_keys=ignore_keys)
 
     return [source for source in sources if source["source"] == source_type]
 

@@ -131,14 +131,12 @@ class QuestionnaireStoreUpdater:
         # If a primary person was initially answered negatively, then changed to positive,
         # the location must be removed from the progress store.
         self.remove_completed_location(self._current_location)
-        self._capture_dependencies_for_list_change(list_name)
 
         return self._list_store.add_list_item(list_name, primary_person=True)
 
     def add_list_item(self, list_name: str) -> str:
         new_list_item_id = self._list_store.add_list_item(list_name)
         self.remove_completed_relationship_locations_for_list_name(list_name)
-        self._capture_dependencies_for_list_change(list_name)
         return new_list_item_id
 
     def remove_primary_person(self, list_name: str) -> None:
@@ -161,9 +159,8 @@ class QuestionnaireStoreUpdater:
             self._update_relationship_question_completeness(list_name)
 
         self._progress_store.remove_progress_for_list_item_id(list_item_id=list_item_id)
-        self._capture_dependencies_for_list_change(list_name)
 
-    def _capture_dependencies_for_list_change(self, list_name: str) -> None:
+    def capture_dependencies_for_list_change(self, list_name: str) -> None:
         """
         Captures the dependencies when an item is added to or removed from the given list.
         Any list collector sections will be affected by the change as well as other sections using when rules
@@ -179,9 +176,8 @@ class QuestionnaireStoreUpdater:
         for section_key in self.started_section_keys(section_ids=section_ids):
             # Only add sections which are repeated sections for this list, or the section in which this list is collected
             # Prevents list item progresses being added as dependants as these are captured by started_section_keys(section_ids=section_ids)
-            if (
-                not self._schema.get_repeat_for_section(section_key.section_id)
-                and section_key.list_item_id
+            if section_key.list_item_id and not self._schema.get_repeat_for_section(
+                section_key.section_id
             ):
                 continue
             self.dependent_sections.add(DependentSection(**section_key.to_dict()))
@@ -401,7 +397,6 @@ class QuestionnaireStoreUpdater:
             self._current_question
         )
 
-        answers_updated = False
         for answer_id, answer_value in form_data.items():
             if answer_id not in answers_by_answer_id:
                 continue
@@ -413,9 +408,8 @@ class QuestionnaireStoreUpdater:
             if self._update_answer(answer_id_to_use, list_item_id_to_use, answer_value):
                 self._capture_section_dependencies_for_answer(answer_id_to_use)
                 self._capture_block_dependencies_for_answer(answer_id_to_use)
-                answers_updated = True
 
-        if answers_updated:
+        if self._answer_store.is_dirty:
             self.capture_progress_section_dependencies()
 
     def capture_progress_section_dependencies(self) -> None:
