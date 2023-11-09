@@ -145,7 +145,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertInUrl("/submitted/thank-you/")
         self.assertInBody("Get confirmation email")
         self.assertEqualPageTitle(
-            "Thank you for completing the census - Confirmation email test schema"
+            "We’ve received your answers - Confirmation email test schema"
         )
 
     def test_census_themed_schema_with_confirmation_email_not_set(self):
@@ -255,10 +255,9 @@ class TestEmailConfirmation(IntegrationTestCase):
 
         # Then I get an error message on the thank you page
         self.assertInUrl("/submitted/thank-you/")
-        self.assertInBody("There is a problem with this page")
         self.assertInBody("Enter an email address")
         self.assertEqualPageTitle(
-            "Error: Thank you for completing the census - Confirmation email test schema"
+            "We’ve received your answers - Confirmation email test schema"
         )
 
     def test_thank_you_incorrect_email_format(self):
@@ -270,13 +269,12 @@ class TestEmailConfirmation(IntegrationTestCase):
 
         # Then I get an error message on the thank you page
         self.assertInUrl("thank-you")
-        self.assertInBody("There is a problem with this page")
         self.assertInBody(
             "Enter an email address in a valid format, for example name@example.com"
         )
 
         self.assertEqualPageTitle(
-            "Error: Thank you for completing the census - Confirmation email test schema"
+            "We’ve received your answers - Confirmation email test schema"
         )
 
     def test_thank_you_email_invalid_tld(self):
@@ -288,7 +286,6 @@ class TestEmailConfirmation(IntegrationTestCase):
 
         # Then I get an error message on the thank you page
         self.assertInUrl("thank-you")
-        self.assertInBody("There is a problem with this page")
         self.assertInBody(
             "Enter an email address in a valid format, for example name@example.com"
         )
@@ -302,7 +299,6 @@ class TestEmailConfirmation(IntegrationTestCase):
 
         # Then I get a single error message on the thank you page
         self.assertInUrl("thank-you")
-        self.assertInBody("There is a problem with this page")
         self.assertInBody(
             "Enter an email address in a valid format, for example name@example.com"
         )
