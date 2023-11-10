@@ -1163,7 +1163,7 @@ class TestRouterNextLocation(RouterTestCase):
         )
         return_location = ReturnLocation(
             return_to="calculated-summary,grand-calculated-summary",
-            return_to_answer_id="first-number-block",
+            return_to_answer_id="q1-a1,distance-calculated-summary-1",
             return_to_block_id="distance-calculated-summary-1,distance-grand-calculated-summary",
         )
         # the test is being done as part of a two-step return to but its identical functionally
@@ -1178,7 +1178,7 @@ class TestRouterNextLocation(RouterTestCase):
             "questionnaire.block",
             return_to="calculated-summary,grand-calculated-summary",
             return_to_block_id="distance-calculated-summary-1,distance-grand-calculated-summary",
-            return_to_answer_id="first-number-block",
+            return_to_answer_id="q1-a1,distance-calculated-summary-1",
             block_id="second-number-block",
         )
 
@@ -1518,7 +1518,7 @@ class TestRouterPreviousLocation(RouterTestCase):
 
         return_location = ReturnLocation(
             return_to="calculated-summary,grand-calculated-summary",
-            return_to_answer_id="second-number-block",
+            return_to_answer_id="q2-a1",
             return_to_block_id="number-calculated-summary-1,number-grand-calculated-summary",
         )
         previous_location_url = self.router.get_previous_location_url(
@@ -1532,7 +1532,7 @@ class TestRouterPreviousLocation(RouterTestCase):
             return_to="calculated-summary,grand-calculated-summary",
             return_to_block_id="number-calculated-summary-1,number-grand-calculated-summary",
             block_id="first-number-block",
-            _anchor="second-number-block",
+            _anchor="q2-a1",
         )
 
         assert expected_previous_url == previous_location_url
@@ -1678,7 +1678,7 @@ class TestRouterPreviousLocation(RouterTestCase):
 
         return_location = ReturnLocation(
             return_to="calculated-summary,grand-calculated-summary",
-            return_to_answer_id="calculated-summary-6",
+            return_to_answer_id="streaming-service-monthly-cost-JSfZqh,calculated-summary-6",
             return_to_block_id="calculated-summary-6,grand-calculated-summary-3",
         )
         next_location_url = self.router.get_previous_location_url(
@@ -1692,7 +1692,8 @@ class TestRouterPreviousLocation(RouterTestCase):
             return_to="grand-calculated-summary",
             block_id="calculated-summary-6",
             return_to_block_id="grand-calculated-summary-3",
-            _anchor="calculated-summary-6",
+            return_to_answer_id="calculated-summary-6",
+            _anchor="streaming-service-monthly-cost-JSfZqh",
         )
 
         assert expected_previous_url == next_location_url
