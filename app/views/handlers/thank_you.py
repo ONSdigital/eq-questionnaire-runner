@@ -1,7 +1,6 @@
 from datetime import datetime
 from functools import cached_property
 
-from flask import session as cookie_session
 from flask_babel import LazyString, gettext
 from flask_login import current_user
 
@@ -34,9 +33,7 @@ class ThankYou:
         self._submitted_at = submitted_at
 
         # self._is_census_theme = cookie_session.get("theme") == "census"
-        self.template = (
-            self.DEFAULT_THANK_YOU_TEMPLATE
-        )
+        self.template = self.DEFAULT_THANK_YOU_TEMPLATE
 
     @cached_property
     def confirmation_email(self) -> ConfirmationEmail | None:

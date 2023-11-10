@@ -44,7 +44,6 @@ DEFAULT_URL = "http://localhost"
 @pytest.mark.parametrize(
     "theme, survey_config, language, expected_footer",
     [
-
         (
             SurveyType.BUSINESS,
             BusinessSurveyConfig(),
@@ -70,7 +69,6 @@ DEFAULT_URL = "http://localhost"
             "cy",
             expected_footer_social_theme("cy"),
         ),
-
     ],
 )
 def test_footer_context(app: Flask, theme, survey_config, language, expected_footer):
@@ -87,11 +85,6 @@ def test_footer_context(app: Flask, theme, survey_config, language, expected_foo
         ).context["footer"]
 
     assert result == expected_footer
-
-
-
-
-
 
 
 @pytest.mark.parametrize(
@@ -776,7 +769,6 @@ def test_account_service_my_todo_url_context(
             BusinessSurveyConfig(),
             f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
         ),
-
         (
             NIBusinessSurveyConfig(),
             f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
@@ -955,7 +947,6 @@ def test_context_set_from_app_config(app):
         (SurveyType.DBT_DSIT, "en", None),
         (SurveyType.DBT_DSIT_NI, "en", None),
         (SurveyType.ORR, "en", None),
-
     ],
 )
 def test_correct_theme_in_context(app: Flask, theme: str, language: str, expected: str):
@@ -984,7 +975,6 @@ def test_correct_theme_in_context(app: Flask, theme: str, language: str, expecte
         (SurveyType.DBT_DSIT, "en", "ONS Surveys"),
         (SurveyType.DBT_DSIT_NI, "en", "ONS Surveys"),
         (SurveyType.ORR, "en", "ONS Surveys"),
-
     ],
 )
 def test_use_default_survey_title_in_context_when_no_cookie(
@@ -1088,7 +1078,6 @@ def test_use_default_survey_title_in_context_when_no_cookie(
             QuestionnaireSchema({"survey_id": "001"}),
             [{"survey_id": "001"}],
         ),
-
     ],
 )
 def test_correct_data_layer_in_context(

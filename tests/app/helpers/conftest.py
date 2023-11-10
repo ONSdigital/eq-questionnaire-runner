@@ -7,6 +7,8 @@ from app.settings import (
     ONS_URL,
     ONS_URL_CY,
 )
+
+
 @fixture
 def get_context_helper():
     def _context_helper(
