@@ -780,7 +780,7 @@ class TestRouterNextLocation(RouterTestCase):
 
         return_location = ReturnLocation(
             return_to="calculated-summary,grand-calculated-summary",
-            return_to_answer_id="distance-calculated-summary-1",
+            return_to_answer_id="q1-a1,distance-calculated-summary-1",
             return_to_block_id="distance-calculated-summary-1,distance-grand-calculated-summary",
         )
 
@@ -793,7 +793,8 @@ class TestRouterNextLocation(RouterTestCase):
             return_to="grand-calculated-summary",
             block_id="distance-calculated-summary-1",
             return_to_block_id="distance-grand-calculated-summary",
-            _anchor="distance-calculated-summary-1",
+            return_to_answer_id="distance-calculated-summary-1",
+            _anchor="q1-a1",
         )
 
         assert expected_previous_url == next_location_url
