@@ -7,7 +7,7 @@
     "form_type": "H",
     "region_code": "GB-WLS",
     "title": "Census household test schema",
-    "theme": "census",
+    "theme": "default",
     "description": "A questionnaire to test the thank you page for census household",
     "metadata": [
         {

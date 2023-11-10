@@ -20,7 +20,7 @@ from app.views.handlers.confirmation_email import (
 
 class ThankYou:
     DEFAULT_THANK_YOU_TEMPLATE = "thank-you"
-    CENSUS_THANK_YOU_TEMPLATE = "census-thank-you"
+
     PAGE_TITLE = gettext("Thank you for completing the census")
 
     def __init__(
@@ -33,11 +33,9 @@ class ThankYou:
         self._schema: QuestionnaireSchema = schema
         self._submitted_at = submitted_at
 
-        self._is_census_theme = cookie_session.get("theme") == "census"
+        # self._is_census_theme = cookie_session.get("theme") == "census"
         self.template = (
-            self.CENSUS_THANK_YOU_TEMPLATE
-            if self._is_census_theme
-            else self.DEFAULT_THANK_YOU_TEMPLATE
+            self.DEFAULT_THANK_YOU_TEMPLATE
         )
 
     @cached_property

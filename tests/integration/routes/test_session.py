@@ -288,22 +288,22 @@ class TestSession(IntegrationTestCase):
         self.assertEqual(mock_validate.call_count, 2)
 
 
-class TestCensusSession(IntegrationTestCase):
-    def setUp(self):
-        # Cache for requests
-        self.last_url = None
-        self.last_response = None
-        self.last_csrf_token = None
-        self.redirect_url = None
-
-        # Perform setup steps
-        self._set_up_app(setting_overrides={"SURVEY_TYPE": "census"})
-
-    def test_session_signed_out_no_cookie_session_census_config(self):
-        self.launchSurvey(schema_name="test_individual_response")
-        self.assertInBody("Save and sign out")
-
-        self.deleteCookie()
-        self.get("/sign-out", follow_redirects=False)
-
-        self.assertInRedirect("census.gov.uk")
+# class TestCensusSession(IntegrationTestCase):
+#     def setUp(self):
+#         # Cache for requests
+#         self.last_url = None
+#         self.last_response = None
+#         self.last_csrf_token = None
+#         self.redirect_url = None
+#
+#         # Perform setup steps
+#         self._set_up_app(setting_overrides={"SURVEY_TYPE": "census"})
+#
+#     # def test_session_signed_out_no_cookie_session_census_config(self):
+#     #     self.launchSurvey(schema_name="test_individual_response")
+#     #     self.assertInBody("Save and sign out")
+#     #
+#     #     self.deleteCookie()
+#     #     self.get("/sign-out", follow_redirects=False)
+#     #
+#     #     self.assertInRedirect("census.gov.uk")

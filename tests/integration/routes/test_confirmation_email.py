@@ -137,28 +137,28 @@ class TestEmailConfirmation(IntegrationTestCase):
         # Then I get shown a 404 error
         self.assertStatusNotFound()
 
-    def test_census_themed_schema_with_confirmation_email_true(self):
-        # Given I launch and complete the test_confirmation_email questionnaire
-        self._launch_and_complete_questionnaire()
+    # def test_census_themed_schema_with_confirmation_email_true(self):
+    #     # Given I launch and complete the test_confirmation_email questionnaire
+    #     self._launch_and_complete_questionnaire()
+    #
+    #     # When I am on the thank you page, Then there is an confirmation email form
+    #     self.assertInUrl("/submitted/thank-you/")
+    #     self.assertInBody("Get confirmation email")
+    #     self.assertEqualPageTitle(
+    #         "We’ve received your answers - Confirmation email test schema"
+    #     )
 
-        # When I am on the thank you page, Then there is an confirmation email form
-        self.assertInUrl("/submitted/thank-you/")
-        self.assertInBody("Get confirmation email")
-        self.assertEqualPageTitle(
-            "We’ve received your answers - Confirmation email test schema"
-        )
-
-    def test_census_themed_schema_with_confirmation_email_not_set(self):
-        # Given I launch the test_thank_you_census_individual questionnaire, which doesn't have email confirmation set in the schema
-        self.launchSurvey("test_thank_you_census_individual")
-
-        # When I complete the questionnaire
-        self.post()
-        self.post()
-
-        # Then on the thank you page I don't get a confirmation email form
-        self.assertInUrl("/submitted/thank-you/")
-        self.assertNotInBody("Get confirmation email")
+    # def test_census_themed_schema_with_confirmation_email_not_set(self):
+    #     # Given I launch the test_thank_you_census_individual questionnaire, which doesn't have email confirmation set in the schema
+    #     self.launchSurvey("test_thank_you_census_individual")
+    #
+    #     # When I complete the questionnaire
+    #     self.post()
+    #     self.post()
+    #
+    #     # Then on the thank you page I don't get a confirmation email form
+    #     self.assertInUrl("/submitted/thank-you/")
+    #     self.assertNotInBody("Get confirmation email")
 
     def test_default_themed_schema_with_confirmation_email_not_set(self):
         # Given I launch the test_checkbox questionnaire, which doesn't have email confirmation set in the schema

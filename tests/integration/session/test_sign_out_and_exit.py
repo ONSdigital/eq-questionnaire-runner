@@ -96,26 +96,26 @@ class TestExitPostSubmissionWithHubDefaultTheme(IntegrationTestCase):
         self.assertInRedirect(ACCOUNT_SERVICE_LOG_OUT_URL)
 
 
-class TestCensusSignOut(IntegrationTestCase):
-    def setUp(self):
-        self._set_up_app(setting_overrides={"SURVEY_TYPE": "census"})
-
-    def test_sign_out_url(self):
-        self.launchSurvey(schema_name="test_individual_response")
-        self.saveAndSignOut()
-        self.assertInRedirect(SIGNED_OUT_URL_PATH)
-
-    def test_sign_out_button_text(self):
-        self.launchSurvey(schema_name="test_individual_response")
-        self.assertEqual(
-            "Save and complete later", self.getSignOutButton().text.strip()
-        )
-
-    def test_no_session_cookie_redirects_to_default_account_service_log_out_url(self):
-        self.launchSurvey(schema_name="test_individual_response")
-        self.assertInBody("Save and sign out")
-
-        self.deleteCookie()
-        self.signOut()
-
-        self.assertInRedirect("census.gov.uk")
+# class TestCensusSignOut(IntegrationTestCase):
+#     def setUp(self):
+#         self._set_up_app(setting_overrides={"SURVEY_TYPE": "census"})
+#
+#     def test_sign_out_url(self):
+#         self.launchSurvey(schema_name="test_individual_response")
+#         self.saveAndSignOut()
+#         self.assertInRedirect(SIGNED_OUT_URL_PATH)
+#
+#     # def test_sign_out_button_text(self):
+#     #     self.launchSurvey(schema_name="test_individual_response")
+#     #     self.assertEqual(
+#     #         "Save and complete later", self.getSignOutButton().text.strip()
+#     #     )
+#
+#     # def test_no_session_cookie_redirects_to_default_account_service_log_out_url(self):
+#     #     self.launchSurvey(schema_name="test_individual_response")
+#     #     self.assertInBody("Save and sign out")
+#     #
+#     #     self.deleteCookie()
+#     #     self.signOut()
+#     #
+#     #     self.assertInRedirect("census.gov.uk")

@@ -7,7 +7,7 @@
     "form_type": "C",
     "region_code": "GB-WLS",
     "title": "Census communal establishment test schema",
-    "theme": "census",
+    "theme": "default",
     "description": "A questionnaire to test the thank you page for communal establishment",
     "metadata": [
         {

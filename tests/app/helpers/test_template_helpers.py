@@ -17,8 +17,6 @@ from app.settings import (
 )
 from app.survey_config import (
     BusinessSurveyConfig,
-    CensusNISRASurveyConfig,
-    CensusSurveyConfig,
     DBTBusinessSurveyConfig,
     DBTDSITBusinessSurveyConfig,
     DBTDSITNIBusinessSurveyConfig,
@@ -30,16 +28,11 @@ from app.survey_config import (
     SocialSurveyConfig,
     SurveyConfig,
     UKHSAONSSocialSurveyConfig,
-    WelshCensusSurveyConfig,
 )
 from app.survey_config.survey_type import SurveyType
 from tests.app.helpers.conftest import (
     expected_footer_business_theme,
     expected_footer_business_theme_no_cookie,
-    expected_footer_census_theme,
-    expected_footer_census_theme_no_cookie,
-    expected_footer_census_welsh_theme,
-    expected_footer_nisra_theme,
     expected_footer_social_theme,
     expected_footer_social_theme_no_cookie,
 )
@@ -51,8 +44,7 @@ DEFAULT_URL = "http://localhost"
 @pytest.mark.parametrize(
     "theme, survey_config, language, expected_footer",
     [
-        (SurveyType.CENSUS, CensusSurveyConfig(), "en", expected_footer_census_theme()),
-        (None, CensusSurveyConfig(), "en", expected_footer_census_theme_no_cookie()),
+
         (
             SurveyType.BUSINESS,
             BusinessSurveyConfig(),
@@ -78,18 +70,7 @@ DEFAULT_URL = "http://localhost"
             "cy",
             expected_footer_social_theme("cy"),
         ),
-        (
-            SurveyType.CENSUS_NISRA,
-            CensusNISRASurveyConfig(),
-            "en",
-            expected_footer_nisra_theme(),
-        ),
-        (
-            SurveyType.CENSUS,
-            WelshCensusSurveyConfig(),
-            "en",
-            expected_footer_census_welsh_theme(),
-        ),
+
     ],
 )
 def test_footer_context(app: Flask, theme, survey_config, language, expected_footer):
@@ -108,31 +89,9 @@ def test_footer_context(app: Flask, theme, survey_config, language, expected_foo
     assert result == expected_footer
 
 
-def test_footer_warning_in_context_census_theme(app: Flask):
-    with app.app_context():
-        expected = "Make sure you <a href='/sign-out'>leave this page</a> or close your browser if using a shared device"
-
-        survey_config = CensusSurveyConfig()
-
-        result = ContextHelper(
-            language="en",
-            is_post_submission=True,
-            include_csrf_token=True,
-            survey_config=survey_config,
-        ).context["footer"]["footerWarning"]
-
-    assert result == expected
 
 
-def test_footer_warning_not_in_context_census_theme(app: Flask):
-    with app.app_context():
-        with pytest.raises(KeyError):
-            _ = ContextHelper(
-                language="en",
-                is_post_submission=False,
-                include_csrf_token=True,
-                survey_config=CensusSurveyConfig(),
-            ).context["footer"]["footerWarning"]
+
 
 
 @pytest.mark.parametrize(
@@ -184,36 +143,6 @@ def test_footer_warning_not_in_context_census_theme(app: Flask):
             None,
             None,
             SurveyConfig(),
-            ["ONS Surveys", None, None],
-        ),
-        (
-            SurveyType.CENSUS,
-            None,
-            CensusSurveyConfig(),
-            ["ONS Surveys", None, None],
-        ),
-        (
-            SurveyType.CENSUS,
-            "Test",
-            CensusSurveyConfig(),
-            ["Test", None, None],
-        ),
-        (
-            None,
-            None,
-            CensusSurveyConfig(),
-            ["ONS Surveys", None, None],
-        ),
-        (
-            SurveyType.CENSUS_NISRA,
-            None,
-            CensusNISRASurveyConfig(),
-            ["ONS Surveys", None, None],
-        ),
-        (
-            None,
-            None,
-            CensusNISRASurveyConfig(),
             ["ONS Surveys", None, None],
         ),
         (
@@ -584,7 +513,6 @@ def test_contact_us_url_context(
     "survey_config, expected",
     [
         (SurveyConfig(), "Save and exit survey"),
-        (CensusSurveyConfig(), "Save and complete later"),
     ],
 )
 def test_sign_out_button_text_context(
@@ -848,9 +776,7 @@ def test_account_service_my_todo_url_context(
             BusinessSurveyConfig(),
             f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
         ),
-        (CensusSurveyConfig(), "https://census.gov.uk/en/start"),
-        (WelshCensusSurveyConfig(), "https://cyfrifiad.gov.uk/en/start"),
-        (CensusNISRASurveyConfig(), "https://census.gov.uk/ni"),
+
         (
             NIBusinessSurveyConfig(),
             f"{ACCOUNT_SERVICE_BASE_URL}/sign-in/logout",
@@ -921,9 +847,6 @@ def test_account_service_log_out_url_context(
         (SurveyType.DBT_DSIT, "en", DBTDSITBusinessSurveyConfig),
         (SurveyType.DBT_DSIT_NI, "en", DBTDSITNIBusinessSurveyConfig),
         (SurveyType.ORR, "en", ORRBusinessSurveyConfig),
-        (SurveyType.CENSUS, "en", CensusSurveyConfig),
-        (SurveyType.CENSUS, "cy", WelshCensusSurveyConfig),
-        (SurveyType.CENSUS_NISRA, "en", CensusNISRASurveyConfig),
         (SurveyType.UKHSA_ONS, "en", UKHSAONSSocialSurveyConfig),
         (None, None, BusinessSurveyConfig),
     ],
@@ -1032,9 +955,7 @@ def test_context_set_from_app_config(app):
         (SurveyType.DBT_DSIT, "en", None),
         (SurveyType.DBT_DSIT_NI, "en", None),
         (SurveyType.ORR, "en", None),
-        (SurveyType.CENSUS, "en", "census"),
-        (SurveyType.CENSUS, "cy", "census"),
-        (SurveyType.CENSUS_NISRA, "en", "census"),
+
     ],
 )
 def test_correct_theme_in_context(app: Flask, theme: str, language: str, expected: str):
@@ -1063,9 +984,7 @@ def test_correct_theme_in_context(app: Flask, theme: str, language: str, expecte
         (SurveyType.DBT_DSIT, "en", "ONS Surveys"),
         (SurveyType.DBT_DSIT_NI, "en", "ONS Surveys"),
         (SurveyType.ORR, "en", "ONS Surveys"),
-        (SurveyType.CENSUS, "en", "ONS Surveys"),
-        (SurveyType.CENSUS, "cy", "ONS Surveys"),
-        (SurveyType.CENSUS_NISRA, "en", "ONS Surveys"),
+
     ],
 )
 def test_use_default_survey_title_in_context_when_no_cookie(
@@ -1169,24 +1088,7 @@ def test_use_default_survey_title_in_context_when_no_cookie(
             QuestionnaireSchema({"survey_id": "001"}),
             [{"survey_id": "001"}],
         ),
-        (
-            SurveyType.CENSUS,
-            "en",
-            QuestionnaireSchema({"survey_id": "001"}),
-            [{"nisra": False}, {"survey_id": "001"}],
-        ),
-        (
-            SurveyType.CENSUS,
-            "cy",
-            QuestionnaireSchema({"survey_id": "001"}),
-            [{"nisra": False}, {"survey_id": "001"}],
-        ),
-        (
-            SurveyType.CENSUS_NISRA,
-            "en",
-            QuestionnaireSchema({"survey_id": "001"}),
-            [{"nisra": True}, {"survey_id": "001"}],
-        ),
+
     ],
 )
 def test_correct_data_layer_in_context(

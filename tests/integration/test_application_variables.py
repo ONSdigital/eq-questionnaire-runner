@@ -60,7 +60,7 @@ class TestApplicationVariables(IntegrationTestCase):
         self.assertInHead("gtm.start")
         # pylint: disable=line-too-long
         self.assertInHead(
-            f'dataLayer = [{{"nisra": false}}, {{"form_type": "I", "survey_id": "0", "title": "Census individual test schema"}}, {{"tx_id": "{actual["METADATA"]["tx_id"]}"}}]'
+            f'dataLayer = [{{"form_type": "I", "survey_id": "0", "title": "Census individual test schema"}}, {{"tx_id": "{actual["METADATA"]["tx_id"]}"}}]'
         )
 
     def test_livereload_script_rendered(self):
