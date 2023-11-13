@@ -19,6 +19,10 @@
         {
             "name": "flag_1",
             "type": "boolean"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
         }
     ],
     "questionnaire_flow": {

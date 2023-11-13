@@ -21,6 +21,10 @@
         {
             "name": "display_address",
             "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
         }
     ],
     "questionnaire_flow": {
