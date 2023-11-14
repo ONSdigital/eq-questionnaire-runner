@@ -28,7 +28,7 @@ jobs:
     needs: [python-dependencies]
     strategy:
       matrix:
-        module: [ questionnaire ]
+        mutation-module-under-test: [ questionnaire ]
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
@@ -58,13 +58,15 @@ jobs:
         run: make translate
       - name: Link env vars
         run: ln -sf .development.env .env
-#      - name: Docker compose for int testing
-#        run: docker-compose --version && RUNNER_ENV_FILE=.functional-tests.env docker-compose up --build -d
+      - name: Docker compose for int testing
+        run: docker-compose --version && RUNNER_ENV_FILE=.functional-tests.env docker-compose up --build -d
       - name: Run mutmut
         run: |
             pipenv run mutmut run \
                 --paths-to-mutate "app/${{ matrix.module }}/" \
-                --runner "py.test -n auto tests/app/${{ matrix.module }}/" \
+#                --runner "py.test -n auto tests/app/${{ matrix.module }}/" \
+                --runner "py.test -n auto --cov=app" \
+                --use-coverage
                 --no-progress \
                 --CI
       - name: Save HTML output
@@ -74,5 +76,5 @@ jobs:
         with:
             name: mutation-test-report
             path: html/
-#      - name: Docker compose shutdown
-#        run: RUNNER_ENV_FILE=.functional-tests.env docker-compose kill
+      - name: Docker compose shutdown
+        run: RUNNER_ENV_FILE=.functional-tests.env docker-compose kill
