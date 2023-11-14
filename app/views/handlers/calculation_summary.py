@@ -12,15 +12,10 @@ class _SummaryWithCalculation(Content):
         summary_context = self.summary_class(
             language=self._language,
             schema=self._schema,
-            answer_store=self._questionnaire_store.answer_store,
-            list_store=self._questionnaire_store.list_store,
-            progress_store=self._questionnaire_store.progress_store,
-            metadata=self._questionnaire_store.metadata,
-            response_metadata=self._questionnaire_store.response_metadata,
+            data_stores=self._questionnaire_store.data_stores,
             current_location=self._current_location,
             routing_path=self._routing_path,
             return_location=self._return_location,
-            supplementary_data_store=self._questionnaire_store.supplementary_data_store,
         )
         context = summary_context.build_view_context()
 

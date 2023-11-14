@@ -5,35 +5,14 @@ from app.data_models import CompletionStatus
 from app.questionnaire.router import Router
 from app.utilities.schema import load_schema_from_name
 from app.views.contexts import HubContext
-from tests.app.questionnaire.conftest import get_metadata
 
 
 @pytest.fixture
-def router(
-    schema,
-    answer_store,
-    list_store,
-    progress_store,
-    supplementary_data_store,
-):
-    return Router(
-        schema,
-        answer_store,
-        list_store,
-        progress_store,
-        metadata=get_metadata(),
-        response_metadata={},
-        supplementary_data_store=supplementary_data_store,
-    )
+def router(schema, data_stores):
+    return Router(schema, data_stores)
 
 
-def test_get_not_started_row_for_section(
-    schema,
-    progress_store,
-    answer_store,
-    list_store,
-    supplementary_data_store,
-):
+def test_get_not_started_row_for_section(schema, data_stores):
     expected = {
         "rowItems": [
             {
@@ -53,16 +32,7 @@ def test_get_not_started_row_for_section(
         ]
     }
 
-    hub = HubContext(
-        language=None,
-        progress_store=progress_store,
-        list_store=list_store,
-        schema=schema,
-        answer_store=answer_store,
-        metadata=get_metadata(),
-        response_metadata={},
-        supplementary_data_store=supplementary_data_store,
-    )
+    hub = HubContext(language=None, schema=schema, data_stores=data_stores)
 
     actual = hub.get_row_context_for_section(
         section_name="Breakfast",
@@ -74,13 +44,7 @@ def test_get_not_started_row_for_section(
     assert expected == actual
 
 
-def test_get_completed_row_for_section(
-    schema,
-    progress_store,
-    answer_store,
-    list_store,
-    supplementary_data_store,
-):
+def test_get_completed_row_for_section(schema, data_stores):
     expected = {
         "rowItems": [
             {
@@ -101,16 +65,7 @@ def test_get_completed_row_for_section(
         ]
     }
 
-    hub = HubContext(
-        language=None,
-        progress_store=progress_store,
-        list_store=list_store,
-        schema=schema,
-        answer_store=answer_store,
-        metadata=get_metadata(),
-        response_metadata={},
-        supplementary_data_store=supplementary_data_store,
-    )
+    hub = HubContext(language=None, schema=schema, data_stores=data_stores)
 
     actual = hub.get_row_context_for_section(
         section_name="Breakfast",
@@ -122,24 +77,9 @@ def test_get_completed_row_for_section(
     assert expected == actual
 
 
-def test_get_context(
-    progress_store,
-    answer_store,
-    list_store,
-    router,
-    supplementary_data_store,
-):
+def test_get_context(router, data_stores):
     schema = load_schema_from_name("test_hub_and_spoke")
-    hub = HubContext(
-        language="en",
-        progress_store=progress_store,
-        list_store=list_store,
-        schema=schema,
-        answer_store=answer_store,
-        metadata=get_metadata(),
-        response_metadata={},
-        supplementary_data_store=supplementary_data_store,
-    )
+    hub = HubContext(language="en", schema=schema, data_stores=data_stores)
 
     expected_context = {
         "individual_response_enabled": False,
@@ -156,24 +96,9 @@ def test_get_context(
     )
 
 
-def test_get_context_custom_content_incomplete(
-    progress_store,
-    answer_store,
-    list_store,
-    router,
-    supplementary_data_store,
-):
+def test_get_context_custom_content_incomplete(router, data_stores):
     schema = load_schema_from_name("test_hub_and_spoke_custom_content")
-    hub_context = HubContext(
-        language="en",
-        progress_store=progress_store,
-        list_store=list_store,
-        schema=schema,
-        answer_store=answer_store,
-        metadata=get_metadata(),
-        response_metadata={},
-        supplementary_data_store=supplementary_data_store,
-    )
+    hub_context = HubContext(language="en", schema=schema, data_stores=data_stores)
 
     expected_context = {
         "individual_response_enabled": False,
@@ -190,24 +115,9 @@ def test_get_context_custom_content_incomplete(
     )
 
 
-def test_get_context_custom_content_complete(
-    progress_store,
-    answer_store,
-    list_store,
-    router,
-    supplementary_data_store,
-):
+def test_get_context_custom_content_complete(data_stores, router):
     schema = load_schema_from_name("test_hub_and_spoke_custom_content")
-    hub_context = HubContext(
-        language="en",
-        progress_store=progress_store,
-        list_store=list_store,
-        schema=schema,
-        answer_store=answer_store,
-        metadata=get_metadata(),
-        response_metadata={},
-        supplementary_data_store=supplementary_data_store,
-    )
+    hub_context = HubContext(language="en", schema=schema, data_stores=data_stores)
 
     expected_context = {
         "individual_response_enabled": False,
@@ -225,23 +135,11 @@ def test_get_context_custom_content_complete(
 
 
 def test_get_context_no_list_items_survey_incomplete_individual_response_disabled(
-    progress_store,
-    answer_store,
-    list_store,
+    data_stores,
     router,
-    supplementary_data_store,
 ):
     schema = load_schema_from_name("test_individual_response")
-    hub_context = HubContext(
-        language="en",
-        progress_store=progress_store,
-        list_store=list_store,
-        schema=schema,
-        answer_store=answer_store,
-        metadata=get_metadata(),
-        response_metadata={},
-        supplementary_data_store=supplementary_data_store,
-    )
+    hub_context = HubContext(language="en", schema=schema, data_stores=data_stores)
 
     assert not (
         hub_context(

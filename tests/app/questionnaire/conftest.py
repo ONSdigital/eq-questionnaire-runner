@@ -4,6 +4,7 @@ import pytest
 
 from app.data_models import CompletionStatus, QuestionnaireStore, SupplementaryDataStore
 from app.data_models.answer_store import Answer, AnswerStore
+from app.data_models.data_stores import DataStores
 from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress import ProgressDict
@@ -58,15 +59,10 @@ def response_metadata():
 def parser(answer_store, location, mock_schema, mock_renderer):
     return PlaceholderParser(
         language="en",
-        answer_store=answer_store,
-        list_store=ListStore(),
-        metadata=get_metadata(),
-        response_metadata={},
+        data_stores=DataStores(answer_store=answer_store, metadata=get_metadata()),
         schema=mock_schema,
         location=location,
         renderer=mock_renderer,
-        progress_store=ProgressStore(),
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
 
@@ -1011,14 +1007,12 @@ def placeholder_renderer(option_label_from_value_schema):
     )
     renderer = PlaceholderRenderer(
         language="en",
-        answer_store=answer_store,
-        list_store=ListStore(),
-        metadata=get_metadata({"trad_as": "ESSENTIAL SERVICES LTD"}),
-        response_metadata={},
+        data_stores=DataStores(
+            answer_store=answer_store,
+            metadata=get_metadata({"trad_as": "ESSENTIAL SERVICES LTD"}),
+        ),
         schema=option_label_from_value_schema,
-        progress_store=ProgressStore(),
         location=Location(section_id="checkbox-section"),
-        supplementary_data_store=SupplementaryDataStore(),
     )
     return renderer
 
@@ -1027,13 +1021,8 @@ def placeholder_renderer(option_label_from_value_schema):
 def mock_renderer(mock_schema):
     return PlaceholderRenderer(
         language="en",
-        answer_store=AnswerStore(),
-        list_store=ListStore(),
-        metadata=get_metadata(),
-        response_metadata={},
+        data_stores=DataStores(),
         schema=mock_schema,
-        progress_store=ProgressStore(),
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
 
@@ -1197,10 +1186,12 @@ def mock_questionnaire_store(
     return mocker.MagicMock(
         spec=QuestionnaireStore,
         completed_blocks=[],
-        answer_store=mock_empty_answer_store,
-        list_store=populated_list_store,
-        progress_store=mock_empty_progress_store,
-        supplementary_data_store=mock_empty_supplementary_data_store,
+        data_stores=DataStores(
+            answer_store=mock_empty_answer_store,
+            list_store=populated_list_store,
+            progress_store=mock_empty_progress_store,
+            supplementary_data_store=mock_empty_supplementary_data_store,
+        ),
     )
 
 

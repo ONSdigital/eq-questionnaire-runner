@@ -1,4 +1,5 @@
 # pylint: disable=too-many-lines
+
 from functools import cached_property
 
 import pytest
@@ -7,44 +8,34 @@ from mock import Mock
 
 from app.data_models import CompletionStatus
 from app.data_models.answer_store import AnswerStore
+from app.data_models.data_stores import DataStores
 from app.data_models.list_store import ListStore
 from app.data_models.progress import ProgressDict
 from app.data_models.progress_store import ProgressStore
-from app.data_models.supplementary_data_store import SupplementaryDataStore
 from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.return_location import ReturnLocation
 from app.questionnaire.router import Router
 from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
-from tests.app.questionnaire.conftest import get_metadata
 
 
 class RouterTestCase:
     schema = None
-    answer_store = AnswerStore()
-    list_store = ListStore()
-    progress_store = ProgressStore()
-    metadata = get_metadata()
-    supplementary_data_store = SupplementaryDataStore()
-    response_metadata = {}
+    data_stores: DataStores
+
+    @pytest.fixture(autouse=True)
+    def setup(self):
+        self.data_stores = DataStores()
 
     @cached_property
     def router(self):
-        return Router(
-            self.schema,
-            self.answer_store,
-            self.list_store,
-            self.progress_store,
-            self.metadata,
-            self.response_metadata,
-            self.supplementary_data_store,
-        )
+        return Router(self.schema, self.data_stores)
 
 
 class TestRouter(RouterTestCase):
     def test_enabled_section_ids(self):
         self.schema = load_schema_from_name("test_section_enabled_checkbox")
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="section-1",
@@ -53,7 +44,7 @@ class TestRouter(RouterTestCase):
                 )
             ]
         )
-        self.answer_store = AnswerStore(
+        self.data_stores.answer_store = AnswerStore(
             [{"answer_id": "section-1-answer", "value": ["Section 2"]}]
         )
 
@@ -82,7 +73,7 @@ class TestRouter(RouterTestCase):
         self.schema = load_schema_from_name(
             "test_repeating_sections_with_hub_and_spoke"
         )
-        self.list_store = ListStore(
+        self.data_stores.list_store = ListStore(
             [
                 {
                     "items": ["abc123", "123abc"],
@@ -125,7 +116,7 @@ class TestRouter(RouterTestCase):
 class TestRouterPathCompletion(RouterTestCase):
     def test_is_complete(self):
         self.schema = load_schema_from_name("test_textfield")
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="default-section",
@@ -153,7 +144,7 @@ class TestRouterPathCompletion(RouterTestCase):
 class TestRouterQuestionnaireCompletion(RouterTestCase):
     def test_is_complete(self):
         self.schema = load_schema_from_name("test_textfield")
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="default-section",
@@ -179,7 +170,7 @@ class TestRouterQuestionnaireCompletion(RouterTestCase):
         self.schema = load_schema_from_name(
             "test_repeating_sections_with_hub_and_spoke"
         )
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 {
                     "section_id": "section",
@@ -199,7 +190,7 @@ class TestRouterQuestionnaireCompletion(RouterTestCase):
                 },
             ]
         )
-        self.list_store = ListStore(
+        self.data_stores.list_store = ListStore(
             [{"items": ["abc123"], "name": "people", "primary_person": "abc123"}]
         )
 
@@ -211,7 +202,7 @@ class TestRouterQuestionnaireCompletion(RouterTestCase):
         self.schema = load_schema_from_name(
             "test_repeating_sections_with_hub_and_spoke"
         )
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 {
                     "section_id": "default-section",
@@ -220,7 +211,7 @@ class TestRouterQuestionnaireCompletion(RouterTestCase):
                 }
             ]
         )
-        self.list_store = ListStore(
+        self.data_stores.list_store = ListStore(
             [
                 {
                     "items": ["abc123", "123abc"],
@@ -272,7 +263,7 @@ class TestRouterLocationValidity(RouterTestCase):
             "test_repeating_sections_with_hub_and_spoke"
         )
 
-        self.list_store = ListStore(
+        self.data_stores.list_store = ListStore(
             [
                 {
                     "items": ["abc123", "123abc"],
@@ -341,7 +332,7 @@ class TestRouterNextLocation(RouterTestCase):
     @pytest.mark.usefixtures("app")
     def test_within_section(self):
         self.schema = load_schema_from_name("test_checkbox")
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="default-section",
@@ -383,7 +374,7 @@ class TestRouterNextLocation(RouterTestCase):
     ):
         self.schema = Mock()
         self.schema.get_block.return_value = {"type": "Question"}
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="section-1",
@@ -411,7 +402,7 @@ class TestRouterNextLocation(RouterTestCase):
     @pytest.mark.usefixtures("app")
     def test_return_to_section_summary_section_is_complete(self):
         self.schema = load_schema_from_name("test_section_summary")
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 {
                     "section_id": "property-details-section",
@@ -444,14 +435,14 @@ class TestRouterNextLocation(RouterTestCase):
     @pytest.mark.usefixtures("app")
     def test_return_to_section_summary_section_is_in_progress(self):
         self.schema = load_schema_from_name("test_section_summary")
-        self.answer_store = AnswerStore(
+        self.data_stores.answer_store = AnswerStore(
             [
                 {"answer_id": "insurance-type-answer", "value": "Both"},
                 {"answer_id": "insurance-address-answer", "value": "Address"},
                 {"answer_id": "listed-answer", "value": "No"},
             ]
         )
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="property-details-section",
@@ -487,7 +478,7 @@ class TestRouterNextLocation(RouterTestCase):
     @pytest.mark.usefixtures("app")
     def test_section_summary_on_completion_true(self):
         self.schema = load_schema_from_name("test_show_section_summary_on_completion")
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="accommodation-section",
@@ -513,7 +504,7 @@ class TestRouterNextLocation(RouterTestCase):
     @pytest.mark.usefixtures("app")
     def test_section_summary_on_completion_false(self):
         self.schema = load_schema_from_name("test_show_section_summary_on_completion")
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="employment-section",
@@ -552,7 +543,7 @@ class TestRouterNextLocation(RouterTestCase):
         self.schema = load_schema_from_name(schema)
         # for the purposes of this test, assume the routing path consists only of the first two blocks and the calculated summary
         # and that those two blocks are complete - this will be a sufficient condition to return to the calculated summary
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="default-section",
@@ -616,7 +607,7 @@ class TestRouterNextLocation(RouterTestCase):
         then you are instead routed to the first incomplete block of the section
         """
         self.schema = load_schema_from_name(schema)
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="default-section",
@@ -686,7 +677,7 @@ class TestRouterNextLocation(RouterTestCase):
         self, schema, return_to_block_id, expected_url
     ):
         self.schema = load_schema_from_name(schema)
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="default-section",
@@ -724,7 +715,7 @@ class TestRouterNextLocation(RouterTestCase):
     )
     def test_return_to_calculated_summary_return_to_block_id_not_on_path(self, schema):
         self.schema = load_schema_from_name(schema)
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="default-section",
@@ -767,7 +758,7 @@ class TestRouterNextLocation(RouterTestCase):
         If going from GCS ->  CS -> answer -> CS -> GCS this tests going from CS -> GCS having just come from an answer
         """
         self.schema = grand_calculated_summary_schema
-        self.progress_store = grand_calculated_summary_progress_store
+        self.data_stores.progress_store = grand_calculated_summary_progress_store
 
         current_location = Location(
             section_id="section-1", block_id="first-number-block"
@@ -806,7 +797,7 @@ class TestRouterNextLocation(RouterTestCase):
         If going from GCS ->  CS -> GCS this tests going from CS -> GCS having just come from the grand calculated summary
         """
         self.schema = grand_calculated_summary_schema
-        self.progress_store = grand_calculated_summary_progress_store
+        self.data_stores.progress_store = grand_calculated_summary_progress_store
 
         current_location = Location(
             section_id="section-1", block_id="distance-calculated-summary-1"
@@ -871,9 +862,11 @@ class TestRouterNextLocation(RouterTestCase):
         the continue button for the CS has a next location url of the original repeating GCS.
         """
         self.schema = grand_calculated_summary_in_repeating_section_schema
-        self.list_store = ListStore([{"items": ["ZIrqqR"], "name": "vehicles"}])
+        self.data_stores.list_store = ListStore(
+            [{"items": ["ZIrqqR"], "name": "vehicles"}]
+        )
 
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="base-costs-section",
@@ -948,7 +941,7 @@ class TestRouterNextLocation(RouterTestCase):
             "test_grand_calculated_summary_repeating_answers"
         )
         # calculated summary 3 is not complete yet
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="section-1",
@@ -1010,7 +1003,7 @@ class TestRouterNextLocation(RouterTestCase):
         """
         self.schema = grand_calculated_summary_schema
         # second-number block not complete yet
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="section-1",
@@ -1147,7 +1140,7 @@ class TestRouterNextLocation(RouterTestCase):
         completed_block_ids = [*routing_path_block_ids]
         completed_block_ids.remove(next_incomplete_block_id)
 
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id=section,
@@ -1182,7 +1175,7 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
         self,
     ):
         self.schema = load_schema_from_name("test_textfield")
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="default-section",
@@ -1209,7 +1202,7 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
         self.schema = load_schema_from_name(
             "test_routing_to_questionnaire_end_single_section"
         )
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="test-section",
@@ -1231,7 +1224,7 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
     @pytest.mark.usefixtures("app")
     def test_return_to_final_summary_section_is_in_progress(self):
         self.schema = load_schema_from_name("test_submit_with_summary")
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="default-section",
@@ -1260,8 +1253,10 @@ class TestRouterNextLocationLinearFlow(RouterTestCase):
         self.schema = load_schema_from_name(
             "test_routing_to_questionnaire_end_multiple_sections"
         )
-        self.answer_store = AnswerStore([{"answer_id": "test-answer", "value": "Yes"}])
-        self.progress_store = ProgressStore(
+        self.data_stores.answer_store = AnswerStore(
+            [{"answer_id": "test-answer", "value": "Yes"}]
+        )
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="test-section",
@@ -1362,7 +1357,7 @@ class TestRouterPreviousLocation(RouterTestCase):
         """
         self.schema = grand_calculated_summary_schema
         # trying to go to number-calculated-summary-1 but distance-calculated-summary-1 which comes before is not complete yet
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="section-1",
@@ -1422,7 +1417,7 @@ class TestRouterPreviousLocation(RouterTestCase):
         """
         self.schema = grand_calculated_summary_schema
         # number calculated summary is not complete, so the section is not complete
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="section-1",
@@ -1538,7 +1533,9 @@ class TestRouterPreviousLocation(RouterTestCase):
         Test returning to a calculated summary from a list repeating question as part of a grand calculated summary change link
         """
         self.schema = grand_calculated_summary_repeating_answers_schema
-        self.progress_store = grand_calculated_summary_repeating_answers_progress_store
+        self.data_stores.progress_store = (
+            grand_calculated_summary_repeating_answers_progress_store
+        )
 
         parent_location = Location(
             section_id="section-5",
@@ -1574,7 +1571,7 @@ class TestRouterPreviousLocation(RouterTestCase):
     @pytest.mark.usefixtures("app")
     def test_return_to_section_summary_section_is_complete(self):
         self.schema = load_schema_from_name("test_section_summary")
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="property-details-section",
@@ -1610,7 +1607,7 @@ class TestRouterPreviousLocation(RouterTestCase):
     @pytest.mark.usefixtures("app")
     def test_return_to_section_summary_section_is_in_progress(self):
         self.schema = load_schema_from_name("test_section_summary")
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="property-details-section",
@@ -1646,7 +1643,7 @@ class TestRouterPreviousLocation(RouterTestCase):
     @pytest.mark.usefixtures("app")
     def test_return_to_final_summary_section_is_complete(self):
         self.schema = load_schema_from_name("test_submit_with_summary")
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 {
                     "section_id": "default-section",
@@ -1682,7 +1679,7 @@ class TestRouterPreviousLocation(RouterTestCase):
     @pytest.mark.usefixtures("app")
     def test_return_to_final_summary_section_is_in_progress(self):
         self.schema = load_schema_from_name("test_submit_with_summary")
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 {
                     "section_id": "default-section",
@@ -1723,7 +1720,7 @@ class TestRouterPreviousLocationLinearFlow(RouterTestCase):
     @pytest.mark.usefixtures("app")
     def test_is_none_on_first_block_single_section(self):
         self.schema = load_schema_from_name("test_checkbox")
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="default-section",
@@ -1758,7 +1755,7 @@ class TestRouterPreviousLocationLinearFlow(RouterTestCase):
     @pytest.mark.usefixtures("app")
     def test_is_none_on_first_block_second_section(self):
         self.schema = load_schema_from_name("test_section_summary")
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 {
                     "section_id": "property-details-section",
@@ -1819,7 +1816,7 @@ class TestRouterLastLocationLinearFlow(RouterTestCase):
     @pytest.mark.usefixtures("app")
     def test_block_on_path(self):
         self.schema = load_schema_from_name("test_checkbox")
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="default-section",
@@ -1844,7 +1841,7 @@ class TestRouterLastLocationLinearFlow(RouterTestCase):
         self.schema = load_schema_from_name(
             "test_routing_to_questionnaire_end_multiple_sections"
         )
-        self.answer_store = AnswerStore(
+        self.data_stores.answer_store = AnswerStore(
             [
                 {"answer_id": "test-answer", "value": "No"},
                 {
@@ -1856,7 +1853,7 @@ class TestRouterLastLocationLinearFlow(RouterTestCase):
         section_id = "test-section"
         last_block_on_path = "test-forced"
         completed_block_not_on_path = "test-optional"
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id=section_id,
@@ -1873,7 +1870,9 @@ class TestRouterLastLocationLinearFlow(RouterTestCase):
         ).url()
 
         last_completed_block_in_progress_store = (
-            self.progress_store.get_completed_block_ids(SectionKey(section_id))[-1]
+            self.data_stores.progress_store.get_completed_block_ids(
+                SectionKey(section_id)
+            )[-1]
         )
 
         last_location_url = self.router.get_last_location_in_questionnaire_url()
@@ -1885,7 +1884,7 @@ class TestRouterLastLocationLinearFlow(RouterTestCase):
     def test_list_collector_final_summary_returns_to_section_summary(self):
         self.schema = load_schema_from_name("test_list_collector_list_summary")
 
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="section",
@@ -1910,7 +1909,7 @@ class TestRouterSectionResume(RouterTestCase):
     def test_section_in_progress_returns_url_for_first_incomplete_location(self):
         self.schema = load_schema_from_name("test_section_summary")
 
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="property-details-section",
@@ -1937,7 +1936,7 @@ class TestRouterSectionResume(RouterTestCase):
         self,
     ):
         self.schema = load_schema_from_name("test_hub_complete_sections")
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="employment-section",

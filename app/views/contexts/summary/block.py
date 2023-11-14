@@ -1,19 +1,11 @@
-from typing import Mapping, MutableMapping
+from typing import Mapping
 
 from jsonpointer import resolve_pointer
 
-from app.data_models import (
-    AnswerStore,
-    ListStore,
-    ProgressStore,
-    SupplementaryDataStore,
-)
-from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.data_stores import DataStores
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.return_location import ReturnLocation
-from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.schema_utils import find_pointers_containing
-from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.questionnaire.variants import choose_variant
 from app.utilities.types import LocationType
 from app.views.contexts.summary.question import Question
@@ -24,15 +16,10 @@ class Block:
         self,
         block_schema: Mapping,
         *,
-        answer_store: AnswerStore,
-        list_store: ListStore,
-        metadata: MetadataProxy | None,
-        response_metadata: MutableMapping,
+        data_stores: DataStores,
         schema: QuestionnaireSchema,
         location: LocationType,
         return_location: ReturnLocation,
-        progress_store: ProgressStore,
-        supplementary_data_store: SupplementaryDataStore,
         language: str,
     ) -> None:
         self.id = block_schema["id"]
@@ -40,54 +27,21 @@ class Block:
         self.number = block_schema.get("number")
         self.location = location
         self.schema = schema
-
-        self._rule_evaluator = RuleEvaluator(
-            schema=self.schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=metadata,
-            response_metadata=response_metadata,
-            location=self.location,
-            progress_store=progress_store,
-            supplementary_data_store=supplementary_data_store,
-        )
-
-        self._value_source_resolver = ValueSourceResolver(
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=metadata,
-            response_metadata=response_metadata,
-            schema=self.schema,
-            location=self.location,
-            list_item_id=self.location.list_item_id if self.location else None,
-            use_default_answer=True,
-            progress_store=progress_store,
-            supplementary_data_store=supplementary_data_store,
-        )
+        self.data_stores = data_stores
 
         self.question = self.get_question(
             block_schema=block_schema,
-            answer_store=answer_store,
-            list_store=list_store,
-            metadata=metadata,
-            response_metadata=response_metadata,
+            data_stores=self.data_stores,
             return_location=return_location,
-            progress_store=progress_store,
-            supplementary_data_store=supplementary_data_store,
             language=language,
         )
 
     def get_question(
         self,
         *,
+        data_stores: DataStores,
         block_schema: Mapping,
-        answer_store: AnswerStore,
-        list_store: ListStore,
-        metadata: MetadataProxy | None,
-        response_metadata: MutableMapping,
         return_location: ReturnLocation,
-        progress_store: ProgressStore,
-        supplementary_data_store: SupplementaryDataStore,
         language: str,
     ) -> dict[str, Question]:
         """Taking question variants into account, return the question which was displayed to the user"""
@@ -95,30 +49,18 @@ class Block:
         variant = choose_variant(
             block_schema,
             self.schema,
-            metadata,
-            response_metadata,
-            answer_store,
-            list_store,
+            data_stores,
             variants_key="question_variants",
             single_key="question",
             current_location=self.location,
-            progress_store=progress_store,
-            supplementary_data_store=supplementary_data_store,
         )
         return Question(
             variant,
-            answer_store=answer_store,
-            list_store=list_store,
-            progress_store=progress_store,
-            supplementary_data_store=supplementary_data_store,
+            data_stores=self.data_stores,
             schema=self.schema,
-            rule_evaluator=self._rule_evaluator,
-            value_source_resolver=self._value_source_resolver,
             location=self.location,
             block_id=self.id,
             return_location=return_location,
-            metadata=metadata,
-            response_metadata=response_metadata,
             language=language,
         ).serialize()
 
