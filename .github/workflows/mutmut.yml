@@ -64,8 +64,7 @@ jobs:
         run: |
             pipenv run mutmut run \
                 --paths-to-mutate "app/${{ matrix.module }}/" \
-                --runner "py.test -n auto --cov=app" \
-                --use-coverage \
+                --runner "py.test -n auto" \
                 --no-progress \
                 --CI
       - name: Save HTML output
