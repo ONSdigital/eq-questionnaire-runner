@@ -58,8 +58,8 @@ jobs:
         run: make translate
       - name: Link env vars
         run: ln -sf .development.env .env
-      - name: Docker compose for int testing
-        run: docker-compose --version && RUNNER_ENV_FILE=.functional-tests.env docker-compose up --build -d
+#      - name: Docker compose for int testing
+#        run: docker-compose --version && RUNNER_ENV_FILE=.functional-tests.env docker-compose up --build -d
       - name: Run mutmut
         run: |
             pipenv run mutmut run
@@ -67,5 +67,12 @@ jobs:
                 --runner "py.test -n auto tests/app/${{ matrix.module }}/"
                 --no-progress
                 --CI
-      - name: Docker compose shutdown
-        run: RUNNER_ENV_FILE=.functional-tests.env docker-compose kill
+      - name: Save HTML output
+        run: |
+            pipenv run mutmut html
+      - uses: actions/upload-artifact@v3
+        with:
+            name: mutation-test-report
+            path: html/
+#      - name: Docker compose shutdown
+#        run: RUNNER_ENV_FILE=.functional-tests.env docker-compose kill
