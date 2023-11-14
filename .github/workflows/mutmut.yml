@@ -46,6 +46,6 @@ jobs:
         run: docker-compose --version && RUNNER_ENV_FILE=.functional-tests.env docker-compose up --build -d
       - name: Run mutmut
         run: |
-            pipenv run mutmut run --paths-to-mutate "app/${{ matrix.module }}/" --runner "py.test -n auto tests/app/{{ matrix.module }}/"
+            pipenv run mutmut run --paths-to-mutate "app/${{ matrix.module }}/" --runner "py.test -n auto tests/app/${{ matrix.module }}/"
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker-compose kill
