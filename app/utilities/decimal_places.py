@@ -27,7 +27,7 @@ def get_formatted_currency(
     *,
     value: float | Decimal,
     currency: str = "GBP",
-    locale: str | None = None,
+    locale: str | Locale | None = None,
     decimal_limit: int | None = None,
 ) -> str:
     """

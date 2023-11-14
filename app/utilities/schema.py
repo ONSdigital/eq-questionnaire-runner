@@ -97,7 +97,7 @@ def _schema_exists(language_code: str, schema_name: str) -> bool:
     )
 
 
-def get_allowed_languages(schema_name: str | None, launch_language: str) -> list:
+def get_allowed_languages(schema_name: str | None, launch_language: str) -> list[str]:
     if schema_name:
         for language_combination in LANGUAGES_MAP.get(schema_name, []):
             if launch_language in language_combination:

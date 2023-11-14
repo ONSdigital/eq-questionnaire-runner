@@ -102,7 +102,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
 
     @validates_schema
     def validate_schema_name_is_set(  # pylint: disable=no-self-use, unused-argument
-        self, data: dict[str, str], **kwargs: Any
+        self, data: dict, **kwargs: Any
     ) -> None:
         if data and not (data.get("schema_name") or data.get("schema_url")):
             raise ValidationError(

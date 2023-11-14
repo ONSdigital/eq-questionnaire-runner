@@ -88,7 +88,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
 
     @validates_schema
     def validate_schema_name(  # pylint: disable=no-self-use, unused-argument
-        self, data: dict[str, str], **kwargs: Any
+        self, data: dict, **kwargs: Any
     ) -> None:
         """Function to validate the business schema parameters"""
         if not data.get("schema_name"):
@@ -103,7 +103,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
 
     @post_load
     def update_schema_name(  # pylint: disable=no-self-use, unused-argument
-        self, data: dict[str, str], **kwargs: Any
+        self, data: dict, **kwargs: Any
     ) -> dict:
         """Function to transform parameters into a business schema"""
         if data.get("schema_name"):
@@ -118,7 +118,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
 
     @post_load
     def update_response_id(  # pylint: disable=no-self-use, unused-argument
-        self, data: dict[str, str], **kwargs: Any
+        self, data: dict, **kwargs: Any
     ) -> dict:
         """
         If response_id is present : return as it is
