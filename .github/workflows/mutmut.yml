@@ -1,0 +1,57 @@
+name: mutmut
+
+on:
+  push:
+    branches:
+      - spike-mutation-testing-mutmut
+
+concurrency:
+  group: '${{ github.head_ref }}'
+  cancel-in-progress: true
+
+jobs:
+
+  python-dependencies:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pipenv'
+      - name: Install Pipenv
+        run: pip install pipenv==2023.8.22
+      - name: Install virtual environment
+        run: |
+          sudo apt-get install libsnappy-dev
+          pipenv install --dev
+
+  test-mutmut:
+    needs: [python-dependencies]
+    strategy:
+      matrix:
+        module: [ questionnaire ]
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pipenv'
+      - name: Install pipenv
+        run: pip install pipenv==2023.8.22
+      - name: Install virtual environment
+        run: pipenv install --dev
+      - name: Docker compose for int testing
+        run: docker-compose --version && RUNNER_ENV_FILE=.functional-tests.env docker-compose up --build -d
+      - name: Run mutmut
+        run: |
+            pipenv run mutmut run \
+                --paths-to-mutate "app/${{ matrix.module }}/" \
+                --runner "py.test -n auto tests/app/{{ matrix.module }}/"
+      - name: Docker compose shutdown
+        run: RUNNER_ENV_FILE=.functional-tests.env docker-compose kill
