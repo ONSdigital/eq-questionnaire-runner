@@ -158,7 +158,7 @@ class HubContext(Context):
     ) -> dict[str, Union[str, list]]:
         row_id = f"{section_id}-{list_item_index}" if list_item_index else section_id
 
-        section_status = self._progress_store.get_section_status(
+        section_status = self._data_stores.progress_store.get_section_status(
             SectionKey(section_id, list_item_id)
         )
 
@@ -183,7 +183,7 @@ class HubContext(Context):
 
                 if repeating_list:
                     for list_item_index, list_item_id in enumerate(
-                        self._list_store[repeating_list].items, start=1
+                        self._data_stores.list_store[repeating_list].items, start=1
                     ):
                         rows.append(
                             self._get_row_for_repeating_section(
@@ -202,7 +202,7 @@ class HubContext(Context):
 
         for_list = self._schema.json["individual_response"]["for_list"]
 
-        if not self._list_store[for_list].non_primary_people:
+        if not self._data_stores.list_store[for_list].non_primary_people:
             return False
         return True
 

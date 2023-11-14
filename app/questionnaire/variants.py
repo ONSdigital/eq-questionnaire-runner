@@ -1,12 +1,8 @@
-from typing import Mapping, MutableMapping
+from typing import Mapping
 
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models.answer_store import AnswerStore
-from app.data_models.list_store import ListStore
-from app.data_models.metadata_proxy import MetadataProxy
-from app.data_models.progress_store import ProgressStore
-from app.data_models.supplementary_data_store import SupplementaryDataStore
+from app.data_models.data_stores import DataStores
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.utilities.types import LocationType
@@ -16,15 +12,10 @@ from app.utilities.types import LocationType
 def choose_variant(  # type: ignore
     block: Mapping,
     schema: QuestionnaireSchema,
-    metadata: MetadataProxy | None,
-    response_metadata: MutableMapping,
-    answer_store: AnswerStore,
-    list_store: ListStore,
+    data_stores: DataStores,
     variants_key: str,
     single_key: str,
     current_location: LocationType,
-    progress_store: ProgressStore,
-    supplementary_data_store: SupplementaryDataStore,
 ) -> dict:
     if block.get(single_key):
         # Type ignore: the key passed in will be for a dictionary
@@ -34,13 +25,8 @@ def choose_variant(  # type: ignore
 
         when_rule_evaluator = RuleEvaluator(
             schema,
-            answer_store,
-            list_store,
-            metadata,
-            response_metadata,
+            data_stores=data_stores,
             location=current_location,
-            progress_store=progress_store,
-            supplementary_data_store=supplementary_data_store,
         )
 
         if when_rule_evaluator.evaluate(when_rules):
@@ -51,78 +37,48 @@ def choose_variant(  # type: ignore
 def choose_question_to_display(
     block: ImmutableDict,
     schema: QuestionnaireSchema,
-    metadata: MetadataProxy | None,
-    response_metadata: MutableMapping,
-    answer_store: AnswerStore,
-    list_store: ListStore,
+    data_stores: DataStores,
     current_location: LocationType,
-    progress_store: ProgressStore,
-    supplementary_data_store: SupplementaryDataStore,
 ) -> dict:
     return choose_variant(
         block,
         schema,
-        metadata,
-        response_metadata,
-        answer_store,
-        list_store,
+        data_stores,
         variants_key="question_variants",
         single_key="question",
         current_location=current_location,
-        progress_store=progress_store,
-        supplementary_data_store=supplementary_data_store,
     )
 
 
 def choose_content_to_display(
     block: ImmutableDict,
     schema: QuestionnaireSchema,
-    metadata: MetadataProxy | None,
-    response_metadata: MutableMapping,
-    answer_store: AnswerStore,
-    list_store: ListStore,
+    data_stores: DataStores,
     current_location: LocationType,
-    progress_store: ProgressStore,
-    supplementary_data_store: SupplementaryDataStore,
 ) -> dict:
     return choose_variant(
         block,
         schema,
-        metadata,
-        response_metadata,
-        answer_store,
-        list_store,
+        data_stores,
         variants_key="content_variants",
         single_key="content",
         current_location=current_location,
-        progress_store=progress_store,
-        supplementary_data_store=supplementary_data_store,
     )
 
 
 def transform_variants(
     block: ImmutableDict,
     schema: QuestionnaireSchema,
-    metadata: MetadataProxy | None,
-    response_metadata: MutableMapping,
-    answer_store: AnswerStore,
-    list_store: ListStore,
+    data_stores: DataStores,
     current_location: LocationType,
-    progress_store: ProgressStore,
-    supplementary_data_store: SupplementaryDataStore,
 ) -> ImmutableDict:
     output_block = dict(block)
     if "question_variants" in block:
         question = choose_question_to_display(
             block,
             schema,
-            metadata,
-            response_metadata,
-            answer_store,
-            list_store,
+            data_stores,
             current_location,
-            progress_store=progress_store,
-            supplementary_data_store=supplementary_data_store,
         )
         output_block.pop("question_variants", None)
         output_block.pop("question", None)
@@ -133,13 +89,8 @@ def transform_variants(
         content = choose_content_to_display(
             block,
             schema,
-            metadata,
-            response_metadata,
-            answer_store,
-            list_store,
+            data_stores,
             current_location,
-            progress_store=progress_store,
-            supplementary_data_store=supplementary_data_store,
         )
         output_block.pop("content_variants", None)
         output_block.pop("content", None)
@@ -153,13 +104,8 @@ def transform_variants(
                 output_block[list_operation] = transform_variants(
                     block[list_operation],
                     schema,
-                    metadata,
-                    response_metadata,
-                    answer_store,
-                    list_store,
+                    data_stores,
                     current_location,
-                    progress_store=progress_store,
-                    supplementary_data_store=supplementary_data_store,
                 )
 
     return ImmutableDict(output_block)

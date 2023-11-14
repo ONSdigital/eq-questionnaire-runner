@@ -48,7 +48,10 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
         }
         # find any sections involved in the grand calculated summary (but only if they have started, to avoid evaluating the path if not necessary)
         started_sections = [
-            key for key, _ in self._progress_store.started_section_keys(section_ids)
+            key
+            for key, _ in self._data_stores.progress_store.started_section_keys(
+                section_ids
+            )
         ]
         routing_path_block_ids: list[str] = []
 
@@ -73,15 +76,10 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
             Group(
                 group_schema=group,
                 routing_path_block_ids=routing_path_block_ids,
-                answer_store=self._answer_store,
-                list_store=self._list_store,
-                metadata=self._metadata,
-                response_metadata=self._response_metadata,
+                data_stores=self._data_stores,
                 schema=self._schema,
                 location=self.current_location,
                 language=self._language,
-                progress_store=self._progress_store,
-                supplementary_data_store=self._supplementary_data_store,
                 summary_type="GrandCalculatedSummary",
                 return_location=ReturnLocation(
                     return_to="grand-calculated-summary",
