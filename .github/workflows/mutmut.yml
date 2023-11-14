@@ -28,7 +28,7 @@ jobs:
     needs: [python-dependencies]
     strategy:
       matrix:
-        mutation-module-under-test: [ questionnaire ]
+        mutation-module-under-test: [ authentication, forms, publisher, questionnaire, routes ]
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
