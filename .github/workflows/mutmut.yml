@@ -38,14 +38,30 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pipenv'
+      - name: Install apt dependencies
+        run: |
+            sudo apt-get install libsnappy-dev libgconf-2-4 jq
+
+            # Install wkthtmltopdf with patched Qt
+            sudo apt-get install -y xfonts-base xfonts-75dpi
+            wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.bionic_amd64.deb
+            sudo dpkg -i wkhtmltox_0.12.6-1.bionic_amd64.deb
+      - name: Write app version
+        run: printf "echo "local" > .application-version
       - name: Install pipenv
         run: pip install pipenv==2023.8.22
       - name: Install virtual environment
         run: pipenv install --dev
+      - name: Load templates
+        run: make load-design-system-templates
+      - name: Compile translations
+        run: make translate
+      - name: Link env vars
+        run: ln -sf .development.env .env
       - name: Docker compose for int testing
         run: docker-compose --version && RUNNER_ENV_FILE=.functional-tests.env docker-compose up --build -d
       - name: Run mutmut
         run: |
-            pipenv run mutmut run --paths-to-mutate "app/${{ matrix.module }}/" --runner "py.test -n auto tests/app/${{ matrix.module }}/"
+            pipenv run mutmut run --paths-to-mutate "app/${{ matrix.module }}/" --runner "py.test -n auto tests/app/${{ matrix.module }}/" --use-coverage
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker-compose kill
