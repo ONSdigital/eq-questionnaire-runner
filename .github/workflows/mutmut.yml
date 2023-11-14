@@ -63,7 +63,8 @@ jobs:
             pipenv run mutmut run \
                 --paths-to-mutate "app/${{ matrix.mutation-module-under-test }}/" \
                 --runner "py.test -n auto" \
-                --no-progress
+                --no-progress \
+                --CI
       - name: Save HTML output
         run: |
             pipenv run mutmut html
