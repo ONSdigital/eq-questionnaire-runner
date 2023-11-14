@@ -47,7 +47,7 @@ jobs:
             wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.bionic_amd64.deb
             sudo dpkg -i wkhtmltox_0.12.6-1.bionic_amd64.deb
       - name: Write app version
-        run: printf "echo "local" > .application-version
+        run: printf "local" > .application-version
       - name: Install pipenv
         run: pip install pipenv==2023.8.22
       - name: Install virtual environment
