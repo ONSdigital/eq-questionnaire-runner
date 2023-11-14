@@ -1,17 +1,12 @@
-from typing import Any, Mapping, MutableMapping, Optional
+from typing import Any, Mapping, Optional
 
 from flask import url_for
 from markupsafe import Markup, escape
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import (
-    AnswerStore,
-    ListStore,
-    ProgressStore,
-    SupplementaryDataStore,
-)
+from app.data_models import AnswerStore
 from app.data_models.answer import AnswerValueEscapedTypes, escape_answer_value
-from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.data_stores import DataStores
 from app.forms.field_handlers.select_handlers import DynamicAnswerOptions
 from app.questionnaire import QuestionnaireSchema, QuestionSchemaType
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
@@ -32,51 +27,52 @@ class Question:
         self,
         question_schema: QuestionSchemaType,
         *,
-        answer_store: AnswerStore,
-        list_store: ListStore,
-        progress_store: ProgressStore,
-        supplementary_data_store: SupplementaryDataStore,
+        data_stores: DataStores,
         schema: QuestionnaireSchema,
-        rule_evaluator: RuleEvaluator,
-        value_source_resolver: ValueSourceResolver,
         location: LocationType,
         block_id: str,
         return_location: ReturnLocation,
-        metadata: MetadataProxy | None,
-        response_metadata: MutableMapping,
         language: str,
     ) -> None:
         self.list_item_id = location.list_item_id if location else None
         self.id = question_schema["id"]
         self.type = question_schema["type"]
         self.schema = schema
+        self.data_stores = data_stores
         self.answer_schemas = iter(question_schema.get("answers", []))
-        self.answer_store = answer_store
-        self.list_store = list_store
-        self.progress_store = progress_store
-        self.supplementary_data_store = supplementary_data_store
+        self.location = location
         self.summary = question_schema.get("summary")
         self.title = (
             question_schema.get("title") or question_schema["answers"][0]["label"]
         )
         self.number = question_schema.get("number", None)
 
-        self.rule_evaluator = rule_evaluator
-        self.value_source_resolver = value_source_resolver
+        self._rule_evaluator = RuleEvaluator(
+            schema=self.schema,
+            data_stores=data_stores,
+            location=self.location,
+        )
+
+        self._value_source_resolver = ValueSourceResolver(
+            data_stores=data_stores,
+            schema=self.schema,
+            location=self.location,
+            list_item_id=self.list_item_id,
+            use_default_answer=True,
+        )
+
         # no need to call the method if no list item id
         self._is_in_repeating_section = bool(
             self.list_item_id and self.schema.is_block_in_repeating_section(block_id)
         )
 
         self.answers = self._build_answers(
-            answer_store=answer_store,
+            answer_store=self.data_stores.answer_store,
             question_schema=question_schema,
             block_id=block_id,
             list_name=location.list_name if location else None,
-            return_location=return_location,
-            metadata=metadata,
-            response_metadata=response_metadata,
             language=language,
+            return_location=return_location,
         )
 
     def get_answer(
@@ -96,8 +92,6 @@ class Question:
         block_id: str,
         list_name: str | None,
         return_location: ReturnLocation,
-        metadata: MetadataProxy | None,
-        response_metadata: MutableMapping,
         language: str,
     ) -> list[dict[str, Any]]:
         if self.summary:
@@ -128,8 +122,6 @@ class Question:
         for answer_schema in self._get_resolved_answers(
             question_schema=question_schema,
             language=language,
-            metadata=metadata,
-            response_metadata=response_metadata,
         ):
             list_item_id = answer_schema.get("list_item_id")
             answer_id = answer_schema.get("original_answer_id") or answer_schema["id"]
@@ -223,8 +215,8 @@ class Question:
 
         dynamic_options = DynamicAnswerOptions(
             dynamic_options_schema=dynamic_options_schema,
-            rule_evaluator=self.rule_evaluator,
-            value_source_resolver=self.value_source_resolver,
+            rule_evaluator=self._rule_evaluator,
+            value_source_resolver=self._value_source_resolver,
         )
 
         return dynamic_options.evaluate()
@@ -294,21 +286,12 @@ class Question:
         *,
         question_schema: QuestionSchemaType,
         language: str,
-        metadata: MetadataProxy | None = None,
-        response_metadata: MutableMapping,
     ) -> Any:
         resolved_question = ImmutableDict({"answers": self.answer_schemas})
 
         if "dynamic_answers" in question_schema:
             placeholder_renderer = PlaceholderRenderer(
-                answer_store=self.answer_store,
-                list_store=self.list_store,
-                progress_store=self.progress_store,
-                schema=self.schema,
-                language=language,
-                metadata=metadata,
-                response_metadata=response_metadata,
-                supplementary_data_store=self.supplementary_data_store,
+                data_stores=self.data_stores, language=language, schema=self.schema
             )
 
             resolved_question = ImmutableDict(

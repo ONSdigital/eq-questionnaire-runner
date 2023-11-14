@@ -1,17 +1,13 @@
-from typing import Mapping, Optional, Union
+from typing import Optional, Union
 
 import pytest
 from mock import MagicMock, Mock
 
 from app.authentication.auth_payload_versions import AuthPayloadVersion
-from app.data_models import (
-    AnswerStore,
-    ListStore,
-    ProgressStore,
-    SupplementaryDataStore,
-)
+from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.answer import Answer, AnswerDict
-from app.data_models.metadata_proxy import MetadataProxy, NoMetadataException
+from app.data_models.data_stores import DataStores
+from app.data_models.metadata_proxy import NoMetadataException
 from app.data_models.supplementary_data_store import InvalidSupplementaryDataSelector
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException
@@ -63,10 +59,7 @@ def get_calculation_block(
 
 def get_value_source_resolver(
     schema: QuestionnaireSchema = None,
-    answer_store: AnswerStore = AnswerStore(),
-    list_store: ListStore = ListStore(),
-    metadata: MetadataProxy = None,
-    response_metadata: Mapping = None,
+    data_stores: DataStores = None,
     location: Union[Location, RelationshipLocation] = Location(
         section_id="test-section", block_id="test-block"
     ),
@@ -74,9 +67,8 @@ def get_value_source_resolver(
     routing_path_block_ids: Optional[list] = None,
     use_default_answer=False,
     escape_answer_values=False,
-    progress_store: ProgressStore | None = None,
-    supplementary_data_store: SupplementaryDataStore | None = None,
 ):
+    data_stores = data_stores or DataStores()
     if not schema:
         schema = get_mock_schema()
         schema.is_repeating_answer = Mock(return_value=bool(list_item_id))
@@ -87,24 +79,21 @@ def get_value_source_resolver(
         schema.get_default_answer = Mock(return_value=None)
 
     return ValueSourceResolver(
-        answer_store=answer_store,
-        list_store=list_store,
-        metadata=metadata,
-        response_metadata=response_metadata,
+        data_stores=data_stores,
         schema=schema,
         location=location,
         list_item_id=list_item_id,
         routing_path_block_ids=routing_path_block_ids,
         use_default_answer=use_default_answer,
         escape_answer_values=escape_answer_values,
-        progress_store=progress_store,
-        supplementary_data_store=supplementary_data_store,
     )
 
 
 def test_answer_source():
     value_source_resolver = get_value_source_resolver(
-        answer_store=AnswerStore([{"answer_id": "some-answer", "value": "Yes"}]),
+        data_stores=DataStores(
+            answer_store=AnswerStore([{"answer_id": "some-answer", "value": "Yes"}])
+        ),
     )
 
     assert (
@@ -117,14 +106,16 @@ def test_answer_source():
 
 def test_answer_source_with_dict_answer_selector():
     value_source_resolver = get_value_source_resolver(
-        answer_store=AnswerStore(
-            [
-                {
-                    "answer_id": "some-answer",
-                    "value": {"years": 1, "months": 10},
-                }
-            ]
-        ),
+        data_stores=DataStores(
+            answer_store=AnswerStore(
+                [
+                    {
+                        "answer_id": "some-answer",
+                        "value": {"years": 1, "months": 10},
+                    }
+                ]
+            ),
+        )
     )
 
     assert (
@@ -141,8 +132,10 @@ def test_answer_source_with_dict_answer_selector():
 
 def test_answer_source_with_list_item_id_no_list_item_selector():
     value_source_resolver = get_value_source_resolver(
-        answer_store=AnswerStore(
-            [{"answer_id": "some-answer", "list_item_id": "item-1", "value": "Yes"}]
+        data_stores=DataStores(
+            answer_store=AnswerStore(
+                [{"answer_id": "some-answer", "list_item_id": "item-1", "value": "Yes"}]
+            )
         ),
         list_item_id="item-1",
     )
@@ -161,7 +154,9 @@ def test_list_item_id_ignored_if_answer_not_in_list_collector_or_repeat():
 
     value_source_resolver = get_value_source_resolver(
         schema=schema,
-        answer_store=AnswerStore([{"answer_id": "some-answer", "value": "Yes"}]),
+        data_stores=DataStores(
+            answer_store=AnswerStore([{"answer_id": "some-answer", "value": "Yes"}])
+        ),
         list_item_id="item-1",
     )
 
@@ -175,14 +170,16 @@ def test_list_item_id_ignored_if_answer_not_in_list_collector_or_repeat():
 
 def test_answer_source_with_list_item_selector_location():
     value_source_resolver = get_value_source_resolver(
-        answer_store=AnswerStore(
-            [
-                {
-                    "answer_id": "some-answer",
-                    "list_item_id": "item-1",
-                    "value": "Yes",
-                }
-            ]
+        data_stores=DataStores(
+            answer_store=AnswerStore(
+                [
+                    {
+                        "answer_id": "some-answer",
+                        "list_item_id": "item-1",
+                        "value": "Yes",
+                    }
+                ]
+            )
         ),
         location=Location(
             section_id="some-section", block_id="some-block", list_item_id="item-1"
@@ -206,14 +203,16 @@ def test_answer_source_with_list_item_selector_location():
 
 def test_answer_source_with_list_item_selector_location_none():
     value_source_resolver = get_value_source_resolver(
-        answer_store=AnswerStore(
-            [
-                {
-                    "answer_id": "some-answer",
-                    "list_item_id": "item-1",
-                    "value": "Yes",
-                }
-            ]
+        data_stores=DataStores(
+            answer_store=AnswerStore(
+                [
+                    {
+                        "answer_id": "some-answer",
+                        "list_item_id": "item-1",
+                        "value": "Yes",
+                    }
+                ]
+            )
         ),
         location=None,
     )
@@ -229,16 +228,18 @@ def test_answer_source_with_list_item_selector_location_none():
 
 def test_answer_source_with_list_item_selector_list_first_item():
     value_source_resolver = get_value_source_resolver(
-        answer_store=AnswerStore(
-            [
-                {
-                    "answer_id": "some-answer",
-                    "list_item_id": "item-1",
-                    "value": "Yes",
-                }
-            ]
+        data_stores=DataStores(
+            answer_store=AnswerStore(
+                [
+                    {
+                        "answer_id": "some-answer",
+                        "list_item_id": "item-1",
+                        "value": "Yes",
+                    }
+                ]
+            ),
+            list_store=ListStore([{"name": "some-list", "items": get_list_items(3)}]),
         ),
-        list_store=ListStore([{"name": "some-list", "items": get_list_items(3)}]),
     )
 
     assert (
@@ -265,8 +266,10 @@ def test_answer_source_outside_of_repeating_section():
 
     value_source_resolver = get_value_source_resolver(
         schema=schema,
-        answer_store=answer_store,
-        list_store=ListStore([{"name": "some-list", "items": get_list_items(3)}]),
+        data_stores=DataStores(
+            answer_store=answer_store,
+            list_store=ListStore([{"name": "some-list", "items": get_list_items(3)}]),
+        ),
         location=Location(
             section_id="some-section", block_id="some-block", list_item_id="item-1"
         ),
@@ -299,8 +302,10 @@ def test_answer_source_not_on_path_non_repeating_section(is_answer_on_path):
 
     value_source_resolver = get_value_source_resolver(
         schema=schema,
-        answer_store=AnswerStore([answer.to_dict()]),
-        list_store=ListStore([{"name": "some-list", "items": get_list_items(3)}]),
+        data_stores=DataStores(
+            answer_store=AnswerStore([answer.to_dict()]),
+            list_store=ListStore([{"name": "some-list", "items": get_list_items(3)}]),
+        ),
         location=location,
         list_item_id=location.list_item_id,
         routing_path_block_ids=["block-on-path"],
@@ -335,8 +340,10 @@ def test_answer_source_not_on_path_repeating_section(is_answer_on_path):
 
     value_source_resolver = get_value_source_resolver(
         schema=schema,
-        answer_store=AnswerStore([answer.to_dict()]),
-        list_store=ListStore([{"name": "some-list", "items": get_list_items(3)}]),
+        data_stores=DataStores(
+            answer_store=AnswerStore([answer.to_dict()]),
+            list_store=ListStore([{"name": "some-list", "items": get_list_items(3)}]),
+        ),
         location=location,
         list_item_id=location.list_item_id,
         routing_path_block_ids=["block-on-path"],
@@ -394,17 +401,19 @@ def test_answer_source_dynamic_answer(
     )
     list_item_ids = get_list_items(len(answer_values))
     value_source_resolver = get_value_source_resolver(
-        answer_store=AnswerStore(
-            [
-                AnswerDict(
-                    answer_id="percentage-of-shopping",
-                    value=value,
-                    list_item_id=list_item_id,
-                )
-                for list_item_id, value in zip(list_item_ids, answer_values)
-            ]
+        data_stores=DataStores(
+            answer_store=AnswerStore(
+                [
+                    AnswerDict(
+                        answer_id="percentage-of-shopping",
+                        value=value,
+                        list_item_id=list_item_id,
+                    )
+                    for list_item_id, value in zip(list_item_ids, answer_values)
+                ]
+            ),
+            list_store=ListStore([{"name": "supermarkets", "items": list_item_ids}]),
         ),
-        list_store=ListStore([{"name": "supermarkets", "items": list_item_ids}]),
         schema=schema,
         escape_answer_values=escape_answer_values,
     )
@@ -433,17 +442,19 @@ def test_answer_source_repeating_block_answers(
     )
     list_item_ids = get_list_items(len(answer_values))
     value_source_resolver = get_value_source_resolver(
-        answer_store=AnswerStore(
-            [
-                AnswerDict(
-                    answer_id="transport-cost",
-                    value=value,
-                    list_item_id=list_item_id,
-                )
-                for list_item_id, value in zip(list_item_ids, answer_values)
-            ]
+        data_stores=DataStores(
+            answer_store=AnswerStore(
+                [
+                    AnswerDict(
+                        answer_id="transport-cost",
+                        value=value,
+                        list_item_id=list_item_id,
+                    )
+                    for list_item_id, value in zip(list_item_ids, answer_values)
+                ]
+            ),
+            list_store=ListStore([{"name": "transport", "items": list_item_ids}]),
         ),
-        list_store=ListStore([{"name": "transport", "items": list_item_ids}]),
         schema=schema,
     )
     assert (
@@ -460,7 +471,7 @@ def test_answer_source_repeating_block_answers(
 )
 def test_metadata_source(metadata_identifier, expected_result):
     value_source_resolver = get_value_source_resolver(
-        metadata=get_metadata({"region_code": "GB-ENG"})
+        data_stores=DataStores(metadata=get_metadata({"region_code": "GB-ENG"}))
     )
 
     source = {"source": "metadata", "identifier": metadata_identifier}
@@ -468,7 +479,7 @@ def test_metadata_source(metadata_identifier, expected_result):
 
 
 def test_resolve_metadata_source_with_no_metadata_raises_exception():
-    value_source_resolver = get_value_source_resolver(metadata=None)
+    value_source_resolver = get_value_source_resolver()
 
     source = {"source": "metadata", "identifier": "identifier"}
 
@@ -495,7 +506,9 @@ def test_metadata_source_v2_metadata_structure(metadata_identifier, expected_res
         }
     )
 
-    value_source_resolver = get_value_source_resolver(metadata=metadata)
+    value_source_resolver = get_value_source_resolver(
+        data_stores=DataStores(metadata=metadata)
+    )
 
     source = {"source": "metadata", "identifier": metadata_identifier}
     assert value_source_resolver.resolve(source) == expected_result
@@ -507,8 +520,10 @@ def test_metadata_source_v2_metadata_structure(metadata_identifier, expected_res
 )
 def test_list_source(list_count):
     value_source_resolver = get_value_source_resolver(
-        list_store=ListStore(
-            [{"name": "some-list", "items": get_list_items(list_count)}]
+        data_stores=DataStores(
+            list_store=ListStore(
+                [{"name": "some-list", "items": get_list_items(list_count)}]
+            )
         ),
     )
 
@@ -522,7 +537,9 @@ def test_list_source(list_count):
 
 def test_list_source_with_id_selector_first():
     value_source_resolver = get_value_source_resolver(
-        list_store=ListStore([{"name": "some-list", "items": get_list_items(3)}]),
+        data_stores=DataStores(
+            list_store=ListStore([{"name": "some-list", "items": get_list_items(3)}])
+        ),
     )
 
     assert (
@@ -535,15 +552,17 @@ def test_list_source_with_id_selector_first():
 
 def test_list_source_with_id_selector_same_name_items():
     value_source_resolver = get_value_source_resolver(
-        list_store=ListStore(
-            [
-                {
-                    "name": "some-list",
-                    "items": get_list_items(5),
-                    "same_name_items": get_list_items(3),
-                }
-            ]
-        ),
+        data_stores=DataStores(
+            list_store=ListStore(
+                [
+                    {
+                        "name": "some-list",
+                        "items": get_list_items(5),
+                        "same_name_items": get_list_items(3),
+                    }
+                ]
+            ),
+        )
     )
 
     assert value_source_resolver.resolve(
@@ -561,15 +580,17 @@ def test_list_source_with_id_selector_same_name_items():
 )
 def test_list_source_id_selector_primary_person(primary_person_list_item_id):
     value_source_resolver = get_value_source_resolver(
-        list_store=ListStore(
-            [
-                {
-                    "name": "some-list",
-                    "primary_person": primary_person_list_item_id,
-                    "items": get_list_items(3),
-                }
-            ]
-        ),
+        data_stores=DataStores(
+            list_store=ListStore(
+                [
+                    {
+                        "name": "some-list",
+                        "primary_person": primary_person_list_item_id,
+                        "items": get_list_items(3),
+                    }
+                ]
+            ),
+        )
     )
 
     assert (
@@ -596,7 +617,9 @@ def test_location_source():
 
 def test_response_metadata_source():
     value_source_resolver = get_value_source_resolver(
-        response_metadata={"started_at": "2021-10-11T09:40:11.220038+00:00"}
+        data_stores=DataStores(
+            response_metadata={"started_at": "2021-10-11T09:40:11.220038+00:00"}
+        )
     )
     assert (
         value_source_resolver.resolve(
@@ -624,15 +647,17 @@ def test_calculated_summary_value_source(mocker, list_item_id):
     )
 
     value_source_resolver = get_value_source_resolver(
-        answer_store=AnswerStore(
-            [
-                AnswerDict(
-                    answer_id="number-answer-1", value=10, list_item_id=list_item_id
-                ),
-                AnswerDict(
-                    answer_id="number-answer-2", value=5, list_item_id=list_item_id
-                ),
-            ]
+        data_stores=DataStores(
+            answer_store=AnswerStore(
+                [
+                    AnswerDict(
+                        answer_id="number-answer-1", value=10, list_item_id=list_item_id
+                    ),
+                    AnswerDict(
+                        answer_id="number-answer-2", value=5, list_item_id=list_item_id
+                    ),
+                ]
+            )
         ),
         schema=schema,
         list_item_id=list_item_id,
@@ -673,17 +698,19 @@ def test_new_calculated_summary_value_source(mocker, list_item_id):
     )
 
     value_source_resolver = get_value_source_resolver(
-        answer_store=AnswerStore(
-            [
-                AnswerDict(
-                    answer_id="number-answer-1",
-                    value=10,
-                    list_item_id=location.list_item_id,
-                ),
-                AnswerDict(
-                    answer_id="number-answer-2", value=5, list_item_id=list_item_id
-                ),
-            ]
+        data_stores=DataStores(
+            answer_store=AnswerStore(
+                [
+                    AnswerDict(
+                        answer_id="number-answer-1",
+                        value=10,
+                        list_item_id=location.list_item_id,
+                    ),
+                    AnswerDict(
+                        answer_id="number-answer-2", value=5, list_item_id=list_item_id
+                    ),
+                ]
+            )
         ),
         schema=schema,
         list_item_id=list_item_id,
@@ -730,18 +757,20 @@ def test_new_calculated_summary_nested_value_source(mocker, list_item_id):
     )
 
     value_source_resolver = get_value_source_resolver(
-        answer_store=AnswerStore(
-            [
-                AnswerDict(
-                    answer_id="number-answer-1", value=10, list_item_id=list_item_id
-                ),
-                AnswerDict(
-                    answer_id="number-answer-2", value=5, list_item_id=list_item_id
-                ),
-                AnswerDict(
-                    answer_id="number-answer-3", value=5, list_item_id=list_item_id
-                ),
-            ]
+        data_stores=DataStores(
+            answer_store=AnswerStore(
+                [
+                    AnswerDict(
+                        answer_id="number-answer-1", value=10, list_item_id=list_item_id
+                    ),
+                    AnswerDict(
+                        answer_id="number-answer-2", value=5, list_item_id=list_item_id
+                    ),
+                    AnswerDict(
+                        answer_id="number-answer-3", value=5, list_item_id=list_item_id
+                    ),
+                ]
+            )
         ),
         schema=schema,
         list_item_id=list_item_id,
@@ -817,21 +846,23 @@ def test_grand_calculated_summary_value_source(
     )
 
     value_source_resolver = get_value_source_resolver(
-        answer_store=AnswerStore(
-            [
-                AnswerDict(
-                    answer_id="answer-1", value=10, list_item_id=cs_list_item_id_1
-                ),
-                AnswerDict(
-                    answer_id="answer-2", value=5, list_item_id=cs_list_item_id_1
-                ),
-                AnswerDict(
-                    answer_id="answer-3", value=20, list_item_id=cs_list_item_id_2
-                ),
-                AnswerDict(
-                    answer_id="answer-4", value=30, list_item_id=cs_list_item_id_2
-                ),
-            ]
+        data_stores=DataStores(
+            answer_store=AnswerStore(
+                [
+                    AnswerDict(
+                        answer_id="answer-1", value=10, list_item_id=cs_list_item_id_1
+                    ),
+                    AnswerDict(
+                        answer_id="answer-2", value=5, list_item_id=cs_list_item_id_1
+                    ),
+                    AnswerDict(
+                        answer_id="answer-3", value=20, list_item_id=cs_list_item_id_2
+                    ),
+                    AnswerDict(
+                        answer_id="answer-4", value=30, list_item_id=cs_list_item_id_2
+                    ),
+                ]
+            )
         ),
         schema=schema,
         list_item_id=gcs_list_item_id,
@@ -856,13 +887,15 @@ def test_grand_calculated_summary_value_source(
 )
 def test_answer_value_can_be_escaped(answer_value, escaped_value):
     value_source_resolver = get_value_source_resolver(
-        answer_store=AnswerStore(
-            [
-                {
-                    "answer_id": "some-answer",
-                    "value": answer_value,
-                }
-            ]
+        data_stores=DataStores(
+            answer_store=AnswerStore(
+                [
+                    {
+                        "answer_id": "some-answer",
+                        "value": answer_value,
+                    }
+                ]
+            )
         ),
         escape_answer_values=True,
     )
@@ -876,13 +909,15 @@ def test_answer_value_can_be_escaped(answer_value, escaped_value):
 
 def test_answer_value_with_selector_can_be_escaped():
     value_source_resolver = get_value_source_resolver(
-        answer_store=AnswerStore(
-            [
-                {
-                    "answer_id": "some-answer",
-                    "value": {"key_1": HTML_CONTENT, "key_2": 1},
-                }
-            ]
+        data_stores=DataStores(
+            answer_store=AnswerStore(
+                [
+                    {
+                        "answer_id": "some-answer",
+                        "value": {"key_1": HTML_CONTENT, "key_2": 1},
+                    }
+                ]
+            )
         ),
         escape_answer_values=True,
     )
@@ -896,7 +931,7 @@ def test_answer_value_with_selector_can_be_escaped():
 
 def test_progress_values_source_throws_if_no_location_given():
     value_source_resolver = get_value_source_resolver(
-        progress_store=ProgressStore(), location=None
+        data_stores=DataStores(progress_store=ProgressStore()), location=None
     )
     with pytest.raises(ValueError):
         value_source_resolver.resolve(
@@ -952,10 +987,12 @@ def test_supplementary_data_value_source_non_list_items(
         else Location(section_id="section", block_id="block-id")
     )
     value_source_resolver = get_value_source_resolver(
-        supplementary_data_store=supplementary_data_store_with_data,
+        data_stores=DataStores(
+            supplementary_data_store=supplementary_data_store_with_data,
+            list_store=list_store,
+        ),
         location=location,
         list_item_id=location.list_item_id,
-        list_store=list_store,
     )
     assert (
         value_source_resolver.resolve(
@@ -1027,10 +1064,12 @@ def test_supplementary_data_value_source_list_items(
         list_item_id=list_item_id,
     )
     value_source_resolver = get_value_source_resolver(
-        supplementary_data_store=supplementary_data_store_with_data,
+        data_stores=DataStores(
+            supplementary_data_store=supplementary_data_store_with_data,
+            list_store=list_store,
+        ),
         location=location,
         list_item_id=list_item_id,
-        list_store=list_store,
     )
     assert (
         value_source_resolver.resolve(
@@ -1051,7 +1090,9 @@ def test_supplementary_data_invalid_selector_raises_exception(
         block_id="block-id",
     )
     value_source_resolver = get_value_source_resolver(
-        supplementary_data_store=supplementary_data_store_with_data,
+        data_stores=DataStores(
+            supplementary_data_store=supplementary_data_store_with_data
+        ),
         location=location,
     )
     with pytest.raises(InvalidSupplementaryDataSelector) as e:
@@ -1075,9 +1116,11 @@ def test_supplementary_data_list_item_outside_repeating_section_raises_exception
         block_id="block-id",
     )
     value_source_resolver = get_value_source_resolver(
-        supplementary_data_store=supplementary_data_store_with_data,
+        data_stores=DataStores(
+            supplementary_data_store=supplementary_data_store_with_data,
+            list_store=list_store,
+        ),
         location=location,
-        list_store=list_store,
     )
     with pytest.raises(InvalidSupplementaryDataSelector) as e:
         value_source_resolver.resolve(

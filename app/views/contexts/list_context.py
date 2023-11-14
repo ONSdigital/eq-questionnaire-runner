@@ -60,14 +60,14 @@ class ListContext(Context):
         primary_person_edit_block_id: str | None,
         for_list_item_ids: Sequence[str] | None,
     ) -> Generator[dict, None, None]:
-        list_item_ids = self._list_store[for_list]
+        list_item_ids = self._data_stores.list_store[for_list]
         if for_list_item_ids:
             list_item_ids = [
                 list_item_id  # type: ignore
                 for list_item_id in list_item_ids
                 if list_item_id in for_list_item_ids
             ]
-        primary_person = self._list_store[for_list].primary_person
+        primary_person = self._data_stores.list_store[for_list].primary_person
 
         for list_item_id in list_item_ids:
             partial_url_for = partial(
@@ -86,7 +86,7 @@ class ListContext(Context):
                 ),
                 "primary_person": is_primary,
                 "list_item_id": list_item_id,
-                "is_complete": self._progress_store.is_section_complete(
+                "is_complete": self._data_stores.progress_store.is_section_complete(
                     SectionKey(section_id, list_item_id)
                 ),
                 "repeating_blocks": has_repeating_blocks,

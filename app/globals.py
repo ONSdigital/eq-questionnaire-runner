@@ -109,7 +109,7 @@ def get_metadata(user: User) -> MetadataProxy | None:
         return None
 
     questionnaire_store = get_questionnaire_store(user.user_id, user.user_ik)
-    return questionnaire_store.metadata
+    return questionnaire_store.data_stores.metadata
 
 
 def get_view_submitted_response_expiration_time(submitted_at: datetime) -> datetime:

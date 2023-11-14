@@ -1,15 +1,9 @@
 from functools import cached_property
-from typing import Callable, Iterable, Mapping, MutableMapping, Tuple
+from typing import Callable, Iterable, Mapping, Tuple
 
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import (
-    AnswerStore,
-    ListStore,
-    ProgressStore,
-    SupplementaryDataStore,
-)
-from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.data_stores import DataStores
 from app.jinja_filters import format_number, format_percentage, format_unit
 from app.questionnaire.questionnaire_schema import (
     QuestionnaireSchema,
@@ -34,26 +28,17 @@ class CalculatedSummaryContext(Context):
         self,
         language: str,
         schema: QuestionnaireSchema,
-        answer_store: AnswerStore,
-        list_store: ListStore,
-        progress_store: ProgressStore,
-        metadata: MetadataProxy | None,
-        response_metadata: MutableMapping,
+        data_stores: DataStores,
         routing_path: RoutingPath,
         current_location: LocationType,
-        supplementary_data_store: SupplementaryDataStore,
         return_location: ReturnLocation,
     ) -> None:
         super().__init__(
             language,
             schema,
-            answer_store,
-            list_store,
-            progress_store,
-            metadata,
-            response_metadata,
-            supplementary_data_store,
+            data_stores,
         )
+        self._data_stores = data_stores
         self.routing_path_block_ids = routing_path.block_ids
         self.current_location = current_location
         self.return_location = return_location
@@ -88,15 +73,10 @@ class CalculatedSummaryContext(Context):
             Group(
                 group_schema=group,
                 routing_path_block_ids=routing_path_block_ids,
-                answer_store=self._answer_store,
-                list_store=self._list_store,
-                metadata=self._metadata,
-                response_metadata=self._response_metadata,
                 schema=self._schema,
+                data_stores=self._data_stores,
                 location=self.current_location,
                 language=self._language,
-                progress_store=self._progress_store,
-                supplementary_data_store=self._supplementary_data_store,
                 summary_type="CalculatedSummary",
                 return_location=ReturnLocation(
                     return_to=return_to,
@@ -205,13 +185,8 @@ class CalculatedSummaryContext(Context):
         block_to_transform: ImmutableDict = transform_variants(
             block,
             self._schema,
-            self._metadata,
-            self._response_metadata,
-            self._answer_store,
-            self._list_store,
+            self._data_stores,
             self.current_location,
-            self._progress_store,
-            self._supplementary_data_store,
         )
         transformed_block: dict = QuestionnaireSchema.get_mutable_deepcopy(
             block_to_transform
@@ -252,15 +227,10 @@ class CalculatedSummaryContext(Context):
         For a calculation in the new style and the list of involved block ids (possibly across sections) evaluate the total
         """
         evaluate_calculated_summary = RuleEvaluator(
-            self._schema,
-            self._answer_store,
-            self._list_store,
-            self._metadata,
-            self._response_metadata,
+            data_stores=self._data_stores,
+            schema=self._schema,
             routing_path_block_ids=routing_path_block_ids,
             location=self.current_location,
-            progress_store=self._progress_store,
-            supplementary_data_store=self._supplementary_data_store,
         )
         # Type ignore: in the case of a calculated summation it will always be a numeric type
         calculated_total: NumericType = evaluate_calculated_summary.evaluate(calculation)  # type: ignore
@@ -290,13 +260,8 @@ class CalculatedSummaryContext(Context):
                 question = choose_question_to_display(
                     block,
                     self._schema,
-                    self._metadata,
-                    self._response_metadata,
-                    self._answer_store,
-                    self._list_store,
+                    self._data_stores,
                     current_location=self.current_location,
-                    progress_store=self._progress_store,
-                    supplementary_data_store=self._supplementary_data_store,
                 )
                 for answer in question["answers"]:
                     if not answer_format["type"]:

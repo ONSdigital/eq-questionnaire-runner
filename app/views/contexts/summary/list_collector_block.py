@@ -17,7 +17,7 @@ class ListCollectorBlock(ListCollectorBaseBlock):
             item_label,
             item_anchor,
         ) = (None, None, None, None, None, None)
-        list_model = self._list_store[summary["for_list"]]
+        list_model = self._data_stores.list_store[summary["for_list"]]
 
         add_link = self._add_link(summary, list_collector_block)
 

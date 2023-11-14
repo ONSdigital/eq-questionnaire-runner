@@ -34,13 +34,8 @@ class SubmitQuestionnaireContext(Context):
             summary_context = SummaryContext(
                 language=self._language,
                 schema=self._schema,
-                answer_store=self._answer_store,
-                list_store=self._list_store,
-                progress_store=self._progress_store,
-                metadata=self._metadata,
-                response_metadata=self._response_metadata,
+                data_stores=self._data_stores,
                 view_submitted_response=False,
-                supplementary_data_store=self._supplementary_data_store,
             )
             context["summary"] = summary_context(
                 answers_are_editable=True, return_to="final-summary"

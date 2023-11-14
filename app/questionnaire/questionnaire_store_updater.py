@@ -32,9 +32,9 @@ class QuestionnaireStoreUpdater:
         self._current_question = current_question or {}
         self._schema = schema
         self._questionnaire_store = questionnaire_store
-        self._answer_store = self._questionnaire_store.answer_store
-        self._list_store = self._questionnaire_store.list_store
-        self._progress_store = self._questionnaire_store.progress_store
+        self._answer_store = self._questionnaire_store.data_stores.answer_store
+        self._list_store = self._questionnaire_store.data_stores.list_store
+        self._progress_store = self._questionnaire_store.data_stores.progress_store
         self._router = router
 
         self.dependent_block_id_by_section_key: Mapping[
@@ -206,10 +206,10 @@ class QuestionnaireStoreUpdater:
         same_name_items = set()
         people_names: dict[str, str] = {}
 
-        list_model = self._questionnaire_store.list_store[list_name]
+        list_model = self._list_store[list_name]
 
         for current_list_item_id in list_model:
-            answers = self._questionnaire_store.answer_store.get_answers_by_answer_id(
+            answers = self._answer_store.get_answers_by_answer_id(
                 answer_ids=same_name_answer_ids, list_item_id=current_list_item_id
             )
             current_names = [answer.value.casefold() for answer in answers if answer]  # type: ignore

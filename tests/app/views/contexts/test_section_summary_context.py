@@ -2,9 +2,8 @@ import pytest
 from mock import MagicMock
 
 from app.data_models.answer_store import Answer, AnswerStore
+from app.data_models.data_stores import DataStores
 from app.data_models.list_store import ListStore
-from app.data_models.progress_store import ProgressStore
-from app.data_models.supplementary_data_store import SupplementaryDataStore
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.questionnaire.routing_path import RoutingPath
@@ -17,23 +16,15 @@ from tests.app.views.contexts import assert_summary_context
 
 def test_build_summary_rendering_context(
     test_section_summary_schema,
-    answer_store,
-    list_store,
-    progress_store,
+    data_stores,
     mocker,
-    supplementary_data_store,
 ):
     section_summary_context = SectionSummaryContext(
         "en",
         test_section_summary_schema,
-        answer_store,
-        list_store,
-        progress_store,
-        metadata=get_metadata(),
-        response_metadata={},
+        data_stores,
         current_location=Location(section_id="property-details-section"),
         routing_path=mocker.MagicMock(),
-        supplementary_data_store=supplementary_data_store,
     )
 
     single_section_context = section_summary_context()
@@ -43,26 +34,18 @@ def test_build_summary_rendering_context(
 
 def test_build_view_context_for_section_summary(
     test_section_summary_schema,
-    answer_store,
-    list_store,
-    progress_store,
+    data_stores,
     mocker,
-    supplementary_data_store,
 ):
     summary_context = SectionSummaryContext(
         "en",
         test_section_summary_schema,
-        answer_store,
-        list_store,
-        progress_store,
-        metadata=None,
-        response_metadata={},
+        data_stores,
         current_location=Location(
             section_id="property-details-section",
             block_id="property-details-summary",
         ),
         routing_path=mocker.MagicMock(),
-        supplementary_data_store=supplementary_data_store,
     )
     context = summary_context()
 
@@ -114,10 +97,7 @@ def test_custom_section(
     expected_title,
     test_section_summary_schema,
     answer_store,
-    list_store,
-    progress_store,
     mocker,
-    supplementary_data_store,
 ):
     for answer in answers:
         answer_store.add_or_update(answer)
@@ -125,38 +105,31 @@ def test_custom_section(
     summary_context = SectionSummaryContext(
         "en",
         test_section_summary_schema,
-        answer_store,
-        list_store,
-        progress_store,
-        metadata=None,
-        response_metadata={},
+        data_stores=DataStores(answer_store=answer_store),
         current_location=location,
         routing_path=mocker.MagicMock(),
-        supplementary_data_store=supplementary_data_store,
     )
     context = summary_context()
     assert context["summary"][title_key] == expected_title
 
 
 @pytest.mark.usefixtures("app")
-def test_context_for_section_list_summary(
-    people_answer_store, progress_store, supplementary_data_store
-):
+def test_context_for_section_list_summary(people_answer_store):
     schema = load_schema_from_name("test_list_collector_list_summary")
 
     summary_context = SectionSummaryContext(
         language=DEFAULT_LANGUAGE_CODE,
         schema=schema,
-        answer_store=people_answer_store,
-        list_store=ListStore(
-            [
-                {"items": ["PlwgoG", "UHPLbX"], "name": "people"},
-                {"items": ["gTrlio"], "name": "visitors"},
-            ]
+        data_stores=DataStores(
+            answer_store=people_answer_store,
+            list_store=ListStore(
+                [
+                    {"items": ["PlwgoG", "UHPLbX"], "name": "people"},
+                    {"items": ["gTrlio"], "name": "visitors"},
+                ]
+            ),
+            metadata=get_metadata({"display_address": "70 Abingdon Road, Goathill"}),
         ),
-        progress_store=progress_store,
-        metadata=get_metadata({"display_address": "70 Abingdon Road, Goathill"}),
-        response_metadata={},
         current_location=Location(section_id="section"),
         routing_path=RoutingPath(
             block_ids=[
@@ -166,7 +139,6 @@ def test_context_for_section_list_summary(
             ],
             section_id="section",
         ),
-        supplementary_data_store=supplementary_data_store,
     )
 
     context = summary_context()
@@ -278,8 +250,6 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
     item_label,
     answer_1_label,
     answer_2_label,
-    progress_store,
-    supplementary_data_store,
     request,
 ):
     schema = load_schema_from_name(test_schema)
@@ -287,15 +257,14 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
     summary_context = SectionSummaryContext(
         language=DEFAULT_LANGUAGE_CODE,
         schema=schema,
-        answer_store=answer_store,
-        list_store=ListStore(
-            [
-                {"items": ["PlwgoG", "UHPLbX"], "name": "companies"},
-            ]
+        data_stores=DataStores(
+            answer_store=answer_store,
+            list_store=ListStore(
+                [
+                    {"items": ["PlwgoG", "UHPLbX"], "name": "companies"},
+                ]
+            ),
         ),
-        progress_store=progress_store,
-        metadata=None,
-        response_metadata={},
         current_location=Location(section_id="section-companies"),
         routing_path=RoutingPath(
             block_ids=[
@@ -303,7 +272,6 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
             ],
             section_id="section-companies",
         ),
-        supplementary_data_store=supplementary_data_store,
     )
     context = summary_context()
     expected = {
@@ -477,16 +445,15 @@ def test_context_for_driving_question_summary_empty_list():
     summary_context = SectionSummaryContext(
         DEFAULT_LANGUAGE_CODE,
         schema,
-        AnswerStore([{"answer_id": "anyone-usually-live-at-answer", "value": "No"}]),
-        ListStore(),
-        ProgressStore(),
-        metadata=None,
-        response_metadata={},
+        DataStores(
+            answer_store=AnswerStore(
+                [{"answer_id": "anyone-usually-live-at-answer", "value": "No"}]
+            )
+        ),
         current_location=Location(section_id="section"),
         routing_path=RoutingPath(
             block_ids=["anyone-usually-live-at"], section_id="section"
         ),
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     context = summary_context()
@@ -517,13 +484,10 @@ def test_context_for_driving_question_summary_empty_list():
 
 
 @pytest.mark.usefixtures("app")
-def test_context_for_driving_question_summary(progress_store):
+def test_context_for_driving_question_summary():
     schema = load_schema_from_name("test_list_collector_driving_question")
-
-    summary_context = SectionSummaryContext(
-        DEFAULT_LANGUAGE_CODE,
-        schema,
-        AnswerStore(
+    data_stores = DataStores(
+        answer_store=AnswerStore(
             [
                 {"answer_id": "anyone-usually-live-at-answer", "value": "Yes"},
                 {"answer_id": "first-name", "value": "Toni", "list_item_id": "PlwgoG"},
@@ -534,16 +498,18 @@ def test_context_for_driving_question_summary(progress_store):
                 },
             ]
         ),
-        ListStore([{"items": ["PlwgoG"], "name": "people"}]),
-        progress_store,
-        metadata=None,
-        response_metadata={},
+        list_store=ListStore([{"items": ["PlwgoG"], "name": "people"}]),
+    )
+
+    summary_context = SectionSummaryContext(
+        DEFAULT_LANGUAGE_CODE,
+        schema,
+        data_stores=data_stores,
         current_location=Location(section_id="section"),
         routing_path=RoutingPath(
             block_ids=["anyone-usually-live-at", "anyone-else-live-at"],
             section_id="section",
         ),
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     context = summary_context()
@@ -594,23 +560,21 @@ def test_titles_for_repeating_section_summary(people_answer_store):
     section_summary_context = SectionSummaryContext(
         DEFAULT_LANGUAGE_CODE,
         schema,
-        people_answer_store,
-        ListStore(
-            [
-                {"items": ["PlwgoG", "UHPLbX"], "name": "people"},
-                {"items": ["gTrlio"], "name": "visitors"},
-            ]
+        data_stores=DataStores(
+            list_store=ListStore(
+                [
+                    {"items": ["PlwgoG", "UHPLbX"], "name": "people"},
+                    {"items": ["gTrlio"], "name": "visitors"},
+                ]
+            ),
+            answer_store=people_answer_store,
         ),
-        ProgressStore(),
-        metadata=None,
-        response_metadata={},
         current_location=Location(
             section_id="personal-details-section",
             list_name="people",
             list_item_id="PlwgoG",
         ),
         routing_path=MagicMock(),
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     context = section_summary_context()
@@ -620,16 +584,15 @@ def test_titles_for_repeating_section_summary(people_answer_store):
     section_summary_context = SectionSummaryContext(
         DEFAULT_LANGUAGE_CODE,
         schema,
-        people_answer_store,
-        ListStore(
-            [
-                {"items": ["PlwgoG", "UHPLbX"], "name": "people"},
-                {"items": ["gTrlio"], "name": "visitors"},
-            ]
+        data_stores=DataStores(
+            answer_store=people_answer_store,
+            list_store=ListStore(
+                [
+                    {"items": ["PlwgoG", "UHPLbX"], "name": "people"},
+                    {"items": ["gTrlio"], "name": "visitors"},
+                ]
+            ),
         ),
-        ProgressStore(),
-        metadata=None,
-        response_metadata={},
         current_location=Location(
             block_id="personal-summary",
             section_id="personal-details-section",
@@ -637,7 +600,6 @@ def test_titles_for_repeating_section_summary(people_answer_store):
             list_item_id="UHPLbX",
         ),
         routing_path=MagicMock(),
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     context = section_summary_context()
@@ -647,17 +609,25 @@ def test_titles_for_repeating_section_summary(people_answer_store):
 @pytest.mark.usefixtures("app")
 def test_primary_only_links_for_section_summary(people_answer_store):
     schema = load_schema_from_name("test_list_collector_list_summary")
+    data_stores = DataStores(
+        answer_store=people_answer_store,
+        list_store=ListStore(
+            [
+                {
+                    "items": ["PlwgoG"],
+                    "name": "people",
+                    "primary_person": "PlwgoG",
+                }
+            ]
+        ),
+        metadata=get_metadata({"display_address": "70 Abingdon Road, Goathill"}),
+        response_metadata={},
+    )
 
     summary_context = SectionSummaryContext(
         language=DEFAULT_LANGUAGE_CODE,
         schema=schema,
-        answer_store=people_answer_store,
-        list_store=ListStore(
-            [{"items": ["PlwgoG"], "name": "people", "primary_person": "PlwgoG"}]
-        ),
-        progress_store=ProgressStore(),
-        metadata=get_metadata({"display_address": "70 Abingdon Road, Goathill"}),
-        response_metadata={},
+        data_stores=data_stores,
         current_location=Location(section_id="section"),
         routing_path=RoutingPath(
             block_ids=[
@@ -667,7 +637,6 @@ def test_primary_only_links_for_section_summary(people_answer_store):
             ],
             section_id="section",
         ),
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     context = summary_context()
@@ -681,9 +650,7 @@ def test_primary_only_links_for_section_summary(people_answer_store):
 def test_primary_links_for_section_summary(people_answer_store):
     schema = load_schema_from_name("test_list_collector_list_summary")
 
-    summary_context = SectionSummaryContext(
-        language=DEFAULT_LANGUAGE_CODE,
-        schema=schema,
+    data_stores = DataStores(
         answer_store=people_answer_store,
         list_store=ListStore(
             [
@@ -694,9 +661,13 @@ def test_primary_links_for_section_summary(people_answer_store):
                 }
             ]
         ),
-        progress_store=ProgressStore(),
         metadata=get_metadata({"display_address": "70 Abingdon Road, Goathill"}),
-        response_metadata={},
+    )
+
+    summary_context = SectionSummaryContext(
+        language=DEFAULT_LANGUAGE_CODE,
+        schema=schema,
+        data_stores=data_stores,
         current_location=Location(section_id="section"),
         routing_path=RoutingPath(
             block_ids=[
@@ -706,7 +677,6 @@ def test_primary_links_for_section_summary(people_answer_store):
             ],
             section_id="section",
         ),
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     context = summary_context()
