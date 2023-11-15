@@ -72,9 +72,9 @@ def flush_data() -> Response:
 def _submit_data(user: User) -> bool:
     questionnaire_store = get_questionnaire_store(user.user_id, user.user_ik)
 
-    if questionnaire_store and questionnaire_store.answer_store:
+    if questionnaire_store and questionnaire_store.data_stores.answer_store:
         # Type ignore: The presence of an answer_store implicitly verifies that there must be metadata populated and thus can safely be used non-optionally.
-        metadata: MetadataProxy = questionnaire_store.metadata  # type: ignore
+        metadata: MetadataProxy = questionnaire_store.data_stores.metadata  # type: ignore
         submitted_at = datetime.now(timezone.utc)
         schema = load_schema_from_metadata(
             metadata=metadata, language_code=metadata.language_code  # type: ignore
@@ -82,12 +82,7 @@ def _submit_data(user: User) -> bool:
 
         router = Router(
             schema=schema,
-            answer_store=questionnaire_store.answer_store,
-            list_store=questionnaire_store.list_store,
-            progress_store=questionnaire_store.progress_store,
-            metadata=questionnaire_store.metadata,
-            response_metadata=questionnaire_store.response_metadata,
-            supplementary_data_store=questionnaire_store.supplementary_data_store,
+            data_stores=questionnaire_store.data_stores,
         )
         full_routing_path = router.full_routing_path()
 

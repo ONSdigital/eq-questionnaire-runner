@@ -51,7 +51,7 @@ def test_generate_date_form_validates_single_date_period(
 ):
     schema = load_schema_from_name("test_date_validation_single")
     value_source_resolver.schema = schema
-    value_source_resolver.metadata = {"ref_p_start_date": "2017-02-20"}
+    value_source_resolver.data_stores.metadata = {"ref_p_start_date": "2017-02-20"}
 
     handler = DateHandler(
         schema.get_answers_by_answer_id("date-range-from")[0],
@@ -115,7 +115,7 @@ def test_get_referenced_offset_value_for_now_value(
 def test_get_referenced_offset_value_for_meta(
     app, value_source_resolver, rule_evaluator
 ):
-    value_source_resolver.metadata = {"date": "2018-02-20"}
+    value_source_resolver.data_stores.metadata = {"date": "2018-02-20"}
     answer = {"minimum": {"value": {"identifier": "date", "source": "metadata"}}}
 
     handler = DateHandler(answer, value_source_resolver, rule_evaluator, error_messages)
@@ -135,7 +135,7 @@ def test_get_referenced_offset_value_for_answer_id(
 
     test_answer_id = Answer(answer_id="date", value="2018-03-20")
     answer_store.add_or_update(test_answer_id)
-    value_source_resolver.answer_store = answer_store
+    value_source_resolver.data_stores.answer_store = answer_store
     answer = {"maximum": {"value": {"identifier": "date", "source": "answers"}}}
 
     handler = DateHandler(answer, value_source_resolver, rule_evaluator, error_messages)
@@ -163,7 +163,7 @@ def test_get_referenced_offset_value_with_list_item_id(
     answer_store = AnswerStore()
 
     answer_store.add_or_update(test_answer_id)
-    value_source_resolver.answer_store = answer_store
+    value_source_resolver.data_stores.answer_store = answer_store
     value_source_resolver.location = location
     value_source_resolver.list_item_id = list_item_id
     answer = {
@@ -195,12 +195,12 @@ def test_get_referenced_offset_value_with_no_offset(
     "app.utilities.schema.load_schema_from_name", return_value=QuestionnaireSchema({})
 )
 def test_minimum_and_maximum_offset_dates(app, value_source_resolver, rule_evaluator):
-    value_source_resolver.metadata = {"date": "2018-02-20"}
+    value_source_resolver.data_stores.metadata = {"date": "2018-02-20"}
     answer_store = AnswerStore()
 
     test_answer_id = Answer(answer_id="date", value="2018-03-20")
     answer_store.add_or_update(test_answer_id)
-    value_source_resolver.answer_store = answer_store
+    value_source_resolver.data_stores.answer_store = answer_store
     answer = {
         "id": "date_answer",
         "type": "Date",

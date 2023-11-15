@@ -10,7 +10,7 @@ class ListCollectorContentBlock(ListCollectorBaseBlock):
 
         item_label = None
 
-        current_list = self._list_store[summary["for_list"]]
+        current_list = self._data_stores.list_store[summary["for_list"]]
 
         list_collector_blocks_on_path = self._list_collector_block_on_path(
             summary["for_list"]
