@@ -798,7 +798,7 @@ class TestRouterNextLocation(RouterTestCase):
         self.schema = load_schema_from_name(
             "test_grand_calculated_summary_overlapping_answers"
         )
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="introduction-section",
@@ -860,7 +860,7 @@ class TestRouterNextLocation(RouterTestCase):
         self.schema = load_schema_from_name(
             "test_grand_calculated_summary_overlapping_answers"
         )
-        self.progress_store = ProgressStore(
+        self.data_stores.progress_store = ProgressStore(
             [
                 ProgressDict(
                     section_id="introduction-section",
