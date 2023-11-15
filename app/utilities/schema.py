@@ -9,7 +9,6 @@ from urllib.parse import urlencode
 from flask import current_app
 from requests import RequestException
 from structlog import get_logger
-from werkzeug.datastructures import ImmutableDict
 
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire.questionnaire_schema import (
