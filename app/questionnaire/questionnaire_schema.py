@@ -556,7 +556,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         block_id: str,
         answer_id: str,
     ) -> None:
-        value_sources = get_mappings_with_key(key="source", data=dynamic_options_values)
+        value_sources = get_mappings_with_key("source", data=dynamic_options_values)
         for value_source in value_sources:
             self._update_dependencies_for_value_source(
                 value_source, block_id=block_id, answer_id=answer_id
@@ -1155,7 +1155,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
         for section in self.get_sections():
             when_rules = get_values_for_key(
-                key="when",
+                "when",
                 data=section,
                 ignore_keys=["question_variants", "content_variants"],
             )
@@ -1358,7 +1358,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         for section in self.get_sections():
             for block in self.get_blocks_for_section(section):
                 sources = get_mappings_with_key(
-                    key="source", data=block, ignore_keys=["when"]
+                    "source", data=block, ignore_keys=["when"]
                 )
                 section_dependencies: set[str] = {
                     # Type ignore: Validator ensures a valid identifier so section will exist
@@ -1409,7 +1409,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _populate_placeholder_transform_section_dependencies(self) -> None:
         for block in self.get_blocks():
-            transforms = get_mappings_with_key(key="transform", data=block)
+            transforms = get_mappings_with_key("transform", data=block)
             placeholder_answer_ids = {
                 item["identifier"]
                 for transform in transforms

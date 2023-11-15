@@ -12,7 +12,7 @@ def get_flattened_mapping_values(
 
 
 def get_mappings_with_key(  # noqa: C901 pylint: disable=too-complex
-    *, key: str, data: Mapping | Sequence, ignore_keys: list[str] | None = None
+    key: str, *, data: Mapping | Sequence, ignore_keys: list[str] | None = None
 ) -> Generator[Mapping, None, None]:
     ignore_keys = ignore_keys or []
 
@@ -20,7 +20,7 @@ def get_mappings_with_key(  # noqa: C901 pylint: disable=too-complex
         for element in value:
             if isinstance(element, Mapping):
                 yield from get_mappings_with_key(
-                    key=key, data=element, ignore_keys=ignore_keys
+                    key, data=element, ignore_keys=ignore_keys
                 )
 
     if isinstance(data, Sequence):
@@ -34,15 +34,13 @@ def get_mappings_with_key(  # noqa: C901 pylint: disable=too-complex
             if k in ignore_keys:
                 continue
             if isinstance(v, Mapping):
-                yield from get_mappings_with_key(
-                    key=key, data=v, ignore_keys=ignore_keys
-                )
+                yield from get_mappings_with_key(key, data=v, ignore_keys=ignore_keys)
             if isinstance(v, Sequence):
                 yield from _handle_sequence(v)
 
 
 def get_values_for_key(
-    *, key: str, data: Mapping | Sequence, ignore_keys: list[str] | None = None
+    key: str, *, data: Mapping | Sequence, ignore_keys: list[str] | None = None
 ) -> Generator:
-    for mapping in get_mappings_with_key(key=key, data=data, ignore_keys=ignore_keys):
+    for mapping in get_mappings_with_key(key, data=data, ignore_keys=ignore_keys):
         yield mapping[key]
