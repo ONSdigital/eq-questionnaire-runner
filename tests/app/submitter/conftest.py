@@ -86,11 +86,15 @@ def get_questionnaire_store(version):
 
     store = QuestionnaireStore(storage)
 
-    store.answer_store = AnswerStore()
+    store.data_stores.answer_store = AnswerStore()
     store.supplementary_data_store = SupplementaryDataStore()
-    store.answer_store.add_or_update(user_answer)
-    store.metadata = METADATA_V2 if version is AuthPayloadVersion.V2 else METADATA_V1
-    store.response_metadata = {"started_at": "2018-07-04T14:49:33.448608+00:00"}
+    store.data_stores.answer_store.add_or_update(user_answer)
+    store.data_stores.metadata = (
+        METADATA_V2 if version is AuthPayloadVersion.V2 else METADATA_V1
+    )
+    store.data_stores.response_metadata = {
+        "started_at": "2018-07-04T14:49:33.448608+00:00"
+    }
 
     return store
 

@@ -31,21 +31,13 @@ from tests.app.views.contexts import assert_summary_context
 def test_custom_submission_content(
     schema_name,
     expected,
-    answer_store,
-    list_store,
-    progress_store,
-    supplementary_data_store,
+    data_stores,
 ):
     schema = load_schema_from_name(schema_name)
     submit_questionnaire_context = SubmitQuestionnaireContext(
         "en",
         schema,
-        answer_store,
-        list_store,
-        progress_store,
-        metadata={},
-        response_metadata={},
-        supplementary_data_store=supplementary_data_store,
+        data_stores,
     )
 
     context = submit_questionnaire_context()
@@ -58,23 +50,9 @@ def test_custom_submission_content(
 
 
 @pytest.mark.usefixtures("app")
-def test_questionnaire_context(
-    answer_store,
-    list_store,
-    progress_store,
-    supplementary_data_store,
-):
+def test_questionnaire_context(data_stores):
     schema = load_schema_from_name("test_submit_with_summary")
-    submit_questionnaire_context = SubmitQuestionnaireContext(
-        "en",
-        schema,
-        answer_store,
-        list_store,
-        progress_store,
-        metadata={},
-        response_metadata={},
-        supplementary_data_store=supplementary_data_store,
-    )
+    submit_questionnaire_context = SubmitQuestionnaireContext("en", schema, data_stores)
 
     context = submit_questionnaire_context()
     assert_summary_context(context)
