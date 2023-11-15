@@ -104,24 +104,18 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     def validate_schema_options(self, data, **kwargs):
         # pylint: disable=no-self-use, unused-argument
         if data:
-            option_count = len(
-                [
-                    option
-                    for option in [
-                        data.get("schema_name"),
-                        data.get("schema_url"),
-                        data.get("cir_instrument_id"),
-                    ]
-                    if option
-                ]
-            )
-            if option_count == 0:
+            options = [
+                option
+                for option in ["schema_name", "schema_url", "cir_instrument_id"]
+                if data.get(option)
+            ]
+            if len(options) == 0:
                 raise ValidationError(
                     "Neither schema_name, schema_url or cir_instrument_id has been set in metadata"
                 )
-            if option_count > 1:
+            if len(options) > 1:
                 raise ValidationError(
-                    "Only one of schema_name, schema_url or cir_instrument_id should be specified in metadata"
+                    f"Only one of schema_name, schema_url or cir_instrument_id should be specified in metadata, but {', '.join(options)} were provided"
                 )
 
 

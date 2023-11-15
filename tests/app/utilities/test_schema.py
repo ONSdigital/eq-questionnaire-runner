@@ -6,7 +6,6 @@ import responses
 from mock import Mock, patch
 from requests import RequestException
 from urllib3.connectionpool import HTTPConnectionPool, HTTPResponse
-from werkzeug.datastructures import ImmutableDict
 
 from app.questionnaire import QuestionnaireSchema
 from app.setup import create_app
@@ -151,11 +150,7 @@ def test_load_schema_from_url_200():
 
     mock_schema = QuestionnaireSchema({}, language_code="cy")
     responses.add(responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=200)
-    loaded_schema = load_schema_from_url(
-        schema_url=TEST_SCHEMA_URL,
-        language_code="cy",
-        parameters=ImmutableDict({"language": "cy"}),
-    )
+    loaded_schema = load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="cy")
 
     assert loaded_schema.json == mock_schema.json
     assert loaded_schema.language_code == mock_schema.language_code
@@ -179,11 +174,7 @@ def test_load_schema_from_url_non_200(status_code):
     )
 
     with pytest.raises(SchemaRequestFailed) as exc:
-        load_schema_from_url(
-            schema_url=TEST_SCHEMA_URL,
-            language_code="en",
-            parameters=ImmutableDict({"language": "en"}),
-        )
+        load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="en")
 
     cache_info = load_schema_from_url.cache_info()
     assert cache_info.currsize == 0
@@ -197,11 +188,7 @@ def test_load_schema_from_url_non_200(status_code):
 def test_load_schema_from_url_request_failed():
     responses.add(responses.GET, TEST_SCHEMA_URL, body=RequestException())
     with pytest.raises(SchemaRequestFailed) as exc:
-        load_schema_from_url(
-            schema_url=TEST_SCHEMA_URL,
-            language_code="en",
-            parameters=ImmutableDict({"language": "en"}),
-        )
+        load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="en")
 
     assert str(exc.value) == "schema request failed"
 
@@ -214,11 +201,7 @@ def test_load_schema_from_url_uses_cache():
     responses.add(responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=200)
 
     # First load: Add to cache, no hits
-    load_schema_from_url(
-        schema_url=TEST_SCHEMA_URL,
-        language_code="cy",
-        parameters=ImmutableDict({"language": "cy"}),
-    )
+    load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="cy")
 
     cache_info = load_schema_from_url.cache_info()
     assert cache_info.currsize == 1
@@ -226,11 +209,7 @@ def test_load_schema_from_url_uses_cache():
     assert cache_info.hits == 0
 
     # Second load: Read from cache, 1 hit
-    load_schema_from_url(
-        schema_url=TEST_SCHEMA_URL,
-        language_code="cy",
-        parameters=ImmutableDict({"language": "cy"}),
-    )
+    load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="cy")
 
     cache_info = load_schema_from_url.cache_info()
     assert cache_info.currsize == 1
@@ -363,11 +342,7 @@ def test_load_schema_from_url_retries_timeout_error(mocked_make_request_with_tim
     load_schema_from_url.cache_clear()
 
     try:
-        schema = load_schema_from_url(
-            schema_url=TEST_SCHEMA_URL,
-            language_code="en",
-            parameters=ImmutableDict({"language": "en"}),
-        )
+        schema = load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="en")
     except SchemaRequestFailed:
         return pytest.fail("Schema request unexpectedly failed")
 
@@ -383,11 +358,7 @@ def test_load_schema_from_url_retries_transient_error(mocker):
     load_schema_from_url.cache_clear()
 
     try:
-        schema = load_schema_from_url(
-            schema_url=TEST_SCHEMA_URL,
-            language_code="en",
-            parameters=ImmutableDict({"language": "en"}),
-        )
+        schema = load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="en")
     except SchemaRequestFailed:
         return pytest.fail("Schema request unexpectedly failed")
 
@@ -404,11 +375,7 @@ def test_load_schema_from_url_max_retries(mocker):
     load_schema_from_url.cache_clear()
 
     with pytest.raises(SchemaRequestFailed) as exc:
-        load_schema_from_url(
-            schema_url=TEST_SCHEMA_URL,
-            language_code="en",
-            parameters=ImmutableDict({"language": "en"}),
-        )
+        load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="en")
 
     assert str(exc.value) == "schema request failed"
     assert mocked_make_request.call_count == 3

@@ -3,7 +3,7 @@ import time
 from functools import lru_cache
 from glob import glob
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any
 from urllib.parse import urlencode
 
 from flask import current_app
@@ -120,7 +120,6 @@ def load_schema_from_metadata(
         schema = load_schema_from_url(
             schema_url=schema_url,
             language_code=language_code,
-            parameters=ImmutableDict({"language": language_code}),
         )
         duration_in_milliseconds = (time.time() - start) * 1_000
 
@@ -138,9 +137,18 @@ def load_schema_from_metadata(
         return schema
 
     if cir_instrument_id := metadata.cir_instrument_id:
-        return load_schema_from_instrument_id(
+        # : TODO: Remove timing information before load_from_instrument_id goes into production
+        start = time.time()
+        schema = load_schema_from_instrument_id(
             cir_instrument_id=cir_instrument_id, language_code=language_code
         )
+        duration_in_milliseconds = (time.time() - start) * 1_000
+        logger.info(
+            f"load_schema_from_instrument_id took {duration_in_milliseconds:.6f} milliseconds",
+            cir_instrument_id=cir_instrument_id,
+            pid=os.getpid(),
+        )
+        return schema
 
     return load_schema_from_name(
         # Type ignore: Metadata is validated to have either schema_name or schema_url populated.
@@ -160,14 +168,9 @@ def load_schema_from_name(
 def load_schema_from_instrument_id(
     *, cir_instrument_id: str, language_code: str | None
 ) -> QuestionnaireSchema:
-    cir_url = (
-        f"{current_app.config['CIR_API_BASE_URL']}/v2/retrieve_collection_instrument"
-    )
-    return load_schema_from_url(
-        schema_url=cir_url,
-        language_code=language_code,
-        parameters=ImmutableDict({"guid": cir_instrument_id}),
-    )
+    parameters = {"guid": cir_instrument_id}
+    cir_url = f"{current_app.config['CIR_API_BASE_URL']}/v2/retrieve_collection_instrument?{urlencode(parameters)}"
+    return load_schema_from_url(schema_url=cir_url, language_code=language_code)
 
 
 @lru_cache(maxsize=None)
@@ -221,10 +224,11 @@ def _load_schema_file(schema_name: str, language_code: str) -> Any:
 
 @lru_cache(maxsize=None)
 def load_schema_from_url(
-    *, schema_url: str, language_code: str | None, parameters: ImmutableDict[str, str]
+    *, schema_url: str, language_code: str | None
 ) -> QuestionnaireSchema:
     """
-    Fetches a schema from the provided url with the provided set of parameters
+    Fetches a schema from the provided url.
+    The caller is responsible for including any required query parameters in the url
     """
     language_code = language_code or DEFAULT_LANGUAGE_CODE
     pid = os.getpid()
@@ -233,10 +237,7 @@ def load_schema_from_url(
         schema_url=schema_url,
         language_code=language_code,
         pid=pid,
-        parameters=parameters,
     )
-
-    constructed_schema_url = f"{schema_url}?{urlencode(parameters)}"
 
     session = get_retryable_session(
         max_retries=SCHEMA_REQUEST_MAX_RETRIES,
@@ -245,11 +246,11 @@ def load_schema_from_url(
     )
 
     try:
-        req = session.get(constructed_schema_url, timeout=SCHEMA_REQUEST_TIMEOUT)
+        req = session.get(schema_url, timeout=SCHEMA_REQUEST_TIMEOUT)
     except RequestException as exc:
         logger.exception(
             "schema request errored",
-            schema_url=constructed_schema_url,
+            schema_url=schema_url,
         )
         raise SchemaRequestFailed from exc
 
@@ -267,7 +268,7 @@ def load_schema_from_url(
     logger.error(
         "got a non-200 response for schema url request",
         status_code=req.status_code,
-        schema_url=constructed_schema_url,
+        schema_url=schema_url,
     )
 
     raise SchemaRequestFailed

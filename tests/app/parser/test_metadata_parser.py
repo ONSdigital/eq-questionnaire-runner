@@ -433,12 +433,13 @@ def test_too_many_of_schema_name_schema_url_and_cir_instrument_id_not_valid_v2(o
     del metadata["schema_name"]
 
     metadata.update(options)
+    provided = ", ".join(options)
 
     with pytest.raises(ValidationError) as exc:
         validate_runner_claims_v2(metadata)
 
     assert (
-        "Only one of schema_name, schema_url or cir_instrument_id should be specified in metadata"
+        f"Only one of schema_name, schema_url or cir_instrument_id should be specified in metadata, but {provided} were provided"
         in str(exc)
     )
 
