@@ -40,7 +40,7 @@ describe("Feature: Grand Calculated Summary", () => {
       await click(GrandCalculatedSummaryShoppingPage.submit());
     });
 
-    it("Given I edit an answer that is only used in a single calculated summary, I am routed back to the calculated summary and then the grand calculated summary", async () => {
+    it("Given I edit an answer that is only used in a single calculated summary, I am routed back to the calculated summary and then the grand calculated summary and the correct fields are focused", async () => {
       await $(HubPage.summaryRowLink("section-3")).click();
       await $(GrandCalculatedSummaryShoppingPage.calculatedSummary2Edit()).click();
       await $(CalculatedSummary2Page.q1A2Edit()).click();
@@ -49,6 +49,9 @@ describe("Feature: Grand Calculated Summary", () => {
 
       // taken back to calculated summary
       await expect(browser).toHaveUrlContaining(CalculatedSummary2Page.pageName);
+      await expect(await browser.getUrl()).toContain(
+        "/questionnaire/calculated-summary-2/?return_to=grand-calculated-summary&return_to_block_id=grand-calculated-summary-shopping&return_to_answer_id=calculated-summary-2#q1-a2",
+      );
       await click(CalculatedSummary2Page.submit());
 
       // then grand calculated summary
@@ -56,6 +59,7 @@ describe("Feature: Grand Calculated Summary", () => {
       await expect(await $(GrandCalculatedSummaryShoppingPage.grandCalculatedSummaryTitle()).getText()).toBe(
         "Grand Calculated Summary of purchases this week comes to £460.00. Is this correct?.",
       );
+      await expect(await browser.getUrl()).toContain("/questionnaire/grand-calculated-summary-shopping/#calculated-summary-2");
     });
 
     it("Given I edit an answer that is used in two calculated summaries, if I edit it from the first calculated summary change link, I taken through each block between the question and the second calculated summary before returning to the grand calculated summary", async () => {

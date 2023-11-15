@@ -64,17 +64,19 @@ class Answer:
         return_location: ReturnLocation,
         is_in_repeating_section: bool,
     ) -> str:
+        return_to_answer_id = self._return_to_answer_id(
+            return_to=return_location.return_to,
+            list_item_id=list_item_id,
+            is_in_repeating_section=is_in_repeating_section,
+            return_to_answer_id=return_location.return_to_answer_id,
+        )
         return url_for(
             endpoint="questionnaire.block",
             list_name=list_name,
             block_id=block_id,
             list_item_id=list_item_id,
             return_to=return_location.return_to,
-            return_to_answer_id=self._return_to_answer_id(
-                return_to=return_location.return_to,
-                list_item_id=list_item_id,
-                is_in_repeating_section=is_in_repeating_section,
-            ),
+            return_to_answer_id=return_to_answer_id,
             return_to_block_id=return_location.return_to_block_id,
             return_to_list_item_id=return_location.return_to_list_item_id,
             _anchor=self.id,
@@ -86,16 +88,24 @@ class Answer:
         return_to: str | None,
         list_item_id: str | None,
         is_in_repeating_section: bool,
+        return_to_answer_id: str | None,
     ) -> str | None:
         """
         If the summary page using this answer has repeating answers, but it is not in a repeating section,
         then the answer ids will be suffixed with list item id, so the return to answer id link also needs this to work correctly
         """
+        answer_id = None
         if return_to:
             if (
                 list_item_id
                 and not is_in_repeating_section
                 and not self._original_answer_id  # original answer would mean id has already been suffixed
             ):
-                return f"{self.id}-{list_item_id}"
-            return self.id
+                answer_id = f"{self.id}-{list_item_id}"
+            else:
+                answer_id = self.id
+
+            if return_to_answer_id:
+                answer_id += f",{return_to_answer_id}"
+
+        return answer_id
