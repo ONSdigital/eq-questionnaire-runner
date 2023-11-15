@@ -64,6 +64,7 @@ jobs:
             tests_dir=tests/app/${{ matrix.mutation-module-under-test }}
             if [ -d tests/app/integration/${{ matrix.mutation-module-under-test }} ]; then
                 tests-dir="${tests_dir},tests/app/integration/${{ matrix.mutation-module-under-test }}"
+            fi
 
             pipenv run mutmut run \
                 --paths-to-mutate "app/${{ matrix.mutation-module-under-test }}/" \
