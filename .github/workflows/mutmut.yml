@@ -60,8 +60,12 @@ jobs:
         run: ln -sf .development.env .env
       - name: Run mutmut
         run: |
-            # If an integration test path also exists, include it in the mutation tests
-            packages_to_run_with_pytest=tests/app/${{ matrix.mutation-package-under-test }}
+            # hacky way to handle unit and integration paths for the package under test for now
+            packages_to_run_with_pytest=""
+            if [ -d tests/app/${{ matrix.mutation-package-under-test }} ]; then
+                packages_to_run_with_pytest="tests/app/${{ matrix.mutation-package-under-test }}"
+            fi
+
             if [ -d tests/integration/${{ matrix.mutation-package-under-test }} ]; then
                 packages_to_run_with_pytest="${packages_to_run_with_pytest} tests/integration/${{ matrix.mutation-package-under-test }}"
             fi
