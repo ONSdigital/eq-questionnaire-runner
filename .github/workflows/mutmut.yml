@@ -63,11 +63,11 @@ jobs:
             # If an integration test path also exists, include it in the mutation tests
             tests_dir=tests/app/${{ matrix.mutation-module-under-test }}
             if [ -d tests/app/integration/${{ matrix.mutation-module-under-test }} ]; then
-                tests-dir="${tests_dir},tests/app/integration/${{ matrix.mutation-module-under-test }}
+                tests-dir="${tests_dir},tests/app/integration/${{ matrix.mutation-module-under-test }}"
 
             pipenv run mutmut run \
                 --paths-to-mutate "app/${{ matrix.mutation-module-under-test }}/" \
-                --tests-dir $tests_dir \
+                --tests-dir "${tests_dir}" \
                 --runner "py.test -n auto" \
                 --no-progress \
                 --CI
