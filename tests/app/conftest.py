@@ -12,6 +12,7 @@ from urllib3.connectionpool import HTTPConnectionPool, HTTPResponse
 
 from app.data_models import QuestionnaireStore
 from app.data_models.answer_store import AnswerStore
+from app.data_models.data_stores import DataStores
 from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
@@ -100,7 +101,7 @@ def fake_questionnaire_store():
     storage.get_user_data = MagicMock(return_value=("{}", "ce_sid", 1, None))
     storage.add_or_update = MagicMock()
     store = QuestionnaireStore(storage)
-    store.metadata = MetadataProxy.from_dict(
+    store.data_stores.metadata = MetadataProxy.from_dict(
         {
             "schema_name": "test_checkbox",
             "display_address": "68 Abingdon Road, Goathill",
@@ -170,6 +171,11 @@ def progress_store():
 @pytest.fixture
 def supplementary_data_store():
     return SupplementaryDataStore()
+
+
+@pytest.fixture
+def data_stores():
+    return DataStores()
 
 
 @pytest.fixture
