@@ -3,12 +3,13 @@ import time
 from functools import lru_cache
 from glob import glob
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 from urllib.parse import urlencode
 
 from flask import current_app
 from requests import RequestException
 from structlog import get_logger
+from werkzeug.datastructures import ImmutableDict
 
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire.questionnaire_schema import (
@@ -117,7 +118,9 @@ def load_schema_from_metadata(
 
         start = time.time()
         schema = load_schema_from_url(
-            schema_url=schema_url, language_code=language_code
+            schema_url=schema_url,
+            language_code=language_code,
+            parameters=ImmutableDict({"language": language_code}),
         )
         duration_in_milliseconds = (time.time() - start) * 1_000
 
@@ -163,7 +166,7 @@ def load_schema_from_instrument_id(
     return load_schema_from_url(
         schema_url=cir_url,
         language_code=language_code,
-        cir_instrument_id=cir_instrument_id,
+        parameters=ImmutableDict({"guid": cir_instrument_id}),
     )
 
 
@@ -218,14 +221,10 @@ def _load_schema_file(schema_name: str, language_code: str) -> Any:
 
 @lru_cache(maxsize=None)
 def load_schema_from_url(
-    *,
-    schema_url: str,
-    language_code: str | None,
-    cir_instrument_id: str | None = None,
+    *, schema_url: str, language_code: str | None, parameters: ImmutableDict[str, str]
 ) -> QuestionnaireSchema:
     """
-    Fetches a schema from the provided url. if a cir_instrument_id is provided
-    this is used for the parameters instead of the language_code
+    Fetches a schema from the provided url with the provided set of parameters
     """
     language_code = language_code or DEFAULT_LANGUAGE_CODE
     pid = os.getpid()
@@ -234,11 +233,8 @@ def load_schema_from_url(
         schema_url=schema_url,
         language_code=language_code,
         pid=pid,
+        parameters=parameters,
     )
-    if cir_instrument_id:
-        parameters = {"guid": cir_instrument_id}
-    else:
-        parameters = {"language": language_code}
 
     constructed_schema_url = f"{schema_url}?{urlencode(parameters)}"
 
