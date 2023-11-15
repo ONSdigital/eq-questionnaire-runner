@@ -39,6 +39,7 @@ pytest-mock = "*"
 types-cachetools = "*"
 types-pytz = "*"
 mutmut = "*"
+hammett = "*"
 
 [packages]
 colorama = "*"
