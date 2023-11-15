@@ -28,7 +28,7 @@ jobs:
     needs: python-dependencies
     strategy:
       matrix:
-        mutation-module-under-test: [ authentication, forms, publisher, questionnaire, routes ]
+        mutation-package-under-test: [ authentication, forms, publisher, questionnaire, routes ]
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
@@ -61,13 +61,13 @@ jobs:
       - name: Run mutmut
         run: |
             # If an integration test path also exists, include it in the mutation tests
-            tests_dir=tests/app/${{ matrix.mutation-module-under-test }}
-            if [ -d tests/integration/${{ matrix.mutation-module-under-test }} ]; then
-                tests_dir="${tests_dir},tests/integration/${{ matrix.mutation-module-under-test }}"
+            tests_dir=tests/app/${{ matrix.mutation-package-under-test }}
+            if [ -d tests/integration/${{ matrix.mutation-package-under-test }} ]; then
+                tests_dir="${tests_dir},tests/integration/${{ matrix.mutation-package-under-test }}"
             fi
 
             pipenv run mutmut run \
-                --paths-to-mutate "app/${{ matrix.mutation-module-under-test }}/" \
+                --paths-to-mutate "app/${{ matrix.mutation-package-under-test }}/" \
                 --tests-dir "${tests_dir}" \
                 --runner "py.test -n auto" \
                 --no-progress \
@@ -77,5 +77,5 @@ jobs:
             pipenv run mutmut html
       - uses: actions/upload-artifact@v3
         with:
-            name: mutation-test-report-${{ matrix.mutation-module-under-test }}
+            name: mutation-test-report-${{ matrix.mutation-package-under-test }}
             path: html/
