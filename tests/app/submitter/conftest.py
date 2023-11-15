@@ -6,6 +6,7 @@ from google.cloud.storage import Blob
 from google.resumable_media import InvalidResponse
 from mock import MagicMock
 from requests import Response
+from structlog import get_logger
 
 from app.authentication.auth_payload_versions import AuthPayloadVersion
 from app.data_models import ListStore, QuestionnaireStore
@@ -18,6 +19,7 @@ from app.settings import ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.submitter import RabbitMQSubmitter
 from tests.app.parser.conftest import get_response_expires_at
 
+logger = get_logger()
 METADATA_V1 = MetadataProxy.from_dict(
     {
         "tx_id": str(uuid.uuid4()),
@@ -109,7 +111,7 @@ def fake_metadata_v2_schema_url():
     copy = RAW_METADATA_V2.copy()
     copy["schema_url"] = "https://schema_url.com"
     del copy["schema_name"]
-    print("fake_metadata_schema_url", data=copy)
+    logger.debug("fake_metadata_schema_url", data=copy)
     return MetadataProxy.from_dict(copy)
 
 
@@ -118,7 +120,7 @@ def fake_metadata_v2_cir_instrument_id():
     copy = RAW_METADATA_V2.copy()
     copy["cir_instrument_id"] = "f0519981-426c-8b93-75c0-bfc40c66fe25"
     del copy["schema_name"]
-    print("fake_metadata_cir", data=copy)
+    logger.debug("fake_metadata_cir", data=copy)
     return MetadataProxy.from_dict(copy)
 
 
