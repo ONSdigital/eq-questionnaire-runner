@@ -61,14 +61,16 @@ jobs:
       - name: Run mutmut
         run: |
             # If an integration test path also exists, include it in the mutation tests
-            test_package_locations=tests/app/${{ matrix.mutation-package-under-test }}
+            packages_to_run_with_pytest=tests/app/${{ matrix.mutation-package-under-test }}
             if [ -d tests/integration/${{ matrix.mutation-package-under-test }} ]; then
-                test_package_locations="${test_package_locations} tests/integration/${{ matrix.mutation-package-under-test }}"
+                packages_to_run_with_pytest="${packages_to_run_with_pytest} tests/integration/${{ matrix.mutation-package-under-test }}"
             fi
+
+            echo ${packages_to_run_with_pytest}
 
             pipenv run mutmut run \
                 --paths-to-mutate "app/${{ matrix.mutation-package-under-test }}/" \
-                --runner "py.test -n auto ${test_package_locations}" \
+                --runner "py.test -n auto ${packages_to_run_with_pytest}" \
                 --no-progress \
                 --CI
       - name: Save HTML output
