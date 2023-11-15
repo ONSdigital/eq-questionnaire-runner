@@ -969,3 +969,16 @@ def test_get_block_for_answer_id_returns_repeating_block_for_repeating_block_ans
 
     assert block1["id"] == "companies-repeating-block-1"
     assert block2["id"] == "companies-repeating-block-2"
+
+
+def test_when_rule_dependencies_dont_include_variants(list_collector_variant_schema):
+    """
+    Since question variants and content variants still have the same question ids, answer ids, etc.
+    A change to the variant does not affect progress,
+    therefore section progress does not need to be re-evaluated when a when rule reference is updated
+    This test ensures that when rule dependencies don't include keys within variants
+    """
+    schema = QuestionnaireSchema(list_collector_variant_schema)
+    assert not schema.when_rules_section_dependencies_by_answer
+    assert not schema.when_rules_section_dependencies_by_section
+    assert not schema.get_when_rule_section_dependencies_for_list("people")

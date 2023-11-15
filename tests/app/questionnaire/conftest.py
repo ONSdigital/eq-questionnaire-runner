@@ -207,8 +207,8 @@ def list_collector_variant_schema():
                 "id": "section",
                 "groups": [
                     {
-                        "id": "group",
-                        "title": "List",
+                        "id": "when-group",
+                        "title": "When Group",
                         "blocks": [
                             {
                                 "type": "Question",
@@ -229,7 +229,18 @@ def list_collector_variant_schema():
                                         }
                                     ],
                                 },
-                            },
+                            }
+                        ],
+                    }
+                ],
+            },
+            {
+                "id": "list-section",
+                "groups": [
+                    {
+                        "id": "list-group",
+                        "title": "List",
+                        "blocks": [
                             {
                                 "id": "block1",
                                 "type": "ListCollector",
@@ -441,7 +452,79 @@ def list_collector_variant_schema():
                         ],
                     }
                 ],
-            }
+            },
+            {
+                "id": "content-section",
+                "groups": [
+                    {
+                        "id": "group-content",
+                        "blocks": [
+                            {
+                                "type": "Interstitial",
+                                "id": "household-occupancy",
+                                "content_variants": [
+                                    {
+                                        "content": {
+                                            "title": "Household Occupancy",
+                                            "contents": [
+                                                {
+                                                    "description": "According to your answer this household is occupied"
+                                                }
+                                            ],
+                                        },
+                                        "when": {
+                                            ">": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "people",
+                                                    "selector": "count",
+                                                },
+                                                0,
+                                            ]
+                                        },
+                                    },
+                                    {
+                                        "content": {
+                                            "title": "Household Occupancy",
+                                            "contents": [
+                                                {
+                                                    "description": "According to your answer this household is unoccupied"
+                                                }
+                                            ],
+                                        },
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "people",
+                                                    "selector": "count",
+                                                },
+                                                0,
+                                            ]
+                                        },
+                                    },
+                                ],
+                            },
+                            {
+                                "type": "Question",
+                                "id": "block-occupancy",
+                                "question": {
+                                    "answers": [
+                                        {
+                                            "id": "answer-occupancy",
+                                            "mandatory": True,
+                                            "type": "General",
+                                        }
+                                    ],
+                                    "id": "question-occupancy",
+                                    "title": {"text": "Does anyone else live here?"},
+                                    "type": "General",
+                                },
+                            },
+                        ],
+                    }
+                ],
+            },
         ]
     }
 

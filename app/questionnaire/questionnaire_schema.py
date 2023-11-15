@@ -1145,13 +1145,20 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         Progress section dependencies by section are directly populated in this method.
         Progress section dependencies by block are populated in the
         `self._populate_block_dependencies_for_progress_value_source` called here.
+
+        Question variants and content variants don't need including, since the answer ids, block ids, and question ids
+        remain the same, so a change in the variant, does not impact questionnaire progress.
         """
         progress_section_dependencies = (
             self._when_rules_section_dependencies_by_section_for_progress_value_source
         )
 
         for section in self.get_sections():
-            when_rules = get_values_for_key(key="when", data=section)
+            when_rules = get_values_for_key(
+                key="when",
+                data=section,
+                ignore_keys=["question_variants", "content_variants"],
+            )
             rules: list = list(when_rules)
 
             (

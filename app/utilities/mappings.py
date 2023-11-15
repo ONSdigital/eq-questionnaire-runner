@@ -41,6 +41,8 @@ def get_mappings_with_key(  # noqa: C901 pylint: disable=too-complex
                 yield from _handle_sequence(v)
 
 
-def get_values_for_key(*, key: str, data: Mapping | Sequence) -> Generator:
-    for mapping in get_mappings_with_key(key=key, data=data):
+def get_values_for_key(
+    *, key: str, data: Mapping | Sequence, ignore_keys: list[str] | None = None
+) -> Generator:
+    for mapping in get_mappings_with_key(key=key, data=data, ignore_keys=ignore_keys):
         yield mapping[key]
