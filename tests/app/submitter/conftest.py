@@ -146,7 +146,7 @@ def patch_gcs_client(mocker):
 
 @pytest.fixture
 def gcs_blob_with_retry(mocker):
-    blob = Blob(name="some-blob", bucket=mocker.Mock())
+    blob = Blob(name="some-blob", bucket=mocker.MagicMock())
 
     response_503 = Response()
     response_503.status_code = 503
