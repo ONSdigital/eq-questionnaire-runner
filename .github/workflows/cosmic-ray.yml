@@ -1,0 +1,100 @@
+name: cosmic-ray
+
+on:
+  push:
+    branches:
+      - spike-mutation-testing-cosmic-ray
+
+jobs:
+
+  python-dependencies:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pipenv'
+      - name: Install Pipenv
+        run: pip install pipenv==2023.8.22
+      - name: Install virtual environment
+        run: |
+          sudo apt-get install libsnappy-dev
+          pipenv install --dev
+
+  test-cosmic-ray:
+    needs: python-dependencies
+    strategy:
+      matrix:
+        mutation-package-under-test: [ authentication, forms, publisher, questionnaire, routes ]
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pipenv'
+      - name: Install apt dependencies
+        run: |
+            sudo apt-get install libsnappy-dev libgconf-2-4 jq
+
+            # Install wkthtmltopdf with patched Qt
+            sudo apt-get install -y xfonts-base xfonts-75dpi
+            wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.bionic_amd64.deb
+            sudo dpkg -i wkhtmltox_0.12.6-1.bionic_amd64.deb
+      - name: Write app version
+        run: printf "local" > .application-version
+      - name: Install pipenv
+        run: pip install pipenv==2023.8.22
+      - name: Install virtual environment
+        run: pipenv install --dev
+      - name: Load templates
+        run: make load-design-system-templates
+      - name: Compile translations
+        run: make translate
+      - name: Link env vars
+        run: ln -sf .development.env .env
+      - name: Run cosmic-ray
+        run: |
+            # hacky way to handle unit and integration paths for the package under test for now
+            packages_to_run_with_pytest=""
+            if [ -d tests/app/${{ matrix.mutation-package-under-test }} ]; then
+                packages_to_run_with_pytest="tests/app/${{ matrix.mutation-package-under-test }}"
+            fi
+
+            if [ -d tests/integration/${{ matrix.mutation-package-under-test }} ]; then
+                packages_to_run_with_pytest="${packages_to_run_with_pytest} tests/integration/${{ matrix.mutation-package-under-test }}"
+            fi
+
+            echo ${packages_to_run_with_pytest}
+
+            # Manually generate a file to pop the config in
+            cat <<EOF > cosmic-ray.ini
+            module-path = "app/${{ matrix.mutation-package-under-test }}/"
+            timeout = 120.0
+            excluded-modules = []
+            test-command = "py.test -n auto ${packages_to_run_with_pytest}"
+
+            [cosmic-ray.distributor]
+            name = "local"
+            EOF
+
+            cat cosmic-ray.ini
+
+            # Initialise cosmic-ray
+            pipenv run cosmic-ray init cosmic-ray.ini cosmic-ray.sqlite
+
+            # Run it
+            pipenv run cosmic-ray --verbosity=INFO exec cosmic-ray.ini cosmic-ray.sqlite
+
+      - name: Save HTML output
+        run: |
+            pipenv run cr-html session.sqlite > cosmic-ray-report-${{ matrix.mutation-package-under-test }}.html
+      - uses: actions/upload-artifact@v3
+        with:
+            name: cosmic-ray-report-${{ matrix.mutation-package-under-test }}
+            path: html/
