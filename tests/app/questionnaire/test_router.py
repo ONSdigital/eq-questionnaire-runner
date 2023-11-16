@@ -771,7 +771,7 @@ class TestRouterNextLocation(RouterTestCase):
 
         return_location = ReturnLocation(
             return_to="calculated-summary,grand-calculated-summary",
-            return_to_answer_id="distance-calculated-summary-1",
+            return_to_answer_id="q1-a1,distance-calculated-summary-1",
             return_to_block_id="distance-calculated-summary-1,distance-grand-calculated-summary",
         )
 
@@ -784,10 +784,136 @@ class TestRouterNextLocation(RouterTestCase):
             return_to="grand-calculated-summary",
             block_id="distance-calculated-summary-1",
             return_to_block_id="distance-grand-calculated-summary",
-            _anchor="distance-calculated-summary-1",
+            return_to_answer_id="distance-calculated-summary-1",
+            _anchor="q1-a1",
         )
 
         assert expected_previous_url == next_location_url
+
+    @pytest.mark.usefixtures("app")
+    def test_return_to_calculated_summary_from_answer_when_multiple_answers(self):
+        """
+        If going from GCS ->  CS -> answer -> CS -> GCS this tests going from CS -> GCS having just come from an answer
+        """
+        self.schema = load_schema_from_name(
+            "test_grand_calculated_summary_overlapping_answers"
+        )
+        self.data_stores.progress_store = ProgressStore(
+            [
+                ProgressDict(
+                    section_id="introduction-section",
+                    block_ids=[
+                        "introduction-block",
+                    ],
+                    status=CompletionStatus.COMPLETED,
+                ),
+                ProgressDict(
+                    section_id="section-1",
+                    block_ids=[
+                        "block-1",
+                        "block-2",
+                        "calculated-summary-1",
+                        "calculated-summary-2",
+                        "block-3",
+                        "calculated-summary-3",
+                    ],
+                    status=CompletionStatus.COMPLETED,
+                ),
+            ]
+        )
+
+        current_location = Location(section_id="section-1", block_id="block-1")
+
+        routing_path = RoutingPath(
+            block_ids=[
+                "block-1",
+                "block-2",
+                "calculated-summary-1",
+                "calculated-summary-2",
+                "block-3",
+                "calculated-summary-3",
+            ],
+            section_id="section-1",
+        )
+
+        return_location = ReturnLocation(
+            return_to="calculated-summary,grand-calculated-summary",
+            return_to_answer_id="q1-a1,calculated-summary-1",
+            return_to_block_id="calculated-summary-1,grand-calculated-summary-shopping",
+        )
+
+        next_location_url = self.router.get_next_location_url(
+            current_location, routing_path, return_location
+        )
+
+        assert (
+            next_location_url
+            == "/questionnaire/calculated-summary-1/?return_to=grand-calculated-summary&return_to_block_id=grand-calculated-summary-shopping&"
+            "return_to_answer_id=calculated-summary-1#q1-a1"
+        )
+
+    @pytest.mark.usefixtures("app")
+    def test_return_to_grand_calculated_summary_from_answer_when_multiple_answers(self):
+        """
+        If going from GCS ->  CS -> answer -> CS -> GCS this tests going from CS -> GCS having just come from an answer
+        """
+        self.schema = load_schema_from_name(
+            "test_grand_calculated_summary_overlapping_answers"
+        )
+        self.data_stores.progress_store = ProgressStore(
+            [
+                ProgressDict(
+                    section_id="introduction-section",
+                    block_ids=[
+                        "introduction-block",
+                    ],
+                    status=CompletionStatus.COMPLETED,
+                ),
+                ProgressDict(
+                    section_id="section-1",
+                    block_ids=[
+                        "block-1",
+                        "block-2",
+                        "calculated-summary-1",
+                        "calculated-summary-2",
+                        "block-3",
+                        "calculated-summary-3",
+                    ],
+                    status=CompletionStatus.COMPLETED,
+                ),
+            ]
+        )
+
+        current_location = Location(
+            section_id="section-1", block_id="calculated-summary-1"
+        )
+
+        routing_path = RoutingPath(
+            block_ids=[
+                "block-1",
+                "block-2",
+                "calculated-summary-1",
+                "calculated-summary-2",
+                "block-3",
+                "calculated-summary-3",
+            ],
+            section_id="section-1",
+        )
+
+        return_location = ReturnLocation(
+            return_to="grand-calculated-summary",
+            return_to_answer_id="calculated-summary-1",
+            return_to_block_id="grand-calculated-summary-shopping",
+        )
+
+        next_location_url = self.router.get_next_location_url(
+            current_location, routing_path, return_location
+        )
+
+        assert (
+            next_location_url
+            == "/questionnaire/grand-calculated-summary-shopping/#calculated-summary-1"
+        )
 
     @pytest.mark.usefixtures("app")
     def test_return_to_grand_calculated_summary_from_calculated_summary(
@@ -1030,7 +1156,7 @@ class TestRouterNextLocation(RouterTestCase):
         )
         return_location = ReturnLocation(
             return_to="calculated-summary,grand-calculated-summary",
-            return_to_answer_id="first-number-block",
+            return_to_answer_id="q1-a1,distance-calculated-summary-1",
             return_to_block_id="distance-calculated-summary-1,distance-grand-calculated-summary",
         )
         # the test is being done as part of a two-step return to but its identical functionally
@@ -1045,7 +1171,7 @@ class TestRouterNextLocation(RouterTestCase):
             "questionnaire.block",
             return_to="calculated-summary,grand-calculated-summary",
             return_to_block_id="distance-calculated-summary-1,distance-grand-calculated-summary",
-            return_to_answer_id="first-number-block",
+            return_to_answer_id="q1-a1,distance-calculated-summary-1",
             block_id="second-number-block",
         )
 
@@ -1387,7 +1513,7 @@ class TestRouterPreviousLocation(RouterTestCase):
 
         return_location = ReturnLocation(
             return_to="calculated-summary,grand-calculated-summary",
-            return_to_answer_id="second-number-block",
+            return_to_answer_id="q2-a1",
             return_to_block_id="number-calculated-summary-1,number-grand-calculated-summary",
         )
         previous_location_url = self.router.get_previous_location_url(
@@ -1401,7 +1527,7 @@ class TestRouterPreviousLocation(RouterTestCase):
             return_to="calculated-summary,grand-calculated-summary",
             return_to_block_id="number-calculated-summary-1,number-grand-calculated-summary",
             block_id="first-number-block",
-            _anchor="second-number-block",
+            _anchor="q2-a1",
         )
 
         assert expected_previous_url == previous_location_url
@@ -1549,7 +1675,7 @@ class TestRouterPreviousLocation(RouterTestCase):
 
         return_location = ReturnLocation(
             return_to="calculated-summary,grand-calculated-summary",
-            return_to_answer_id="calculated-summary-6",
+            return_to_answer_id="streaming-service-monthly-cost-JSfZqh,calculated-summary-6",
             return_to_block_id="calculated-summary-6,grand-calculated-summary-3",
         )
         next_location_url = self.router.get_previous_location_url(
@@ -1563,7 +1689,8 @@ class TestRouterPreviousLocation(RouterTestCase):
             return_to="grand-calculated-summary",
             block_id="calculated-summary-6",
             return_to_block_id="grand-calculated-summary-3",
-            _anchor="calculated-summary-6",
+            return_to_answer_id="calculated-summary-6",
+            _anchor="streaming-service-monthly-cost-JSfZqh",
         )
 
         assert expected_previous_url == next_location_url

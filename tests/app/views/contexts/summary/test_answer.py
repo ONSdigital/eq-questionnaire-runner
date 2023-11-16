@@ -6,20 +6,58 @@ from app.views.contexts.summary.answer import Answer
 
 @pytest.mark.usefixtures("app")
 @pytest.mark.parametrize(
-    "return_to, return_to_block_id, is_in_repeating_section",
+    "return_to, return_to_block_id, is_in_repeating_section, return_to_answer_id, query_string",
     [
-        ("section-summary", None, False),
-        (None, None, False),
-        ("calculated-summary", "total", False),
-        ("section-summary", None, True),
-        (None, None, True),
-        ("calculated-summary", "total", True),
+        (
+            "section-summary",
+            None,
+            False,
+            "answer-id",
+            "?return_to=section-summary&return_to_answer_id=answer-id-answer-item-id,answer-id",
+        ),
+        (None, None, False, "answer-id", ""),
+        (
+            "calculated-summary",
+            "total",
+            False,
+            "answer-id",
+            "?return_to=calculated-summary&return_to_answer_id=answer-id-answer-item-id,answer-id&return_to_block_id=total",
+        ),
+        (
+            "section-summary",
+            None,
+            True,
+            "answer-id-answer-item-id",
+            "?return_to=section-summary&return_to_answer_id=answer-id,answer-id-answer-item-id",
+        ),
+        (None, None, True, "answer-id-answer-item-id", ""),
+        (
+            "calculated-summary",
+            "total",
+            True,
+            "answer-id-answer-item-id",
+            "?return_to=calculated-summary&return_to_answer_id=answer-id,answer-id-answer-item-id&return_to_block_id=total",
+        ),
+        (
+            "calculated-summary",
+            "total",
+            True,
+            "calculated-summary-1",
+            "?return_to=calculated-summary&return_to_answer_id=answer-id,calculated-summary-1&return_to_block_id=total",
+        ),
     ],
 )
-def test_create_answer(return_to, return_to_block_id, is_in_repeating_section):
+def test_create_answer(
+    return_to,
+    return_to_block_id,
+    is_in_repeating_section,
+    return_to_answer_id,
+    query_string,
+):
     return_location = ReturnLocation(
         return_to=return_to,
         return_to_block_id=return_to_block_id,
+        return_to_answer_id=return_to_answer_id,
     )
 
     answer = Answer(
@@ -36,19 +74,6 @@ def test_create_answer(return_to, return_to_block_id, is_in_repeating_section):
     assert answer.label == "Answer Label"
     assert answer.value == "An answer"
     assert answer.type == "date"
-
-    return_to_answer_id = answer.id
-    if not is_in_repeating_section:
-        return_to_answer_id += "-answer-item-id"
-
-    if return_to and return_to_block_id:
-        query_string = f"?return_to={return_to}&return_to_answer_id={return_to_answer_id}&return_to_block_id={return_to_block_id}"
-    elif return_to:
-        query_string = (
-            f"?return_to={return_to}&return_to_answer_id={return_to_answer_id}"
-        )
-    else:
-        query_string = ""
 
     assert (
         answer.link
