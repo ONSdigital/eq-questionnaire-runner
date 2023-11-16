@@ -1,4 +1,4 @@
-name: cosmic-ray-unit
+name: cosmic-ray-integration
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
     needs: python-dependencies
     strategy:
       matrix:
-        mutation-package-under-test: [ authentication, forms, publisher, questionnaire ]
+        mutation-package-under-test: [ questionnaire, routes ]
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
@@ -66,7 +66,7 @@ jobs:
             module-path = "app/${{ matrix.mutation-package-under-test }}/"
             timeout = 120.0
             excluded-modules = []
-            test-command = "py.test -n auto tests/app/${{ matrix.mutation-package-under-test }}"
+            test-command = "py.test -n auto tests/integration/${{ matrix.mutation-package-under-test }}"
 
             [cosmic-ray.distributor]
             name = "local"
