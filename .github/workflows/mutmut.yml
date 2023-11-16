@@ -28,7 +28,7 @@ jobs:
     needs: python-dependencies
     strategy:
       matrix:
-        mutation-package-under-test: [ authentication, forms, publisher, questionnaire ]
+        mutation-package-under-test: [ questionnaire, routes ]
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
@@ -62,7 +62,7 @@ jobs:
         run: |
             pipenv run mutmut run \
                 --paths-to-mutate "app/${{ matrix.mutation-package-under-test }}/" \
-                --runner "py.test -n auto tests/app/${{ matrix.mutation-package-under-test }}" \
+                --runner "py.test -n auto tests/integration/${{ matrix.mutation-package-under-test }}" \
                 --no-progress \
                 --CI
 
