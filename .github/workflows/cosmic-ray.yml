@@ -74,6 +74,7 @@ jobs:
 
             # Manually generate a file to pop the config in
             cat <<EOF > cosmic-ray.ini
+            [cosmic-ray]
             module-path = "app/${{ matrix.mutation-package-under-test }}/"
             timeout = 120.0
             excluded-modules = []
