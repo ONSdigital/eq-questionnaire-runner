@@ -393,8 +393,8 @@ def test_cir_instrument_id_in_metadata_should_be_in_payload(
         fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
     )
     logger.debug("fake_metadata", metadata=fake_metadata_v2_cir_instrument_id)
-    logger.debug("store_metadata", metadata=questionnaire_store.metadata)
-    logger.debug("payload", payload=payload)
+    logger.warning("store_metadata", metadata=questionnaire_store.metadata)
+    print("payload", payload)
 
     assert "schema_url" not in payload
     assert "schema_name" not in payload
