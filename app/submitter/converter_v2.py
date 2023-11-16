@@ -50,7 +50,6 @@ def convert_answers_v2(
         Data payload
     """
     metadata = questionnaire_store.data_stores.metadata
-    print(metadata)
     if not metadata:
         raise NoMetadataException
 
@@ -76,16 +75,6 @@ def convert_answers_v2(
         metadata, data_stores.response_metadata
     )
 
-    print(
-        {
-            "schema_name": metadata.schema_name,
-            "schema_url": metadata.schema_url,
-            "cir_instrument_id": metadata.cir_instrument_id,
-        }
-    )
-
-    print("\noptional_properties", optional_properties)
-
     if metadata.schema_name:
         payload["schema_name"] = metadata.schema_name
     elif metadata.schema_url:
@@ -101,8 +90,6 @@ def convert_answers_v2(
         schema=schema,
         full_routing_path=full_routing_path,
     )
-
-    print(payload)
 
     logger.info("converted answer ready for submission")
 

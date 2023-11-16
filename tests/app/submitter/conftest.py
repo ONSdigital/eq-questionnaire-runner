@@ -113,7 +113,6 @@ def fake_metadata_v2_schema_url():
     copy = RAW_METADATA_V2.copy()
     copy["schema_url"] = "https://schema_url.com"
     del copy["schema_name"]
-    print("fake_metadata_schema_url", copy)
     return MetadataProxy.from_dict(copy)
 
 
@@ -122,7 +121,6 @@ def fake_metadata_v2_cir_instrument_id():
     copy = RAW_METADATA_V2.copy()
     copy["cir_instrument_id"] = "f0519981-426c-8b93-75c0-bfc40c66fe25"
     del copy["schema_name"]
-    print("fake_metadata_cir", copy)
     return MetadataProxy.from_dict(copy)
 
 
