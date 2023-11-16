@@ -22,6 +22,7 @@ logger = get_logger()
 
 SCHEMA_DIR = "schemas"
 LANGUAGE_CODES = ("en", "cy")
+CIR_RETRIEVE_COLLECTION_INSTRUMENT_URL = "/v2/retrieve_collection_instrument"
 
 LANGUAGES_MAP = {
     "test_language": [["en", "cy"]],
@@ -111,43 +112,15 @@ def load_schema_from_metadata(
     metadata: MetadataProxy, *, language_code: str | None
 ) -> QuestionnaireSchema:
     if schema_url := metadata.schema_url:
-        # :TODO: Remove before production uses schema_url
-        # This is temporary and is only for development/integration purposes.
-        # This should not be used in production.
-
-        start = time.time()
-        schema = load_schema_from_url(
-            schema_url=schema_url,
+        return load_schema_from_url(
+            url=schema_url,
             language_code=language_code,
         )
-        duration_in_milliseconds = (time.time() - start) * 1_000
-
-        cache_info = (
-            load_schema_from_url.cache_info()  # pylint: disable=missing-kwoa,too-many-function-args
-        )
-        logger.info(
-            f"load_schema_from_url took {duration_in_milliseconds:.6f} milliseconds",
-            schema_url=schema_url,
-            currsize=cache_info.currsize,
-            hits=cache_info.hits,
-            misses=cache_info.misses,
-            pid=os.getpid(),
-        )
-        return schema
 
     if cir_instrument_id := metadata.cir_instrument_id:
-        # : TODO: Remove timing information before load_from_instrument_id goes into production
-        start = time.time()
-        schema = load_schema_from_instrument_id(
+        return load_schema_from_instrument_id(
             cir_instrument_id=cir_instrument_id, language_code=language_code
         )
-        duration_in_milliseconds = (time.time() - start) * 1_000
-        logger.info(
-            f"load_schema_from_instrument_id took {duration_in_milliseconds:.6f} milliseconds",
-            cir_instrument_id=cir_instrument_id,
-            pid=os.getpid(),
-        )
-        return schema
 
     return load_schema_from_name(
         # Type ignore: Metadata is validated to have either schema_name or schema_url populated.
@@ -168,8 +141,8 @@ def load_schema_from_instrument_id(
     *, cir_instrument_id: str, language_code: str | None
 ) -> QuestionnaireSchema:
     parameters = {"guid": cir_instrument_id}
-    cir_url = f"{current_app.config['CIR_API_BASE_URL']}/v2/retrieve_collection_instrument?{urlencode(parameters)}"
-    return load_schema_from_url(schema_url=cir_url, language_code=language_code)
+    cir_url = f"{current_app.config['CIR_API_BASE_URL']}{CIR_RETRIEVE_COLLECTION_INSTRUMENT_URL}?{urlencode(parameters)}"
+    return load_schema_from_url(url=cir_url, language_code=language_code)
 
 
 @lru_cache(maxsize=None)
@@ -222,9 +195,7 @@ def _load_schema_file(schema_name: str, language_code: str) -> Any:
 
 
 @lru_cache(maxsize=None)
-def load_schema_from_url(
-    *, schema_url: str, language_code: str | None
-) -> QuestionnaireSchema:
+def load_schema_from_url(url: str, *, language_code: str | None) -> QuestionnaireSchema:
     """
     Fetches a schema from the provided url.
     The caller is responsible for including any required query parameters in the url
@@ -233,7 +204,7 @@ def load_schema_from_url(
     pid = os.getpid()
     logger.info(
         "loading schema from URL",
-        schema_url=schema_url,
+        schema_url=url,
         language_code=language_code,
         pid=pid,
     )
@@ -245,11 +216,11 @@ def load_schema_from_url(
     )
 
     try:
-        req = session.get(schema_url, timeout=SCHEMA_REQUEST_TIMEOUT)
+        req = session.get(url, timeout=SCHEMA_REQUEST_TIMEOUT)
     except RequestException as exc:
         logger.exception(
             "schema request errored",
-            schema_url=schema_url,
+            schema_url=url,
         )
         raise SchemaRequestFailed from exc
 
@@ -267,7 +238,7 @@ def load_schema_from_url(
     logger.error(
         "got a non-200 response for schema url request",
         status_code=req.status_code,
-        schema_url=schema_url,
+        schema_url=url,
     )
 
     raise SchemaRequestFailed

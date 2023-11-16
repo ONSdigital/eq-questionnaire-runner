@@ -2,7 +2,10 @@ import time
 
 from httmock import HTTMock, response, urlmatch
 
-from app.utilities.schema import get_schema_path_map
+from app.utilities.schema import (
+    CIR_RETRIEVE_COLLECTION_INSTRUMENT_URL,
+    get_schema_path_map,
+)
 from tests.integration.create_token import PAYLOAD
 from tests.integration.integration_test_case import IntegrationTestCase
 
@@ -397,7 +400,7 @@ class TestLoginWithPostRequest(IntegrationTestCase):
 
     @staticmethod
     @urlmatch(
-        path="/v2/retrieve_collection_instrument",
+        path=CIR_RETRIEVE_COLLECTION_INSTRUMENT_URL,
         query="guid=f0519981-426c-8b93-75c0-bfc40c66fe25",
     )
     def cir_url_mock(_url, _request):
@@ -408,7 +411,7 @@ class TestLoginWithPostRequest(IntegrationTestCase):
 
     @staticmethod
     @urlmatch(
-        path="/v2/retrieve_collection_instrument",
+        path=CIR_RETRIEVE_COLLECTION_INSTRUMENT_URL,
         query="guid=a0df1208-dff5-4a3d-b35d-f9620c4a48ef",
     )
     def cir_url_mock_500(_url, _request):

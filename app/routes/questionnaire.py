@@ -17,6 +17,7 @@ from app.authentication.no_questionnaire_state_exception import (
     NoQuestionnaireStateException,
 )
 from app.data_models import QuestionnaireStore, SessionStore
+from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import (
     get_metadata,
     get_questionnaire_store,
@@ -94,12 +95,7 @@ def before_questionnaire_request() -> Response | None:
         tx_id=metadata.tx_id,
         ce_id=metadata.collection_exercise_sid,
     )
-
-    if schema_name := metadata.schema_name:
-        contextvars.bind_contextvars(schema_name=schema_name)
-
-    if schema_url := metadata.schema_url:
-        contextvars.bind_contextvars(schema_url=schema_url)
+    _bind_contextvars_schema_from_metadata(metadata)
 
     logger.info(
         "questionnaire request", method=request.method, url_path=request.full_path
@@ -138,12 +134,7 @@ def before_post_submission_request() -> None:
     )
 
     contextvars.bind_contextvars(tx_id=metadata.tx_id)
-
-    if schema_name := metadata.schema_name:
-        contextvars.bind_contextvars(schema_name=schema_name)
-
-    if schema_url := metadata.schema_url:
-        contextvars.bind_contextvars(schema_url=schema_url)
+    _bind_contextvars_schema_from_metadata(metadata)
 
     logger.info(
         "questionnaire request", method=request.method, url_path=request.full_path
@@ -692,3 +683,14 @@ def _render_page(
         legal_basis=schema.json.get("legal_basis"),
         page_title=page_title,
     )
+
+
+def _bind_contextvars_schema_from_metadata(metadata: MetadataProxy) -> None:
+    if schema_name := metadata.schema_name:
+        contextvars.bind_contextvars(schema_name=schema_name)
+
+    if schema_url := metadata.schema_url:
+        contextvars.bind_contextvars(schema_url=schema_url)  # pragma: no cover
+
+    if cir_instrument_id := metadata.cir_instrument_id:
+        contextvars.bind_contextvars(cir_instrument_id=cir_instrument_id)

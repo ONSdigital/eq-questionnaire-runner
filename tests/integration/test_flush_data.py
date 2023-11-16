@@ -233,7 +233,7 @@ class TestFlushData(IntegrationTestCase):
                     url=f"/flush?token={self.token_generator.create_token_with_schema_url('test_textfield', schema_url, payload=self.get_payload())}"
                 )
 
-                flush_log = logs.output[6]
+                flush_log = logs.output[5]
 
                 self.assertIn("successfully flushed answers", flush_log)
                 self.assertIn("tx_id", flush_log)
