@@ -1,4 +1,4 @@
-name: cosmic-ray
+name: cosmic-ray-unit
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
     needs: python-dependencies
     strategy:
       matrix:
-        mutation-package-under-test: [ authentication, forms, publisher, questionnaire, routes ]
+        mutation-package-under-test: [ authentication, forms, publisher, questionnaire ]
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
@@ -60,25 +60,13 @@ jobs:
         run: ln -sf .development.env .env
       - name: Run cosmic-ray
         run: |
-            # hacky way to handle unit and integration paths for the package under test for now
-            packages_to_run_with_pytest=""
-            if [ -d tests/app/${{ matrix.mutation-package-under-test }} ]; then
-                packages_to_run_with_pytest="tests/app/${{ matrix.mutation-package-under-test }}"
-            fi
-
-            if [ -d tests/integration/${{ matrix.mutation-package-under-test }} ]; then
-                packages_to_run_with_pytest="${packages_to_run_with_pytest} tests/integration/${{ matrix.mutation-package-under-test }}"
-            fi
-
-            echo ${packages_to_run_with_pytest}
-
             # Manually generate a file to pop the config in
             cat <<EOF > cosmic-ray.ini
             [cosmic-ray]
             module-path = "app/${{ matrix.mutation-package-under-test }}/"
             timeout = 120.0
             excluded-modules = []
-            test-command = "py.test -n auto ${packages_to_run_with_pytest}"
+            test-command = "py.test -n auto tests/app/${{ matrix.mutation-package-under-test }}"
 
             [cosmic-ray.distributor]
             name = "local"
