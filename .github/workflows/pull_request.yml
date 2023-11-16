@@ -36,18 +36,18 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version-file : ".nvmrc"
-      - name: Get yarn cache
-        id: get-yarn-cache
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-      - name: Cache yarn modules
-        id: cache-yarn
+      - name: Get npm cache
+        id: get-npm-cache
+        run: echo "dir=$(npm get cache)" >> $GITHUB_OUTPUT
+      - name: Cache npm modules
+        id: cache-npm
         uses: actions/cache@v3
         with:
-          path: ${{ steps.get-yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-      - name: Install yarn deps
-        if: steps.cache-yarn.outputs.cache-hit != 'true'
-        run: yarn
+          path: '~/.npm'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      - name: Install npm deps
+        if: steps.cache-npm.outputs.cache-hit != 'true'
+        run: npm install
   lint:
     needs: [python-dependencies, node-dependencies]
     runs-on: ubuntu-22.04
@@ -74,17 +74,17 @@ jobs:
         run: pipenv run python -m scripts.extract_translation_templates --test
       - name: Python linting
         run: make lint-python
-      - name: Get yarn cache
-        id: get-yarn-cache
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-      - name: Cache yarn modules
+      - name: Get npm cache
+        id: get-npm-cache
+        run: echo "dir=$(npm get cache)" >> $GITHUB_OUTPUT
+      - name: Cache npm modules
         uses: actions/cache@v3
-        id: cache-yarn
+        id: cache-npm
         with:
-          path: ${{ steps.get-yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-      - name: Install yarn deps
-        run: yarn install
+          path: '~/.npm'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      - name: Install npm deps
+        run: npm install
       - name: Functional tests spec lint
         run: ./scripts/lint_functional_test_specs.sh
       - name: Javascript linting
@@ -155,17 +155,17 @@ jobs:
         run: pip install pipenv==2023.8.22
       - name: Install virtual environment
         run: pipenv install --dev
-      - name: Get yarn cache
-        id: get-yarn-cache
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-      - name: Cache yarn modules
+      - name: Get npm cache
+        id: get-npm-cache
+        run: echo "dir=$(npm get cache)" >> $GITHUB_OUTPUT
+      - name: Cache np, modules
         uses: actions/cache@v3
-        id: cache-yarn
+        id: cache-npm
         with:
-          path: ${{ steps.get-yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-      - name: Install yarn deps
-        run: yarn install
+          path: '~/.npm'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      - name: Install npm deps
+        run: npm install
       - name: Docker compose
         run: docker-compose --version && RUNNER_ENV_FILE=.functional-tests.env docker-compose up --build -d
       - name: Functional tests
