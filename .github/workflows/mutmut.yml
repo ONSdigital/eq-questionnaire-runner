@@ -82,7 +82,7 @@ jobs:
 
             pipenv run mutmut run \
                 --paths-to-mutate "app/${{ matrix.mutation-package-under-test }}/" \
-                --runner "py.test -n auto ${{ matrix.mutation-package-under-test }}" \
+                --runner "py.test -n auto tests/app/${{ matrix.mutation-package-under-test }}" \
                 --no-progress \
                 --CI
 
