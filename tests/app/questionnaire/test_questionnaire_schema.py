@@ -4,7 +4,7 @@ import pytest
 from ordered_set import OrderedSet
 from werkzeug.datastructures import ImmutableDict
 
-from app.questionnaire.questionnaire_schema import AnswerDependent, QuestionnaireSchema
+from app.questionnaire.questionnaire_schema import Dependent, QuestionnaireSchema
 from app.utilities.schema import load_schema_from_name
 
 
@@ -221,14 +221,6 @@ def test_get_all_questions_for_block_question():
     assert all_questions[0]["answers"][0]["id"] == "answer1"
 
 
-def test_get_section_ids_by_list_name(sections_dependent_on_list_schema):
-    schema = QuestionnaireSchema(sections_dependent_on_list_schema)
-    when_blocks = schema.get_section_ids_dependent_on_list("list")
-
-    assert len(when_blocks) == 2
-    assert ["section2", "section4"] == when_blocks
-
-
 def test_get_all_questions_for_block_question_variants():
     block = {
         "id": "block1",
@@ -409,7 +401,7 @@ def test_answer_dependencies_for_calculated_question_non_repeating(
 
     assert schema.answer_dependencies == {
         "total-employees-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="breakdown-section",
                 block_id="employees-breakdown-block",
                 for_list=None,
@@ -417,7 +409,7 @@ def test_answer_dependencies_for_calculated_question_non_repeating(
             )
         },
         "total-turnover-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="breakdown-section",
                 block_id="turnover-breakdown-block",
                 for_list=None,
@@ -434,7 +426,7 @@ def test_answer_dependencies_for_calculated_question_repeating(
 
     assert schema.answer_dependencies == {
         "entertainment-spending-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="breakdown-section",
                 block_id="second-spending-breakdown-block",
                 for_list="people",
@@ -442,7 +434,7 @@ def test_answer_dependencies_for_calculated_question_repeating(
             )
         },
         "total-spending-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="breakdown-section",
                 block_id="spending-breakdown-block",
                 for_list="people",
@@ -459,13 +451,13 @@ def test_answer_dependencies_for_calculated_question_value_source(
 
     assert schema.answer_dependencies == {
         "breakdown-1": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="number-total-playback",
                 for_list=None,
                 answer_id=None,
             ),
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="second-breakdown-block",
                 for_list=None,
@@ -473,13 +465,13 @@ def test_answer_dependencies_for_calculated_question_value_source(
             ),
         },
         "breakdown-2": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="number-total-playback",
                 for_list=None,
                 answer_id=None,
             ),
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="second-breakdown-block",
                 for_list=None,
@@ -487,7 +479,7 @@ def test_answer_dependencies_for_calculated_question_value_source(
             ),
         },
         "total-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="breakdown-block",
                 for_list=None,
@@ -504,13 +496,13 @@ def test_answer_dependencies_for_calculated_summary(
 
     expected_dependencies = {
         "first-number-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="currency-total-playback",
                 for_list=None,
                 answer_id=None,
             ),
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="set-min-max-block",
                 for_list=None,
@@ -518,13 +510,13 @@ def test_answer_dependencies_for_calculated_summary(
             ),
         },
         "second-number-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="currency-total-playback",
                 for_list=None,
                 answer_id=None,
             ),
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="set-min-max-block",
                 for_list=None,
@@ -532,13 +524,13 @@ def test_answer_dependencies_for_calculated_summary(
             ),
         },
         "second-number-answer-also-in-total": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="currency-total-playback",
                 for_list=None,
                 answer_id=None,
             ),
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="set-min-max-block",
                 for_list=None,
@@ -546,13 +538,13 @@ def test_answer_dependencies_for_calculated_summary(
             ),
         },
         "third-number-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="currency-total-playback",
                 for_list=None,
                 answer_id=None,
             ),
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="set-min-max-block",
                 for_list=None,
@@ -560,13 +552,13 @@ def test_answer_dependencies_for_calculated_summary(
             ),
         },
         "fourth-number-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="currency-total-playback",
                 for_list=None,
                 answer_id=None,
             ),
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="set-min-max-block",
                 for_list=None,
@@ -574,13 +566,13 @@ def test_answer_dependencies_for_calculated_summary(
             ),
         },
         "fourth-and-a-half-number-answer-also-in-total": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="currency-total-playback",
                 for_list=None,
                 answer_id=None,
             ),
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="set-min-max-block",
                 for_list=None,
@@ -588,7 +580,7 @@ def test_answer_dependencies_for_calculated_summary(
             ),
         },
         "second-number-answer-unit-total": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="unit-total-playback",
                 for_list=None,
@@ -596,7 +588,7 @@ def test_answer_dependencies_for_calculated_summary(
             )
         },
         "third-and-a-half-number-answer-unit-total": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="unit-total-playback",
                 for_list=None,
@@ -604,7 +596,7 @@ def test_answer_dependencies_for_calculated_summary(
             )
         },
         "fifth-percent-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="percentage-total-playback",
                 for_list=None,
@@ -612,7 +604,7 @@ def test_answer_dependencies_for_calculated_summary(
             )
         },
         "sixth-percent-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="percentage-total-playback",
                 for_list=None,
@@ -620,7 +612,7 @@ def test_answer_dependencies_for_calculated_summary(
             )
         },
         "fifth-number-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="number-total-playback",
                 for_list=None,
@@ -628,7 +620,7 @@ def test_answer_dependencies_for_calculated_summary(
             )
         },
         "sixth-number-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="number-total-playback",
                 for_list=None,
@@ -645,7 +637,7 @@ def test_answer_dependencies_for_min_max(numbers_schema):
 
     assert schema.answer_dependencies == {
         "set-minimum": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="test-min-max-block",
                 for_list=None,
@@ -653,13 +645,13 @@ def test_answer_dependencies_for_min_max(numbers_schema):
             )
         },
         "set-maximum": {
-            AnswerDependent(
+            Dependent(
                 section_id="currency-section",
                 block_id="second-number-block",
                 for_list=None,
                 answer_id=None,
             ),
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="test-min-max-block",
                 for_list=None,
@@ -667,7 +659,7 @@ def test_answer_dependencies_for_min_max(numbers_schema):
             ),
         },
         "test-range": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="detail-answer-block",
                 for_list=None,
@@ -675,7 +667,7 @@ def test_answer_dependencies_for_min_max(numbers_schema):
             )
         },
         "first-number-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="currency-section",
                 block_id="second-number-block",
                 for_list=None,
@@ -692,13 +684,13 @@ def test_answer_dependencies_for_dynamic_options(
 
     assert schema.answer_dependencies == {
         "injury-sustained-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="injury-sustained-section",
                 block_id="most-serious-injury",
                 for_list=None,
                 answer_id="most-serious-injury-answer",
             ),
-            AnswerDependent(
+            Dependent(
                 section_id="injury-sustained-section",
                 block_id="healed-the-quickest",
                 for_list=None,
@@ -715,30 +707,49 @@ def test_answer_dependencies_for_dynamic_options_function_driven(
 
     assert schema.answer_dependencies == {
         "reference-date-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="dynamic-mutually-exclusive",
                 for_list=None,
                 answer_id="dynamic-mutually-exclusive-dynamic-answer",
             ),
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="dynamic-checkbox",
                 for_list=None,
                 answer_id="dynamic-checkbox-answer",
             ),
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="dynamic-dropdown",
                 for_list=None,
                 answer_id="dynamic-dropdown-answer",
             ),
-            AnswerDependent(
+            Dependent(
                 section_id="default-section",
                 block_id="dynamic-radio",
                 for_list=None,
                 answer_id="dynamic-radio-answer",
             ),
+        }
+    }
+
+
+def test_list_dependencies_for_calculated_summary_with_repeating_answers():
+    """
+    Tests list dependencies for list value sources, calculated summaries involving a repeat
+    and calculated summary value sources where the calculated summary includes a repeating answer.
+    """
+    schema = load_schema_from_name(
+        "test_new_calculated_summary_repeating_and_static_answers"
+    )
+
+    assert schema.list_dependencies == {
+        "supermarkets": {
+            Dependent(section_id="section-1", block_id="dynamic-answer"),
+            Dependent(section_id="section-1", block_id="calculated-summary-spending"),
+            Dependent(section_id="section-1", block_id="calculated-summary-visits"),
+            Dependent(section_id="section-2", block_id="supermarket-transport"),
         }
     }
 
@@ -802,6 +813,17 @@ def test_when_rules_section_dependencies_new_calculated_summary(
         "cheese-answer": {"dependent-enabled-section", "dependent-question-section"},
         "butter-answer": {"dependent-enabled-section", "dependent-question-section"},
     } == schema.when_rules_section_dependencies_by_answer
+
+
+def test_when_rule_section_dependencies_for_list(sections_dependent_on_list_schema):
+    """Tests when rule dependencies for lists when used in a section, a block, and nested in a conditional question"""
+    schema = QuestionnaireSchema(sections_dependent_on_list_schema)
+
+    assert schema.get_when_rule_section_dependencies_for_list("list") == {
+        "section2",
+        "section4",
+        "section6",
+    }
 
 
 def test_progress_block_dependencies(
@@ -947,3 +969,16 @@ def test_get_block_for_answer_id_returns_repeating_block_for_repeating_block_ans
 
     assert block1["id"] == "companies-repeating-block-1"
     assert block2["id"] == "companies-repeating-block-2"
+
+
+def test_when_rule_dependencies_dont_include_variants(list_collector_variant_schema):
+    """
+    Since question variants and content variants still have the same question ids, answer ids, etc.
+    A change to the variant does not affect progress,
+    therefore section progress does not need to be re-evaluated when a when rule reference is updated
+    This test ensures that when rule dependencies don't include keys within variants
+    """
+    schema = QuestionnaireSchema(list_collector_variant_schema)
+    assert not schema.when_rules_section_dependencies_by_answer
+    assert not schema.when_rules_section_dependencies_by_section
+    assert not schema.get_when_rule_section_dependencies_for_list("people")

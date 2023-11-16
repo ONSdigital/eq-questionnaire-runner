@@ -79,26 +79,16 @@ class BlockHandler:
     def placeholder_renderer(self) -> PlaceholderRenderer:
         return PlaceholderRenderer(
             self._language,
-            answer_store=self._questionnaire_store.answer_store,
-            list_store=self._questionnaire_store.list_store,
-            metadata=self._questionnaire_store.metadata,
-            response_metadata=self._questionnaire_store.response_metadata,
+            data_stores=self._questionnaire_store.data_stores,
             schema=self._schema,
             location=self._current_location,
-            progress_store=self._questionnaire_store.progress_store,
-            supplementary_data_store=self._questionnaire_store.supplementary_data_store,
         )
 
     @cached_property
     def router(self) -> Router:
         return Router(
             schema=self._schema,
-            answer_store=self._questionnaire_store.answer_store,
-            list_store=self._questionnaire_store.list_store,
-            progress_store=self._questionnaire_store.progress_store,
-            metadata=self._questionnaire_store.metadata,
-            response_metadata=self._questionnaire_store.response_metadata,
-            supplementary_data_store=self._questionnaire_store.supplementary_data_store,
+            data_stores=self._questionnaire_store.data_stores,
         )
 
     def is_location_valid(self) -> bool:
@@ -142,7 +132,7 @@ class BlockHandler:
         )
 
     def _set_started_at_metadata(self) -> str | None:
-        response_metadata = self._questionnaire_store.response_metadata
+        response_metadata = self._questionnaire_store.data_stores.response_metadata
         if not response_metadata.get("started_at"):
             started_at = datetime.now(timezone.utc).isoformat()
             logger.info("Survey started", started_at=started_at)
@@ -154,9 +144,11 @@ class BlockHandler:
 
     def _resolve_custom_page_title_vars(self) -> MutableMapping:
         # Type ignore: list_item_id and list_name are populated at this stage
-        list_item_position = self._questionnaire_store.list_store.list_item_position(
-            self.current_location.list_name,  # type: ignore
-            self.current_location.list_item_id,  # type: ignore
+        list_item_position = (
+            self._questionnaire_store.data_stores.list_store.list_item_position(
+                self.current_location.list_name,  # type: ignore
+                self.current_location.list_item_id,  # type: ignore
+            )
         )
         return {"list_item_position": list_item_position}
 

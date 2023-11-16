@@ -1,6 +1,6 @@
 import pytest
 
-from app.data_models import ProgressStore, SupplementaryDataStore
+from app.data_models.data_stores import DataStores
 from app.forms import error_messages
 from app.forms.field_handlers import get_field_handler
 from app.questionnaire import QuestionnaireSchema
@@ -8,7 +8,7 @@ from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 
 
-def test_invalid_field_type_raises_on_invalid(answer_store, list_store):
+def test_invalid_field_type_raises_on_invalid():
     schema = QuestionnaireSchema(
         {
             "questionnaire_flow": {
@@ -33,30 +33,18 @@ def test_invalid_field_type_raises_on_invalid(answer_store, list_store):
         "case_ref": "1000000000000001",
     }
 
-    response_metadata = {}
-
     value_source_resolver = ValueSourceResolver(
-        answer_store=answer_store,
-        list_store=list_store,
-        metadata=metadata,
-        response_metadata=response_metadata,
+        data_stores=DataStores(metadata=metadata, response_metadata={}),
         schema=schema,
         location=None,
         list_item_id=None,
         escape_answer_values=False,
-        progress_store=ProgressStore(),
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     rule_evaluator = RuleEvaluator(
-        answer_store=answer_store,
-        list_store=list_store,
-        metadata=metadata,
-        response_metadata=response_metadata,
+        data_stores=DataStores(),
         schema=schema,
         location=None,
-        progress_store=ProgressStore(),
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     # Given

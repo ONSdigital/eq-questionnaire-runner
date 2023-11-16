@@ -18,7 +18,7 @@ def test_question_with_dynamic_answers(storage, language, mocker):
     set_storage_data(storage, submitted_at=submitted_at)
 
     questionnaire_store = QuestionnaireStore(storage)
-    questionnaire_store.answer_store = AnswerStore(
+    questionnaire_store.data_stores.answer_store = AnswerStore(
         [
             {
                 "answer_id": "supermarket-name",
@@ -32,7 +32,7 @@ def test_question_with_dynamic_answers(storage, language, mocker):
             },
         ]
     )
-    questionnaire_store.list_store = ListStore(
+    questionnaire_store.data_stores.list_store = ListStore(
         [{"items": ["tUJzGV", "vhECeh"], "name": "supermarkets"}]
     )
     questionnaire_store.set_metadata({"response_expires_at": get_response_expires_at()})

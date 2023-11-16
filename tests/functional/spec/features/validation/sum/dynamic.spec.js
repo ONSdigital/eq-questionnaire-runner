@@ -94,16 +94,13 @@ describe("Feature: Sum of dynamic answers based on list and optional static answ
     });
   });
   describe("Given I add list items and fill all the dynamic answers", () => {
-    it("When I continue and edit existing list item, Then I should be revisiting dynamic answers which should be updated to reflect the changes", async () => {
+    it("When I continue and edit existing list item, Then I should return straight to the summary because the dynamic answers do not depend on the supermarket name", async () => {
       await addTwoSupermarkets();
       await fillDynamicAnswers();
       await $(SectionSummaryPage.supermarketsListEditLink(1)).click();
       await $(ListCollectorEditPage.supermarketName()).setValue("Aldi");
       await click(ListCollectorEditPage.submit());
-      await click(DynamicAnswerPage.submit());
-      await click(DynamicAnswerOnlyPage.submit());
       await expect(browser).toHaveUrlContaining(SectionSummaryPage.pageName);
-      await $(SectionSummaryPage.groupContent(2)).waitForExist({ timeout: 2000 });
       await expect(await $(SectionSummaryPage.groupContent(2)).$$(summaryTitles)[0].getText()).toBe("Percentage of shopping at Aldi");
     });
   });

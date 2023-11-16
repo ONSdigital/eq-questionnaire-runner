@@ -9,7 +9,6 @@ from app.helpers import get_address_lookup_api_auth_token
 from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.questionnaire.variants import transform_variants
-from app.utilities.types import DependentSection
 from app.views.contexts import ListContext
 from app.views.contexts.question import build_question_context
 from app.views.handlers.block import BlockHandler
@@ -28,28 +27,18 @@ class Question(BlockHandler):
             return generate_form(
                 schema=self._schema,
                 question_schema=question_json,
-                answer_store=self._questionnaire_store.answer_store,
-                list_store=self._questionnaire_store.list_store,
-                metadata=self._questionnaire_store.metadata,
-                response_metadata=self._questionnaire_store.response_metadata,
+                data_stores=self._questionnaire_store.data_stores,
                 location=self._current_location,
                 form_data=self._form_data,
-                progress_store=self._questionnaire_store.progress_store,
-                supplementary_data_store=self._questionnaire_store.supplementary_data_store,
             )
 
         answers = self._get_answers_for_question(question_json)
         return generate_form(
             schema=self._schema,
             question_schema=question_json,
-            answer_store=self._questionnaire_store.answer_store,
-            list_store=self._questionnaire_store.list_store,
-            metadata=self._questionnaire_store.metadata,
-            response_metadata=self._questionnaire_store.response_metadata,
+            data_stores=self._questionnaire_store.data_stores,
             location=self._current_location,
             data=answers,
-            progress_store=self._questionnaire_store.progress_store,
-            supplementary_data_store=self._questionnaire_store.supplementary_data_store,
         )
 
     @cached_property
@@ -67,13 +56,8 @@ class Question(BlockHandler):
         transformed_block = transform_variants(
             self.block,
             self._schema,
-            self._questionnaire_store.metadata,
-            self._questionnaire_store.response_metadata,
-            self._questionnaire_store.answer_store,
-            self._questionnaire_store.list_store,
+            self._questionnaire_store.data_stores,
             self._current_location,
-            self._questionnaire_store.progress_store,
-            self._questionnaire_store.supplementary_data_store,
         )
         page_title = transformed_block.get("page_title") or self._get_safe_page_title(
             transformed_block["question"]["title"]
@@ -99,12 +83,7 @@ class Question(BlockHandler):
         return ListContext(
             language=self._language,
             schema=self._schema,
-            answer_store=self._questionnaire_store.answer_store,
-            list_store=self._questionnaire_store.list_store,
-            progress_store=self._questionnaire_store.progress_store,
-            metadata=self._questionnaire_store.metadata,
-            response_metadata=self._questionnaire_store.response_metadata,
-            supplementary_data_store=self._questionnaire_store.supplementary_data_store,
+            data_stores=self._questionnaire_store.data_stores,
         )
 
     def get_next_location_url(self) -> str:
@@ -132,7 +111,7 @@ class Question(BlockHandler):
                 or self._current_location.list_item_id
             )
             answer_id_to_use = resolved_answer.get("original_answer_id") or answer_id
-            if answer := self._questionnaire_store.answer_store.get_answer(
+            if answer := self._questionnaire_store.data_stores.answer_store.get_answer(
                 answer_id=answer_id_to_use, list_item_id=list_item_id
             ):
                 answer_value_by_answer_id[answer_id] = answer.value
@@ -142,7 +121,7 @@ class Question(BlockHandler):
     def _get_list_add_question_url(self, params: dict) -> str | None:
         block_id = params["block_id"]
         list_name = params["list_name"]
-        list_items = self._questionnaire_store.list_store[list_name].items
+        list_items = self._questionnaire_store.data_stores.list_store[list_name].items
         section_id = self._schema.get_section_id_for_block_id(block_id)
 
         if self._is_list_just_primary(list_items, list_name) or not list_items:
@@ -157,7 +136,9 @@ class Question(BlockHandler):
         return (
             len(list_items) == 1
             and list_items[0]
-            == self._questionnaire_store.list_store[list_name].primary_person
+            == self._questionnaire_store.data_stores.list_store[
+                list_name
+            ].primary_person
         )
 
     def _get_answer_action(self) -> dict | None:
@@ -239,27 +220,6 @@ class Question(BlockHandler):
         ):
             return url_for(".get_questionnaire")
 
-    def capture_dependent_sections_for_list(self, list_name: str) -> None:
-        section_ids = self._schema.get_section_ids_dependent_on_list(list_name)
-        section_ids.append(self.current_location.section_id)
-
-        for (
-            section_id,
-            list_item_id,
-        ) in self.questionnaire_store_updater.started_section_keys(
-            section_ids=section_ids
-        ):
-            # Only add sections which are repeated sections for this list, or the section in which this list is collected
-            # Prevents list item progresses being added as dependants as these are captured by started_section_keys(section_ids=section_ids)
-            if section_id == self.current_location.section_id and list_item_id:
-                continue
-            self.questionnaire_store_updater.dependent_sections.add(
-                DependentSection(
-                    section_id,
-                    list_item_id,
-                )
-            )
-
     def clear_radio_answers(self) -> None:
         answer_ids_to_remove = []
         for answer in self.rendered_block["question"]["answers"]:
@@ -278,7 +238,7 @@ class Question(BlockHandler):
         if not repeating_block_ids:
             return None
 
-        list_model = self._questionnaire_store.list_store.get(list_name)
+        list_model = self._questionnaire_store.data_stores.list_store.get(list_name)
         for list_item_id in list_model.items:
             if incomplete_location := self.get_first_incomplete_list_repeating_block_location_for_list_item(
                 repeating_block_ids=repeating_block_ids,
@@ -294,11 +254,13 @@ class Question(BlockHandler):
         section_key: SectionKey,
         list_name: str,
     ) -> Location | None:
-        if self._questionnaire_store.progress_store.is_section_complete(section_key):
+        if self._questionnaire_store.data_stores.progress_store.is_section_complete(
+            section_key
+        ):
             return None
 
         for repeating_block_id in repeating_block_ids:
-            if not self._questionnaire_store.progress_store.is_block_complete(
+            if not self._questionnaire_store.data_stores.progress_store.is_block_complete(
                 block_id=repeating_block_id,
                 section_key=section_key,
             ):

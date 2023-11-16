@@ -3,8 +3,9 @@ from decimal import Decimal
 import pytest
 from mock import Mock
 
-from app.data_models import ProgressStore, SupplementaryDataStore
+from app.data_models import ProgressStore
 from app.data_models.answer_store import AnswerStore
+from app.data_models.data_stores import DataStores
 from app.data_models.list_store import ListStore
 from app.data_models.progress import CompletionStatus, ProgressDict
 from app.questionnaire import Location
@@ -39,15 +40,10 @@ def test_metadata_placeholder(mock_renderer, mock_schema, mock_location):
     metadata = get_metadata({"period_str": period_str})
     parser = PlaceholderParser(
         language="en",
-        answer_store=AnswerStore(),
-        list_store=ListStore(),
-        metadata=metadata,
-        response_metadata={},
+        data_stores=DataStores(metadata=metadata),
         schema=mock_schema,
         renderer=mock_renderer,
-        progress_store=ProgressStore(),
         location=mock_location,
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_list)
@@ -82,15 +78,10 @@ def test_previous_answer_transform_placeholder(mock_renderer, mock_location):
 
     parser = PlaceholderParser(
         language="en",
-        answer_store=answer_store,
-        list_store=ListStore(),
-        metadata=get_metadata(),
-        response_metadata={},
+        data_stores=DataStores(answer_store=answer_store),
         schema=schema,
         renderer=mock_renderer,
-        progress_store=ProgressStore(),
         location=mock_location,
-        supplementary_data_store=SupplementaryDataStore(),
     )
     placeholders = parser(placeholder_list)
 
@@ -120,15 +111,10 @@ def test_metadata_transform_placeholder(mock_renderer, mock_schema, mock_locatio
 
     parser = PlaceholderParser(
         language="en",
-        answer_store=AnswerStore(),
-        list_store=ListStore(),
-        metadata=metadata,
-        response_metadata={},
+        data_stores=DataStores(metadata=metadata),
         schema=mock_schema,
         renderer=mock_renderer,
-        progress_store=ProgressStore(),
         location=mock_location,
-        supplementary_data_store=SupplementaryDataStore(),
     )
     placeholders = parser(placeholder_list)
 
@@ -162,15 +148,10 @@ def test_response_metadata_transform_placeholder(
 
     parser = PlaceholderParser(
         language="en",
-        answer_store=AnswerStore(),
-        list_store=ListStore(),
-        metadata=metadata,
-        response_metadata=response_metadata,
+        data_stores=DataStores(metadata=metadata, response_metadata=response_metadata),
         schema=mock_schema,
         renderer=mock_renderer,
-        progress_store=ProgressStore(),
         location=mock_location,
-        supplementary_data_store=SupplementaryDataStore(),
     )
     placeholders = parser(placeholder_list)
 
@@ -207,15 +188,10 @@ def test_multiple_answer_transform_placeholder(
 
     parser = PlaceholderParser(
         language="en",
-        answer_store=answer_store,
-        list_store=ListStore(),
-        metadata=get_metadata(),
-        response_metadata={},
+        data_stores=DataStores(answer_store=answer_store),
         schema=mock_schema,
         renderer=mock_renderer,
-        progress_store=ProgressStore(),
         location=mock_location,
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_list)
@@ -247,15 +223,10 @@ def test_first_non_empty_item_transform_placeholder(
 
     parser = PlaceholderParser(
         language="en",
-        answer_store=AnswerStore(),
-        list_store=ListStore(),
-        metadata=metadata,
-        response_metadata={},
+        data_stores=DataStores(metadata=metadata),
         schema=mock_schema,
         renderer=mock_renderer,
-        progress_store=ProgressStore(),
         location=mock_location,
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_list)
@@ -289,15 +260,10 @@ def test_format_list_answer_transform_placeholder(
 
     parser = PlaceholderParser(
         language="en",
-        answer_store=answer_store,
-        list_store=ListStore(),
-        metadata=get_metadata(),
-        response_metadata={},
+        data_stores=DataStores(answer_store=answer_store),
         schema=mock_schema,
         renderer=mock_renderer,
-        progress_store=ProgressStore(),
         location=mock_location,
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_list)
@@ -334,15 +300,10 @@ def test_placeholder_parser_escapes_answers(mock_renderer, mock_schema, mock_loc
 
     parser = PlaceholderParser(
         language="en",
-        answer_store=answer_store,
-        list_store=ListStore(),
-        metadata=get_metadata(),
-        response_metadata={},
+        data_stores=DataStores(answer_store=answer_store),
         schema=mock_schema,
         renderer=mock_renderer,
-        progress_store=ProgressStore(),
         location=mock_location,
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_list)
@@ -385,15 +346,10 @@ def test_multiple_metadata_transform_placeholder(
 
     parser = PlaceholderParser(
         language="en",
-        answer_store=AnswerStore(),
-        list_store=ListStore(),
-        metadata=metadata,
-        response_metadata={},
+        data_stores=DataStores(metadata=metadata),
         schema=mock_schema,
         renderer=mock_renderer,
-        progress_store=ProgressStore(),
         location=mock_location,
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_list)
@@ -428,15 +384,10 @@ def test_multiple_metadata_list_transform_placeholder(
 
     parser = PlaceholderParser(
         language="en",
-        answer_store=AnswerStore(),
-        list_store=ListStore(),
-        metadata=metadata,
-        response_metadata={},
+        data_stores=DataStores(metadata=metadata),
         schema=mock_schema,
         renderer=mock_renderer,
-        progress_store=ProgressStore(),
         location=mock_location,
-        supplementary_data_store=SupplementaryDataStore(),
     )
     placeholders = parser(placeholder_list)
 
@@ -469,15 +420,10 @@ def test_checkbox_transform_placeholder(mock_renderer, mock_schema, mock_locatio
 
     parser = PlaceholderParser(
         language="en",
-        answer_store=answer_store,
-        list_store=ListStore(),
-        metadata=get_metadata(),
-        response_metadata={},
+        data_stores=DataStores(answer_store=answer_store),
         schema=mock_schema,
         renderer=mock_renderer,
-        progress_store=ProgressStore(),
         location=mock_location,
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_list)
@@ -514,15 +460,10 @@ def test_mixed_transform_placeholder(mock_renderer, mock_schema, mock_location):
 
     parser = PlaceholderParser(
         language="en",
-        answer_store=answer_store,
-        list_store=ListStore(),
-        metadata=metadata,
-        response_metadata={},
+        data_stores=DataStores(answer_store=answer_store, metadata=metadata),
         schema=mock_schema,
         renderer=mock_renderer,
-        progress_store=ProgressStore(),
         location=mock_location,
-        supplementary_data_store=SupplementaryDataStore(),
     )
     placeholders = parser(placeholder_list)
 
@@ -554,15 +495,10 @@ def test_mixed_transform_placeholder_value(mock_renderer, mock_schema, mock_loca
 
     parser = PlaceholderParser(
         language="en",
-        answer_store=answer_store,
-        list_store=ListStore(),
-        metadata=get_metadata(),
-        response_metadata={},
+        data_stores=DataStores(answer_store=answer_store),
         schema=mock_schema,
         renderer=mock_renderer,
-        progress_store=ProgressStore(),
         location=mock_location,
-        supplementary_data_store=SupplementaryDataStore(),
     )
     placeholders = parser(placeholder_list)
 
@@ -583,15 +519,10 @@ def test_list_source_count(mock_renderer, mock_schema, mock_location):
 
     parser = PlaceholderParser(
         language="en",
-        answer_store=AnswerStore(),
-        list_store=list_store,
-        metadata=get_metadata(),
-        response_metadata={},
+        data_stores=DataStores(list_store=list_store),
         schema=mock_schema,
         renderer=mock_renderer,
-        progress_store=ProgressStore(),
         location=mock_location,
-        supplementary_data_store=SupplementaryDataStore(),
     )
     placeholders = parser(placeholder_list)
 
@@ -623,15 +554,10 @@ def test_list_source_count_in_transform(mock_renderer, mock_schema, mock_locatio
 
     parser = PlaceholderParser(
         language="en",
-        answer_store=AnswerStore(),
-        list_store=list_store,
-        metadata=get_metadata(),
-        response_metadata={},
+        data_stores=DataStores(list_store=list_store),
         schema=mock_schema,
         renderer=mock_renderer,
-        progress_store=ProgressStore(),
         location=mock_location,
-        supplementary_data_store=SupplementaryDataStore(),
     )
     placeholders = parser(placeholder_list)
 
@@ -670,15 +596,10 @@ def test_chain_transform_placeholder(mock_renderer, mock_schema, mock_location):
 
     parser = PlaceholderParser(
         language="en",
-        answer_store=answer_store,
-        list_store=ListStore(),
-        metadata=get_metadata(),
-        response_metadata={},
+        data_stores=DataStores(answer_store=answer_store),
         schema=mock_schema,
         renderer=mock_renderer,
-        progress_store=ProgressStore(),
         location=mock_location,
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_list)
@@ -717,15 +638,10 @@ def test_placeholder_resolves_answer_value_based_on_first_item_in_list(
 
     parser = PlaceholderParser(
         language="en",
-        answer_store=answer_store,
-        list_store=list_store,
-        metadata=get_metadata(),
-        response_metadata={},
+        data_stores=DataStores(list_store=list_store, answer_store=answer_store),
         schema=mock_schema,
         renderer=mock_renderer,
-        progress_store=ProgressStore(),
         location=mock_location,
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_list)
@@ -750,15 +666,10 @@ def test_placeholder_resolves_list_item_value_based_on_first_item_in_list(
 
     parser = PlaceholderParser(
         language="en",
-        answer_store=AnswerStore(),
-        list_store=list_store,
-        metadata=get_metadata(),
-        response_metadata={},
+        data_stores=DataStores(list_store=list_store),
         schema=mock_schema,
         renderer=mock_renderer,
-        progress_store=ProgressStore(),
         location=mock_location,
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_list)
@@ -791,16 +702,11 @@ def test_placeholder_resolves_same_name_items(
 
     parser = PlaceholderParser(
         language="en",
-        answer_store=AnswerStore(),
-        list_store=list_store,
-        metadata=get_metadata(),
-        response_metadata={},
+        data_stores=DataStores(list_store=list_store),
         schema=mock_schema,
         renderer=mock_renderer,
         list_item_id="abc123",
-        progress_store=ProgressStore(),
         location=mock_location,
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_list)
@@ -898,16 +804,11 @@ def test_placeholder_resolves_name_is_duplicate_chain(
 
     parser = PlaceholderParser(
         language="en",
-        answer_store=answer_store,
-        list_store=list_store,
-        metadata=get_metadata(),
-        response_metadata={},
+        data_stores=DataStores(list_store=list_store, answer_store=answer_store),
         schema=mock_schema,
         list_item_id="abc123",
         renderer=mock_renderer,
-        progress_store=ProgressStore(),
         location=mock_location,
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_transforms)
@@ -916,16 +817,11 @@ def test_placeholder_resolves_name_is_duplicate_chain(
 
     parser = PlaceholderParser(
         language="en",
-        answer_store=answer_store,
-        list_store=list_store,
-        metadata=get_metadata(),
-        response_metadata={},
+        data_stores=DataStores(list_store=list_store, answer_store=answer_store),
         schema=mock_schema,
         list_item_id="cde456",
         renderer=mock_renderer,
-        progress_store=ProgressStore(),
         location=mock_location,
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_transforms)
@@ -1019,16 +915,11 @@ def test_placeholder_resolves_list_has_items_chain(
 
     parser = PlaceholderParser(
         language="en",
-        answer_store=answer_store,
-        list_store=list_store,
-        metadata=get_metadata(),
-        response_metadata={},
+        data_stores=DataStores(answer_store=answer_store, list_store=list_store),
         schema=mock_schema,
         list_item_id="abc123",
         renderer=mock_renderer,
-        progress_store=ProgressStore(),
         location=mock_location,
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_transforms)
@@ -1037,16 +928,11 @@ def test_placeholder_resolves_list_has_items_chain(
 
     parser = PlaceholderParser(
         language="en",
-        answer_store=answer_store,
-        list_store=list_store,
-        metadata=get_metadata(),
-        response_metadata={},
+        data_stores=DataStores(answer_store=answer_store, list_store=list_store),
         schema=mock_schema,
         list_item_id="cde456",
         renderer=mock_renderer,
-        progress_store=ProgressStore(),
         location=mock_location,
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_transforms)
@@ -1073,15 +959,10 @@ def test_placeholder_default_value(default_placeholder_value_schema, mock_render
 
     parser = PlaceholderParser(
         language="en",
-        answer_store=AnswerStore(),
-        list_store=ListStore(),
-        metadata=get_metadata(),
-        response_metadata={},
+        data_stores=DataStores(),
         schema=default_placeholder_value_schema,
         renderer=mock_renderer,
-        progress_store=ProgressStore(),
         location=location,
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_list)
@@ -1157,15 +1038,12 @@ def test_placeholder_parser_calculated_summary_dependencies_cache(
 
     placeholder_parser = PlaceholderParser(
         language="en",
-        answer_store=answer_store,
-        list_store=ListStore(),
-        metadata=get_metadata(),
-        response_metadata={},
+        data_stores=DataStores(
+            answer_store=answer_store, progress_store=progress_store
+        ),
         schema=schema,
         renderer=mock_renderer,
-        progress_store=progress_store,
         location=location,
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholder_1 = placeholder_parser(placeholder_list=placeholder_list_1)
@@ -1265,15 +1143,14 @@ def test_placeholder_dependencies_cache(mocker, mock_renderer):
     )
     placeholder_parser = PlaceholderParser(
         language="en",
-        answer_store=answer_store,
-        list_store=ListStore(),
-        metadata=get_metadata(),
-        response_metadata={},
+        data_stores=DataStores(
+            answer_store=answer_store,
+            progress_store=progress_store,
+            metadata=get_metadata(),
+        ),
         schema=schema,
         renderer=mock_renderer,
-        progress_store=progress_store,
         location=location,
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholder_1 = placeholder_parser(placeholder_list=placeholder_list_1)
@@ -1324,15 +1201,10 @@ def test_format_currency_placeholder_total_with_previous_transform(
 
     parser = PlaceholderParser(
         language="en",
-        answer_store=AnswerStore(),
-        list_store=ListStore(),
-        metadata=metadata,
-        response_metadata={},
+        data_stores=DataStores(metadata=metadata),
         schema=mock_schema,
         renderer=mock_renderer,
-        progress_store=ProgressStore(),
         location=mock_location,
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     placeholders = parser(placeholder_list)

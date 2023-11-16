@@ -385,7 +385,7 @@ def test_get_schema_value_answer_store(value_source_resolver, rule_evaluator):
 
     answer_store.add_or_update(Answer(answer_id="set-maximum", value=10))
     answer_store.add_or_update(Answer(answer_id="set-minimum", value=1))
-    value_source_resolver.answer_store = answer_store
+    value_source_resolver.data_stores.answer_store = answer_store
     number_handler = NumberHandler(
         answer_schema, value_source_resolver, rule_evaluator, error_messages
     )

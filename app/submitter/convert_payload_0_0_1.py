@@ -4,14 +4,9 @@ from typing import Any, Iterable, Mapping, MutableMapping
 
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import (
-    AnswerStore,
-    ListStore,
-    ProgressStore,
-    SupplementaryDataStore,
-)
+from app.data_models import AnswerStore
 from app.data_models.answer import AnswerValueTypes, ListAnswer
-from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.data_stores import DataStores
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location
 from app.questionnaire.routing_path import RoutingPath
@@ -23,14 +18,9 @@ MetadataType = MutableMapping[str, str | int | list]
 # pylint: disable=too-many-locals,too-many-nested-blocks
 def convert_answers_to_payload_0_0_1(
     *,
-    metadata: MetadataProxy,
-    response_metadata: MetadataType,
-    answer_store: AnswerStore,
-    list_store: ListStore,
+    data_stores: DataStores,
     schema: QuestionnaireSchema,
     full_routing_path: Iterable[RoutingPath],
-    progress_store: ProgressStore,
-    supplementary_data_store: SupplementaryDataStore,
 ) -> OrderedDict[str, Any]:
     """
     Convert answers into the data format below
@@ -39,21 +29,16 @@ def convert_answers_to_payload_0_0_1(
           '001': '01-01-2016',
           '002': '30-03-2016'
         }
-    :param metadata: questionnaire metadata
-    :param response_metadata: response metadata
-    :param answer_store: questionnaire answers
-    :param list_store: list store
+    :param data_stores: questionnaire data stores
     :param schema: QuestionnaireSchema class with populated schema json
     :param full_routing_path: a list of section routing paths followed in the questionnaire
-    :param progress_store: progress store
-    :param supplementary_data_store: supplementary data store
     :return: data in a formatted form
     """
     data = OrderedDict()
     for routing_path in full_routing_path:
         for block_id in routing_path:
             answer_ids = schema.get_answer_ids_for_block(block_id)
-            answers_in_block = answer_store.get_answers_by_answer_id(
+            answers_in_block = data_stores.answer_store.get_answers_by_answer_id(
                 answer_ids, routing_path.list_item_id
             )
 
@@ -69,13 +54,8 @@ def convert_answers_to_payload_0_0_1(
                 question = choose_question_to_display(
                     block,
                     schema,
-                    metadata,
-                    response_metadata,
-                    answer_store,
-                    list_store,
+                    data_stores,
                     current_location=current_location,
-                    progress_store=progress_store,
-                    supplementary_data_store=supplementary_data_store,
                 )
                 for answer_id, answer in schema.get_answers_for_question_by_id(
                     question
@@ -90,7 +70,7 @@ def convert_answers_to_payload_0_0_1(
                     if answer_schema["type"] == "Checkbox":
                         data.update(
                             _get_checkbox_answer_data(
-                                answer_store, answer_schema, value  # type: ignore
+                                data_stores.answer_store, answer_schema, value  # type: ignore
                             )
                         )
                     elif "q_code" in answer_schema:
