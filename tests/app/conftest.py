@@ -8,7 +8,8 @@ import pytest
 from mock import MagicMock
 from mock.mock import Mock
 from requests.adapters import ConnectTimeoutError, ReadTimeoutError
-from urllib3.connectionpool import HTTPConnectionPool, HTTPResponse
+from urllib3.connectionpool import HTTPConnectionPool
+from urllib3.response import HTTPResponse
 
 from app.data_models import QuestionnaireStore
 from app.data_models.answer_store import AnswerStore
