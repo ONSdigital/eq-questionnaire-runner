@@ -94,7 +94,7 @@ jobs:
 
       - name: Save HTML output
         run: |
-            pipenv run cr-html cosmic-ray.sqlite > cosmic-ray-report-${{ matrix.mutation-package-under-test }}.html
+            pipenv run cr-html cosmic-ray.sqlite > html/cosmic-ray-report-${{ matrix.mutation-package-under-test }}.html
       - uses: actions/upload-artifact@v3
         with:
             name: cosmic-ray-report-${{ matrix.mutation-package-under-test }}
