@@ -28,7 +28,6 @@ jobs:
     needs: python-dependencies
     strategy:
       matrix:
-#        mutation-package-under-test: [ authentication, forms, publisher, questionnaire, routes ]
         mutation-package-under-test: [ authentication, forms, publisher, questionnaire ]
     runs-on: ubuntu-22.04
     steps:
@@ -61,25 +60,6 @@ jobs:
         run: ln -sf .development.env .env
       - name: Run mutmut
         run: |
-            # hacky way to handle unit and integration paths for the package under test for now
-            #            packages_to_run_with_pytest=""
-            #            if [ -d tests/app/${{ matrix.mutation-package-under-test }} ]; then
-            #                packages_to_run_with_pytest="tests/app/${{ matrix.mutation-package-under-test }}"
-            #            fi
-            #
-            #            if [ -d tests/integration/${{ matrix.mutation-package-under-test }} ]; then
-            #                packages_to_run_with_pytest="${packages_to_run_with_pytest} tests/integration/${{ matrix.mutation-package-under-test }}"
-            #            fi
-
-            #            packages_to_run_with_pytest=""
-            #            echo ${packages_to_run_with_pytest}
-            #
-            #            pipenv run mutmut run \
-            #                --paths-to-mutate "app/${{ matrix.mutation-package-under-test }}/" \
-            #                --runner "py.test -n auto ${packages_to_run_with_pytest}" \
-            #                --no-progress \
-            #                --CI
-
             pipenv run mutmut run \
                 --paths-to-mutate "app/${{ matrix.mutation-package-under-test }}/" \
                 --runner "py.test -n auto tests/app/${{ matrix.mutation-package-under-test }}" \
