@@ -1,4 +1,4 @@
-name: cosmic-ray-integration
+name: cosmic-ray
 
 on:
   push:
