@@ -371,15 +371,17 @@ def test_instrument_id_should_be_set_in_payload_collection_if_form_type_in_metad
 def test_schema_url_in_metadata_should_be_in_payload(
     fake_metadata_v2_schema_url, fake_questionnaire_schema
 ):
+    print("URL GET STORE")
     questionnaire_store = get_questionnaire_store("v2")
-    questionnaire_store.metadata = fake_metadata_v2_schema_url
+    print("URL SET STORE METADATA")
+    questionnaire_store.data_stores.metadata = fake_metadata_v2_schema_url
+    print("URL STORE METADATA V1", questionnaire_store.data_stores.metadata)
 
     payload = convert_answers_v2(
         fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
     )
-    print("fake_metadata", fake_metadata_v2_schema_url)
-    print("store_metadata", questionnaire_store.metadata)
-    print("payload", payload)
+    print("URL CONVERTED PAYLOAD", payload)
+    print("URL POST CONVERSION METADATA", questionnaire_store.data_stores.metadata)
 
     assert "schema_url" in payload
     assert "schema_name" not in payload
@@ -390,15 +392,17 @@ def test_schema_url_in_metadata_should_be_in_payload(
 def test_cir_instrument_id_in_metadata_should_be_in_payload(
     fake_metadata_v2_cir_instrument_id, fake_questionnaire_schema
 ):
+    print("CIR GET STORE")
     questionnaire_store = get_questionnaire_store("v2")
-    questionnaire_store.metadata = fake_metadata_v2_cir_instrument_id
+    print("CIR SET STORE METADATA")
+    questionnaire_store.data_stores.metadata = fake_metadata_v2_cir_instrument_id
+    print("CIR STORE METADATA V1", questionnaire_store.data_stores.metadata)
 
     payload = convert_answers_v2(
         fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
     )
-    print("fake_metadata", fake_metadata_v2_cir_instrument_id)
-    print("store_metadata", questionnaire_store.metadata)
-    print("payload", payload)
+    print("CIR CONVERTED PAYLOAD", payload)
+    print("CIR POST CONVERSION METADATA", questionnaire_store.data_stores.metadata)
 
     assert "schema_url" not in payload
     assert "schema_name" not in payload
