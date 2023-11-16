@@ -255,10 +255,7 @@ class TestEmailConfirmation(IntegrationTestCase):
 
         # Then I get an error message on the thank you page
         self.assertInUrl("/submitted/thank-you/")
-        self.assertInBody("Enter an email address")
-        self.assertEqualPageTitle(
-            "We’ve received your answers - Confirmation email test schema"
-        )
+        self.assertInSelectorCSS("Enter an email address", class_="ons-panel__error")
 
     def test_thank_you_incorrect_email_format(self):
         # Given I launch and complete the test_confirmation_email questionnaire
@@ -269,12 +266,9 @@ class TestEmailConfirmation(IntegrationTestCase):
 
         # Then I get an error message on the thank you page
         self.assertInUrl("thank-you")
-        self.assertInBody(
-            "Enter an email address in a valid format, for example name@example.com"
-        )
-
-        self.assertEqualPageTitle(
-            "We’ve received your answers - Confirmation email test schema"
+        self.assertInSelectorCSS(
+            "Enter an email address in a valid format, for example name@example.com",
+            class_="ons-panel__error",
         )
 
     def test_thank_you_email_invalid_tld(self):
@@ -286,8 +280,9 @@ class TestEmailConfirmation(IntegrationTestCase):
 
         # Then I get an error message on the thank you page
         self.assertInUrl("thank-you")
-        self.assertInBody(
-            "Enter an email address in a valid format, for example name@example.com"
+        self.assertInSelectorCSS(
+            "Enter an email address in a valid format, for example name@example.com",
+            class_="ons-panel__error",
         )
 
     def test_thank_you_email_invalid_and_invalid_tld(self):
@@ -299,8 +294,9 @@ class TestEmailConfirmation(IntegrationTestCase):
 
         # Then I get a single error message on the thank you page
         self.assertInUrl("thank-you")
-        self.assertInBody(
-            "Enter an email address in a valid format, for example name@example.com"
+        self.assertInSelectorCSS(
+            "Enter an email address in a valid format, for example name@example.com",
+            class_="ons-panel__error",
         )
         self.assertNotInBody('data-qa="error-link-2"')
 
