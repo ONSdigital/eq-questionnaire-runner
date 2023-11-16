@@ -17,7 +17,7 @@
             "type": "string"
         },
         {
-            "name": "display_address",
+            "name": "ru_name",
             "type": "string"
         }
     ],
