@@ -13,7 +13,7 @@ from app.data_models.list_store import ListStore
 from app.data_models.progress import ProgressDict
 from app.data_models.progress_store import ProgressStore
 from app.questionnaire.location import Location
-from app.questionnaire.questionnaire_schema import AnswerDependent, QuestionnaireSchema
+from app.questionnaire.questionnaire_schema import Dependent, QuestionnaireSchema
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.utilities.schema import load_schema_from_name
 from app.utilities.types import DependentSection, SectionKey
@@ -66,7 +66,7 @@ def test_update_dynamic_answers(
     ]
     mock_empty_schema.answer_dependencies = {
         "supermarket-name": {
-            AnswerDependent(
+            Dependent(
                 section_id="section",
                 block_id="dynamic-answer",
                 for_list="supermarkets",
@@ -537,7 +537,7 @@ def test_update_same_name_items(
 def get_answer_dependencies(for_list=None):
     return {
         "total-employees-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="breakdown-section",
                 block_id="employees-breakdown-block",
                 for_list=for_list,
@@ -545,7 +545,7 @@ def get_answer_dependencies(for_list=None):
             )
         },
         "total-turnover-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="breakdown-section",
                 block_id="turnover-breakdown-block",
                 for_list=for_list,
@@ -724,7 +724,7 @@ def test_update_answers_with_answer_dependents(
     mock_schema.get_answer_ids_for_question.return_value = ["first-answer"]
     mock_schema.answer_dependencies = {
         "first-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="section",
                 block_id="second-block",
                 for_list=None,
@@ -813,7 +813,7 @@ def test_update_repeating_answers_with_answer_dependents(
     mock_schema.get_answer_ids_for_question.return_value = ["first-answer"]
     mock_schema.answer_dependencies = {
         "first-answer": {
-            AnswerDependent(
+            Dependent(
                 section_id="section",
                 block_id="second-block",
                 for_list="list-name",

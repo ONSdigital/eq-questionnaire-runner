@@ -38,7 +38,7 @@ class ListAddQuestion(ListAction):
     def handle_post(self) -> None:
         # Ensure the section is in progress when user adds an item
         self._list_item_id = self.questionnaire_store_updater.add_list_item(
-            self.parent_block["for_list"]
+            list_name := self.parent_block["for_list"]
         )
 
         # Clear the answer from the confirmation question on the list collector question
@@ -54,9 +54,7 @@ class ListAddQuestion(ListAction):
         self.questionnaire_store_updater.update_answers(
             self.form.data, self._list_item_id
         )
-
-        self.capture_dependent_sections_for_list(self.parent_block["for_list"])
-
+        self.questionnaire_store_updater.capture_dependencies_for_list_change(list_name)
         return super().handle_post()
 
     def _resolve_custom_page_title_vars(self) -> dict[str, int]:
