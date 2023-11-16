@@ -1,7 +1,6 @@
 from datetime import datetime, timezone
 
 import pytest
-from structlog import get_logger
 
 from app.authentication.auth_payload_versions import AuthPayloadVersion
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
@@ -15,7 +14,6 @@ from tests.app.questionnaire.conftest import get_metadata
 from tests.app.submitter.conftest import get_questionnaire_store
 
 SUBMITTED_AT = datetime.now(timezone.utc)
-logger = get_logger()
 
 
 @pytest.mark.parametrize(
@@ -373,9 +371,9 @@ def test_schema_url_in_metadata_should_be_in_payload(
     payload = convert_answers_v2(
         fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
     )
-    logger.debug("fake_metadata", metadata=fake_metadata_v2_schema_url)
-    logger.debug("store_metadata", metadata=questionnaire_store.metadata)
-    logger.debug("payload", payload=payload)
+    print("fake_metadata", fake_metadata_v2_schema_url)
+    print("store_metadata", questionnaire_store.metadata)
+    print("payload", payload)
 
     assert "schema_url" in payload
     assert "schema_name" not in payload
@@ -392,8 +390,8 @@ def test_cir_instrument_id_in_metadata_should_be_in_payload(
     payload = convert_answers_v2(
         fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT
     )
-    logger.debug("fake_metadata", metadata=fake_metadata_v2_cir_instrument_id)
-    logger.warning("store_metadata", metadata=questionnaire_store.metadata)
+    print("fake_metadata", fake_metadata_v2_cir_instrument_id)
+    print("store_metadata", questionnaire_store.metadata)
     print("payload", payload)
 
     assert "schema_url" not in payload
