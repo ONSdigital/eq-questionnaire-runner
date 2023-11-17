@@ -70,31 +70,25 @@ class SurveyMetadata(Schema, StripWhitespaceMixin):
 class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     """Metadata which is required for the operation of runner itself"""
 
-    jti = VALIDATORS["uuid"]()  # type:ignore
-    tx_id = VALIDATORS["uuid"]()  # type:ignore
-    case_id = VALIDATORS["uuid"]()  # type:ignore
-    collection_exercise_sid = VALIDATORS["string"](
-        validate=validate.Length(min=1)
-    )  # type:ignore
+    jti = VALIDATORS["uuid"]()
+    tx_id = VALIDATORS["uuid"]()
+    case_id = VALIDATORS["uuid"]()
+    collection_exercise_sid = VALIDATORS["string"](validate=validate.Length(min=1))
     version = VALIDATORS["string"](
         required=True, validate=validate.OneOf([AuthPayloadVersion.V2.value])
-    )  # type:ignore
-    schema_name = VALIDATORS["string"](required=False)  # type:ignore
-    schema_url = VALIDATORS["url"](required=False)  # type:ignore
-    response_id = VALIDATORS["string"](required=True)  # type:ignore
-    account_service_url = VALIDATORS["url"](required=True)  # type:ignore
+    )
+    schema_name = VALIDATORS["string"](required=False)
+    schema_url = VALIDATORS["url"](required=False)
+    response_id = VALIDATORS["string"](required=True)
+    account_service_url = VALIDATORS["url"](required=True)
 
-    language_code = VALIDATORS["string"](required=False)  # type:ignore
-    channel = VALIDATORS["string"](
-        required=False, validate=validate.Length(min=1)
-    )  # type:ignore
+    language_code = VALIDATORS["string"](required=False)
+    channel = VALIDATORS["string"](required=False, validate=validate.Length(min=1))
     response_expires_at = VALIDATORS["iso_8601_date_string"](
         required=True,
         validate=lambda x: parse_iso_8601_datetime(x) > datetime.now(tz=timezone.utc),
-    )  # type:ignore
-    region_code = VALIDATORS["string"](
-        required=False, validate=RegionCode()
-    )  # type:ignore
+    )
+    region_code = VALIDATORS["string"](required=False, validate=RegionCode())
 
     roles = fields.List(fields.String(), required=False)
     survey_metadata = fields.Nested(SurveyMetadata, required=False)

@@ -1243,9 +1243,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 # Type ignore: Added as this will be a set rather than a dict at this point
                 dependencies_ids_for_progress_value_source["sections"][
                     identifier
-                ] = OrderedSet(
-                    [current_section_id]
-                )  # type: ignore
+                ] = OrderedSet([current_section_id])
             elif selector == "block" and (
                 section_id := self.get_section_id_for_block_id(identifier)
             ):
@@ -1274,9 +1272,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         section_dependencies: set[str] = set()
         # Type Ignore: Added to this method as the block will exist at this point
         for answer_id in dependent_answer_ids:
-            block = self.get_block_for_answer_id(answer_id)  # type: ignore
+            block = self.get_block_for_answer_id(answer_id)
             section_id = self.get_section_id_for_block_id(block["id"])  # type: ignore
-
             if section_id != current_section_id:
                 self._when_rules_section_dependencies_by_answer[answer_id].add(
                     current_section_id

@@ -192,7 +192,7 @@ class QuestionnaireForm(FlaskForm):
 
         if "value" in calculation:
             if isinstance(calculation["value"], dict):
-                target_total = self.value_source_resolver.resolve(calculation["value"])  # type: ignore
+                target_total = self.value_source_resolver.resolve(calculation["value"])
             else:
                 target_total = calculation["value"]
         else:
