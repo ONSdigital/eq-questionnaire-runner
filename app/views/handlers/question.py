@@ -9,7 +9,6 @@ from app.helpers import get_address_lookup_api_auth_token
 from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdater
 from app.questionnaire.variants import transform_variants
-from app.utilities.types import DependentSection
 from app.views.contexts import ListContext
 from app.views.contexts.question import build_question_context
 from app.views.handlers.block import BlockHandler
@@ -220,27 +219,6 @@ class Question(BlockHandler):
             and self.router.can_access_hub()
         ):
             return url_for(".get_questionnaire")
-
-    def capture_dependent_sections_for_list(self, list_name: str) -> None:
-        section_ids = self._schema.get_section_ids_dependent_on_list(list_name)
-        section_ids.append(self.current_location.section_id)
-
-        for (
-            section_id,
-            list_item_id,
-        ) in self.questionnaire_store_updater.started_section_keys(
-            section_ids=section_ids
-        ):
-            # Only add sections which are repeated sections for this list, or the section in which this list is collected
-            # Prevents list item progresses being added as dependants as these are captured by started_section_keys(section_ids=section_ids)
-            if section_id == self.current_location.section_id and list_item_id:
-                continue
-            self.questionnaire_store_updater.dependent_sections.add(
-                DependentSection(
-                    section_id,
-                    list_item_id,
-                )
-            )
 
     def clear_radio_answers(self) -> None:
         answer_ids_to_remove = []

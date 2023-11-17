@@ -32,7 +32,9 @@ class ListRemoveQuestion(ListAction):
                 list_name,
                 self._current_location.list_item_id,  # type: ignore
             )
-            self.capture_dependent_sections_for_list(self.parent_block["for_list"])
+            self.questionnaire_store_updater.capture_dependencies_for_list_change(
+                list_name
+            )
 
         return super().handle_post()
 
