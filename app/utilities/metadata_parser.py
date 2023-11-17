@@ -1,6 +1,6 @@
 import functools
 from datetime import datetime, timezone
-from typing import Any, Mapping
+from typing import Any, Mapping, MutableMapping
 
 from marshmallow import (
     EXCLUDE,
@@ -35,8 +35,8 @@ VALIDATORS = {
 class StripWhitespaceMixin:
     @pre_load()
     def strip_whitespace(  # pylint: disable=no-self-use, unused-argument
-        self, items: dict, **kwargs: Any
-    ) -> dict:
+        self, items: MutableMapping, **kwargs: Any
+    ) -> MutableMapping:
         for key, value in items.items():
             if isinstance(value, str):
                 items[key] = value.strip()
@@ -88,7 +88,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
 
     @validates_schema
     def validate_schema_name(  # pylint: disable=no-self-use, unused-argument
-        self, data: dict, **kwargs: Any
+        self, data: Mapping, **kwargs: Any
     ) -> None:
         """Function to validate the business schema parameters"""
         if not data.get("schema_name"):
@@ -103,8 +103,8 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
 
     @post_load
     def update_schema_name(  # pylint: disable=no-self-use, unused-argument
-        self, data: dict, **kwargs: Any
-    ) -> dict:
+        self, data: MutableMapping, **kwargs: Any
+    ) -> MutableMapping:
         """Function to transform parameters into a business schema"""
         if data.get("schema_name"):
             logger.info(
@@ -118,8 +118,8 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
 
     @post_load
     def update_response_id(  # pylint: disable=no-self-use, unused-argument
-        self, data: dict, **kwargs: Any
-    ) -> dict:
+        self, data: MutableMapping, **kwargs: Any
+    ) -> MutableMapping:
         """
         If response_id is present : return as it is
         If response_id is not present : Build response_id from ru_ref,collection_exercise_sid,eq_id and form_type

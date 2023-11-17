@@ -42,7 +42,7 @@ class SupplementaryData(Schema, StripWhitespaceMixin):
 
     @validates_schema()
     def validate_identifier(  # pylint: disable=no-self-use, unused-argument
-        self, data: dict, **kwargs: Any
+        self, data: Mapping, **kwargs: Any
     ) -> None:
         if data and data["identifier"] != self.context["identifier"]:
             raise ValidationError(

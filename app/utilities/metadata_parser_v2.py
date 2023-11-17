@@ -1,6 +1,6 @@
 import functools
 from datetime import datetime, timezone
-from typing import Any, Callable, Iterable, Mapping
+from typing import Any, Callable, Iterable, Mapping, MutableMapping
 
 from marshmallow import (
     EXCLUDE,
@@ -35,8 +35,8 @@ VALIDATORS: Mapping[str, Callable] = {
 class StripWhitespaceMixin:
     @pre_load()
     def strip_whitespace(  # pylint: disable=no-self-use, unused-argument
-        self, items: dict, **kwargs: Any
-    ) -> dict:
+        self, items: MutableMapping, **kwargs: Any
+    ) -> MutableMapping:
         for key, value in items.items():
             if isinstance(value, str):
                 items[key] = value.strip()
@@ -53,7 +53,7 @@ class SurveyMetadata(Schema, StripWhitespaceMixin):
 
     @validates_schema
     def validate_receipting_keys(  # pylint: disable=no-self-use, unused-argument
-        self, data: dict, **kwargs: Any
+        self, data: Mapping, **kwargs: Any
     ) -> None:
         if data and (receipting_keys := data.get("receipting_keys", {})):
             missing_receipting_keys = [
@@ -102,7 +102,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
 
     @validates_schema
     def validate_schema_name_is_set(  # pylint: disable=no-self-use, unused-argument
-        self, data: dict, **kwargs: Any
+        self, data: Mapping, **kwargs: Any
     ) -> None:
         if data and not (data.get("schema_name") or data.get("schema_url")):
             raise ValidationError(
