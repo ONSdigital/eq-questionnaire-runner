@@ -66,7 +66,9 @@ def before_individual_response_request() -> Response | None:
         contextvars.bind_contextvars(schema_url=schema_url)  # pragma: no cover
 
     if cir_instrument_id := metadata.cir_instrument_id:
-        contextvars.bind_contextvars(cir_instrument_id=cir_instrument_id)
+        contextvars.bind_contextvars(
+            cir_instrument_id=cir_instrument_id
+        )  # pragma: no cover
 
     logger.info(
         "individual-response request", method=request.method, url_path=request.full_path

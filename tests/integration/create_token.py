@@ -211,10 +211,12 @@ class TokenGenerator:
 
         return self.generate_token(payload_vars)
 
-    def create_token_with_cir_instrument_id(self, cir_instrument_id, **extra_payload):
+    def create_token_with_cir_instrument_id(
+        self, cir_instrument_id, payload=None, **extra_payload
+    ):
         payload_vars = self._get_payload_with_params(
             cir_instrument_id=cir_instrument_id,
-            payload=PAYLOAD_V2_BUSINESS,
+            payload=payload or PAYLOAD_V2_BUSINESS,
             **extra_payload,
         )
 
