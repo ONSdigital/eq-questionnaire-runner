@@ -32,7 +32,6 @@ class ThankYou:
         self._schema: QuestionnaireSchema = schema
         self._submitted_at = submitted_at
 
-        # self._is_census_theme = cookie_session.get("theme") == "census"
         self.template = self.DEFAULT_THANK_YOU_TEMPLATE
 
     @cached_property
