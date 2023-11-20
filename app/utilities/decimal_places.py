@@ -92,7 +92,7 @@ def custom_format_unit(
         value=value,
         measurement_unit=measurement_unit,
         length=length,
-        # Type ignore: babel function has incorrect typing, NumberPattern is valid
+        # Type ignore: babel function has incorrect type hinting, NumberPattern is valid here
         format=number_format,  # type: ignore
         locale=locale,
     )
