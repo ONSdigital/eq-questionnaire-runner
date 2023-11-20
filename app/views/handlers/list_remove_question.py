@@ -6,13 +6,13 @@ class ListRemoveQuestion(ListAction):
     def is_location_valid(self) -> bool:
         list_item_doesnt_exist = (
             self._current_location.list_item_id
-            not in self._questionnaire_store.list_store[
+            not in self._questionnaire_store.data_stores.list_store[
                 # Type ignore: list_name will exist within the remove block
                 self._current_location.list_name  # type: ignore
             ].items
         )
         is_primary = (
-            self._questionnaire_store.list_store[
+            self._questionnaire_store.data_stores.list_store[
                 # Type ignore: list_name will exist within the remove block
                 self._current_location.list_name  # type: ignore
             ].primary_person
@@ -32,7 +32,9 @@ class ListRemoveQuestion(ListAction):
                 list_name,
                 self._current_location.list_item_id,  # type: ignore
             )
-            self.capture_dependent_sections_for_list(self.parent_block["for_list"])
+            self.questionnaire_store_updater.capture_dependencies_for_list_change(
+                list_name
+            )
 
         return super().handle_post()
 

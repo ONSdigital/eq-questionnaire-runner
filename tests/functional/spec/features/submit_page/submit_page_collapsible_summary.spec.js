@@ -26,20 +26,20 @@ describe("Collapsible Summary", () => {
     });
 
     it("When I am on the submit page, Then a collapsed summary should be displayed with the group title and questions should not be displayed", async () => {
-      await expect(await $(SubmitPage.collapsibleSummary()).isDisplayed()).to.be.true;
+      await expect(await $(SubmitPage.collapsibleSummary()).isDisplayed()).toBe(true);
 
-      await expect(await $(SubmitPage.collapsibleSummary()).getText()).to.contain("Property Details");
-      await expect(await $(SubmitPage.collapsibleSummary()).getText()).to.contain("House Details");
+      await expect(await $(SubmitPage.collapsibleSummary()).getText()).toContain("Property Details");
+      await expect(await $(SubmitPage.collapsibleSummary()).getText()).toContain("House Details");
 
-      await expect(await $(SubmitPage.insuranceAddressQuestion()).getText()).to.equal("");
-      await expect(await $(SubmitPage.numberOfPeopleQuestion()).getText()).to.equal("");
+      await expect(await $(SubmitPage.insuranceAddressQuestion()).getText()).toBe("");
+      await expect(await $(SubmitPage.numberOfPeopleQuestion()).getText()).toBe("");
     });
 
     it("When I click the Show all button, Then the summary should be expanded and questions should be displayed", async () => {
       await $(SubmitPage.summaryShowAllButton()).click();
 
-      await expect(await $(SubmitPage.insuranceAddressQuestion()).getText()).to.contain("What is the address you would like to insure?");
-      await expect(await $(SubmitPage.numberOfPeopleQuestion()).getText()).to.contain("Title");
+      await expect(await $(SubmitPage.insuranceAddressQuestion()).getText()).toBe("What is the address you would like to insure?");
+      await expect(await $(SubmitPage.numberOfPeopleQuestion()).getText()).toBe("Title");
     });
   });
 });

@@ -13,14 +13,14 @@ describe("Post submission exit", () => {
     await click(HubPage.submit());
     await browser.deleteAllCookies();
     await $(CensusThankYouPage.exit()).click();
-    await expect(await browser.getUrl()).to.equal("https://surveys.ons.gov.uk/sign-in/");
+    await expect(browser).toHaveUrlContaining("https://surveys.ons.gov.uk/sign-in/");
   });
 
   it("Given I click the exit button from the thank you page, When I am redirected, Then I should be redirected to the correct log out url", async () => {
     await click(SubmitPage.submit());
     await click(HubPage.submit());
     await $(CensusThankYouPage.exit()).click();
-    await expect(await browser.getUrl()).to.equal("https://www.ons.gov.uk/census");
+    await expect(browser).toHaveUrlContaining("https://www.ons.gov.uk/census");
   });
 
   it("Given I have clicked the exit button, When I navigate back, Then I am taken to the session timed out page", async () => {
@@ -28,7 +28,7 @@ describe("Post submission exit", () => {
     await click(HubPage.submit());
     await $(CensusThankYouPage.exit()).click();
     await browser.back();
-    await expect(await browser.getUrl()).to.contain("submitted/thank-you");
-    await expect(await $("body").getHTML()).to.contain("Sorry, you need to sign in again");
+    await expect(browser).toHaveUrlContaining("submitted/thank-you");
+    await expect(await $("body").getHTML()).toContain("Sorry, you need to sign in again");
   });
 });

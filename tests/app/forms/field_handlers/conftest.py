@@ -1,8 +1,6 @@
 import pytest
 
-from app.data_models import ProgressStore, SupplementaryDataStore
-from app.data_models.answer_store import AnswerStore
-from app.data_models.list_store import ListStore
+from app.data_models.data_stores import DataStores
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
@@ -27,14 +25,9 @@ def get_mock_response_metadata():
 @pytest.fixture
 def rule_evaluator():
     evaluator = RuleEvaluator(
-        answer_store=AnswerStore(),
-        list_store=ListStore(),
-        metadata=None,
-        response_metadata=get_mock_response_metadata(),
+        data_stores=DataStores(response_metadata=get_mock_response_metadata()),
         schema=get_mock_schema(),
         location=None,
-        progress_store=ProgressStore(),
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     return evaluator
@@ -43,16 +36,11 @@ def rule_evaluator():
 @pytest.fixture
 def value_source_resolver():
     resolver = ValueSourceResolver(
-        answer_store=AnswerStore(),
-        list_store=ListStore(),
-        metadata=None,
-        response_metadata=get_mock_response_metadata(),
+        data_stores=DataStores(response_metadata=get_mock_response_metadata()),
         schema=get_mock_schema(),
         location=None,
         list_item_id=None,
         escape_answer_values=False,
-        progress_store=ProgressStore(),
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     return resolver

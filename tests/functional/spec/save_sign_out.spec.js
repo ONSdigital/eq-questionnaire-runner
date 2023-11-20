@@ -19,10 +19,10 @@ describe("Save sign out / Exit", () => {
     await browser.openQuestionnaire("test_introduction.json");
     await $(IntroductionPage.exitButton()).click();
 
-    await expect(await browser.getUrl()).to.contain("/surveys/todo");
+    await expect(browser).toHaveUrlContaining("/surveys/todo");
 
     await browser.back();
-    await expect(await $("body").getHTML()).to.contain("Sorry, you need to sign in again");
+    await expect(await $("body").getHTML()).toContain("Sorry, you need to sign in again");
   });
 
   it("Given I am completing a questionnaire, when I select save and sign out, then I am redirected to the signed out page", async () => {
@@ -32,10 +32,10 @@ describe("Save sign out / Exit", () => {
     await click(SetMinMax.submit());
     await $(TestMinMax.saveSignOut()).click();
 
-    await expect(await browser.getUrl()).to.contain("/signed-out");
+    await expect(browser).toHaveUrlContaining("/signed-out");
 
     await browser.back();
-    await expect(await $("body").getHTML()).to.contain("Sorry, you need to sign in again");
+    await expect(await $("body").getHTML()).toContain("Sorry, you need to sign in again");
   });
 
   it("Given I have started a questionnaire, when I return to the questionnaire, then I am returned to the page I was on and can then complete the questionnaire", async () => {
@@ -57,49 +57,49 @@ describe("Save sign out / Exit", () => {
     await click(currencySectionSummary.submit());
 
     await click(SubmitPage.submit());
-    await expect(await browser.getUrl()).to.contain("thank-you");
+    await expect(browser).toHaveUrlContaining("thank-you");
   });
 
   it("Given a I have started a social questionnaire, when I select save and sign out, then I am redirected to the signed out page and the correct access code link is shown", async () => {
     await browser.openQuestionnaire("test_theme_social.json", { version: "v2", theme: "social" });
     await $(SubmitPage.saveSignOut()).click();
-    await expect(await browser.getUrl()).to.contain("/signed-out");
-    await expect(await $("body").getHTML()).to.contain("Your progress has been saved");
-    await expect(await $("body").getHTML()).to.contain("To resume the survey,");
-    await expect(await $("body").getHTML()).to.contain("/en/start");
+    await expect(browser).toHaveUrlContaining("/signed-out");
+    await expect(await $("body").getHTML()).toContain("Your progress has been saved");
+    await expect(await $("body").getHTML()).toContain("To resume the survey,");
+    await expect(await $("body").getHTML()).toContain("/en/start");
   });
 
   it("Given a I have started a business questionnaire, when I select save and sign out, then I am redirected to the signed out page and the correct access code link is shown", async () => {
     await browser.openQuestionnaire("test_introduction.json");
     await $(IntroductionPage.getStarted()).click();
     await $(IntroInterstitialPage.saveSignOut()).click();
-    await expect(await browser.getUrl()).to.contain("/signed-out");
-    await expect(await $("body").getHTML()).to.contain("Your progress has been saved");
-    await expect(await $("body").getHTML()).to.contain("To find further information or resume the survey,");
-    await expect(await $("body").getHTML()).to.contain("/surveys/todo");
+    await expect(browser).toHaveUrlContaining("/signed-out");
+    await expect(await $("body").getHTML()).toContain("Your progress has been saved");
+    await expect(await $("body").getHTML()).toContain("To find further information or resume the survey,");
+    await expect(await $("body").getHTML()).toContain("/surveys/todo");
   });
 
   it("Given a business questionnaire, when I navigate the questionnaire, then I see the correct sign out buttons", async () => {
     await browser.openQuestionnaire("test_introduction.json");
 
-    await expect(await $(IntroductionPage.exitButton()).getText()).to.contain("Exit");
+    await expect(await $(IntroductionPage.exitButton()).getText()).toBe("Exit");
     await $(IntroductionPage.getStarted()).click();
 
-    await expect(await $(IntroInterstitialPage.saveSignOut()).getText()).to.contain("Save and exit survey");
+    await expect(await $(IntroInterstitialPage.saveSignOut()).getText()).toBe("Save and exit survey");
     await click(IntroInterstitialPage.submit());
 
-    await expect(await $(SubmitPage.saveSignOut()).getText()).to.contain("Save and exit survey");
+    await expect(await $(SubmitPage.saveSignOut()).getText()).toBe("Save and exit survey");
     await click(SubmitPage.submit());
 
-    await expect(await $(IntroThankYouPagePage.exitButton()).isExisting()).to.be.false;
+    await expect(await $(IntroThankYouPagePage.exitButton()).isExisting()).toBe(false);
   });
 
   it("Given a Census questionnaire, when I navigate the questionnaire, then I see the correct sign out buttons", async () => {
     await browser.openQuestionnaire("test_thank_you_census_household.json");
 
-    await expect(await $(HouseHolderConfirmationPage.saveSignOut()).getText()).to.contain("Save and complete later");
+    await expect(await $(HouseHolderConfirmationPage.saveSignOut()).getText()).toBe("Save and complete later");
     await click(HouseHolderConfirmationPage.submit());
 
-    await expect(await $(SubmitPage.saveSignOut()).getText()).to.contain("Save and complete later");
+    await expect(await $(SubmitPage.saveSignOut()).getText()).toBe("Save and complete later");
   });
 });

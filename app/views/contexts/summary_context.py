@@ -1,12 +1,4 @@
-from typing import MutableMapping
-
-from app.data_models import (
-    AnswerStore,
-    ListStore,
-    ProgressStore,
-    SupplementaryDataStore,
-)
-from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.data_stores import DataStores
 from app.questionnaire.location import Location
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.views.contexts.context import Context
@@ -18,23 +10,13 @@ class SummaryContext(Context):
         self,
         language: str,
         schema: QuestionnaireSchema,
-        answer_store: AnswerStore,
-        list_store: ListStore,
-        progress_store: ProgressStore,
-        metadata: MetadataProxy | None,
-        response_metadata: MutableMapping,
+        data_stores: DataStores,
         view_submitted_response: bool,
-        supplementary_data_store: SupplementaryDataStore,
     ) -> None:
         super().__init__(
             language,
             schema,
-            answer_store,
-            list_store,
-            progress_store,
-            metadata,
-            response_metadata,
-            supplementary_data_store,
+            data_stores,
         )
         self.view_submitted_response = view_submitted_response
         self.summaries: list[dict] = []
@@ -58,7 +40,7 @@ class SummaryContext(Context):
     def _build_all_groups(self, return_to: str | None) -> None:
         for section_id in self._router.enabled_section_ids:
             if repeat := self._schema.get_repeat_for_section(section_id):
-                for_repeat = self._list_store[repeat["for_list"]]
+                for_repeat = self._data_stores.list_store[repeat["for_list"]]
 
                 if for_repeat.count > 0:
                     for item in for_repeat.items:
@@ -84,14 +66,9 @@ class SummaryContext(Context):
         section_summary_context = SectionSummaryContext(
             language=self._language,
             schema=self._schema,
-            answer_store=self._answer_store,
-            list_store=self._list_store,
-            progress_store=self._progress_store,
-            metadata=self._metadata,
-            response_metadata=self._response_metadata,
+            data_stores=self._data_stores,
             current_location=location,
             routing_path=self._router.routing_path(location.section_key),
-            supplementary_data_store=self._supplementary_data_store,
         )
 
         summary = section_summary_context(
