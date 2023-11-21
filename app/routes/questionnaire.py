@@ -17,7 +17,6 @@ from app.authentication.no_questionnaire_state_exception import (
     NoQuestionnaireStateException,
 )
 from app.data_models import QuestionnaireStore, SessionStore
-from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import (
     get_metadata,
     get_questionnaire_store,
