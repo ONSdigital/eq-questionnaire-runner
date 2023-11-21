@@ -5,7 +5,8 @@ import pytest
 import responses
 from mock import Mock, patch
 from requests import RequestException
-from urllib3.connectionpool import HTTPConnectionPool, HTTPResponse
+from urllib3.connectionpool import HTTPConnectionPool
+from urllib3.response import HTTPResponse
 
 from app.questionnaire import QuestionnaireSchema
 from app.setup import create_app
@@ -325,18 +326,11 @@ def get_mocked_make_request(mocker, status_codes):
 
         mocked_responses.append(response)
 
-    patched_make_request = mocker.patch.object(
+    return mocker.patch.object(
         HTTPConnectionPool,
         "_make_request",
         side_effect=mocked_responses,
     )
-    mocker.patch.object(
-        HTTPResponse,
-        "from_httplib",
-        side_effect=mocked_responses,
-    )
-
-    return patched_make_request
 
 
 def test_load_schema_from_url_retries_timeout_error(mocked_make_request_with_timeout):

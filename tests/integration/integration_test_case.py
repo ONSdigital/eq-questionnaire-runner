@@ -340,7 +340,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         """
         Deletes the test client cookie
         """
-        self._client.delete_cookie("localhost", "session")
+        self._client.delete_cookie(domain="localhost", key="session")
 
     def getHtmlSoup(self):
         """

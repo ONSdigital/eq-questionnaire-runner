@@ -33,12 +33,6 @@ def get_questionnaire_store(user_id: str, user_ik: str) -> QuestionnaireStore:
 
 def get_session_store() -> SessionStore | None:
     if USER_IK not in cookie_session or EQ_SESSION_ID not in cookie_session:
-        if USER_IK not in cookie_session:
-            logger.info("user ik not found in cookie session")  # pragma: no cover
-
-        if EQ_SESSION_ID not in cookie_session:
-            logger.info("eq session id not found in cookie session")  # pragma: no cover
-
         return None
 
     # Sets up a single SessionStore instance per request context.
@@ -54,9 +48,6 @@ def get_session_store() -> SessionStore | None:
             cookie_session[USER_IK], pepper, cookie_session[EQ_SESSION_ID]
         )
 
-    if not store.session_data:
-        logger.info("session data not found")  # pragma: no cover
-
     return store if store.session_data else None
 
 
@@ -66,11 +57,7 @@ def get_session_timeout_in_seconds(schema: QuestionnaireSchema) -> int:
     :return: Timeout in seconds
     """
     default_session_timeout = current_app.config["EQ_SESSION_TIMEOUT_SECONDS"]
-    logger.info("default session timeout", timeout=default_session_timeout)
-
     schema_session_timeout = schema.json.get("session_timeout_in_seconds")
-    logger.info("schema session timeout", timeout=schema_session_timeout)
-
     timeout = (
         schema_session_timeout
         if schema_session_timeout and schema_session_timeout < default_session_timeout
