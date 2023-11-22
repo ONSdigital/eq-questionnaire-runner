@@ -11,10 +11,7 @@ from typing import (
     TypeAlias,
 )
 
-from app.data_models import ProgressStore, SupplementaryDataStore
-from app.data_models.answer_store import AnswerStore
-from app.data_models.list_store import ListStore
-from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.data_stores import DataStores
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire import path_finder as pf
 from app.questionnaire.dependencies import (
@@ -31,13 +28,14 @@ from app.questionnaire.value_source_resolver import (
     ValueSourceResolver,
     ValueSourceTypes,
 )
-from app.utilities.mappings import get_flattened_mapping_values
+from app.utilities.mappings import get_flattened_mapping_values, get_values_for_key
 from app.utilities.types import LocationType, SectionKey
 
 if TYPE_CHECKING:
     from app.questionnaire.placeholder_renderer import (
         PlaceholderRenderer,  # pragma: no cover
     )
+
 
 TransformedValueTypes: TypeAlias = None | str | int | Decimal | bool
 
@@ -51,14 +49,9 @@ class PlaceholderParser:
     def __init__(
         self,
         language: str,
-        answer_store: AnswerStore,
-        list_store: ListStore,
-        metadata: MetadataProxy | None,
-        response_metadata: MutableMapping,
+        data_stores: DataStores,
         schema: QuestionnaireSchema,
         renderer: PlaceholderRenderer,
-        progress_store: ProgressStore,
-        supplementary_data_store: SupplementaryDataStore,
         list_item_id: str | None = None,
         location: LocationType | None = None,
         placeholder_preview_mode: bool | None = False,
@@ -67,25 +60,14 @@ class PlaceholderParser:
         self._placeholder_map: MutableMapping[
             str, ValueSourceEscapedTypes | ValueSourceTypes | None
         ] = {}
-        self._answer_store = answer_store
-        self._list_store = list_store
-        self._metadata = metadata
-        self._response_metadata = response_metadata
+        self._data_stores = data_stores
         self._list_item_id = list_item_id
         self._schema = schema
         self._location = location
-        self._progress_store = progress_store
-        self._supplementary_data_store = supplementary_data_store
         self._placeholder_preview_mode = placeholder_preview_mode
 
         self._path_finder = pf.PathFinder(
-            schema=self._schema,
-            answer_store=self._answer_store,
-            list_store=self._list_store,
-            progress_store=self._progress_store,
-            metadata=self._metadata,
-            response_metadata=self._response_metadata,
-            supplementary_data_store=self._supplementary_data_store,
+            schema=self._schema, data_stores=self._data_stores
         )
 
         self._value_source_resolver = self._get_value_source_resolver()
@@ -126,19 +108,14 @@ class PlaceholderParser:
         assess_routing_path: bool | None = False,
     ) -> ValueSourceResolver:
         return ValueSourceResolver(
-            answer_store=self._answer_store,
-            list_store=self._list_store,
-            metadata=self._metadata,
+            data_stores=self._data_stores,
             schema=self._schema,
             location=self._location,
             list_item_id=self._list_item_id,
             escape_answer_values=True,
-            response_metadata=self._response_metadata,
             use_default_answer=True,
             assess_routing_path=assess_routing_path,
             routing_path_block_ids=routing_path_block_ids,
-            progress_store=self._progress_store,
-            supplementary_data_store=self._supplementary_data_store,
         )
 
     def _parse_placeholder(self, placeholder: Mapping) -> Any:
@@ -201,7 +178,7 @@ class PlaceholderParser:
         return (
             get_routing_path_block_ids_by_section_for_calculated_summary_dependencies(
                 location=self._location,
-                progress_store=self._progress_store,
+                progress_store=self._data_stores.progress_store,
                 sections_to_ignore=sections_to_ignore,
                 data=data,
                 path_finder=self._path_finder,
@@ -210,8 +187,9 @@ class PlaceholderParser:
             )
         )
 
-    def _all_value_sources_metadata(self, placeholder: Mapping) -> bool:
-        sources = self._schema.get_values_for_key(placeholder, key="source")
+    @staticmethod
+    def _all_value_sources_metadata(placeholder: Mapping) -> bool:
+        sources = get_values_for_key("source", data=placeholder)
         return all(source == "metadata" for source in sources)
 
     def _get_value_source_resolver_for_transform(
@@ -228,7 +206,7 @@ class PlaceholderParser:
             )
             block_ids = get_routing_path_block_ids_by_section_for_dependent_sections(
                 location=self._location,
-                progress_store=self._progress_store,
+                progress_store=self._data_stores.progress_store,
                 sections_to_ignore=["when"],
                 path_finder=self._path_finder,
                 data=transform,

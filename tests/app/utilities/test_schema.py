@@ -5,11 +5,13 @@ import pytest
 import responses
 from mock import Mock, patch
 from requests import RequestException
-from urllib3.connectionpool import HTTPConnectionPool, HTTPResponse
+from urllib3.connectionpool import HTTPConnectionPool
+from urllib3.response import HTTPResponse
 
 from app.questionnaire import QuestionnaireSchema
 from app.setup import create_app
 from app.utilities.schema import (
+    CIR_RETRIEVE_COLLECTION_INSTRUMENT_URL,
     SCHEMA_REQUEST_MAX_RETRIES,
     SchemaRequestFailed,
     _load_schema_from_name,
@@ -25,6 +27,7 @@ from app.utilities.schema import (
 from tests.app.questionnaire.conftest import get_metadata
 
 TEST_SCHEMA_URL = "http://test.domain/schema.json"
+TEST_CIR_URL = "http://cir.domain"
 
 
 def test_valid_schema_names_from_params():
@@ -69,7 +72,7 @@ def test_get_schema_list():
     assert get_schema_list() == expected_output
 
 
-# pylint: disable=no-value-for-parameter
+# pylint: disable=no-value-for-parameter,missing-kwoa,too-many-function-args
 def test_schema_cache_on_function_call():
     _load_schema_from_name.cache_clear()
 
@@ -149,7 +152,7 @@ def test_load_schema_from_url_200():
 
     mock_schema = QuestionnaireSchema({}, language_code="cy")
     responses.add(responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=200)
-    loaded_schema = load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="cy")
+    loaded_schema = load_schema_from_url(url=TEST_SCHEMA_URL, language_code="cy")
 
     assert loaded_schema.json == mock_schema.json
     assert loaded_schema.language_code == mock_schema.language_code
@@ -173,7 +176,7 @@ def test_load_schema_from_url_non_200(status_code):
     )
 
     with pytest.raises(SchemaRequestFailed) as exc:
-        load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="en")
+        load_schema_from_url(url=TEST_SCHEMA_URL, language_code="en")
 
     cache_info = load_schema_from_url.cache_info()
     assert cache_info.currsize == 0
@@ -187,7 +190,7 @@ def test_load_schema_from_url_non_200(status_code):
 def test_load_schema_from_url_request_failed():
     responses.add(responses.GET, TEST_SCHEMA_URL, body=RequestException())
     with pytest.raises(SchemaRequestFailed) as exc:
-        load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="en")
+        load_schema_from_url(url=TEST_SCHEMA_URL, language_code="en")
 
     assert str(exc.value) == "schema request failed"
 
@@ -200,7 +203,7 @@ def test_load_schema_from_url_uses_cache():
     responses.add(responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=200)
 
     # First load: Add to cache, no hits
-    load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="cy")
+    load_schema_from_url(url=TEST_SCHEMA_URL, language_code="cy")
 
     cache_info = load_schema_from_url.cache_info()
     assert cache_info.currsize == 1
@@ -208,7 +211,7 @@ def test_load_schema_from_url_uses_cache():
     assert cache_info.hits == 0
 
     # Second load: Read from cache, 1 hit
-    load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="cy")
+    load_schema_from_url(url=TEST_SCHEMA_URL, language_code="cy")
 
     cache_info = load_schema_from_url.cache_info()
     assert cache_info.currsize == 1
@@ -249,6 +252,72 @@ def test_load_schema_from_metadata_with_schema_url_and_override_language_code():
     assert loaded_schema.language_code == language_code
 
 
+@responses.activate
+def test_load_schema_from_metadata_with_cir_instrument_id_200(
+    app, metadata_with_cir_instrument_id
+):
+    load_schema_from_url.cache_clear()
+    mock_schema = QuestionnaireSchema({}, language_code="cy")
+    responses.add(
+        responses.GET,
+        f"{TEST_CIR_URL}{CIR_RETRIEVE_COLLECTION_INSTRUMENT_URL}",
+        json=mock_schema.json,
+        status=200,
+    )
+
+    with app.app_context():
+        app.config["CIR_API_BASE_URL"] = TEST_CIR_URL
+        loaded_schema = load_schema_from_metadata(
+            metadata=metadata_with_cir_instrument_id, language_code="cy"
+        )
+
+    assert loaded_schema.json == mock_schema.json
+    assert loaded_schema.language_code == mock_schema.language_code
+
+
+@responses.activate
+def test_load_schema_from_metadata_with_cir_instrument_id_request_failed(
+    app, metadata_with_cir_instrument_id
+):
+    load_schema_from_url.cache_clear()
+    responses.add(
+        responses.GET,
+        f"{TEST_CIR_URL}{CIR_RETRIEVE_COLLECTION_INSTRUMENT_URL}",
+        body=RequestException(),
+    )
+    with app.app_context():
+        with pytest.raises(SchemaRequestFailed):
+            app.config["CIR_API_BASE_URL"] = TEST_CIR_URL
+            load_schema_from_metadata(
+                metadata=metadata_with_cir_instrument_id, language_code="cy"
+            )
+
+
+@pytest.mark.parametrize(
+    "status_code",
+    [401, 403, 404, 501, 511],
+)
+@responses.activate
+def test_load_schema_from_metadata_with_cir_instrument_id_non_200(
+    app, status_code, metadata_with_cir_instrument_id
+):
+    load_schema_from_url.cache_clear()
+    mock_schema = QuestionnaireSchema({}, language_code="cy")
+    responses.add(
+        responses.GET,
+        f"{TEST_CIR_URL}{CIR_RETRIEVE_COLLECTION_INSTRUMENT_URL}",
+        json=mock_schema.json,
+        status=status_code,
+    )
+    with app.app_context():
+        with pytest.raises(SchemaRequestFailed) as exc:
+            app.config["CIR_API_BASE_URL"] = TEST_CIR_URL
+            load_schema_from_metadata(
+                metadata=metadata_with_cir_instrument_id, language_code="cy"
+            )
+    assert str(exc.value) == "schema request failed"
+
+
 def get_mocked_make_request(mocker, status_codes):
     mocked_responses = []
     for status_code in status_codes:
@@ -257,25 +326,18 @@ def get_mocked_make_request(mocker, status_codes):
 
         mocked_responses.append(response)
 
-    patched_make_request = mocker.patch.object(
+    return mocker.patch.object(
         HTTPConnectionPool,
         "_make_request",
         side_effect=mocked_responses,
     )
-    mocker.patch.object(
-        HTTPResponse,
-        "from_httplib",
-        side_effect=mocked_responses,
-    )
-
-    return patched_make_request
 
 
 def test_load_schema_from_url_retries_timeout_error(mocked_make_request_with_timeout):
     load_schema_from_url.cache_clear()
 
     try:
-        schema = load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="en")
+        schema = load_schema_from_url(url=TEST_SCHEMA_URL, language_code="en")
     except SchemaRequestFailed:
         return pytest.fail("Schema request unexpectedly failed")
 
@@ -291,7 +353,7 @@ def test_load_schema_from_url_retries_transient_error(mocker):
     load_schema_from_url.cache_clear()
 
     try:
-        schema = load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="en")
+        schema = load_schema_from_url(url=TEST_SCHEMA_URL, language_code="en")
     except SchemaRequestFailed:
         return pytest.fail("Schema request unexpectedly failed")
 
@@ -308,7 +370,7 @@ def test_load_schema_from_url_max_retries(mocker):
     load_schema_from_url.cache_clear()
 
     with pytest.raises(SchemaRequestFailed) as exc:
-        load_schema_from_url(schema_url=TEST_SCHEMA_URL, language_code="en")
+        load_schema_from_url(url=TEST_SCHEMA_URL, language_code="en")
 
     assert str(exc.value) == "schema request failed"
     assert mocked_make_request.call_count == 3

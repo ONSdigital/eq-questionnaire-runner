@@ -4,6 +4,7 @@ import pytest
 
 from app.data_models import CompletionStatus, QuestionnaireStore, SupplementaryDataStore
 from app.data_models.answer_store import Answer, AnswerStore
+from app.data_models.data_stores import DataStores
 from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress import ProgressDict
@@ -21,7 +22,7 @@ from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
 
 
-def get_metadata(extra_metadata: dict = None):
+def get_metadata(extra_metadata: dict | None = None):
     extra_metadata = extra_metadata or {}
     metadata = {
         "response_id": "1",
@@ -58,15 +59,10 @@ def response_metadata():
 def parser(answer_store, location, mock_schema, mock_renderer):
     return PlaceholderParser(
         language="en",
-        answer_store=answer_store,
-        list_store=ListStore(),
-        metadata=get_metadata(),
-        response_metadata={},
+        data_stores=DataStores(answer_store=answer_store, metadata=get_metadata()),
         schema=mock_schema,
         location=location,
         renderer=mock_renderer,
-        progress_store=ProgressStore(),
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
 
@@ -207,8 +203,8 @@ def list_collector_variant_schema():
                 "id": "section",
                 "groups": [
                     {
-                        "id": "group",
-                        "title": "List",
+                        "id": "when-group",
+                        "title": "When Group",
                         "blocks": [
                             {
                                 "type": "Question",
@@ -229,7 +225,18 @@ def list_collector_variant_schema():
                                         }
                                     ],
                                 },
-                            },
+                            }
+                        ],
+                    }
+                ],
+            },
+            {
+                "id": "list-section",
+                "groups": [
+                    {
+                        "id": "list-group",
+                        "title": "List",
+                        "blocks": [
                             {
                                 "id": "block1",
                                 "type": "ListCollector",
@@ -441,7 +448,79 @@ def list_collector_variant_schema():
                         ],
                     }
                 ],
-            }
+            },
+            {
+                "id": "content-section",
+                "groups": [
+                    {
+                        "id": "group-content",
+                        "blocks": [
+                            {
+                                "type": "Interstitial",
+                                "id": "household-occupancy",
+                                "content_variants": [
+                                    {
+                                        "content": {
+                                            "title": "Household Occupancy",
+                                            "contents": [
+                                                {
+                                                    "description": "According to your answer this household is occupied"
+                                                }
+                                            ],
+                                        },
+                                        "when": {
+                                            ">": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "people",
+                                                    "selector": "count",
+                                                },
+                                                0,
+                                            ]
+                                        },
+                                    },
+                                    {
+                                        "content": {
+                                            "title": "Household Occupancy",
+                                            "contents": [
+                                                {
+                                                    "description": "According to your answer this household is unoccupied"
+                                                }
+                                            ],
+                                        },
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "people",
+                                                    "selector": "count",
+                                                },
+                                                0,
+                                            ]
+                                        },
+                                    },
+                                ],
+                            },
+                            {
+                                "type": "Question",
+                                "id": "block-occupancy",
+                                "question": {
+                                    "answers": [
+                                        {
+                                            "id": "answer-occupancy",
+                                            "mandatory": True,
+                                            "type": "General",
+                                        }
+                                    ],
+                                    "id": "question-occupancy",
+                                    "title": {"text": "Does anyone else live here?"},
+                                    "type": "General",
+                                },
+                            },
+                        ],
+                    }
+                ],
+            },
         ]
     }
 
@@ -713,6 +792,29 @@ def sections_dependent_on_list_schema():
                                         0,
                                     ]
                                 },
+                            }
+                        ],
+                    }
+                ],
+            },
+            {
+                "id": "section6",
+                "enabled": {
+                    "when": {
+                        ">": [
+                            {"count": [{"source": "list", "identifier": "list"}]},
+                            0,
+                        ]
+                    }
+                },
+                "groups": [
+                    {
+                        "id": "group6",
+                        "blocks": [
+                            {
+                                "type": "Question",
+                                "id": "block6",
+                                "question": {},
                             }
                         ],
                     }
@@ -1011,14 +1113,12 @@ def placeholder_renderer(option_label_from_value_schema):
     )
     renderer = PlaceholderRenderer(
         language="en",
-        answer_store=answer_store,
-        list_store=ListStore(),
-        metadata=get_metadata({"trad_as": "ESSENTIAL SERVICES LTD"}),
-        response_metadata={},
+        data_stores=DataStores(
+            answer_store=answer_store,
+            metadata=get_metadata({"trad_as": "ESSENTIAL SERVICES LTD"}),
+        ),
         schema=option_label_from_value_schema,
-        progress_store=ProgressStore(),
         location=Location(section_id="checkbox-section"),
-        supplementary_data_store=SupplementaryDataStore(),
     )
     return renderer
 
@@ -1027,13 +1127,8 @@ def placeholder_renderer(option_label_from_value_schema):
 def mock_renderer(mock_schema):
     return PlaceholderRenderer(
         language="en",
-        answer_store=AnswerStore(),
-        list_store=ListStore(),
-        metadata=get_metadata(),
-        response_metadata={},
+        data_stores=DataStores(),
         schema=mock_schema,
-        progress_store=ProgressStore(),
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
 
@@ -1197,10 +1292,12 @@ def mock_questionnaire_store(
     return mocker.MagicMock(
         spec=QuestionnaireStore,
         completed_blocks=[],
-        answer_store=mock_empty_answer_store,
-        list_store=populated_list_store,
-        progress_store=mock_empty_progress_store,
-        supplementary_data_store=mock_empty_supplementary_data_store,
+        data_stores=DataStores(
+            answer_store=mock_empty_answer_store,
+            list_store=populated_list_store,
+            progress_store=mock_empty_progress_store,
+            supplementary_data_store=mock_empty_supplementary_data_store,
+        ),
     )
 
 

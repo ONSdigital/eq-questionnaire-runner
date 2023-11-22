@@ -1,13 +1,8 @@
 # pylint: disable=redefined-outer-name
 import pytest
 
-from app.data_models import (
-    AnswerStore,
-    ListStore,
-    ProgressStore,
-    SupplementaryDataStore,
-)
 from app.data_models.answer_store import Answer
+from app.data_models.data_stores import DataStores
 from app.questionnaire.dynamic_answer_options import DynamicAnswerOptions
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
@@ -16,14 +11,9 @@ from app.questionnaire.value_source_resolver import ValueSourceResolver
 @pytest.fixture
 def rule_evaluator(mock_schema, response_metadata):
     evaluator = RuleEvaluator(
-        answer_store=AnswerStore(),
-        list_store=ListStore(),
-        metadata={},
-        response_metadata=response_metadata,
+        data_stores=DataStores(response_metadata=response_metadata),
         schema=mock_schema,
         location=None,
-        progress_store=ProgressStore(),
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     return evaluator
@@ -32,17 +22,12 @@ def rule_evaluator(mock_schema, response_metadata):
 @pytest.fixture
 def value_source_resolver(mock_schema, response_metadata):
     resolver = ValueSourceResolver(
-        answer_store=AnswerStore(),
-        list_store=ListStore(),
-        metadata={},
-        response_metadata=response_metadata,
+        data_stores=DataStores(response_metadata=response_metadata),
         schema=mock_schema,
         location=None,
         list_item_id=None,
         routing_path_block_ids=None,
         use_default_answer=True,
-        progress_store=ProgressStore(),
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     return resolver
@@ -130,7 +115,7 @@ def test_dynamic_answer_options_answer_source(
     )
 
     if checkbox_answer:
-        value_source_resolver.answer_store.add_or_update(
+        value_source_resolver.data_stores.answer_store.add_or_update(
             Answer(answer_id="injury-sustained-answer", value=checkbox_answer)
         )
 

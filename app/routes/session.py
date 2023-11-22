@@ -87,6 +87,7 @@ def login() -> Response:
             "case_id": decrypted_token.get("case_id"),
             "schema_name": decrypted_token.get("schema_name"),
             "schema_url": decrypted_token.get("schema_url"),
+            "cir_instrument_id": decrypted_token.get("cir_instrument_id"),
             "ru_ref": ru_ref,
             "qid": qid,
         }.items()
@@ -154,8 +155,9 @@ def _set_questionnaire_supplementary_data(
     as it is possible that the survey has changed but the dataset hasn't so the validity could have changed.
     """
     existing_sds_dataset_id = (
-        questionnaire_store.metadata.survey_metadata["sds_dataset_id"]
-        if questionnaire_store.metadata and questionnaire_store.metadata.survey_metadata
+        questionnaire_store.data_stores.metadata.survey_metadata["sds_dataset_id"]
+        if questionnaire_store.data_stores.metadata
+        and questionnaire_store.data_stores.metadata.survey_metadata
         else None
     )
 
@@ -165,7 +167,7 @@ def _set_questionnaire_supplementary_data(
     ):
         # no need to fetch: either no supplementary data or it hasn't changed, just validate lists
         _validate_supplementary_data_lists(
-            supplementary_data=questionnaire_store.supplementary_data_store.raw_data,
+            supplementary_data=questionnaire_store.data_stores.supplementary_data_store.raw_data,
             schema=schema,
         )
         return

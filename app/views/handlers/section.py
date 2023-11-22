@@ -23,12 +23,7 @@ class SectionHandler:
         self._language = language
         self._router = Router(
             schema=schema,
-            answer_store=questionnaire_store.answer_store,
-            list_store=questionnaire_store.list_store,
-            progress_store=questionnaire_store.progress_store,
-            metadata=questionnaire_store.metadata,
-            response_metadata=questionnaire_store.response_metadata,
-            supplementary_data_store=questionnaire_store.supplementary_data_store,
+            data_stores=self._questionnaire_store.data_stores,
         )
         if not self._is_valid_location():
             raise InvalidLocationException(f"location {self._section_id} is not valid")
@@ -47,14 +42,9 @@ class SectionHandler:
         section_summary_context = SectionSummaryContext(
             self._language,
             self._schema,
-            self._questionnaire_store.answer_store,
-            self._questionnaire_store.list_store,
-            self._questionnaire_store.progress_store,
-            self._questionnaire_store.metadata,
-            self._questionnaire_store.response_metadata,
+            self._questionnaire_store.data_stores,
             self._routing_path,
             self.current_location,
-            self._questionnaire_store.supplementary_data_store,
         )
         return section_summary_context()
 

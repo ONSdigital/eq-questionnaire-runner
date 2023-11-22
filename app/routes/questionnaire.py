@@ -31,6 +31,7 @@ from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.router import Router
 from app.submitter.previously_submitted_exception import PreviouslySubmittedException
+from app.utilities.bind_context import bind_contextvars_schema_from_metadata
 from app.utilities.schema import load_schema_from_metadata
 from app.views.contexts import HubContext
 from app.views.contexts.preview_context import (
@@ -94,12 +95,7 @@ def before_questionnaire_request() -> Response | None:
         tx_id=metadata.tx_id,
         ce_id=metadata.collection_exercise_sid,
     )
-
-    if schema_name := metadata.schema_name:
-        contextvars.bind_contextvars(schema_name=schema_name)
-
-    if schema_url := metadata.schema_url:
-        contextvars.bind_contextvars(schema_url=schema_url)
+    bind_contextvars_schema_from_metadata(metadata)
 
     logger.info(
         "questionnaire request", method=request.method, url_path=request.full_path
@@ -130,7 +126,7 @@ def before_post_submission_request() -> None:
     if not questionnaire_store.submitted_at:
         raise NotFound
 
-    handle_language(questionnaire_store.metadata)
+    handle_language(questionnaire_store.data_stores.metadata)
 
     # pylint: disable=assigning-non-slot
     g.schema = load_schema_from_metadata(
@@ -138,12 +134,7 @@ def before_post_submission_request() -> None:
     )
 
     contextvars.bind_contextvars(tx_id=metadata.tx_id)
-
-    if schema_name := metadata.schema_name:
-        contextvars.bind_contextvars(schema_name=schema_name)
-
-    if schema_url := metadata.schema_url:
-        contextvars.bind_contextvars(schema_url=schema_url)
+    bind_contextvars_schema_from_metadata(metadata)
 
     logger.info(
         "questionnaire request", method=request.method, url_path=request.full_path
@@ -158,12 +149,7 @@ def get_questionnaire(
 ) -> Response | str:
     router = Router(
         schema=schema,
-        answer_store=questionnaire_store.answer_store,
-        list_store=questionnaire_store.list_store,
-        progress_store=questionnaire_store.progress_store,
-        metadata=questionnaire_store.metadata,
-        response_metadata=questionnaire_store.response_metadata,
-        supplementary_data_store=questionnaire_store.supplementary_data_store,
+        data_stores=questionnaire_store.data_stores,
     )
 
     if not router.can_access_hub():
@@ -184,12 +170,7 @@ def get_questionnaire(
     hub_context = HubContext(
         language=flask_babel.get_locale().language,
         schema=schema,
-        answer_store=questionnaire_store.answer_store,
-        list_store=questionnaire_store.list_store,
-        progress_store=questionnaire_store.progress_store,
-        metadata=questionnaire_store.metadata,
-        response_metadata=questionnaire_store.response_metadata,
-        supplementary_data_store=questionnaire_store.supplementary_data_store,
+        data_stores=questionnaire_store.data_stores,
     )
     context = hub_context(
         survey_complete=router.is_questionnaire_complete,
@@ -243,12 +224,7 @@ def get_preview(
         preview_context = PreviewContext(
             language=flask_babel.get_locale().language,
             schema=schema,
-            answer_store=questionnaire_store.answer_store,
-            list_store=questionnaire_store.list_store,
-            progress_store=questionnaire_store.progress_store,
-            metadata=questionnaire_store.metadata,
-            response_metadata=questionnaire_store.response_metadata,
-            supplementary_data_store=questionnaire_store.supplementary_data_store,
+            data_stores=questionnaire_store.data_stores,
         )
     except PreviewNotEnabledException as exc:
         raise NotFound from exc

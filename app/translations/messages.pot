@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-11-13 08:45+0000\n"
+"POT-Creation-Date: 2023-11-10 11:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.12.1\n"
+"Generated-By: Babel 2.13.1\n"
 
 #: app/forms/validators.py:389 app/jinja_filters.py:111
 #, python-format
@@ -213,19 +213,19 @@ msgstr[1] ""
 msgid "Not a valid choice."
 msgstr ""
 
-#: app/helpers/template_helpers.py:48
+#: app/helpers/template_helpers.py:51
 msgid "ONS Surveys"
 msgstr ""
 
-#: app/helpers/template_helpers.py:114
+#: app/helpers/template_helpers.py:117
 msgid "Menu"
 msgstr ""
 
-#: app/helpers/template_helpers.py:145
+#: app/helpers/template_helpers.py:148
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:170
+#: app/helpers/template_helpers.py:173
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
@@ -310,6 +310,8 @@ msgid "An individual access code has been sent by text"
 msgstr ""
 
 #: app/survey_config/business_config.py:59
+#: app/survey_config/census_config.py:33 app/survey_config/census_config.py:89
+#: app/survey_config/census_config.py:154
 msgid "Help"
 msgstr ""
 
@@ -327,6 +329,8 @@ msgid "What we do"
 msgstr ""
 
 #: app/survey_config/business_config.py:92
+#: app/survey_config/census_config.py:40 app/survey_config/census_config.py:97
+#: app/survey_config/census_config.py:162
 #: app/survey_config/social_survey_config.py:43
 msgid "Contact us"
 msgstr ""
@@ -337,21 +341,55 @@ msgid "Accessibility"
 msgstr ""
 
 #: app/survey_config/business_config.py:107
+#: app/survey_config/census_config.py:61 app/survey_config/census_config.py:117
+#: app/survey_config/census_config.py:171
 #: app/survey_config/social_survey_config.py:58
 msgid "Cookies"
 msgstr ""
 
 #: app/survey_config/business_config.py:109
+#: app/survey_config/census_config.py:67 app/survey_config/census_config.py:123
+#: app/survey_config/census_config.py:177
 #: app/survey_config/social_survey_config.py:60
 msgid "Privacy and data protection"
 msgstr ""
 
-#: app/survey_config/survey_config.py:17
-msgid "Crown copyright and database rights 2020 OS 100019153."
+#: app/survey_config/census_config.py:23
+msgid "Census 2021"
 msgstr ""
 
-#: app/survey_config/survey_config.py:20
+#: app/survey_config/census_config.py:24
+msgid "Save and complete later"
+msgstr ""
+
+#: app/survey_config/census_config.py:46 app/survey_config/census_config.py:103
+msgid "Languages"
+msgstr ""
+
+#: app/survey_config/census_config.py:50 app/survey_config/census_config.py:107
+msgid "BSL and audio videos"
+msgstr ""
+
+#: app/survey_config/census_config.py:63 app/survey_config/census_config.py:119
+#: app/survey_config/census_config.py:173
+msgid "Accessibility statement"
+msgstr ""
+
+#: app/survey_config/census_config.py:71 app/survey_config/census_config.py:127
+#: app/survey_config/census_config.py:181
+msgid "Terms and conditions"
+msgstr ""
+
+#: app/survey_config/census_config.py:143
+msgid "Crown copyright and database rights 2021 NIMA MOU577.501."
+msgstr ""
+
+#: app/survey_config/census_config.py:146 app/survey_config/survey_config.py:20
 msgid "Use of address data is subject to the terms and conditions."
+msgstr ""
+
+#: app/survey_config/survey_config.py:17
+msgid "Crown copyright and database rights 2020 OS 100019153."
 msgstr ""
 
 #: app/survey_config/survey_config.py:36
@@ -455,17 +493,17 @@ msgstr ""
 msgid "Please submit this survey to complete it"
 msgstr ""
 
-#: app/views/contexts/thank_you_context.py:30
+#: app/views/contexts/thank_you_context.py:29
 msgid ""
 "Your answers have been submitted for <span>{company_name}</span> "
 "({trading_name})"
 msgstr ""
 
-#: app/views/contexts/thank_you_context.py:37
+#: app/views/contexts/thank_you_context.py:36
 msgid "Your answers have been submitted for <span>{company_name}</span>"
 msgstr ""
 
-#: app/views/contexts/thank_you_context.py:41
+#: app/views/contexts/thank_you_context.py:40
 msgid "Your answers have been submitted."
 msgstr ""
 
@@ -690,12 +728,65 @@ msgstr ""
 msgid "Confirm mobile number"
 msgstr ""
 
-#: app/views/handlers/thank_you.py:23
+#: app/views/handlers/thank_you.py:27 templates/census-thank-you.html:24
 msgid "Thank you for completing the census"
 msgstr ""
 
 #: app/views/handlers/view_submitted_response.py:52
 msgid "View Submitted Response"
+msgstr ""
+
+#: templates/census-thank-you.html:9 templates/confirmation-email.html:8
+msgid "There is a problem with this page"
+msgstr ""
+
+#: templates/census-thank-you.html:22
+msgid "Thank you for completing your census"
+msgstr ""
+
+#: templates/census-thank-you.html:26
+msgid "Thank you for completing the survey"
+msgstr ""
+
+#: templates/census-thank-you.html:32
+msgid ""
+"Your individual census has been submitted for "
+"<strong>{display_address}</strong>"
+msgstr ""
+
+#: templates/census-thank-you.html:34
+msgid ""
+"Your census has been submitted for the household at "
+"<strong>{display_address}</strong>"
+msgstr ""
+
+#: templates/census-thank-you.html:36
+msgid ""
+"Your census has been submitted for the accommodation at "
+"<strong>{display_address}</strong>"
+msgstr ""
+
+#: templates/census-thank-you.html:37
+msgid ""
+"Anyone staying at this accommodation for at least 6 months needs to fill "
+"in their own individual census, including staff. Your Census Officer will"
+" provide you with census forms for your residents."
+msgstr ""
+
+#: templates/census-thank-you.html:49
+msgid ""
+"Your personal information is protected by law and will be kept "
+"confidential"
+msgstr ""
+
+#: templates/census-thank-you.html:55
+msgid "Get confirmation email"
+msgstr ""
+
+#: templates/census-thank-you.html:56
+msgid ""
+"If you would like to be sent confirmation that you have completed your "
+"census, enter your email address"
 msgstr ""
 
 #: templates/confirm-email.html:12 templates/partials/answers/address.html:55
@@ -729,10 +820,6 @@ msgid ""
 "It can take a few minutes for the email to arrive. If it doesn't arrive, "
 "check your junk mail, or you can <a href='{send_confirmation_email_url}' "
 "id='send-another-email'>send another confirmation email</a>."
-msgstr ""
-
-#: templates/confirmation-email.html:8
-msgid "There is a problem with this page"
 msgstr ""
 
 #: templates/confirmation-email.html:12
@@ -925,16 +1012,6 @@ msgstr ""
 
 #: templates/thank-you.html:76
 msgid "For security, your answers will only be available to view for 45 minutes"
-msgstr ""
-
-#: templates/thank-you.html:87
-msgid "Get confirmation email"
-msgstr ""
-
-#: templates/thank-you.html:88
-msgid ""
-"If you would like to be sent confirmation that you have completed your "
-"survey, enter your email address"
 msgstr ""
 
 #: templates/view-submitted-response.html:35

@@ -38,7 +38,7 @@ class ListAddQuestion(ListAction):
     def handle_post(self) -> None:
         # Ensure the section is in progress when user adds an item
         self._list_item_id = self.questionnaire_store_updater.add_list_item(
-            self.parent_block["for_list"]
+            list_name := self.parent_block["for_list"]
         )
 
         # Clear the answer from the confirmation question on the list collector question
@@ -54,16 +54,14 @@ class ListAddQuestion(ListAction):
         self.questionnaire_store_updater.update_answers(
             self.form.data, self._list_item_id
         )
-
-        self.capture_dependent_sections_for_list(self.parent_block["for_list"])
-
+        self.questionnaire_store_updater.capture_dependencies_for_list_change(list_name)
         return super().handle_post()
 
     def _resolve_custom_page_title_vars(self) -> dict[str, int]:
         # For list add blocks, no list item id is yet available. Instead, we resolve
         # `list_item_position` to the position in the list it would be if added.
         list_length = len(
-            self._questionnaire_store.list_store[self._current_location.list_name]  # type: ignore
+            self._questionnaire_store.data_stores.list_store[self._current_location.list_name]  # type: ignore
         )
 
         return {"list_item_position": list_length + 1}

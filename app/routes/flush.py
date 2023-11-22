@@ -21,6 +21,7 @@ from app.submitter import GCSSubmitter, LogSubmitter, RabbitMQSubmitter
 from app.submitter.converter import convert_answers
 from app.submitter.converter_v2 import convert_answers_v2
 from app.submitter.submission_failed import SubmissionFailedException
+from app.utilities.bind_context import bind_contextvars_schema_from_metadata
 from app.utilities.json import json_dumps
 from app.utilities.schema import load_schema_from_metadata
 from app.views.handlers.submission import get_receipting_metadata
@@ -59,10 +60,8 @@ def flush_data() -> Response:
                 tx_id=metadata.tx_id,
                 ce_id=metadata.collection_exercise_sid,
             )
-            if schema_name := metadata.schema_name:
-                contextvars.bind_contextvars(schema_name=schema_name)
-            if schema_url := metadata.schema_url:
-                contextvars.bind_contextvars(schema_url=schema_url)
+            bind_contextvars_schema_from_metadata(metadata)
+
         if _submit_data(user):
             return Response(status=200)
         return Response(status=404)
@@ -72,9 +71,9 @@ def flush_data() -> Response:
 def _submit_data(user: User) -> bool:
     questionnaire_store = get_questionnaire_store(user.user_id, user.user_ik)
 
-    if questionnaire_store and questionnaire_store.answer_store:
+    if questionnaire_store and questionnaire_store.data_stores.answer_store:
         # Type ignore: The presence of an answer_store implicitly verifies that there must be metadata populated and thus can safely be used non-optionally.
-        metadata: MetadataProxy = questionnaire_store.metadata  # type: ignore
+        metadata: MetadataProxy = questionnaire_store.data_stores.metadata  # type: ignore
         submitted_at = datetime.now(timezone.utc)
         schema = load_schema_from_metadata(
             metadata=metadata, language_code=metadata.language_code  # type: ignore
@@ -82,12 +81,7 @@ def _submit_data(user: User) -> bool:
 
         router = Router(
             schema=schema,
-            answer_store=questionnaire_store.answer_store,
-            list_store=questionnaire_store.list_store,
-            progress_store=questionnaire_store.progress_store,
-            metadata=questionnaire_store.metadata,
-            response_metadata=questionnaire_store.response_metadata,
-            supplementary_data_store=questionnaire_store.supplementary_data_store,
+            data_stores=questionnaire_store.data_stores,
         )
         full_routing_path = router.full_routing_path()
 
