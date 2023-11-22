@@ -21,7 +21,6 @@ from app.submitter import GCSSubmitter, LogSubmitter, RabbitMQSubmitter
 from app.submitter.converter import convert_answers
 from app.submitter.converter_v2 import convert_answers_v2
 from app.submitter.submission_failed import SubmissionFailedException
-from app.utilities.bind_context import bind_contextvars_schema_from_metadata
 from app.utilities.json import json_dumps
 from app.utilities.schema import load_schema_from_metadata
 from app.views.handlers.submission import get_receipting_metadata
@@ -60,8 +59,10 @@ def flush_data() -> Response:
                 tx_id=metadata.tx_id,
                 ce_id=metadata.collection_exercise_sid,
             )
-            bind_contextvars_schema_from_metadata(metadata)
-
+            if schema_name := metadata.schema_name:
+                contextvars.bind_contextvars(schema_name=schema_name)
+            if schema_url := metadata.schema_url:
+                contextvars.bind_contextvars(schema_url=schema_url)
         if _submit_data(user):
             return Response(status=200)
         return Response(status=404)

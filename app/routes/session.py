@@ -87,7 +87,6 @@ def login() -> Response:
             "case_id": decrypted_token.get("case_id"),
             "schema_name": decrypted_token.get("schema_name"),
             "schema_url": decrypted_token.get("schema_url"),
-            "cir_instrument_id": decrypted_token.get("cir_instrument_id"),
             "ru_ref": ru_ref,
             "qid": qid,
         }.items()

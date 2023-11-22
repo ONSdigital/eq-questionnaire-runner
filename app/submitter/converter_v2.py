@@ -65,23 +65,17 @@ def convert_answers_v2(
         "data_version": schema.json["data_version"],
         "origin": "uk.gov.ons.edc.eq",
         "collection_exercise_sid": metadata.collection_exercise_sid,
+        "schema_name": metadata.schema_name,
         "flushed": flushed,
         "submitted_at": submitted_at.isoformat(),
         "launch_language_code": metadata.language_code or DEFAULT_LANGUAGE_CODE,
-        "survey_metadata": {"survey_id": survey_id},
     }
 
     optional_properties = get_optional_payload_properties(
         metadata, data_stores.response_metadata
     )
 
-    if metadata.schema_name:
-        payload["schema_name"] = metadata.schema_name
-    elif metadata.schema_url:
-        payload["schema_url"] = metadata.schema_url
-    elif metadata.cir_instrument_id:
-        payload["cir_instrument_id"] = metadata.cir_instrument_id
-
+    payload["survey_metadata"] = {"survey_id": survey_id}
     if metadata.survey_metadata:
         payload["survey_metadata"].update(metadata.survey_metadata.data)
 

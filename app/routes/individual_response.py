@@ -18,7 +18,6 @@ from app.helpers.schema_helpers import with_schema
 from app.helpers.session_helpers import with_questionnaire_store
 from app.helpers.template_helpers import render_template
 from app.questionnaire import QuestionnaireSchema
-from app.utilities.bind_context import bind_contextvars_schema_from_metadata
 from app.utilities.schema import load_schema_from_metadata
 from app.views.handlers.individual_response import (
     IndividualResponseChangeHandler,
@@ -60,7 +59,11 @@ def before_individual_response_request() -> Response | None:
         ce_id=metadata.collection_exercise_sid,
     )
 
-    bind_contextvars_schema_from_metadata(metadata)
+    if schema_name := metadata.schema_name:
+        contextvars.bind_contextvars(schema_name=schema_name)
+
+    if schema_url := metadata.schema_url:
+        contextvars.bind_contextvars(schema_url=schema_url)  # pragma: no cover
 
     logger.info(
         "individual-response request", method=request.method, url_path=request.full_path

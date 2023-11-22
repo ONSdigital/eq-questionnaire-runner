@@ -22,7 +22,7 @@ from app.questionnaire.routing_path import RoutingPath
 from app.utilities.schema import load_schema_from_name
 
 
-def get_metadata(extra_metadata: dict | None = None):
+def get_metadata(extra_metadata: dict = None):
     extra_metadata = extra_metadata or {}
     metadata = {
         "response_id": "1",
