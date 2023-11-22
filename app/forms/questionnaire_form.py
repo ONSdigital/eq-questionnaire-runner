@@ -411,7 +411,6 @@ class QuestionnaireForm(FlaskForm):
         return result
 
     def answers_all_valid(self, answer_id_list: Sequence[str]) -> bool:
-        # pylint: disable=no-member
         # wtforms Form parents are not discoverable in the 2.3.3 implementation
         return not set(answer_id_list) & set(self.errors)
 
@@ -425,7 +424,6 @@ class QuestionnaireForm(FlaskForm):
                     self.question_errors[self.question["id"]],
                 )
             ]
-        # pylint: disable=no-member
         # wtforms Form parents are not discoverable in the 2.3.3 implementation
         for answer in self.question["answers"]:
             if answer["id"] in self.errors:

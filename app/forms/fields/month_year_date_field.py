@@ -18,7 +18,6 @@ def get_form_class(validators: Sequence[DateValidatorType]) -> Type[Form]:
 
         @cached_property
         def data(self) -> str | None:
-            # pylint: disable=no-member
             # wtforms Form parents are not discoverable in the 2.3.3 implementation
             data = super().data
 

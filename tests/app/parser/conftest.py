@@ -1,4 +1,3 @@
-# pylint: disable=redefined-outer-name
 import uuid
 from datetime import datetime, timedelta, timezone
 

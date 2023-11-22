@@ -104,7 +104,6 @@ def get_optional_payload_properties(
     return payload
 
 
-# pylint: disable=too-many-locals
 def get_payload_data(
     data_stores: DataStores,
     schema: QuestionnaireSchema,

@@ -37,7 +37,7 @@ def user_loader(user_id: str) -> Optional[str]:
 
 @login_manager.request_loader
 def request_load_user(
-    request: Request,  # pylint: disable=unused-argument
+    request: Request,
 ) -> Optional[User]:
     logger.debug("load user")
 

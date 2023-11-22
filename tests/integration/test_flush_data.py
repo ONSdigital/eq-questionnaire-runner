@@ -96,9 +96,7 @@ class TestFlushData(IntegrationTestCase):
         self.assertStatusForbidden()
 
     def test_flush_errors_when_submission_fails(self):
-        self.submitter_instance.send_message.return_value = (
-            False  # pylint: disable=no-member
-        )
+        self.submitter_instance.send_message.return_value = False
 
         self.post(
             url="/flush?token="
@@ -112,8 +110,8 @@ class TestFlushData(IntegrationTestCase):
             + self.token_generator.generate_token(self.get_payload())
         )
 
-        self.encrypt_instance.assert_called_once()  # pylint: disable=no-member
-        args = self.encrypt_instance.call_args[0]  # pylint: disable=no-member
+        self.encrypt_instance.assert_called_once()
+        args = self.encrypt_instance.call_args[0]
 
         self.assertTrue('"flushed": true' in args[0])
 

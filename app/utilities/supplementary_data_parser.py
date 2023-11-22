@@ -41,7 +41,7 @@ class SupplementaryData(Schema, StripWhitespaceMixin):
 
     @validates_schema()
     def validate_identifier(self, data, **kwargs):
-        # pylint: disable=no-self-use, unused-argument
+        # pylint: disable=unused-argument
         if data and data["identifier"] != self.context["identifier"]:
             raise ValidationError(
                 "Supplementary data did not return the specified Identifier"
@@ -60,7 +60,7 @@ class SupplementaryDataMetadataSchema(Schema, StripWhitespaceMixin):
 
     @validates_schema()
     def validate_dataset_and_survey_id(self, data, **kwargs):
-        # pylint: disable=no-self-use, unused-argument
+        # pylint: disable=unused-argument
         if data:
             if data["dataset_id"] != self.context["dataset_id"]:
                 raise ValidationError(

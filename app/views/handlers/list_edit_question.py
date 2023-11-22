@@ -49,8 +49,6 @@ class ListEditQuestion(ListAction):
         return super().get_next_location_url()
 
     def handle_post(self) -> None:
-        # pylint: disable=no-member
-        # wtforms Form parents are not discoverable in the 2.3.3 implementation
         self.questionnaire_store_updater.update_answers(self.form.data)
 
         return super().handle_post()

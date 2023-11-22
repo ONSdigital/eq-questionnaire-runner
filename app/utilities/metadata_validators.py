@@ -16,7 +16,7 @@ class UUIDString(fields.UUID):
     This custom field deserializes UUIDs to strings.
     """
 
-    def _deserialize(self, *args, **kwargs):  # pylint: disable=arguments-differ
+    def _deserialize(self, *args, **kwargs):
         return str(super()._deserialize(*args, **kwargs))
 
 
@@ -26,7 +26,7 @@ class DateString(fields.DateTime):
     This custom field deserializes Dates to strings.
     """
 
-    def _deserialize(self, *args, **kwargs):  # pylint: disable=arguments-differ
+    def _deserialize(self, *args, **kwargs):
         date = super()._deserialize(*args, **kwargs)
 
         if self.format == "iso8601":

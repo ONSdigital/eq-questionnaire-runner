@@ -1026,7 +1026,7 @@ def test_bespoke_message_for_sum_validation(app, answer_store, mocker):
 
 
 @pytest.mark.parametrize(
-    "schema_name, block, answers, breakdowns, expected_form_data, question, errors_text, value_dict",  # pylint: disable=too-many-locals
+    "schema_name, block, answers, breakdowns, expected_form_data, question, errors_text, value_dict",
     [
         [
             "test_validation_sum_against_total_equal",
@@ -1180,7 +1180,7 @@ def test_bespoke_message_for_sum_validation(app, answer_store, mocker):
             "second-breakdown-question",
             ["TOTAL_SUM_NOT_EQUALS"],
             {"total": "10"},
-        ],  # pylint: disable=too-many-locals
+        ],
     ],
 )
 def test_calculated_field(

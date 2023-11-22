@@ -41,7 +41,6 @@ class SurveyMetadata:
         return self.data.get(key)
 
 
-# pylint: disable=too-many-locals
 @dataclass(frozen=True)
 class MetadataProxy:
     tx_id: str

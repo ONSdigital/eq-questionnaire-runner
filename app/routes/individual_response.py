@@ -72,7 +72,6 @@ def before_individual_response_request() -> Response | None:
     # Ensures langauge is set in the SessionStore
     handle_language(metadata)
 
-    # pylint: disable=assigning-non-slot
     g.schema = load_schema_from_metadata(
         metadata=metadata,
         language_code=get_locale().language,

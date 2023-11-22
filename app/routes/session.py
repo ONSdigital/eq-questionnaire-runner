@@ -98,7 +98,6 @@ def login() -> Response:
 
     metadata = MetadataProxy.from_dict(runner_claims)
 
-    # pylint: disable=assigning-non-slot
     g.schema = load_schema_from_metadata(
         metadata=metadata, language_code=metadata.language_code
     )
