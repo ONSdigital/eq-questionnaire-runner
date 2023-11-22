@@ -115,7 +115,7 @@
                                                 }
                                             ]
                                         },
-                                        "mandatory": false,
+                                        "mandatory": true,
                                         "type": "Number",
                                         "decimal_places": 2,
                                         "maximum": {
