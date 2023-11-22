@@ -62,7 +62,7 @@ class SupplementaryDataMetadataSchema(Schema, StripWhitespaceMixin):
 
     @validates_schema()
     def validate_dataset_and_survey_id(  # pylint: disable=no-self-use, unused-argument
-        self, data: dict, **kwargs: Any
+        self, data: Mapping, **kwargs: Any
     ) -> None:
         if data:
             if data["dataset_id"] != self.context["dataset_id"]:
