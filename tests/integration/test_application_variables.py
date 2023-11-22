@@ -48,19 +48,19 @@ class TestApplicationVariables(IntegrationTestCase):
             f'dataLayer = [{{"survey_id": "001", "title": "Other input fields"}}, {{"tx_id": "{actual["METADATA"]["tx_id"]}"}}]'
         )
 
-    def test_google_analytics_data_layer_is_set_to_nisra_false(self):
-        self.launchSurvey("test_thank_you_census_individual", roles=["dumper"])
+    def test_google_analytics_data_layer_with_form_type(self):
+        self.launchSurvey("test_confirmation_email", roles=["dumper"])
         self.get("/dump/debug")
         actual = json_loads(self.getResponseData())
         self._client.set_cookie(
             domain="localhost", key="ons_cookie_policy", value="'usage':true"
         )
-        self.get("/questionnaire/individual-confirmation/")
+        self.get("/questionnaire/schema-confirmation/")
         self.assertStatusOK()
         self.assertInHead("gtm.start")
         # pylint: disable=line-too-long
         self.assertInHead(
-            f'dataLayer = [{{"form_type": "I", "survey_id": "0", "title": "Census individual test schema"}}, {{"tx_id": "{actual["METADATA"]["tx_id"]}"}}]'
+            f'dataLayer = [{{"form_type": "H", "survey_id": "0", "title": "Confirmation email test schema"}}, {{"tx_id": "{actual["METADATA"]["tx_id"]}"}}]'
         )
 
     def test_livereload_script_rendered(self):
