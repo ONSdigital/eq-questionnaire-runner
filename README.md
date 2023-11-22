@@ -429,8 +429,8 @@ The following env variables can be used
 | DATASTORE_USE_GRPC                        | False                        | Determines whether to use gRPC for Datastore. gRPC is currently only supported for threaded web servers        |
 | ACCOUNT_SERVICE_BASE_URL                  | `https://surveys.ons.gov.uk` | The base URL of the account service used to launch the survey                                                  |
 | ONS_URL                                   | `https://www.ons.gov.uk`     | The URL of the ONS website where static content is sourced, e.g. accessibility info                            |
-| SDS_API_BASE_URL                          | `http://localhost:5003`      | The base URL of the SDS API used for fetching supplementary data                                               |
-| CIR_API_BASE_URL                          | `http://localhost:5004`      | The base URL of the CIR API used for fetching collection instruments                                           |
+| SDS_API_BASE_URL                          |                              | The base URL of the SDS API used for fetching supplementary data                                               |
+| CIR_API_BASE_URL                          |                              | The base URL of the CIR API used for fetching collection instruments                                           |
 
 The following env variables can be used when running tests
 
