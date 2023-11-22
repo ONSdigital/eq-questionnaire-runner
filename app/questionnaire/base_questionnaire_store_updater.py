@@ -140,6 +140,13 @@ class BaseQuestionnaireStoreUpdater:
 
         self._progress_store.remove_progress_for_list_item_id(list_item_id=list_item_id)
 
+    def remove_list_data(self, list_name: str) -> None:
+        """Delete entire list and remove any associated answers"""
+        self._answer_store.remove_all_answers_for_list_item_ids(
+            *self._list_store[list_name].items
+        )
+        self._list_store.delete_list(list_name)
+
     def capture_dependencies_for_list_change(self, list_name: str) -> None:
         """
         Captures the dependencies when an item is added to or removed from the given list.
