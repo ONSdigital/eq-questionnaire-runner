@@ -235,7 +235,6 @@ def test_update_progress_for_dependent_sections(
 
 
 def test_update_progress_of_repeating_dependent(
-    supplementary_data,
     supplementary_data_schema,
     questionnaire_store_with_supplementary_data,
 ):

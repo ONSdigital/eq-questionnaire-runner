@@ -262,7 +262,11 @@ describe("Using supplementary data", () => {
     await expect(await $(CalculatedSummaryVolumeSalesPage.calculatedSummaryTitle()).getText()).toBe(
       "We calculate the total volume of sales over the previous quarter to be 150 kg. Is this correct?",
     );
-    await assertSummaryItems(["Volume of sales for Articles and equipment for sports or outdoor games", "Volume of sales for Kitchen Equipment", "Total sales volume"]);
+    await assertSummaryItems([
+      "Volume of sales for Articles and equipment for sports or outdoor games",
+      "Volume of sales for Kitchen Equipment",
+      "Total sales volume",
+    ]);
     await assertSummaryValues(["100 kg", "50 kg", "150 kg"]);
     await click(CalculatedSummaryVolumeSalesPage.submit());
   });
@@ -271,7 +275,11 @@ describe("Using supplementary data", () => {
     await expect(await $(CalculatedSummaryVolumeTotalPage.calculatedSummaryTitle()).getText()).toBe(
       "We calculate the total volume produced over the previous quarter to be 500 kg. Is this correct?",
     );
-    await assertSummaryItems(["Total volume produced for Articles and equipment for sports or outdoor games", "Total volume produced for Kitchen Equipment", "Total volume produced"]);
+    await assertSummaryItems([
+      "Total volume produced for Articles and equipment for sports or outdoor games",
+      "Total volume produced for Kitchen Equipment",
+      "Total volume produced",
+    ]);
     await assertSummaryValues(["200 kg", "300 kg", "500 kg"]);
     await click(CalculatedSummaryVolumeTotalPage.submit());
   });
@@ -294,7 +302,7 @@ describe("Using supplementary data", () => {
       "Value of sales for Articles and equipment for sports or outdoor games",
       "Value of sales for Kitchen Equipment",
       "Value of sales from other categories",
-      "Total sales value"
+      "Total sales value",
     ]);
     await assertSummaryValues(["£110.00", "£220.00", "£330.00", "£660.00"]);
     await click(CalculatedSummaryValueSalesPage.submit());
@@ -420,7 +428,16 @@ describe("Using supplementary data", () => {
     await click(HubPage.submit());
     await $(ThankYouPage.savePrintAnswersLink()).click();
 
-    await assertSummaryTitles(["Company Details", "Additional Employees", "Harry Potter", "Bruce Wayne", "Jane Doe", "John Smith", "Product details", "Production Targets"]);
+    await assertSummaryTitles([
+      "Company Details",
+      "Additional Employees",
+      "Harry Potter",
+      "Bruce Wayne",
+      "Jane Doe",
+      "John Smith",
+      "Product details",
+      "Production Targets",
+    ]);
 
     // Company details
     await expect(await $(ViewSubmittedResponsePage.emailQuestion()).getText()).toBe("Is contact@lidl.org still the correct contact email for Lidl?");
@@ -484,9 +501,7 @@ describe("Using supplementary data", () => {
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryValues)[3].getText()).toBe("300 kg");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[6].getText()).toBe("Groceries");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[7].getText()).toBe("Volume of sales for Groceries");
-    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[8].getText()).toBe(
-      "Total volume produced for Groceries",
-    );
+    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[8].getText()).toBe("Total volume produced for Groceries");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryValues)[4].getText()).toBe("40 kg");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryValues)[5].getText()).toBe("50 kg");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryRowTitles)[0].getText()).toBe("Sales during the previous quarter");

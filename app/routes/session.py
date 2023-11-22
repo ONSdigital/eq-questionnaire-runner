@@ -25,7 +25,7 @@ from app.helpers.template_helpers import (
     get_survey_config,
     render_template,
 )
-from app.questionnaire import Location, QuestionnaireSchema
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.base_questionnaire_store_updater import (
     BaseQuestionnaireStoreUpdater,
 )

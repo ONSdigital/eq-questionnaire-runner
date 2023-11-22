@@ -1,6 +1,6 @@
 from collections import defaultdict
 from itertools import combinations
-from typing import Iterable, Mapping
+from typing import Iterable, Mapping, Sequence
 
 from ordered_set import OrderedSet
 from werkzeug.datastructures import ImmutableDict
@@ -264,53 +264,36 @@ class BaseQuestionnaireStoreUpdater:
         dependencies: set[Dependent] = self._schema.list_dependencies.get(
             list_name, set()
         )
-        self._capture_block_dependencies(dependencies)
+        for dependent in dependencies:
+            list_item_ids = self._get_list_item_ids_for_list_dependency(dependent)
+            self._capture_block_dependent(dependent, list_item_ids)
 
-    def _capture_block_dependencies_for_answer(self, answer_id: str) -> None:
-        """Captures a unique list of block ids that are dependents of the provided answer id."""
-        dependencies: set[Dependent] = self._schema.answer_dependencies.get(
-            answer_id, set()
-        )
-        is_repeating_answer = self._schema.is_answer_in_repeating_section(answer_id)
-        self._capture_block_dependencies(dependencies, is_repeating_answer)
+    def _get_list_item_ids_for_list_dependency(
+        self, dependency: Dependent
+    ) -> list[str] | list[None]:
+        if dependency.for_list:
+            return self._list_store[dependency.for_list].items
+        return [None]
 
-    def _capture_block_dependencies(
-        self, dependencies: set[Dependent], is_repeating_answer: bool | None = None
+    def _capture_block_dependent(
+        self, dependent: Dependent, list_item_ids: Sequence[str] | Sequence[None]
     ) -> None:
         """
-        The block_ids are mapped to the section key. Dependencies in a repeating section use the list items
-        for the repeating list when creating the section key.
+        The block_id is mapped to the section key. Dependents in a repeating section should be passed in with the list items
+        for the repeating list for creating the section key.
 
         Blocks are captured regardless of whether they are complete. This avoids fetching the completed blocks
         multiples times, as you may have multiple dependencies for one block which may also apply to each item in the list.
         However, when updating the progress store, the block ids are checked to ensure they exist in the progress store.
         """
-        for dependency in dependencies:
-            for list_item_id in self._get_list_item_ids_for_dependency(
-                dependency, is_repeating_answer
-            ):
-                if dependency.answer_id:
-                    self._answer_store.remove_answer(
-                        dependency.answer_id, list_item_id=list_item_id
-                    )
-                self.dependent_block_id_by_section_key[
-                    SectionKey(dependency.section_id, list_item_id)
-                ].add(dependency.block_id)
-
-    def _get_list_item_ids_for_dependency(
-        self, dependency: Dependent, is_repeating_answer: bool | None = False
-    ) -> list[str] | list[None]:
-        """
-        Gets the list item ids that relate to the dependency. In the base updater,
-        this is always outside the context of a repeat.
-        """
-        if dependency.for_list:
-            if is_repeating_answer:
-                raise ValueError(
-                    "Not valid to get list item ids for dependencies of repeating answers in the base updater"
+        for list_item_id in list_item_ids:
+            if dependent.answer_id:
+                self._answer_store.remove_answer(
+                    dependent.answer_id, list_item_id=list_item_id
                 )
-            return self._list_store[dependency.for_list].items
-        return [None]
+            self.dependent_block_id_by_section_key[
+                SectionKey(dependent.section_id, list_item_id)
+            ].add(dependent.block_id)
 
     def _capture_section_dependencies_for_answer(self, answer_id: str) -> None:
         """Captures a unique list of section ids that are dependents of the provided answer id."""

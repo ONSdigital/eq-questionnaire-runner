@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import TYPE_CHECKING, MutableMapping, Optional
+from typing import TYPE_CHECKING, MutableMapping, Optional, Sequence
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.data_stores import DataStores
@@ -76,10 +76,13 @@ class QuestionnaireStore:
         this updates ListStore to add/update any lists for supplementary data and stores the
         identifier -> list_item_id mappings in the supplementary data store to use in the payload at the end
         """
+        modified_lists: set[str] = set()
+
         if self._stores.supplementary_data_store.list_mappings:
             self._remove_old_supplementary_lists_and_answers(
                 new_data=to_set,
                 base_questionnaire_store_updater=base_questionnaire_store_updater,
+                modified_lists=modified_lists,
             )
 
         list_mappings = {
@@ -87,9 +90,15 @@ class QuestionnaireStore:
                 list_name=list_name,
                 list_data=list_data,
                 base_questionnaire_store_updater=base_questionnaire_store_updater,
+                modified_lists=modified_lists,
             )
             for list_name, list_data in to_set.get("items", {}).items()
         }
+
+        for list_name in modified_lists:
+            base_questionnaire_store_updater.capture_dependencies_for_list_change(
+                list_name
+            )
 
         self._stores.supplementary_data_store = SupplementaryDataStore(
             supplementary_data=to_set, list_mappings=list_mappings
@@ -99,8 +108,9 @@ class QuestionnaireStore:
         self,
         *,
         list_name: str,
-        list_data: list[dict],
+        list_data: Sequence[dict],
         base_questionnaire_store_updater: BaseQuestionnaireStoreUpdater,
+        modified_lists: set[str],
     ) -> list[SupplementaryDataListMapping]:
         """
         Creates or updates a list in ListStore based off supplementary data
@@ -117,18 +127,19 @@ class QuestionnaireStore:
                 ).get(identifier)
             ):
                 list_item_id = base_questionnaire_store_updater.add_list_item(list_name)
+                modified_lists.add(list_name)
             list_mappings.append(
                 SupplementaryDataListMapping(
                     identifier=identifier, list_item_id=list_item_id
                 )
             )
-        base_questionnaire_store_updater.capture_dependencies_for_list_change(list_name)
         return list_mappings
 
     def _remove_old_supplementary_lists_and_answers(
         self,
         new_data: MutableMapping,
         base_questionnaire_store_updater: BaseQuestionnaireStoreUpdater,
+        modified_lists: set[str],
     ) -> None:
         """
         In the case that existing supplementary data is being replaced with new data: any list items in the old data
@@ -145,14 +156,12 @@ class QuestionnaireStore:
                 ]
                 for identifier, list_item_id in mappings.items():
                     if identifier not in new_identifiers:
+                        modified_lists.add(list_name)
                         base_questionnaire_store_updater.remove_list_item_data(
                             list_name, list_item_id
                         )
             else:
                 base_questionnaire_store_updater.remove_list_data(list_name)
-            base_questionnaire_store_updater.capture_dependencies_for_list_change(
-                list_name
-            )
 
     def _deserialize(self, data: str) -> None:
         json_data = json_loads(data)

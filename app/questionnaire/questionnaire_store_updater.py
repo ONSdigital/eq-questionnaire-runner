@@ -55,13 +55,27 @@ class QuestionnaireStoreUpdater(BaseQuestionnaireStoreUpdater):
         location = location or self._current_location
         return self._progress_store.remove_completed_location(location)
 
-    def _get_list_item_ids_for_dependency(
+    def _capture_block_dependencies_for_answer(self, answer_id: str) -> None:
+        """Captures a unique list of block ids that are dependents of the provided answer id."""
+        dependencies: set[Dependent] = self._schema.answer_dependencies.get(
+            answer_id, set()
+        )
+        is_repeating_answer = self._schema.is_answer_in_repeating_section(answer_id)
+
+        for dependent in dependencies:
+            list_item_ids = self._get_list_item_ids_for_answer_dependency(
+                dependent, is_repeating_answer
+            )
+            self._capture_block_dependent(dependent, list_item_ids)
+
+    def _get_list_item_ids_for_answer_dependency(
         self, dependency: Dependent, is_repeating_answer: bool | None = False
     ) -> list[str] | list[None]:
         """
-        Gets the list item ids that relate to the dependency. If the dependency is repeating, and the dependent is also repeating
-        then we must be in that repeating section, so the only relevant list item id is the current one.
-        If the dependent is not repeating, but the dependency is, then all list item ids need including.
+        Gets the list item ids that relate to the dependency of the answer.
+        If the dependency is repeating, and so is the answer, then we must be in that repeating section,
+        so the only relevant list item id is the current one.
+        If the answer is not repeating, but the dependency is, then all list item ids need including.
         """
         if dependency.for_list:
             if is_repeating_answer:
