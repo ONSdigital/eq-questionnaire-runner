@@ -118,7 +118,15 @@ def load_user(extend_session: bool = True) -> Optional[User]:
 
         return user
 
-    logger.info("session does not exist")
+    logger.info(
+        "session does not exist",
+        user_ik_present=USER_IK in cookie_session,
+        eq_session_id_present=EQ_SESSION_ID in cookie_session,
+        session_store_exists=bool(session_store),
+        session_expiration=session_store.expiration_time.isoformat()
+        if session_store and session_store.expiration_time
+        else None,
+    )
 
     cookie_session.pop(USER_IK, None)
 

@@ -2,7 +2,10 @@ import time
 
 from httmock import HTTMock, response, urlmatch
 
-from app.utilities.schema import get_schema_path_map
+from app.utilities.schema import (
+    CIR_RETRIEVE_COLLECTION_INSTRUMENT_URL,
+    get_schema_path_map,
+)
 from tests.integration.create_token import PAYLOAD
 from tests.integration.integration_test_case import IntegrationTestCase
 
@@ -356,6 +359,37 @@ class TestLoginWithPostRequest(IntegrationTestCase):
         # Then
         self.assertStatusForbidden()
 
+    def test_login_token_with_cir_instrument_id_should_redirect_to_survey(self):
+        cir_instrument_id = "f0519981-426c-8b93-75c0-bfc40c66fe25"
+
+        # Given
+        token = self.token_generator.create_token_with_cir_instrument_id(
+            cir_instrument_id=cir_instrument_id
+        )
+
+        # When
+        with HTTMock(self.cir_url_mock):
+            self.post(url=f"/session?token={token}")
+
+        # Then
+        self.assertStatusOK()
+        self.assertInUrl("/questionnaire")
+
+    def test_login_token_with_invalid_cir_instrument_id_results_in_500(self):
+        cir_instrument_id = "a0df1208-dff5-4a3d-b35d-f9620c4a48ef"
+
+        # Given
+        token = self.token_generator.create_token_with_cir_instrument_id(
+            cir_instrument_id=cir_instrument_id
+        )
+
+        # When
+        with HTTMock(self.cir_url_mock_500):
+            self.post(url=f"/session?token={token}")
+
+        # Then
+        self.assertException()
+
     @staticmethod
     @urlmatch(netloc=r"eq-survey-register", path=r"\/my-test-schema")
     def schema_url_mock(_url, _request):
@@ -363,6 +397,25 @@ class TestLoginWithPostRequest(IntegrationTestCase):
 
         with open(schema_path, encoding="utf8") as json_data:
             return json_data.read()
+
+    @staticmethod
+    @urlmatch(
+        path=CIR_RETRIEVE_COLLECTION_INSTRUMENT_URL,
+        query="guid=f0519981-426c-8b93-75c0-bfc40c66fe25",
+    )
+    def cir_url_mock(_url, _request):
+        schema_path = SCHEMA_PATH_MAP["test"]["en"]["test_textarea"]
+
+        with open(schema_path, encoding="utf8") as json_data:
+            return json_data.read()
+
+    @staticmethod
+    @urlmatch(
+        path=CIR_RETRIEVE_COLLECTION_INSTRUMENT_URL,
+        query="guid=a0df1208-dff5-4a3d-b35d-f9620c4a48ef",
+    )
+    def cir_url_mock_500(_url, _request):
+        return response(500)
 
     @staticmethod
     @urlmatch(netloc=r"eq-survey-register", path=r"\/my-test-schema-not-found")
