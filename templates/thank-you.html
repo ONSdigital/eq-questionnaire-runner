@@ -80,13 +80,13 @@
     {% endif %}
   {% endif %}
 
-  {% set form = content.form %}
-
-  {% if form %}
+  {% if confirmation_email_form %}
     <hr class="ons-u-mt-no">
     <h2 class="ons-u-mt-m">{{ _("Get confirmation email") }}</h2>
     <p>{{ _("If you would like to be sent confirmation that you have completed your survey, enter your email address") }}</p>
-    {% include 'partials/confirmation-email-form.html' %}
+    {% with form=content.confirmation_email_form %}
+      {% include 'partials/confirmation-email-form.html' %}
+    {% endwith %}
   {% endif %}
 
   {% if content.show_feedback_call_to_action %}
