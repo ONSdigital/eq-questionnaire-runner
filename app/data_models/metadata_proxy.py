@@ -3,7 +3,7 @@ from __future__ import annotations
 from copy import deepcopy
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, Mapping, Optional
+from typing import Any, Mapping
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -26,6 +26,7 @@ TOP_LEVEL_METADATA_KEYS = [
     "language_code",
     "schema_name",
     "schema_url",
+    "cir_instrument_id",
     "channel",
     "region_code",
     "roles",
@@ -35,9 +36,9 @@ TOP_LEVEL_METADATA_KEYS = [
 @dataclass(frozen=True)
 class SurveyMetadata:
     data: ImmutableDict
-    receipting_keys: Optional[tuple] = None
+    receipting_keys: tuple | None = None
 
-    def __getitem__(self, key: str) -> Optional[Any]:
+    def __getitem__(self, key: str) -> Any:
         return self.data.get(key)
 
 
@@ -50,16 +51,17 @@ class MetadataProxy:
     collection_exercise_sid: str
     response_id: str
     response_expires_at: datetime
-    survey_metadata: Optional[SurveyMetadata] = None
-    schema_url: Optional[str] = None
-    schema_name: Optional[str] = None
-    language_code: Optional[str] = None
-    channel: Optional[str] = None
-    region_code: Optional[str] = None
-    version: Optional[AuthPayloadVersion] = None
-    roles: Optional[list] = None
+    survey_metadata: SurveyMetadata | None = None
+    schema_url: str | None = None
+    schema_name: str | None = None
+    cir_instrument_id: str | None = None
+    language_code: str | None = None
+    channel: str | None = None
+    region_code: str | None = None
+    version: AuthPayloadVersion | None = None
+    roles: list | None = None
 
-    def __getitem__(self, key: str) -> Optional[Any]:
+    def __getitem__(self, key: str) -> Any | None:
         if self.survey_metadata and key in self.survey_metadata.data:
             return self.survey_metadata[key]
 
