@@ -44,36 +44,35 @@ METADATA_V1 = MetadataProxy.from_dict(
     }
 )
 
-METADATA_V2 = MetadataProxy.from_dict(
-    {
-        "version": AuthPayloadVersion.V2.value,
-        "tx_id": str(uuid.uuid4()),
-        "schema_name": "1_0000",
-        "collection_exercise_sid": "test-sid",
-        "account_service_url": ACCOUNT_SERVICE_BASE_URL_SOCIAL,
-        "survey_metadata": {
-            "data": {
-                "period_id": "2016-02-01",
-                "period_str": "2016-01-01",
-                "ref_p_start_date": "2016-02-02",
-                "ref_p_end_date": "2016-03-03",
-                "ru_ref": "432423423423",
-                "ru_name": "Apple",
-                "case_type": "SPG",
-                "form_type": "I",
-                "case_ref": "1000000000000001",
-                "display_address": "68 Abingdon Road, Goathill",
-                "user_id": "789473423",
-            },
+RAW_METADATA_V2 = {
+    "version": AuthPayloadVersion.V2.value,
+    "tx_id": str(uuid.uuid4()),
+    "schema_name": "1_0000",
+    "collection_exercise_sid": "test-sid",
+    "account_service_url": ACCOUNT_SERVICE_BASE_URL_SOCIAL,
+    "survey_metadata": {
+        "data": {
+            "period_id": "2016-02-01",
+            "period_str": "2016-01-01",
+            "ref_p_start_date": "2016-02-02",
+            "ref_p_end_date": "2016-03-03",
+            "ru_ref": "432423423423",
+            "ru_name": "Apple",
+            "case_type": "SPG",
+            "form_type": "I",
+            "case_ref": "1000000000000001",
+            "display_address": "68 Abingdon Road, Goathill",
+            "user_id": "789473423",
         },
-        "response_id": "1234567890123456",
-        "case_id": str(uuid.uuid4()),
-        "region_code": "GB-ENG",
-        "channel": "RH",
-        "jti": str(uuid.uuid4()),
-        "response_expires_at": get_response_expires_at(),
-    }
-)
+    },
+    "response_id": "1234567890123456",
+    "case_id": str(uuid.uuid4()),
+    "region_code": "GB-ENG",
+    "channel": "RH",
+    "jti": str(uuid.uuid4()),
+    "response_expires_at": get_response_expires_at(),
+}
+METADATA_V2 = MetadataProxy.from_dict(RAW_METADATA_V2)
 
 
 def get_questionnaire_store(version):
@@ -106,6 +105,22 @@ def fake_metadata():
 @pytest.fixture
 def fake_metadata_v2():
     return METADATA_V2
+
+
+@pytest.fixture
+def fake_metadata_v2_schema_url():
+    copy = RAW_METADATA_V2.copy()
+    copy["schema_url"] = "https://schema_url.com"
+    del copy["schema_name"]
+    return MetadataProxy.from_dict(copy)
+
+
+@pytest.fixture
+def fake_metadata_v2_cir_instrument_id():
+    copy = RAW_METADATA_V2.copy()
+    copy["cir_instrument_id"] = "f0519981-426c-8b93-75c0-bfc40c66fe25"
+    del copy["schema_name"]
+    return MetadataProxy.from_dict(copy)
 
 
 @pytest.fixture
