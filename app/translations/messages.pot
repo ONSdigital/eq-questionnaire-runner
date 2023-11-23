@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-11-16 13:49+0000\n"
+"POT-Creation-Date: 2023-11-23 08:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -213,19 +213,19 @@ msgstr[1] ""
 msgid "Not a valid choice."
 msgstr ""
 
-#: app/helpers/template_helpers.py:51
+#: app/helpers/template_helpers.py:48
 msgid "ONS Surveys"
 msgstr ""
 
-#: app/helpers/template_helpers.py:117
+#: app/helpers/template_helpers.py:114
 msgid "Menu"
 msgstr ""
 
-#: app/helpers/template_helpers.py:148
+#: app/helpers/template_helpers.py:145
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:173
+#: app/helpers/template_helpers.py:170
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
@@ -301,17 +301,15 @@ msgstr ""
 msgid "You can try to <a href='{retry_url}'>submit your feedback again</a>."
 msgstr ""
 
-#: app/routes/individual_response.py:206
+#: app/routes/individual_response.py:203
 msgid "An individual access code has been sent by post"
 msgstr ""
 
-#: app/routes/individual_response.py:312
+#: app/routes/individual_response.py:309
 msgid "An individual access code has been sent by text"
 msgstr ""
 
 #: app/survey_config/business_config.py:59
-#: app/survey_config/census_config.py:33 app/survey_config/census_config.py:89
-#: app/survey_config/census_config.py:154
 msgid "Help"
 msgstr ""
 
@@ -329,8 +327,6 @@ msgid "What we do"
 msgstr ""
 
 #: app/survey_config/business_config.py:92
-#: app/survey_config/census_config.py:40 app/survey_config/census_config.py:97
-#: app/survey_config/census_config.py:162
 #: app/survey_config/social_survey_config.py:43
 msgid "Contact us"
 msgstr ""
@@ -341,55 +337,21 @@ msgid "Accessibility"
 msgstr ""
 
 #: app/survey_config/business_config.py:107
-#: app/survey_config/census_config.py:61 app/survey_config/census_config.py:117
-#: app/survey_config/census_config.py:171
 #: app/survey_config/social_survey_config.py:58
 msgid "Cookies"
 msgstr ""
 
 #: app/survey_config/business_config.py:109
-#: app/survey_config/census_config.py:67 app/survey_config/census_config.py:123
-#: app/survey_config/census_config.py:177
 #: app/survey_config/social_survey_config.py:60
 msgid "Privacy and data protection"
 msgstr ""
 
-#: app/survey_config/census_config.py:23
-msgid "Census 2021"
-msgstr ""
-
-#: app/survey_config/census_config.py:24
-msgid "Save and complete later"
-msgstr ""
-
-#: app/survey_config/census_config.py:46 app/survey_config/census_config.py:103
-msgid "Languages"
-msgstr ""
-
-#: app/survey_config/census_config.py:50 app/survey_config/census_config.py:107
-msgid "BSL and audio videos"
-msgstr ""
-
-#: app/survey_config/census_config.py:63 app/survey_config/census_config.py:119
-#: app/survey_config/census_config.py:173
-msgid "Accessibility statement"
-msgstr ""
-
-#: app/survey_config/census_config.py:71 app/survey_config/census_config.py:127
-#: app/survey_config/census_config.py:181
-msgid "Terms and conditions"
-msgstr ""
-
-#: app/survey_config/census_config.py:143
-msgid "Crown copyright and database rights 2021 NIMA MOU577.501."
-msgstr ""
-
-#: app/survey_config/census_config.py:146 app/survey_config/survey_config.py:20
-msgid "Use of address data is subject to the terms and conditions."
-msgstr ""
-
 #: app/survey_config/survey_config.py:17
 msgid "Crown copyright and database rights 2020 OS 100019153."
+msgstr ""
+
+#: app/survey_config/survey_config.py:20
+msgid "Use of address data is subject to the terms and conditions."
 msgstr ""
 
 #: app/survey_config/survey_config.py:36
@@ -728,7 +690,7 @@ msgstr ""
 msgid "Confirm mobile number"
 msgstr ""
 
-#: app/views/handlers/thank_you.py:23
+#: app/views/handlers/thank_you.py:22
 msgid "Thank you for completing the survey"
 msgstr ""
 
@@ -1297,15 +1259,15 @@ msgstr ""
 msgid "Interviewer note:"
 msgstr ""
 
-#: templates/partials/email-form.html:25
+#: templates/partials/confirmation-email-form.html:25
 msgid "Email address"
 msgstr ""
 
-#: templates/partials/email-form.html:26
+#: templates/partials/confirmation-email-form.html:26
 msgid "This will not be stored and only used once to send your confirmation"
 msgstr ""
 
-#: templates/partials/email-form.html:38
+#: templates/partials/confirmation-email-form.html:38
 msgid "Send confirmation"
 msgstr ""
 
