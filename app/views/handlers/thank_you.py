@@ -19,8 +19,7 @@ from app.views.handlers.confirmation_email import (
 
 class ThankYou:
     DEFAULT_THANK_YOU_TEMPLATE = "thank-you"
-
-    PAGE_TITLE = gettext("Thank you for completing the census")
+    PAGE_TITLE = gettext("Thank you for completing the survey")
 
     def __init__(
         self,
