@@ -55,7 +55,9 @@ def build_thank_you_context(
         ),
     }
     if confirmation_email_form:
-        context |= build_email_form_context(confirmation_email_form)
+        context["confirmation_email_form"] = build_email_form_context(
+            confirmation_email_form
+        )
     return context
 
 
