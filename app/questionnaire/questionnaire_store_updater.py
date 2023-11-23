@@ -1,6 +1,6 @@
 from collections import defaultdict
 from itertools import combinations
-from typing import Iterable, Mapping, Sequence
+from typing import Iterable, Sequence
 
 from ordered_set import OrderedSet
 from werkzeug.datastructures import ImmutableDict
