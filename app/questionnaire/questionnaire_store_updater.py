@@ -1,11 +1,13 @@
 from collections import defaultdict
 from itertools import combinations
 from typing import Iterable, Sequence
+from typing import Mapping
 
 from ordered_set import OrderedSet
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import AnswerValueTypes, CompletionStatus, QuestionnaireStore
+from app.data_models import AnswerValueTypes, CompletionStatus
+from app.data_models import QuestionnaireStore
 from app.data_models.answer_store import Answer
 from app.data_models.relationship_store import RelationshipDict, RelationshipStore
 from app.questionnaire import QuestionnaireSchema
@@ -13,6 +15,7 @@ from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.questionnaire_schema import Dependent
 from app.questionnaire.router import Router
 from app.utilities.types import DependentSection
+from app.utilities.types import LocationType
 
 
 class BaseQuestionnaireStoreUpdater:
@@ -479,18 +482,6 @@ class BaseQuestionnaireStoreUpdater:
         return sorted(
             self.dependent_sections, key=lambda x: sections.index(x.section_id)
         )
-
-
-
-
-from typing import Mapping
-
-from app.data_models import QuestionnaireStore
-from app.questionnaire import QuestionnaireSchema
-from app.questionnaire.questionnaire_schema import Dependent
-from app.questionnaire.questionnaire_store_updater import BaseQuestionnaireStoreUpdater
-from app.questionnaire.router import Router
-from app.utilities.types import LocationType
 
 
 class QuestionnaireStoreUpdater(BaseQuestionnaireStoreUpdater):
