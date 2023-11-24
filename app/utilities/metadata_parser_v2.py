@@ -79,6 +79,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     )
     schema_name = VALIDATORS["string"](required=False)
     schema_url = VALIDATORS["url"](required=False)
+    cir_instrument_id = VALIDATORS["uuid"](required=False)
     response_id = VALIDATORS["string"](required=True)
     account_service_url = VALIDATORS["url"](required=True)
 
