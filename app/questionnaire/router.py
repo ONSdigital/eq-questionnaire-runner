@@ -350,7 +350,15 @@ class Router:
             # remove first item and return the remaining ones
             # Type ignore: return_location.return_to and return_location.return_to_answer_id will always be populated at this point
             return_to = ",".join(return_location.return_to.split(",")[1:]) or None  # type: ignore
-            anchor, *return_to_answer_ids = return_location.return_to_answer_id.split(",")  # type: ignore
+            return_to_answer_ids = []
+            anchor = None
+
+            if return_location.return_to_answer_id:
+                (
+                    anchor,
+                    *return_to_answer_ids,
+                ) = return_location.return_to_answer_id.split(",")
+
             return_to_answer_id = (
                 ",".join(return_to_answer_ids) if return_to_answer_ids else None
             )
