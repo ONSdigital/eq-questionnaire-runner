@@ -1,0 +1,160 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "A test schema to validate a sum against total with calculated summary",
+    "theme": "default",
+    "description": "A survey that tests calculated answers against a total",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {}
+    },
+    "sections": [
+        {
+            "id": "calculated-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "id": "block-total-1",
+                            "type": "Question",
+                            "question": {
+                                "id": "question-total-1",
+                                "title": "For the period, what was your business&#39;s gross non-capital expenditure on salaries and wages for civil R&amp;D?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer-total-1",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "label": "Non-capital expenditure on salaries and wages for civil Research and Development",
+                                        "description": "Enter a value to the nearest &#xA3;thousand (e.g. 56,000). Do not enter &#x2018;56&#x2019; for &#xA3;56,000.",
+                                        "decimal_places": 0,
+                                        "currency": "GBP"
+                                    }
+                                ]
+                            },
+                            "page_title": "Non-capital expenditure on salaries and wages for civil R&D"
+                        },
+                        {
+                            "id": "block-total-2",
+                            "type": "Question",
+                            "question": {
+                                "id": "question-total-2",
+                                "title": "For the reporting period, what was your business&#39;s non-capital expenditure on all civil R&amp;D materials, supplies, equipment and services?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer-total-2",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "label": "Non-capital expenditure on all materials, supplies, equipment and services for civil Research and Development",
+                                        "description": "Enter a value to the nearest &#xA3;thousand (e.g. 56,000). Do not enter &#x2018;56&#x2019; for &#xA3;56,000.",
+                                        "decimal_places": 0,
+                                        "currency": "GBP"
+                                    }
+                                ]
+                            },
+                            "page_title": "Non-capital expenditure on all materials, supplies, equipment and services for civil R&D"
+                        },
+                        {
+                            "id": "block-breakdown",
+                            "type": "Question",
+                            "question": {
+                                "id": "question-breakdown",
+                                "title": {
+                                    "text": "Of the {expenditure} non-capital expenditure on all civil R&amp;D materials, supplies, equipment and services, how much did your business spend on the following?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "expenditure",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_currency",
+                                                    "arguments": {
+                                                        "number": {
+                                                            "identifier": "answer-total-2",
+                                                            "source": "answers"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "Calculated",
+                                "answers": [
+                                    {
+                                        "id": "answer-breakdown-1",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "label": "Purchase of materials for civil Research and Development",
+                                        "decimal_places": 0,
+                                        "currency": "GBP"
+                                    },
+                                    {
+                                        "id": "answer-breakdown-2",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "label": "Purchase of services for civil Research and Development",
+                                        "decimal_places": 0,
+                                        "currency": "GBP"
+                                    }
+                                ],
+                                "calculations": [
+                                    {
+                                        "calculation_type": "sum",
+                                        "answers_to_calculate": ["answer-breakdown-1", "answer-breakdown-2"],
+                                        "conditions": ["equals"],
+                                        "value": {
+                                            "identifier": "answer-total-2",
+                                            "source": "answers"
+                                        }
+                                    }
+                                ]
+                            },
+                            "page_title": "Purchase of materials and services for civil R&D"
+                        },
+                        {
+                            "id": "calculated",
+                            "type": "CalculatedSummary",
+                            "page_title": "Total in-house non-capital expenditure for civil R&D",
+                            "title": "We have calculated your business&#39;s total in-house non-capital expenditure for civil R&amp;D to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "identifier": "answer-total-1",
+                                            "source": "answers"
+                                        },
+                                        {
+                                            "identifier": "answer-total-2",
+                                            "source": "answers"
+                                        }
+                                    ]
+                                },
+                                "title": "Total in-house non-capital expenditure for civil R&amp;D"
+                            }
+                        }
+                    ],
+                    "id": "calculated-group"
+                }
+            ]
+        }
+    ]
+}
