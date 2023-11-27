@@ -233,7 +233,9 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       const content = $("h1 + ul").getText();
       const textsToAssert = ["Total currency values: £9.36", "Total unit values: 1,467", "Total percentage values: 79", "Total number values: 124.58"];
 
-      textsToAssert.forEach(async (text) => await expect(content).toBe(text));
+      for (const text of textsToAssert) {
+        await expect(content).toBe(text);
+      }
     });
 
     it("Given I have an answer minimum based on a calculated summary total, When I enter an invalid answer, Then I should see an error message on the page", async () => {
@@ -319,7 +321,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
     });
   });
 
-  describe("Given I have a Calculated Summary in a Repeating Section", async () => {
+  describe("Given I have a Calculated Summary in a Repeating Section", () => {
     before("Get to Final Summary", async () => {
       await browser.openQuestionnaire("test_new_calculated_summary_repeating_section.json");
       await click(HubPage.submit());

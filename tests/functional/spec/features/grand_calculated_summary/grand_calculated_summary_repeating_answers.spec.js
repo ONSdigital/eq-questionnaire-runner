@@ -262,8 +262,8 @@ describe("Feature: Grand Calculated Summary", () => {
       await expect(await $(GrandCalculatedSummary3Page.grandCalculatedSummaryTitle()).getText()).toBe(
         "Grand Calculated Summary for monthly spending on bills and services is calculated to be £280.00. Is this correct?",
       );
-      assertSummaryValues(["£250.00", "£30.00", "£280.00"]);
-      assertSummaryItems([
+      await assertSummaryValues(["£250.00", "£30.00", "£280.00"]);
+      await assertSummaryItems([
         "Total monthly expenditure on utility bills",
         "Total monthly expenditure on streaming services",
         "Total monthly expenditure on bills and streaming services",
@@ -275,8 +275,8 @@ describe("Feature: Grand Calculated Summary", () => {
       await expect(await $(GrandCalculatedSummary4Page.grandCalculatedSummaryTitle()).getText()).toBe(
         "Grand Calculated Summary for internet usage is calculated to be 100 GB. Is this correct?",
       );
-      assertSummaryValues(["45 GB", "55 GB", "100 GB"]);
-      assertSummaryItems(["Total internet usage on streaming services", "Total internet usage on other services", "Total internet usage"]);
+      await assertSummaryValues(["45 GB", "55 GB", "100 GB"]);
+      await assertSummaryItems(["Total internet usage on streaming services", "Total internet usage on other services", "Total internet usage"]);
     });
 
     it("Given I have multiple calculated summaries of static, repeating and dynamic answers, When I reach the grand calculated summary of them all, Then I see the correct total and items", async () => {
@@ -284,8 +284,8 @@ describe("Feature: Grand Calculated Summary", () => {
       await expect(await $(GrandCalculatedSummary5Page.grandCalculatedSummaryTitle()).getText()).toBe(
         "Grand Calculated Summary for total monthly household expenditure is calculated to be £1,130.00. Is this correct?",
       );
-      assertSummaryValues(["£550.00", "£300.00", "£0.00", "£250.00", "£30.00", "£1,130.00"]);
-      assertSummaryValues([
+      await assertSummaryValues(["£550.00", "£300.00", "£0.00", "£250.00", "£30.00", "£1,130.00"]);
+      await assertSummaryValues([
         "Total monthly food expenditure",
         "Total monthly clothes expenditure",
         "Total games expenditure",
