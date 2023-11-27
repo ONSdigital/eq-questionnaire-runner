@@ -156,8 +156,8 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
       await expect(await $(SecondBreakdownAnswerPage.errorNumber(1)).getText()).toBe("Enter answers that add up to 3");
     });
   });
-  describe("Given I complete a grouped answer validation survey and get to the final summary page", () => {
-    it("When I journey back and I end up with no answer_id anchor for the url, Then I should not see any errors", async () => {
+  describe("Given I edit a question from a Calculated Summary page", () => {
+    it("When I change the answer and there is a question that needs to be revisited before I can return to the Calculated Summary Page, Then I revisit the relevant page before I route back to the Calculated Summary page", async () => {
       await $(TotalAnswerPage.total()).setValue("5");
       await click(TotalAnswerPage.submit());
 
