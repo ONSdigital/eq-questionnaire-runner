@@ -348,7 +348,7 @@ class Router:
             return_to_block_id = ",".join(remaining) if remaining else None
 
             # remove first item and return the remaining ones
-            # Type ignore: return_location.return_to and return_location.return_to_answer_id will always be populated at this point
+            # Type ignore: return_location.return_to will always be populated at this point
             return_to = ",".join(return_location.return_to.split(",")[1:]) or None  # type: ignore
             return_to_answer_ids = []
             anchor = None
