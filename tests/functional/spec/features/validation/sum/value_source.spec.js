@@ -46,7 +46,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
   });
 
   describe("Given I have a calculated summary value of 12", () => {
-    it("When I continue to second breakdown and enter values equal to calculated summary total, Then I should be able to get to the summary page", async () => {
+    it("When I continue to second breakdown and enter values equal to calculated summary total, Then I should be able to get to the next calculated summary", async () => {
       await $(TotalAnswerPage.total()).setValue("12");
       await click(TotalAnswerPage.submit());
 
@@ -57,7 +57,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
   });
 
   describe("Given I completed both grouped answer validation questions and I am on the summary", () => {
-    it("When I go back from the summary and change the total, Then I must reconfirm both breakdown questions with valid answers before I can get to the summary", async () => {
+    it("When I go back from the summary and change the total, Then I must reconfirm both breakdown questions with valid answers before I can get to the next calculated summary", async () => {
       await $(TotalAnswerPage.total()).setValue("12");
       await click(TotalAnswerPage.submit());
 
@@ -162,12 +162,6 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
       await click(TotalAnswerPage.submit());
 
       await answerBothBreakdownQuestions(["2", "1", "1", "1"], ["1", "2", "0", "0"]);
-
-      await click(AnotherTotalPlaybackPage.submit());
-
-      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
-
-      await $(SubmitPage.previous()).click();
 
       await $(AnotherTotalPlaybackPage.breakdown1Edit()).click();
 
