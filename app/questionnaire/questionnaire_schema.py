@@ -625,10 +625,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         ]
 
     def get_section_ids_required_for_hub(self) -> tuple[str, ...]:
-        return self.flow_options.get("required_completed_sections", tuple())
+        return tuple(self.flow_options.get("required_completed_sections", ()))
 
     def get_summary_options(self) -> ImmutableDict[str, bool]:
-        return self.flow_options.get("summary", ImmutableDict({}))
+        return ImmutableDict(self.flow_options.get("summary", {}))
 
     def get_sections(self) -> Iterable[ImmutableDict]:
         return self._sections_by_id.values()
@@ -701,7 +701,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def get_show_on_hub_for_section(self, section_id: str) -> bool | None:
         if section := self.get_section(section_id):
-            return section.get("show_on_hub", True)
+            return bool(section.get("show_on_hub", True))
 
     def get_summary_for_section(self, section_id: str) -> ImmutableDict | None:
         if section := self.get_section(section_id):
@@ -713,7 +713,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def show_summary_on_completion_for_section(self, section_id: str) -> bool | None:
         if summary := self.get_summary_for_section(section_id):
-            return summary.get("show_on_completion", False)
+            return bool(summary.get("show_on_completion"))
 
     def get_repeat_for_section(self, section_id: str) -> ImmutableDict | None:
         if section := self.get_section(section_id):
@@ -871,7 +871,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self, list_collector_id: str
     ) -> list[ImmutableDict] | None:
         if list_collector := self.get_block(list_collector_id):
-            return list_collector.get("repeating_blocks", [])
+            return list(list_collector.get("repeating_blocks", []))
 
     def get_answer_ids_for_list_items(self, list_collector_id: str) -> list[str]:
         """
