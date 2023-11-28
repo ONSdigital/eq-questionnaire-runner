@@ -285,12 +285,13 @@ describe("Feature: Grand Calculated Summary", () => {
         "Grand Calculated Summary for total monthly household expenditure is calculated to be £1,130.00. Is this correct?",
       );
       await assertSummaryValues(["£550.00", "£300.00", "£0.00", "£250.00", "£30.00", "£1,130.00"]);
-      await assertSummaryValues([
+      await assertSummaryItems([
         "Total monthly food expenditure",
         "Total monthly clothes expenditure",
         "Total games expenditure",
         "Total monthly expenditure on utility bills",
         "Total monthly expenditure on streaming services",
+        "Total monthly expenditure",
       ]);
     });
 
