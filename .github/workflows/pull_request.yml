@@ -36,15 +36,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version-file : ".nvmrc"
+          cache: "npm"
       - name: Get npm cache
         id: get-npm-cache
         run: echo "dir=$(npm get cache)" >> $GITHUB_OUTPUT
-      - name: Cache npm modules
-        id: cache-npm
-        uses: actions/cache@v3
-        with:
-          path: '~/.npm'
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Install npm deps
         if: steps.cache-npm.outputs.cache-hit != 'true'
         run: npm install
