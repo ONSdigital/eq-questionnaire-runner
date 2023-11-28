@@ -346,7 +346,7 @@ describe("Using supplementary data", () => {
     await click(HubPage.submit());
     await $(ThankYouPage.savePrintAnswersLink()).click();
 
-    assertSummaryTitles(["Company Details", "Employees", "Additional Employees", "Harry Potter", "Bruce Wayne", "Jane Doe", "John Smith", "Product details"]);
+    await assertSummaryTitles(["Company Details", "Additional Employees", "Harry Potter", "Bruce Wayne", "Jane Doe", "John Smith", "Product details"]);
 
     // Company details
     await expect(await $(ViewSubmittedResponsePage.emailQuestion()).getText()).toBe("Is contact@lidl.org still the correct contact email for Lidl?");
