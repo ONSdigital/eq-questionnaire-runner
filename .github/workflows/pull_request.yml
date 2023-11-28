@@ -62,6 +62,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version-file: ".nvmrc"
+          cache: "npm"
       - name: Write app version
         run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
       - name: Install pipenv
@@ -77,12 +78,6 @@ jobs:
       - name: Get npm cache
         id: get-npm-cache
         run: echo "dir=$(npm get cache)" >> $GITHUB_OUTPUT
-      - name: Cache npm modules
-        uses: actions/cache@v3
-        id: cache-npm
-        with:
-          path: '~/.npm'
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Install npm deps
         run: npm install
       - name: Functional tests spec lint
@@ -145,6 +140,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version-file: ".nvmrc"
+          cache: "npm"
       - run: |
           echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
       - uses: actions/setup-python@v4
@@ -158,12 +154,6 @@ jobs:
       - name: Get npm cache
         id: get-npm-cache
         run: echo "dir=$(npm get cache)" >> $GITHUB_OUTPUT
-      - name: Cache np, modules
-        uses: actions/cache@v3
-        id: cache-npm
-        with:
-          path: '~/.npm'
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Install npm deps
         run: npm install
       - name: Docker compose
