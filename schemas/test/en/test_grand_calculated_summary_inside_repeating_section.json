@@ -30,7 +30,17 @@
             "id": "base-costs-section",
             "title": "Vehicle Costs",
             "summary": {
-                "show_on_completion": true
+                "show_on_completion": true,
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "costs",
+                        "title": "Base Costs",
+                        "add_link_text": "Add another base cost",
+                        "empty_list_text": "There are no base costs"
+                    }
+                ],
+                "show_non_item_answers": true
             },
             "groups": [
                 {
@@ -44,19 +54,6 @@
                                 "type": "General",
                                 "id": "any-cost-question",
                                 "title": "Do you have any outgoing costs for owning a vehicle?",
-                                "guidance": {
-                                    "contents": [
-                                        {
-                                            "title": "Notes for testing"
-                                        },
-                                        {
-                                            "description": "For the first iteration, calculated summaries of repeating answers don’t work in a grand calculated summary in a separate repeating section"
-                                        },
-                                        {
-                                            "description": "<b>So you should answer no to this question</b> and remove this guidance once separate repeating answer calculated summaries are supported"
-                                        }
-                                    ]
-                                },
                                 "answers": [
                                     {
                                         "type": "Radio",
@@ -216,6 +213,49 @@
                                     ]
                                 }
                             },
+                            "repeating_blocks": [
+                                {
+                                    "id": "cost-repeating-block-1",
+                                    "type": "ListRepeatingQuestion",
+                                    "question": {
+                                        "id": "cost-repeating-block-1-question",
+                                        "type": "General",
+                                        "title": {
+                                            "text": "What is the base monthly rate for {cost_name} for a single vehicle?",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "cost_name",
+                                                    "value": {
+                                                        "source": "answers",
+                                                        "identifier": "cost-name"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "answers": [
+                                            {
+                                                "id": "cost-base",
+                                                "label": {
+                                                    "text": "Base {transformed_value} expenditure",
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "transformed_value",
+                                                            "value": {
+                                                                "source": "answers",
+                                                                "identifier": "cost-name"
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "mandatory": true,
+                                                "type": "Currency",
+                                                "currency": "GBP",
+                                                "decimal_places": 2
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
                             "summary": {
                                 "title": "cost",
                                 "item_title": {
@@ -262,7 +302,7 @@
                             },
                             "question": {
                                 "id": "dynamic-answer-question",
-                                "title": "How much do you spend per month on the following for a single vehicle?",
+                                "title": "How much extra do you normally spend per month for a single vehicle?",
                                 "type": "General",
                                 "dynamic_answers": {
                                     "values": {
@@ -272,7 +312,7 @@
                                     "answers": [
                                         {
                                             "label": {
-                                                "text": "Single vehicle {transformed_value}",
+                                                "text": "Extra {transformed_value} expenditure",
                                                 "placeholders": [
                                                     {
                                                         "placeholder": "transformed_value",
@@ -283,9 +323,9 @@
                                                     }
                                                 ]
                                             },
-                                            "id": "cost-of-cost",
+                                            "id": "cost-extra",
                                             "type": "Currency",
-                                            "mandatory": true,
+                                            "mandatory": false,
                                             "currency": "GBP",
                                             "decimal_places": 2
                                         }
@@ -322,7 +362,11 @@
                                     "+": [
                                         {
                                             "source": "answers",
-                                            "identifier": "cost-of-cost"
+                                            "identifier": "cost-base"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "cost-extra"
                                         },
                                         {
                                             "source": "answers",
@@ -814,6 +858,13 @@
                             "id": "gcs-breakdown-block",
                             "question": {
                                 "id": "gcs-breakdown-question",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "Currently this question is not revisited when the grand calculated summary changes. When grand calculated summary dependencies are implemented, this guidance should be removed, and this block should become incomplete upon the GCS changing."
+                                        }
+                                    ]
+                                },
                                 "title": {
                                     "text": "How do you pay for the monthly fees of {vehicle_cost}?",
                                     "placeholders": [

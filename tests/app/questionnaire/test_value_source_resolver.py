@@ -72,6 +72,9 @@ def get_value_source_resolver(
     if not schema:
         schema = get_mock_schema()
         schema.is_repeating_answer = Mock(return_value=bool(list_item_id))
+        schema.get_list_name_for_answer_id = Mock(
+            return_value="list" if list_item_id else None
+        )
         schema.is_answer_dynamic = Mock(return_value=False)
         schema.is_answer_in_list_collector_repeating_block = Mock(return_value=False)
 
@@ -150,7 +153,7 @@ def test_answer_source_with_list_item_id_no_list_item_selector():
 
 def test_list_item_id_ignored_if_answer_not_in_list_collector_or_repeat():
     schema = get_mock_schema()
-    schema.is_repeating_answer = Mock(return_value=False)
+    schema.get_list_name_for_answer_id = Mock(return_value=None)
 
     value_source_resolver = get_value_source_resolver(
         schema=schema,
@@ -261,7 +264,7 @@ def test_answer_source_with_list_item_selector_list_first_item():
 def test_answer_source_outside_of_repeating_section():
     schema = get_mock_schema()
 
-    schema.is_repeating_answer = Mock(return_value=False)
+    schema.get_list_name_for_answer_id = Mock(return_value=None)
     answer_store = AnswerStore([{"answer_id": "some-answer", "value": "Yes"}])
 
     value_source_resolver = get_value_source_resolver(
@@ -322,7 +325,7 @@ def test_answer_source_not_on_path_non_repeating_section(is_answer_on_path):
 @pytest.mark.parametrize("is_answer_on_path", [True, False])
 def test_answer_source_not_on_path_repeating_section(is_answer_on_path):
     schema = get_mock_schema()
-    schema.is_repeating_answer = Mock(return_value=True)
+    schema.get_list_name_for_answer_id = Mock(return_value="some-list")
     location = Location(
         section_id="test-section", block_id="test-block", list_item_id="item-1"
     )
@@ -426,17 +429,87 @@ def test_answer_source_dynamic_answer(
     )
 
 
-@pytest.mark.parametrize("answer_values", ([], [10, 5], [100, 200, 300]))
-def test_answer_source_repeating_block_answers(
-    mocker, placeholder_transform_question_repeating_block, answer_values
+@pytest.mark.parametrize(
+    "answer_values, list_name, list_item_id, expected",
+    (
+        ([10, 5], "supermarkets", "item-1", 10),
+        ([10, 5], "cars", "item-1", [10, 5]),
+        ([10, 5], None, None, [10, 5]),
+    ),
+)
+def test_answer_source_dynamic_answer_in_different_repeat(
+    placeholder_transform_question_dynamic_answers_json,
+    answer_values,
+    list_name,
+    list_item_id,
+    expected,
 ):
     """
-    Tests that an answer id from a repeating block resolves to the list of answers for that list and repeating block question
+    Tests that a dynamic answer id as a value source resolves to the specific instance in the context of a repeat
+    and the list of all answers when outside a repeat or in a repeat for a different list.
     """
-    schema = mocker.MagicMock()
+    schema = MagicMock()
+    schema.is_answer_dynamic = Mock(return_value=True)
+    schema.get_block_for_answer_id = Mock(
+        return_value={"question": placeholder_transform_question_dynamic_answers_json}
+    )
+    schema.get_list_name_for_answer_id = Mock(return_value="supermarkets")
+    list_item_ids = get_list_items(len(answer_values))
+    value_source_resolver = get_value_source_resolver(
+        data_stores=DataStores(
+            answer_store=AnswerStore(
+                [
+                    AnswerDict(
+                        answer_id="percentage-of-shopping",
+                        value=value,
+                        list_item_id=list_item_id,
+                    )
+                    for list_item_id, value in zip(list_item_ids, answer_values)
+                ]
+            ),
+            list_store=ListStore([{"name": "supermarkets", "items": list_item_ids}]),
+        ),
+        location=Location(
+            section_id="section-1", list_name=list_name, list_item_id=list_item_id
+        ),
+        list_item_id=list_item_id,
+        schema=schema,
+    )
+    assert (
+        value_source_resolver.resolve(
+            {"source": "answers", "identifier": "percentage-of-shopping"}
+        )
+        == expected
+    )
+
+
+@pytest.mark.parametrize(
+    "answer_values, list_name, list_item_id, expected",
+    (
+        ([], None, None, []),
+        ([10, 5], None, None, [10, 5]),
+        ([100, 200, 300], None, None, [100, 200, 300]),
+        ([10, 5], "transport", "item-1", 10),
+        ([100, 200, 300], "transport", "item-2", 200),
+        ([10, 5], "shopping", "item-1", [10, 5]),
+        ([100, 200, 300], "shopping", "item-2", [100, 200, 300]),
+    ),
+)
+def test_answer_source_repeating_block_answers_in_repeat(
+    placeholder_transform_question_repeating_block,
+    answer_values,
+    list_name,
+    list_item_id,
+    expected,
+):
+    """
+    Tests that an answer id from a repeating block resolves to the specific answer in the context of a repeat.
+    And the list of answers for that list and repeating block question outside a repeat or in a repeat for another list.
+    """
+    schema = MagicMock()
     schema.list_names_by_list_repeating_block_id = {"repeating-block-1": "transport"}
     schema.is_answer_dynamic = Mock(return_value=False)
-    schema.is_answer_in_list_collector_repeating_block = Mock(return_value=True)
+    schema.get_list_name_for_answer_id = Mock(return_value="transport")
     schema.get_block_for_answer_id = Mock(
         return_value=placeholder_transform_question_repeating_block
     )
@@ -456,12 +529,16 @@ def test_answer_source_repeating_block_answers(
             list_store=ListStore([{"name": "transport", "items": list_item_ids}]),
         ),
         schema=schema,
+        location=Location(
+            section_id="section-1", list_name=list_name, list_item_id=list_item_id
+        ),
+        list_item_id=list_item_id,
     )
     assert (
         value_source_resolver.resolve(
             {"source": "answers", "identifier": "transport-cost"}
         )
-        == answer_values
+        == expected
     )
 
 
@@ -829,13 +906,18 @@ def test_grand_calculated_summary_value_source(
         }
         return blocks[block_id]
 
-    def mock_is_answer_repeating(answer_id: str) -> bool:
-        return (answer_id in {"answer-1", "answer-2"} and cs_list_item_id_1) or (
-            answer_id in {"answer-3", "answer-4"} and cs_list_item_id_2
+    def mock_get_list_name_for_answer_id(answer_id: str) -> str | None:
+        return (
+            "mock-list"
+            if (answer_id in {"answer-1", "answer-2"} and cs_list_item_id_1)
+            or (answer_id in {"answer-3", "answer-4"} and cs_list_item_id_2)
+            else None
         )
 
     schema.get_block = Mock(side_effect=mock_get_block)
-    schema.is_repeating_answer = Mock(side_effect=mock_is_answer_repeating)
+    schema.get_list_name_for_answer_id = Mock(
+        side_effect=mock_get_list_name_for_answer_id
+    )
     schema.is_answer_dynamic = Mock(return_value=False)
     schema.is_answer_in_list_collector_repeating_block = Mock(return_value=False)
 
