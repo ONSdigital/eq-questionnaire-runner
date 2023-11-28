@@ -31,6 +31,7 @@ from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.router import Router
 from app.submitter.previously_submitted_exception import PreviouslySubmittedException
+from app.utilities.bind_context import bind_contextvars_schema_from_metadata
 from app.utilities.schema import load_schema_from_metadata
 from app.views.contexts import HubContext
 from app.views.contexts.preview_context import (
@@ -94,12 +95,7 @@ def before_questionnaire_request() -> Response | None:
         tx_id=metadata.tx_id,
         ce_id=metadata.collection_exercise_sid,
     )
-
-    if schema_name := metadata.schema_name:
-        contextvars.bind_contextvars(schema_name=schema_name)
-
-    if schema_url := metadata.schema_url:
-        contextvars.bind_contextvars(schema_url=schema_url)
+    bind_contextvars_schema_from_metadata(metadata)
 
     logger.info(
         "questionnaire request", method=request.method, url_path=request.full_path
@@ -138,12 +134,7 @@ def before_post_submission_request() -> None:
     )
 
     contextvars.bind_contextvars(tx_id=metadata.tx_id)
-
-    if schema_name := metadata.schema_name:
-        contextvars.bind_contextvars(schema_name=schema_name)
-
-    if schema_url := metadata.schema_url:
-        contextvars.bind_contextvars(schema_url=schema_url)
+    bind_contextvars_schema_from_metadata(metadata)
 
     logger.info(
         "questionnaire request", method=request.method, url_path=request.full_path

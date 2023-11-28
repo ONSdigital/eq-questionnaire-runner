@@ -81,6 +81,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     )  # type:ignore
     schema_name = VALIDATORS["string"](required=False)  # type:ignore
     schema_url = VALIDATORS["url"](required=False)  # type:ignore
+    cir_instrument_id = VALIDATORS["uuid"](required=False)  # type:ignore
     response_id = VALIDATORS["string"](required=True)  # type:ignore
     account_service_url = VALIDATORS["url"](required=True)  # type:ignore
 
@@ -100,12 +101,22 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     survey_metadata = fields.Nested(SurveyMetadata, required=False)
 
     @validates_schema
-    def validate_schema_name_is_set(self, data, **kwargs):
+    def validate_schema_options(self, data, **kwargs):
         # pylint: disable=no-self-use, unused-argument
-        if data and not (data.get("schema_name") or data.get("schema_url")):
-            raise ValidationError(
-                "Neither schema_name or schema_url has been set in metadata"
-            )
+        if data:
+            options = [
+                option
+                for option in ["schema_name", "schema_url", "cir_instrument_id"]
+                if data.get(option)
+            ]
+            if len(options) == 0:
+                raise ValidationError(
+                    "Neither schema_name, schema_url or cir_instrument_id has been set in metadata"
+                )
+            if len(options) > 1:
+                raise ValidationError(
+                    f"Only one of schema_name, schema_url or cir_instrument_id should be specified in metadata, but {', '.join(options)} were provided"
+                )
 
 
 def validate_questionnaire_claims(

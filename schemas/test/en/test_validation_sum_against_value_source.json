@@ -171,6 +171,16 @@
                                     }
                                 ]
                             }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "another-number-total-playback",
+                            "title": "We calculate the total of number values entered to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "calculation_type": "sum",
+                                "answers_to_calculate": ["breakdown-1", "breakdown-2", "breakdown-3", "breakdown-4"],
+                                "title": "Another grand total of previous values"
+                            }
                         }
                     ]
                 }
