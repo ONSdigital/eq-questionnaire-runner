@@ -3,6 +3,7 @@ import BreakdownAnswerPage from "../../../../generated_pages/validation_sum_agai
 import TotalPlaybackPage from "../../../../generated_pages/validation_sum_against_value_source/number-total-playback.page";
 import SecondBreakdownAnswerPage from "../../../../generated_pages/validation_sum_against_value_source/second-breakdown-block.page";
 import SubmitPage from "../../../../generated_pages/validation_sum_against_total_equal/submit.page";
+import AnotherTotalPlaybackPage from "../../../../generated_pages/validation_sum_against_value_source/another-number-total-playback.page";
 import { click } from "../../../../helpers";
 const answerAndSubmitBreakdownQuestion = async (breakdown1, breakdown2, breakdown3, breakdown4) => {
   await $(BreakdownAnswerPage.breakdown1()).setValue(breakdown1);
@@ -45,22 +46,24 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
   });
 
   describe("Given I have a calculated summary value of 12", () => {
-    it("When I continue to second breakdown and enter values equal to calculated summary total, Then I should be able to get to the summary page", async () => {
+    it("When I continue to second breakdown and enter values equal to calculated summary total, Then I should be able to get to the next calculated summary", async () => {
       await $(TotalAnswerPage.total()).setValue("12");
       await click(TotalAnswerPage.submit());
 
       await answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
 
-      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
+      await expect(browser).toHaveUrlContaining(AnotherTotalPlaybackPage.pageName);
     });
   });
 
   describe("Given I completed both grouped answer validation questions and I am on the summary", () => {
-    it("When I go back from the summary and change the total, Then I must reconfirm both breakdown questions with valid answers before I can get to the summary", async () => {
+    it("When I go back from the summary and change the total, Then I must reconfirm both breakdown questions with valid answers before I can get to the next calculated summary", async () => {
       await $(TotalAnswerPage.total()).setValue("12");
       await click(TotalAnswerPage.submit());
 
       await answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
+
+      await click(AnotherTotalPlaybackPage.submit());
 
       await $(SubmitPage.totalAnswerEdit()).click();
       await $(TotalAnswerPage.total()).setValue("15");
@@ -74,7 +77,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await answerBothBreakdownQuestions(["6", "3", "3", "3"], ["3", "3", "2", "1"]);
 
-      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
+      await expect(browser).toHaveUrlContaining(AnotherTotalPlaybackPage.pageName);
     });
   });
 
@@ -84,6 +87,8 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
       await click(TotalAnswerPage.submit());
 
       await answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
+
+      await click(AnotherTotalPlaybackPage.submit());
 
       await $(SubmitPage.totalAnswerEdit()).click();
       await $(TotalAnswerPage.total()).setValue("15");
@@ -97,7 +102,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await answerBothBreakdownQuestions(["5", "4", "4", "2"], ["3", "3", "2", "1"]);
 
-      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
+      await expect(browser).toHaveUrlContaining(AnotherTotalPlaybackPage.pageName);
     });
   });
 
@@ -107,6 +112,8 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
       await click(TotalAnswerPage.submit());
 
       await answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
+
+      await click(AnotherTotalPlaybackPage.submit());
 
       await $(SubmitPage.breakdown1Edit()).click();
 
@@ -124,7 +131,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await expect(await $(SecondBreakdownAnswerPage.singleErrorLink()).isDisplayed()).toBe(false);
 
-      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
+      await expect(browser).toHaveUrlContaining(AnotherTotalPlaybackPage.pageName);
     });
   });
 
@@ -147,6 +154,33 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
       await answerBothBreakdownQuestions(["2", "1", "1", "1"], ["3", "3", "3", "3"]);
 
       await expect(await $(SecondBreakdownAnswerPage.errorNumber(1)).getText()).toBe("Enter answers that add up to 3");
+    });
+  });
+  describe("Given I edit a question from a Calculated Summary page", () => {
+    it("When I change the answer and there is a question that needs to be revisited before I can return to the Calculated Summary Page, Then I revisit the relevant page before I route back to the Calculated Summary page", async () => {
+      await $(TotalAnswerPage.total()).setValue("5");
+      await click(TotalAnswerPage.submit());
+
+      await answerBothBreakdownQuestions(["2", "1", "1", "1"], ["1", "2", "0", "0"]);
+
+      await $(AnotherTotalPlaybackPage.breakdown1Edit()).click();
+
+      await $(BreakdownAnswerPage.breakdown1()).setValue("1");
+      await $(BreakdownAnswerPage.breakdown2()).setValue("2");
+
+      await click(BreakdownAnswerPage.submit());
+
+      await click(TotalPlaybackPage.previous());
+
+      await click(BreakdownAnswerPage.submit());
+
+      await click(TotalPlaybackPage.submit());
+
+      await click(SecondBreakdownAnswerPage.submit());
+
+      await click(AnotherTotalPlaybackPage.submit());
+
+      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
     });
   });
 });
