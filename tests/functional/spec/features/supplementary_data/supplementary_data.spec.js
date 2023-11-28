@@ -259,7 +259,11 @@ describe("Using supplementary data", () => {
     await expect(await $(CalculatedSummaryVolumeSalesPage.calculatedSummaryTitle()).getText()).toBe(
       "We calculate the total volume of sales over the previous quarter to be 150 kg. Is this correct?",
     );
-    await assertSummaryItems(["Volume of sales for Articles and equipment for sports or outdoor games", "Volume of sales for Kitchen Equipment", "Total sales volume"]);
+    await assertSummaryItems([
+      "Volume of sales for Articles and equipment for sports or outdoor games",
+      "Volume of sales for Kitchen Equipment",
+      "Total sales volume",
+    ]);
     await assertSummaryValues(["100 kg", "50 kg", "150 kg"]);
     await click(CalculatedSummaryVolumeSalesPage.submit());
   });
@@ -268,7 +272,11 @@ describe("Using supplementary data", () => {
     await expect(await $(CalculatedSummaryVolumeTotalPage.calculatedSummaryTitle()).getText()).toBe(
       "We calculate the total volume produced over the previous quarter to be 500 kg. Is this correct?",
     );
-    await assertSummaryItems(["Total volume produced for Articles and equipment for sports or outdoor games", "Total volume produced for Kitchen Equipment", "Total volume produced"]);
+    await assertSummaryItems([
+      "Total volume produced for Articles and equipment for sports or outdoor games",
+      "Total volume produced for Kitchen Equipment",
+      "Total volume produced",
+    ]);
     await assertSummaryValues(["200 kg", "300 kg", "500 kg"]);
     await click(CalculatedSummaryVolumeTotalPage.submit());
   });
