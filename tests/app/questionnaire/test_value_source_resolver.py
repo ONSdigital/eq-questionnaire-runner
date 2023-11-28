@@ -1,3 +1,4 @@
+# pylint: disable=too-many-lines
 from typing import Optional, Union
 
 import pytest
