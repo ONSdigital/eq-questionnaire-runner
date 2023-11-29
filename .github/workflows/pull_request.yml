@@ -37,11 +37,7 @@ jobs:
         with:
           node-version-file : ".nvmrc"
           cache: "npm"
-      - name: Get npm cache
-        id: get-npm-cache
-        run: echo "dir=$(npm get cache)" >> $GITHUB_OUTPUT
       - name: Install npm deps
-        if: steps.cache-npm.outputs.cache-hit != 'true'
         run: npm install
   lint:
     needs: [python-dependencies, node-dependencies]
@@ -70,9 +66,6 @@ jobs:
         run: pipenv run python -m scripts.extract_translation_templates --test
       - name: Python linting
         run: make lint-python
-      - name: Get npm cache
-        id: get-npm-cache
-        run: echo "dir=$(npm get cache)" >> $GITHUB_OUTPUT
       - name: Install npm deps
         run: npm install
       - name: Functional tests spec lint
@@ -146,9 +139,6 @@ jobs:
         run: pip install pipenv==2023.8.22
       - name: Install virtual environment
         run: pipenv install --dev
-      - name: Get npm cache
-        id: get-npm-cache
-        run: echo "dir=$(npm get cache)" >> $GITHUB_OUTPUT
       - name: Install npm deps
         run: npm install
       - name: Docker compose
