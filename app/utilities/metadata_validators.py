@@ -8,7 +8,7 @@ class RegionCode(validate.Regexp):
     Currently, this does not validate the subdivision, but only checks length
     """
 
-    def __init__(self, *args: int, **kwargs: Any) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__("^GB-[A-Z]{3}$", *args, **kwargs)
 
 
