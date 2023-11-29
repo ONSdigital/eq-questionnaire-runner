@@ -411,7 +411,6 @@ class QuestionnaireForm(FlaskForm):
         return result
 
     def answers_all_valid(self, answer_id_list: Sequence[str]) -> bool:
-        # wtforms Form parents are not discoverable in the 2.3.3 implementation
         return not set(answer_id_list) & set(self.errors)
 
     def map_errors(self) -> list[tuple[str, str]]:
@@ -424,7 +423,6 @@ class QuestionnaireForm(FlaskForm):
                     self.question_errors[self.question["id"]],
                 )
             ]
-        # wtforms Form parents are not discoverable in the 2.3.3 implementation
         for answer in self.question["answers"]:
             if answer["id"] in self.errors:
                 ordered_errors += map_subfield_errors(self.errors, answer["id"])
