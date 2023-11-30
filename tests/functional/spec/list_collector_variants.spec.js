@@ -30,7 +30,7 @@ describe("List Collector With Variants", () => {
 
     it("The user can see all household members in the summary", async () => {
       const peopleExpected = ["Samuel Clemens"];
-      checkItemsInList(peopleExpected, ListCollectorPage.listLabel);
+      await checkItemsInList(peopleExpected, ListCollectorPage.listLabel);
     });
 
     it("The questionnaire has the correct question text on the change and remove pages", async () => {
@@ -76,7 +76,7 @@ describe("List Collector With Variants", () => {
 
     it("The user can see all household members in the summary", async () => {
       const peopleExpected = ["Samuel Clemens"];
-      checkItemsInList(peopleExpected, ListCollectorPage.listLabel);
+      await checkItemsInList(peopleExpected, ListCollectorPage.listLabel);
     });
 
     it("The questionnaire has the correct question text on the change and remove pages", async () => {
