@@ -89,7 +89,7 @@ describe("List Collector Repeating Blocks", () => {
       await $(AnyOtherCompaniesOrBranchesPage.yes()).click();
       await click(AnyOtherCompaniesOrBranchesPage.submit());
       await addCompany("MOD", "789", "3", "3", "2023", true);
-      checkItemsInList(["ONS", "GOV", "MOD"], AnyOtherCompaniesOrBranchesPage.listLabel);
+      await checkItemsInList(["ONS", "GOV", "MOD"], AnyOtherCompaniesOrBranchesPage.listLabel);
     });
 
     it("When the user edits an item, Then the name of the item is able to be changed", async () => {
@@ -103,7 +103,7 @@ describe("List Collector Repeating Blocks", () => {
       await $(AnyOtherCompaniesOrBranchesPage.listRemoveLink(2)).click();
       await $(RemoveCompanyPage.yes()).click();
       await click(RemoveCompanyPage.submit());
-      checkItemsInList(["ONS", "MOD"], AnyOtherCompaniesOrBranchesPage.listLabel);
+      await checkItemsInList(["ONS", "MOD"], AnyOtherCompaniesOrBranchesPage.listLabel);
       await expect(await $(AnyOtherCompaniesOrBranchesPage.listLabel(2)).getText()).not.toContain("Government");
       await expect(await $(AnyOtherCompaniesOrBranchesPage.listLabel(2)).getText()).toBe("MOD");
     });
@@ -112,7 +112,7 @@ describe("List Collector Repeating Blocks", () => {
       await $(AnyOtherCompaniesOrBranchesPage.yes()).click();
       await click(AnyOtherCompaniesOrBranchesPage.submit());
       await addCompany("Council", "101", "4", "4", "2023", false, true);
-      checkItemsInList(["ONS", "MOD", "Council"], AnyOtherCompaniesOrBranchesPage.listLabel);
+      await checkItemsInList(["ONS", "MOD", "Council"], AnyOtherCompaniesOrBranchesPage.listLabel);
     });
 
     it("When a user has finished making changes to the list, Then section can be completed and the questionnaire submitted", async () => {
@@ -159,11 +159,11 @@ describe("List Collector Repeating Blocks", () => {
       await addCompany("NAV", "101", "4", "4", "2023", true, true);
 
       // Only the ONS and NAV items should be complete
-      checkItemsInList(["ONS", "GOV", "MOD", "NAV"], AnyOtherCompaniesOrBranchesPage.listLabel);
-      checkListItemComplete(`dt[data-qa="list-item-1-label"]`);
-      checkListItemIncomplete(`dt[data-qa="list-item-2-label"]`);
-      checkListItemIncomplete(`dt[data-qa="list-item-3-label"]`);
-      checkListItemComplete(`dt[data-qa="list-item-1-label"]`);
+      await checkItemsInList(["ONS", "GOV", "MOD", "NAV"], AnyOtherCompaniesOrBranchesPage.listLabel);
+      await checkListItemComplete(`dt[data-qa="list-item-1-label"]`);
+      await checkListItemIncomplete(`dt[data-qa="list-item-2-label"]`);
+      await checkListItemIncomplete(`dt[data-qa="list-item-3-label"]`);
+      await checkListItemComplete(`dt[data-qa="list-item-1-label"]`);
     });
 
     it("When an item has incomplete repeating blocks, Then using submit on the list collector page will navigate the user to the first incomplete repeating block.", async () => {
@@ -193,10 +193,10 @@ describe("List Collector Repeating Blocks", () => {
     it("When the last remaining incomplete repeating block is completed, Then all items are marked as completed with the checkmark icon.", async () => {
       await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioNo()).click();
       await click(CompaniesRepeatingBlock2Page.submit());
-      checkListItemComplete(`dt[data-qa="list-item-1-label"]`);
-      checkListItemComplete(`dt[data-qa="list-item-2-label"]`);
-      checkListItemComplete(`dt[data-qa="list-item-3-label"]`);
-      checkListItemComplete(`dt[data-qa="list-item-4-label"]`);
+      await checkListItemComplete(`dt[data-qa="list-item-1-label"]`);
+      await checkListItemComplete(`dt[data-qa="list-item-2-label"]`);
+      await checkListItemComplete(`dt[data-qa="list-item-3-label"]`);
+      await checkListItemComplete(`dt[data-qa="list-item-4-label"]`);
     });
 
     it("When the user clicks a change link from the section summary and submits without changing an answer, Then the user is returned to the section summary anchored to the answer they clicked on", async () => {
@@ -305,8 +305,8 @@ describe("List Collector Repeating Blocks", () => {
       await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioNo()).click();
       await click(CompaniesRepeatingBlock2Page.submit());
       await expect(browser).toHaveUrlContaining(AnyOtherCompaniesOrBranchesPage.pageName);
-      checkListItemComplete(`dt[data-qa="list-item-1-label"]`);
-      checkListItemComplete(`dt[data-qa="list-item-2-label"]`);
+      await checkListItemComplete(`dt[data-qa="list-item-1-label"]`);
+      await checkListItemComplete(`dt[data-qa="list-item-2-label"]`);
     });
 
     it("When another incomplete item is added via the section summary, Then navigating to the submit page of the section will redirect to the list collector page.", async () => {

@@ -24,6 +24,7 @@ def build_thank_you_context(
     submitted_at: datetime,
     survey_type: SurveyType,
     guidance_content: Optional[dict] = None,
+    confirmation_email_form: Optional[EmailForm] = None,
 ) -> dict[str, Any]:
     if (ru_name := metadata["ru_name"]) and (trad_as := metadata["trad_as"]):
         submission_text = lazy_gettext(
@@ -43,7 +44,8 @@ def build_thank_you_context(
         submitted_at,
         metadata.tx_id,
     )
-    return {
+
+    context = {
         "hide_sign_out_button": True,
         "submission_text": submission_text,
         "metadata": context_metadata,
@@ -52,6 +54,11 @@ def build_thank_you_context(
             schema, submitted_at
         ),
     }
+    if confirmation_email_form:
+        context["confirmation_email_form"] = build_email_form_context(
+            confirmation_email_form
+        )
+    return context
 
 
 def build_view_submitted_response_context(
@@ -74,19 +81,3 @@ def build_view_submitted_response_context(
                 "post_submission.get_view_submitted_response"
             )
     return view_submitted_response
-
-
-def build_census_thank_you_context(
-    metadata: MetadataProxy,
-    confirmation_email_form: Optional[EmailForm],
-    form_type: str,
-) -> dict[str, bool | str | None]:
-    context = {
-        "display_address": metadata["display_address"],
-        "form_type": form_type,
-        "hide_sign_out_button": False,
-        "sign_out_url": url_for("session.get_sign_out"),
-    }
-    if confirmation_email_form:
-        context.update(build_email_form_context(confirmation_email_form))
-    return context

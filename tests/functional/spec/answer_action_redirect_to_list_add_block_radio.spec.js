@@ -37,7 +37,7 @@ describe("Answer Action: Redirect To List Add Question (Radio)", () => {
       await expect(browser).toHaveUrlContaining(AnyoneLiveAtListCollector.pageName);
 
       const peopleExpected = ["Marcus Twin"];
-      checkItemsInList(peopleExpected, AnyoneLiveAtListCollector.listLabel);
+      await checkItemsInList(peopleExpected, AnyoneLiveAtListCollector.listLabel);
     });
 
     it('When the user click the "Previous" link from the list collector, Then, they are taken to the last complete block', async () => {

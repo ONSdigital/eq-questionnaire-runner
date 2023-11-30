@@ -30,7 +30,7 @@ const openQuestionnaireAndSetUp = async (schema) => {
   await click(ReferenceDatePage.submit());
 };
 
-testCases.forEach(async (testCase) => {
+testCases.forEach((testCase) => {
   describe(`Feature: Dynamically generated answer options driven by a function (${testCase.schemaName})`, () => {
     describe("Selecting/Deselecting", () => {
       before("Open questionnaire", async () => {

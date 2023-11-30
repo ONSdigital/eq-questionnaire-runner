@@ -53,7 +53,7 @@ describe("List Collector", () => {
 
     it("The collector shows all of the household members in the summary", async () => {
       const peopleExpected = ["Marcus Twin", "Samuel Clemens", "Olivia Clemens", "Suzy Clemens"];
-      checkItemsInList(peopleExpected, ListCollectorPage.listLabel);
+      await checkItemsInList(peopleExpected, ListCollectorPage.listLabel);
     });
 
     it("The questionnaire allows the name of a person to be changed", async () => {
@@ -111,7 +111,7 @@ describe("List Collector", () => {
 
     it("The collector shows everyone on the summary", async () => {
       const peopleExpected = ["Samuel Clemens", "Olivia Clemens", "Suzy Clemens", "Clara Clemens", "Jean Clemens"];
-      checkItemsInList(peopleExpected, ListCollectorPage.listLabel);
+      await checkItemsInList(peopleExpected, ListCollectorPage.listLabel);
     });
 
     it("When No is answered on the list collector the user sees an interstitial", async () => {
@@ -127,7 +127,7 @@ describe("List Collector", () => {
 
     it("The collector still shows the same list of people on the summary", async () => {
       const peopleExpected = ["Samuel Clemens", "Olivia Clemens", "Suzy Clemens", "Clara Clemens", "Jean Clemens"];
-      checkItemsInList(peopleExpected, ListCollectorPage.listLabel);
+      await checkItemsInList(peopleExpected, ListCollectorPage.listLabel);
     });
 
     it("The collector allows the user to add another person to the same list", async () => {
