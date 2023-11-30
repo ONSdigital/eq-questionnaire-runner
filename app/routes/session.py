@@ -26,10 +26,8 @@ from app.helpers.template_helpers import (
     render_template,
 )
 from app.questionnaire import QuestionnaireSchema
-from app.questionnaire.base_questionnaire_store_updater import (
-    BaseQuestionnaireStoreUpdater,
-)
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
+from app.questionnaire.questionnaire_store_updater import BaseQuestionnaireStoreUpdater
 from app.questionnaire.router import Router
 from app.routes.errors import _render_error_page
 from app.services.supplementary_data import get_supplementary_data_v1

@@ -4,9 +4,7 @@ from mock import MagicMock
 
 from app.data_models import ListStore, ProgressStore
 from app.data_models.progress import CompletionStatus, ProgressDict
-from app.questionnaire.base_questionnaire_store_updater import (
-    BaseQuestionnaireStoreUpdater,
-)
+from app.questionnaire.questionnaire_store_updater import BaseQuestionnaireStoreUpdater
 from app.utilities.types import DependentSection, SectionKey
 
 

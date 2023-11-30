@@ -14,7 +14,7 @@ from app.utilities.json import json_dumps, json_loads
 from app.utilities.types import SupplementaryDataListMapping
 
 if TYPE_CHECKING:
-    from app.questionnaire.base_questionnaire_store_updater import (  # pragma: no cover
+    from app.questionnaire.questionnaire_store_updater import (  # pragma: no cover
         BaseQuestionnaireStoreUpdater,
     )
     from app.storage.encrypted_questionnaire_storage import (  # pragma: no cover

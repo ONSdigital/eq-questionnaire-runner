@@ -6,10 +6,8 @@ from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
 from app.data_models.questionnaire_store import QuestionnaireStore
 from app.data_models.supplementary_data_store import SupplementaryDataStore
-from app.questionnaire.base_questionnaire_store_updater import (
-    BaseQuestionnaireStoreUpdater,
-)
 from app.questionnaire.location import SectionKey
+from app.questionnaire.questionnaire_store_updater import BaseQuestionnaireStoreUpdater
 from app.utilities.json import json_dumps, json_loads
 from app.utilities.make_immutable import make_immutable
 
