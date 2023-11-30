@@ -58,7 +58,7 @@ const answerAndSubmitEntertainmentBreakdownQuestion = async (breakdown1, breakdo
   await click(EntertainmentBreakdownPage.submit());
 };
 
-const assertRepeatingSectionOnChange = async (repeatIndex, currentBreakdown1, currentBreakdown2, currentBreakdown3, newTotal) => {
+const assertRepeatingSectionOnChange = (repeatIndex, currentBreakdown1, currentBreakdown2, currentBreakdown3, newTotal) => {
   it(`When I click 'Continue with section' on repeating section ${repeatIndex}, Then I should be taken to the spending breakdown question and my previous answers should be prefilled`, async () => {
     await $(HubPage.summaryRowLink(repeatingSectionId(repeatIndex))).click();
 
