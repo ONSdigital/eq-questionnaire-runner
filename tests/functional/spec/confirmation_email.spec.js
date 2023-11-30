@@ -6,6 +6,8 @@ import ConfirmationEmailSentPage from "../base_pages/confirmation-email-sent.pag
 import ConfirmEmailPage from "../base_pages/confirm-email.page";
 import { click } from "../helpers";
 
+const errorPanel = '[data-ga="error"]';
+
 describe("Email confirmation", () => {
   describe("Given I launch the test email confirmation survey", () => {
     before(async () => {
@@ -22,16 +24,16 @@ describe("Email confirmation", () => {
     it("When I submit the form without providing an email address, Then I get an error message", async () => {
       await click(ThankYouPage.submit());
       await expect(browser).toHaveUrlContaining(ThankYouPage.pageName);
-      await expect(await $(ThankYouPage.errorPanel()).isExisting()).toBe(true);
-      await expect(await $(ThankYouPage.errorPanel()).getText()).toContain("Enter an email address");
+      await expect(await $(errorPanel).isExisting()).toBe(true);
+      await expect(await $(errorPanel).getText()).toBe("Enter an email address");
     });
 
     it("When I submit the form without providing a correctly formatted email address, Then I get an error message", async () => {
       await $(ThankYouPage.email()).setValue("incorrect-format");
       await click(ThankYouPage.submit());
       await expect(browser).toHaveUrlContaining(ThankYouPage.pageName);
-      await expect(await $(ThankYouPage.errorPanel()).isExisting()).toBe(true);
-      await expect(await $(ThankYouPage.errorPanel()).getText()).toContain("Enter an email address in a valid format, for example name@example.com");
+      await expect(await $(errorPanel).isExisting()).toBe(true);
+      await expect(await $(errorPanel).getText()).toBe("Enter an email address in a valid format, for example name@example.com");
     });
 
     it("When I submit the form with a valid email address, Then I go to the confirm email page", async () => {
