@@ -70,7 +70,7 @@ class TestEmailConfirmation(IntegrationTestCase):
 
     def test_confirm_email_with_confirmation_email_not_set(self):
         # Given I launch the test_thank_you_census_individual questionnaire, which doesn't have email confirmation set in the schema
-        self.launchSurvey("test_thank_you_census_individual")
+        self.launchSurvey("test_thank_you")
         self.post()
         self.post()
 
@@ -83,7 +83,7 @@ class TestEmailConfirmation(IntegrationTestCase):
 
     def test_confirmation_email_send_with_confirmation_email_not_set(self):
         # Given I launch the test_thank_you_census_individual questionnaire, which doesn't have email confirmation set in the schema
-        self.launchSurvey("test_thank_you_census_individual")
+        self.launchSurvey("test_thank_you")
         self.post()
         self.post()
 
@@ -147,18 +147,6 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertEqualPageTitle(
             "We’ve received your answers - Confirmation email test schema"
         )
-
-    def test_census_themed_schema_with_confirmation_email_not_set(self):
-        # Given I launch the test_thank_you_census_individual questionnaire, which doesn't have email confirmation set in the schema
-        self.launchSurvey("test_thank_you_census_individual")
-
-        # When I complete the questionnaire
-        self.post()
-        self.post()
-
-        # Then on the thank you page I don't get a confirmation email form
-        self.assertInUrl("/submitted/thank-you/")
-        self.assertNotInBody("Get confirmation email")
 
     def test_default_themed_schema_with_confirmation_email_not_set(self):
         # Given I launch the test_checkbox questionnaire, which doesn't have email confirmation set in the schema
