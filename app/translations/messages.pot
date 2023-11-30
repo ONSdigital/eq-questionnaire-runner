@@ -213,19 +213,19 @@ msgstr[1] ""
 msgid "Not a valid choice."
 msgstr ""
 
-#: app/helpers/template_helpers.py:48
+#: app/helpers/template_helpers.py:51
 msgid "ONS Surveys"
 msgstr ""
 
-#: app/helpers/template_helpers.py:114
+#: app/helpers/template_helpers.py:117
 msgid "Menu"
 msgstr ""
 
-#: app/helpers/template_helpers.py:145
+#: app/helpers/template_helpers.py:148
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:170
+#: app/helpers/template_helpers.py:173
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
@@ -301,11 +301,11 @@ msgstr ""
 msgid "You can try to <a href='{retry_url}'>submit your feedback again</a>."
 msgstr ""
 
-#: app/routes/individual_response.py:203
+#: app/routes/individual_response.py:206
 msgid "An individual access code has been sent by post"
 msgstr ""
 
-#: app/routes/individual_response.py:309
+#: app/routes/individual_response.py:312
 msgid "An individual access code has been sent by text"
 msgstr ""
 
