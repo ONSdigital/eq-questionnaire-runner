@@ -1,7 +1,6 @@
 from datetime import datetime
 from functools import cached_property
 
-from flask import session as cookie_session
 from flask_babel import LazyString, gettext
 from flask_login import current_user
 
@@ -10,10 +9,7 @@ from app.data_models.session_store import SessionStore
 from app.globals import get_metadata
 from app.helpers.template_helpers import get_survey_type
 from app.questionnaire import QuestionnaireSchema
-from app.views.contexts.thank_you_context import (
-    build_census_thank_you_context,
-    build_thank_you_context,
-)
+from app.views.contexts.thank_you_context import build_thank_you_context
 from app.views.handlers.confirmation_email import (
     ConfirmationEmail,
     ConfirmationEmailLimitReached,
@@ -23,8 +19,7 @@ from app.views.handlers.confirmation_email import (
 
 class ThankYou:
     DEFAULT_THANK_YOU_TEMPLATE = "thank-you"
-    CENSUS_THANK_YOU_TEMPLATE = "census-thank-you"
-    PAGE_TITLE = gettext("Thank you for completing the census")
+    PAGE_TITLE = gettext("Thank you for completing the survey")
 
     def __init__(
         self,
@@ -36,12 +31,7 @@ class ThankYou:
         self._schema: QuestionnaireSchema = schema
         self._submitted_at = submitted_at
 
-        self._is_census_theme = cookie_session.get("theme") == "census"
-        self.template = (
-            self.CENSUS_THANK_YOU_TEMPLATE
-            if self._is_census_theme
-            else self.DEFAULT_THANK_YOU_TEMPLATE
-        )
+        self.template = self.DEFAULT_THANK_YOU_TEMPLATE
 
     @cached_property
     def confirmation_email(self) -> ConfirmationEmail | None:
@@ -53,25 +43,18 @@ class ThankYou:
     def get_context(self) -> dict:
         metadata: MetadataProxy = get_metadata(current_user)  # type: ignore
 
-        if not self._is_census_theme:
-            guidance_content = self._schema.get_post_submission().get("guidance")
-            return build_thank_you_context(
-                self._schema,
-                metadata,
-                self._submitted_at,
-                get_survey_type(),
-                guidance_content,
-            )
-
         confirmation_email_form = (
             self.confirmation_email.form if self.confirmation_email else None
         )
 
-        return build_census_thank_you_context(
+        guidance_content = self._schema.get_post_submission().get("guidance")
+        return build_thank_you_context(
+            self._schema,
             metadata,
+            self._submitted_at,
+            get_survey_type(),
+            guidance_content,
             confirmation_email_form,
-            # Type ignore: form_type will already be populated at this stage
-            self._schema.form_type,  # type: ignore
         )
 
     def get_page_title(self) -> str | LazyString:

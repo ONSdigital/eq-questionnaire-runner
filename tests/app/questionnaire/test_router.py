@@ -2083,3 +2083,62 @@ class TestRouterSectionResume(RouterTestCase):
         )
 
         assert "questionnaire/employment-status/" in section_resume_url
+
+    @pytest.mark.usefixtures("app")
+    def test_return_to_calculated_summary_no_return_to_answer_id(self):
+        self.schema = load_schema_from_name("test_validation_sum_against_value_source")
+        self.data_stores.progress_store = ProgressStore(
+            [
+                ProgressDict(
+                    section_id="default-section",
+                    block_ids=[
+                        "total-block",
+                        "breakdown-block",
+                        "number-total-playback",
+                    ],
+                    status=CompletionStatus.IN_PROGRESS,
+                )
+            ]
+        )
+
+        current_location = Location(
+            section_id="default-section", block_id="second-breakdown-block"
+        )
+
+        routing_path = RoutingPath(
+            block_ids=[
+                "total-block",
+                "breakdown-block",
+                "number-total-playback",
+                "second-breakdown-block",
+                "another-number-total-playback",
+            ],
+            section_id="default-section",
+        )
+
+        return_location = ReturnLocation(
+            return_to_answer_id=None,
+            return_to="calculated-summary",
+            return_to_block_id="another-number-total-playback",
+        )
+
+        next_location_url = self.router.get_next_location_url(
+            current_location,
+            routing_path,
+            return_location,
+        )
+
+        expected_location = Location(
+            section_id="default-section",
+            block_id="second-breakdown-block",
+        )
+
+        expected_location_url = url_for(
+            "questionnaire.block",
+            block_id=expected_location.block_id,
+            return_to=return_location.return_to,
+            return_to_block_id=return_location.return_to_block_id,
+            return_to_answer_id=return_location.return_to_answer_id,
+        )
+
+        assert expected_location_url == next_location_url
