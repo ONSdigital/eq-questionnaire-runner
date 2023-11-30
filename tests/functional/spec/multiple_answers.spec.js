@@ -33,7 +33,7 @@ describe("Multiple Answers", () => {
   describe("Given I have completed a questionnaire that has multiple answers per question", () => {
     beforeEach("Load the questionnaire and answer all questions", async () => {
       await browser.openQuestionnaire("test_multiple_answers.json");
-      answerAllQuestions();
+      await answerAllQuestions();
     });
 
     it("When I am on the summary, Then all answers are displayed", async () => {
