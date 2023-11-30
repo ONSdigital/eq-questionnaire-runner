@@ -625,10 +625,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         ]
 
     def get_section_ids_required_for_hub(self) -> tuple[str, ...]:
-        return tuple(self.flow_options.get("required_completed_sections", ()))
+        # Type ignore: the type of the .get() returned value is Any
+        return self.flow_options.get("required_completed_sections", tuple())  # type: ignore
 
     def get_summary_options(self) -> ImmutableDict[str, bool]:
-        return ImmutableDict(self.flow_options.get("summary", {}))
+        # Type ignore: the type of the .get() returned value is Any
+        return self.flow_options.get("summary", ImmutableDict({}))  # type: ignore
 
     def get_sections(self) -> Iterable[ImmutableDict]:
         return self._sections_by_id.values()
