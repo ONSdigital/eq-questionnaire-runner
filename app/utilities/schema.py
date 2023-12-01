@@ -71,7 +71,7 @@ def get_schema_path(language_code: str, schema_name: str) -> str | None:
 def get_schema_path_map(
     include_test_schemas: bool = False,
 ) -> dict[str, dict[str, dict[str, str]]]:
-    schemas = {}
+    schemas: dict[str, dict[str, dict[str, str]]] = {}
     for survey_type in os.listdir(SCHEMA_DIR):
         if not include_test_schemas and survey_type == "test":
             continue
@@ -99,7 +99,7 @@ def _schema_exists(language_code: str, schema_name: str) -> bool:
     )
 
 
-def get_allowed_languages(schema_name: str | None, launch_language: str):
+def get_allowed_languages(schema_name: str | None, launch_language: str) -> list[str]:
     if schema_name:
         for language_combination in LANGUAGES_MAP.get(schema_name, []):
             if launch_language in language_combination:
@@ -151,7 +151,7 @@ def _load_schema_from_name(schema_name: str, language_code: str) -> Questionnair
     return QuestionnaireSchema(schema_json, language_code)
 
 
-def get_schema_name_from_params(eq_id, form_type) -> str:
+def get_schema_name_from_params(eq_id: str | None, form_type: str | None) -> str:
     return f"{eq_id}_{form_type}"
 
 
@@ -243,7 +243,7 @@ def load_schema_from_url(url: str, *, language_code: str | None) -> Questionnair
     raise SchemaRequestFailed
 
 
-def cache_questionnaire_schemas():
+def cache_questionnaire_schemas() -> None:
     for schemas_by_language in get_schema_path_map().values():
         for language_code, schemas in schemas_by_language.items():
             for schema in schemas:
