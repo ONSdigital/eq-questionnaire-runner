@@ -1,3 +1,5 @@
+from typing import Any
+
 from marshmallow import fields, validate
 
 
@@ -6,7 +8,7 @@ class RegionCode(validate.Regexp):
     Currently, this does not validate the subdivision, but only checks length
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__("^GB-[A-Z]{3}$", *args, **kwargs)
 
 
@@ -16,7 +18,7 @@ class UUIDString(fields.UUID):
     This custom field deserializes UUIDs to strings.
     """
 
-    def _deserialize(self, *args, **kwargs):  # pylint: disable=arguments-differ
+    def _deserialize(self, *args: Any, **kwargs: Any) -> str:  # type: ignore # pylint: disable=arguments-differ
         return str(super()._deserialize(*args, **kwargs))
 
 
@@ -26,10 +28,12 @@ class DateString(fields.DateTime):
     This custom field deserializes Dates to strings.
     """
 
-    def _deserialize(self, *args, **kwargs):  # pylint: disable=arguments-differ
-        date = super()._deserialize(*args, **kwargs)
+    DEFAULT_FORMAT = "iso8601"
 
-        if self.format == "iso8601":
+    def _deserialize(self, *args: Any, **kwargs: Any) -> str:  # type: ignore # pylint: disable=arguments-differ
+        date = super()._deserialize(*args, **kwargs)
+        date_format = self.format or self.DEFAULT_FORMAT
+        if date_format == "iso8601":
             return date.isoformat()
 
-        return date.strftime(self.format)
+        return date.strftime(date_format)
