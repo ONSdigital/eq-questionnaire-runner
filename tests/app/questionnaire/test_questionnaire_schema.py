@@ -449,44 +449,74 @@ def test_answer_dependencies_for_calculated_question_value_source(
 ):
     schema = calculated_question_with_dependent_sections_schema
 
-    assert schema.answer_dependencies == {
-        "breakdown-1": {
-            Dependent(
-                section_id="default-section",
-                block_id="number-total-playback",
-                for_list=None,
-                answer_id=None,
-            ),
-            Dependent(
-                section_id="default-section",
-                block_id="second-breakdown-block",
-                for_list=None,
-                answer_id=None,
-            ),
-        },
-        "breakdown-2": {
-            Dependent(
-                section_id="default-section",
-                block_id="number-total-playback",
-                for_list=None,
-                answer_id=None,
-            ),
-            Dependent(
-                section_id="default-section",
-                block_id="second-breakdown-block",
-                for_list=None,
-                answer_id=None,
-            ),
-        },
-        "total-answer": {
-            Dependent(
-                section_id="default-section",
-                block_id="breakdown-block",
-                for_list=None,
-                answer_id=None,
-            )
-        },
-    }
+    assert schema.answer_dependencies == ImmutableDict(
+        {
+            "total-answer": {
+                Dependent(
+                    section_id="default-section",
+                    block_id="breakdown-block",
+                    for_list=None,
+                    answer_id=None,
+                )
+            },
+            "breakdown-1": {
+                Dependent(
+                    section_id="default-section",
+                    block_id="number-total-playback",
+                    for_list=None,
+                    answer_id=None,
+                ),
+                Dependent(
+                    section_id="default-section",
+                    block_id="second-breakdown-block",
+                    for_list=None,
+                    answer_id=None,
+                ),
+                Dependent(
+                    section_id="default-section",
+                    block_id="another-number-total-playback",
+                    for_list=None,
+                    answer_id=None,
+                ),
+            },
+            "breakdown-2": {
+                Dependent(
+                    section_id="default-section",
+                    block_id="number-total-playback",
+                    for_list=None,
+                    answer_id=None,
+                ),
+                Dependent(
+                    section_id="default-section",
+                    block_id="second-breakdown-block",
+                    for_list=None,
+                    answer_id=None,
+                ),
+                Dependent(
+                    section_id="default-section",
+                    block_id="another-number-total-playback",
+                    for_list=None,
+                    answer_id=None,
+                ),
+            },
+            "breakdown-3": {
+                Dependent(
+                    section_id="default-section",
+                    block_id="another-number-total-playback",
+                    for_list=None,
+                    answer_id=None,
+                )
+            },
+            "breakdown-4": {
+                Dependent(
+                    section_id="default-section",
+                    block_id="another-number-total-playback",
+                    for_list=None,
+                    answer_id=None,
+                )
+            },
+        }
+    )
 
 
 def test_answer_dependencies_for_calculated_summary(

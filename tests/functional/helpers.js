@@ -23,9 +23,9 @@ const assertSummaryFunction = (selector) => {
   };
 };
 
-export const assertSummaryValues = assertSummaryFunction('dd[class="ons-summary__values"]');
-export const assertSummaryTitles = assertSummaryFunction('dt[class="ons-summary__title"]');
-export const assertSummaryItems = assertSummaryFunction('dd[class="ons-summary__item--text"]');
+export const assertSummaryValues = assertSummaryFunction(".ons-summary__values");
+export const assertSummaryTitles = assertSummaryFunction(".ons-summary__title");
+export const assertSummaryItems = assertSummaryFunction(".ons-summary__item--text");
 
 export const repeatingAnswerChangeLink = (answerIndex) => {
   return $$('dd[class="ons-summary__actions"]')[answerIndex].$("a");

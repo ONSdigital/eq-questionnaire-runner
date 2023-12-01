@@ -319,7 +319,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
     });
   });
 
-  describe("Given I have a Calculated Summary in a Repeating Section", async () => {
+  describe("Given I have a Calculated Summary in a Repeating Section", () => {
     before("Get to Final Summary", async () => {
       await browser.openQuestionnaire("test_new_calculated_summary_repeating_section.json");
       await click(HubPage.submit());
