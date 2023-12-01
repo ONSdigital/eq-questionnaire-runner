@@ -491,8 +491,8 @@ To add a new dependency, use `npm install [dev dependency] --save-dev` or `npm i
 ### On [Design System](https://github.com/ONSdigital/design-system) Repo
 Checkout branch with new changes on
 
-You will need to install the Design System dependencies to do this so run `yarn` in the terminal if you haven't
-You will also need to install gulp
+You will need to install the Design System dependencies. If you haven't installed Yarn, install it with `npm i -g yarn`. To install the dependencies run `yarn` in the terminal. If you haven't
+you will also need to install gulp.
 
 Then in the terminal run:
 
