@@ -451,7 +451,7 @@ class TestCase {
       await expect(browser).toHaveUrlContaining(CurrencyTotalPlaybackPage.pageName);
     });
     it("Given I have entered a range of positive and negative values, When I reach the calculated summary, Then the total is correct", async () => {
-      assertSummaryValues(expectedAnswerValues);
+      await assertSummaryValues(expectedAnswerValues);
       await expect(await $(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).toBe(
         `We calculate the total of currency values entered to be ${expectedTotalValue}. Is this correct?`,
       );
