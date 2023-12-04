@@ -92,7 +92,7 @@ describe("Grand Calculated Summary inside a repeating section", () => {
     await expect(await $(GrandCalculatedSummaryVehiclePage.calculatedSummaryBaseCostLabel()).getText()).toBe("Vehicle base cost");
     await expect(await $(GrandCalculatedSummaryVehiclePage.calculatedSummaryRunningCostLabel()).getText()).toBe("Monthly Car costs");
     await expect(await $(GrandCalculatedSummaryVehiclePage.grandCalculatedSummaryQuestion()).getText()).toBe("Grand total Car expenditure");
-    assertSummaryValues(["£90.00", "£225.00", "£315.00"]);
+    await assertSummaryValues(["£90.00", "£225.00", "£315.00"]);
   });
 
   it("Given I immediately use that Grand Calculated Summary for validation, When I enter a sum of values too high, Then I see an error message", async () => {
@@ -137,7 +137,7 @@ describe("Grand Calculated Summary inside a repeating section", () => {
     await expect(await $(GrandCalculatedSummaryVehiclePage.calculatedSummaryBaseCostLabel()).getText()).toBe("Vehicle base cost");
     await expect(await $(GrandCalculatedSummaryVehiclePage.calculatedSummaryRunningCostLabel()).getText()).toBe("Monthly Van costs");
     await expect(await $(GrandCalculatedSummaryVehiclePage.grandCalculatedSummaryQuestion()).getText()).toBe("Grand total Van expenditure");
-    assertSummaryValues(["£90.00", "£95.00", "£185.00"]);
+    await assertSummaryValues(["£90.00", "£95.00", "£185.00"]);
   });
 
   it("Given I am at a Grand Summary inside a repeating section, When I click the change link for a repeating calculated summary, Then I am taken to the correct page", async () => {
