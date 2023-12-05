@@ -204,7 +204,7 @@ describe("Grand Calculated Summary inside a repeating section", () => {
     );
   });
 
-  it("Given I edit the non-repeating calculated summary, When I return to the Hub, Then I see repeating sections are incomplete", async () => {
+  it("Given I have edited a static answer whilst completing the repeating section, When I return to the Hub and enter the other repeat, Then I see the breakdown block needs to be revisited", async () => {
     await click(GrandCalculatedSummaryVehiclePage.submit());
     await $(GcsBreakdownBlockPage.payDebit()).setValue(100);
     await $(GcsBreakdownBlockPage.payCredit()).setValue(110);
@@ -214,9 +214,16 @@ describe("Grand Calculated Summary inside a repeating section", () => {
     await click(VehicleDetailsSectionPage.submit());
     await $(HubPage.summaryRowLink("vehicle-details-section-1")).click();
     await click(GrandCalculatedSummaryVehiclePage.submit());
+    await expect(browser).toHaveUrlContaining(GcsBreakdownBlockPage.pageName);
+    await expect(await $(GcsBreakdownBlockPage.questionText()).getText()).toBe("How do you pay for the monthly fees of £325.00?");
+    await $(GcsBreakdownBlockPage.payCredit()).setValue(125);
+    await click(GcsBreakdownBlockPage.submit());
     await click(VehicleDetailsSectionPage.submit());
     await expect(await $(HubPage.summaryRowState("vehicle-details-section-1")).getText()).toBe("Completed");
     await expect(await $(HubPage.summaryRowState("vehicle-details-section-2")).getText()).toBe("Completed");
+  });
+
+  it("Given I edit the non-repeating calculated summary, When I return to the Hub, Then I see repeating sections are incomplete", async () => {
     await $(HubPage.summaryRowLink("base-costs-section")).click();
     await $(BaseCostsSectionPage.financeCostAnswerEdit()).click();
     await $(FinanceCostPage.answer()).setValue(110);
@@ -236,6 +243,9 @@ describe("Grand Calculated Summary inside a repeating section", () => {
       "The total cost of owning and running your Car is calculated to be £335.00. Is this correct?",
     );
     await click(GrandCalculatedSummaryVehiclePage.submit());
+    await expect(browser).toHaveUrlContaining(GcsBreakdownBlockPage.pageName);
+    await $(GcsBreakdownBlockPage.payCredit()).setValue(135);
+    await click(GcsBreakdownBlockPage.submit());
     await click(VehicleDetailsSectionPage.submit());
   });
 
@@ -246,5 +256,13 @@ describe("Grand Calculated Summary inside a repeating section", () => {
     await expect(await $(GrandCalculatedSummaryVehiclePage.grandCalculatedSummaryTitle()).getText()).toBe(
       "The total cost of owning and running your Van is calculated to be £230.00. Is this correct?",
     );
+    await click(GrandCalculatedSummaryVehiclePage.submit());
+    await expect(browser).toHaveUrlContaining(GcsBreakdownBlockPage.pageName);
+    await expect(await $(GcsBreakdownBlockPage.questionText()).getText()).toBe("How do you pay for the monthly fees of £230.00?");
+    await $(GcsBreakdownBlockPage.payCredit()).setValue(120);
+    await click(GcsBreakdownBlockPage.submit());
+    await click(VehicleDetailsSectionPage.submit());
+    await expect(await $(HubPage.summaryRowState("vehicle-details-section-1")).getText()).toBe("Completed");
+    await expect(await $(HubPage.summaryRowState("vehicle-details-section-2")).getText()).toBe("Completed");
   });
 });
