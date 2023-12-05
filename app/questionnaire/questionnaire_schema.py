@@ -99,7 +99,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         ] = defaultdict(
             lambda: defaultdict(OrderedSet)
         )
-        self.calculated_summary_section_dependencies_by_block: dict[
+        self.calculation_summary_section_dependencies_by_block: dict[
             str, DependencyDictType
         ] = defaultdict(lambda: defaultdict(OrderedSet))
         self._when_rules_section_dependencies_by_answer: dict[
@@ -131,7 +131,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         # Post schema parsing.
         self._populate_answer_and_list_dependencies()
         self._populate_when_rules_section_dependencies()
-        self._populate_calculated_summary_section_dependencies()
+        self._populate_calculation_summary_section_dependencies()
         self._populate_min_max_for_numeric_answers()
         self._populate_placeholder_transform_section_dependencies()
 
@@ -502,7 +502,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self, grand_calculated_summary_block: ImmutableDict
     ) -> None:
         grand_calculated_summary_calculated_summary_ids = (
-            get_calculation_block_ids_for_grand_calculated_summary(
+            get_calculated_summary_ids_for_grand_calculated_summary(
                 grand_calculated_summary_block
             )
         )
@@ -562,6 +562,27 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 value_source, block_id=block_id, answer_id=answer_id
             )
 
+    def _update_dependencies_for_calculated_summary_value_source(
+        self, *, calculated_summary_id: str, block_id: str, answer_id: str | None
+    ) -> None:
+        """
+        For the given block (and optionally answer within) set it as a dependency of each calculated summary answer
+        If the calculated summary depends on a list, make the block depend on it too
+        """
+        # Type ignore: validator checks the validity of value sources.
+        calculated_summary_block: ImmutableDict = self.get_block(calculated_summary_id)  # type: ignore
+        answer_ids_for_block = get_calculated_summary_answer_ids(
+            calculated_summary_block
+        )
+        dependent = self._get_dependent_for_block_id(
+            block_id=block_id, answer_id=answer_id
+        )
+        for answer_id_for_block in answer_ids_for_block:
+            self._answer_dependencies_map[answer_id_for_block].add(dependent)
+            # if the answer is repeating, then the calculated summary also depends on the list it loops over
+            if list_name := self.get_list_name_for_answer_id(answer_id_for_block):
+                self._list_dependencies_map[list_name].add(dependent)
+
     def _update_dependencies_for_value_source(
         self,
         value_source: Mapping,
@@ -577,22 +598,24 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             self._answer_dependencies_map[value_source["identifier"]] |= {
                 self._get_dependent_for_block_id(block_id=block_id, answer_id=answer_id)
             }
-        if value_source["source"] == "calculated_summary":
+        elif value_source["source"] == "calculated_summary":
             identifier = value_source["identifier"]
-            if calculated_summary_block := self.get_block(identifier):
-                answer_ids_for_block = get_calculated_summary_answer_ids(
-                    calculated_summary_block
+            self._update_dependencies_for_calculated_summary_value_source(
+                calculated_summary_id=identifier, block_id=block_id, answer_id=answer_id
+            )
+
+        elif value_source["source"] == "grand_calculated_summary":
+            identifier = value_source["identifier"]
+            # Type ignore: validator will ensure identifier is valid
+            gcs_block: ImmutableDict = self.get_block(identifier)  # type: ignore
+            for (
+                calculated_summary_id
+            ) in get_calculated_summary_ids_for_grand_calculated_summary(gcs_block):
+                self._update_dependencies_for_calculated_summary_value_source(
+                    calculated_summary_id=calculated_summary_id,
+                    block_id=block_id,
+                    answer_id=answer_id,
                 )
-                dependent = self._get_dependent_for_block_id(
-                    block_id=block_id, answer_id=answer_id
-                )
-                for answer_id_for_block in answer_ids_for_block:
-                    self._answer_dependencies_map[answer_id_for_block].add(dependent)
-                    # if the answer is repeating, then the calculated summary also depends on the list it loops over
-                    if list_name := self.get_list_name_for_answer_id(
-                        answer_id_for_block
-                    ):
-                        self._list_dependencies_map[list_name].add(dependent)
 
         if value_source["source"] == "list":
             self._list_dependencies_map[value_source["identifier"]].add(
@@ -1207,14 +1230,15 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         set[str], set[str], dict[str, dict[str, OrderedSet[str] | DependencyDictType]]
     ]:
         """
-        For a given rule, returns:
-        - a set of dependent answer ids
+        For a given rule, stores any dependent answers and returns:
+        - a set of dependent sections
         - a set of dependent lists
         - any dependent sections for progress value sources.
         Progress dependencies are keyed both by section and by block e.g.
         sections: {"section-1": {"section-2"}}
         blocks: {"section-1": {"block-1": {"section-2"}}}
         """
+        dependent_sections: set[str] = set()
         dependent_answer_ids: set[str] = set()
         dependent_list_names: set[str] = set()
         dependencies_ids_for_progress_value_source: dict[
@@ -1236,6 +1260,14 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 calculated_summary_block  # type: ignore
             )
             dependent_answer_ids.update(calculated_summary_answer_ids)
+        elif source == "grand_calculated_summary" and identifier:
+            # grand calculated summary section could differ from cs & answer sections, include it in dependent sections
+            gcs_section_id: str = self.get_section_id_for_block_id(identifier)  # type: ignore
+            if gcs_section_id != current_section_id:
+                dependent_sections.add(gcs_section_id)
+            dependent_answer_ids.update(
+                self.get_answer_ids_for_grand_calculated_summary_id(identifier)
+            )
         elif source == "list" and identifier:
             dependent_list_names.add(identifier)
         elif source == "progress" and identifier:
@@ -1252,14 +1284,14 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 # Type ignore: The identifier key will return a list
                 if section_id != current_section_id:
                     dependencies_ids_for_progress_value_source["blocks"][section_id] = {
-                        identifier: OrderedSet()
+                        identifier: OrderedSet([current_section_id])
                     }
-                    dependencies_ids_for_progress_value_source["blocks"][section_id][
-                        identifier  # type: ignore
-                    ].append(current_section_id)
 
+        dependent_sections |= self._get_section_dependencies_for_dependent_answers(
+            current_section_id, dependent_answer_ids
+        )
         return (
-            dependent_answer_ids,
+            dependent_sections,
             dependent_list_names,
             dependencies_ids_for_progress_value_source,
         )
@@ -1302,7 +1334,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 continue
 
             [
-                dependent_answer_ids,
+                dependent_sections,
                 dependent_list_names,
                 dependencies_for_progress_value_source,
             ] = self._get_section_and_block_ids_dependencies_for_progress_source_and_answer_ids_from_rule(
@@ -1316,11 +1348,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 dependencies_for_progress_value_source["blocks"]
             )
 
-            section_dependencies |= (
-                self._get_section_dependencies_for_dependent_answers(
-                    current_section_id, dependent_answer_ids
-                )
-            )
+            section_dependencies |= dependent_sections
 
             for list_name in dependent_list_names:
                 self._when_rules_section_dependencies_by_list[list_name].add(
@@ -1347,26 +1375,34 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             block_dependencies_for_progress_value_source,
         )
 
-    def _populate_calculated_summary_section_dependencies(self) -> None:
+    def _populate_calculation_summary_section_dependencies(self) -> None:
         """
-        For each block, find all the calculated summary value source dependencies
+        For each block, find all the calculated and grand calculated summary value source dependencies
         and make sure all involved sections are added as dependencies for that block and its section.
 
         Since calculated summaries can only contain answers from the section they are in,
-        it is sufficient to check the section for the calculated summary only.
+        it is sufficient to check the section for the calculated summary only. For grand calculated summaries
+        Need to include the section of the gcs, and each cs it references.
         """
         for section in self.get_sections():
             for block in self.get_blocks_for_section(section):
                 sources = get_mappings_with_key(
                     "source", data=block, ignore_keys=["when"]
                 )
-                section_dependencies: set[str] = {
-                    # Type ignore: Validator ensures a valid identifier so section will exist
-                    self.get_section_id_for_block_id(source["identifier"])  # type: ignore
-                    for source in sources
-                    if source["source"] == "calculated_summary"
-                }
-                self.calculated_summary_section_dependencies_by_block[section["id"]][
+                section_dependencies: set[str] = set()
+
+                for source in sources:
+                    if source["source"] == "calculated_summary":
+                        section_dependencies.add(
+                            self.get_section_id_for_block_id(source["identifier"])  # type: ignore
+                        )
+                    elif source["source"] == "grand_calculated_summary":
+                        section_dependencies.update(
+                            self.get_section_ids_for_grand_calculated_summary_id(
+                                source["identifier"]
+                            )
+                        )
+                self.calculation_summary_section_dependencies_by_block[section["id"]][
                     block["id"]
                 ].update(section_dependencies)
 
@@ -1378,6 +1414,36 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             section_id = self.get_section_id_for_block_id(block["id"])  # type: ignore
             section_dependencies.add(section_id)  # type: ignore
         return section_dependencies
+
+    def get_answer_ids_for_grand_calculated_summary_id(
+        self, grand_calculated_summary_id: str
+    ) -> list[str]:
+        # Type ignores: can assume the cs and gcs exist
+        answer_ids: list[str] = []
+        block: ImmutableDict = self.get_block(grand_calculated_summary_id)  # type: ignore
+        for (
+            calculated_summary_id
+        ) in get_calculated_summary_ids_for_grand_calculated_summary(block):
+            calculated_summary_block: ImmutableDict = self.get_block(  # type: ignore
+                calculated_summary_id
+            )
+            answer_ids.extend(
+                get_calculated_summary_answer_ids(calculated_summary_block)
+            )
+        return answer_ids
+
+    def get_section_ids_for_grand_calculated_summary_id(
+        self, grand_calculated_summary_id: str
+    ) -> set[str]:
+        """
+        Returns all sections that the grand calculated summary depends on,
+        i.e. the grand calculated summary section and the sections for each included calculated summary
+        """
+        # Type ignores: Can assume the block and each section exists
+        block_ids = {grand_calculated_summary_id}
+        block: ImmutableDict = self.get_block(grand_calculated_summary_id)  # type: ignore
+        block_ids.update(get_calculated_summary_ids_for_grand_calculated_summary(block))
+        return {self.get_section_id_for_block_id(block_id) for block_id in block_ids}  # type: ignore
 
     def get_summary_item_for_list_for_section(
         self, *, section_id: str, list_name: str
@@ -1451,22 +1517,22 @@ def is_summary_with_calculation(summary_type: str) -> bool:
     return summary_type in {"GrandCalculatedSummary", "CalculatedSummary"}
 
 
-def get_sources_for_type_from_data(
+def get_sources_for_types_from_data(
     *,
-    source_type: str,
+    source_types: set[str],
     data: MultiDict | Mapping | Sequence,
     ignore_keys: list | None = None,
 ) -> list:
     sources = get_mappings_with_key(key="source", data=data, ignore_keys=ignore_keys)
 
-    return [source for source in sources if source["source"] == source_type]
+    return [source for source in sources if source["source"] in source_types]
 
 
 def get_identifiers_from_calculation_block(
     *, calculation_block: Mapping, source_type: str
 ) -> list[str]:
-    values = get_sources_for_type_from_data(
-        source_type=source_type, data=calculation_block["calculation"]["operation"]
+    values = get_sources_for_types_from_data(
+        source_types={source_type}, data=calculation_block["calculation"]["operation"]
     )
 
     return [value["identifier"] for value in values]
@@ -1481,7 +1547,7 @@ def get_calculated_summary_answer_ids(calculated_summary_block: Mapping) -> list
     )
 
 
-def get_calculation_block_ids_for_grand_calculated_summary(
+def get_calculated_summary_ids_for_grand_calculated_summary(
     grand_calculated_summary_block: Mapping,
 ) -> list[str]:
     return get_identifiers_from_calculation_block(
