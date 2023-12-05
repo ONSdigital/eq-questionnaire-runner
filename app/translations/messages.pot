@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-11-23 08:39+0000\n"
+"POT-Creation-Date: 2023-12-04 17:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -213,19 +213,19 @@ msgstr[1] ""
 msgid "Not a valid choice."
 msgstr ""
 
-#: app/helpers/template_helpers.py:51
+#: app/helpers/template_helpers.py:48
 msgid "ONS Surveys"
 msgstr ""
 
-#: app/helpers/template_helpers.py:117
+#: app/helpers/template_helpers.py:114
 msgid "Menu"
 msgstr ""
 
-#: app/helpers/template_helpers.py:148
+#: app/helpers/template_helpers.py:145
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:173
+#: app/helpers/template_helpers.py:170
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
@@ -301,11 +301,11 @@ msgstr ""
 msgid "You can try to <a href='{retry_url}'>submit your feedback again</a>."
 msgstr ""
 
-#: app/routes/individual_response.py:206
+#: app/routes/individual_response.py:203
 msgid "An individual access code has been sent by post"
 msgstr ""
 
-#: app/routes/individual_response.py:312
+#: app/routes/individual_response.py:309
 msgid "An individual access code has been sent by text"
 msgstr ""
 
@@ -927,11 +927,11 @@ msgstr ""
 msgid "For security, your answers will only be available to view for 45 minutes"
 msgstr ""
 
-#: templates/thank-you.html:87
+#: templates/thank-you.html:85
 msgid "Get confirmation email"
 msgstr ""
 
-#: templates/thank-you.html:88
+#: templates/thank-you.html:86
 msgid ""
 "If you would like to be sent confirmation that you have completed your "
 "survey, enter your email address"

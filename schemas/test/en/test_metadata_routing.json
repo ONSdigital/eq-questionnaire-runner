@@ -4,8 +4,8 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "0",
-    "title": "Census England Household Schema",
-    "description": "Census England Household Schema",
+    "title": "Household Schema",
+    "description": "Household Schema",
     "theme": "default",
     "metadata": [
         {

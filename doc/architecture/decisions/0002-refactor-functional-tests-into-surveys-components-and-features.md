@@ -17,10 +17,6 @@ The functional tests should be organised in such a way that encourages consisten
 tests/
   functional/
     spec/
-        surveys/
-            census-household.spec.js
-            mci.spec.js
-            ...
         components/
             radio.spec.js
             checkbox.spec.js

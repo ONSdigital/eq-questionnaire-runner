@@ -69,7 +69,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertBadRequest()
 
     def test_confirm_email_with_confirmation_email_not_set(self):
-        # Given I launch the test_thank_you_census_individual questionnaire, which doesn't have email confirmation set in the schema
+        # Given I launch the test_thank_you questionnaire, which doesn't have email confirmation set in the schema
         self.launchSurvey("test_thank_you")
         self.post()
         self.post()
@@ -82,7 +82,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertNotInBody("Is this email address correct?")
 
     def test_confirmation_email_send_with_confirmation_email_not_set(self):
-        # Given I launch the test_thank_you_census_individual questionnaire, which doesn't have email confirmation set in the schema
+        # Given I launch the test_thank_you questionnaire, which doesn't have email confirmation set in the schema
         self.launchSurvey("test_thank_you")
         self.post()
         self.post()
@@ -137,7 +137,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         # Then I get shown a 404 error
         self.assertStatusNotFound()
 
-    def test_census_themed_schema_with_confirmation_email_true(self):
+    def test_default_themed_schema_with_confirmation_email_true(self):
         # Given I launch and complete the test_confirmation_email questionnaire
         self._launch_and_complete_questionnaire()
 
