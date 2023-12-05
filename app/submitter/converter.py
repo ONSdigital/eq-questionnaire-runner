@@ -128,7 +128,7 @@ def build_metadata(metadata: MetadataProxy) -> MetadataType:
 
 def get_optional_payload_properties(
     metadata: MetadataProxy, response_metadata: MutableMapping
-) -> MetadataType:
+) -> dict:
     payload = {}
 
     for key in ["channel", "case_type", "form_type", "region_code", "case_ref"]:
