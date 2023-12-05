@@ -1239,14 +1239,15 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         elif source == "progress" and identifier:
             if selector == "section" and identifier != current_section_id:
                 progress_section_dependencies[identifier].add(current_section_id)
-            elif selector == "block" and (
-                block_section_id := self.get_section_id_for_block_id(identifier)
+            elif (
+                selector == "block"
+                and (block_section_id := self.get_section_id_for_block_id(identifier))
+                != current_section_id
             ):
                 # Type ignore: The identifier key will return a list
-                if block_section_id != current_section_id:
-                    progress_block_dependencies[block_section_id][identifier].add(
-                        current_section_id
-                    )
+                progress_block_dependencies[block_section_id][identifier].add(  # type: ignore
+                    current_section_id
+                )
 
         dependent_section_ids |= self._get_section_dependencies_for_dependent_answers(
             current_section_id, dependent_answer_ids
