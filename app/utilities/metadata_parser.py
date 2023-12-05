@@ -15,7 +15,7 @@ from marshmallow import (
 from structlog import get_logger
 
 from app.questionnaire.rules.utils import parse_iso_8601_datetime
-from app.utilities.metadata_validators import DateString, RegionCode, UUIDString
+from app.utilities.metadata_validators import DateString, UUIDString
 from app.utilities.schema import get_schema_name_from_params
 
 logger = get_logger()

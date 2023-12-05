@@ -63,7 +63,7 @@
                         "type": "List",
                         "for_list": "visitors",
                         "title": {
-                            "text": "Visitors staying overnight on at {household_address}",
+                            "text": "Visitors staying overnight at {household_address}",
                             "placeholders": [
                                 {
                                     "placeholder": "household_address",
@@ -269,9 +269,8 @@
                             },
                             "summary": {
                                 "title": {
-                                    "text": "Household members staying overnight on at {household_address}",
+                                    "text": "Household members staying overnight at {household_address}",
                                     "placeholders": [
-
                                         {
                                             "placeholder": "household_address",
                                             "value": {
@@ -426,7 +425,7 @@
                             },
                             "summary": {
                                 "title": {
-                                    "text": "Visitors staying overnight on at {household_address}",
+                                    "text": "Visitors staying overnight at {household_address}",
                                     "placeholders": [
                                         {
                                             "placeholder": "household_address",
