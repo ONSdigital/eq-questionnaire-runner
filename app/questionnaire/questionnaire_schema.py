@@ -625,12 +625,10 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         ]
 
     def get_section_ids_required_for_hub(self) -> tuple[str, ...]:
-        # Type ignore: the type of the .get() returned value is Any
-        return self.flow_options.get("required_completed_sections", tuple())  # type: ignore
+        return self.flow_options.get("required_completed_sections", tuple())
 
     def get_summary_options(self) -> ImmutableDict[str, bool]:
-        # Type ignore: the type of the .get() returned value is Any
-        return self.flow_options.get("summary", ImmutableDict({}))  # type: ignore
+        return self.flow_options.get("summary", ImmutableDict({}))
 
     def get_sections(self) -> Iterable[ImmutableDict]:
         return self._sections_by_id.values()
@@ -703,8 +701,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def get_show_on_hub_for_section(self, section_id: str) -> bool | None:
         if section := self.get_section(section_id):
-            # Type ignore: the type of the .get() returned value is Any
-            return section.get("show_on_hub", True)  # type: ignore
+            return section.get("show_on_hub", True)
 
     def get_summary_for_section(self, section_id: str) -> ImmutableDict | None:
         if section := self.get_section(section_id):
@@ -716,8 +713,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def show_summary_on_completion_for_section(self, section_id: str) -> bool | None:
         if summary := self.get_summary_for_section(section_id):
-            # Type ignore: the type of the .get() returned value is Any
-            return summary.get("show_on_completion", False)  # type: ignore
+            return summary.get("show_on_completion", False)
 
     def get_repeat_for_section(self, section_id: str) -> ImmutableDict | None:
         if section := self.get_section(section_id):
@@ -875,8 +871,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self, list_collector_id: str
     ) -> list[ImmutableDict] | None:
         if list_collector := self.get_block(list_collector_id):
-            # Type ignore: the type of the .get() returned value is Any
-            return list_collector.get("repeating_blocks", [])  # type: ignore
+            return list_collector.get("repeating_blocks", [])
 
     def get_answer_ids_for_list_items(self, list_collector_id: str) -> list[str]:
         """

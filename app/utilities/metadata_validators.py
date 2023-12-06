@@ -18,7 +18,7 @@ class UUIDString(fields.UUID):
     This custom field deserializes UUIDs to strings.
     """
 
-    def _deserialize(self, *args: Any, **kwargs: Any) -> str:  # type: ignore # pylint: disable=arguments-differ
+    def _deserialize(self, *args: Any, **kwargs: Any) -> str:  # type: ignore
         return str(super()._deserialize(*args, **kwargs))
 
 
@@ -30,7 +30,7 @@ class DateString(fields.DateTime):
 
     DEFAULT_FORMAT = "iso8601"
 
-    def _deserialize(self, *args: Any, **kwargs: Any) -> str:  # type: ignore # pylint: disable=arguments-differ
+    def _deserialize(self, *args: Any, **kwargs: Any) -> str:  # type: ignore
         date = super()._deserialize(*args, **kwargs)
         date_format = self.format or self.DEFAULT_FORMAT
         if date_format == "iso8601":
