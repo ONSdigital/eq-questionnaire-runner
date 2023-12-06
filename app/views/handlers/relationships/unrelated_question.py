@@ -49,8 +49,6 @@ class UnrelatedQuestion(RelationshipQuestion):
         if answer_action := self._get_answer_action():
             self.handle_answer_action(answer_action["type"])
 
-        # pylint: disable=no-member
-        # wtforms Form parents are not discoverable in the 2.3.3 implementation
         self.questionnaire_store_updater.update_answers(
             self.form.data, list_item_id=self.current_location.list_item_id
         )
