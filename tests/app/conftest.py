@@ -1,5 +1,5 @@
 # pylint: disable=redefined-outer-name
-
+from copy import deepcopy
 from datetime import datetime, timedelta, timezone
 from http.client import HTTPMessage
 
@@ -287,7 +287,8 @@ def supplementary_data():
 
 @pytest.fixture
 def supplementary_data_with_employees(supplementary_data):
-    supplementary_data["items"]["employees"] = [
+    copy = deepcopy(supplementary_data)
+    copy["items"]["employees"] = [
         {
             "identifier": "429001",
             "personal_details": {
@@ -373,7 +374,7 @@ def supplementary_data_with_employees(supplementary_data):
             },
         },
     ]
-    return supplementary_data
+    return copy
 
 
 @pytest.fixture
