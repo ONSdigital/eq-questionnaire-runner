@@ -49,8 +49,6 @@ class ListAddQuestion(ListAction):
         self.questionnaire_store_updater.remove_answers(answer_ids_to_remove)
         self.questionnaire_store_updater.remove_completed_location(self.parent_location)
 
-        # pylint: disable=no-member
-        # wtforms Form parents are not discoverable in the 2.3.3 implementation
         self.questionnaire_store_updater.update_answers(
             self.form.data, self._list_item_id
         )

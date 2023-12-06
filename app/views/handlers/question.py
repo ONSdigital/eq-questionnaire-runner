@@ -149,8 +149,6 @@ class Question(BlockHandler):
         answers = self.rendered_block["question"]["answers"]
 
         for answer in answers:
-            # pylint: disable=no-member
-            # wtforms Form parents are not discoverable in the 2.3.3 implementation
             submitted_answer = self.form.data[answer["id"]]
 
             for option in answer.get("options", {}):
@@ -171,8 +169,6 @@ class Question(BlockHandler):
 
         if "list_summary" in self.rendered_block:
             context.update(self.get_list_summary_context())
-        # pylint: disable=no-member
-        # wtforms Form parents are not discoverable in the 2.3.3 implementation
         if self.form.errors or self.form.question_errors:
             self.page_title = gettext("Error: {page_title}").format(
                 page_title=self.page_title
@@ -201,8 +197,6 @@ class Question(BlockHandler):
         )
 
     def handle_post(self) -> None:
-        # pylint: disable=no-member
-        # wtforms Form parents are not discoverable in the 2.3.3 implementation
         self.questionnaire_store_updater.update_answers(self.form.data)
         if self.questionnaire_store_updater.is_dirty():
             # We prematurely complete the block, as we need it completed to build the routing path

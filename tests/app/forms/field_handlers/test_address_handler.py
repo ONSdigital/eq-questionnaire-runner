@@ -69,8 +69,6 @@ def test_no_validation_when_address_not_mandatory(
         value_source_resolver,
     )
     form.validate()
-    # pylint: disable=no-member
-    # wtforms Form parents are not discoverable in the 2.3.3 implementation
     assert not form.errors
 
 
@@ -84,8 +82,6 @@ def test_mandatory_validation_when_address_line_1_missing(
     )
     form = test_form_class(MultiDict({"test_field": "1"}), value_source_resolver)
     form.validate()
-    # pylint: disable=no-member
-    # wtforms Form parents are not discoverable in the 2.3.3 implementation
     assert form.errors["test_field"]["line1"][0] == "Enter an address"
 
 
