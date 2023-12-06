@@ -1,6 +1,6 @@
 import functools
 from datetime import datetime, timezone
-from typing import Callable, Iterable, Mapping
+from typing import Any, Callable, Iterable, Mapping, MutableMapping
 
 from marshmallow import (
     EXCLUDE,
@@ -34,9 +34,9 @@ VALIDATORS: Mapping[str, Callable] = {
 
 class StripWhitespaceMixin:
     @pre_load()
-    def strip_whitespace(
-        self, items, **kwargs
-    ):  # pylint: disable=no-self-use, unused-argument
+    def strip_whitespace(  # pylint: disable=no-self-use, unused-argument
+        self, items: MutableMapping, **kwargs: Any
+    ) -> MutableMapping:
         for key, value in items.items():
             if isinstance(value, str):
                 items[key] = value.strip()
@@ -52,8 +52,9 @@ class SurveyMetadata(Schema, StripWhitespaceMixin):
     receipting_keys = fields.List(fields.String)
 
     @validates_schema
-    def validate_receipting_keys(self, data, **kwargs):
-        # pylint: disable=no-self-use, unused-argument
+    def validate_receipting_keys(  # pylint: disable=no-self-use, unused-argument
+        self, data: Mapping, **kwargs: Any
+    ) -> None:
         if data and (receipting_keys := data.get("receipting_keys", {})):
             missing_receipting_keys = [
                 receipting_key
@@ -95,8 +96,9 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     survey_metadata = fields.Nested(SurveyMetadata, required=False)
 
     @validates_schema
-    def validate_schema_options(self, data, **kwargs):
-        # pylint: disable=no-self-use, unused-argument
+    def validate_schema_options(  # pylint: disable=no-self-use, unused-argument
+        self, data: Mapping, **kwargs: Any
+    ) -> None:
         if data:
             options = [
                 option
@@ -116,14 +118,14 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
 def validate_questionnaire_claims(
     claims: Mapping,
     questionnaire_specific_metadata: Iterable[Mapping],
-    unknown=EXCLUDE,
+    unknown: str = EXCLUDE,
 ) -> dict:
     """Validate any survey specific claims required for a questionnaire"""
-    dynamic_fields = {}
+    dynamic_fields: dict[str, fields.String | DateString] = {}
 
     for metadata_field in questionnaire_specific_metadata:
-        field_arguments = {}
-        validators = []
+        field_arguments: dict[str, bool] = {}
+        validators: list[validate.Validator] = []
 
         if metadata_field.get("optional"):
             field_arguments["required"] = False
@@ -149,10 +151,12 @@ def validate_questionnaire_claims(
     )(unknown=unknown)
 
     # The load method performs validation.
-    return questionnaire_metadata_schema.load(claims)
+    # Type ignore: the load method in the Marshmallow parent schema class doesn't have type hints for return
+    return questionnaire_metadata_schema.load(claims)  # type: ignore
 
 
 def validate_runner_claims_v2(claims: Mapping) -> dict:
     """Validate claims required for runner to function"""
     runner_metadata_schema = RunnerMetadataSchema(unknown=EXCLUDE)
-    return runner_metadata_schema.load(claims)
+    # Type ignore: the load method in the Marshmallow parent schema class doesn't have type hints for return
+    return runner_metadata_schema.load(claims)  # type: ignore

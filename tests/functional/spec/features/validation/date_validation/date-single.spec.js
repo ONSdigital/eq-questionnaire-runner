@@ -5,7 +5,7 @@ import { click } from "../../../../helpers";
 describe("Feature: Validation for single date periods", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_date_validation_single.json");
-    completeFirstDatePage();
+    await completeFirstDatePage();
   });
 
   describe("Given I enter a date before the minimum offset meta date", () => {

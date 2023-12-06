@@ -3,7 +3,7 @@ from typing import Literal, TypeAlias
 
 import flask_babel
 from babel import Locale, numbers, units
-from babel.numbers import get_currency_precision
+from babel.numbers import NumberPattern, get_currency_precision
 
 UnitLengthType: TypeAlias = Literal["short", "long", "narrow"]
 
@@ -27,7 +27,7 @@ def get_formatted_currency(
     *,
     value: float | Decimal,
     currency: str = "GBP",
-    locale: str | None = None,
+    locale: str | Locale | None = None,
     decimal_limit: int | None = None,
 ) -> str:
     """
@@ -80,7 +80,7 @@ def custom_format_unit(
     measurement_unit: str,
     locale: Locale | str,
     length: UnitLengthType = "short",
-):
+) -> str:
     """
     This function provides a wrapper for the numbers `format_unit` method, generating the
     number format (including the desired number of decimals), based on the value entered by the user and
@@ -92,14 +92,17 @@ def custom_format_unit(
         value=value,
         measurement_unit=measurement_unit,
         length=length,
-        format=number_format,
+        # Type ignore: babel function has incorrect type hinting, NumberPattern is valid here
+        format=number_format,  # type: ignore
         locale=locale,
     )
 
     return formatted_unit
 
 
-def get_number_format(value: int | float | Decimal, locale: Locale | str) -> str:
+def get_number_format(
+    value: int | float | Decimal, locale: Locale | str
+) -> NumberPattern:
     """
     Generates the number format based on the value entered by the user and the locale
 
@@ -111,7 +114,7 @@ def get_number_format(value: int | float | Decimal, locale: Locale | str) -> str
     """
     decimal_places = _get_decimal_places(value)
     locale = Locale.parse(locale)
-    locale_decimal_format = locale.decimal_formats[None]
+    locale_decimal_format: NumberPattern = locale.decimal_formats[None]
     locale_decimal_format.frac_prec = (decimal_places, decimal_places)
     return locale_decimal_format
 

@@ -1,10 +1,12 @@
+from typing import Sequence
+
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3 import Retry
 
 
 def get_retryable_session(
-    max_retries, retry_status_codes, backoff_factor
+    max_retries: int, retry_status_codes: Sequence[int], backoff_factor: float
 ) -> requests.Session:
     session = requests.Session()
 
