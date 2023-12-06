@@ -98,7 +98,7 @@ def convert_answers_v2(
 
 def get_optional_payload_properties(
     metadata: MetadataProxy, response_metadata: MutableMapping
-) -> MetadataType:
+) -> dict:
     payload = {}
 
     for key in ["channel", "region_code"]:
