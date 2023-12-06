@@ -29,8 +29,6 @@ class PrimaryPersonListCollector(Question):
 
         if answer_action and answer_action["type"] == "RedirectToListAddBlock":
             self._is_adding = True
-            # pylint: disable=no-member
-            # wtforms Form parents are not discoverable in the 2.3.3 implementation
             self.questionnaire_store_updater.update_answers(self.form.data)
             self._primary_person_id = (
                 self.questionnaire_store_updater.add_primary_person(list_name)

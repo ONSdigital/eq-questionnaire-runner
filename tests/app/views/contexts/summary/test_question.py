@@ -1,4 +1,3 @@
-# pylint: disable=too-many-lines
 import pytest
 
 from app.data_models import Answer, ListStore

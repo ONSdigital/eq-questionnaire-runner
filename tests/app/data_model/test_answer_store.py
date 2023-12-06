@@ -1,4 +1,3 @@
-# pylint: disable=redefined-outer-name
 import pytest
 
 from app.data_models.answer_store import Answer, AnswerStore

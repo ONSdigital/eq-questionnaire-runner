@@ -25,7 +25,6 @@ def get_questionnaire_store(user_id: str, user_ik: str) -> QuestionnaireStore:
             "EQ_SERVER_SIDE_STORAGE_ENCRYPTION_USER_PEPPER"
         )
         storage = EncryptedQuestionnaireStorage(user_id, user_ik, pepper)
-        # pylint: disable=assigning-non-slot
         store = g._questionnaire_store = QuestionnaireStore(storage)
 
     return store
@@ -43,7 +42,6 @@ def get_session_store() -> SessionStore | None:
         pepper = secret_store.get_secret_by_name(
             "EQ_SERVER_SIDE_STORAGE_ENCRYPTION_USER_PEPPER"
         )
-        # pylint: disable=assigning-non-slot
         store = g._session_store = SessionStore(
             cookie_session[USER_IK], pepper, cookie_session[EQ_SESSION_ID]
         )
@@ -82,7 +80,7 @@ def create_session_store(
         seconds=session_timeout_in_seconds
     )
 
-    # pylint: disable=protected-access, assigning-non-slot
+    # pylint: disable=protected-access
     g._session_store = (
         SessionStore(user_ik, pepper)
         .create(eq_session_id, user_id, session_data, expires_at)

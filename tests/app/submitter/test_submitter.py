@@ -375,7 +375,7 @@ def test_double_submission_is_forbidden_when_not_delete_operation_error(
 def gcs_blob_create_forbidden(mocker):
     blob = Blob(name="test-blob", bucket=mocker.Mock())
 
-    blob.upload_from_string = mocker.Mock(  # pylint: disable=protected-access
+    blob.upload_from_string = mocker.Mock(
         side_effect=Forbidden("storage.objects.create")
     )
 
@@ -386,7 +386,7 @@ def gcs_blob_create_forbidden(mocker):
 def gcs_blob_delete_forbidden(mocker):
     blob = Blob(name="test-blob", bucket=mocker.Mock())
 
-    blob.upload_from_string = mocker.Mock(  # pylint: disable=protected-access
+    blob.upload_from_string = mocker.Mock(
         side_effect=Forbidden("storage.objects.delete")
     )
 

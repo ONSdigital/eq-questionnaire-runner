@@ -29,9 +29,8 @@ class Content(BlockHandler):
     def get_context(self) -> dict:
         return {
             "block": self.rendered_block,
-            # Type ignore: if block is first in individual response, these two items won't be none
             "individual_response_url": individual_response_url(
-                self._schema.get_individual_response_list(),  # type: ignore
+                self._schema.get_individual_response_list(),
                 self._current_location.list_item_id,  # type: ignore
                 self._questionnaire_store,
             )

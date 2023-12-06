@@ -61,8 +61,6 @@ class ConfirmationEmail:
         return url_safe_serializer().dumps(self.form.email.data)
 
     def get_page_title(self) -> str | LazyString | None:
-        # pylint: disable=no-member
-        # wtforms Form parents are not discoverable in the 2.3.3 implementation
         if self.form.errors:
             return gettext("Error: {page_title}").format(page_title=self.page_title)
         return self.page_title
