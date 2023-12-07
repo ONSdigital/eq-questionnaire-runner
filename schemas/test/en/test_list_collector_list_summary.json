@@ -45,8 +45,22 @@
                         "type": "List",
                         "for_list": "people",
                         "title": {
-                            "text": "Household members staying overnight at {household_address}",
+                            "text": "Household members staying overnight on {date} at {household_address}",
                             "placeholders": [
+                                {
+                                    "placeholder": "date",
+                                    "transforms": [
+                                        {
+                                            "arguments": {
+                                                "date_format": "d MMMM yyyy",
+                                                "date_to_format": {
+                                                    "value": "2019-10-13"
+                                                }
+                                            },
+                                            "transform": "format_date"
+                                        }
+                                    ]
+                                },
                                 {
                                     "placeholder": "household_address",
                                     "value": {
@@ -63,8 +77,22 @@
                         "type": "List",
                         "for_list": "visitors",
                         "title": {
-                            "text": "Visitors staying overnight at {household_address}",
+                            "text": "Visitors staying overnight on {date} at {household_address}",
                             "placeholders": [
+                                {
+                                    "placeholder": "date",
+                                    "transforms": [
+                                        {
+                                            "arguments": {
+                                                "date_format": "d MMMM yyyy",
+                                                "date_to_format": {
+                                                    "value": "2019-10-13"
+                                                }
+                                            },
+                                            "transform": "format_date"
+                                        }
+                                    ]
+                                },
                                 {
                                     "placeholder": "household_address",
                                     "value": {
@@ -269,8 +297,22 @@
                             },
                             "summary": {
                                 "title": {
-                                    "text": "Household members staying overnight at {household_address}",
+                                    "text": "Household members staying overnight on {date} at {household_address}",
                                     "placeholders": [
+                                        {
+                                            "placeholder": "date",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "date_format": "d MMMM yyyy",
+                                                        "date_to_format": {
+                                                            "value": "2019-10-13"
+                                                        }
+                                                    },
+                                                    "transform": "format_date"
+                                                }
+                                            ]
+                                        },
                                         {
                                             "placeholder": "household_address",
                                             "value": {
@@ -425,8 +467,22 @@
                             },
                             "summary": {
                                 "title": {
-                                    "text": "Visitors staying overnight at {household_address}",
+                                    "text": "Visitors staying overnight on {date} at {household_address}",
                                     "placeholders": [
+                                        {
+                                            "placeholder": "date",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "date_format": "d MMMM yyyy",
+                                                        "date_to_format": {
+                                                            "value": "2019-10-13"
+                                                        }
+                                                    },
+                                                    "transform": "format_date"
+                                                }
+                                            ]
+                                        },
                                         {
                                             "placeholder": "household_address",
                                             "value": {
