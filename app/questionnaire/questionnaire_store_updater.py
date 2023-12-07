@@ -166,7 +166,7 @@ class QuestionnaireStoreUpdaterBase:
             list_name
         )
         section_ids.update(
-            self._schema.list_collector_section_ids_by_list_name[list_name]
+            self._schema.list_collector_section_ids_by_list_name.get(list_name, ())
         )
 
         for section_key in self.started_section_keys(section_ids=section_ids):

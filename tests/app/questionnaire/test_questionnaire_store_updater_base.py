@@ -4,6 +4,7 @@ from mock import MagicMock, Mock
 
 from app.data_models import AnswerStore, ListStore, ProgressStore, QuestionnaireStore
 from app.data_models.progress import CompletionStatus, ProgressDict
+from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdaterBase
 from app.utilities.make_immutable import make_immutable
 from app.utilities.types import DependentSection, SectionKey
@@ -277,6 +278,28 @@ def test_update_progress_of_repeating_dependent(
         DependentSection(section_id="section-4", list_item_id="employee-1"),
         DependentSection(section_id="section-4", list_item_id="employee-2"),
     }
+
+
+def test_update_supplementary_data_list_in_schema_with_no_list_collector(
+    question_variant_schema,
+    fake_questionnaire_store,
+    supplementary_data_with_employees,
+):
+    """
+    Tests that updating supplementary data for a schema with no list collectors is safe
+    """
+    base_questionnaire_store_updater = QuestionnaireStoreUpdaterBase(
+        schema=QuestionnaireSchema(questionnaire_json=question_variant_schema),
+        questionnaire_store=fake_questionnaire_store,
+        router=MagicMock(),
+    )
+    base_questionnaire_store_updater.set_supplementary_data(
+        supplementary_data_with_employees
+    )
+    base_questionnaire_store_updater.remove_list_item_data("products", "product-1")
+    base_questionnaire_store_updater.capture_dependencies_for_list_change("products")
+    # supplementary data has nothing to do with given schema
+    assert base_questionnaire_store_updater.dependent_sections == set()
 
 
 class TestSettingSupplementaryData:
