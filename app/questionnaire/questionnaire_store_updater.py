@@ -221,7 +221,7 @@ class QuestionnaireStoreUpdater:
             else:
                 people_names[current_list_item_name] = current_list_item_id
 
-        list_model.same_name_items = list(same_name_items)  # type: ignore
+        list_model.same_name_items = list(same_name_items)
 
     def _remove_relationship_answers_for_list_item_id(
         self, list_item_id: str, answers: list

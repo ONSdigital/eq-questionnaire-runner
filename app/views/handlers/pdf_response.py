@@ -56,7 +56,7 @@ class PDFResponse:
         if self._questionnaire_store.submitted_at:
             formatted_date = self._questionnaire_store.submitted_at.date().isoformat()
         else:
-            formatted_date = datetime.now(tz=timezone.utc).strftime("%Y-%m-%d")  # type: ignore
+            formatted_date = datetime.now(tz=timezone.utc).strftime("%Y-%m-%d")
         return f"{formatted_title}-{formatted_date}.pdf"
 
     def _get_pdf(self, rendered_html: str) -> io.BytesIO:

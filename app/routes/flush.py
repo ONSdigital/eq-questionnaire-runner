@@ -76,7 +76,7 @@ def _submit_data(user: User) -> bool:
         metadata: MetadataProxy = questionnaire_store.data_stores.metadata  # type: ignore
         submitted_at = datetime.now(timezone.utc)
         schema = load_schema_from_metadata(
-            metadata=metadata, language_code=metadata.language_code  # type: ignore
+            metadata=metadata, language_code=metadata.language_code
         )
 
         router = Router(

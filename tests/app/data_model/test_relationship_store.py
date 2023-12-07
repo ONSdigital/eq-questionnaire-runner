@@ -27,7 +27,7 @@ def test_deserialisation():
     assert len(relationship_store) == 2
 
 
-def test_clear():  # pylint: disable=redefined-outer-name
+def test_clear():
     relationship_store = RelationshipStore(relationships)
     relationship_store.clear()
 
