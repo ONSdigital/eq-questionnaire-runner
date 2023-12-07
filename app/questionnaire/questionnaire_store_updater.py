@@ -48,6 +48,14 @@ class QuestionnaireStoreUpdaterBase:
         ] = defaultdict(set)
         self.dependent_sections: set[DependentSection] = set()
 
+    @property
+    def _supplementary_data_store(self) -> SupplementaryDataStore:
+        return self._questionnaire_store.data_stores.supplementary_data_store
+
+    @_supplementary_data_store.setter
+    def _supplementary_data_store(self, store: SupplementaryDataStore) -> None:
+        self._questionnaire_store.data_stores.supplementary_data_store = store
+
     def save(self) -> None:
         if self.is_dirty():
             self._questionnaire_store.save()
@@ -166,7 +174,7 @@ class QuestionnaireStoreUpdaterBase:
             list_name
         )
         section_ids.update(
-            self._schema.list_collector_section_ids_by_list_name.get(list_name, ())
+            self._schema.list_collector_section_ids_by_list_name.get(list_name, set())
         )
 
         for section_key in self.started_section_keys(section_ids=section_ids):
@@ -500,7 +508,7 @@ class QuestionnaireStoreUpdaterBase:
         list_mappings: dict[str, list[SupplementaryDataListMapping]] = {}
         modified_lists: set[str] = set()
 
-        if self._questionnaire_store.data_stores.supplementary_data_store.list_mappings:
+        if self._supplementary_data_store.list_mappings:
             modified_lists |= self._remove_old_supplementary_lists_and_answers(
                 new_data=to_set
             )
@@ -515,10 +523,8 @@ class QuestionnaireStoreUpdaterBase:
         for list_name in modified_lists:
             self.capture_dependencies_for_list_change(list_name)
 
-        self._questionnaire_store.data_stores.supplementary_data_store = (
-            SupplementaryDataStore(
-                supplementary_data=to_set, list_mappings=list_mappings
-            )
+        self._supplementary_data_store = SupplementaryDataStore(
+            supplementary_data=to_set, list_mappings=list_mappings
         )
 
     def _create_supplementary_list(
@@ -535,11 +541,9 @@ class QuestionnaireStoreUpdaterBase:
             # if any pre-existing supplementary data already has a mapping for this list item
             # then its already in the list store and doesn't require adding
             if not (
-                list_item_id := self._questionnaire_store.data_stores.supplementary_data_store.list_lookup.get(
+                list_item_id := self._supplementary_data_store.list_lookup.get(
                     list_name, {}
-                ).get(
-                    identifier
-                )
+                ).get(identifier)
             ):
                 list_item_id = self.add_list_item(list_name)
                 modified_lists.add(list_name)
@@ -562,9 +566,7 @@ class QuestionnaireStoreUpdaterBase:
         for (
             list_name,
             mappings,
-        ) in (
-            self._questionnaire_store.data_stores.supplementary_data_store.list_lookup.items()
-        ):
+        ) in self._supplementary_data_store.list_lookup.items():
             if list_name in new_data.get("items", {}):
                 new_identifiers = [
                     item["identifier"] for item in new_data["items"][list_name]
