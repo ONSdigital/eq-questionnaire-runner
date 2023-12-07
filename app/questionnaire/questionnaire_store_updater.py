@@ -88,9 +88,7 @@ class QuestionnaireStoreUpdaterBase:
             for target in target_relationship_collectors:
                 block_id = target["id"]
                 section_id = self._schema.get_section_for_block_id(block_id)["id"]  # type: ignore
-                self._progress_store.remove_completed_location(
-                    Location(section_id, block_id)
-                )
+                self.remove_completed_location(Location(section_id, block_id))
 
     def _update_relationship_question_completeness(self, list_name: str) -> None:
         relationship_collectors = self._get_relationship_collectors_by_list_name(
@@ -120,7 +118,7 @@ class QuestionnaireStoreUpdaterBase:
                         "id"
                     ]  # type: ignore
                     location = Location(section_id, collector["id"])
-                    self._progress_store.add_completed_location(location)
+                    self.add_completed_location(location)
 
     def _get_relationship_collectors_by_list_name(
         self, list_name: str
@@ -238,6 +236,13 @@ class QuestionnaireStoreUpdaterBase:
             ]
             answer.value = answers_to_keep
             self._answer_store.add_or_update(answer)
+
+    def add_completed_location(self, location: LocationType) -> None:
+        if not self._progress_store.is_routing_backwards:
+            self._progress_store.add_completed_location(location)
+
+    def remove_completed_location(self, location: LocationType) -> bool:
+        return self._progress_store.remove_completed_location(location)
 
     def update_section_status(
         self, *, is_complete: bool, section_key: SectionKey
@@ -471,9 +476,7 @@ class QuestionnaireStoreUpdaterBase:
                     list_item_id=list_item_id,
                     block_id=block_id,
                 )
-                blocks_removed |= self._progress_store.remove_completed_location(
-                    location
-                )
+                blocks_removed |= self.remove_completed_location(location)
 
             if blocks_removed and not self.is_current_section(section_id, list_item_id):
                 # Since this section key will be marked as incomplete, any `DependentSection` with is_complete as `None`
@@ -615,15 +618,6 @@ class QuestionnaireStoreUpdater(QuestionnaireStoreUpdaterBase):
         """
         if list_item_id := self._list_store[list_name].primary_person:
             self.remove_list_item_data(list_name, list_item_id)
-
-    def add_completed_location(self, location: LocationType | None = None) -> None:
-        if not self._progress_store.is_routing_backwards:
-            location = location or self._current_location
-            self._progress_store.add_completed_location(location)
-
-    def remove_completed_location(self, location: LocationType | None = None) -> bool:
-        location = location or self._current_location
-        return self._progress_store.remove_completed_location(location)
 
     def _capture_block_dependencies_for_answer(self, answer_id: str) -> None:
         """Captures a unique list of block ids that are dependents of the provided answer id."""
