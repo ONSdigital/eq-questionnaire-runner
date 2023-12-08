@@ -170,8 +170,8 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
       // Add second visitor
       await $(VisitorsListCollectorPage.yes()).click();
       await click(VisitorsListCollectorPage.submit());
-      await $(VisitorsListCollectorAddPage.visitorFirstName).setValue("Yvonne");
-      await $(VisitorsListCollectorAddPage.visitorLastName).setValue("Yoe");
+      await $(VisitorsListCollectorAddPage.visitorFirstName()).setValue("Yvonne");
+      await $(VisitorsListCollectorAddPage.visitorLastName()).setValue("Yoe");
       await click(VisitorsListCollectorAddPage.submit());
 
       // Exit the visitors list collector
