@@ -452,11 +452,6 @@ class QuestionnaireStoreUpdaterBase:
         )
         evaluated_dependents.append((dependent_section_id, list_item_id))
 
-    def is_current_section(self, section_id: str, list_item_id: str | None) -> bool:
-        """Overwritten by QuestionnaireStoreUpdater to return True if the location is the current section"""
-        # pylint: disable=no-self-use, unused-argument
-        return False
-
     def remove_dependent_blocks_and_capture_dependent_sections(self) -> None:
         """Removes dependent blocks from the progress store."""
 
@@ -478,16 +473,23 @@ class QuestionnaireStoreUpdaterBase:
                 )
                 blocks_removed |= self.remove_completed_location(location)
 
-            if blocks_removed and not self.is_current_section(section_id, list_item_id):
-                # Since this section key will be marked as incomplete, any `DependentSection` with is_complete as `None`
-                # can be removed as we do not need to re-evaluate progress as we already know the section would be incomplete.
-                dependent = DependentSection(section_id, list_item_id)
-                if dependent in self.dependent_sections:
-                    self.dependent_sections.remove(dependent)
+            if blocks_removed:
+                self._capture_dependent_section(section_id, list_item_id)
 
-                self.dependent_sections.add(
-                    DependentSection(section_id, list_item_id, is_complete=False)
-                )
+    def _capture_dependent_section(
+        self, section_id: str, list_item_id: str | None
+    ) -> None:
+        """
+        Since this section key will be marked as incomplete, any `DependentSection` with is_complete as `None`
+        can be removed as we do not need to re-evaluate progress as we already know the section would be incomplete.
+        """
+        dependent = DependentSection(section_id, list_item_id)
+        if dependent in self.dependent_sections:
+            self.dependent_sections.remove(dependent)
+
+        self.dependent_sections.add(
+            DependentSection(section_id, list_item_id, is_complete=False)
+        )
 
     def started_section_keys(
         self, section_ids: Iterable[str] | None = None
@@ -684,9 +686,12 @@ class QuestionnaireStoreUpdater(QuestionnaireStoreUpdaterBase):
             block_id=self._current_location.block_id,  # type: ignore
         )
 
-    def is_current_section(self, section_id: str, list_item_id: str | None) -> bool:
-        """Overwritten by QuestionnaireStoreUpdater to return True if the location is the current section"""
-        return (
+    def _capture_dependent_section(
+        self, section_id: str, list_item_id: str | None
+    ) -> None:
+        """Only capture the dependent section if it is not the current one"""
+        if not (
             section_id == self._current_location.section_id
             and list_item_id == self._current_location.list_item_id
-        )
+        ):
+            super()._capture_dependent_section(section_id, list_item_id)
