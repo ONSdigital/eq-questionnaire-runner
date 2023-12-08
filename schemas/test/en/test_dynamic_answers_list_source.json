@@ -156,7 +156,7 @@
                                             "type": "Number",
                                             "decimal_places": 2,
                                             "minimum": {
-                                                "value": 1001
+                                                "value": 1000.99
                                             },
                                             "maximum": {
                                                 "value": 10000
