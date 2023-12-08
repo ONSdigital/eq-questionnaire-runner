@@ -162,16 +162,16 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
 
       // Add first visitor
       await $(SectionSummaryPage.visitorListAddLink()).click();
-      await $(VisitorsListCollectorAddPage.firstName()).setValue("Joe");
-      await $(VisitorsListCollectorAddPage.lastName()).setValue("Public");
+      await $(VisitorsListCollectorAddPage.visitorFirstName()).setValue("Joe");
+      await $(VisitorsListCollectorAddPage.visitorLastName()).setValue("Public");
       await click(VisitorsListCollectorAddPage.submit());
       await expect(browser).toHaveUrlContaining("/questionnaire/visitors-block");
 
       // Add second visitor
       await $(VisitorsListCollectorPage.yes()).click();
       await click(VisitorsListCollectorPage.submit());
-      await $(VisitorsListCollectorAddPage.firstName()).setValue("Yvonne");
-      await $(VisitorsListCollectorAddPage.lastName()).setValue("Yoe");
+      await $(VisitorsListCollectorAddPage.visitorFirstName).setValue("Yvonne");
+      await $(VisitorsListCollectorAddPage.visitorLastName).setValue("Yoe");
       await click(VisitorsListCollectorAddPage.submit());
 
       // Exit the visitors list collector
@@ -261,8 +261,8 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
 
       // Add another visitor
       await $(SectionSummaryPage.visitorListAddLink()).click();
-      await $(VisitorsListCollectorAddPage.firstName()).setValue("Anna");
-      await $(VisitorsListCollectorAddPage.lastName()).setValue("Doe");
+      await $(VisitorsListCollectorAddPage.visitorFirstName()).setValue("Anna");
+      await $(VisitorsListCollectorAddPage.visitorLastName()).setValue("Doe");
       await click(VisitorsListCollectorAddPage.submit());
 
       await $(VisitorsListCollectorPage.no()).click();
