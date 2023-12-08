@@ -21,7 +21,7 @@ services:
             SURVEY_RUNNER_URL: http://localhost:5000
             SURVEY_RUNNER_SCHEMA_URL: http://docker.for.mac.host.internal:5000
             SDS_API_BASE_URL: http://docker.for.mac.host.internal:5003
-            CIR_API_BASE_URL: http://host.docker.internal:5004
+            CIR_API_BASE_URL: http://docker.for.mac.host.internal:5004
         networks:
             - eq-env
         restart: always
