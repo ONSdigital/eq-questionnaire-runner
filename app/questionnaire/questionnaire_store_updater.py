@@ -514,7 +514,7 @@ class QuestionnaireStoreUpdaterBase:
         modified_lists: set[str] = set()
 
         if self._supplementary_data_store.list_mappings:
-            modified_lists |= self._remove_old_supplementary_lists_and_answers(
+            modified_lists |= self._remove_outdated_supplementary_lists_and_answers(
                 new_data=to_set
             )
 
@@ -559,13 +559,14 @@ class QuestionnaireStoreUpdaterBase:
             )
         return list_mappings, modified_lists
 
-    def _remove_old_supplementary_lists_and_answers(
+    def _remove_outdated_supplementary_lists_and_answers(
         self, new_data: MutableMapping
     ) -> set[str]:
         """
         In the case that existing supplementary data is being replaced with new data: any list items in the old data
         but not the new data are removed from the list store and related answers are deleted
         :param new_data - the new supplementary data for comparison
+        :return: any lists that were modified by the change in supplementary data
         """
         modified_lists: set[str] = set()
         for (
