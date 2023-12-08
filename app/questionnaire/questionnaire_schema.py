@@ -457,7 +457,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             if block["type"] == "ListCollectorContent" and block.get(
                 "repeating_blocks"
             ):
-                # normal list collectors don't need this because the add/remove handlers manage revisiting repeating blocks
+                # Editable list collectors don't need this because the add/remove handlers manage revisiting repeating blocks
                 self._list_dependencies_map[block["for_list"]].add(
                     self._get_dependent_for_block_id(block_id=block["id"])
                 )
