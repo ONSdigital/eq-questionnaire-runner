@@ -46,23 +46,9 @@ describe("List Collector Section Summary and Summary Items", () => {
       await $(ResponsiblePartyQuestionPage.yes()).click();
       await click(ResponsiblePartyQuestionPage.submit());
       await click(ListCollectorContentPage.submit());
-      await $(ListCollectorFirstRepeatingBlockPage.registrationNumberRepeatingBlock()).setValue(123);
-      await $(ListCollectorFirstRepeatingBlockPage.registrationDateRepeatingBlockday()).setValue(1);
-      await $(ListCollectorFirstRepeatingBlockPage.registrationDateRepeatingBlockmonth()).setValue(1);
-      await $(ListCollectorFirstRepeatingBlockPage.registrationDateRepeatingBlockyear()).setValue(1990);
-      await click(ListCollectorFirstRepeatingBlockPage.submit());
-      await $(ListCollectorSecondRepeatingBlockPage.authorisedTraderUkRadioRepeatingBlockYes()).click();
-      await $(ListCollectorSecondRepeatingBlockPage.authorisedTraderEuRadioRepeatingBlockYes()).click();
-      await click(ListCollectorSecondRepeatingBlockPage.submit());
+      await completeRepeatingBlocks(123, 1, 1, 1990, true, true);
       await click(ListCollectorContentPage.submit());
-      await $(ListCollectorFirstRepeatingBlockPage.registrationNumberRepeatingBlock()).setValue(456);
-      await $(ListCollectorFirstRepeatingBlockPage.registrationDateRepeatingBlockday()).setValue(1);
-      await $(ListCollectorFirstRepeatingBlockPage.registrationDateRepeatingBlockmonth()).setValue(1);
-      await $(ListCollectorFirstRepeatingBlockPage.registrationDateRepeatingBlockyear()).setValue(1990);
-      await click(ListCollectorFirstRepeatingBlockPage.submit());
-      await $(ListCollectorSecondRepeatingBlockPage.authorisedTraderUkRadioRepeatingBlockYes()).click();
-      await $(ListCollectorSecondRepeatingBlockPage.authorisedTraderEuRadioRepeatingBlockYes()).click();
-      await click(ListCollectorSecondRepeatingBlockPage.submit());
+      await completeRepeatingBlocks(456, 1, 1, 1990, true, true);
       await click(ListCollectorContentPage.submit());
       await expect(browser).toHaveUrlContaining(ListCollectorContentSectionSummaryPage.url());
     });
@@ -72,14 +58,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await $(ResponsiblePartyQuestionPage.yes()).click();
       await click(ResponsiblePartyQuestionPage.submit());
       await click(ListCollectorContentPage.submit());
-      await $(ListCollectorFirstRepeatingBlockPage.registrationNumberRepeatingBlock()).setValue(123);
-      await $(ListCollectorFirstRepeatingBlockPage.registrationDateRepeatingBlockday()).setValue(1);
-      await $(ListCollectorFirstRepeatingBlockPage.registrationDateRepeatingBlockmonth()).setValue(1);
-      await $(ListCollectorFirstRepeatingBlockPage.registrationDateRepeatingBlockyear()).setValue(1990);
-      await click(ListCollectorFirstRepeatingBlockPage.submit());
-      await $(ListCollectorSecondRepeatingBlockPage.authorisedTraderUkRadioRepeatingBlockYes()).click();
-      await $(ListCollectorSecondRepeatingBlockPage.authorisedTraderEuRadioRepeatingBlockYes()).click();
-      await click(ListCollectorSecondRepeatingBlockPage.submit());
+      await completeRepeatingBlocks(123, 1, 1, 1990, true, true);
       await $(ListCollectorContentPage.previous()).click();
       await $(ResponsiblePartyQuestionPage.previous()).click();
       await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).toBe("Partially completed");
@@ -90,22 +69,9 @@ describe("List Collector Section Summary and Summary Items", () => {
       await $(ResponsiblePartyQuestionPage.yes()).click();
       await click(ResponsiblePartyQuestionPage.submit());
       await click(ListCollectorContentPage.submit());
-      await $(ListCollectorFirstRepeatingBlockPage.registrationNumberRepeatingBlock()).setValue(123);
-      await $(ListCollectorFirstRepeatingBlockPage.registrationDateRepeatingBlockday()).setValue(1);
-      await $(ListCollectorFirstRepeatingBlockPage.registrationDateRepeatingBlockmonth()).setValue(1);
-      await $(ListCollectorFirstRepeatingBlockPage.registrationDateRepeatingBlockyear()).setValue(1990);
-      await click(ListCollectorFirstRepeatingBlockPage.submit());
-      await $(ListCollectorSecondRepeatingBlockPage.authorisedTraderUkRadioRepeatingBlockYes()).click();
-      await $(ListCollectorSecondRepeatingBlockPage.authorisedTraderEuRadioRepeatingBlockYes()).click();
-      await click(ListCollectorSecondRepeatingBlockPage.submit());
+      await completeRepeatingBlocks(123, 1, 1, 1990, true, true);
       await click(ListCollectorContentPage.submit());
-      await $(ListCollectorFirstRepeatingBlockPage.registrationNumberRepeatingBlock()).setValue(456);
-      await $(ListCollectorFirstRepeatingBlockPage.registrationDateRepeatingBlockday()).setValue(1);
-      await $(ListCollectorFirstRepeatingBlockPage.registrationDateRepeatingBlockmonth()).setValue(1);
-      await $(ListCollectorFirstRepeatingBlockPage.registrationDateRepeatingBlockyear()).setValue(1990);
-      await click(ListCollectorFirstRepeatingBlockPage.submit());
-      await $(ListCollectorSecondRepeatingBlockPage.authorisedTraderUkRadioRepeatingBlockYes()).click();
-      await $(ListCollectorSecondRepeatingBlockPage.authorisedTraderEuRadioRepeatingBlockYes()).click();
+      await completeRepeatingBlocks(456, 1, 1, 1990, true, true);
       await click(ListCollectorSecondRepeatingBlockPage.submit());
       await click(ListCollectorContentPage.submit());
       await $(ListCollectorContentSectionSummaryPage.previous()).click();
@@ -132,7 +98,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await checkListItemIncomplete(`dt[data-qa="list-item-3-label"]`);
       await click(ListCollectorContentPage.submit());
       await expect(browser).toHaveUrlContaining(ListCollectorFirstRepeatingBlockPage.pageName);
-      await completeRepeatingBlocks(666, 2, 5, 1995, true);
+      await completeRepeatingBlocks(666, 2, 5, 1995, true, true);
       await checkListItemComplete(`dt[data-qa="list-item-3-label"]`);
       await click(ListCollectorContentPage.submit());
       await click(ListCollectorContentSectionSummaryPage.submit());
@@ -173,23 +139,28 @@ const completeBothSections = async () => {
   await $(ResponsiblePartyQuestionPage.yes()).click();
   await click(ResponsiblePartyQuestionPage.submit());
   await click(ListCollectorContentPage.submit());
-  await completeRepeatingBlocks(654, 2, 6, 1999, true);
+  await completeRepeatingBlocks(654, 2, 6, 1999, true, true);
   await click(ListCollectorContentPage.submit());
-  await completeRepeatingBlocks(655, 12, 1, 1989, true);
+  await completeRepeatingBlocks(655, 12, 1, 1989, true, false);
   await click(ListCollectorContentPage.submit());
   await click(ListCollectorContentSectionSummaryPage.submit());
 };
 
-const completeRepeatingBlocks = async (registrationNumber, day, month, year, authorised) => {
+const completeRepeatingBlocks = async (registrationNumber, day, month, year, authorisedUk, authorisedEu) => {
   await $(ListCollectorFirstRepeatingBlockPage.registrationNumberRepeatingBlock()).setValue(registrationNumber);
   await $(ListCollectorFirstRepeatingBlockPage.registrationDateRepeatingBlockday()).setValue(day);
   await $(ListCollectorFirstRepeatingBlockPage.registrationDateRepeatingBlockmonth()).setValue(month);
   await $(ListCollectorFirstRepeatingBlockPage.registrationDateRepeatingBlockyear()).setValue(year);
   await click(ListCollectorFirstRepeatingBlockPage.submit());
-  if (authorised) {
+  if (authorisedUk) {
     await $(ListCollectorSecondRepeatingBlockPage.authorisedTraderUkRadioRepeatingBlockYes()).click();
   } else {
     await $(ListCollectorSecondRepeatingBlockPage.authorisedTraderUkRadioRepeatingBlockNo()).click();
+  }
+  if (authorisedEu) {
+    await $(ListCollectorSecondRepeatingBlockPage.authorisedTraderEuRadioRepeatingBlockYes()).click();
+  } else {
+    await $(ListCollectorSecondRepeatingBlockPage.authorisedTraderEuRadioRepeatingBlockNo()).click();
   }
   await click(ListCollectorSecondRepeatingBlockPage.submit());
 };
