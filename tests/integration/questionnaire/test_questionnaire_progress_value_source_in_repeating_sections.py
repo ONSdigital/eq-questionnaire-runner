@@ -268,7 +268,6 @@ class TestQuestionnaireProgressValueSourceInRepeatingSections(IntegrationTestCas
         # 3. Assert random question shows up
         self.assertInBody("Random question")
 
-    # pylint: disable=locally-disabled, too-many-statements
     def test_block_progress_dependencies_updated_in_repeating_sections(self):
         """
         Test that dependency blocks inside repeating sections are updated properly

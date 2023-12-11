@@ -5,7 +5,7 @@ from app.cloud_tasks.exceptions import CloudTaskCreationFailed
 from tests.integration.integration_test_case import IntegrationTestCase
 
 
-# pylint: disable=too-many-public-methods,too-few-public-methods
+# pylint: disable=too-many-public-methods
 class TestEmailConfirmation(IntegrationTestCase):
     def setUp(self):
         settings.CONFIRMATION_EMAIL_LIMIT = 2

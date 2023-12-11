@@ -124,8 +124,6 @@ class ConfirmEmail:
         return url_for(".send_confirmation_email", email=self._serialized_email)
 
     def get_page_title(self) -> str:
-        # pylint: disable=no-member
-        # wtforms Form parents are not discoverable in the 2.3.3 implementation
         if self.form.errors:
             formatted_errors: str = gettext("Error: {page_title}").format(
                 page_title=self.page_title

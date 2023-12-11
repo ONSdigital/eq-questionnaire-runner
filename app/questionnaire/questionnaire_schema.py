@@ -625,10 +625,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         ]
 
     def get_section_ids_required_for_hub(self) -> tuple[str, ...]:
-        return self.flow_options.get("required_completed_sections", tuple())
+        # Type ignore: the type of the .get() returned value is Any
+        return self.flow_options.get("required_completed_sections", tuple())  # type: ignore
 
     def get_summary_options(self) -> ImmutableDict[str, bool]:
-        return self.flow_options.get("summary", ImmutableDict({}))
+        # Type ignore: the type of the .get() returned value is Any
+        return self.flow_options.get("summary", ImmutableDict({}))  # type: ignore
 
     def get_sections(self) -> Iterable[ImmutableDict]:
         return self._sections_by_id.values()
@@ -700,8 +702,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             return section.get("title")
 
     def get_show_on_hub_for_section(self, section_id: str) -> bool | None:
+        # Type ignore: the type of the .get() returned value is Any
         if section := self.get_section(section_id):
-            return section.get("show_on_hub", True)
+            return section.get("show_on_hub", True)  # type: ignore
 
     def get_summary_for_section(self, section_id: str) -> ImmutableDict | None:
         if section := self.get_section(section_id):
@@ -713,7 +716,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def show_summary_on_completion_for_section(self, section_id: str) -> bool | None:
         if summary := self.get_summary_for_section(section_id):
-            return summary.get("show_on_completion", False)
+            # Type ignore: the type of the .get() returned value is Any
+            return summary.get("show_on_completion", False)  # type: ignore
 
     def get_repeat_for_section(self, section_id: str) -> ImmutableDict | None:
         if section := self.get_section(section_id):
@@ -874,7 +878,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self, list_collector_id: str
     ) -> list[ImmutableDict] | None:
         if list_collector := self.get_block(list_collector_id):
-            return list_collector.get("repeating_blocks", [])
+            # Type ignore: the type of the .get() returned value is Any
+            return list_collector.get("repeating_blocks", [])  # type: ignore
 
     def get_answer_ids_for_list_items(self, list_collector_id: str) -> list[str]:
         """
@@ -1246,9 +1251,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 # Type ignore: Added as this will be a set rather than a dict at this point
                 dependencies_ids_for_progress_value_source["sections"][
                     identifier
-                ] = OrderedSet(
-                    [current_section_id]
-                )  # type: ignore
+                ] = OrderedSet([current_section_id])
             elif selector == "block" and (
                 section_id := self.get_section_id_for_block_id(identifier)
             ):
@@ -1277,9 +1280,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         section_dependencies: set[str] = set()
         # Type Ignore: Added to this method as the block will exist at this point
         for answer_id in dependent_answer_ids:
-            block = self.get_block_for_answer_id(answer_id)  # type: ignore
+            block = self.get_block_for_answer_id(answer_id)
             section_id = self.get_section_id_for_block_id(block["id"])  # type: ignore
-
             if section_id != current_section_id:
                 self._when_rules_section_dependencies_by_answer[answer_id].add(
                     current_section_id

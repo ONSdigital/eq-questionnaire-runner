@@ -22,7 +22,7 @@ def dynamodb():
         for config in StorageModel.TABLE_CONFIG_BY_TYPE.values():
             table_name = current_app.config[config["table_name_key"]]
             if table_name:
-                boto3_client.create_table(  # pylint: disable=no-member
+                boto3_client.create_table(
                     TableName=table_name,
                     AttributeDefinitions=[
                         {"AttributeName": config["key_field"], "AttributeType": "S"}

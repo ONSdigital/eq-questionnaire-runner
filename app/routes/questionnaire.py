@@ -103,7 +103,6 @@ def before_questionnaire_request() -> Response | None:
 
     handle_language(metadata)
 
-    # pylint: disable=assigning-non-slot
     g.schema = load_schema_from_metadata(
         metadata=metadata, language_code=get_locale().language
     )
@@ -128,7 +127,6 @@ def before_post_submission_request() -> None:
 
     handle_language(questionnaire_store.data_stores.metadata)
 
-    # pylint: disable=assigning-non-slot
     g.schema = load_schema_from_metadata(
         metadata=metadata, language_code=get_locale().language
     )
@@ -281,7 +279,6 @@ def get_section(
     return redirect(section_handler.get_next_location_url())
 
 
-# pylint: disable=too-many-return-statements
 @questionnaire_blueprint.route("<block_id>/", methods=["GET", "POST"])
 @questionnaire_blueprint.route("<list_name>/<block_id>/", methods=["GET", "POST"])
 @questionnaire_blueprint.route(
@@ -412,8 +409,6 @@ def get_thank_you(
                 )
             )
 
-        # pylint: disable=no-member
-        # wtforms Form parents are not discoverable in the 2.3.3 implementation
         logger.info(
             "email validation error",
             error_message=str(confirmation_email.form.errors["email"][0]),
@@ -537,8 +532,6 @@ def send_confirmation_email(
                 )
             )
 
-        # pylint: disable=no-member
-        # wtforms Form parents are not discoverable in the 2.3.3 implementation
         logger.info(
             "email validation error",
             error_message=str(confirmation_email.form.errors["email"][0]),

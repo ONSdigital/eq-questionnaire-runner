@@ -98,7 +98,7 @@ def convert_answers_v2(
 
 def get_optional_payload_properties(
     metadata: MetadataProxy, response_metadata: MutableMapping
-) -> MetadataType:
+) -> dict:
     payload = {}
 
     for key in ["channel", "region_code"]:
@@ -110,7 +110,6 @@ def get_optional_payload_properties(
     return payload
 
 
-# pylint: disable=too-many-locals
 def get_payload_data(
     data_stores: DataStores,
     schema: QuestionnaireSchema,

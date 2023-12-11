@@ -4,7 +4,6 @@ from app.views.contexts.summary.list_collector_base_block import ListCollectorBa
 
 
 class ListCollectorContentBlock(ListCollectorBaseBlock):
-    # pylint: disable=too-many-locals
     def list_summary_element(self, summary: Mapping[str, Any]) -> dict[str, Any]:
         related_answers = None
 
