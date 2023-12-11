@@ -113,7 +113,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await $(ResponsiblePartyQuestionPage.previous()).click();
       await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).toBe("Completed");
     });
-    it("When I complete both sections then add another item, The list collector content block reverts to in progress and the new repeating blocks need completing", async() => {
+    it("When I complete both sections then add another item, The list collector content block reverts to in progress and the new repeating blocks need completing", async () => {
       await completeBothSections();
       await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).toBe("Completed");
       await $(HubPage.summaryRowLink("section-companies")).click();
@@ -139,7 +139,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).toBe("Completed");
     });
     // :TODO: Currently, this is expected behaviour, if list collector content blocks no longer need revisiting after removing items, this test needs updating.
-    it("When I complete both sections then remove a list item item, Then the list collector content block reverts to in progress the list summary is revisited", async() => {
+    it("When I complete both sections then remove a list item item, Then the list collector content block reverts to in progress the list summary is revisited", async () => {
       await completeBothSections();
       await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).toBe("Completed");
       await $(HubPage.summaryRowLink("section-companies")).click();
