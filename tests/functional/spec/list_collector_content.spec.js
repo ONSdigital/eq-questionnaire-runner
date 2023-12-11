@@ -72,7 +72,6 @@ describe("List Collector Section Summary and Summary Items", () => {
       await completeRepeatingBlocks(123, 1, 1, 1990, true, true);
       await click(ListCollectorContentPage.submit());
       await completeRepeatingBlocks(456, 1, 1, 1990, true, true);
-      await click(ListCollectorSecondRepeatingBlockPage.submit());
       await click(ListCollectorContentPage.submit());
       await $(ListCollectorContentSectionSummaryPage.previous()).click();
       await $(ListCollectorContentPage.previous()).click();
