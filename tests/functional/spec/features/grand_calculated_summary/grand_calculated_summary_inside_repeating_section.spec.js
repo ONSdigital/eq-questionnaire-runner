@@ -39,13 +39,13 @@ describe("Grand Calculated Summary inside a repeating section", () => {
     await click(AnyCostPage.submit());
     await $(ListCollectorCostAddPage.costName()).selectByAttribute("value", "Road Tax");
     await click(ListCollectorCostAddPage.submit());
-    await $(CostRepeatingBlock1RepeatingBlockPage.costBase()).setValue(5);
+    await $(CostRepeatingBlock1RepeatingBlockPage.repeatingBlock1CostBase()).setValue(5);
     await click(CostRepeatingBlock1RepeatingBlockPage.submit());
     await $(ListCollectorCostPage.yes()).click();
     await click(ListCollectorCostPage.submit());
     await $(ListCollectorCostAddPage.costName()).selectByAttribute("value", "Parking Permit");
     await click(ListCollectorCostAddPage.submit());
-    await $(CostRepeatingBlock1RepeatingBlockPage.costBase()).setValue(12);
+    await $(CostRepeatingBlock1RepeatingBlockPage.repeatingBlock1CostBase()).setValue(12);
     await click(CostRepeatingBlock1RepeatingBlockPage.submit());
     costListItemIds = await listItemIds();
     await $(ListCollectorCostPage.no()).click();
@@ -312,7 +312,7 @@ describe("Grand Calculated Summary inside a repeating section", () => {
     await dynamicAnswerChangeLink(1).click();
     await expect(browser).toHaveUrlContaining(CostRepeatingBlock1RepeatingBlockPage.pageName);
     await expect(browser).toHaveUrlContaining(`costs/${costListItemIds[1]}/`);
-    await $(CostRepeatingBlock1RepeatingBlockPage.costBase()).setValue(22);
+    await $(CostRepeatingBlock1RepeatingBlockPage.repeatingBlock1CostBase()).setValue(22);
     await click(CostRepeatingBlock1RepeatingBlockPage.submit());
     await click(CalculatedSummaryBaseCostPage.submit());
     await click(BaseCostPaymentBreakdownPage.submit());
@@ -375,7 +375,7 @@ describe("Grand Calculated Summary inside a repeating section", () => {
     await $(BaseCostsSectionPage.costsListAddLink()).click();
     await $(ListCollectorCostAddPage.costName()).selectByAttribute("value", "Road Tax");
     await click(ListCollectorCostAddPage.submit());
-    await $(CostRepeatingBlock1RepeatingBlockPage.costBase()).setValue(30);
+    await $(CostRepeatingBlock1RepeatingBlockPage.repeatingBlock1CostBase()).setValue(30);
     await click(CostRepeatingBlock1RepeatingBlockPage.submit());
     await $(ListCollectorCostPage.no()).click();
     await click(ListCollectorCostPage.submit());

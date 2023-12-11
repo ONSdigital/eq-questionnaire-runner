@@ -234,7 +234,7 @@
                                         },
                                         "answers": [
                                             {
-                                                "id": "cost-base",
+                                                "id": "repeating-block-1-cost-base",
                                                 "label": {
                                                     "text": "Base {transformed_value} expenditure",
                                                     "placeholders": [
@@ -323,7 +323,7 @@
                                                     }
                                                 ]
                                             },
-                                            "id": "cost-extra",
+                                            "id": "dynamic-answer-cost-extra",
                                             "type": "Currency",
                                             "mandatory": false,
                                             "currency": "GBP",
@@ -362,11 +362,11 @@
                                     "+": [
                                         {
                                             "source": "answers",
-                                            "identifier": "cost-base"
+                                            "identifier": "repeating-block-1-cost-base"
                                         },
                                         {
                                             "source": "answers",
-                                            "identifier": "cost-extra"
+                                            "identifier": "dynamic-answer-cost-extra"
                                         },
                                         {
                                             "source": "answers",
