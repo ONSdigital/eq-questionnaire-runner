@@ -36,18 +36,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version-file : ".nvmrc"
-      - name: Get yarn cache
-        id: get-yarn-cache
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-      - name: Cache yarn modules
-        id: cache-yarn
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.get-yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-      - name: Install yarn deps
-        if: steps.cache-yarn.outputs.cache-hit != 'true'
-        run: yarn
+          cache: "npm"
+      - name: Install npm deps
+        run: npm install
   lint:
     needs: [python-dependencies, node-dependencies]
     runs-on: ubuntu-22.04
@@ -62,6 +53,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version-file: ".nvmrc"
+          cache: "npm"
       - name: Write app version
         run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
       - name: Install pipenv
@@ -74,17 +66,8 @@ jobs:
         run: pipenv run python -m scripts.extract_translation_templates --test
       - name: Python linting
         run: make lint-python
-      - name: Get yarn cache
-        id: get-yarn-cache
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-      - name: Cache yarn modules
-        uses: actions/cache@v3
-        id: cache-yarn
-        with:
-          path: ${{ steps.get-yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-      - name: Install yarn deps
-        run: yarn install
+      - name: Install npm deps
+        run: npm install
       - name: Functional tests spec lint
         run: ./scripts/lint_functional_test_specs.sh
       - name: Javascript linting
@@ -145,6 +128,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version-file: ".nvmrc"
+          cache: "npm"
       - run: |
           echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
       - uses: actions/setup-python@v4
@@ -155,17 +139,8 @@ jobs:
         run: pip install pipenv==2023.8.22
       - name: Install virtual environment
         run: pipenv install --dev
-      - name: Get yarn cache
-        id: get-yarn-cache
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-      - name: Cache yarn modules
-        uses: actions/cache@v3
-        id: cache-yarn
-        with:
-          path: ${{ steps.get-yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-      - name: Install yarn deps
-        run: yarn install
+      - name: Install npm deps
+        run: npm install
       - name: Docker compose
         run: docker-compose --version && RUNNER_ENV_FILE=.functional-tests.env docker-compose up --build -d
       - name: Functional tests
