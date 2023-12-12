@@ -20,6 +20,7 @@ from app.authentication.jti_claim_storage import JtiTokenUsed, use_jti_claim
 from app.data_models import QuestionnaireStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import get_session_store, get_session_timeout_in_seconds
+from app.helpers.metadata_helpers import get_ru_ref_without_check_letter
 from app.helpers.template_helpers import (
     DATA_LAYER_KEYS,
     get_survey_config,
@@ -171,10 +172,16 @@ def _set_questionnaire_supplementary_data(
         )
         return
 
+    identifier = (
+        get_ru_ref_without_check_letter(metadata["ru_ref"])
+        if metadata["ru_ref"]
+        else metadata["qid"]
+    )
+
     supplementary_data = get_supplementary_data_v1(
         # Type ignore: survey_id and either ru_ref or qid are required for schemas that use supplementary data
         dataset_id=new_sds_dataset_id,
-        identifier=metadata["ru_ref"] or metadata["qid"],  # type: ignore
+        identifier=identifier,  # type: ignore
         survey_id=metadata["survey_id"],  # type: ignore
     )
     logger.info(
