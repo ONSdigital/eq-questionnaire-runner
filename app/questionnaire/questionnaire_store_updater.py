@@ -685,12 +685,7 @@ class QuestionnaireStoreUpdater(QuestionnaireStoreUpdaterBase):
             block_id=self._current_location.block_id,  # type: ignore
         )
 
-    def _capture_dependent_section(
-        self, section_id: str, list_item_id: str | None
-    ) -> None:
+    def _capture_dependent_section(self, section_key: SectionKey) -> None:
         """Only capture the dependent section if it is not the current one"""
-        if not (
-            section_id == self._current_location.section_id
-            and list_item_id == self._current_location.list_item_id
-        ):
-            super()._capture_dependent_section(section_id, list_item_id)
+        if not section_key == self._current_location.section_key:
+            super()._capture_dependent_section(self._current_location.section_key)
