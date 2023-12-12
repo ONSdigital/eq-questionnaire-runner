@@ -474,21 +474,19 @@ class QuestionnaireStoreUpdaterBase:
                 blocks_removed |= self.remove_completed_location(location)
 
             if blocks_removed:
-                self._capture_dependent_section(section_id, list_item_id)
+                self._capture_dependent_section(section_key)
 
-    def _capture_dependent_section(
-        self, section_id: str, list_item_id: str | None
-    ) -> None:
+    def _capture_dependent_section(self, section_key: SectionKey) -> None:
         """
         Since this section key will be marked as incomplete, any `DependentSection` with is_complete as `None`
         can be removed as we do not need to re-evaluate progress as we already know the section would be incomplete.
         """
-        dependent = DependentSection(section_id, list_item_id)
+        dependent = DependentSection(**section_key.to_dict())
         if dependent in self.dependent_sections:
             self.dependent_sections.remove(dependent)
 
         self.dependent_sections.add(
-            DependentSection(section_id, list_item_id, is_complete=False)
+            DependentSection(**section_key.to_dict(), is_complete=False)
         )
 
     def started_section_keys(
