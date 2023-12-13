@@ -10,7 +10,6 @@ import HubPage from "../../base_pages/hub.page";
 import OnlineShoppingPage from "../../generated_pages/dynamic_answers_list_source/dynamic-answer-separate-section.page";
 import { click } from "../../helpers";
 import { expect } from "@wdio/globals";
-import SetMinMaxBlockPage from "../../generated_pages/calculated_summary/set-min-max-block.page";
 
 describe("Dynamic answers list value source", () => {
   const summaryTitles = ".ons-summary__item-title";
