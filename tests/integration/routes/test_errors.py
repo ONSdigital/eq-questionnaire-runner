@@ -21,7 +21,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         "period_str": "April 2016",
         "period_id": "201604",
         "collection_exercise_sid": "789",
-        "ru_ref": "123456789012A",
+        "ru_ref": "12345678901A",
         "response_id": "1234567890123456",
         "ru_name": "Integration Testing",
         "ref_p_start_date": "2016-04-01",

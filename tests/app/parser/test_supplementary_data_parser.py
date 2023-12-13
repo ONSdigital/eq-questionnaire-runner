@@ -11,7 +11,7 @@ SUPPLEMENTARY_DATA_PAYLOAD = {
     "survey_id": "123",
     "data": {
         "schema_version": "v1",
-        "identifier": "12346789012",
+        "identifier": "12345678901",
         "items": {
             "local_units": [
                 {
@@ -47,7 +47,7 @@ def test_invalid_supplementary_data_payload_raises_error():
         validate_supplementary_data(
             supplementary_data={},
             dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
-            identifier="12346789012",
+            identifier="12345678901",
             survey_id="123",
         )
 
@@ -58,7 +58,7 @@ def test_validate_supplementary_data_payload():
     validated_payload = validate_supplementary_data_v1(
         supplementary_data=SUPPLEMENTARY_DATA_PAYLOAD,
         dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
-        identifier="12346789012",
+        identifier="12345678901",
         survey_id="123",
     )
 
@@ -70,7 +70,7 @@ def test_validate_supplementary_data_payload_incorrect_dataset_id():
         validate_supplementary_data_v1(
             supplementary_data=SUPPLEMENTARY_DATA_PAYLOAD,
             dataset_id="331507ca-1039-4624-a342-7cbc3630e217",
-            identifier="12346789012",
+            identifier="12345678901",
             survey_id="123",
         )
 
@@ -85,7 +85,7 @@ def test_validate_supplementary_data_payload_incorrect_survey_id():
         validate_supplementary_data_v1(
             supplementary_data=SUPPLEMENTARY_DATA_PAYLOAD,
             dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
-            identifier="12346789012",
+            identifier="12345678901",
             survey_id="234",
         )
 
@@ -116,14 +116,14 @@ def test_supplementary_data_payload_with_no_items_is_validated():
         "survey_id": "123",
         "data": {
             "schema_version": "v1",
-            "identifier": "12346789012",
+            "identifier": "12345678901",
         },
     }
 
     validated_payload = validate_supplementary_data_v1(
         supplementary_data=payload,
         dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
-        identifier="12346789012",
+        identifier="12345678901",
         survey_id="123",
     )
 
@@ -135,7 +135,7 @@ def test_validate_supplementary_data_payload_missing_survey_id():
         "dataset_id": "44f1b432-9421-49e5-bd26-e63e18a30b69",
         "data": {
             "schema_version": "v1",
-            "identifier": "12346789012",
+            "identifier": "12345678901",
         },
     }
 
@@ -143,7 +143,7 @@ def test_validate_supplementary_data_payload_missing_survey_id():
         validate_supplementary_data_v1(
             supplementary_data=payload,
             dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
-            identifier="12346789012",
+            identifier="12345678901",
             survey_id="123",
         )
 
@@ -157,14 +157,14 @@ def test_validate_supplementary_data_payload_with_unknown_field():
         "some_field": "value",
         "data": {
             "schema_version": "v1",
-            "identifier": "12346789012",
+            "identifier": "12345678901",
         },
     }
 
     validated_payload = validate_supplementary_data_v1(
         supplementary_data=payload,
         dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
-        identifier="12346789012",
+        identifier="12345678901",
         survey_id="123",
     )
 
@@ -178,7 +178,7 @@ def test_validate_supplementary_data_invalid_schema_version():
         "some_field": "value",
         "data": {
             "schema_version": "v2",
-            "identifier": "12346789012",
+            "identifier": "12345678901",
         },
     }
 
@@ -186,7 +186,7 @@ def test_validate_supplementary_data_invalid_schema_version():
         validate_supplementary_data_v1(
             supplementary_data=payload,
             dataset_id="001",
-            identifier="12346789012",
+            identifier="12345678901",
             survey_id="123",
         )
 
@@ -201,7 +201,7 @@ def test_validate_supplementary_data_payload_missing_identifier_in_items():
         validate_supplementary_data_v1(
             supplementary_data=payload,
             dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
-            identifier="12346789012",
+            identifier="12345678901",
             survey_id="123",
         )
 
@@ -217,7 +217,7 @@ def test_validate_supplementary_data_payload_invalid_identifier(invalid_identifi
         validate_supplementary_data_v1(
             supplementary_data=payload,
             dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
-            identifier="12346789012",
+            identifier="12345678901",
             survey_id="123",
         )
 

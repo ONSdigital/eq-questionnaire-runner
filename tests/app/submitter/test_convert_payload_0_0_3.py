@@ -1581,7 +1581,7 @@ def test_payload_supplementary_data():
 
     supplementary_data = {
         "schema_version": "v1",
-        "identifier": "12346789012",
+        "identifier": "12345678901",
         "note": {"title": "supermarket test survey", "description": "test data"},
         "items": {
             "supermarkets": [

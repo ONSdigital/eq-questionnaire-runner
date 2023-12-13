@@ -138,11 +138,10 @@ class TestSession(IntegrationTestCase):
         mock_set.assert_called_once()
         mock_validate.assert_called_once()
 
-        assert mock_get.call_args.kwargs[
-            "identifier"
-        ] == get_ru_ref_without_check_letter(
-            PAYLOAD_V2_SUPPLEMENTARY_DATA["survey_metadata"]["data"]["ru_ref"]
-        )
+        used_identifier = mock_get.call_args.kwargs["identifier"]
+        ru_ref = PAYLOAD_V2_SUPPLEMENTARY_DATA["survey_metadata"]["data"]["ru_ref"]
+        assert used_identifier == get_ru_ref_without_check_letter(ru_ref)
+        assert used_identifier != ru_ref
 
     @patch("app.routes.session.get_supplementary_data_v1")
     @patch("app.routes.session._validate_supplementary_data_lists")
