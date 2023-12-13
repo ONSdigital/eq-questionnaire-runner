@@ -89,7 +89,7 @@ class TestDumpSubmission(IntegrationTestCase):
                     "schema_name": "test_radio_mandatory_with_detail_answer_mandatory",
                 },
                 "data": {"answers": [], "lists": []},
-                "metadata": {"ru_ref": "123456789012A", "user_id": "integration-test"},
+                "metadata": {"ru_ref": "12346789012A", "user_id": "integration-test"},
                 "launch_language_code": "en",
                 "submission_language_code": "en",
             }
@@ -137,7 +137,7 @@ class TestDumpSubmission(IntegrationTestCase):
                     ],
                     "lists": [],
                 },
-                "metadata": {"ru_ref": "123456789012A", "user_id": "integration-test"},
+                "metadata": {"ru_ref": "12346789012A", "user_id": "integration-test"},
                 "launch_language_code": "en",
                 "submission_language_code": "en",
             }
@@ -205,7 +205,7 @@ class TestDumpSubmission(IntegrationTestCase):
                         }
                     ],
                 },
-                "metadata": {"ru_ref": "123456789012A", "user_id": "integration-test"},
+                "metadata": {"ru_ref": "12346789012A", "user_id": "integration-test"},
                 "launch_language_code": "en",
                 "submission_language_code": "en",
             }
