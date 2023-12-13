@@ -10,6 +10,7 @@ import HubPage from "../../base_pages/hub.page";
 import OnlineShoppingPage from "../../generated_pages/dynamic_answers_list_source/dynamic-answer-separate-section.page";
 import { click } from "../../helpers";
 import { expect } from "@wdio/globals";
+import SetMinMaxBlockPage from "../../generated_pages/calculated_summary/set-min-max-block.page";
 
 describe("Dynamic answers list value source", () => {
   const summaryTitles = ".ons-summary__item-title";
@@ -161,6 +162,16 @@ describe("Dynamic answers list value source", () => {
     await expect(await $$(OnlineShoppingPage.labels())[0].getText()).toBe("Percentage of online shopping at Tesco");
     await expect(await $$(OnlineShoppingPage.labels())[1].getText()).toBe("Percentage of online shopping at Aldi");
     await expect(await $$(OnlineShoppingPage.labels()).length).toBe(4);
+  });
+
+  it("Given the minimum value is set to 1000.99, When the maximum amount of spending entered should be between 1000.99 and 10000 and 1000.98 is entered, Then the value should not be accepted", async () => {
+    // Go through until maximum spending is achieved, then enter the spending to 1000.98 and then an error should appear.
+    await $(DriverPage.yes()).click();
+    await click(DriverPage.submit());
+    await $(ListCollectorAddPage.supermarketName()).setValue("Tesco");
+    await $(ListCollectorAddPage.setMaximum()).setValue(1000.98);
+    await click(ListCollectorAddPage.submit());
+    await expect(await $(ListCollectorAddPage.errorNumber(1)).getText()).toBe("Enter an answer more than or equal to 1,000.99");
   });
 });
 
