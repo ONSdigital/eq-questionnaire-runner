@@ -22,7 +22,7 @@ def test_supplementary_data_serialisation(
 
 def test_supplementary_data_deserialisation():
     raw_data = {
-        "identifier": "12346789012A",
+        "identifier": "12346789012",
         "items": {
             "products": [
                 {"identifier": 89929001},
@@ -47,7 +47,7 @@ def test_supplementary_data_deserialisation():
     assert deserialized.raw_data == make_immutable(raw_data)
     assert deserialized.list_mappings == make_immutable(list_mappings)
     assert deserialized._data_map == {  # pylint: disable=protected-access
-        ("identifier", None): "12346789012A",
+        ("identifier", None): "12346789012",
         ("products", "item-1"): {"identifier": 89929001},
         ("products", "item-2"): {"identifier": "201630601"},
     }
@@ -63,7 +63,7 @@ def test_empty_supplementary_data_deserialisation():
 @pytest.mark.parametrize(
     "identifier,list_item_id,selectors,expected",
     [
-        ("identifier", None, None, "12346789012A"),
+        ("identifier", None, None, "12346789012"),
         ("note", None, ["title"], "Volume of total production"),
         ("products", "item-2", ["name"], "Other Minerals"),
         ("products", "item-1", ["value_sales", "answer_code"], "89929001"),

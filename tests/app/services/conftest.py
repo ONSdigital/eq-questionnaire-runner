@@ -8,7 +8,7 @@ def decrypted_mock_supplementary_data_payload():
         "survey_id": "123",
         "data": {
             "schema_version": "v1",
-            "identifier": "12346789012A",
+            "identifier": "12346789012",
             "items": {
                 "local_units": [
                     {
