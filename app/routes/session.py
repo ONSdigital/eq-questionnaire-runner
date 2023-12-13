@@ -28,6 +28,8 @@ from app.helpers.template_helpers import (
 )
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
+from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdaterBase
+from app.questionnaire.router import Router
 from app.routes.errors import _render_error_page
 from app.services.supplementary_data import get_supplementary_data_v1
 from app.utilities.metadata_parser import validate_runner_claims
@@ -192,7 +194,31 @@ def _set_questionnaire_supplementary_data(
     _validate_supplementary_data_lists(
         supplementary_data=supplementary_data["data"], schema=schema
     )
-    questionnaire_store.set_supplementary_data(supplementary_data["data"])
+    _set_supplementary_data(
+        questionnaire_store=questionnaire_store,
+        schema=schema,
+        supplementary_data=supplementary_data["data"],
+    )
+
+
+def _set_supplementary_data(
+    *,
+    questionnaire_store: QuestionnaireStore,
+    schema: QuestionnaireSchema,
+    supplementary_data: dict,
+) -> None:
+    """
+    Adds the supplementary data to the questionnaire store which:
+    1) removes any old list items and answers
+    2) Updates block and section progress to reflect any newly unlocked questions due to supplementary data list changes
+    """
+    router = Router(schema=schema, data_stores=questionnaire_store.data_stores)
+    base_questionnaire_store_updater = QuestionnaireStoreUpdaterBase(
+        questionnaire_store=questionnaire_store, schema=schema, router=router
+    )
+    base_questionnaire_store_updater.set_supplementary_data(to_set=supplementary_data)
+    base_questionnaire_store_updater.remove_dependent_blocks_and_capture_dependent_sections()
+    base_questionnaire_store_updater.update_progress_for_dependent_sections()
 
 
 def _validate_supplementary_data_lists(
