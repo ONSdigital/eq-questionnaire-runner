@@ -45,7 +45,7 @@ services:
             - "8000:8000"
 
     sds:
-        image: onsdigital/eq-runner-mock-sds:remove-checkletter-from-sds-identifier
+        image: onsdigital/eq-runner-mock-sds:latest
         networks:
             - eq-env
         restart: always
