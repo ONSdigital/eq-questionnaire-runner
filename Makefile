@@ -102,6 +102,7 @@ run-uwsgi-async: link-development-env
 dev-compose-up:
 	docker-compose -f docker-compose-dev-mac.yml pull eq-questionnaire-launcher
 	docker-compose -f docker-compose-dev-mac.yml pull sds
+	docker-compose -f docker-compose-dev-mac.yml pull cir
 	docker-compose -f docker-compose-dev-mac.yml up -d
 
 dev-compose-up-linux:
