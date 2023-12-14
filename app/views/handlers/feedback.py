@@ -226,7 +226,7 @@ class FeedbackPayload:
         "metadata": {
             "ref_period_end_date": "2021-03-29",
             "ref_period_start_date": "2021-03-01",
-            "ru_ref": "11110000022H",
+            "ru_ref": "12345678901A",
             "user_id": "d98d78eb-d23a-494d-b67c-e770399de383"
         },
         "origin": "uk.gov.ons.edc.eq",

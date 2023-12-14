@@ -158,7 +158,7 @@ class TestFlushData(IntegrationTestCase):
                 "schema_name": "test_textfield",
                 "period": "201605",
             },
-            "metadata": {"user_id": "UNKNOWN", "ru_ref": "12346789012A"},
+            "metadata": {"user_id": "UNKNOWN", "ru_ref": "12345678901A"},
             "launch_language_code": "en",
             "data": {
                 "answers": [{"answer_id": "name-answer", "value": "sdfsdaf"}],
@@ -197,7 +197,7 @@ class TestFlushData(IntegrationTestCase):
                 "period_id": "201605",
                 "ru_name": "ESSENTIAL ENTERPRISE LTD.",
                 "user_id": "UNKNOWN",
-                "ru_ref": "12346789012A",
+                "ru_ref": "12345678901A",
             },
             "data": {
                 "answers": [{"answer_id": "name-answer", "value": "sdfsdf"}],
