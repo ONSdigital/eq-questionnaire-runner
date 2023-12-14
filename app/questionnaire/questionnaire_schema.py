@@ -609,10 +609,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         elif value_source["source"] == "grand_calculated_summary":
             identifier = value_source["identifier"]
             # Type ignore: validator will ensure identifier is valid
-            gcs_block: ImmutableDict = self.get_block(identifier)  # type: ignore
+            grand_calculated_summary_block: ImmutableDict = self.get_block(identifier)  # type: ignore
             for (
                 calculated_summary_id
-            ) in get_calculated_summary_ids_for_grand_calculated_summary(gcs_block):
+            ) in get_calculated_summary_ids_for_grand_calculated_summary(
+                grand_calculated_summary_block
+            ):
                 self._update_dependencies_for_calculated_summary_value_source(
                     calculated_summary_id=calculated_summary_id,
                     block_id=block_id,
@@ -1226,9 +1228,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             dependent_answer_ids.update(calculated_summary_answer_ids)
         elif source == "grand_calculated_summary":
             # grand calculated summary section could differ from cs & answer sections, include it in dependent sections
-            gcs_section_id: str = self.get_section_id_for_block_id(identifier)  # type: ignore
-            if gcs_section_id != current_section_id:
-                dependent_section_ids.add(gcs_section_id)
+            grand_calculated_summary_section_id: str = self.get_section_id_for_block_id(identifier)  # type: ignore
+            if grand_calculated_summary_section_id != current_section_id:
+                dependent_section_ids.add(grand_calculated_summary_section_id)
             dependent_answer_ids.update(
                 self.get_answer_ids_for_grand_calculated_summary_id(identifier)
             )
