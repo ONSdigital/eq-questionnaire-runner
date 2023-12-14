@@ -158,7 +158,7 @@ def get_schema_name_from_params(eq_id: str | None, form_type: str | None) -> str
 def _load_schema_file(schema_name: str, language_code: str) -> Any:
     """
     Load a schema, optionally for a specified language.
-    :param schema_name: The name of the schema e.g. census_household
+    :param schema_name: The name of the schema e.g. test_address
     :param language_code: ISO 2-character code for language e.g. 'en', 'cy'
     """
     if language_code != DEFAULT_LANGUAGE_CODE and not _schema_exists(
