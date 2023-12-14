@@ -150,16 +150,16 @@
                                         },
                                         {
                                             "id": "set-maximum",
-                                            "description": "Maximum amount of spending at this supermarket, should be between 1000.99 and 10000.98",
+                                            "description": "Maximum amount of spending at this supermarket, should be between 1001 and 10000",
                                             "label": "Maximum Spending",
                                             "mandatory": true,
                                             "type": "Number",
                                             "decimal_places": 2,
                                             "minimum": {
-                                                "value": 1000.99
+                                                "value": 1001
                                             },
                                             "maximum": {
-                                                "value": 10000.98
+                                                "value": 10000
                                             }
                                         }
                                     ]

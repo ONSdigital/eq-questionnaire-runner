@@ -162,24 +162,6 @@ describe("Dynamic answers list value source", () => {
     await expect(await $$(OnlineShoppingPage.labels())[1].getText()).toBe("Percentage of online shopping at Aldi");
     await expect(await $$(OnlineShoppingPage.labels()).length).toBe(4);
   });
-
-  it("Given the minimum value is set to 1000.99, When the maximum amount of spending entered should be between 1000.99 and 10000 and 1000.98 is entered, Then the value should not be accepted", async () => {
-    await $(DriverPage.yes()).click();
-    await click(DriverPage.submit());
-    await $(ListCollectorAddPage.supermarketName()).setValue("Tesco");
-    await $(ListCollectorAddPage.setMaximum()).setValue(1000.98);
-    await click(ListCollectorAddPage.submit());
-    await expect(await $(ListCollectorAddPage.errorNumber(1)).getText()).toBe("Enter an answer more than or equal to 1,000.99");
-  });
-
-  it("Given the maximum value is set to 10000.98, When the maximum amount of spending entered should be between 1000.99 and 10000 and 10000.99 is entered, Then the value should not be accepted", async () => {
-    await $(DriverPage.yes()).click();
-    await click(DriverPage.submit());
-    await $(ListCollectorAddPage.supermarketName()).setValue("Tesco");
-    await $(ListCollectorAddPage.setMaximum()).setValue(10000.99);
-    await click(ListCollectorAddPage.submit());
-    await expect(await $(ListCollectorAddPage.errorNumber(1)).getText()).toBe("Enter an answer less than or equal to 10,000.98");
-  });
 });
 
 async function addTwoSupermarkets() {

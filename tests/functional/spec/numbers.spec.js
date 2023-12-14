@@ -13,6 +13,20 @@ describe("Number validation", () => {
     await browser.openQuestionnaire("test_numbers.json");
   });
   describe("Given I am completing the test numbers questionnaire,", () => {
+    it("When a float less than the minimum value, Then the correct error message including the minimum value as a float is included", async () => {
+      await $(SetMinMax.setMinimum()).setValue(-1000.99);
+      await $(SetMinMax.setMaximum()).setValue(1000);
+      await click(SetMinMax.submit());
+      await expect(await $(SetMinMax.errorNumber(1)).getText()).toBe("Enter an answer more than or equal to -1,000.98");
+    });
+
+    it("When a float less than the maximum value, Then the correct error message including the maximum value as a float is included", async () => {
+      await $(SetMinMax.setMinimum()).setValue(100);
+      await $(SetMinMax.setMaximum()).setValue(10000.99);
+      await click(SetMinMax.submit());
+      await expect(await $(SetMinMax.errorNumber(1)).getText()).toBe("Enter an answer less than or equal to 10,000.98");
+    });
+
     it("When I am on the set minimum and maximum page, Then each field has a label", async () => {
       await expect(await $(SetMinMax.setMinimumLabelDescription()).getText()).toBe("This is a description of the minimum value");
       await expect(await $(SetMinMax.setMaximumLabelDescription()).getText()).toBe("This is a description of the maximum value");
