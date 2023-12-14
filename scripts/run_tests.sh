@@ -15,7 +15,7 @@ echo "Running python lint tests"
 ./scripts/run_lint_python.sh
 
 echo "Running js lint tests"
-yarn lint
+npm run lint
 
 echo "Running unit tests"
 ./scripts/run_tests_unit.sh

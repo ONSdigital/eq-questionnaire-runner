@@ -202,16 +202,10 @@ nvm install
 nvm use
 ```
 
-Install yarn with:
-
-``` shell
-npm i -g yarn
-```
-
 Fetch npm dependencies:
 
 ``` shell
-yarn
+npm install
 ```
 
 Available commands:
@@ -299,7 +293,7 @@ make test-functional-suite SUITE=<suite>
 To run the tests against a remote deployment you will need to specify the environment variable of EQ_FUNCTIONAL_TEST_ENV eg:
 
 ``` shell
-EQ_FUNCTIONAL_TEST_ENV=https://staging-new-surveys.dev.eq.ons.digital/ yarn test_functional
+EQ_FUNCTIONAL_TEST_ENV=https://staging-new-surveys.dev.eq.ons.digital/ npm run test_functional
 ```
 
 ---
@@ -488,7 +482,7 @@ To add a new dependency, use `pipenv install [package-name]`, which not only ins
 NB: both the Pipfile and Pipfile.lock files are required in source control to accurately pin dependencies.
 
 ### JavaScript
-To add a new dependency, use `yarn add [package-name]` and `yarn` to install all the packages locally.
+To add a new dependency, use `npm install [dev dependency] --save-dev` or `npm install [dependency]` then use `npm install` to install all the packages locally.
 
 ---
 
@@ -497,8 +491,8 @@ To add a new dependency, use `yarn add [package-name]` and `yarn` to install all
 ### On [Design System](https://github.com/ONSdigital/design-system) Repo
 Checkout branch with new changes on
 
-You will need to install the Design System dependencies to do this so run `yarn` in the terminal if you haven't
-You will also need to install gulp
+You will need to install the Design System dependencies. If you haven't installed Yarn, install it with `npm i -g yarn`. To install the dependencies run `yarn` in the terminal. If you haven't
+you will also need to install gulp.
 
 Then in the terminal run:
 

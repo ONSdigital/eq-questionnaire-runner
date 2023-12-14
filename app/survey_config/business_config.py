@@ -5,6 +5,7 @@ from warnings import warn
 
 from flask_babel import lazy_gettext
 
+from app.helpers.metadata_helpers import get_ru_ref_without_check_letter
 from app.settings import read_file
 from app.survey_config.link import HeaderLink, Link
 from app.survey_config.survey_config import SurveyConfig
@@ -39,7 +40,7 @@ class BusinessSurveyConfig(SurveyConfig):
                 # The ru_ref currently is concatenated with the check letter. Which upstream currently do not support.
                 # The first 11 characters represents the reporting unit reference.
                 # The 12th character is the check letter identifier.
-                "ru_ref": ru_ref[:11],
+                "ru_ref": get_ru_ref_without_check_letter(ru_ref),
             }
             return f"{self.base_url}/surveys/surveys-help?{urlencode(request_data)}"
 
