@@ -1,0 +1,1159 @@
+{
+    "language": "en",
+    "mime_type": "application/json/ons/eq",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "preview_questions": false,
+    "survey_id": "068",
+    "form_type": "0001",
+    "answer_codes": [
+        {
+            "answer_id": "answer08c4caae-6f34-4fb2-95e3-ab6a900fe3ef",
+            "code": "9999"
+        },
+        {
+            "answer_id": "answerff221d94-2044-45fb-9cd7-e4677485483f",
+            "code": "9998"
+        },
+        {
+            "answer_id": "answer47a97e99-a1ab-4f02-879a-23c7fba8fbe3",
+            "code": "9997"
+        },
+        {
+            "answer_id": "answer0c4d8705-0c53-4778-b8d9-de0b41bc446f",
+            "code": "9996"
+        },
+        {
+            "answer_id": "answer276c7972-e158-44ab-8235-6549d3472a18",
+            "code": "9995"
+        },
+        {
+            "answer_id": "answer-driving-additional-new-sites",
+            "code": "9994"
+        },
+        {
+            "answer_id": "answer77f7db4b-6e35-4696-9671-26a906ea4e7d",
+            "code": "9993"
+        },
+        {
+            "answer_id": "answer049445d3-9240-45fd-adb6-49fbc540de8a",
+            "code": "9992"
+        },
+        {
+            "answer_id": "answer3aa044a8-26dd-403f-8646-8a9c8874b3be",
+            "code": "9991"
+        },
+        {
+            "answer_id": "add-another-additional-new-sites",
+            "code": "9990"
+        },
+        {
+            "answer_id": "answerbf11b2d4-3f36-4466-8e59-4f8bc3cce4c8",
+            "code": "147"
+        },
+        {
+            "answer_id": "answer27f27859-fc11-4577-b9bb-745407356498",
+            "code": "9989"
+        },
+        {
+            "answer_id": "answer6fd5d6f5-c9b0-4b69-8e62-435e4bc3db48",
+            "code": "9988"
+        }
+    ],
+    "title": "Quarterly Survey of Building Materials - Concrete Roofing Tiles",
+    "questionnaire_flow": {
+        "type": "Hub",
+        "options": {
+            "required_completed_sections": [
+                "section88d360e2-bdf7-43a1-9739-a61eeed1fa15"
+            ]
+        }
+    },
+    "sections": [
+        {
+            "id": "section88d360e2-bdf7-43a1-9739-a61eeed1fa15",
+            "title": "Introduction",
+            "show_on_hub": false,
+            "groups": [
+                {
+                    "id": "group88d360e2-bdf7-43a1-9739-a61eeed1fa15",
+                    "title": "Introduction",
+                    "blocks": [
+                        {
+                            "id": "introduction",
+                            "type": "Introduction",
+                            "primary_content": [
+                                {
+                                    "id": "primary",
+                                    "title": {
+                                        "text": "You are completing this for {ru_name} {trad_as}",
+                                        "placeholders": [
+                                            {
+                                                "placeholder": "ru_name",
+                                                "value": {
+                                                    "source": "metadata",
+                                                    "identifier": "ru_name"
+                                                }
+                                            },
+                                            {
+                                                "placeholder": "trad_as",
+                                                "transforms": [
+                                                    {
+                                                        "transform": "conditional_trad_as",
+                                                        "arguments": {
+                                                            "trad_as": {
+                                                                "source": "metadata",
+                                                                "identifier": "trad_as"
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "contents": [
+                                        {
+                                            "description": {
+                                                "text": "If the company details or structure have changed contact us on {telephone_number_link} or email {email_link}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "telephone_number_link",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "telephone_number_link",
+                                                                "arguments": {
+                                                                    "telephone_number": "0300 1234 931"
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "placeholder": "email_link",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "email_link",
+                                                                "arguments": {
+                                                                    "email_address": "surveys@ons.gov.uk",
+                                                                    "email_subject": "Change of details",
+                                                                    "email_subject_append": {
+                                                                        "identifier": "ru_ref",
+                                                                        "source": "metadata"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "additional-guidance",
+                                    "contents": [
+                                        {
+                                            "guidance": {
+                                                "contents": [
+                                                    {
+                                                        "title": "Important Notice"
+                                                    },
+                                                    {
+                                                        "description": "This questionnaire has been designed for online mode. You may notice changes compared with the paper version, such as to the ordering of questions and sections."
+                                                    },
+                                                    {
+                                                        "description": "There is additional guidance throughout the questionnaire. However, if you require support then please contact us on <a href=\"tel:03001234931\"target=\"_blank\"rel=\"noopener noreferrer\">0300 1234 931</a> or via email at <a href=\"mailto:surveys@ons.gov.uk?subject=Change%20of%20details%2012346789012A\"target=\"_blank\"rel=\"noopener noreferrer\">surveys@ons.gov.uk</a>"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "description",
+                                    "contents": [
+                                        {
+                                            "list": [
+                                                "This voluntary survey is conducted by the Office for National Statistics on behalf of the Department for Business and Trade (DBT).",
+                                                "Data should relate to all sites in England, Scotland, Wales and Northern Ireland unless otherwise stated.",
+                                                "This survey is to be completed for the sites named within the local unit list and new site list sections of this questionnaire.",
+                                                "You can provide informed estimates if actual figures are not available.",
+                                                "We will treat your data securely and confidentially.",
+                                                "You can save a copy of your answers at the end of this questionnaire using the &#x2018;Download as PDF&#x2019; button."
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            "preview_content": {
+                                "id": "preview",
+                                "title": "Information you need",
+                                "contents": [
+                                    {
+                                        "description": {
+                                            "text": "This survey collects information on your business&#39;s production and delivery of concrete roofing tiles as a building material during the quarter {ref_p_start_date} to {ref_p_end_date}.",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "ref_p_start_date",
+                                                    "transforms": [
+                                                        {
+                                                            "transform": "format_date",
+                                                            "arguments": {
+                                                                "date_to_format": {
+                                                                    "source": "metadata",
+                                                                    "identifier": "ref_p_start_date"
+                                                                },
+                                                                "date_format": "d MMMM yyyy"
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "placeholder": "ref_p_end_date",
+                                                    "transforms": [
+                                                        {
+                                                            "transform": "format_date",
+                                                            "arguments": {
+                                                                "date_to_format": {
+                                                                    "source": "metadata",
+                                                                    "identifier": "ref_p_end_date"
+                                                                },
+                                                                "date_format": "d MMMM yyyy"
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "description": "<a href=\"https://www.ons.gov.uk/surveys/informationforbusinesses/businesssurveys/quarterlysurveyofbuildingmaterialsconcreteroofingtiles\"target=\"_blank\"rel=\"noopener noreferrer\">View more information about this survey (this link opens in a new tab)</a>"
+                                    },
+                                    {
+                                        "description": "This survey has the following sections:"
+                                    }
+                                ],
+                                "questions": [
+                                    {
+                                        "question": "Details of production",
+                                        "contents": [
+                                            {
+                                                "description": "In this section you will be asked to provide the details of production for concrete roofing tiles."
+                                            },
+                                            {
+                                                "description": "<strong>This includes:</strong>"
+                                            },
+                                            {
+                                                "list": [
+                                                    "tiles manufactured",
+                                                    "tiles delivered",
+                                                    "closing stock",
+                                                    "new works your business has brought into use since the date of your last return"
+                                                ]
+                                            },
+                                            {
+                                                "description": "<strong>This section is to be completed for the sites named within the local unit list and new site list sections of this questionnaire.</strong>"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "question": "Local unit list",
+                                        "contents": [
+                                            {
+                                                "description": "In this section you will be presented with your business&#39;s local units that this return covers. You will be asked to check the list for any errors and provide details of any changes. If a unit is no longer covered by this return, include the date that it ceased production."
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "question": "New site list",
+                                        "contents": [
+                                            {
+                                                "description": "In this section you will be asked to provide details of any new sites that have come into production since your last return."
+                                            },
+                                            {
+                                                "description": "<strong>This includes:</strong>"
+                                            },
+                                            {
+                                                "list": [
+                                                    "name, address, and postcode of the new unit",
+                                                    "nature of work carried on at the new unit",
+                                                    "number of persons employed at the new unit",
+                                                    "date the new unit came into production"
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "secondary_content": [
+                                {
+                                    "id": "secondary-content",
+                                    "contents": [
+                                        {
+                                            "title": "How we use your data"
+                                        },
+                                        {
+                                            "list": [
+                                                "DBT uses the information for monitoring trends in the construction industries.",
+                                                "For the benefit of industry, and the public generally, building materials information is published by DBT in their <a href=\"https://www.gov.uk/government/collections/building-materials-and-components-monthly-statistics-2012\"target=\"_blank\"rel=\"noopener noreferrer\">&#39;Monthly Statistics of Building Materials and Components&#39; (this link opens in a new tab)</a>"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "f7b1c412-d8b5-43ea-86d3-52efcf3ba36c",
+            "title": "Details of production",
+            "summary": {
+                "show_on_completion": false,
+                "collapsible": false
+            },
+            "show_on_hub": true,
+            "groups": [
+                {
+                    "id": "groupf7b1c412-d8b5-43ea-86d3-52efcf3ba36c",
+                    "blocks": [
+                        {
+                            "type": "Interstitial",
+                            "id": "details-of-production-introduction",
+                            "page_title": "Details of production introduction",
+                            "content": {
+                                "title": "Details of production",
+                                "contents": [
+                                    {
+                                        "description": "You will be asked to provide the details of production for concrete roofing tiles."
+                                    },
+                                    {
+                                        "description": "<strong>This includes:</strong>"
+                                    },
+                                    {
+                                        "list": [
+                                            "tiles manufactured",
+                                            "tiles delivered",
+                                            "closing stock",
+                                            "new works your business has brought into use since the date of your last return"
+                                        ]
+                                    },
+                                    {
+                                        "description": "<strong>This section is to be completed for the sites named within the local unit list and new site list sections of this questionnaire.</strong>"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "concrete-roofing-tiles-manufactured",
+                            "type": "Question",
+                            "question": {
+                                "id": "questionconcrete-roofing-tiles-manufactured",
+                                "title": {
+                                    "text": "For the period {ref_p_start_date} to {ref_p_end_date}, how many square metres of concrete roofing tiles were manufactured by {ru_name}?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "ref_p_start_date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "metadata",
+                                                            "identifier": "ref_p_start_date"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "placeholder": "ref_p_end_date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "metadata",
+                                                            "identifier": "ref_p_end_date"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "placeholder": "ru_name",
+                                            "value": {
+                                                "source": "metadata",
+                                                "identifier": "ru_name"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "description": [
+                                    "<p>Record in <em>square metres of roof area covered. </em></p><p>1 square yard = 0.836 square metres.</p><p>Informed estimates are acceptable.</p><p>If the value is known to be none, enter a single zero.</p>"
+                                ],
+                                "definitions": [
+                                    {
+                                        "title": "What we mean by &#39;tiles manufactured&#39;",
+                                        "contents": [
+                                            {
+                                                "description": "This refers to products completed and ready for despatch."
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer08c4caae-6f34-4fb2-95e3-ab6a900fe3ef",
+                                        "mandatory": false,
+                                        "type": "Unit",
+                                        "label": "Concrete roofing tiles manufactured",
+                                        "description": "Enter a value to the nearest whole number. For example, for 0.836 square metres, enter 1 square metre.",
+                                        "unit": "area-square-meter",
+                                        "unit_length": "short",
+                                        "decimal_places": 0
+                                    }
+                                ]
+                            },
+                            "page_title": "Concrete roofing tiles manufactured"
+                        },
+                        {
+                            "id": "concrete-roofing-tiles-delivered",
+                            "type": "Question",
+                            "question": {
+                                "id": "questionconcrete-roofing-tiles-delivered",
+                                "title": "For the reporting period, how many square metres of concrete roofing tiles were <em>delivered</em> by your business?",
+                                "description": [
+                                    "<p>Record in <em>square metres of roof area covered</em>. </p><p>1 square yard = 0.836 square metres.</p><p>Informed estimates are acceptable.</p><p>If the value is known to be none, enter a single zero.</p>"
+                                ],
+                                "definitions": [
+                                    {
+                                        "title": "What we mean by &#39;delivered&#39;",
+                                        "contents": [
+                                            {
+                                                "description": "This refers to products which have actually left the premises."
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answerff221d94-2044-45fb-9cd7-e4677485483f",
+                                        "mandatory": false,
+                                        "type": "Unit",
+                                        "label": "Concrete roofing tiles delivered",
+                                        "description": "Enter a value to the nearest whole number. For example, for 0.836 square metres, enter 1 square metre.",
+                                        "unit": "area-square-meter",
+                                        "unit_length": "short",
+                                        "decimal_places": 0
+                                    }
+                                ]
+                            },
+                            "page_title": "Concrete roofing tiles delivered"
+                        },
+                        {
+                            "id": "closing-stock-of-concrete-roofing-tiles",
+                            "type": "Question",
+                            "question": {
+                                "id": "questionclosing-stock-of-concrete-roofing-tiles",
+                                "title": {
+                                    "text": "How many square metres of concrete roofing tiles were in your business&#39;s closing stock on <em>{ref_p_end_date}</em>?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "ref_p_end_date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "metadata",
+                                                            "identifier": "ref_p_end_date"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "description": [
+                                    "<p>Record in <em>square metres of roof area covered. </em></p><p>1 square yard = 0.836 square metres.</p><p>Informed estimates are acceptable.</p><p>If the value is known to be none, enter a single zero.</p>"
+                                ],
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer47a97e99-a1ab-4f02-879a-23c7fba8fbe3",
+                                        "mandatory": false,
+                                        "type": "Unit",
+                                        "label": "Closing stock of concrete roofing tiles",
+                                        "description": "Enter a value to the nearest whole number. For example, for 0.836 square metres, enter 1 square metre.",
+                                        "unit": "area-square-meter",
+                                        "unit_length": "short",
+                                        "decimal_places": 0
+                                    }
+                                ]
+                            },
+                            "page_title": "Closing stock of concrete roofing tiles"
+                        },
+                        {
+                            "id": "new-works",
+                            "type": "Question",
+                            "question": {
+                                "id": "questionnew-works",
+                                "title": "Provide details of any new works your business has brought into use since the date of your last return",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer0c4d8705-0c53-4778-b8d9-de0b41bc446f",
+                                        "mandatory": false,
+                                        "type": "TextArea",
+                                        "label": "New works brought into use since the date of your last return",
+                                        "max_length": 2000
+                                    }
+                                ]
+                            },
+                            "page_title": "New works"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "cdfa0429-2771-4491-bcbb-7e8e91a30f7f",
+            "title": "Local unit list",
+            "summary": {
+                "show_on_completion": false,
+                "collapsible": false
+            },
+            "show_on_hub": true,
+            "groups": [
+                {
+                    "id": "groupcdfa0429-2771-4491-bcbb-7e8e91a30f7f",
+                    "blocks": [
+                        {
+                            "type": "Interstitial",
+                            "id": "local-unit-list-introduction",
+                            "page_title": "Local unit list introduction",
+                            "content": {
+                                "title": "Local unit list",
+                                "contents": [
+                                    {
+                                        "description": "In this section you will presented with your business&#39;s local units that this return covers. You will be asked to check this list for any errors and provide details of any changes. If a unit is no longer covered by this return, include the date that it ceased production."
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "local-unit-list",
+                            "type": "Question",
+                            "question": {
+                                "id": "questionlocal-unit-list",
+                                "title": "The following local units are covered by this return. Check this list for any errors and provide details of any changes.",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "<strong>Include:</strong>"
+                                        },
+                                        {
+                                            "list": [
+                                                "if the unit is no longer covered by this return, with the date that it ceased production"
+                                            ]
+                                        },
+                                        {
+                                            "description": "<strong>Exclude:</strong>"
+                                        },
+                                        {
+                                            "list": [
+                                                "any new sites. You can provide these in the &#39;new site list&#39; section in this questionnaire"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "dynamic_answers": {
+                                    "values": {
+                                        "source": "list",
+                                        "identifier": "local-units"
+                                    },
+                                    "answers": [
+                                        {
+                                            "id": "answer276c7972-e158-44ab-8235-6549d3472a18",
+                                            "mandatory": false,
+                                            "type": "TextField",
+                                            "label": {
+                                                "text": "{localunits_name}, {localunits_address}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "localunits_name",
+                                                        "value": {
+                                                            "source": "supplementary_data",
+                                                            "identifier": "local-units",
+                                                            "selectors": [
+                                                                "name"
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "placeholder": "localunits_address",
+                                                        "transforms": [
+                                                            {
+                                                                "transform": "concatenate_list",
+                                                                "arguments": {
+                                                                    "list_to_concatenate": [
+                                                                        {
+                                                                            "source": "supplementary_data",
+                                                                            "identifier": "local-units",
+                                                                            "selectors": [
+                                                                                "address"
+                                                                            ]
+                                                                        }
+                                                                    ],
+                                                                    "delimiter": ", "
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "page_title": "Local unit list"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "0fb6a460-3a40-4ec9-84f5-b00663713b77",
+            "title": "New site list",
+            "summary": {
+                "show_on_completion": false,
+                "collapsible": false,
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "additional_units",
+                        "title": "What is the name, address, and postcode of the new unit?",
+                        "item_anchor_answer_id": "answer27f27859-fc11-4577-b9bb-745407356498",
+                        "item_label": "<p>Name of new unit</p>",
+                        "related_answers": [
+                            {
+                                "source": "answers",
+                                "identifier": "answer6fd5d6f5-c9b0-4b69-8e62-435e4bc3db48"
+                            }
+                        ],
+                        "add_link_text": "Add item to this list",
+                        "empty_list_text": "There are no items"
+                    }
+                ]
+            },
+            "show_on_hub": true,
+            "groups": [
+                {
+                    "id": "group0fb6a460-3a40-4ec9-84f5-b00663713b77",
+                    "blocks": [
+                        {
+                            "type": "Interstitial",
+                            "id": "new-site-list-introduction",
+                            "page_title": "New site list introduction",
+                            "content": {
+                                "title": "New site list",
+                                "contents": [
+                                    {
+                                        "description": "In this section you will be asked to provide details of any new sites that have come into production since your last return."
+                                    },
+                                    {
+                                        "description": "<strong>This includes:</strong>"
+                                    },
+                                    {
+                                        "list": [
+                                            "name, address, and postcode of the new unit",
+                                            "nature of work carried on at the new unit",
+                                            "number of persons employed at the new unit",
+                                            "date the new unit came into production"
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "new-sites",
+                            "type": "ListCollectorDrivingQuestion",
+                            "for_list": "additional_units",
+                            "question": {
+                                "id": "question-driving-additional-new-sites",
+                                "type": "General",
+                                "title": {
+                                    "text": "Does {ru_name} have any new sites that are covered by this return for the period {ref_p_start_date} to {ref_p_end_date}?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "ru_name",
+                                            "value": {
+                                                "source": "metadata",
+                                                "identifier": "ru_name"
+                                            }
+                                        },
+                                        {
+                                            "placeholder": "ref_p_start_date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "metadata",
+                                                            "identifier": "ref_p_start_date"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "placeholder": "ref_p_end_date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "metadata",
+                                                            "identifier": "ref_p_end_date"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "answer-driving-additional-new-sites",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock",
+                                                    "params": {
+                                                        "block_id": "add-block-name-address-and-postcode-of-new-unit",
+                                                        "list_name": "additional_units"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "section": "End",
+                                    "when": {
+                                        "in": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "answer-driving-additional-new-sites"
+                                            },
+                                            [
+                                                "No"
+                                            ]
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "additional-new-sites"
+                                }
+                            ],
+                            "page_title": "New sites"
+                        },
+                        {
+                            "id": "additional-new-sites",
+                            "type": "ListCollector",
+                            "page_title": "Additional new sites",
+                            "for_list": "additional_units",
+                            "question": {
+                                "id": "list-collector-question-additional-new-sites",
+                                "type": "General",
+                                "title": "Do you have any other new sites covered by this return?",
+                                "answers": [
+                                    {
+                                        "id": "add-another-additional-new-sites",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "add_block": {
+                                "id": "add-block-name-address-and-postcode-of-new-unit",
+                                "type": "ListAddQuestion",
+                                "page_title": "Name, address, and postcode of new unit",
+                                "cancel_text": "Don’t need to add this item",
+                                "question": {
+                                    "id": "add-block-question-name-address-and-postcode-of-new-unit",
+                                    "description": [
+                                        "<p>If required, additional units can be added in later questions.</p>"
+                                    ],
+                                    "type": "General",
+                                    "title": "What is the name, address, and postcode of the new unit?",
+                                    "answers": [
+                                        {
+                                            "id": "answer27f27859-fc11-4577-b9bb-745407356498",
+                                            "mandatory": true,
+                                            "type": "TextField",
+                                            "label": "Name of new unit"
+                                        },
+                                        {
+                                            "id": "answer6fd5d6f5-c9b0-4b69-8e62-435e4bc3db48",
+                                            "mandatory": true,
+                                            "type": "TextField",
+                                            "label": "Address and postcode of new unit"
+                                        }
+                                    ]
+                                }
+                            },
+                            "repeating_blocks": [
+                                {
+                                    "id": "nature-of-work-carried-on-at-the-new-unit",
+                                    "type": "ListRepeatingQuestion",
+                                    "page_title": "Nature of work carried on at the new unit",
+                                    "question": {
+                                        "id": "questionnature-of-work-carried-on-at-the-new-unit",
+                                        "title": {
+                                            "text": "What is the nature of work carried on at the new unit <em>{name_of_new_unit}</em>, <em>{address_and_postcode_of_new_unit}</em>?",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "name_of_new_unit",
+                                                    "value": {
+                                                        "identifier": "answer27f27859-fc11-4577-b9bb-745407356498",
+                                                        "source": "answers"
+                                                    }
+                                                },
+                                                {
+                                                    "placeholder": "address_and_postcode_of_new_unit",
+                                                    "value": {
+                                                        "identifier": "answer6fd5d6f5-c9b0-4b69-8e62-435e4bc3db48",
+                                                        "source": "answers"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "type": "General",
+                                        "answers": [
+                                            {
+                                                "id": "answer77f7db4b-6e35-4696-9671-26a906ea4e7d",
+                                                "mandatory": false,
+                                                "type": "TextField",
+                                                "label": "Nature of work carried on at the new unit"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "number-of-persons-employed-at-the-new-unit",
+                                    "type": "ListRepeatingQuestion",
+                                    "page_title": "Number of persons employed at the new unit",
+                                    "question": {
+                                        "id": "questionnumber-of-persons-employed-at-the-new-unit",
+                                        "title": {
+                                            "text": "What is the number of persons employed at the new unit {name_of_new_unit}, {address_and_postcode_of_new_unit}?",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "name_of_new_unit",
+                                                    "value": {
+                                                        "identifier": "answer27f27859-fc11-4577-b9bb-745407356498",
+                                                        "source": "answers"
+                                                    }
+                                                },
+                                                {
+                                                    "placeholder": "address_and_postcode_of_new_unit",
+                                                    "value": {
+                                                        "identifier": "answer6fd5d6f5-c9b0-4b69-8e62-435e4bc3db48",
+                                                        "source": "answers"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "type": "General",
+                                        "answers": [
+                                            {
+                                                "id": "answer049445d3-9240-45fd-adb6-49fbc540de8a",
+                                                "mandatory": false,
+                                                "type": "Number",
+                                                "label": "Number of persons employed at the new unit",
+                                                "decimal_places": 0
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "id": "date-new-unit-came-into-production",
+                                    "type": "ListRepeatingQuestion",
+                                    "page_title": "Date new unit came into production",
+                                    "question": {
+                                        "id": "questiondate-new-unit-came-into-production",
+                                        "title": {
+                                            "text": "What date did the new unit {name_of_new_unit}, {address_and_postcode_of_new_unit} come into production?",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "name_of_new_unit",
+                                                    "value": {
+                                                        "identifier": "answer27f27859-fc11-4577-b9bb-745407356498",
+                                                        "source": "answers"
+                                                    }
+                                                },
+                                                {
+                                                    "placeholder": "address_and_postcode_of_new_unit",
+                                                    "value": {
+                                                        "identifier": "answer6fd5d6f5-c9b0-4b69-8e62-435e4bc3db48",
+                                                        "source": "answers"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "type": "General",
+                                        "answers": [
+                                            {
+                                                "id": "answer3aa044a8-26dd-403f-8646-8a9c8874b3be",
+                                                "mandatory": false,
+                                                "type": "Date",
+                                                "label": "Date new unit came into production"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "edit_block": {
+                                "id": "edit-block-name-address-and-postcode-of-new-unit",
+                                "type": "ListEditQuestion",
+                                "page_title": "Name, address, and postcode of new unit",
+                                "cancel_text": "Don’t need to edit this item",
+                                "question": {
+                                    "id": "edit-block-question-name-address-and-postcode-of-new-unit",
+                                    "description": [
+                                        "<p>If required, additional units can be added in later questions.</p>"
+                                    ],
+                                    "type": "General",
+                                    "title": "What is the name, address, and postcode of the new unit?",
+                                    "answers": [
+                                        {
+                                            "id": "answer27f27859-fc11-4577-b9bb-745407356498",
+                                            "mandatory": true,
+                                            "type": "TextField",
+                                            "label": "Name of new unit"
+                                        },
+                                        {
+                                            "id": "answer6fd5d6f5-c9b0-4b69-8e62-435e4bc3db48",
+                                            "mandatory": true,
+                                            "type": "TextField",
+                                            "label": "Address and postcode of new unit"
+                                        }
+                                    ]
+                                }
+                            },
+                            "remove_block": {
+                                "id": "remove-block-name-address-and-postcode-of-new-unit",
+                                "type": "ListRemoveQuestion",
+                                "cancel_text": "Don’t need to remove this item?",
+                                "question": {
+                                    "id": "remove-block-question-name-address-and-postcode-of-new-unit",
+                                    "type": "General",
+                                    "title": "Are you sure you want to remove this item?",
+                                    "warning": "All of the information about this item will be deleted",
+                                    "answers": [
+                                        {
+                                            "id": "remove-confirmation-name-address-and-postcode-of-new-unit",
+                                            "mandatory": true,
+                                            "type": "Radio",
+                                            "options": [
+                                                {
+                                                    "label": "Yes",
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
+                                                },
+                                                {
+                                                    "label": "No",
+                                                    "value": "No"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "summary": {
+                                "title": "Summary",
+                                "item_title": {
+                                    "text": "{listcollector_summary_placeholder}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "listcollector_summary_placeholder",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": "&nbsp;",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "answer27f27859-fc11-4577-b9bb-745407356498"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "answer6fd5d6f5-c9b0-4b69-8e62-435e4bc3db48"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "249baadf-4114-4f69-9d67-f7d72c1ce55a",
+            "title": "Comments",
+            "summary": {
+                "show_on_completion": false,
+                "collapsible": false
+            },
+            "show_on_hub": true,
+            "groups": [
+                {
+                    "id": "group249baadf-4114-4f69-9d67-f7d72c1ce55a",
+                    "blocks": [
+                        {
+                            "id": "comments",
+                            "type": "Question",
+                            "question": {
+                                "id": "questioncomments",
+                                "title": "Please provide any further details that will help us understand your figures and to tell an industry story",
+                                "description": [
+                                    "<p>Make sure you continue to the next page and select &#39;submit answers&#39; at the bottom.</p>"
+                                ],
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "<strong>Include:</strong>"
+                                        },
+                                        {
+                                            "list": [
+                                                "comments on figures included in this return, for example, to explain any substantial fluctuations in your figures compared with those of the previous return",
+                                                "any additional information about your business&#39;s local units"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answerbf11b2d4-3f36-4466-8e59-4f8bc3cce4c8",
+                                        "mandatory": false,
+                                        "type": "TextArea",
+                                        "label": "Comments",
+                                        "max_length": 2000
+                                    }
+                                ]
+                            },
+                            "page_title": "Comments"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "theme": "dbt",
+    "navigation": {
+        "visible": false
+    },
+    "metadata": [
+        {
+            "name": "ru_name",
+            "type": "string"
+        },
+        {
+            "name": "trad_as",
+            "type": "string",
+            "optional": true
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ref_p_start_date",
+            "type": "date"
+        },
+        {
+            "name": "ref_p_end_date",
+            "type": "date"
+        },
+        {
+            "name": "ru_ref",
+            "type": "string"
+        },
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "sds_dataset_id",
+            "type": "string"
+        },
+        {
+            "name": "survey_id",
+            "type": "string"
+        }
+    ],
+    "supplementary_data": {
+        "lists": [
+            "local-units"
+        ]
+    },
+    "post_submission": {
+        "feedback": true,
+        "view_response": true,
+        "guidance": {
+            "contents": [
+                {
+                    "description": "<a href=\"https://www.ons.gov.uk/surveys\"target=\"_blank\"rel=\"noopener noreferrer\">Learn more about how we use this data (this link opens in a new tab)</a>"
+                }
+            ]
+        }
+    },
+    "submission": {
+        "button": "Submit",
+        "title": "Check your answers and submit",
+        "warning": "You must submit this survey to complete it",
+        "guidance": "You will have the opportunity to view, save or print a copy of your answers after submitting this survey."
+    }
+}
