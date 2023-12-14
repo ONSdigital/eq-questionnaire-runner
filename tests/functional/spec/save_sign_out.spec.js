@@ -5,7 +5,6 @@ import SubmitPage from "../generated_pages/numbers/submit.page";
 import IntroductionPage from "../generated_pages/introduction/introduction.page";
 import IntroInterstitialPage from "../generated_pages/introduction/general-business-information-completed.page";
 import IntroThankYouPagePage from "../base_pages/thank-you.page";
-import HouseHolderConfirmationPage from "../generated_pages/thank_you_census_household/household-confirmation.page";
 import currencyBlock from "../generated_pages/variants_question/currency-block.page.js";
 import firstNumberBlock from "../generated_pages/variants_question/first-number-block.page.js";
 import secondNumberBlock from "../generated_pages/variants_question/second-number-block.page.js";
@@ -92,14 +91,5 @@ describe("Save sign out / Exit", () => {
     await click(SubmitPage.submit());
 
     await expect(await $(IntroThankYouPagePage.exitButton()).isExisting()).toBe(false);
-  });
-
-  it("Given a Census questionnaire, when I navigate the questionnaire, then I see the correct sign out buttons", async () => {
-    await browser.openQuestionnaire("test_thank_you_census_household.json");
-
-    await expect(await $(HouseHolderConfirmationPage.saveSignOut()).getText()).toBe("Save and complete later");
-    await click(HouseHolderConfirmationPage.submit());
-
-    await expect(await $(SubmitPage.saveSignOut()).getText()).toBe("Save and complete later");
   });
 });

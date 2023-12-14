@@ -21,6 +21,7 @@ services:
             DATASTORE_EMULATOR_HOST: datastore:8432
             EQ_REDIS_HOST: "redis"
             SDS_API_BASE_URL: http://sds:5003
+            CIR_API_BASE_URL: http://cir:5004
         restart: always
         depends_on:
             - datastore
@@ -51,6 +52,14 @@ services:
         restart: always
         ports:
             - "5003:5003"
+
+    cir:
+        image: onsdigital/eq-runner-mock-cir:latest
+        networks:
+            - eq-env
+        restart: always
+        ports:
+            - "5004:5004"
 
 
 networks:
