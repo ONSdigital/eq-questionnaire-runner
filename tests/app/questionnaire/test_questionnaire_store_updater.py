@@ -1156,7 +1156,7 @@ def test_dependent_sections_completed_dependant_blocks_removed_and_status_update
         progress_store=progress_store,
         router=mock_router,
     )
-    dependent_section_key = ("breakdown-section", None)
+    dependent_section_key = SectionKey("breakdown-section", None)
     dependent_block_id = "turnover-breakdown-block"
 
     questionnaire_store_updater.dependent_block_id_by_section_key = {
@@ -1380,7 +1380,7 @@ def test_repeating_dependent_sections_completed_dependant_blocks_removed_and_sta
     )
 
     questionnaire_store_updater.dependent_block_id_by_section_key = {
-        ("breakdown-section", list_item): {"turnover-breakdown-block"}
+        SectionKey("breakdown-section", list_item): {"turnover-breakdown-block"}
         for list_item in list_store["some-list"]
     }
     questionnaire_store_updater.dependent_sections.add(
@@ -1453,7 +1453,7 @@ def test_dependent_sections_added_dependant_block_removed(
         progress_store=progress_store,
         router=mock_router,
     )
-    dependent_section_key = ("breakdown-section", None)
+    dependent_section_key = SectionKey("breakdown-section", None)
     dependent_block_id = "turnover-breakdown-block"
 
     questionnaire_store_updater.dependent_block_id_by_section_key = {

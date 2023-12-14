@@ -7,11 +7,13 @@ from marshmallow import ValidationError
 from mock.mock import patch
 from sdc.crypto.key_store import KeyStore
 
+from app.helpers.metadata_helpers import get_ru_ref_without_check_letter
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.services.supplementary_data import SupplementaryDataRequestFailed
 from app.settings import ACCOUNT_SERVICE_BASE_URL, ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.utilities.json import json_loads
 from tests.app.services.test_request_supplementary_data import TEST_SDS_URL
+from tests.integration.create_token import PAYLOAD_V2_SUPPLEMENTARY_DATA
 from tests.integration.integration_test_case import (
     EQ_SUBMISSION_SDX_PRIVATE_KEY,
     EQ_SUBMISSION_SR_PRIVATE_SIGNING_KEY,
@@ -122,9 +124,9 @@ class TestSession(IntegrationTestCase):
     @patch("app.routes.session.get_supplementary_data_v1")
     @patch("app.routes.session._validate_supplementary_data_lists")
     @patch(
-        "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data"
+        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdaterBase.set_supplementary_data",
     )
-    def test_supplementary_data_is_loaded_when_new_sds_dataset_id_in_metadata(
+    def test_supplementary_data_is_loaded_with_correct_identifier_when_new_sds_dataset_id_in_metadata(
         self,
         mock_set,
         mock_validate,
@@ -136,10 +138,15 @@ class TestSession(IntegrationTestCase):
         mock_set.assert_called_once()
         mock_validate.assert_called_once()
 
+        used_identifier = mock_get.call_args.kwargs["identifier"]
+        ru_ref = PAYLOAD_V2_SUPPLEMENTARY_DATA["survey_metadata"]["data"]["ru_ref"]
+        assert used_identifier == get_ru_ref_without_check_letter(ru_ref)
+        assert used_identifier != ru_ref
+
     @patch("app.routes.session.get_supplementary_data_v1")
     @patch("app.routes.session._validate_supplementary_data_lists")
     @patch(
-        "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data"
+        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdaterBase.set_supplementary_data",
     )
     def test_supplementary_data_is_reloaded_when_changed_sds_dataset_id_in_metadata(
         self,
@@ -161,7 +168,7 @@ class TestSession(IntegrationTestCase):
     @patch("app.routes.session.get_supplementary_data_v1")
     @patch("app.routes.session._validate_supplementary_data_lists")
     @patch(
-        "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data"
+        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdaterBase.set_supplementary_data",
     )
     def test_supplementary_data_is_not_reloaded_when_same_sds_dataset_id_in_metadata(
         self,
@@ -231,7 +238,7 @@ class TestSession(IntegrationTestCase):
 
     @patch("app.routes.session.get_supplementary_data_v1")
     @patch(
-        "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data",
+        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdaterBase.set_supplementary_data",
     )
     def test_supplementary_data_raises_500_error_when_missing_required_lists(
         self, mock_set, mock_get
@@ -245,7 +252,7 @@ class TestSession(IntegrationTestCase):
 
     @patch("app.routes.session.get_supplementary_data_v1")
     @patch(
-        "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data",
+        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdaterBase.set_supplementary_data",
     )
     def test_supplementary_data_is_loaded_when_all_required_lists_present(
         self, mock_set, mock_get
@@ -266,7 +273,7 @@ class TestSession(IntegrationTestCase):
         ],
     )
     @patch(
-        "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data"
+        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdaterBase.set_supplementary_data",
     )
     def test_supplementary_data_raises_500_error_when_survey_becomes_invalid_for_same_dataset(
         self,

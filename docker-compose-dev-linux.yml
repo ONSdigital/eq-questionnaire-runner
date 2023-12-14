@@ -21,6 +21,7 @@ services:
             SURVEY_RUNNER_URL: http://localhost:5000
             SURVEY_RUNNER_SCHEMA_URL: http://host.docker.internal:5000
             SDS_API_BASE_URL: http://host.docker.internal:5003
+            CIR_API_BASE_URL: http://host.docker.internal:5004
         networks:
             - eq-env
         restart: always
@@ -34,6 +35,14 @@ services:
         restart: always
         ports:
             - "5003:5003"
+
+    cir:
+        image: onsdigital/eq-runner-mock-cir:latest
+        networks:
+            - eq-env
+        restart: always
+        ports:
+            - "5004:5004"
 
 networks:
     eq-env:

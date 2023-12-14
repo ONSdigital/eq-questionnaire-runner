@@ -365,7 +365,7 @@ def test_header_context(app: Flask, theme, survey_title, survey_config, expected
                 "itemsList": [
                     {
                         "title": "Help",
-                        "url": f"{ACCOUNT_SERVICE_BASE_URL}/surveys/surveys-help?survey_ref=001&ru_ref=63782964754",
+                        "url": f"{ACCOUNT_SERVICE_BASE_URL}/surveys/surveys-help?survey_ref=001&ru_ref=12345678901",
                         "id": "header-link-help",
                     },
                     {
@@ -402,7 +402,7 @@ def test_service_links_context(
         if is_authenticated:
             mocker.patch(
                 "app.helpers.template_helpers.get_metadata",
-                return_value=get_metadata({"ru_ref": "63782964754U", "tx_id": "tx_id"}),
+                return_value=get_metadata({"ru_ref": "12345678901A", "tx_id": "tx_id"}),
             )
 
         result = ContextHelper(

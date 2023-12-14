@@ -6,7 +6,7 @@ from app.data_models.metadata_proxy import MetadataProxy, SurveyMetadata
 
 METADATA_V1 = {
     "schema_name": "1_0000",
-    "ru_ref": "432423423423",
+    "ru_ref": "12345678901A",
     "response_id": "1",
     "account_service_url": "account_service_url",
     "tx_id": "tx_id",
@@ -26,7 +26,7 @@ METADATA_V2 = {
     "response_expires_at": "2023-04-24T10:46:32+00:00",
     "survey_metadata": {
         "data": {
-            "ru_ref": "432423423423",
+            "ru_ref": "12345678901A",
         },
     },
 }

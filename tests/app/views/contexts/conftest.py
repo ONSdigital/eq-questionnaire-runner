@@ -487,7 +487,7 @@ def questionnaire_store():
         "ref_p_end_date": "2016-03-03",
         "display_address": "68 Abingdon Road, Goathill",
         "trad_as": "ESSENTIAL ENTERPRISE LTD.",
-        "ru_ref": "12346789012A",
+        "ru_ref": "12345678901A",
     }
 
     store.data_stores.response_metadata = {
