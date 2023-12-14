@@ -112,7 +112,7 @@ class BlockHandler:
 
     def handle_post(self) -> None:
         self._set_started_at_metadata()
-        self.questionnaire_store_updater.add_completed_location()
+        self.questionnaire_store_updater.add_completed_location(self._current_location)
         self.questionnaire_store_updater.remove_dependent_blocks_and_capture_dependent_sections()
         self._update_section_completeness()
         self.questionnaire_store_updater.update_progress_for_dependent_sections()
