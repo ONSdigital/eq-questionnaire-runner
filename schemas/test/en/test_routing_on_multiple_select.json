@@ -6,7 +6,7 @@
     "survey_id": "0",
     "title": "Test schema for routing on multiple selected answers",
     "description": "Test schema for routing on multiple selected answers",
-    "theme": "census",
+    "theme": "default",
     "metadata": [
         {
             "name": "user_id",
@@ -14,6 +14,10 @@
         },
         {
             "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
             "type": "string"
         }
     ],
