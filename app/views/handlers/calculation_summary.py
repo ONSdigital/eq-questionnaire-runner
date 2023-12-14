@@ -26,7 +26,7 @@ class _SummaryWithCalculation(Content):
 
     def handle_post(self) -> None:
         # We prematurely set the current as complete, so that dependent sections can be updated accordingly
-        self.questionnaire_store_updater.add_completed_location()
+        self.questionnaire_store_updater.add_completed_location(self.current_location)
         # Then we update dependent sections
         self.questionnaire_store_updater.capture_progress_section_dependencies()
         return super().handle_post()

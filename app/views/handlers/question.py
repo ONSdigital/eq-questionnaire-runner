@@ -201,7 +201,9 @@ class Question(BlockHandler):
         if self.questionnaire_store_updater.is_dirty():
             # We prematurely complete the block, as we need it completed to build the routing path
             # In order to support progress value source references of the previous block
-            self.questionnaire_store_updater.add_completed_location()
+            self.questionnaire_store_updater.add_completed_location(
+                self.current_location
+            )
             self._routing_path = self.router.routing_path(
                 self._current_location.section_key
             )
