@@ -1201,8 +1201,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         For a given rule, update dependency maps to indicate that the section containing the rule
         depends on the answer/block/progress etc. that the rule is referencing.
         """
-        identifier: str | None = rule.get("identifier")
-        source: str | None = rule.get("source")
+        identifier: str = rule["identifier"]
+        source: str = rule["source"]
         selector: str | None = rule.get("selector")
 
         dependent_answer_ids: set[str] = set()
@@ -1215,16 +1215,16 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             self._when_rules_block_dependencies_by_section_for_progress_value_source
         )
 
-        if source == "answers" and identifier:
+        if source == "answers":
             dependent_answer_ids.add(identifier)
-        elif source == "calculated_summary" and identifier:
+        elif source == "calculated_summary":
             calculated_summary_block = self.get_block(identifier)
             # Type Ignore: Calculated summary block will exist at this point
             calculated_summary_answer_ids = get_calculated_summary_answer_ids(
                 calculated_summary_block  # type: ignore
             )
             dependent_answer_ids.update(calculated_summary_answer_ids)
-        elif source == "grand_calculated_summary" and identifier:
+        elif source == "grand_calculated_summary":
             # grand calculated summary section could differ from cs & answer sections, include it in dependent sections
             gcs_section_id: str = self.get_section_id_for_block_id(identifier)  # type: ignore
             if gcs_section_id != current_section_id:
@@ -1232,11 +1232,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             dependent_answer_ids.update(
                 self.get_answer_ids_for_grand_calculated_summary_id(identifier)
             )
-        elif source == "list" and identifier:
+        elif source == "list":
             self._when_rules_section_dependencies_by_list[identifier].add(
                 current_section_id
             )
-        elif source == "progress" and identifier:
+        elif source == "progress":
             if selector == "section" and identifier != current_section_id:
                 progress_section_dependencies[identifier].add(current_section_id)
             elif (
