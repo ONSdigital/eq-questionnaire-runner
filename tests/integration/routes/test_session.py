@@ -122,7 +122,7 @@ class TestSession(IntegrationTestCase):
     @patch("app.routes.session.get_supplementary_data_v1")
     @patch("app.routes.session._validate_supplementary_data_lists")
     @patch(
-        "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data"
+        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdaterBase.set_supplementary_data",
     )
     def test_supplementary_data_is_loaded_when_new_sds_dataset_id_in_metadata(
         self,
@@ -139,7 +139,7 @@ class TestSession(IntegrationTestCase):
     @patch("app.routes.session.get_supplementary_data_v1")
     @patch("app.routes.session._validate_supplementary_data_lists")
     @patch(
-        "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data"
+        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdaterBase.set_supplementary_data",
     )
     def test_supplementary_data_is_reloaded_when_changed_sds_dataset_id_in_metadata(
         self,
@@ -161,7 +161,7 @@ class TestSession(IntegrationTestCase):
     @patch("app.routes.session.get_supplementary_data_v1")
     @patch("app.routes.session._validate_supplementary_data_lists")
     @patch(
-        "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data"
+        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdaterBase.set_supplementary_data",
     )
     def test_supplementary_data_is_not_reloaded_when_same_sds_dataset_id_in_metadata(
         self,
@@ -231,7 +231,7 @@ class TestSession(IntegrationTestCase):
 
     @patch("app.routes.session.get_supplementary_data_v1")
     @patch(
-        "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data",
+        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdaterBase.set_supplementary_data",
     )
     def test_supplementary_data_raises_500_error_when_missing_required_lists(
         self, mock_set, mock_get
@@ -245,7 +245,7 @@ class TestSession(IntegrationTestCase):
 
     @patch("app.routes.session.get_supplementary_data_v1")
     @patch(
-        "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data",
+        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdaterBase.set_supplementary_data",
     )
     def test_supplementary_data_is_loaded_when_all_required_lists_present(
         self, mock_set, mock_get
@@ -266,7 +266,7 @@ class TestSession(IntegrationTestCase):
         ],
     )
     @patch(
-        "app.data_models.questionnaire_store.QuestionnaireStore.set_supplementary_data"
+        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdaterBase.set_supplementary_data",
     )
     def test_supplementary_data_raises_500_error_when_survey_becomes_invalid_for_same_dataset(
         self,
