@@ -75,10 +75,16 @@ export function generateToken(
     languageCode = "en",
     includeLogoutUrl = true,
     displayAddress = "",
+    cirInstrumentId = null,
   },
 ) {
-  const schemaParts = schemaRegEx.exec(schema);
-
+  let schemaParams = {};
+  if (schema) {
+    const schemaParts = schemaRegEx.exec(schema);
+    schemaParams = { schema_name: `${schemaParts[1]}_${schemaParts[2]}` };
+  } else if (cirInstrumentId) {
+    schemaParams = { cir_instrument_id: cirInstrumentId };
+  }
   // Header
   const oHeader = {
     alg: "RS256",
@@ -105,7 +111,7 @@ export function generateToken(
       exp,
       case_id: caseId,
       response_id: responseId,
-      schema_name: `${schemaParts[1]}_${schemaParts[2]}`,
+      ...schemaParams,
       collection_exercise_sid: collectionId,
       region_code: regionCode,
       language_code: languageCode,
@@ -126,7 +132,7 @@ export function generateToken(
       response_id: responseId,
       ru_name: "Apple",
       trad_as: "Apple",
-      schema_name: `${schemaParts[1]}_${schemaParts[2]}`,
+      ...schemaParams,
       collection_exercise_sid: collectionId,
       period_id: periodId,
       period_str: periodStr,
