@@ -32,7 +32,7 @@ import Section6Page from "../../../generated_pages/supplementary_data/section-6-
 import ThankYouPage from "../../../base_pages/thank-you.page";
 import TradingPage from "../../../generated_pages/supplementary_data/trading.page.js";
 import ViewSubmittedResponsePage from "../../../generated_pages/supplementary_data/view-submitted-response.page.js";
-
+// TEMPORARY COMMENT
 describe("Using supplementary data", () => {
   const responseId = getRandomString(16);
   const summaryItems = ".ons-summary__item--text";
