@@ -54,7 +54,7 @@ def get_rule_evaluator(
 ):
     if not schema:
         schema = get_mock_schema()
-        schema.is_repeating_answer = Mock(return_value=True)
+        schema.get_list_name_for_answer_id = Mock(return_value="mock-list")
         schema.get_default_answer = Mock(return_value=None)
         schema.is_answer_dynamic = Mock(return_value=False)
         schema.is_answer_in_list_collector_repeating_block = Mock(return_value=False)
@@ -793,7 +793,7 @@ def test_date_value(rule, expected_result):
 def test_answer_source_outside_of_repeating_section():
     schema = get_mock_schema()
 
-    schema.is_repeating_answer = Mock(return_value=False)
+    schema.get_list_name_for_answer_id = Mock(return_value=None)
     answer_store = AnswerStore([{"answer_id": "some-answer", "value": "Yes"}])
 
     rule_evaluator = get_rule_evaluator(
@@ -857,7 +857,7 @@ def test_answer_source_not_on_path_non_repeating_section(is_answer_on_path):
 @pytest.mark.parametrize("is_answer_on_path", [True, False])
 def test_answer_source_not_on_path_repeating_section(is_answer_on_path):
     schema = get_mock_schema()
-    schema.is_repeating_answer = Mock(return_value=True)
+    schema.get_list_name_for_answer_id = Mock(return_value="mock-list")
     location = Location(
         section_id="test-section", block_id="test-block", list_item_id="item-1"
     )
@@ -1098,7 +1098,7 @@ def test_supplementary_data_source(
 ):
     """Tests rule evaluation of repeating and non-repeating supplementary data source inside a repeat"""
     schema = get_mock_schema()
-    schema.is_repeating_answer = Mock(return_value=False)
+    schema.get_list_name_for_answer_id = Mock(return_value=None)
     answer_store = AnswerStore([{"answer_id": "same-answer", "value": value}])
 
     rule_evaluator = get_rule_evaluator(
