@@ -146,8 +146,8 @@ def test_get_referenced_offset_value_for_answer_id(
 
 
 @patch(
-    "app.questionnaire.questionnaire_schema.QuestionnaireSchema.is_repeating_answer",
-    return_value=True,
+    "app.questionnaire.questionnaire_schema.QuestionnaireSchema.get_list_name_for_answer_id",
+    return_value="list",
 )
 def test_get_referenced_offset_value_with_list_item_id(
     app, value_source_resolver, rule_evaluator
