@@ -18,7 +18,7 @@ export const config = {
   //
   specs: ["./spec/**/*supplementary_data*.js"],
   suites: {
-    features: ["./spec/features/**/*.js"],
+    features: ["./spec/features/**/*supplementary_data*.js"],
   },
   // Patterns to exclude.
   exclude: [
