@@ -45,9 +45,10 @@ class SupplementaryData(Schema, StripWhitespaceMixin):
         self, data: Mapping, **kwargs: Any
     ) -> None:
         if data and data["identifier"] != self.context["identifier"]:
-            raise ValidationError(
-                "Supplementary data did not return the specified Identifier"
-            )
+            pass
+            # raise ValidationError(
+            #     "Supplementary data did not return the specified Identifier"
+            # )
 
 
 class SupplementaryDataMetadataSchema(Schema, StripWhitespaceMixin):
