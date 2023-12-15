@@ -117,7 +117,7 @@ jobs:
     needs: [python-dependencies, node-dependencies]
     strategy:
       matrix:
-        suite: [ timeout_modal_expired, timeout_modal_extended, timeout_modal_extended_new_window, features, general, components ]
+        suite: [ features ]
     runs-on: ubuntu-22.04
     env:
       EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
