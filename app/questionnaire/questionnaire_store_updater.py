@@ -1,35 +1,41 @@
 from collections import defaultdict
 from itertools import combinations
-from typing import Iterable, Mapping
+from typing import Iterable, Mapping, MutableMapping, Sequence
 
 from ordered_set import OrderedSet
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import AnswerValueTypes, CompletionStatus, QuestionnaireStore
+from app.data_models import (
+    AnswerValueTypes,
+    CompletionStatus,
+    QuestionnaireStore,
+    SupplementaryDataStore,
+)
 from app.data_models.answer_store import Answer
 from app.data_models.relationship_store import RelationshipDict, RelationshipStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.questionnaire_schema import Dependent
 from app.questionnaire.router import Router
-from app.utilities.types import DependentSection, LocationType
+from app.utilities.types import (
+    DependentSection,
+    LocationType,
+    SupplementaryDataListMapping,
+)
 
 
-class QuestionnaireStoreUpdater:
-    """Component responsible for any actions that need to happen as a result of updating the questionnaire_store"""
+class QuestionnaireStoreUpdaterBase:
+    """Component responsible for any actions that need to happen as a result of updating the questionnaire_store
+    his should only be used over the QuestionnaireStoreUpdater if location is unknown"""
 
     EMPTY_ANSWER_VALUES: tuple[None, list, str, dict] = (None, [], "", {})
 
     def __init__(
         self,
-        current_location: LocationType,
         schema: QuestionnaireSchema,
         questionnaire_store: QuestionnaireStore,
         router: Router,
-        current_question: Mapping | None,
     ):
-        self._current_location = current_location
-        self._current_question = current_question or {}
         self._schema = schema
         self._questionnaire_store = questionnaire_store
         self._answer_store = self._questionnaire_store.data_stores.answer_store
@@ -41,6 +47,14 @@ class QuestionnaireStoreUpdater:
             SectionKey, set[str]
         ] = defaultdict(set)
         self.dependent_sections: set[DependentSection] = set()
+
+    @property
+    def _supplementary_data_store(self) -> SupplementaryDataStore:
+        return self._questionnaire_store.data_stores.supplementary_data_store
+
+    @_supplementary_data_store.setter
+    def _supplementary_data_store(self, store: SupplementaryDataStore) -> None:
+        self._questionnaire_store.data_stores.supplementary_data_store = store
 
     def save(self) -> None:
         if self.is_dirty():
@@ -122,29 +136,10 @@ class QuestionnaireStoreUpdater:
         for answer_id in answer_ids:
             self._answer_store.remove_answer(answer_id, list_item_id=list_item_id)
 
-    def add_primary_person(self, list_name: str) -> str:
-        self.remove_completed_relationship_locations_for_list_name(list_name)
-
-        if primary_person := self._list_store[list_name].primary_person:
-            return primary_person
-
-        # If a primary person was initially answered negatively, then changed to positive,
-        # the location must be removed from the progress store.
-        self.remove_completed_location(self._current_location)
-
-        return self._list_store.add_list_item(list_name, primary_person=True)
-
     def add_list_item(self, list_name: str) -> str:
         new_list_item_id = self._list_store.add_list_item(list_name)
         self.remove_completed_relationship_locations_for_list_name(list_name)
         return new_list_item_id
-
-    def remove_primary_person(self, list_name: str) -> None:
-        """Remove the primary person and all of their answers.
-        Any context for the primary person will be removed
-        """
-        if list_item_id := self._list_store[list_name].primary_person:
-            self.remove_list_item_data(list_name, list_item_id)
 
     def remove_list_item_data(self, list_name: str, list_item_id: str) -> None:
         """Remove answers from the answer store, remove list item progress from the progress store and update the list store to remove it.
@@ -160,6 +155,13 @@ class QuestionnaireStoreUpdater:
 
         self._progress_store.remove_progress_for_list_item_id(list_item_id=list_item_id)
 
+    def remove_list_data(self, list_name: str) -> None:
+        """Delete entire list and remove any associated answers"""
+        self._answer_store.remove_all_answers_for_list_item_ids(
+            *self._list_store[list_name].items
+        )
+        self._list_store.delete_list(list_name)
+
     def capture_dependencies_for_list_change(self, list_name: str) -> None:
         """
         Captures the dependencies when an item is added to or removed from the given list.
@@ -170,7 +172,7 @@ class QuestionnaireStoreUpdater:
             list_name
         )
         section_ids.update(
-            self._schema.list_collector_section_ids_by_list_name[list_name]
+            self._schema.list_collector_section_ids_by_list_name.get(list_name, set())
         )
 
         for section_key in self.started_section_keys(section_ids=section_ids):
@@ -221,7 +223,7 @@ class QuestionnaireStoreUpdater:
             else:
                 people_names[current_list_item_name] = current_list_item_id
 
-        list_model.same_name_items = list(same_name_items)  # type: ignore
+        list_model.same_name_items = list(same_name_items)
 
     def _remove_relationship_answers_for_list_item_id(
         self, list_item_id: str, answers: list
@@ -235,13 +237,11 @@ class QuestionnaireStoreUpdater:
             answer.value = answers_to_keep
             self._answer_store.add_or_update(answer)
 
-    def add_completed_location(self, location: LocationType | None = None) -> None:
+    def add_completed_location(self, location: LocationType) -> None:
         if not self._progress_store.is_routing_backwards:
-            location = location or self._current_location
             self._progress_store.add_completed_location(location)
 
-    def remove_completed_location(self, location: LocationType | None = None) -> bool:
-        location = location or self._current_location
+    def remove_completed_location(self, location: LocationType) -> bool:
         return self._progress_store.remove_completed_location(location)
 
     def update_section_status(
@@ -286,53 +286,36 @@ class QuestionnaireStoreUpdater:
         dependencies: set[Dependent] = self._schema.list_dependencies.get(
             list_name, set()
         )
-        self._capture_block_dependencies(dependencies)
+        for dependent in dependencies:
+            list_item_ids = self._get_list_item_ids_for_list_dependency(dependent)
+            self._capture_block_dependent(dependent, list_item_ids)
 
-    def _capture_block_dependencies_for_answer(self, answer_id: str) -> None:
-        """Captures a unique list of block ids that are dependents of the provided answer id."""
-        dependencies: set[Dependent] = self._schema.answer_dependencies.get(
-            answer_id, set()
-        )
-        is_repeating_answer = self._schema.is_answer_in_repeating_section(answer_id)
-        self._capture_block_dependencies(dependencies, is_repeating_answer)
+    def _get_list_item_ids_for_list_dependency(
+        self, dependency: Dependent
+    ) -> list[str] | list[None]:
+        if dependency.for_list:
+            return self._list_store[dependency.for_list].items
+        return [None]
 
-    def _capture_block_dependencies(
-        self, dependencies: set[Dependent], is_repeating_answer: bool | None = None
+    def _capture_block_dependent(
+        self, dependent: Dependent, list_item_ids: Sequence[str] | Sequence[None]
     ) -> None:
         """
-        The block_ids are mapped to the section key. Dependencies in a repeating section use the list items
-        for the repeating list when creating the section key.
+        The block_id is mapped to the section key. Dependents in a repeating section should be passed in with the list items
+        for the repeating list for creating the section key.
 
         Blocks are captured regardless of whether they are complete. This avoids fetching the completed blocks
         multiples times, as you may have multiple dependencies for one block which may also apply to each item in the list.
         However, when updating the progress store, the block ids are checked to ensure they exist in the progress store.
         """
-        for dependency in dependencies:
-            for list_item_id in self._get_list_item_ids_for_dependency(
-                dependency, is_repeating_answer
-            ):
-                if dependency.answer_id:
-                    self._answer_store.remove_answer(
-                        dependency.answer_id, list_item_id=list_item_id
-                    )
-                self.dependent_block_id_by_section_key[
-                    SectionKey(dependency.section_id, list_item_id)
-                ].add(dependency.block_id)
-
-    def _get_list_item_ids_for_dependency(
-        self, dependency: Dependent, is_repeating_answer: bool | None = False
-    ) -> list[str] | list[None]:
-        """
-        Gets the list item ids that relate to the dependency. If the dependency is repeating, and the dependent is also repeating
-        then we must be in that repeating section, so the only relevant list item id is the current one.
-        If the dependent is not repeating, but the dependency is, then all list item ids need including.
-        """
-        if dependency.for_list:
-            if is_repeating_answer:
-                # Type ignore: in this scenario the list item id must exist
-                return [self._current_location.list_item_id]  # type: ignore
-            return self._list_store[dependency.for_list].items
-        return [None]
+        for list_item_id in list_item_ids:
+            if dependent.answer_id:
+                self._answer_store.remove_answer(
+                    dependent.answer_id, list_item_id=list_item_id
+                )
+            self.dependent_block_id_by_section_key[
+                SectionKey(dependent.section_id, list_item_id)
+            ].add(dependent.block_id)
 
     def _capture_section_dependencies_for_answer(self, answer_id: str) -> None:
         """Captures a unique list of section ids that are dependents of the provided answer id."""
@@ -388,42 +371,6 @@ class QuestionnaireStoreUpdater:
                     )
             else:
                 self.dependent_sections.add(DependentSection(section_id))
-
-    def update_answers(
-        self, form_data: Mapping, list_item_id: str | None = None
-    ) -> None:
-        list_item_id = list_item_id or self._current_location.list_item_id
-        answers_by_answer_id = self._schema.get_answers_for_question_by_id(
-            self._current_question
-        )
-
-        for answer_id, answer_value in form_data.items():
-            if answer_id not in answers_by_answer_id:
-                continue
-
-            resolved_answer = answers_by_answer_id[answer_id]
-            answer_id_to_use = resolved_answer.get("original_answer_id") or answer_id
-            list_item_id_to_use = resolved_answer.get("list_item_id") or list_item_id
-
-            if self._update_answer(answer_id_to_use, list_item_id_to_use, answer_value):
-                self._capture_section_dependencies_for_answer(answer_id_to_use)
-                self._capture_block_dependencies_for_answer(answer_id_to_use)
-
-        if self._answer_store.is_dirty:
-            self.capture_progress_section_dependencies()
-
-    def capture_progress_section_dependencies(self) -> None:
-        """
-        Captures a unique list of section ids that are dependents of the current section or block, for progress value sources.
-        """
-        self._capture_section_dependencies_progress_value_source_for_section(
-            self._current_location.section_id
-        )
-        # Type ignore: block id will exist when at any time this is called
-        self._capture_section_dependencies_progress_value_source_for_block(
-            section_id=self._current_location.section_id,
-            block_id=self._current_location.block_id,  # type: ignore
-        )
 
     def update_progress_for_dependent_sections(self) -> None:
         """Removes dependent blocks from the progress store and updates the progress to IN_PROGRESS.
@@ -526,19 +473,21 @@ class QuestionnaireStoreUpdater:
                 )
                 blocks_removed |= self.remove_completed_location(location)
 
-            if blocks_removed and (
-                section_id != self._current_location.section_id
-                or list_item_id != self._current_location.list_item_id
-            ):
-                # Since this section key will be marked as incomplete, any `DependentSection` with is_complete as `None`
-                # can be removed as we do not need to re-evaluate progress as we already know the section would be incomplete.
-                dependent = DependentSection(section_id, list_item_id)
-                if dependent in self.dependent_sections:
-                    self.dependent_sections.remove(dependent)
+            if blocks_removed:
+                self._capture_dependent_section(section_key)
 
-                self.dependent_sections.add(
-                    DependentSection(section_id, list_item_id, is_complete=False)
-                )
+    def _capture_dependent_section(self, section_key: SectionKey) -> None:
+        """
+        Since this section key will be marked as incomplete, any `DependentSection` with is_complete as `None`
+        can be removed as we do not need to re-evaluate progress as we already know the section would be incomplete.
+        """
+        dependent = DependentSection(**section_key.to_dict())
+        if dependent in self.dependent_sections:
+            self.dependent_sections.remove(dependent)
+
+        self.dependent_sections.add(
+            DependentSection(**section_key.to_dict(), is_complete=False)
+        )
 
     def started_section_keys(
         self, section_ids: Iterable[str] | None = None
@@ -550,3 +499,193 @@ class QuestionnaireStoreUpdater:
         return sorted(
             self.dependent_sections, key=lambda x: sections.index(x.section_id)
         )
+
+    def set_supplementary_data(self, to_set: MutableMapping) -> None:
+        """
+        Used to set or update the supplementary data whenever the sds endpoint is called
+        (Which should be once per session, but only if the sds_dataset_id has changed)
+
+        this updates ListStore to add/update any lists for supplementary data and stores the
+        identifier -> list_item_id mappings in the supplementary data store to use in the payload at the end
+        """
+        list_mappings: dict[str, list[SupplementaryDataListMapping]] = {}
+        modified_lists: set[str] = set()
+
+        if self._supplementary_data_store.list_mappings:
+            modified_lists |= self._remove_outdated_supplementary_lists_and_answers(
+                new_data=to_set
+            )
+
+        for list_name, list_data in to_set.get("items", {}).items():
+            mappings, lists = self._create_supplementary_list(
+                list_name=list_name, list_data=list_data
+            )
+            list_mappings[list_name] = mappings
+            modified_lists |= lists
+
+        for list_name in modified_lists:
+            self.capture_dependencies_for_list_change(list_name)
+
+        self._supplementary_data_store = SupplementaryDataStore(
+            supplementary_data=to_set, list_mappings=list_mappings
+        )
+
+    def _create_supplementary_list(
+        self, *, list_name: str, list_data: Sequence[dict]
+    ) -> tuple[list[SupplementaryDataListMapping], set[str]]:
+        """
+        Creates or updates a list in ListStore based off supplementary data
+        returns the identifier -> list_item_id mappings used and the lists that were modified in the process
+        """
+        list_mappings: list[SupplementaryDataListMapping] = []
+        modified_lists: set[str] = set()
+        for list_item in list_data:
+            identifier = list_item["identifier"]
+            # if any pre-existing supplementary data already has a mapping for this list item
+            # then its already in the list store and doesn't require adding
+            if not (
+                list_item_id := self._supplementary_data_store.list_lookup.get(
+                    list_name, {}
+                ).get(identifier)
+            ):
+                list_item_id = self.add_list_item(list_name)
+                modified_lists.add(list_name)
+            list_mappings.append(
+                SupplementaryDataListMapping(
+                    identifier=identifier, list_item_id=list_item_id
+                )
+            )
+        return list_mappings, modified_lists
+
+    def _remove_outdated_supplementary_lists_and_answers(
+        self, new_data: MutableMapping
+    ) -> set[str]:
+        """
+        In the case that existing supplementary data is being replaced with new data: any list items in the old data
+        but not the new data are removed from the list store and related answers are deleted
+        :param new_data - the new supplementary data for comparison
+        :return: any lists that were modified by the change in supplementary data
+        """
+        modified_lists: set[str] = set()
+        for (
+            list_name,
+            mappings,
+        ) in self._supplementary_data_store.list_lookup.items():
+            if list_name in new_data.get("items", {}):
+                new_identifiers = [
+                    item["identifier"] for item in new_data["items"][list_name]
+                ]
+                for identifier, list_item_id in mappings.items():
+                    if identifier not in new_identifiers:
+                        modified_lists.add(list_name)
+                        self.remove_list_item_data(list_name, list_item_id)
+            else:
+                self.remove_list_data(list_name)
+        return modified_lists
+
+
+class QuestionnaireStoreUpdater(QuestionnaireStoreUpdaterBase):
+    """Component responsible for any actions that need to happen as a result of updating the questionnaire_store"""
+
+    def __init__(
+        self,
+        current_location: LocationType,
+        schema: QuestionnaireSchema,
+        questionnaire_store: QuestionnaireStore,
+        router: Router,
+        current_question: Mapping | None,
+    ):
+        self._current_location = current_location
+        self._current_question = current_question or {}
+        super().__init__(
+            schema=schema, questionnaire_store=questionnaire_store, router=router
+        )
+
+    def add_primary_person(self, list_name: str) -> str:
+        self.remove_completed_relationship_locations_for_list_name(list_name)
+
+        if primary_person := self._list_store[list_name].primary_person:
+            return primary_person
+
+        # If a primary person was initially answered negatively, then changed to positive,
+        # the location must be removed from the progress store.
+        self.remove_completed_location(self._current_location)
+
+        return self._list_store.add_list_item(list_name, primary_person=True)
+
+    def remove_primary_person(self, list_name: str) -> None:
+        """Remove the primary person and all of their answers.
+        Any context for the primary person will be removed
+        """
+        if list_item_id := self._list_store[list_name].primary_person:
+            self.remove_list_item_data(list_name, list_item_id)
+
+    def _capture_block_dependencies_for_answer(self, answer_id: str) -> None:
+        """Captures a unique list of block ids that are dependents of the provided answer id."""
+        dependencies: set[Dependent] = self._schema.answer_dependencies.get(
+            answer_id, set()
+        )
+        is_repeating_answer = self._schema.is_answer_in_repeating_section(answer_id)
+
+        for dependent in dependencies:
+            list_item_ids = self._get_list_item_ids_for_answer_dependency(
+                dependent, is_repeating_answer
+            )
+            self._capture_block_dependent(dependent, list_item_ids)
+
+    def _get_list_item_ids_for_answer_dependency(
+        self, dependency: Dependent, is_repeating_answer: bool | None = False
+    ) -> list[str] | list[None]:
+        """
+        Gets the list item ids that relate to the dependency of the answer.
+        If the dependency is repeating, and so is the answer, then we must be in that repeating section,
+        so the only relevant list item id is the current one.
+        If the answer is not repeating, but the dependency is, then all list item ids need including.
+        """
+        if dependency.for_list:
+            if is_repeating_answer:
+                # Type ignore: in this scenario the list item id must exist
+                return [self._current_location.list_item_id]  # type: ignore
+            return self._list_store[dependency.for_list].items
+        return [None]
+
+    def update_answers(
+        self, form_data: Mapping, list_item_id: str | None = None
+    ) -> None:
+        list_item_id = list_item_id or self._current_location.list_item_id
+        answers_by_answer_id = self._schema.get_answers_for_question_by_id(
+            self._current_question
+        )
+
+        for answer_id, answer_value in form_data.items():
+            if answer_id not in answers_by_answer_id:
+                continue
+
+            resolved_answer = answers_by_answer_id[answer_id]
+            answer_id_to_use = resolved_answer.get("original_answer_id") or answer_id
+            list_item_id_to_use = resolved_answer.get("list_item_id") or list_item_id
+
+            if self._update_answer(answer_id_to_use, list_item_id_to_use, answer_value):
+                self._capture_section_dependencies_for_answer(answer_id_to_use)
+                self._capture_block_dependencies_for_answer(answer_id_to_use)
+
+        if self._answer_store.is_dirty:
+            self.capture_progress_section_dependencies()
+
+    def capture_progress_section_dependencies(self) -> None:
+        """
+        Captures a unique list of section ids that are dependents of the current section or block, for progress value sources.
+        """
+        self._capture_section_dependencies_progress_value_source_for_section(
+            self._current_location.section_id
+        )
+        # Type ignore: block id will exist when at any time this is called
+        self._capture_section_dependencies_progress_value_source_for_block(
+            section_id=self._current_location.section_id,
+            block_id=self._current_location.block_id,  # type: ignore
+        )
+
+    def _capture_dependent_section(self, section_key: SectionKey) -> None:
+        """Only capture the dependent section if it is not the current one"""
+        if section_key != self._current_location.section_key:
+            super()._capture_dependent_section(section_key)

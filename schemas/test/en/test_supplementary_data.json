@@ -1054,6 +1054,88 @@
                                     }
                                 ]
                             }
+                        },
+                        {
+                            "id": "conditional-employee-block",
+                            "type": "Question",
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "employees"
+                                                }
+                                            ]
+                                        },
+                                        3
+                                    ]
+                                }
+                            },
+                            "question": {
+                                "id": "conditional-employee-question",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "This block is enabled because there are 3 employees in the supplementary dataset"
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "title": {
+                                    "text": "Has {employee_name} been promoted since starting at {company_name}?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "company_name",
+                                            "value": {
+                                                "source": "supplementary_data",
+                                                "identifier": "company_name"
+                                            }
+                                        },
+                                        {
+                                            "placeholder": "employee_name",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "supplementary_data",
+                                                                "identifier": "employees",
+                                                                "selectors": ["personal_details", "forename"]
+                                                            },
+                                                            {
+                                                                "source": "supplementary_data",
+                                                                "identifier": "employees",
+                                                                "selectors": ["personal_details", "surname"]
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "promoted-yes-no-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
                         }
                     ]
                 }
@@ -1189,6 +1271,86 @@
                                                 "identifier": "incorporation_date"
                                             }
                                         }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "conditional-additional-employee-block",
+                            "type": "Question",
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "additional-employees"
+                                                }
+                                            ]
+                                        },
+                                        3
+                                    ]
+                                }
+                            },
+                            "question": {
+                                "id": "conditional-additional-employee-question",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "This block is enabled because there are 3 additional employees"
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "title": {
+                                    "text": "Has {employee_name} been promoted since starting at {company_name}?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "company_name",
+                                            "value": {
+                                                "source": "supplementary_data",
+                                                "identifier": "company_name"
+                                            }
+                                        },
+                                        {
+                                            "placeholder": "employee_name",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "employee-first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "employee-last-name"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "additional-promoted-yes-no-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
                                     }
                                 ]
                             }
@@ -1539,6 +1701,204 @@
                                         }
                                     ]
                                 }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-7",
+            "title": "Sales targets",
+            "groups": [
+                {
+                    "id": "value-sales-group",
+                    "blocks": [
+                        {
+                            "id": "product-sales-interstitial",
+                            "type": "Interstitial",
+                            "content": {
+                                "title": "Product value sales",
+                                "contents": [
+                                    {
+                                        "guidance": {
+                                            "contents": [
+                                                {
+                                                    "description": "The next block only shows when there are 2 products in the supplementary dataset."
+                                                },
+                                                {
+                                                    "description": "This is to test that section progress updates when swapping between supplementary datasets which remove or add list items"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "product-question-2-enabled",
+                            "type": "Question",
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "products"
+                                                }
+                                            ]
+                                        },
+                                        2
+                                    ]
+                                }
+                            },
+                            "question": {
+                                "id": "product-2-question",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "This block is enabled because there are 2 products in the supplementary dataset"
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "title": {
+                                    "text": "Did the total value sales of {value_sales} over the last quarter meet the target?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "value_sales",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_currency",
+                                                    "arguments": {
+                                                        "number": {
+                                                            "source": "calculated_summary",
+                                                            "identifier": "calculated-summary-value-sales"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "value-yes-no-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-8",
+            "title": "Production targets",
+            "groups": [
+                {
+                    "id": "volume-produced-group",
+                    "blocks": [
+                        {
+                            "id": "product-volume-interstitial",
+                            "type": "Interstitial",
+                            "content": {
+                                "title": "Product volume produced",
+                                "contents": [
+                                    {
+                                        "guidance": {
+                                            "contents": [
+                                                {
+                                                    "description": "The next block only shows when there are 3 products in the supplementary dataset."
+                                                },
+                                                {
+                                                    "description": "This is to test that section progress updates when swapping between supplementary datasets which remove or add list items"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "product-question-3-enabled",
+                            "type": "Question",
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "products"
+                                                }
+                                            ]
+                                        },
+                                        3
+                                    ]
+                                }
+                            },
+                            "question": {
+                                "id": "product-3-question",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "This block is enabled because there are 3 products in the supplementary dataset"
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "title": {
+                                    "text": "Did the total volume produced of {volume_produced} over the last quarter meet the target?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "volume_produced",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_unit",
+                                                    "arguments": {
+                                                        "value": {
+                                                            "source": "calculated_summary",
+                                                            "identifier": "calculated-summary-volume-total"
+                                                        },
+                                                        "unit": "mass-kilogram",
+                                                        "unit_length": "short"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "volume-yes-no-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
                             }
                         }
                     ]

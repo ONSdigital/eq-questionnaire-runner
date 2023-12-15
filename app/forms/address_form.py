@@ -24,8 +24,6 @@ def get_address_form(
 
         @cached_property
         def data(self) -> dict[str, Any]:
-            # pylint: disable=no-member
-            # wtforms Form parents are not discoverable in the 2.3.3 implementation
             data_: dict[str, Any] = super().data
             return data_
 

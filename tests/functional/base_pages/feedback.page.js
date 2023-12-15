@@ -9,10 +9,6 @@ class FeedbackPage extends FeedbackBasePage {
     return "#feedback-type";
   }
 
-  feedbackTypeCensusQuestions() {
-    return "#feedback-type-0";
-  }
-
   feedbackTypePageDesignAndStructure() {
     return "#feedback-type-1";
   }

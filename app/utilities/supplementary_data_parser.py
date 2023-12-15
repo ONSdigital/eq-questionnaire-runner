@@ -41,7 +41,7 @@ class SupplementaryData(Schema, StripWhitespaceMixin):
     items = fields.Nested(ItemsData, required=False, unknown=INCLUDE)
 
     @validates_schema()
-    def validate_identifier(  # pylint: disable=no-self-use, unused-argument
+    def validate_identifier(  # pylint: disable=unused-argument
         self, data: Mapping, **kwargs: Any
     ) -> None:
         if data and data["identifier"] != self.context["identifier"]:
@@ -61,7 +61,7 @@ class SupplementaryDataMetadataSchema(Schema, StripWhitespaceMixin):
     )
 
     @validates_schema()
-    def validate_dataset_and_survey_id(  # pylint: disable=no-self-use, unused-argument
+    def validate_dataset_and_survey_id(  # pylint: disable=unused-argument
         self, data: Mapping, **kwargs: Any
     ) -> None:
         if data:

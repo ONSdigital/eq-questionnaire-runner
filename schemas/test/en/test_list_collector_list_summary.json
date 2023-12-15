@@ -45,10 +45,10 @@
                         "type": "List",
                         "for_list": "people",
                         "title": {
-                            "text": "Household members staying overnight on {census_date} at {household_address}",
+                            "text": "Household members staying overnight on {date} at {household_address}",
                             "placeholders": [
                                 {
-                                    "placeholder": "census_date",
+                                    "placeholder": "date",
                                     "transforms": [
                                         {
                                             "arguments": {
@@ -77,10 +77,10 @@
                         "type": "List",
                         "for_list": "visitors",
                         "title": {
-                            "text": "Visitors staying overnight on {census_date} at {household_address}",
+                            "text": "Visitors staying overnight on {date} at {household_address}",
                             "placeholders": [
                                 {
-                                    "placeholder": "census_date",
+                                    "placeholder": "date",
                                     "transforms": [
                                         {
                                             "arguments": {
@@ -297,10 +297,10 @@
                             },
                             "summary": {
                                 "title": {
-                                    "text": "Household members staying overnight on {census_date} at {household_address}",
+                                    "text": "Household members staying overnight on {date} at {household_address}",
                                     "placeholders": [
                                         {
-                                            "placeholder": "census_date",
+                                            "placeholder": "date",
                                             "transforms": [
                                                 {
                                                     "arguments": {
@@ -467,10 +467,10 @@
                             },
                             "summary": {
                                 "title": {
-                                    "text": "Visitors staying overnight on {census_date} at {household_address}",
+                                    "text": "Visitors staying overnight on {date} at {household_address}",
                                     "placeholders": [
                                         {
-                                            "placeholder": "census_date",
+                                            "placeholder": "date",
                                             "transforms": [
                                                 {
                                                     "arguments": {

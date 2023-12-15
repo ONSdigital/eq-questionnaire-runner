@@ -7,8 +7,6 @@ from app.forms.questionnaire_form import ErrorList, map_subfield_errors
 from app.forms.validators import EmailTLDCheck
 
 
-# pylint: disable=no-member
-# wtforms Form parents are not discoverable in the 2.3.3 implementation
 class EmailForm(FlaskForm):
     email = StringField(
         validators=[

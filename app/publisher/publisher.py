@@ -24,7 +24,6 @@ class PubSubPublisher(Publisher):
 
     def _publish(self, topic_id, message) -> "publisher.futures.Future":
         logger.info("publishing message", topic_id=topic_id)
-        # pylint: disable=no-member
         topic_path = self._client.topic_path(self._project_id, topic_id)
         response: Future = self._client.publish(topic_path, message)
         return response
@@ -40,7 +39,7 @@ class PubSubPublisher(Publisher):
                 message_id=message_id,
                 fulfilment_request_transaction_id=fulfilment_request_transaction_id,
             )
-        except Exception as exc:  # pylint:disable=broad-except
+        except Exception as exc:
             logger.exception(
                 "message publication failed",
                 topic_id=topic_id,
