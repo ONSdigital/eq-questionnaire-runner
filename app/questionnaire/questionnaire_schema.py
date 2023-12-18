@@ -1183,11 +1183,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _populate_when_rules_section_dependencies(self) -> None:
         """
-        Populates section dependencies for when rules, including when rules containing
-        progress value sources.
-        Progress section dependencies by section are directly populated in this method.
-        Progress section dependencies by block are populated in the
-        `self._populate_block_dependencies_for_progress_value_source` called here.
+        Populates section dependencies for when rules, including when rules containing progress value sources.
 
         Question variants and content variants don't need including, since the answer ids, block ids, and question ids
         remain the same, so a change in the variant, does not impact questionnaire progress.
