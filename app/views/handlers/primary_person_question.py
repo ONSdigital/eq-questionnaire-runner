@@ -45,8 +45,6 @@ class PrimaryPersonQuestion(Question):
 
     def handle_post(self) -> None:
         same_name_answer_ids = self.parent_block.get("same_name_answer_ids")
-        # pylint: disable=no-member
-        # wtforms Form parents are not discoverable in the 2.3.3 implementation
         self.questionnaire_store_updater.update_answers(self.form.data)
         self.questionnaire_store_updater.update_same_name_items(
             self.parent_block["for_list"], same_name_answer_ids

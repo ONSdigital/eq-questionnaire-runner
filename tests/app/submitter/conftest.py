@@ -1,4 +1,3 @@
-# pylint: disable=redefined-outer-name
 import uuid
 
 import pytest
@@ -29,7 +28,7 @@ METADATA_V1 = MetadataProxy.from_dict(
         "period_str": "2016-01-01",
         "ref_p_start_date": "2016-02-02",
         "ref_p_end_date": "2016-03-03",
-        "ru_ref": "432423423423",
+        "ru_ref": "12345678901A",
         "response_id": "1234567890123456",
         "ru_name": "Apple",
         "return_by": "2016-07-07",
@@ -57,7 +56,7 @@ RAW_METADATA_V2 = {
             "period_str": "2016-01-01",
             "ref_p_start_date": "2016-02-02",
             "ref_p_end_date": "2016-03-03",
-            "ru_ref": "432423423423",
+            "ru_ref": "12345678901A",
             "ru_name": "Apple",
             "case_type": "SPG",
             "form_type": "I",

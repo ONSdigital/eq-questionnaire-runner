@@ -1,4 +1,3 @@
-# pylint: disable=redefined-outer-name
 import uuid
 from datetime import datetime, timedelta, timezone
 
@@ -106,7 +105,7 @@ def fake_metadata_full_v2_business():
         "ru_name": "Apple",
         "return_by": "2016-07-07",
         "case_ref": "1000000000000001",
-        "ru_ref": "123456789",
+        "ru_ref": "12345678901A",
         "form_type": "I",
         "response_expires_at": get_response_expires_at(),
     }

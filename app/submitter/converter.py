@@ -45,7 +45,7 @@ def convert_answers(
         'channel': 'RH',
         'metadata': {
           'user_id': '789473423',
-          'ru_ref': '432423423423'
+          'ru_ref': '12345678901A'
         },
         'data': [
             ...

@@ -149,7 +149,7 @@ def get_format_date(value: Markup) -> str:
     return f"<span class='date'>{date}</span>"
 
 
-@pass_eval_context  # type: ignore
+@pass_eval_context
 @blueprint.app_template_filter()
 def format_datetime(
     context: nodes.EvalContext, date_time: datetime
@@ -197,13 +197,13 @@ def get_currency_symbol_processor() -> dict[str, Callable]:
     return {"get_currency_symbol": get_currency_symbol}
 
 
-@blueprint.app_template_filter()  # type: ignore
+@blueprint.app_template_filter()
 def setAttribute(dictionary: dict[str, str], key: str, value: str) -> dict[str, str]:
     dictionary[key] = value
     return dictionary
 
 
-@blueprint.app_template_filter()  # type: ignore
+@blueprint.app_template_filter()
 def setAttributes(
     dictionary: dict[str, str], attributes: dict[str, str]
 ) -> dict[str, str]:
@@ -371,15 +371,13 @@ class OtherConfig:
             ]
         else:
             self.otherType = "input"
-            self.value = escape(
-                detail_answer_field._value()
-            )  # pylint: disable=protected-access
+            self.value = escape(detail_answer_field._value())
 
             if answer_type == "Number":
                 self.width = get_width_for_number(detail_answer_schema)
 
 
-@blueprint.app_template_filter()  # type: ignore
+@blueprint.app_template_filter()
 def map_select_config(form: FormType, answer: AnswerType) -> list[SelectConfig]:
     options = form["fields"][answer["id"]]
 
@@ -394,7 +392,7 @@ def map_select_config_processor() -> dict[str, Callable]:
     return {"map_select_config": map_select_config}
 
 
-@blueprint.app_template_filter()  # type: ignore
+@blueprint.app_template_filter()
 def map_relationships_config(
     form: Mapping[str, str], answer: Mapping[str, Union[int, slice]]
 ) -> list[RelationshipRadioConfig]:
@@ -643,7 +641,7 @@ def map_summary_item_config_processor() -> dict[str, Callable]:
 
 
 # pylint: disable=too-many-locals
-@blueprint.app_template_filter()  # type: ignore
+@blueprint.app_template_filter()
 def map_list_collector_config(
     list_items: list[dict[str, str | int]],
     editable: bool = True,

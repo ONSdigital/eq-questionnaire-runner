@@ -110,9 +110,7 @@ class TestFlushData(IntegrationTestCase):
         self.assertStatusForbidden()
 
     def test_flush_errors_when_submission_fails(self):
-        self.submitter_instance.send_message.return_value = (
-            False  # pylint: disable=no-member
-        )
+        self.submitter_instance.send_message.return_value = False
 
         self.post(
             url="/flush?token="
@@ -126,8 +124,8 @@ class TestFlushData(IntegrationTestCase):
             + self.token_generator.generate_token(self.get_payload())
         )
 
-        self.encrypt_instance.assert_called_once()  # pylint: disable=no-member
-        args = self.encrypt_instance.call_args[0]  # pylint: disable=no-member
+        self.encrypt_instance.assert_called_once()
+        args = self.encrypt_instance.call_args[0]
 
         self.assertTrue('"flushed": true' in args[0])
 
@@ -160,7 +158,7 @@ class TestFlushData(IntegrationTestCase):
                 "schema_name": "test_textfield",
                 "period": "201605",
             },
-            "metadata": {"user_id": "UNKNOWN", "ru_ref": "12346789012A"},
+            "metadata": {"user_id": "UNKNOWN", "ru_ref": "12345678901A"},
             "launch_language_code": "en",
             "data": {
                 "answers": [{"answer_id": "name-answer", "value": "sdfsdaf"}],
@@ -199,7 +197,7 @@ class TestFlushData(IntegrationTestCase):
                 "period_id": "201605",
                 "ru_name": "ESSENTIAL ENTERPRISE LTD.",
                 "user_id": "UNKNOWN",
-                "ru_ref": "12346789012A",
+                "ru_ref": "12345678901A",
             },
             "data": {
                 "answers": [{"answer_id": "name-answer", "value": "sdfsdf"}],

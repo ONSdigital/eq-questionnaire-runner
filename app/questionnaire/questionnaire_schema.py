@@ -456,6 +456,14 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 self._update_dependencies_for_summary(block)
                 continue
 
+            if block["type"] == "ListCollectorContent" and block.get(
+                "repeating_blocks"
+            ):
+                # Editable list collectors don't need this because the add/remove handlers manage revisiting repeating blocks
+                self._list_dependencies_map[block["for_list"]].add(
+                    self._get_dependent_for_block_id(block_id=block["id"])
+                )
+
             for question in self.get_all_questions_for_block(block):
                 self.update_dependencies_for_dynamic_answers(
                     question=question, block_id=block["id"]
@@ -729,8 +737,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             return section.get("title")
 
     def get_show_on_hub_for_section(self, section_id: str) -> bool | None:
+        # Type ignore: the type of the .get() returned value is Any
         if section := self.get_section(section_id):
-            # Type ignore: the type of the .get() returned value is Any
             return section.get("show_on_hub", True)  # type: ignore
 
     def get_summary_for_section(self, section_id: str) -> ImmutableDict | None:
@@ -854,11 +862,14 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         if the answer is dynamic or in a repeating block or section, return the name of the list it repeats over, otherwise None.
         """
         # Type ignore: safe to assume block exists, same for section below.
-        block_id: str = self.get_block_for_answer_id(answer_id)["id"]  # type: ignore
+        block: ImmutableDict = self.get_block_for_answer_id(answer_id)  # type: ignore
+        block_id: str = block["id"]
         if self.is_answer_dynamic(answer_id):
             return self.get_list_name_for_dynamic_answer(block_id)
         if self.is_answer_in_list_collector_repeating_block(answer_id):
-            return self._list_names_by_list_repeating_block_id[block_id]
+            return self.list_names_by_list_repeating_block_id[block_id]
+        if self.is_answer_in_list_collector_block(answer_id):
+            return block["for_list"]  # type: ignore
         if self.is_answer_in_repeating_section(answer_id):
             section_id: str = self.get_section_id_for_block_id(block_id)  # type: ignore
             return self.get_repeating_list_for_section(section_id)
@@ -1269,9 +1280,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         section_dependencies: set[str] = set()
         # Type Ignore: Added to this method as the block will exist at this point
         for answer_id in dependent_answer_ids:
-            block = self.get_block_for_answer_id(answer_id)  # type: ignore
+            block = self.get_block_for_answer_id(answer_id)
             section_id = self.get_section_id_for_block_id(block["id"])  # type: ignore
-
             if section_id != current_section_id:
                 self._when_rules_section_dependencies_by_answer[answer_id].add(
                     current_section_id

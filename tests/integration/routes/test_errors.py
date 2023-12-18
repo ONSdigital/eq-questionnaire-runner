@@ -21,7 +21,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         "period_str": "April 2016",
         "period_id": "201604",
         "collection_exercise_sid": "789",
-        "ru_ref": "123456789012A",
+        "ru_ref": "12345678901A",
         "response_id": "1234567890123456",
         "ru_name": "Integration Testing",
         "ref_p_start_date": "2016-04-01",
@@ -314,24 +314,6 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
                 f'<p><a href="{DEFAULT_URL}/contact-us/">Contact us</a> if you need to speak to someone about your survey.</p>'
             )
 
-    def test_500_theme_census_cookie_exists(self):
-        # Given
-        self.launchSurvey("test_thank_you_census_household")
-
-        # When
-        with patch(
-            "app.routes.questionnaire.get_block_handler",
-            side_effect=Exception("You broke it"),
-        ):
-            self.post({"answer": "test"})
-
-            # Then
-            self.assertException()
-            self.assertInBody(
-                "<p>If you are completing a business survey and you need to speak to someone about your survey,"
-                f' please <a href="{DEFAULT_URL}/contact-us/">contact us</a>.</p>'
-            )
-
     def test_submission_failed_theme_default_cookie_exists(self):
         # Given
         submitter = self._application.eq["submitter"]
@@ -366,20 +348,6 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         self.assertStatusCode(500)
         self.assertInBody(
             f'<p>If this problem keeps happening, please <a href="{ONS_URL}/aboutus/contactus/surveyenquiries/">contact us</a> for help.</p>'
-        )
-
-    def test_submission_failed_theme_census_cookie_exists(self):
-        # Given
-        submitter = self._application.eq["submitter"]
-        submitter.send_message = Mock(return_value=False)
-
-        # When
-        self.launchAndFailSubmission("test_thank_you_census_individual")
-
-        # Then
-        self.assertStatusCode(500)
-        self.assertInBody(
-            f'<p>If you are completing a business survey, please <a href="{DEFAULT_URL}/contact-us/">contact us</a>.</p>'
         )
 
     def test_preview_not_enabled_results_in_404(self):

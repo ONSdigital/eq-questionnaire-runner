@@ -1,7 +1,5 @@
 from tests.integration.questionnaire import QuestionnaireTestCase
 
-# pylint: disable=too-many-public-methods
-
 
 class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
     def get_add_someone_link(self):

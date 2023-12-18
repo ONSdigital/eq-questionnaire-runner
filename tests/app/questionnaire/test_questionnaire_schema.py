@@ -1037,7 +1037,7 @@ def test_grand_calculated_summary_dependencies():
     assert gcs_dependent in schema.list_dependencies["costs"]
     assert gcs_dependent in schema.list_dependencies["vehicles"]
     gcs_answers = [
-        "cost-of-cost",
+        "dynamic-answer-cost-extra",
         "finance-cost-answer",
         "vehicle-maintenance-cost",
         "vehicle-fuel-cost",

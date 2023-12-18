@@ -141,7 +141,7 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
     # before_request hooks. Otherwise any logging by the plugin in their before
     # request will use the logger context of the previous request.
     @application.before_request
-    def before_request():  # pylint: disable=unused-variable
+    def before_request():
         contextvars.clear_contextvars()
 
         request_id = str(uuid4())
@@ -206,7 +206,7 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
     setup_jinja_env(application)
 
     @application.after_request
-    def apply_caching(response):  # pylint: disable=unused-variable
+    def apply_caching(response):
         if "text/html" in response.content_type:
             for k, v in CACHE_HEADERS.items():
                 response.headers[k] = v
@@ -216,7 +216,7 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
         return response
 
     @application.after_request
-    def response_minify(response):  # pylint: disable=unused-variable
+    def response_minify(response):
         """
         minify html response to decrease site traffic
         """
@@ -237,7 +237,7 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
         return response
 
     @application.after_request
-    def after_request(response):  # pylint: disable=unused-variable
+    def after_request(response):
         # We're using the stringified version of the Flask session to get a rough
         # length for the cookie. The real length won't be known yet as Flask
         # serializes and adds the cookie header after this method is called.
@@ -260,7 +260,6 @@ def setup_jinja_env(application):
     # Switch off flask default autoescaping as schema content can contain html
     application.jinja_env.autoescape = False
 
-    # pylint: disable=no-member
     application.jinja_env.add_extension("jinja2.ext.do")
 
 
@@ -489,7 +488,7 @@ def setup_compression(application):
 
 def add_safe_health_check(application):
     @application.route("/status")
-    def safe_health_check():  # pylint: disable=unused-variable
+    def safe_health_check():
         data = {"status": "OK", "version": application.config["EQ_APPLICATION_VERSION"]}
         return json_dumps(data)
 

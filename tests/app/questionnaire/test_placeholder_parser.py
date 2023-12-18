@@ -800,7 +800,7 @@ def test_placeholder_resolves_name_is_duplicate_chain(
         }
     ]
 
-    mock_schema.is_repeating_answer = Mock(return_value=True)
+    mock_schema.get_list_name_for_answer_id = Mock(return_value="people")
 
     parser = PlaceholderParser(
         language="en",
@@ -911,7 +911,7 @@ def test_placeholder_resolves_list_has_items_chain(
         }
     ]
 
-    mock_schema.is_repeating_answer = Mock(return_value=True)
+    mock_schema.get_list_name_for_answer_id = Mock(return_value="people")
 
     parser = PlaceholderParser(
         language="en",

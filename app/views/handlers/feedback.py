@@ -74,8 +74,6 @@ class Feedback:
         return build_feedback_context(self.question_schema, self.form)
 
     def get_page_title(self) -> str:
-        # pylint: disable=no-member
-        # wtforms Form parents are not discoverable in the 2.3.3 implementation
         if self.form.errors:
             title: str = gettext("Error: {page_title}").format(
                 page_title=self.PAGE_TITLE
@@ -94,8 +92,6 @@ class Feedback:
         case_id = metadata.case_id
         tx_id = metadata.tx_id
 
-        # pylint: disable=no-member
-        # wtforms Form parents are not discoverable in the 2.3.3 implementation
         feedback_converter = (
             FeedbackPayloadV2
             if metadata.version is AuthPayloadVersion.V2
@@ -230,7 +226,7 @@ class FeedbackPayload:
         "metadata": {
             "ref_period_end_date": "2021-03-29",
             "ref_period_start_date": "2021-03-01",
-            "ru_ref": "11110000022H",
+            "ru_ref": "12345678901A",
             "user_id": "d98d78eb-d23a-494d-b67c-e770399de383"
         },
         "origin": "uk.gov.ons.edc.eq",

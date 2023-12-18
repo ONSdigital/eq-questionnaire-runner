@@ -69,15 +69,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
         validate=lambda x: parse_iso_8601_datetime(x) > datetime.now(tz=timezone.utc),
     )  # type:ignore
 
-    # Either schema_name OR the three census parameters are required. Should be required after census.
     schema_name = VALIDATORS["string"](required=False)  # type:ignore
-
-    # The following three parameters can be removed after Census
-    survey = VALIDATORS["string"](
-        required=False,
-        validate=validate.OneOf(("CENSUS", "CCS")),
-        load_default="CENSUS",
-    )  # type:ignore
     region_code = VALIDATORS["string"](
         required=False, validate=RegionCode()
     )  # type:ignore
