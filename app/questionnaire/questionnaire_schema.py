@@ -1534,7 +1534,7 @@ def is_summary_with_calculation(summary_type: str) -> bool:
 
 def get_sources_for_types_from_data(
     *,
-    source_types: set[str],
+    source_types: Iterable[str],
     data: MultiDict | Mapping | Sequence,
     ignore_keys: list | None = None,
 ) -> list:

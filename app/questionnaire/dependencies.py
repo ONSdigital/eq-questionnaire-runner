@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Mapping, Sequence
+from typing import TYPE_CHECKING, Iterable, Mapping, Sequence
 
 from ordered_set import OrderedSet
 from werkzeug.datastructures import MultiDict
@@ -20,7 +20,7 @@ def get_routing_path_block_ids_by_section_for_dependent_sections(
     location: LocationType,
     progress_store: ProgressStore,
     path_finder: PathFinder,
-    source_types: set[str],
+    source_types: Iterable[str],
     data: MultiDict | Mapping | Sequence,
     sections_to_ignore: list | None = None,
     ignore_keys: list[str] | None = None,
