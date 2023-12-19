@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from functools import cached_property
 from typing import Any, Generator, Iterable, Literal, Mapping, Sequence, TypeAlias
 
+from decimal import Decimal
 from flask_babel import force_locale
 from ordered_set import OrderedSet
 from werkzeug.datastructures import ImmutableDict, MultiDict
@@ -165,8 +166,8 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         for answer in answers:
             value = answer.get(min_max, {}).get("value")
 
-            if isinstance(value, float | int):
-                value_length = len(str(value))
+            if isinstance(value, float | int | Decimal):
+                value_length = len(str(int(value)))
 
                 longest_value_length = max(longest_value_length, value_length)
 

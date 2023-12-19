@@ -1489,7 +1489,7 @@ def test_answer_errors_are_interpolated(app, data_stores):
         form.validate()
         answer_errors = form.answer_errors("set-minimum")
         assert (
-            schema.error_messages["NUMBER_TOO_SMALL"] % {"min": "-1,000"}
+            schema.error_messages["NUMBER_TOO_SMALL"] % {"min": "-1,000.98"}
             in answer_errors
         )
 
