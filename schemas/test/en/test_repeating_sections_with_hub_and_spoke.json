@@ -436,13 +436,13 @@
                                     "title": "What is the name of the person?",
                                     "answers": [
                                         {
-                                            "id": "forename",
+                                            "id": "visitor-first-name",
                                             "label": "First name",
                                             "mandatory": true,
                                             "type": "TextField"
                                         },
                                         {
-                                            "id": "surname",
+                                            "id": "visitor-last-name",
                                             "label": "Last name",
                                             "mandatory": true,
                                             "type": "TextField"
@@ -459,13 +459,13 @@
                                     "title": "What is the name of the person?",
                                     "answers": [
                                         {
-                                            "id": "forename",
+                                            "id": "visitor-first-name",
                                             "label": "First name",
                                             "mandatory": true,
                                             "type": "TextField"
                                         },
                                         {
-                                            "id": "surname",
+                                            "id": "visitor-last-name",
                                             "label": "Last name",
                                             "mandatory": true,
                                             "type": "TextField"
@@ -516,11 +516,11 @@
                                                         "list_to_concatenate": [
                                                             {
                                                                 "source": "answers",
-                                                                "identifier": "forename"
+                                                                "identifier": "visitor-first-name"
                                                             },
                                                             {
                                                                 "source": "answers",
-                                                                "identifier": "surname"
+                                                                "identifier": "visitor-last-name"
                                                             }
                                                         ]
                                                     },
@@ -1219,11 +1219,11 @@
                                         "list_to_concatenate": [
                                             {
                                                 "source": "answers",
-                                                "identifier": "forename"
+                                                "identifier": "visitor-first-name"
                                             },
                                             {
                                                 "source": "answers",
-                                                "identifier": "surname"
+                                                "identifier": "visitor-last-name"
                                             }
                                         ],
                                         "delimiter": " "
@@ -1278,11 +1278,11 @@
                                                         "list_to_concatenate": [
                                                             {
                                                                 "source": "answers",
-                                                                "identifier": "forename"
+                                                                "identifier": "visitor-first-name"
                                                             },
                                                             {
                                                                 "source": "answers",
-                                                                "identifier": "surname"
+                                                                "identifier": "visitor-last-name"
                                                             }
                                                         ]
                                                     },
