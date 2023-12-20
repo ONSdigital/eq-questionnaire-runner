@@ -256,10 +256,7 @@ def get_min_max_value_width(
     are calculated incorrectly
     """
 
-    if (
-        answer.get(min_max, {})
-        and isinstance(answer[min_max]["value"], Mapping)
-    ):
+    if answer.get(min_max, {}) and isinstance(answer[min_max]["value"], Mapping):
         if answer[min_max]["value"].get("source") == "answers":
             schema: QuestionnaireSchema = g.get("schema")
             identifier = answer[min_max]["value"].get("identifier")
