@@ -23,12 +23,23 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pipenv'
-      - name: Install Pipenv
-        run: pip install pipenv==2023.8.22
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.7.1
+          virtualenvs-create: true
+          virtualenvs-in-project: false
+          virtualenvs-path: ~/.virtualenvs
+      - name: Cache Poetry virtualenv
+        uses: actions/cache@v3
+        id: cache-virtualenv
+        with:
+          path: ~/.virtualenvs
+          key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('poetry.lock') }}
       - name: Install virtual environment
         run: |
           sudo apt-get install libsnappy-dev
-          pipenv install --dev
+          poetry install
   node-dependencies:
     runs-on: ubuntu-22.04
     steps:
