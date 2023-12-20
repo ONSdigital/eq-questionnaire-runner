@@ -52,7 +52,6 @@ flask = "*"
 flask-babel = "*"
 flask-login = "*"
 flask-wtf = "*"
-
 google-cloud-datastore = "*"
 grpcio = "*"
 gunicorn = "*"
@@ -84,6 +83,7 @@ markupsafe = "*"
 pdfkit = "*"
 ordered-set = "*"
 cachetools = "*"
+gevent = "^23.9.1"
 
 [build-system]
 requires = ["poetry-core"]
