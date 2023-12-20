@@ -250,20 +250,25 @@ def get_min_max_value_width(
     """
     This function gets the minimum and maximum value accepted for a question.
     Which then allows us to use that value to set the width of the textbox to suit that min and max.
+
+    Check if value is a Mapping if not "answers" source and returns default value because the widths
+    of calculated_summary/grand_calculated_summary and potentially supplementary_data and metadata
+    are calculated incorrectly
     """
 
     if (
         answer.get(min_max, {})
         and isinstance(answer[min_max]["value"], Mapping)
-        and answer[min_max]["value"].get("source") == "answers"
     ):
-        schema: QuestionnaireSchema = g.get("schema")
-        identifier = answer[min_max]["value"].get("identifier")
-        return schema.min_and_max_map[identifier][min_max]
+        if answer[min_max]["value"].get("source") == "answers":
+            schema: QuestionnaireSchema = g.get("schema")
+            identifier = answer[min_max]["value"].get("identifier")
+            return schema.min_and_max_map[identifier][min_max]
+        return len(str(default_value))
 
-    #Factor out the decimals as it's accounted for in get_width_for_number
-    value = str(int(answer.get(min_max, {}).get("value", default_value)))
-    return len(value)
+    # Factor out the decimals as it's accounted for in get_width_for_number
+    return len(str(int(answer.get(min_max, {}).get("value", default_value))))
+
 
 @blueprint.app_template_filter()
 def get_width_for_number(answer: AnswerType) -> Optional[int]:

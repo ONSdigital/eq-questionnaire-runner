@@ -2,10 +2,10 @@
 from collections import defaultdict
 from copy import deepcopy
 from dataclasses import dataclass
+from decimal import Decimal
 from functools import cached_property
 from typing import Any, Generator, Iterable, Literal, Mapping, Sequence, TypeAlias
 
-from decimal import Decimal
 from flask_babel import force_locale
 from ordered_set import OrderedSet
 from werkzeug.datastructures import ImmutableDict, MultiDict
