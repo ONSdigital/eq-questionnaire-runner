@@ -273,7 +273,7 @@
                                     "title": "Are you sure you want to remove this company or UK branch?",
                                     "answers": [
                                         {
-                                            "id": "remove-confirmation",
+                                            "id": "remove-confirmation-company",
                                             "mandatory": true,
                                             "type": "Radio",
                                             "options": [

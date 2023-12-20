@@ -120,7 +120,7 @@ class TestQuestionnaireHub(IntegrationTestCase):
         # Visitors
         self.post({"visitors-anyone-else": "Yes"})
 
-        self.post({"first-name": "Joe", "last-name": "Public"})
+        self.post({"visitor-first-name": "Joe", "visitor-last-name": "Public"})
 
         # Go back to hub
         self.post({"visitors-anyone-else": "No"})

@@ -15,8 +15,6 @@ from app.questionnaire import QuestionnaireSchema
 from app.settings import ACCOUNT_SERVICE_BASE_URL
 from app.survey_config import (
     BusinessSurveyConfig,
-    CensusNISRASurveyConfig,
-    CensusSurveyConfig,
     DBTBusinessSurveyConfig,
     DBTDSITBusinessSurveyConfig,
     DBTDSITNIBusinessSurveyConfig,
@@ -28,7 +26,6 @@ from app.survey_config import (
     SocialSurveyConfig,
     SurveyConfig,
     UKHSAONSSocialSurveyConfig,
-    WelshCensusSurveyConfig,
 )
 from app.survey_config.survey_type import SurveyType
 from app.utilities.schema import load_schema_from_metadata
@@ -194,10 +191,6 @@ def survey_config_mapping(
         SurveyType.DESNZ: DESNZBusinessSurveyConfig,
         SurveyType.DESNZ_NI: DESNZNIBusinessSurveyConfig,
         SurveyType.ORR: ORRBusinessSurveyConfig,
-        SurveyType.CENSUS: (
-            WelshCensusSurveyConfig if language == "cy" else CensusSurveyConfig
-        ),
-        SurveyType.CENSUS_NISRA: CensusNISRASurveyConfig,
         SurveyType.UKHSA_ONS: UKHSAONSSocialSurveyConfig,
     }
 

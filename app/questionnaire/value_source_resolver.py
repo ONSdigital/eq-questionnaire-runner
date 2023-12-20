@@ -75,6 +75,23 @@ class ValueSourceResolver:
         ):
             return answer.value
 
+    def _resolve_list_item_id_for_answer_id(self, answer_id: str) -> str | None:
+        """
+        If there's a list item id and the answer is repeating, return the list item id to resolve the instance of the answer
+        However if the answer is repeating for a different list, return None so that the repeating answer id resolves to a list
+        """
+        if self.list_item_id and (
+            list_name_for_answer := self.schema.get_list_name_for_answer_id(answer_id)
+        ):
+            # if there is a current list, and it differs to the repeating answer one, return None
+            if (
+                self.location
+                and self.location.list_name
+                and self.location.list_name != list_name_for_answer
+            ):
+                return None
+            return self.list_item_id
+
     def _resolve_list_item_id_for_value_source(
         self, value_source: Mapping
     ) -> str | None:
@@ -102,12 +119,8 @@ class ValueSourceResolver:
                 else None
             )
 
-        return (
-            self.list_item_id
-            if self.list_item_id
-            and self.schema.is_repeating_answer(value_source["identifier"])
-            else None
-        )
+        if value_source["source"] == "answers":
+            return self._resolve_list_item_id_for_answer_id(value_source["identifier"])
 
     def _resolve_repeating_answers_for_list(
         self, *, answer_id: str, list_name: str
@@ -242,11 +255,10 @@ class ValueSourceResolver:
         # the calculation object for the old type of calculated summary block may contain answers_to_calculate instead of operation
         if calculation.get("answers_to_calculate"):
             operator = self.get_calculation_operator(calculation["calculation_type"])
-            list_item_id = self._resolve_list_item_id_for_value_source(value_source)
             values = [
                 self._get_answer_value(
                     answer_id=answer_id,
-                    list_item_id=list_item_id,
+                    list_item_id=self._resolve_list_item_id_for_answer_id(answer_id),
                     assess_routing_path=assess_routing_path,
                 )
                 for answer_id in calculation["answers_to_calculate"]
