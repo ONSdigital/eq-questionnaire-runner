@@ -167,6 +167,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             value = answer.get(min_max, {}).get("value")
 
             if isinstance(value, float | int | Decimal):
+                # Factor out the decimals as it's accounted for in jinja_filters.py
                 value_length = len(str(int(value)))
 
                 longest_value_length = max(longest_value_length, value_length)

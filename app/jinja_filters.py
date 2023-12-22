@@ -251,9 +251,8 @@ def get_min_max_value_width(
     This function gets the minimum and maximum value accepted for a question.
     Which then allows us to use that value to set the width of the textbox to suit that min and max.
 
-    Check if value is a Mapping if not "answers" source and returns default value because the widths
-    of calculated_summary/grand_calculated_summary and potentially supplementary_data and metadata
-    are calculated incorrectly
+    If the min or max for the answer is a value source but not an "answers" source, such as a calculated or grand calculated summary,
+    use the length of the default value for the min and max width, as the actual min and max width cannot currently be determined
     """
 
     if answer.get(min_max, {}) and isinstance(answer[min_max]["value"], Mapping):
