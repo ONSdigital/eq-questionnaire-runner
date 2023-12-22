@@ -89,13 +89,9 @@ Inside the project directory install python version, upgrade pip and install dep
 
 ``` shell
 pyenv install
-pip install --upgrade pip setuptools pipenv
-pipenv install --dev
-```
-
-###### NOTE: You may encounter an issue with the `python-snappy` installation with `pipenv` above on Mac OSX. If so, install with the recommended [workaround command](https://github.com/andrix/python-snappy#frequently-asked-questions) instead:
-``` shell
-CPPFLAGS="-I/usr/local/include -L/usr/local/lib" pipenv install --dev
+pip install --upgrade pip setuptools
+curl -sSL https://install.python-poetry.org | python3 - 
+poetry install
 ```
 
 #### Design system templates
@@ -116,7 +112,7 @@ make load-schemas
 
 #### Run server
 
-Run the server inside the virtual env created by Pipenv with:
+Run the server inside the virtual env created by Poetry with:
 
 ``` shell
 make run
@@ -477,9 +473,19 @@ Refer to our [profiling document](doc/profiling.md).
 ## Updating / Installing dependencies
 
 ### Python
-To add a new dependency, use `pipenv install [package-name]`, which not only installs the package but Pipenv will also go to the trouble of updating the Pipfile as well.
+To add a new dependency, use:
+``` shell
+`poetry add [package-name]`,
+```
+This will add the required packages to your pyproject.toml and install them
 
-NB: both the Pipfile and Pipfile.lock files are required in source control to accurately pin dependencies.
+To update a dependency, use:
+```shell
+`poetry update [package-name]`
+```
+This will resolve the required dependencies of the project and write the exact versions into poetry.lock
+
+NB: both the pyproject.toml and poetry.lock files are required in source control to accurately pin dependencies.
 
 ### JavaScript
 To add a new dependency, use `npm install [dev dependency] --save-dev` or `npm install [dependency]` then use `npm install` to install all the packages locally.
