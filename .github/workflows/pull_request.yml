@@ -104,10 +104,10 @@ jobs:
             sudo dpkg -i wkhtmltox_0.12.6-1.bionic_amd64.deb
       - name: Write app version
         run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
-      - name: Install pipenv
-        run: pip install pipenv==2023.8.22
+      - name: Install poetry
+        run: pip install poetry
       - name: Install virtual environment
-        run: pipenv install --dev
+        run: poetry install
       - name: Load templates
         run: make load-design-system-templates
       - name: Compile translations
