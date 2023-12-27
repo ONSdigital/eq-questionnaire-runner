@@ -73,32 +73,22 @@
 
 
 {% block head %}
-  {% if google_tag_manager_id and google_tag_manager_auth %}
-    <!--
-    Information such as events or variables can be passed to Google Tag Manager via the data layer,
-    and triggers can be set up in Google Tag Manager
-    -->
+  {% if google_tag_id %}
     <script nonce="{{ csp_nonce }}">
       dataLayer = {{ data_layer | tojson }}
     </script>
 
-    <!-- Google Tag Manager -->
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ google_tag_id }}"></script>
     <script nonce="{{ csp_nonce }}">
-      function loadGTM() {
-        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl+ '&gtm_auth={{ google_tag_manager_auth }}&gtm_cookies_win=x';var n=d.querySelector('[nonce]');
-        n&&j.setAttribute('nonce',n.nonce||n.getAttribute('nonce'));f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','{{ google_tag_manager_id }}');
-      }
-
+      window.dataLayer = window.dataLayer || [];
       var cookie_usage_regex = /^(.*)?\s*'usage':true\s*[^;]+(.*)?$/;
       if (document.cookie.match(cookie_usage_regex)) {
-          loadGTM();
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{{ google_tag_id }}');
       }
     </script>
-    <!-- End Google Tag Manager -->
   {% endif %}
 {% endblock %}
 

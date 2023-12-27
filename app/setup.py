@@ -62,13 +62,11 @@ CSP_POLICY = {
         "'self'",
         "https://tagmanager.google.com",
         "https://*.googletagmanager.com",
-        "'unsafe-inline'",
     ],
     "style-src": [
         "'self'",
         "https://tagmanager.google.com",
         "https://fonts.googleapis.com",
-        "'unsafe-inline'",
     ],
     "connect-src": [
         "'self'",

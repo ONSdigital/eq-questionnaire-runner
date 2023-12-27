@@ -51,10 +51,7 @@ class ContextHelper:
             f'{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}'
         )
         self._address_lookup_api = current_app.config["ADDRESS_LOOKUP_API_URL"]
-        self._google_tag_manager_id = current_app.config.get("EQ_GOOGLE_TAG_MANAGER_ID")
-        self._google_tag_manager_auth = current_app.config.get(
-            "EQ_GOOGLE_TAG_MANAGER_AUTH"
-        )
+        self._google_tag_id = current_app.config.get("EQ_GOOGLE_TAG_ID")
         self._survey_type = cookie_session.get("theme")
         self._preview_enabled = (
             self._survey_config.schema.preview_enabled
@@ -81,8 +78,7 @@ class ContextHelper:
             "address_lookup_api_url": self._address_lookup_api,
             "data_layer": self.data_layer_context,
             "include_csrf_token": self._include_csrf_token,
-            "google_tag_manager_id": self._google_tag_manager_id,
-            "google_tag_manager_auth": self._google_tag_manager_auth,
+            "google_tag_id": self._google_tag_id,
             "survey_type": self._survey_type,
             "preview_enabled": self._preview_enabled,
             "masthead_logo": self._survey_config.masthead_logo,
