@@ -139,12 +139,12 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
             csp_policy_parts = headers["Content-Security-Policy"].split("; ")
             self.assertIn(f"default-src 'self' {cdn_url}", csp_policy_parts)
             self.assertIn(
-                "script-src 'self' https://tagmanager.google.com https://*.googletagmanager.com "
+                "script-src 'self' https://*.googletagmanager.com "
                 f"{cdn_url} 'nonce-{request.csp_nonce}'",
                 csp_policy_parts,
             )
             self.assertIn(
-                f"style-src 'self' https://tagmanager.google.com https://fonts.googleapis.com {cdn_url}",
+                f"style-src 'self' https://fonts.googleapis.com {cdn_url}",
                 csp_policy_parts,
             )
             self.assertIn(

@@ -60,12 +60,10 @@ CSP_POLICY = {
     "font-src": ["'self'", "data:", "https://fonts.gstatic.com"],
     "script-src": [
         "'self'",
-        "https://tagmanager.google.com",
         "https://*.googletagmanager.com",
     ],
     "style-src": [
         "'self'",
-        "https://tagmanager.google.com",
         "https://fonts.googleapis.com",
     ],
     "connect-src": [
