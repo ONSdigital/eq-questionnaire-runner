@@ -80,7 +80,7 @@ jobs:
           key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('poetry.lock') }}
       - name: Install virtual environment
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
-        run: poetry install
+        run: poetry install --no-interaction
       - name: Compile translations
         run: make translate
       - name: Running translation tests
@@ -128,7 +128,7 @@ jobs:
           key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('poetry.lock') }}
       - name: Install virtual environment
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
-        run: poetry install
+        run: poetry install --no-interaction
       - name: Load templates
         run: make load-design-system-templates
       - name: Compile translations
@@ -181,7 +181,7 @@ jobs:
           key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('poetry.lock') }}
       - name: Install virtual environment
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
-        run: poetry install
+        run: poetry install --no-interaction
       - name: Install npm deps
         run: npm install
       - name: Docker compose
