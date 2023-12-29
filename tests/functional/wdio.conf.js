@@ -209,11 +209,12 @@ export const config = {
           surveyId = "123",
           periodId = "201605",
           periodStr = "May 2016",
-          ruRef = "12346789012A",
+          ruRef = "12345678901A",
           sdsDatasetId = null,
           region = "GB-ENG",
           language = "en",
           includeLogoutUrl = false,
+          cirInstrumentId = null,
         } = {},
       ) {
         const token = await JwtHelper.generateToken(schema, {
@@ -230,6 +231,7 @@ export const config = {
           regionCode: region,
           languageCode: language,
           includeLogoutUrl,
+          cirInstrumentId,
         });
         this.url(`/session?token=${token}`);
       },

@@ -1,3 +1,6 @@
+import { assertSummaryItems, assertSummaryTitles, assertSummaryValues, checkListItemComplete, checkListItemIncomplete, click } from "../../../helpers";
+import { expect } from "@wdio/globals";
+import { getRandomString } from "../../../jwt_helper";
 import AddAdditionalEmployeePage from "../../../generated_pages/supplementary_data/list-collector-additional-add.page.js";
 import AdditionalLengthOfEmploymentPage from "../../../generated_pages/supplementary_data/additional-length-of-employment.page.js";
 import AnyAdditionalEmployeesPage from "../../../generated_pages/supplementary_data/any-additional-employees.page.js";
@@ -15,7 +18,10 @@ import ListCollectorEmployeesPage from "../../../generated_pages/supplementary_d
 import ListCollectorProductsPage from "../../../generated_pages/supplementary_data/list-collector-products.page.js";
 import LoadedSuccessfullyBlockPage from "../../../generated_pages/supplementary_data/loaded-successfully-block.page.js";
 import NewEmailPage from "../../../generated_pages/supplementary_data/new-email.page.js";
+import ProductQuestion3EnabledPage from "../../../generated_pages/supplementary_data/product-question-3-enabled.page";
 import ProductRepeatingBlock1Page from "../../../generated_pages/supplementary_data/product-repeating-block-1-repeating-block.page.js";
+import ProductSalesInterstitialPage from "../../../generated_pages/supplementary_data/product-sales-interstitial.page";
+import ProductVolumeInterstitialPage from "../../../generated_pages/supplementary_data/product-volume-interstitial.page";
 import SalesBreakdownBlockPage from "../../../generated_pages/supplementary_data/sales-breakdown-block.page.js";
 import Section1InterstitialPage from "../../../generated_pages/supplementary_data/section-1-interstitial.page.js";
 import Section1Page from "../../../generated_pages/supplementary_data/section-1-summary.page.js";
@@ -26,9 +32,6 @@ import Section6Page from "../../../generated_pages/supplementary_data/section-6-
 import ThankYouPage from "../../../base_pages/thank-you.page";
 import TradingPage from "../../../generated_pages/supplementary_data/trading.page.js";
 import ViewSubmittedResponsePage from "../../../generated_pages/supplementary_data/view-submitted-response.page.js";
-import { assertSummaryItems, assertSummaryTitles, assertSummaryValues, click } from "../../../helpers";
-import { getRandomString } from "../../../jwt_helper";
-import { expect } from "@wdio/globals";
 
 describe("Using supplementary data", () => {
   const responseId = getRandomString(16);
@@ -58,7 +61,7 @@ describe("Using supplementary data", () => {
     await click(EmailBlockPage.submit());
   });
 
-  it("Given I have dynamic answer options based of a supplementary date value, When I reach the block on trading start date, Then I see a correct list of options to choose from", async () => {
+  it("Given I have dynamic answer options based off a supplementary date value, When I reach the block using them, Then I see a correct list of options to choose from", async () => {
     await expect(await $(TradingPage.answerLabelByIndex(0)).getText()).toBe("Thursday 27 November 1947");
     await expect(await $(TradingPage.answerLabelByIndex(1)).getText()).toBe("Friday 28 November 1947");
     await expect(await $(TradingPage.answerLabelByIndex(2)).getText()).toBe("Saturday 29 November 1947");
@@ -70,14 +73,14 @@ describe("Using supplementary data", () => {
     await click(TradingPage.submit());
   });
 
-  it("Given I have answers with a sum validated against a supplementary data value, When I enter a breakdown that exceeds the total, Then I see an error message", async () => {
+  it("Given I have a calculated question validated against a supplementary data value, When I enter a breakdown that exceeds the total, Then I see an error message", async () => {
     await $(SalesBreakdownBlockPage.salesBristol()).setValue(333000);
     await $(SalesBreakdownBlockPage.salesLondon()).setValue(444000);
     await click(SalesBreakdownBlockPage.submit());
     await expect(await $(SalesBreakdownBlockPage.errorNumber(1)).getText()).toContain("Enter answers that add up to or are less than 555,000");
   });
 
-  it("Given I have answers with a sum validated against a supplementary data value, When I enter a breakdown less than the total, Then I see a calculated summary page with the sum of my previous answers", async () => {
+  it("Given I have a calculated question validated against a supplementary data value, When I enter a breakdown less than the total, Then I see a calculated summary page with the sum of my previous answers", async () => {
     await $(SalesBreakdownBlockPage.salesLondon()).setValue(111000);
     await click(SalesBreakdownBlockPage.submit());
     await expect(await $(CalculatedSummarySalesPage.calculatedSummaryTitle()).getText()).toBe(
@@ -114,7 +117,7 @@ describe("Using supplementary data", () => {
     await expect(await $(Section1Page.salesLondonAnswer()).getText()).toBe("£111,000.00");
   });
 
-  it("Given I change the email for the company, When I return to the interstitial block, Then I see the email has updated", async () => {
+  it("Given I add an answer used in a first non empty item transform with supplementary data, When I return to the interstitial block, Then I see the transform value has updated", async () => {
     await $(Section1Page.sameEmailAnswerEdit()).click();
     await $(EmailBlockPage.no()).click();
     await click(EmailBlockPage.submit());
@@ -126,14 +129,14 @@ describe("Using supplementary data", () => {
     await click(Section1Page.submit());
   });
 
-  it("Given I have a list collector block using a supplementary list, When I start the section, I see the supplementary list items in the list", async () => {
+  it("Given I have a list collector content block using a supplementary list, When I start the section, I see the supplementary list items in the list", async () => {
     await click(HubPage.submit());
     await expect(await $(ListCollectorEmployeesPage.listLabel(1)).getText()).toBe("Harry Potter");
     await expect(await $(ListCollectorEmployeesPage.listLabel(2)).getText()).toBe("Clark Kent");
     await click(ListCollectorEmployeesPage.submit());
   });
 
-  it("Given I add some additional employees via a list collector, When I return to the Hub, Then I see new enabled sections for the supplementary list items, and my added ones", async () => {
+  it("Given I add some additional employees via another list collector, When I return to the Hub, Then I see new enabled sections for the supplementary list items and my added ones", async () => {
     await click(HubPage.submit());
     await $(AnyAdditionalEmployeesPage.yes()).click();
     await click(AnyAdditionalEmployeesPage.submit());
@@ -175,7 +178,7 @@ describe("Using supplementary data", () => {
     await expect(await $(Section4Page.employmentStart()).getText()).toBe("1 January 1990");
   });
 
-  it("Given I complete the repeating section for the other supplementary item, When I reach the summary page, Then I see the correct supplementary data with my answers", async () => {
+  it("Given I complete the repeating section for another supplementary item, When I reach the summary page, Then I see the correct supplementary data with my answers", async () => {
     await click(Section4Page.submit());
     await click(HubPage.submit());
     await expect(await $(LengthOfEmploymentPage.questionTitle()).getText()).toContain("When did Clark Kent start working for Tesco?");
@@ -305,7 +308,7 @@ describe("Using supplementary data", () => {
     await click(CalculatedSummaryValueSalesPage.submit());
   });
 
-  it("Given I have a section summary for product details, When I reach the summary page, Then I see the supplementary data and my answers rendered correctly", async () => {
+  it("Given I have a section with repeating answers for a supplementary list, When I reach the section summary page, Then I see the supplementary data and my answers rendered correctly", async () => {
     await expect(await $$(summaryRowTitles)[0].getText()).toBe("Sales during the previous quarter");
     await assertSummaryItems([
       "Articles and equipment for sports or outdoor games",
@@ -320,9 +323,17 @@ describe("Using supplementary data", () => {
     ]);
     await assertSummaryValues(["100 kg", "200 kg", "50 kg", "300 kg", "£110.00", "£220.00", "£330.00"]);
     await click(Section6Page.submit());
+    await expect(await $(HubPage.summaryRowState("section-6")).getText()).toBe("Completed");
   });
 
-  it("Given I relaunch the survey for a newer version of the supplementary data, When I open the Hub page, Then I see the new supplementary list items as new incomplete sections and not the old ones", async () => {
+  it("Given I am using a supplementary dataset where the size of one of the lists skips a question in a section, When I enter the section, Then I only see an interstitial block as the other block is skipped", async () => {
+    await $(HubPage.summaryRowLink("section-8")).click();
+    await expect(browser).toHaveUrlContaining(ProductVolumeInterstitialPage.pageName);
+    await click(ProductVolumeInterstitialPage.submit());
+    await expect(await $(HubPage.summaryRowState("section-8")).getText()).toBe("Completed");
+  });
+
+  it("Given I relaunch the survey with new supplementary data and new list items for the repeating section, When I open the Hub page, Then I see the new supplementary list items as new incomplete sections and not any old ones", async () => {
     await browser.openQuestionnaire("test_supplementary_data.json", {
       version: "v2",
       sdsDatasetId: "693dc252-2e90-4412-bd9c-c4d953e36fcd",
@@ -336,10 +347,58 @@ describe("Using supplementary data", () => {
     await expect(await $(HubPage.summaryRowState("section-4-2")).getText()).toBe("Not started");
     await expect(await $(HubPage.summaryRowState("section-5-1")).getText()).toBe("Completed");
     await expect(await $(HubPage.summaryRowState("section-5-2")).getText()).toBe("Completed");
-    await expect(await $("body").getText()).not.toBe("Clark Kent");
+    await expect(await $("body").getText()).not.toContain("Clark Kent");
   });
 
-  it("Given I now have a new incomplete section, When I start the section, Then I see the new supplementary data piped in accordingly", async () => {
+  it("Given the survey has been relaunched with new data and more items in the products list, When I am on the Hub, Then I see the products section and section with a new block due to the product list size are both in progress", async () => {
+    await expect(await $(HubPage.summaryRowState("section-6")).getText()).toBe("Partially completed");
+    await expect(await $(HubPage.summaryRowState("section-8")).getText()).toBe("Partially completed");
+  });
+
+  it("Given I am using a supplementary dataset with a product list size that skips a question in the sales target section, When I enter the section, Then I only see an interstitial block", async () => {
+    await $(HubPage.summaryRowLink("section-7")).click();
+    await expect(browser).toHaveUrlContaining(ProductSalesInterstitialPage.pageName);
+    await click(ProductSalesInterstitialPage.submit());
+    await expect(await $(HubPage.summaryRowState("section-7")).getText()).toBe("Completed");
+  });
+
+  it("Given there is now an additional product, When I resume the Product Details Section, Then I start from the list collector content block and see the new product is incomplete", async () => {
+    await $(HubPage.summaryRowLink("section-6")).click();
+    await expect(browser).toHaveUrlContaining(ListCollectorProductsPage.pageName);
+    await checkListItemComplete(`dt[data-qa="list-item-1-label"]`);
+    await checkListItemComplete(`dt[data-qa="list-item-2-label"]`);
+    await checkListItemIncomplete(`dt[data-qa="list-item-3-label"]`);
+    await click(ListCollectorProductsPage.submit());
+    await expect(browser).toHaveUrlContaining(ProductRepeatingBlock1Page.pageName);
+  });
+
+  it("Given I complete the section and relaunch with the old data that has fewer items in the products list, When I am on the Hub, Then I see the products section and sales targets sections are now in progress", async () => {
+    await $(ProductRepeatingBlock1Page.productVolumeSales()).setValue(40);
+    await $(ProductRepeatingBlock1Page.productVolumeTotal()).setValue(50);
+    await click(ProductRepeatingBlock1Page.submit());
+    await click(ListCollectorProductsPage.submit());
+    await click(CalculatedSummaryVolumeSalesPage.submit());
+    await click(CalculatedSummaryVolumeTotalPage.submit());
+    await $$(DynamicProductsPage.inputs())[2].setValue(115);
+    await click(DynamicProductsPage.submit());
+    await click(CalculatedSummaryValueSalesPage.submit());
+    await click(Section6Page.submit());
+    await expect(await $(HubPage.summaryRowState("section-6")).getText()).toBe("Completed");
+    await browser.openQuestionnaire("test_supplementary_data.json", {
+      version: "v2",
+      sdsDatasetId: "c067f6de-6d64-42b1-8b02-431a3486c178",
+      responseId,
+    });
+    await expect(await $(HubPage.summaryRowState("section-6")).getText()).toBe("Partially completed");
+    await expect(await $(HubPage.summaryRowState("section-7")).getText()).toBe("Partially completed");
+  });
+
+  it("Given I return to the new data resulting in a new incomplete section, When I start the section, Then I see the new supplementary data piped in accordingly", async () => {
+    await browser.openQuestionnaire("test_supplementary_data.json", {
+      version: "v2",
+      sdsDatasetId: "693dc252-2e90-4412-bd9c-c4d953e36fcd",
+      responseId,
+    });
     await click(HubPage.submit());
     await $(LengthOfEmploymentPage.day()).setValue(10);
     await $(LengthOfEmploymentPage.month()).setValue(10);
@@ -352,9 +411,33 @@ describe("Using supplementary data", () => {
 
   it("Given I can view my response after submission, When I submit the survey, Then I see the values I've entered and correct rendering with supplementary data", async () => {
     await click(HubPage.submit());
+    await click(ListCollectorProductsPage.submit());
+    await $(ProductRepeatingBlock1Page.productVolumeSales()).setValue(40);
+    await $(ProductRepeatingBlock1Page.productVolumeTotal()).setValue(50);
+    await click(ProductRepeatingBlock1Page.submit());
+    await click(ListCollectorProductsPage.submit());
+    await click(CalculatedSummaryVolumeSalesPage.submit());
+    await click(CalculatedSummaryVolumeTotalPage.submit());
+    await $$(DynamicProductsPage.inputs())[2].setValue(115);
+    await click(DynamicProductsPage.submit());
+    await click(CalculatedSummaryValueSalesPage.submit());
+    await click(Section6Page.submit());
+    await click(HubPage.submit());
+    await $(ProductQuestion3EnabledPage.yes()).click();
+    await click(ProductQuestion3EnabledPage.submit());
+    await click(HubPage.submit());
     await $(ThankYouPage.savePrintAnswersLink()).click();
 
-    await assertSummaryTitles(["Company Details", "Additional Employees", "Harry Potter", "Bruce Wayne", "Jane Doe", "John Smith", "Product details"]);
+    await assertSummaryTitles([
+      "Company Details",
+      "Additional Employees",
+      "Harry Potter",
+      "Bruce Wayne",
+      "Jane Doe",
+      "John Smith",
+      "Product details",
+      "Production Targets",
+    ]);
 
     // Company details
     await expect(await $(ViewSubmittedResponsePage.emailQuestion()).getText()).toBe("Is contact@lidl.org still the correct contact email for Lidl?");
@@ -416,6 +499,11 @@ describe("Using supplementary data", () => {
     );
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryValues)[2].getText()).toBe("50 kg");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryValues)[3].getText()).toBe("300 kg");
+    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[6].getText()).toBe("Groceries");
+    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[7].getText()).toBe("Volume of sales for Groceries");
+    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[8].getText()).toBe("Total volume produced for Groceries");
+    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryValues)[4].getText()).toBe("40 kg");
+    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryValues)[5].getText()).toBe("50 kg");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryRowTitles)[0].getText()).toBe("Sales during the previous quarter");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryItems)[0].getText()).toBe(
       "Value of sales for Articles and equipment for sports or outdoor games",
@@ -425,7 +513,7 @@ describe("Using supplementary data", () => {
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryItems)[3].getText()).toBe("Value of sales from other categories");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryValues)[0].getText()).toBe("£110.00");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryValues)[1].getText()).toBe("£220.00");
-    await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryValues)[2].getText()).toBe("No answer provided");
+    await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryValues)[2].getText()).toBe("£115.00");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryValues)[3].getText()).toBe("£330.00");
   });
 });

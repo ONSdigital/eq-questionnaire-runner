@@ -11,7 +11,6 @@ from app.data_models.progress_store import ProgressStore
 from app.data_models.supplementary_data_store import SupplementaryDataStore
 from app.questionnaire.rules.utils import parse_iso_8601_datetime
 from app.utilities.json import json_dumps, json_loads
-from app.utilities.types import SupplementaryDataListMapping
 
 if TYPE_CHECKING:
     from app.storage.encrypted_questionnaire_storage import (  # pragma: no cover
@@ -59,83 +58,6 @@ class QuestionnaireStore:
         self._stores.metadata = MetadataProxy.from_dict(self._metadata)
 
         return self
-
-    def set_supplementary_data(self, to_set: MutableMapping) -> None:
-        """
-        Used to set or update the supplementary data whenever the sds endpoint is called
-        (Which should be once per session, but only if the sds_dataset_id has changed)
-
-        this updates ListStore to add/update any lists for supplementary data and stores the
-        identifier -> list_item_id mappings in the supplementary data store to use in the payload at the end
-        """
-        if self._stores.supplementary_data_store.list_mappings:
-            self._remove_old_supplementary_lists_and_answers(new_data=to_set)
-
-        list_mappings = {
-            list_name: self._create_supplementary_list(
-                list_name=list_name, list_data=list_data
-            )
-            for list_name, list_data in to_set.get("items", {}).items()
-        }
-
-        self._stores.supplementary_data_store = SupplementaryDataStore(
-            supplementary_data=to_set, list_mappings=list_mappings
-        )
-
-    def _create_supplementary_list(
-        self, *, list_name: str, list_data: list[dict]
-    ) -> list[SupplementaryDataListMapping]:
-        """
-        Creates or updates a list in ListStore based off supplementary data
-        returns the identifier -> list_item_id mappings used
-        """
-        list_mappings: list[SupplementaryDataListMapping] = []
-        for list_item in list_data:
-            identifier = list_item["identifier"]
-            # if any pre-existing supplementary data already has a mapping for this list item
-            # then its already in the list store and doesn't require adding
-            if not (
-                list_item_id := self._stores.supplementary_data_store.list_lookup.get(
-                    list_name, {}
-                ).get(identifier)
-            ):
-                list_item_id = self._stores.list_store.add_list_item(list_name)
-            list_mappings.append(
-                SupplementaryDataListMapping(
-                    identifier=identifier, list_item_id=list_item_id
-                )
-            )
-        return list_mappings
-
-    def _remove_old_supplementary_lists_and_answers(
-        self, new_data: MutableMapping
-    ) -> None:
-        """
-        In the case that existing supplementary data is being replaced with new data: any list items in the old data
-        but not the new data are removed from the list store and related answers are deleted
-        :param new_data - the new supplementary data for comparison
-        """
-        deleted_list_item_ids: set[str] = set()
-        for (
-            list_name,
-            mappings,
-        ) in self._stores.supplementary_data_store.list_lookup.items():
-            if list_name in new_data.get("items", {}):
-                new_identifiers = [
-                    item["identifier"] for item in new_data["items"][list_name]
-                ]
-                for identifier, list_item_id in mappings.items():
-                    if identifier not in new_identifiers:
-                        self._stores.list_store.delete_list_item(
-                            list_name, list_item_id
-                        )
-                        deleted_list_item_ids.add(list_item_id)
-            else:
-                self._stores.list_store.delete_list(list_name)
-                deleted_list_item_ids.update(mappings.values())
-        self._stores.answer_store.remove_all_answers_for_list_item_ids(
-            *deleted_list_item_ids
-        )
 
     def _deserialize(self, data: str) -> None:
         json_data = json_loads(data)
