@@ -254,16 +254,17 @@ def get_min_max_value_width(
     If the min or max for the answer is a value source but not an "answers" source, such as a calculated or grand calculated summary,
     use the length of the default value for the min and max width, as the actual min and max width cannot currently be determined
     """
-
-    if answer.get(min_max, {}) and isinstance(answer[min_max]["value"], Mapping):
+    min_max_value = answer.get(min_max, {})
+    if min_max_value and isinstance(answer[min_max]["value"], Mapping):
         if answer[min_max]["value"].get("source") == "answers":
             schema: QuestionnaireSchema = g.get("schema")
-            identifier = answer[min_max]["value"].get("identifier")
+            identifier = answer[min_max]["value"]["identifier"]
             return schema.min_and_max_map[identifier][min_max]
         return len(str(default_value))
 
     # Factor out the decimals as it's accounted for in get_width_for_number
-    return len(str(int(answer.get(min_max, {}).get("value", default_value))))
+    result = int(min_max_value.get("value", default_value))
+    return len(str(result))
 
 
 @blueprint.app_template_filter()
