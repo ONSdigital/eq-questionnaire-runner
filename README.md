@@ -347,14 +347,14 @@ The following environment variables must be set when deploying the app.
 The following environment variables are optional:
 
 | Variable Name                | Default          | Description                                                                                                    |
-| ---------------------------- | ---------------- |----------------------------------------------------------------------------------------------------------------|
+|------------------------------| ---------------- |----------------------------------------------------------------------------------------------------------------|
 | REGION                       | europe-west2     | The region that will be used for your Cloud Run service                                                        |
 | CONCURRENCY                  | 80               | The maximum number of requests that can be processed simultaneously by a given container instance              |
 | MIN_INSTANCES                | 1                | The minimum number of container instances that can be used for your Cloud Run service                          |
 | MAX_INSTANCES                | 1                | The maximum number of container instances that can be used for your Cloud Run service                          |
 | CPU                          | 4                | The number of CPUs to allocate for each Cloud Run container instance                                           |
 | MEMORY                       | 4G               | The amount of memory to allocate for each Cloud Run container instance                                         |
-| GOOGLE_TAG_MANAGER_ID        |                  | The Google Tag ID - Specifies the GTM account                                                                  |
+| GOOGLE_TAG_ID                |                  | The Google Tag ID - Specifies the GTM account                                                                  |
 | WEB_SERVER_TYPE              | gunicorn-threads | Web server type used to run the application. This also determines the worker class which can be async/threaded |
 | WEB_SERVER_WORKERS           | 7                | The number of worker processes                                                                                 |
 | WEB_SERVER_THREADS           | 10               | The number of worker threads per worker                                                                        |
