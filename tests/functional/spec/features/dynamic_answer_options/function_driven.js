@@ -60,7 +60,7 @@ testCases.forEach((testCase) => {
 
       describe("Given a dynamic answer options questionnaire and I am on the radio answer page", () => {
         it("When I click a radio option, then the radio should be selected", async () => {
-          for (let i = 0; i < (testCase.answerOptionCount); i++) {
+          for (let i = 0; i < testCase.answerOptionCount; i++) {
             await $(DynamicRadioPage.answerByIndex(i)).click();
             await expect(await $(DynamicRadioPage.answerByIndex(i)).isSelected()).toBe(true);
           }
@@ -88,14 +88,14 @@ testCases.forEach((testCase) => {
 
       describe("Given a dynamic answer options questionnaire and I am on the mutually exclusive page", () => {
         it("When I click a dynamic checkbox option, then the checkbox should be selected", async () => {
-          for (let i = 0; i < (testCase.answerOptionCount); i++) {
+          for (let i = 0; i < testCase.answerOptionCount; i++) {
             await $(DynamicMutuallyExclusivePage.answerByIndex(i)).click();
             await expect(await $(DynamicMutuallyExclusivePage.answerByIndex(i)).isSelected()).toBe(true);
           }
         });
 
         it("When I click a selected option, then it should be deselected", async () => {
-          for (let i = 0; i < (testCase.answerOptionCount); i++) {
+          for (let i = 0; i < testCase.answerOptionCount; i++) {
             await $(DynamicMutuallyExclusivePage.answerByIndex(i)).click();
             await expect(await $(DynamicMutuallyExclusivePage.answerByIndex(i)).isSelected()).toBe(false);
           }
