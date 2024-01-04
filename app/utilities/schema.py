@@ -14,6 +14,8 @@ from app.questionnaire.questionnaire_schema import (
     DEFAULT_LANGUAGE_CODE,
     QuestionnaireSchema,
 )
+from app.settings import CIR_OAUTH2_CLIENT_ID
+from app.utilities.credentials import fetch_credentials
 from app.utilities.json import json_load, json_loads
 from app.utilities.request_session import get_retryable_session
 
@@ -141,7 +143,7 @@ def load_schema_from_instrument_id(
 ) -> QuestionnaireSchema:
     parameters = {"guid": cir_instrument_id}
     cir_url = f"{current_app.config['CIR_API_BASE_URL']}{CIR_RETRIEVE_COLLECTION_INSTRUMENT_URL}?{urlencode(parameters)}"
-    return load_schema_from_url(url=cir_url, language_code=language_code)
+    return load_schema_from_url(url=cir_url, language_code=language_code, is_cir=True)
 
 
 @lru_cache(maxsize=None)
@@ -194,7 +196,9 @@ def _load_schema_file(schema_name: str, language_code: str) -> Any:
 
 
 @lru_cache(maxsize=None)
-def load_schema_from_url(url: str, *, language_code: str | None) -> QuestionnaireSchema:
+def load_schema_from_url(
+    url: str, *, language_code: str | None, is_cir: bool = False
+) -> QuestionnaireSchema:
     """
     Fetches a schema from the provided url.
     The caller is responsible for including any required query parameters in the url
@@ -213,6 +217,10 @@ def load_schema_from_url(url: str, *, language_code: str | None) -> Questionnair
         retry_status_codes=SCHEMA_REQUEST_RETRY_STATUS_CODES,
         backoff_factor=SCHEMA_REQUEST_BACKOFF_FACTOR,
     )
+
+    if is_cir:
+        # Type ignore: CIR_OAUTH2_CLIENT_ID is an env var which must exist as it is verified in setup.py
+        fetch_credentials(session=session, client_id=CIR_OAUTH2_CLIENT_ID)  # type: ignore
 
     try:
         req = session.get(url, timeout=SCHEMA_REQUEST_TIMEOUT)
