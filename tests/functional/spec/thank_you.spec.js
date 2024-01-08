@@ -29,7 +29,6 @@ describe("Thank You Default", () => {
       await browser.openQuestionnaire("test_title.json");
     });
 
-    // temporary comment to create draft PR
     it("When I navigate to the thank you page, Then I should see default theme content", async () => {
       await $(CheckboxPage.good()).click();
       await click(SubmitPage.submit());

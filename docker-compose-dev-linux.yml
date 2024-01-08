@@ -16,7 +16,7 @@ services:
             - "6379:6379"
 
     eq-questionnaire-launcher:
-        image: onsdigital/eq-questionnaire-launcher:latest
+        image: onsdigital/eq-questionnaire-launcher:improper-survey-metadata-generation
         environment:
             SURVEY_RUNNER_URL: http://localhost:5000
             SURVEY_RUNNER_SCHEMA_URL: http://host.docker.internal:5000
