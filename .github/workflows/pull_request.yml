@@ -118,7 +118,6 @@ jobs:
         with:
           version: 1.7.1
           virtualenvs-create: true
-          virtualenvs-in-project: true
           virtualenvs-path: ~/.virtualenvs
       - name: Cache Poetry virtualenv
         uses: actions/cache@v3
@@ -127,7 +126,6 @@ jobs:
           path: ~/.virtualenvs
           key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('poetry.lock') }}
       - name: Install Dependencies 
-        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         run: poetry install --no-interaction
       - name: Load templates
         run: make load-design-system-templates
