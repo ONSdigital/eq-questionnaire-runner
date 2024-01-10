@@ -178,7 +178,6 @@ jobs:
           path: ~/.virtualenvs
           key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('poetry.lock') }}
       - name: Install virtual environment
-        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         run: poetry install --no-interaction
       - name: Install npm deps
         run: npm install
