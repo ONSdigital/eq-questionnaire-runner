@@ -135,6 +135,8 @@ jobs:
         run: make translate
       - name: Link env vars
         run: ln -sf .development.env .env
+      - name: Debug - Print contents of .env
+        run: cat .env      
       - name: Running unit tests
         run: make test-unit
   validate-schemas:
