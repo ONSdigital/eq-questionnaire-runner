@@ -133,6 +133,8 @@ jobs:
         run: make load-design-system-templates
       - name: Compile translations
         run: make translate
+      - name: Debug - Print contents of .env
+        run: cat .env      
       - name: Link env vars
         run: ln -sf .development.env .env
       - name: Debug - Print contents of .env
