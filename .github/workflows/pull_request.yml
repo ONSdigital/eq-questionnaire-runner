@@ -137,8 +137,7 @@ jobs:
         run: ln -sf .development.env .env 
       - name: Set up environment variables
         run: |
-          cp .development.env .env
-          source .env
+          source .development.env
       - name: Running unit tests
         run:     
           make test-unit
