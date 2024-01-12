@@ -135,10 +135,11 @@ jobs:
         run: make translate
       - name: Link env vars
         run: ln -sf .development.env .env 
-      - name: Running unit tests
+      - name: Load Environment Variables
         run: |
-          cp .development.env .env.local
-          source .development.env .env.local       
+          python -m dotenv --file .development.env
+      - name: Running unit tests
+        run:     
           make test-unit
   validate-schemas:
     runs-on: ubuntu-22.04
