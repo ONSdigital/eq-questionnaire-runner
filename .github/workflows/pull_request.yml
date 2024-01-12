@@ -137,7 +137,7 @@ jobs:
         run: ln -sf .development.env .env 
       - name: Load Environment Variables
         run: |
-          python -m dotenv --file .development.env
+          poetry run python -m dotenv
       - name: Running unit tests
         run:     
           make test-unit
