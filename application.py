@@ -11,6 +11,9 @@ from structlog.stdlib import LoggerFactory, add_log_level
 
 from app.utilities.json import json_dumps
 
+# Load environment variables from .env file
+load_dotenv()
+
 
 def configure_logging():
     log_level = logging.INFO
@@ -77,9 +80,6 @@ from app.setup import (  # NOQA isort:skip # pylint: disable=wrong-import-positi
 )
 
 application = create_app()
-
-# Load environment variables from .env file
-load_dotenv()
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

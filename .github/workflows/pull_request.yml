@@ -135,9 +135,6 @@ jobs:
         run: make translate
       - name: Link env vars
         run: ln -sf .development.env .env 
-      - name: Set up environment variables
-        run: |
-          source .development.env
       - name: Running unit tests
         run:     
           make test-unit
