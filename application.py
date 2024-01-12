@@ -3,6 +3,7 @@ import logging
 import os
 import sys
 
+from dotenv import load_dotenv
 from structlog import configure, contextvars
 from structlog.dev import ConsoleRenderer
 from structlog.processors import JSONRenderer, TimeStamper, format_exc_info
@@ -76,6 +77,9 @@ from app.setup import (  # NOQA isort:skip # pylint: disable=wrong-import-positi
 )
 
 application = create_app()
+
+# Load environment variables from .env file
+load_dotenv()
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

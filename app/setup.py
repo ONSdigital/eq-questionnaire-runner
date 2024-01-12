@@ -2,8 +2,6 @@ from copy import deepcopy
 from typing import Dict
 from uuid import uuid4
 
-from dotenv import load_dotenv
-
 import boto3
 import redis
 import yaml
@@ -94,7 +92,6 @@ compress = Compress()
 
 logger = get_logger()
 
-load_dotenv()
 
 class MissingEnvironmentVariable(Exception):
     pass
