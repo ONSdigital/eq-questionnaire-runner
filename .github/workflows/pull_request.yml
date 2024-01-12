@@ -135,9 +135,10 @@ jobs:
         run: make translate
       - name: Link env vars
         run: ln -sf .development.env .env 
-      - name: Load Environment Variables
+      - name: Set up environment variables
         run: |
-          poetry run python -m dotenv
+          cp .development.env .env
+          source .env
       - name: Running unit tests
         run:     
           make test-unit
