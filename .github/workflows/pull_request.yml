@@ -133,14 +133,12 @@ jobs:
         run: make load-design-system-templates
       - name: Compile translations
         run: make translate
-      - name: Debug - Print contents of .development.env
-        run: cat .development.env
       - name: Link env vars
         run: ln -sf .development.env .env 
       - name: Load environment variables
         run: |
-          cp .env .env.local
-          source .env.local 
+          cp .env .env
+          source .env
       - name: Running unit tests
         run: make test-unit
   validate-schemas:
