@@ -136,11 +136,7 @@ jobs:
       - name: Debug - Print contents of .development.env
         run: cat .development.env
       - name: Link env vars
-        run: ln -sf .development.env .env
-      - name: Load environment variables
-        run: cp .development.env .env
-      - name: Debug - Print contents of .env
-        run: cat .env      
+        run: ln -sf .development.env .env   
       - name: Running unit tests
         run: make test-unit
   validate-schemas:
