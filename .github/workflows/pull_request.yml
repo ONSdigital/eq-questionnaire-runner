@@ -137,7 +137,6 @@ jobs:
         run: ln -sf .development.env .env 
       - name: Load environment variables
         run: |
-          cp .env .env
           source .env
       - name: Running unit tests
         run: make test-unit
