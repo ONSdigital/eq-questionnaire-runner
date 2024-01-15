@@ -218,9 +218,7 @@ def load_schema_from_url(
         backoff_factor=SCHEMA_REQUEST_BACKOFF_FACTOR,
     )
 
-    if is_cir:
-        # Type ignore: CIR_OAUTH2_CLIENT_ID is an env var which must exist as it is verified in setup.py
-        fetch_credentials(session=session, client_id=CIR_OAUTH2_CLIENT_ID)  # type: ignore
+    fetch_credentials(session=session, client_id=CIR_OAUTH2_CLIENT_ID)  # type: ignore
 
     try:
         req = session.get(url, timeout=SCHEMA_REQUEST_TIMEOUT)
