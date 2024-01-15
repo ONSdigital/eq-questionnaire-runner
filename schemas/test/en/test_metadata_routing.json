@@ -63,7 +63,7 @@
                                     "when": {
                                         "==": [
                                             {
-                                                "identifier": "flag_1",
+                                                "identifier": "boolean_flag",
                                                 "source": "metadata"
                                             },
                                             true
