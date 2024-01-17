@@ -3,16 +3,12 @@ import logging
 import os
 import sys
 
-from dotenv import load_dotenv
 from structlog import configure, contextvars
 from structlog.dev import ConsoleRenderer
 from structlog.processors import JSONRenderer, TimeStamper, format_exc_info
 from structlog.stdlib import LoggerFactory, add_log_level
 
 from app.utilities.json import json_dumps
-
-# Load environment variables from .env file
-load_dotenv()
 
 
 def configure_logging():
