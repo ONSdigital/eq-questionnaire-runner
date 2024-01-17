@@ -1,4 +1,5 @@
 from pytest import fixture
+
 from app.helpers.template_helpers import ContextHelper
 from app.settings import (
     ACCOUNT_SERVICE_BASE_URL,
@@ -6,6 +7,7 @@ from app.settings import (
     ONS_URL,
     ONS_URL_CY,
 )
+
 
 @fixture
 def get_context_helper():
