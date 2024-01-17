@@ -12,15 +12,16 @@ describe("Number validation", () => {
   before(async () => {
     await browser.openQuestionnaire("test_numbers.json");
   });
+
   describe("Given I am completing the test numbers questionnaire,", () => {
-    it("When a maximum value with decimals is used, Then the correct error message including the minimum value as a float is included", async () => {
+    it("When a minimum value with decimals is used and I enter a value less than the minimum, Then the error message includes the minimum value with the decimals values", async () => {
       await $(SetMinMax.setMinimum()).setValue(-1000.99);
       await $(SetMinMax.setMaximum()).setValue(1000);
       await click(SetMinMax.submit());
       await expect(await $(SetMinMax.errorNumber(1)).getText()).toBe("Enter an answer more than or equal to -1,000.98");
     });
 
-    it("When a minimum value with decimals is used, Then the correct error message including the maximum value as a float is included", async () => {
+    it("When a maximum value with decimals is used and I enter a value greater than the maximum, Then the error message includes the minimum value with the decimal values", async () => {
       await $(SetMinMax.setMinimum()).setValue(100);
       await $(SetMinMax.setMaximum()).setValue(10000.99);
       await click(SetMinMax.submit());
