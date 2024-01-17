@@ -135,12 +135,10 @@ jobs:
         run: make translate
       - name: Link env vars
         run: ln -sf .development.env .env 
-      - name: Load .env File
+      - name: Load .env file
         uses: xom9ikk/dotenv@v2
         with:
           path: ./.env
-          mode: development
-          load-mode: strict
       - name: Running unit tests
         run:     
           make test-unit
