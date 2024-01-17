@@ -133,6 +133,8 @@ jobs:
         run: make load-design-system-templates
       - name: Compile translations
         run: make translate
+      - name: Link env vars
+        run: ln -sf .development.env .env 
       - name: Load .env File
         uses: xom9ikk/dotenv@v2
       - name: Running unit tests
