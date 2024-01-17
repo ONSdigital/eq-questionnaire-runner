@@ -15,7 +15,7 @@ from app.questionnaire.questionnaire_schema import (
     QuestionnaireSchema,
 )
 from app.settings import CIR_OAUTH2_CLIENT_ID
-from app.utilities.credentials import fetch_credentials
+from app.utilities.credentials import fetch_and_apply_oidc_credentials
 from app.utilities.json import json_load, json_loads
 from app.utilities.request_session import get_retryable_session
 
@@ -220,7 +220,7 @@ def load_schema_from_url(
 
     if is_cir:
         # Type ignore: CIR_OAUTH2_CLIENT_ID is an env var which must exist as it is verified in setup.py
-        fetch_credentials(session=session, client_id=CIR_OAUTH2_CLIENT_ID)  # type: ignore
+        fetch_and_apply_oidc_credentials(session=session, client_id=CIR_OAUTH2_CLIENT_ID)  # type: ignore
 
     try:
         req = session.get(url, timeout=SCHEMA_REQUEST_TIMEOUT)

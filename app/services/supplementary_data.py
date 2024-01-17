@@ -11,7 +11,7 @@ from structlog import get_logger
 
 from app.keys import KEY_PURPOSE_SDS
 from app.settings import SDS_OAUTH2_CLIENT_ID
-from app.utilities.credentials import fetch_credentials
+from app.utilities.credentials import fetch_and_apply_oidc_credentials
 from app.utilities.request_session import get_retryable_session
 from app.utilities.supplementary_data_parser import validate_supplementary_data_v1
 
@@ -67,7 +67,7 @@ def get_supplementary_data_v1(
     )
 
     # Type ignore: SDS_OAUTH2_CLIENT_ID is an env var which must exist as it is verified in setup.py
-    fetch_credentials(session=session, client_id=SDS_OAUTH2_CLIENT_ID)  # type: ignore
+    fetch_and_apply_oidc_credentials(session=session, client_id=SDS_OAUTH2_CLIENT_ID)  # type: ignore
 
     try:
         response = session.get(
