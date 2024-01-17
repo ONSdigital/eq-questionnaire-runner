@@ -80,7 +80,7 @@
 
     <!-- Google tag (gtag.js) -->
     <script nonce="{{ csp_nonce }}">
-      function loadGTM() {
+      function loadGoogleTagScript() {
         (function (document, script, google_tag_id) {
           var f = document.getElementsByTagName(script)[0],
             j = document.createElement(script);
@@ -97,7 +97,7 @@
       window.dataLayer = window.dataLayer || [];
       var cookie_usage_regex = /^(.*)?\s*'usage':true\s*[^;]+(.*)?$/;
       if (document.cookie.match(cookie_usage_regex)) {
-        loadGTM()
+        loadGoogleTagScript()
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', '{{ google_tag_id }}');
