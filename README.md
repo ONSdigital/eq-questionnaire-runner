@@ -429,6 +429,10 @@ The following env variables can be used
 | ONS_URL                                   | `https://www.ons.gov.uk`     | The URL of the ONS website where static content is sourced, e.g. accessibility info                            |
 | SDS_API_BASE_URL                          |                              | The base URL of the SDS API used for fetching supplementary data                                               |
 | CIR_API_BASE_URL                          |                              | The base URL of the CIR API used for fetching collection instruments                                           |
+| OIDC_TOKEN_BACKEND                        | gcp                          | The backend to use when fetching the Open ID Connect token                                                     |
+| OIDC_TOKEN_LEEWAY_IN_SECONDS              | 300                          | The leeway to use when validating OIDC tokens                                                                  |
+| SDS_OAUTH2_CLIENT_ID                      |                              | The OAuth2 Client ID used when setting up IAP on the SDS                                                       |
+| CIR_OAUTH2_CLIENT_ID                      |                              | The OAuth2 Client ID used when setting up IAP on the CIR                                                       |
 
 The following env variables can be used when running tests
 

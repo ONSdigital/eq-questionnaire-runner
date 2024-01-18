@@ -328,6 +328,30 @@
                     ]
                 }
             ]
+        },
+        {
+            "id": "section-4",
+            "title": "Conditional Section",
+            "enabled": {
+                "when": {
+                    ">": [{ "source": "grand_calculated_summary", "identifier": "grand-calculated-summary-shopping" }, 500]
+                }
+            },
+            "groups": [
+                {
+                    "id": "group-3",
+                    "title": "Conditional Group",
+                    "blocks": [
+                        {
+                            "type": "Interstitial",
+                            "id": "grand-calculated-summary-piping",
+                            "content": {
+                                "title": "This section is only showing because the grand calculated summary exceeded £500."
+                            }
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }

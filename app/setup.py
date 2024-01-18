@@ -383,15 +383,18 @@ def setup_task_client(application):
 
 
 def setup_oidc(application):
-    def sds_client_id_exists():
+    def client_ids_exist():
         if not application.config.get("SDS_OAUTH2_CLIENT_ID"):
             raise MissingEnvironmentVariable("Setting SDS_OAUTH2_CLIENT_ID Missing")
+
+        if not application.config.get("CIR_OAUTH2_CLIENT_ID"):
+            raise MissingEnvironmentVariable("Setting CIR_OAUTH2_CLIENT_ID Missing")
 
     if not (oidc_token_backend := application.config.get("OIDC_TOKEN_BACKEND")):
         raise MissingEnvironmentVariable("Setting OIDC_TOKEN_BACKEND Missing")
 
     if oidc_token_backend == "gcp":
-        sds_client_id_exists()
+        client_ids_exist()
         application.eq["oidc_credentials_service"] = OIDCCredentialsServiceGCP()
 
     elif oidc_token_backend == "local":

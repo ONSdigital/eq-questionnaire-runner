@@ -1012,3 +1012,81 @@ def test_when_rule_dependencies_dont_include_variants(list_collector_variant_sch
     assert not schema.when_rules_section_dependencies_by_answer
     assert not schema.when_rules_section_dependencies_by_section
     assert not schema.get_when_rule_section_dependencies_for_list("people")
+
+
+def test_grand_calculated_summary_dependencies():
+    """
+    Ensures that both the grand calculated summary, and the breakdown depending on it appear in
+    the list dependencies of the two lists involved in the grand calculated summary, and each answer id
+    """
+    schema = load_schema_from_name(
+        "test_grand_calculated_summary_inside_repeating_section"
+    )
+    gcs = Dependent(
+        section_id="vehicle-details-section",
+        block_id="grand-calculated-summary-vehicle",
+        for_list="vehicles",
+    )
+    gcs_dependent = Dependent(
+        section_id="vehicle-details-section",
+        block_id="gcs-breakdown-block",
+        for_list="vehicles",
+    )
+    assert gcs in schema.list_dependencies["costs"]
+    assert gcs in schema.list_dependencies["vehicles"]
+    assert gcs_dependent in schema.list_dependencies["costs"]
+    assert gcs_dependent in schema.list_dependencies["vehicles"]
+    gcs_answers = [
+        "dynamic-answer-cost-extra",
+        "finance-cost-answer",
+        "vehicle-maintenance-cost",
+        "vehicle-fuel-cost",
+    ]
+    for answer in gcs_answers:
+        assert gcs in schema.answer_dependencies[answer]
+        assert gcs_dependent in schema.answer_dependencies[answer]
+
+
+def test_grand_calculated_summary_path_dependencies():
+    """
+    Ensures that the calculation block dependencies are correct for the grand calculated summary
+    These are used to look up the routing path block ids and include only answers on the path in the total value
+
+    For this schema, the grand calculated summary, breakdown depending on it, and page it is piped into,
+    all need the routing path block ids from both sections to display the correct total
+    """
+    schema = load_schema_from_name(
+        "test_grand_calculated_summary_inside_repeating_section"
+    )
+    calculation_deps = schema.calculation_summary_section_dependencies_by_block[
+        "vehicle-details-section"
+    ]
+    for block_id in [
+        "grand-calculated-summary-vehicle",
+        "gcs-breakdown-block",
+        "gcs-piping",
+    ]:
+        assert calculation_deps[block_id] == {
+            "base-costs-section",
+            "vehicle-details-section",
+        }
+
+
+def test_grand_calculated_summary_when_rule_dependencies():
+    """
+    Tests that for a section enabled only when a grand calculated summary is a specific value, the schema when rules
+    have the section depending on each answer making up the GCS and depending on the sections containing the answers and GCS
+    """
+    schema = load_schema_from_name("test_grand_calculated_summary_overlapping_answers")
+    assert schema.when_rules_section_dependencies_by_section["section-4"] == {
+        "section-1",
+        "section-3",
+    }
+    assert schema.when_rules_section_dependencies_by_answer == ImmutableDict(
+        {
+            "q1-a2": {"section-4"},
+            "q2-a1": {"section-4"},
+            "q1-a1": {"section-4"},
+            "q2-a2": {"section-4"},
+        }
+    )
