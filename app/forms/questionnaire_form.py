@@ -18,7 +18,7 @@ from app.forms.field_handlers import DateHandler, FieldHandler, get_field_handle
 from app.forms.validators import DateRangeCheck, MutuallyExclusiveCheck, SumCheck
 from app.questionnaire import Location, QuestionnaireSchema, QuestionSchemaType
 from app.questionnaire.dependencies import (
-    get_routing_path_block_ids_by_section_for_calculated_summary_dependencies,
+    get_routing_path_block_ids_by_section_for_calculation_summary_dependencies,
 )
 from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.relationship_location import RelationshipLocation
@@ -467,7 +467,7 @@ def get_answer_fields(
 
     if location and data_stores.progress_store:
         block_ids_by_section = (
-            get_routing_path_block_ids_by_section_for_calculated_summary_dependencies(
+            get_routing_path_block_ids_by_section_for_calculation_summary_dependencies(
                 location=location,
                 progress_store=data_stores.progress_store,
                 path_finder=PathFinder(schema=schema, data_stores=data_stores),
