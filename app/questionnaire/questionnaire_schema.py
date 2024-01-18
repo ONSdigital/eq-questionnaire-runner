@@ -2,6 +2,7 @@
 from collections import defaultdict
 from copy import deepcopy
 from dataclasses import dataclass
+from decimal import Decimal
 from functools import cached_property
 from typing import Any, Generator, Iterable, Literal, Mapping, Sequence, TypeAlias
 
@@ -167,8 +168,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         for answer in answers:
             value = answer.get(min_max, {}).get("value")
 
-            if isinstance(value, float | int):
-                value_length = len(str(value))
+            if isinstance(value, float | int | Decimal):
+                # Factor out the decimals as it's accounted for in jinja_filters.py
+                value_length = len(str(int(value)))
 
                 longest_value_length = max(longest_value_length, value_length)
 
