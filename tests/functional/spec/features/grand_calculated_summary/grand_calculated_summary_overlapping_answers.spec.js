@@ -121,7 +121,7 @@ describe("Feature: Grand Calculated Summary", () => {
       await $(HubPage.summaryRowLink("section-3")).click();
       await $(GrandCalculatedSummaryShoppingPage.calculatedSummary4Edit()).click();
       await $(CalculatedSummary4Page.q2A2Edit()).click();
-      await $(Block2Page.q2A2()).setValue(100);
+      await $(Block2Page.q2A2()).setValue(50);
       await click(Block2Page.submit());
 
       // confirm one of the calculated summaries but return to the hub instead of confirming the other
@@ -131,6 +131,31 @@ describe("Feature: Grand Calculated Summary", () => {
       // calculated summary 4 is not confirmed so GCS doesn't show
       await expect(await $(HubPage.summaryRowState("section-1")).getText()).toBe("Partially completed");
       await expect(await $(HubPage.summaryRowLink("section-3")).isExisting()).toBe(false);
+    });
+
+    it("Given I complete the calculated and grand calculated summaries, When I return to the Hub, Then I see a new conditional section has opened up", async () => {
+      await click(HubPage.submit());
+      await click(CalculatedSummary4Page.submit());
+      await click(Section1SummaryPage.submit());
+      await click(HubPage.submit());
+      await expect(await $(GrandCalculatedSummaryShoppingPage.grandCalculatedSummaryTitle()).getText()).toContain(
+        "Grand Calculated Summary of purchases this week comes to £520.00. Is this correct?",
+      );
+      await click(GrandCalculatedSummaryShoppingPage.submit());
+      await expect(await $(HubPage.summaryRowState("section-1")).getText()).toBe("Completed");
+      await expect(await $(HubPage.summaryRowState("section-3")).getText()).toBe("Completed");
+      await expect(await $(HubPage.summaryRowLink("section-4")).isExisting()).toBe(true);
+    });
+
+    it("Given I change my answer about purchasing additional items decreasing the gcs, When I return to the Hub, Then I see the conditional section is gone", async () => {
+      await $(HubPage.summaryRowLink("section-1")).click();
+      await $(Section1SummaryPage.radioExtraEdit()).click();
+      await $(Block3Page.no()).click();
+      await click(Block3Page.submit());
+      await click(Section1SummaryPage.submit());
+      await expect(await $(HubPage.summaryRowState("section-1")).getText()).toBe("Completed");
+      await expect(await $(HubPage.summaryRowState("section-3")).getText()).toBe("Completed");
+      await expect(await $(HubPage.summaryRowLink("section-4")).isExisting()).toBe(false);
     });
   });
 });

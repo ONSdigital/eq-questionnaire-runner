@@ -4,7 +4,7 @@ from werkzeug.datastructures import ImmutableDict
 
 from app.questionnaire.location import SectionKey
 from app.questionnaire.questionnaire_schema import (
-    get_calculation_block_ids_for_grand_calculated_summary,
+    get_calculated_summary_ids_for_grand_calculated_summary,
 )
 from app.questionnaire.return_location import ReturnLocation
 from app.views.contexts.calculated_summary_context import CalculatedSummaryContext
@@ -21,8 +21,8 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
             self.current_location.block_id  # type: ignore
         )
 
-        calculated_summary_ids = get_calculation_block_ids_for_grand_calculated_summary(
-            self.rendered_block
+        calculated_summary_ids = (
+            get_calculated_summary_ids_for_grand_calculated_summary(self.rendered_block)
         )
         blocks_to_calculate = [
             self._schema.get_block(block_id) for block_id in calculated_summary_ids
@@ -95,8 +95,8 @@ class GrandCalculatedSummaryContext(CalculatedSummaryContext):
         Build summary section with formatted total and change links for each calculated summary
         """
         calculation = self.rendered_block["calculation"]
-        calculated_summary_ids = get_calculation_block_ids_for_grand_calculated_summary(
-            self.rendered_block
+        calculated_summary_ids = (
+            get_calculated_summary_ids_for_grand_calculated_summary(self.rendered_block)
         )
         routing_path_block_ids = self._blocks_on_routing_path(calculated_summary_ids)
 
