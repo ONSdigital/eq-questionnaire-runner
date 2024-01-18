@@ -217,15 +217,15 @@ msgstr ""
 msgid "ONS Surveys"
 msgstr ""
 
-#: app/helpers/template_helpers.py:114
+#: app/helpers/template_helpers.py:110
 msgid "Menu"
 msgstr ""
 
-#: app/helpers/template_helpers.py:145
+#: app/helpers/template_helpers.py:141
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:170
+#: app/helpers/template_helpers.py:166
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
@@ -907,19 +907,19 @@ msgid ""
 "your answers</a> for your records."
 msgstr ""
 
-#: templates/layouts/_base.html:143 templates/thank-you.html:71
+#: templates/layouts/_base.html:133 templates/thank-you.html:71
 msgid "minute"
 msgstr ""
 
-#: templates/layouts/_base.html:144 templates/thank-you.html:72
+#: templates/layouts/_base.html:134 templates/thank-you.html:72
 msgid "minutes"
 msgstr ""
 
-#: templates/layouts/_base.html:145 templates/thank-you.html:73
+#: templates/layouts/_base.html:135 templates/thank-you.html:73
 msgid "second"
 msgstr ""
 
-#: templates/layouts/_base.html:146 templates/thank-you.html:74
+#: templates/layouts/_base.html:136 templates/thank-you.html:74
 msgid "seconds"
 msgstr ""
 
@@ -1213,29 +1213,29 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
-#: templates/layouts/_base.html:113
+#: templates/layouts/_base.html:103
 msgid "Skip to main content"
 msgstr ""
 
-#: templates/layouts/_base.html:138
+#: templates/layouts/_base.html:128
 msgid "You will be signed out soon"
 msgstr ""
 
-#: templates/layouts/_base.html:139
+#: templates/layouts/_base.html:129
 msgid "It appears you have been inactive for a while."
 msgstr ""
 
-#: templates/layouts/_base.html:140
+#: templates/layouts/_base.html:130
 msgid ""
 "To protect your information, your progress will be saved and you will be "
 "signed out in"
 msgstr ""
 
-#: templates/layouts/_base.html:141
+#: templates/layouts/_base.html:131
 msgid "You are being signed out"
 msgstr ""
 
-#: templates/layouts/_base.html:142
+#: templates/layouts/_base.html:132
 msgid "Continue survey"
 msgstr ""
 
