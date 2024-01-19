@@ -33,6 +33,9 @@ format-python:
 	pipenv run isort .
 	pipenv run black .
 
+sourcery:
+	pipenv run sourcery review . --config .sourcery.yml --verbose --check
+
 test:
 	pipenv run ./scripts/run_tests.sh
 
