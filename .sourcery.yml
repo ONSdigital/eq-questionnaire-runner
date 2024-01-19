@@ -1,0 +1,53 @@
+rule_settings:
+  python_version: '3.11'
+
+  enable:
+    - default   # sourcery
+    - gpsg  # Google Python Style Guidance
+
+  disable:
+    - snake-case-functions  # test names can include things like exception class names for readability
+    - do-not-use-staticmethod # use with external library APIs if needed
+    - avoid-global-variables # required for blueprints, flask globals etc.
+    - name-type-suffix # vars used with list collectors to be named with 'list' for readability
+    - no-loop-in-tests # tests need looping for lengthy assertions
+    - no-conditionals-in-tests # parameterised tests require conditional logic
+
+    # TODO: Remove below rules after type hinting has been fully added to Runner
+    - require-return-annotation
+    - require-parameter-annotation
+
+    # TODO: Excluded until we decide where/what to document
+    - docstrings-for-functions
+    - docstrings-for-modules
+    - docstrings-for-classes
+    - docstrings-for-packages
+
+ignore:
+    # TODO: Ignore each of the below until we investigate & fix
+    - '*.py' # top-level python project files
+    - app/ # app package-level files
+    - app/authentication/
+    - app/cloud_tasks/
+    - app/forms/
+    - app/libs/
+    - app/publisher/
+    - app/routes/
+    - app/storage/
+    - app/survey_config/
+    - app/utilities/
+    - app/authentication/
+    - app/data_models/
+    - app/helpers/
+    - app/oidc/
+    - app/questionnaire/
+    - app/services/
+    - app/submitter/
+    - app/translations/
+    - app/views/
+    - tests/
+
+    # We will always ignore these
+    - functional/  # TODO: We should use sourcery for our JS tests too, but needs investigation
+    - templates/
+    - scripts/
