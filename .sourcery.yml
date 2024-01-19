@@ -3,7 +3,7 @@ rule_settings:
 
   enable:
     - default   # sourcery
-    - gpsg  # Google Python Style Guidance
+    - gpsg  # Google Python Style Guide
 
   disable:
     - snake-case-functions  # test names can include things like exception class names for readability
