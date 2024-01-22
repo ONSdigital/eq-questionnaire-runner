@@ -21,32 +21,33 @@ token_generator = TokenGenerator(
 )
 
 
-class TestTokenGenerator(IntegrationTestCase):
-    def get_claims(self, decrypted_token):
-        result = get_questionnaire_claims(
-            decrypted_token,
-            [
-                {"name": "user_id", "type": "string"},
-                {"name": "period_id", "type": "string"},
-                {"name": "flag_1", "type": "boolean"},
-                {"name": "ru_name", "type": "string"},
-            ],
-        )
-        return result
+def get_claims(decrypted_token):
+    result = get_questionnaire_claims(
+        decrypted_token,
+        [
+            {"name": "user_id", "type": "string"},
+            {"name": "period_id", "type": "string"},
+            {"name": "flag_1", "type": "boolean"},
+            {"name": "ru_name", "type": "string"},
+        ],
+    )
+    return result
 
+
+class TestTokenGenerator(IntegrationTestCase):
     def test_integer_value_for_boolean_type_fails_validation_with_create_token(self):
         token = self.token_generator.create_token("test_metadata_routing", flag_1=123)
         with app.app_context():
             decrypted_token = decrypt_token(token)
             with self.assertRaises(InvalidTokenException) as ex:
-                self.get_claims(decrypted_token)
+                get_claims(decrypted_token)
                 assert "Invalid questionnaire claims" in str(ex.exception)
 
     def test_boolean_value_passes_validation_with_create_token(self):
         token = self.token_generator.create_token("test_metadata_routing", flag_1=True)
         with app.app_context():
             decrypted_token = decrypt_token(token)
-            result = self.get_claims(decrypted_token)
+            result = get_claims(decrypted_token)
 
             assert result == {
                 "flag_1": True,
@@ -68,7 +69,7 @@ class TestTokenGenerator(IntegrationTestCase):
         with app.app_context():
             decrypted_token = decrypt_token(token)
             with self.assertRaises(InvalidTokenException) as ex:
-                self.get_claims(decrypted_token)
+                get_claims(decrypted_token)
                 assert "Invalid questionnaire claims" in str(ex.exception)
 
     def test_boolean_value_passes_validation_with_create_token_v2(self):
@@ -78,7 +79,7 @@ class TestTokenGenerator(IntegrationTestCase):
         with app.app_context():
             decrypted_token = decrypt_token(token)
             # Returns values within "survey_metadata"
-            result = self.get_claims(decrypted_token)
+            result = get_claims(decrypted_token)
 
             assert result == {
                 "display_address": "68 Abingdon Road, Goathill",
