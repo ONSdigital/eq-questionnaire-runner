@@ -125,7 +125,11 @@ class TokenGenerator:
         payload_vars["response_expires_at"] = get_response_expires_at()
 
         for key, value in extra_payload.items():
-            payload_vars[key] = value
+            if payload_vars.get("survey_metadata"):
+                survey_metadata = payload_vars["survey_metadata"].get("data")
+                survey_metadata[key] = value
+            else:
+                payload_vars[key] = value
 
         return payload_vars
 
