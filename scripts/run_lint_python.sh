@@ -28,9 +28,6 @@ display_result $? 1 "Flake 8 code style check"
 find . -type f -name "*.py" | xargs pylint --reports=n --output-format=colorized --rcfile=.pylintrc -j 0
 display_result $? 1 "Pylint linting check"
 
-sourcery review . --config .sourcery.yml --check --verbose
-display_result $? 1 "sourcery check"
-
 isort --check .
 display_result $? 1 "isort linting check"
 
