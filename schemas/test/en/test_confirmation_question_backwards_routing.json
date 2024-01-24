@@ -81,7 +81,7 @@
             "title": "Section 2",
             "groups": [
                 {
-                    "id": "group=2",
+                    "id": "group-2",
                     "title": "Confirmation Question",
                     "blocks": [
                         {
