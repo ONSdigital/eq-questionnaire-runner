@@ -65,6 +65,7 @@ CSP_POLICY = {
     "style-src": [
         "'self'",
         "https://fonts.googleapis.com",
+        "'unsafe-inline'",
     ],
     "connect-src": [
         "'self'",
