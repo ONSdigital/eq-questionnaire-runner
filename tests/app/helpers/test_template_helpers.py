@@ -1,4 +1,3 @@
-# pylint: disable=too-many-lines
 from typing import Type
 
 import pytest
