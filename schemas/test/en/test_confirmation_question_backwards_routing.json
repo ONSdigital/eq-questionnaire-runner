@@ -40,11 +40,11 @@
     "sections": [
         {
             "id": "default-section",
-            "title": "Questions",
+            "title": "Section 1",
             "groups": [
                 {
                     "id": "confirmation",
-                    "title": "Confirmation Question Test",
+                    "title": "Confirmation Driver",
                     "blocks": [
                         {
                             "type": "Question",
@@ -71,7 +71,19 @@
                                     }
                                 ]
                             }
-                        },
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-2",
+            "title": "Section 2",
+            "groups": [
+                {
+                    "id": "group=2",
+                    "title": "Confirmation Question",
+                    "blocks": [
                         {
                             "id": "number-of-employees-total-block",
                             "question": {

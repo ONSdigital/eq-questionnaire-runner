@@ -1,3 +1,4 @@
+from copy import deepcopy
 from typing import Iterable, Mapping, Sequence
 
 from werkzeug.datastructures import ImmutableDict
@@ -105,7 +106,7 @@ class PathFinder:
         when_rules_block_dependencies: list[str],
     ) -> list[str]:
         # Keep going unless we've hit the last block
-
+        # routing_path_block_ids can be mutated by _evaluate_routing_rules
         routing_path_block_ids: list[str] = []
         block_index = 0
         repeating_list = self.schema.get_repeating_list_for_section(
@@ -175,16 +176,16 @@ class PathFinder:
         routing_path_block_ids: list[str],
         when_rules_block_dependencies: list[str],
     ) -> int | None:
-        if when_rules_block_dependencies:
-            routing_path_block_ids = (
-                when_rules_block_dependencies + routing_path_block_ids
-            )
+        # Use `list` to create a shallow copy since routing_path_block_ids is mutated hence we don't to update its memory reference
+        block_ids_for_dependencies = list(routing_path_block_ids) + (
+            when_rules_block_dependencies
+        )
 
         when_rule_evaluator = RuleEvaluator(
             self.schema,
             self.data_stores,
             location=this_location,
-            routing_path_block_ids=routing_path_block_ids,
+            routing_path_block_ids=block_ids_for_dependencies,
         )
         for rule in routing_rules:
             rule_valid = (
@@ -224,16 +225,15 @@ class PathFinder:
         if not skip_conditions:
             return False
 
-        if when_rules_block_dependencies:
-            routing_path_block_ids = (
-                when_rules_block_dependencies + routing_path_block_ids
-            )
+        block_ids_for_dependencies = list(routing_path_block_ids) + (
+            when_rules_block_dependencies
+        )
 
         when_rule_evaluator = RuleEvaluator(
             schema=self.schema,
             data_stores=self.data_stores,
             location=current_location,
-            routing_path_block_ids=routing_path_block_ids,
+            routing_path_block_ids=block_ids_for_dependencies,
         )
 
         return when_rule_evaluator.evaluate(skip_conditions["when"])
