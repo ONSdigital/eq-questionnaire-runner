@@ -176,8 +176,8 @@ class PathFinder:
         when_rules_block_dependencies: list[str],
     ) -> int | None:
         # Use `list` to create a shallow copy since routing_path_block_ids is mutated hence we don't to update its memory reference
-        block_ids_for_dependencies = list(routing_path_block_ids) + (
-            when_rules_block_dependencies
+        block_ids_for_dependencies = (
+            list(routing_path_block_ids) + when_rules_block_dependencies
         )
 
         when_rule_evaluator = RuleEvaluator(
@@ -224,8 +224,8 @@ class PathFinder:
         if not skip_conditions:
             return False
 
-        block_ids_for_dependencies = list(routing_path_block_ids) + (
-            when_rules_block_dependencies
+        block_ids_for_dependencies = (
+            list(routing_path_block_ids) + when_rules_block_dependencies
         )
 
         when_rule_evaluator = RuleEvaluator(

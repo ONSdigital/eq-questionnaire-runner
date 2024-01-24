@@ -414,9 +414,7 @@ def test_remove_answer_and_block_if_routing_backwards():
                 "section_id": "default-section",
                 "list_item_id": None,
                 "status": CompletionStatus.COMPLETED,
-                "block_ids": [
-                    "route-backwards-block"
-                ],
+                "block_ids": ["route-backwards-block"],
             },
             {
                 "section_id": "section-2",
@@ -426,7 +424,7 @@ def test_remove_answer_and_block_if_routing_backwards():
                     "number-of-employees-total-block",
                     "confirm-zero-employees-block",
                 ],
-            }
+            },
         ]
     )
 
