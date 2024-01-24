@@ -1,4 +1,3 @@
-from copy import deepcopy
 from typing import Iterable, Mapping, Sequence
 
 from werkzeug.datastructures import ImmutableDict
