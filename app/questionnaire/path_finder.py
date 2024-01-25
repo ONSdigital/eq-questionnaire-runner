@@ -175,7 +175,7 @@ class PathFinder:
         routing_path_block_ids: list[str],
         when_rules_block_dependencies: list[str],
     ) -> int | None:
-        # Use `list` to create a shallow copy since routing_path_block_ids is mutated hence we don't to update its memory reference
+        # Use `list` to create a shallow copy since routing_path_block_ids is mutated hence we don't want to update its memory reference
         block_ids_for_dependencies = (
             list(routing_path_block_ids) + when_rules_block_dependencies
         )
