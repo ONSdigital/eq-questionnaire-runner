@@ -151,6 +151,16 @@ class TestLoginWithGetRequest(IntegrationTestCase):
 
         self.assertStatusForbidden()
 
+    def test_login_with_invalid_questionnaire_claims_should_be_forbidden_v2(self):
+        # flag_1 should be a boolean
+        token = self.token_generator.create_token_v2(
+            "test_metadata_routing", flag_1=123
+        )
+
+        self.get(url=f"/session?token={token}")
+
+        self.assertStatusForbidden()
+
     def test_login_with_invalid_version_should_be_forbidden(self):
         token = self.token_generator.create_token_invalid_version("test_checkbox")
 
@@ -284,6 +294,16 @@ class TestLoginWithPostRequest(IntegrationTestCase):
         token = self.token_generator.create_token("test_metadata_routing", flag_1=123)
 
         self.post(url=f"/session?token={token}")
+
+        self.assertStatusForbidden()
+
+    def test_login_with_invalid_questionnaire_claims_should_be_forbidden_v2(self):
+        # flag_1 should be a boolean
+        token = self.token_generator.create_token_v2(
+            "test_metadata_routing", flag_1=123
+        )
+
+        self.get(url=f"/session?token={token}")
 
         self.assertStatusForbidden()
 
