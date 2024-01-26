@@ -30,7 +30,8 @@ def test_safe_serializer_raises_bad_signature_when_salts_differ(app: Flask):
         with pytest.raises(BadSignature):
             url_safe_serializer().loads(serialized_param)
 
-def test_safe_serializer_raises_value_error_when_secret_key_is_none(app:Flask):
+
+def test_safe_serializer_raises_value_error_when_secret_key_is_none(app: Flask):
     app.secret_key = None
     with app.test_request_context():
         with pytest.raises(ValueError):
