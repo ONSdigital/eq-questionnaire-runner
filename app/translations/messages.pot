@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-01-02 11:59+0000\n"
+"POT-Creation-Date: 2024-01-30 10:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.13.1\n"
+"Generated-By: Babel 2.14.0\n"
 
 #: app/forms/validators.py:389 app/jinja_filters.py:111
 #, python-format
@@ -907,19 +907,19 @@ msgid ""
 "your answers</a> for your records."
 msgstr ""
 
-#: templates/layouts/_base.html:133 templates/thank-you.html:71
+#: templates/layouts/_base.html:147 templates/thank-you.html:71
 msgid "minute"
 msgstr ""
 
-#: templates/layouts/_base.html:134 templates/thank-you.html:72
+#: templates/layouts/_base.html:148 templates/thank-you.html:72
 msgid "minutes"
 msgstr ""
 
-#: templates/layouts/_base.html:135 templates/thank-you.html:73
+#: templates/layouts/_base.html:149 templates/thank-you.html:73
 msgid "second"
 msgstr ""
 
-#: templates/layouts/_base.html:136 templates/thank-you.html:74
+#: templates/layouts/_base.html:150 templates/thank-you.html:74
 msgid "seconds"
 msgstr ""
 
@@ -1213,38 +1213,34 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
-#: templates/layouts/_base.html:103
+#: templates/layouts/_base.html:117
 msgid "Skip to main content"
 msgstr ""
 
-#: templates/layouts/_base.html:128
+#: templates/layouts/_base.html:142
 msgid "You will be signed out soon"
 msgstr ""
 
-#: templates/layouts/_base.html:129
+#: templates/layouts/_base.html:143
 msgid "It appears you have been inactive for a while."
 msgstr ""
 
-#: templates/layouts/_base.html:130
+#: templates/layouts/_base.html:144
 msgid ""
 "To protect your information, your progress will be saved and you will be "
 "signed out in"
 msgstr ""
 
-#: templates/layouts/_base.html:131
+#: templates/layouts/_base.html:145
 msgid "You are being signed out"
 msgstr ""
 
-#: templates/layouts/_base.html:132
+#: templates/layouts/_base.html:146
 msgid "Continue survey"
 msgstr ""
 
-#: templates/layouts/_calculatedsummary.html:14
-msgid "Please review your answers and confirm these are correct"
-msgstr ""
-
-#: templates/layouts/_calculatedsummary.html:25
-msgid "Yes, I confirm these are correct"
+#: templates/layouts/_calculatedsummary.html:19
+msgid "Yes, I confirm this is correct"
 msgstr ""
 
 #: templates/layouts/_questionnaire.html:39
