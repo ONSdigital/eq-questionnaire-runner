@@ -112,6 +112,126 @@ class TestRouter(RouterTestCase):
 
         assert expected_path == routing_path
 
+    def test_can_access_hub(self):
+        self.schema = load_schema_from_name(
+            "test_repeating_sections_with_hub_and_spoke"
+        )
+
+        assert self.router.can_access_hub()
+
+    def test_can_access_hub_with_required_sections_enabled_and_sections_complete(self):
+        self.schema = load_schema_from_name("test_hub_section_required_and_enabled")
+
+        self.data_stores.progress_store = ProgressStore(
+            [
+                ProgressDict(
+                    section_id="household-section",
+                    block_ids=["household-relationships-block"],
+                    status=CompletionStatus.COMPLETED,
+                ),
+                ProgressDict(
+                    section_id="relationships-section",
+                    block_ids=["relationships-count"],
+                    status=CompletionStatus.COMPLETED,
+                ),
+            ],
+        )
+
+        assert self.router.can_access_hub()
+
+    def test_can_access_hub_with_required_sections_enabled_and_section_incomplete(self):
+        self.schema = load_schema_from_name("test_hub_section_required_and_enabled")
+
+        self.data_stores.progress_store = ProgressStore(
+            [
+                ProgressDict(
+                    section_id="household-section",
+                    block_ids=["household-relationships-block"],
+                    status=CompletionStatus.IN_PROGRESS,
+                ),
+            ],
+        )
+
+        assert not self.router.can_access_hub()
+
+    def test_can_access_hub_with_required_sections_enabled_and_repeating_sections_complete(
+        self,
+    ):
+        self.schema = load_schema_from_name("test_hub_section_required_with_repeat")
+
+        self.data_stores.progress_store = ProgressStore(
+            [
+                ProgressDict(
+                    section_id="list-collector-section",
+                    block_ids=["primary-person-list-collector", "list-collector"],
+                    status=CompletionStatus.COMPLETED,
+                ),
+                ProgressDict(
+                    section_id="personal-details-section",
+                    block_ids=["proxy", "date-of-birth"],
+                    status=CompletionStatus.COMPLETED,
+                    list_item_id="XLvVvS",
+                ),
+                ProgressDict(
+                    section_id="personal-details-section",
+                    block_ids=["proxy", "date-of-birth"],
+                    status=CompletionStatus.COMPLETED,
+                    list_item_id="mJPRpW",
+                ),
+            ],
+        )
+
+        self.data_stores.list_store = ListStore(
+            [
+                {
+                    "items": ["XLvVvS", "mJPRpW"],
+                    "name": "people",
+                    "primary_person": "XLvVvS",
+                }
+            ]
+        )
+
+        assert self.router.can_access_hub()
+
+    def test_can_access_hub_with_required_sections_enabled_and_repeating_sections_incomplete(
+        self,
+    ):
+        self.schema = load_schema_from_name("test_hub_section_required_with_repeat")
+
+        self.data_stores.progress_store = ProgressStore(
+            [
+                ProgressDict(
+                    section_id="list-collector-section",
+                    block_ids=["primary-person-list-collector", "list-collector"],
+                    status=CompletionStatus.COMPLETED,
+                ),
+                ProgressDict(
+                    section_id="personal-details-section",
+                    block_ids=["proxy", "date-of-birth"],
+                    status=CompletionStatus.COMPLETED,
+                    list_item_id="XLvVvS",
+                ),
+                ProgressDict(
+                    section_id="personal-details-section",
+                    block_ids=["proxy"],
+                    status=CompletionStatus.IN_PROGRESS,
+                    list_item_id="mJPRpW",
+                ),
+            ],
+        )
+
+        self.data_stores.list_store = ListStore(
+            [
+                {
+                    "items": ["XLvVvS", "mJPRpW"],
+                    "name": "people",
+                    "primary_person": "XLvVvS",
+                }
+            ]
+        )
+
+        assert not self.router.can_access_hub()
+
 
 class TestRouterPathCompletion(RouterTestCase):
     def test_is_complete(self):
