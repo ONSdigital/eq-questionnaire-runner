@@ -39,8 +39,6 @@ jobs:
         run: |
           sudo apt-get install libsnappy-dev
           poetry install --no-interaction 
-      - name: Install dotenv plugin
-        run: poetry self add poetry-plugin-dotenv
   node-dependencies:
     runs-on: ubuntu-22.04
     steps:
@@ -137,6 +135,8 @@ jobs:
         run: make translate
       - name: Link env vars
         run: ln -sf .development.env .env 
+      - name: Install dotenv plugin
+        run: poetry self add poetry-plugin-dotenv
       - name: Running unit tests
         run:     
           make test-unit
