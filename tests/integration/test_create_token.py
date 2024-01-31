@@ -97,7 +97,7 @@ class TestCreateToken(IntegrationTestCase, AppContextTestCase):
 
     def test_uuid_consistent_after_decryption(self):
         token = self.token_generator.create_token_v2(
-            "social_demo.json", theme="social", value="Dummy Text"
+            "test_checkbox.json", theme="social", value="Dummy Text"
         )
         with self.test_app.app_context():
             decrypted_token = decrypt_token(token)
