@@ -177,3 +177,50 @@ class TestQuestionnaireHub(IntegrationTestCase):
 
         # Then I should be redirected to the second section
         self.assertEqualUrl("/questionnaire/relationships-count/")
+
+    def test_hub_section_enabled_and_accessible_with_repeating_sections(self):
+        # Given the hub is enabled and there are two required sections (and one is for a repeat)
+        self.launchSurvey("test_hub_section_required_with_repeat")
+
+        # When I answer I complete the first section and the repeating section
+        self.post({"you-live-here": "Yes"})
+        self.post({"first-name": "John", "last-name": "Doe"})
+        self.post({"anyone-else": "No"})
+        self.post()
+        self.post({"proxy-answer": "Yes"})
+        self.post(
+            {
+                "date-of-birth-answer-day": 1,
+                "date-of-birth-answer-month": 2,
+                "date-of-birth-answer-year": 1999,
+            }
+        )
+        self.post()
+
+        # Then I should see the hub
+        self.assertEqualUrl(HUB_URL_PATH)
+
+    def test_hub_section_is_inaccessible_when_all_repeats_not_complete(self):
+        # Given the hub is enabled and there are two required sections (and one is for a repeat)
+        self.launchSurvey("test_hub_section_required_with_repeat")
+
+        # When I  complete the first section and the first repeat, but not the second repeat
+        self.post({"you-live-here": "Yes"})
+        self.post({"first-name": "John", "last-name": "Doe"})
+        self.post({"anyone-else": "Yes"})
+        self.post({"first-name": "Jane", "last-name": "Doe"})
+        self.post({"anyone-else": "No"})
+        self.post()
+        self.post({"proxy-answer": "Yes"})
+        self.post(
+            {
+                "date-of-birth-answer-day": 1,
+                "date-of-birth-answer-month": 2,
+                "date-of-birth-answer-year": 1999,
+            }
+        )
+        self.post()
+
+        # Then the hub should not yet be accessible
+        self.get(HUB_URL_PATH)
+        self.assertInUrl("/proxy")
