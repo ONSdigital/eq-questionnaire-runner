@@ -12,9 +12,11 @@ import ListCollectorSectionSummaryPage from "../../../generated_pages/hub_sectio
 import ProxyRepeatPage from "../../../generated_pages/hub_section_required_with_repeat/proxy.page.js";
 import { click } from "../../../helpers";
 import DateOfBirthPage from "../../../generated_pages/hub_section_required_with_repeat/date-of-birth.page";
-import PrimaryPersonListCollectorPage from "../../../generated_pages/relationships_primary/primary-person-list-collector.page";
-import PrimaryPersonListCollectorAddPage from "../../../generated_pages/relationships_primary/primary-person-list-collector-add.page";
-import ListCollectorPage from "../../../generated_pages/relationships_primary/list-collector.page";
+import PrimaryPersonListCollectorPage from "../../../generated_pages/hub_section_required_with_repeat/primary-person-list-collector.page";
+import PrimaryPersonListCollectorAddPage from "../../../generated_pages/hub_section_required_with_repeat/primary-person-list-collector-add.page";
+import ListCollectorPage from "../../../generated_pages/hub_section_required_with_repeat/list-collector.page";
+import ListCollectorAddPage from "../../../generated_pages/hub_section_required_with_repeat/list-collector-add.page";
+import RepeatingSummaryPage from "../../../generated_pages/hub_section_required_with_repeat/personal-details-section-summary.page";
 import { getRandomString } from "../../../jwt_helper";
 import LoadedSuccessfullyBlockPage from "../../../generated_pages/hub_section_required_with_repeat_supplementary/loaded-successfully-block.page";
 import IntroductionBlockPage from "../../../generated_pages/hub_section_required_with_repeat_supplementary/introduction-block.page";
@@ -252,20 +254,36 @@ describe("Feature: Hub and Spoke", () => {
       await $(PrimaryPersonListCollectorAddPage.firstName()).setValue("Marcus");
       await $(PrimaryPersonListCollectorAddPage.lastName()).setValue("Twin");
       await click(PrimaryPersonListCollectorAddPage.submit());
+      await $(ListCollectorPage.yes()).click();
+      await $(ListCollectorPage.submit()).click();
+      await $(ListCollectorAddPage.firstName()).setValue("John");
+      await $(ListCollectorAddPage.lastName()).setValue("Doe");
+      await click(ListCollectorAddPage.submit());
       await $(ListCollectorPage.no()).click();
       await $(ListCollectorPage.submit()).click();
       await click(ListCollectorSectionSummaryPage.submit());
 
+      // Try to access the hub
+      await browser.url(HubPage.url());
+
+      // Redirected to the repeating sections to be completed
       await $(ProxyRepeatPage.yes()).click();
       await $(ProxyRepeatPage.submit()).click();
       await $(DateOfBirthPage.day()).setValue(12);
       await $(DateOfBirthPage.month()).setValue(4);
       await $(DateOfBirthPage.year()).setValue(2021);
       await click(DateOfBirthPage.submit());
+      await $(RepeatingSummaryPage.submit()).click();
+      await $(ProxyRepeatPage.yes()).click();
+      await $(ProxyRepeatPage.submit()).click();
+      await $(DateOfBirthPage.day()).setValue(1);
+      await $(DateOfBirthPage.month()).setValue(1);
+      await $(DateOfBirthPage.year()).setValue(2000);
+      await $(RepeatingSummaryPage.submit()).click();
       await expect(browser).toHaveUrlContaining(HubPage.url());
     });
 
-    it("When the repeating sections are incomplete. Then the hub should not be displayed", async () => {
+    it("When the repeating sections are incomplete, Then the hub should not be displayed", async () => {
       await $(PrimaryPersonListCollectorPage.yes()).click();
       await $(PrimaryPersonListCollectorPage.submit()).click();
       await $(PrimaryPersonListCollectorAddPage.firstName()).setValue("Marcus");
