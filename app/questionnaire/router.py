@@ -3,6 +3,7 @@ from typing import Generator, Mapping
 from flask import url_for
 
 from app.data_models.data_stores import DataStores
+from app.data_models.list_store import ListModel
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.path_finder import PathFinder
