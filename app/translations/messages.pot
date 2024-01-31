@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-01-02 11:59+0000\n"
+"POT-Creation-Date: 2024-01-31 11:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -907,19 +907,19 @@ msgid ""
 "your answers</a> for your records."
 msgstr ""
 
-#: templates/layouts/_base.html:133 templates/thank-you.html:71
+#: templates/layouts/_base.html:147 templates/thank-you.html:71
 msgid "minute"
 msgstr ""
 
-#: templates/layouts/_base.html:134 templates/thank-you.html:72
+#: templates/layouts/_base.html:148 templates/thank-you.html:72
 msgid "minutes"
 msgstr ""
 
-#: templates/layouts/_base.html:135 templates/thank-you.html:73
+#: templates/layouts/_base.html:149 templates/thank-you.html:73
 msgid "second"
 msgstr ""
 
-#: templates/layouts/_base.html:136 templates/thank-you.html:74
+#: templates/layouts/_base.html:150 templates/thank-you.html:74
 msgid "seconds"
 msgstr ""
 
@@ -982,7 +982,7 @@ msgid ""
 msgstr ""
 
 #: templates/errors/401.html:20 templates/errors/403.html:12
-#: templates/errors/404.html:13 templates/errors/500.html:12
+#: templates/errors/404.html:13 templates/errors/500.html:16
 #: templates/errors/submission-failed.html:14
 msgid "Business surveys"
 msgstr ""
@@ -994,8 +994,7 @@ msgid ""
 msgstr ""
 
 #: templates/errors/401.html:22 templates/errors/403.html:14
-#: templates/errors/404.html:15 templates/errors/500.html:14
-#: templates/errors/submission-failed.html:16
+#: templates/errors/404.html:15 templates/errors/submission-failed.html:16
 msgid "All other surveys"
 msgstr ""
 
@@ -1081,22 +1080,41 @@ msgstr ""
 msgid "If you have started a survey, your answers have been saved."
 msgstr ""
 
-#: templates/errors/500.html:10
+#: templates/errors/500.html:10 templates/errors/500.html:17
 msgid ""
-"<a href='{url}'>Contact us</a> if you need to speak to someone about your"
-" survey."
+"If you have attempted to submit your survey, you should check that this "
+"was successful. To do this, <a href='{url}'>sign in to your business "
+"survey account</a> ."
+msgstr ""
+
+#: templates/errors/500.html:11 templates/errors/500.html:14
+msgid "If you need more help, <a href='{url}'>contact us</a>."
 msgstr ""
 
 #: templates/errors/500.html:13
 msgid ""
-"If you are completing a business survey and you need to speak to someone "
-"about your survey, please <a href='{url}'>contact us</a>."
+"If you were trying to submit your survey, you should check that this was "
+"successful. To do this, <a href='{url}'>re-enter your code</a>."
 msgstr ""
 
-#: templates/errors/500.html:15
+#: templates/errors/500.html:18
 msgid ""
-"If you started your survey using an access code and you need to speak to "
-"someone about your survey, please <a href='{url}'>contact us</a>."
+"If you need more help, <a href='{url}'>contact us about business "
+"surveys</a>."
+msgstr ""
+
+#: templates/errors/500.html:19
+msgid "Other surveys"
+msgstr ""
+
+#: templates/errors/500.html:20
+msgid ""
+"If you have attempted to submit your survey, you should check that this "
+"was successful. To do this, <a href='{url}'>re-enter your code</a>."
+msgstr ""
+
+#: templates/errors/500.html:21
+msgid "If you need more help, <a href='{url}'>contact us about other surveys</a>."
 msgstr ""
 
 #: templates/errors/previously-submitted.html:3
@@ -1213,29 +1231,29 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
-#: templates/layouts/_base.html:103
+#: templates/layouts/_base.html:117
 msgid "Skip to main content"
 msgstr ""
 
-#: templates/layouts/_base.html:128
+#: templates/layouts/_base.html:142
 msgid "You will be signed out soon"
 msgstr ""
 
-#: templates/layouts/_base.html:129
+#: templates/layouts/_base.html:143
 msgid "It appears you have been inactive for a while."
 msgstr ""
 
-#: templates/layouts/_base.html:130
+#: templates/layouts/_base.html:144
 msgid ""
 "To protect your information, your progress will be saved and you will be "
 "signed out in"
 msgstr ""
 
-#: templates/layouts/_base.html:131
+#: templates/layouts/_base.html:145
 msgid "You are being signed out"
 msgstr ""
 
-#: templates/layouts/_base.html:132
+#: templates/layouts/_base.html:146
 msgid "Continue survey"
 msgstr ""
 

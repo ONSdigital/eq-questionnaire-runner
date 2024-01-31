@@ -293,12 +293,22 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
             self.assertEqual(cookie.get("theme"), "default")
             self.assertException()
             self.assertInBody(
-                f'<p><a href="{DEFAULT_URL}/contact-us/">Contact us</a> if you need to speak to someone about your survey.</p>'
+                [
+                    (
+                        "If you have attempted to submit your survey, you should check that this was successful. To do this, "
+                        f'<a href="{DEFAULT_URL}/sign-in/logout">sign in to your business survey account</a> .'
+                    ),
+                    f'<p>If you need more help, <a href="{DEFAULT_URL}/contact-us/">contact us</a>.</p>',
+                ]
             )
 
     def test_500_theme_social_cookie_exists(self):
         # Given
-        self.launchSurvey("test_introduction")
+        self.launchSurveyV2(
+            schema_name="test_theme_social",
+            theme="social",
+            account_service_url=SOCIAL_URL,
+        )
         # When
         with patch(
             "app.routes.questionnaire.get_block_handler",
@@ -308,10 +318,14 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
             cookie = self.getCookie()
 
             # Then
-            self.assertEqual(cookie.get("theme"), "default")
+            self.assertEqual(cookie.get("theme"), "social")
             self.assertException()
             self.assertInBody(
-                f'<p><a href="{DEFAULT_URL}/contact-us/">Contact us</a> if you need to speak to someone about your survey.</p>'
+                [
+                    "<p>If you were trying to submit your survey, you should check that this was successful. To do this, "
+                    f'<a href="{SOCIAL_URL}/{DEFAULT_LANGUAGE_CODE}/start/">re-enter your code</a>.</p>',
+                    '<p>If you need more help, <a href="https://www.ons.gov.uk/aboutus/contactus/surveyenquiries/">contact us</a>.</p>',
+                ]
             )
 
     def test_submission_failed_theme_default_cookie_exists(self):
