@@ -7,7 +7,7 @@ version = "0.1.0"
 description = "Python-Flask server side web application"
 authors = ["ONSDigital"]
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 pep8 = "*"
 mock = "*"
 pytest-cov = "*"
