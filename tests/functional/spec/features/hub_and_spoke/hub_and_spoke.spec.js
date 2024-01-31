@@ -246,7 +246,7 @@ describe("Feature: Hub and Spoke", () => {
       await browser.openQuestionnaire("test_hub_section_required_with_repeat.json");
     });
 
-    it("When the repeating sections are complete. Then the hub should be displayed", async () => {
+    it("When all the repeating sections are complete, Then the hub should be displayed", async () => {
       await $(PrimaryPersonListCollectorPage.yes()).click();
       await $(PrimaryPersonListCollectorPage.submit()).click();
       await $(PrimaryPersonListCollectorAddPage.firstName()).setValue("Marcus");
