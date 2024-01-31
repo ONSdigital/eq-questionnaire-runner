@@ -20,8 +20,10 @@ jobs:
       - run: |
           echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
       - uses: actions/setup-python@v4
+        id: cache-poetry
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+          cache: "poetry"
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
@@ -29,12 +31,6 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: false
           virtualenvs-path: ~/.virtualenvs
-      - name: Cache Poetry virtualenv
-        uses: actions/cache@v3
-        id: cache-virtualenv
-        with:
-          path: ~/.virtualenvs
-          key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('poetry.lock') }}
       - name: Install virtual environment
         run: |
           sudo apt-get install libsnappy-dev
@@ -57,29 +53,25 @@ jobs:
       - run: |
           echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
       - uses: actions/setup-python@v4
+        id: cache-poetry
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+          cache: "poetry"
       - uses: actions/setup-node@v3
         with:
           node-version-file: ".nvmrc"
           cache: "npm"
       - name: Write app version
         run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
-      - name: Install poetry
+      - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
-          version : 1.7.1
+          version: 1.7.1
           virtualenvs-create: true
           virtualenvs-in-project: false
           virtualenvs-path: ~/.virtualenvs
-      - name: Cache Poetry virtualenv
-        uses: actions/cache@v3
-        id: cache-virtualenv
-        with:
-          path: ~/.virtualenvs
-          key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('poetry.lock') }}
       - name: Install virtual environment
-        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+        if: steps.cache-poetry.outputs.cache-hit != 'true'
         run: poetry install
       - name: Compile translations
         run: make translate
@@ -101,8 +93,10 @@ jobs:
       - run: |
           echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
       - uses: actions/setup-python@v4
+        id: cache-poetry
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+          cache: "poetry"
       - name: Install apt dependencies
         run: |
             sudo apt-get install libsnappy-dev libgconf-2-4 jq
@@ -120,17 +114,11 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: false
           virtualenvs-path: ~/.virtualenvs
-      - name: Cache Poetry virtualenv
-        uses: actions/cache@v3
-        id: cache-virtualenv
-        with:
-          path: ~/.virtualenvs
-          key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('poetry.lock') }}
-      - name: Install Dependencies 
-        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
-        run: poetry install
       - name: Install dotenv plugin
         run: poetry self add poetry-plugin-dotenv
+      - name: Install Dependencies 
+        if: steps.cache-poetry.outputs.cache-hit != 'true'
+        run: poetry install
       - name: Load templates
         run: make load-design-system-templates
       - name: Compile translations
@@ -167,8 +155,10 @@ jobs:
       - run: |
           echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
       - uses: actions/setup-python@v4
+        id: cache-poetry
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+          cache: "poetry"
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
@@ -176,14 +166,8 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: false
           virtualenvs-path: ~/.virtualenvs
-      - name: Cache Poetry virtualenv
-        uses: actions/cache@v3
-        id: cache-virtualenv
-        with:            
-          path: ~/.virtualenvs
-          key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('poetry.lock') }}
       - name: Install virtual environment
-        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+        if: steps.cache-poetry.outputs.cache-hit != 'true'
         run: poetry install
       - name: Install npm deps
         run: npm install
