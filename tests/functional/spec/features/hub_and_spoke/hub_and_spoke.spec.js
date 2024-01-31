@@ -295,7 +295,7 @@ describe("Feature: Hub and Spoke", () => {
       });
     });
 
-    it("When the repeating sections are complete. Then the hub should be displayed", async () => {
+    it("When all the repeating sections are complete, Then the hub should be displayed", async () => {
       await click(LoadedSuccessfullyBlockPage.submit());
       await click(IntroductionBlockPage.submit());
 
