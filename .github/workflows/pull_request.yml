@@ -38,7 +38,7 @@ jobs:
       - name: Install virtual environment
         run: |
           sudo apt-get install libsnappy-dev
-          poetry install --no-interaction 
+          poetry install
   node-dependencies:
     runs-on: ubuntu-22.04
     steps:
@@ -80,7 +80,7 @@ jobs:
           key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('poetry.lock') }}
       - name: Install virtual environment
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction
+        run: poetry install
       - name: Compile translations
         run: make translate
       - name: Running translation tests
@@ -128,7 +128,7 @@ jobs:
           key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('poetry.lock') }}
       - name: Install Dependencies 
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction
+        run: poetry install
       - name: Install dotenv plugin
         run: poetry self add poetry-plugin-dotenv
       - name: Load templates
@@ -184,7 +184,7 @@ jobs:
           key: ${{ runner.os }}-${{ env.PYTHON_VERSION }}-virtualenvs-${{ hashFiles('poetry.lock') }}
       - name: Install virtual environment
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction
+        run: poetry install
       - name: Install npm deps
         run: npm install
       - name: Docker compose
