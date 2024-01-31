@@ -69,8 +69,9 @@ test_parameters = [
 ]
 
 """
-The purpose of this test class is to test the creation of a token (from create_token.py) to ensure metadata in a decrypted token is nested/found in the correct level. create_token_v2 is used
-as v1 methods are intended to be dropped and the other tests only use methods that do not have a v2 implementation.
+The purpose of this test class is to test the creation of a token (from create_token.py) to ensure metadata in
+a decrypted token is nested/found in the correct level. create_token_v2 is used as v1 methods are intended to
+be dropped and the other tests only use methods that do not have a v2 implementation.
 """
 
 
