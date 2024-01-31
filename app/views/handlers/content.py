@@ -29,13 +29,15 @@ class Content(BlockHandler):
     def get_context(self) -> dict:
         return {
             "block": self.rendered_block,
-            "individual_response_url": individual_response_url(
-                self._schema.get_individual_response_list(),
-                self._current_location.list_item_id,  # type: ignore
-                self._questionnaire_store,
-            )
-            if self._is_block_first_block_in_individual_response()
-            else None,
+            "individual_response_url": (
+                individual_response_url(
+                    self._schema.get_individual_response_list(),
+                    self._current_location.list_item_id,  # type: ignore
+                    self._questionnaire_store,
+                )
+                if self._is_block_first_block_in_individual_response()
+                else None
+            ),
         }
 
     def _get_content_title(self, transformed_block: ImmutableDict) -> str | None:

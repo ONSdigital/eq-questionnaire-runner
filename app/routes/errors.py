@@ -102,10 +102,9 @@ def bad_request(
 @errors_blueprint.app_errorhandler(NoQuestionnaireStateException)
 @errors_blueprint.app_errorhandler(Unauthorized)
 def unauthorized(
-    exception: CSRFError
-    | NoTokenException
-    | NoQuestionnaireStateException
-    | Unauthorized,
+    exception: (
+        CSRFError | NoTokenException | NoQuestionnaireStateException | Unauthorized
+    ),
 ) -> tuple[str, int]:
     log_exception(exception, 401)
     return _render_error_page(401, template="401")
@@ -198,9 +197,11 @@ def too_many_feedback_requests(
 @errors_blueprint.app_errorhandler(MissingSupplementaryDataKey)
 @errors_blueprint.app_errorhandler(InvalidSupplementaryData)
 def supplementary_data_request_failed(
-    exception: SupplementaryDataRequestFailed
-    | MissingSupplementaryDataKey
-    | InvalidSupplementaryData,
+    exception: (
+        SupplementaryDataRequestFailed
+        | MissingSupplementaryDataKey
+        | InvalidSupplementaryData
+    ),
 ) -> tuple[str, int]:
     log_exception(exception, 500)
     return _render_error_page(500, template=500)
