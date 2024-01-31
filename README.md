@@ -85,13 +85,14 @@ Python versions can be changed with the `pyenv local` or `pyenv global` commands
 
 #### Python & dependencies
 
-Inside the project directory install python version, upgrade pip and install dependencies:
+Inside the project directory install python version, upgrade pip, install dependencies and poetry dotenv plugin:
 
 ``` shell
 pyenv install
 pip install --upgrade pip setuptools
 curl -sSL https://install.python-poetry.org | python3 - 
 poetry install
+poetry self add poetry-plugin-dotenv
 ```
 
 #### Design system templates
