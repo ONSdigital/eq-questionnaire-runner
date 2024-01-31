@@ -91,14 +91,13 @@ class Router:
                     self._schema.get_repeating_list_for_section(section_id)
                 )
 
-                items = (
+                items: ListModel | list[None] = (
                     self._data_stores.list_store.get(repeating_list_for_section)
                     if repeating_list_for_section
                     else [None]
                 )
 
-                # Type ignore: items is an iterable as per the ListModel __iter__ method
-                for list_item_id in items:  # type: ignore
+                for list_item_id in items:
                     section_key = SectionKey(section_id, list_item_id)
                     if not self._data_stores.progress_store.is_section_complete(
                         section_key
