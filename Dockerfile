@@ -20,7 +20,7 @@ COPY poetry.lock poetry.lock
 RUN groupadd -r appuser && useradd -r -g appuser -u 9000 appuser && chown -R appuser:appuser .
 RUN pip install "poetry==1.7.1"
 RUN poetry config virtualenvs.create false
-RUN poetry install --only-main && make build
+RUN poetry install --only main && make build
 
 USER appuser
 
