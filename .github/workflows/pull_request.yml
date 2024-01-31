@@ -129,14 +129,14 @@ jobs:
       - name: Install Dependencies 
         if: steps.cache-virtualenv.outputs.cache-hit != 'true'
         run: poetry install --no-interaction
+      - name: Install dotenv plugin
+        run: poetry self add poetry-plugin-dotenv
       - name: Load templates
         run: make load-design-system-templates
       - name: Compile translations
         run: make translate
       - name: Link env vars
         run: ln -sf .development.env .env 
-      - name: Install dotenv plugin
-        run: poetry self add poetry-plugin-dotenv
       - name: Running unit tests
         run:     
           make test-unit
