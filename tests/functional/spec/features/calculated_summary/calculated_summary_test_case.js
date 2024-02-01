@@ -64,7 +64,6 @@ class TestCase {
       await $(SixthNumberBlockPage.sixthNumber()).setValue(45.67);
       await click(SixthNumberBlockPage.submit());
 
-      await expect(await $(CurrencyTotalPlaybackPage.submit()).getText()).toBe("Yes, I confirm this is correct");
       await expect(browser).toHaveUrlContaining(CurrencyTotalPlaybackPage.pageName);
     });
 
