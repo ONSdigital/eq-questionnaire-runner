@@ -3,6 +3,7 @@ from typing import Generator, Mapping
 from flask import url_for
 
 from app.data_models.data_stores import DataStores
+from app.data_models.list_store import ListModel
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.path_finder import PathFinder
@@ -82,11 +83,29 @@ class Router:
         return location.block_id in self._get_allowable_path(routing_path)
 
     def can_access_hub(self) -> bool:
-        return self._schema.is_flow_hub and all(
-            self._data_stores.progress_store.is_section_complete(SectionKey(section_id))
-            for section_id in self._schema.get_section_ids_required_for_hub()
-            if section_id in self.enabled_section_ids
-        )
+        if not self._schema.is_flow_hub:
+            return False
+
+        for section_id in self._schema.get_section_ids_required_for_hub():
+            if section_id in self.enabled_section_ids:
+                repeating_list_for_section = (
+                    self._schema.get_repeating_list_for_section(section_id)
+                )
+
+                items: ListModel | list[None] = (
+                    self._data_stores.list_store.get(repeating_list_for_section)
+                    if repeating_list_for_section
+                    else [None]
+                )
+
+                for list_item_id in items:
+                    section_key = SectionKey(section_id, list_item_id)
+                    if not self._data_stores.progress_store.is_section_complete(
+                        section_key
+                    ):
+                        return False
+
+        return True
 
     def can_display_section_summary(self, section_key: SectionKey) -> bool:
         return bool(
