@@ -11,6 +11,8 @@ from tests.integration.integration_test_case import IntegrationTestCase
 
 SCHEMA_PATH_MAP = get_schema_path_map(include_test_schemas=True)
 
+# pylint: disable=too-many-public-methods
+
 
 class TestLoginWithGetRequest(IntegrationTestCase):
     def test_login_with_no_token_should_be_unauthorized(self):
