@@ -109,7 +109,7 @@ class TokenGenerator:
         payload=PAYLOAD,
         **extra_payload,
     ):  # pylint: disable=dangerous-default-value
-        payload_vars = payload.copy()
+        payload_vars = deepcopy(payload)
         payload_vars["tx_id"] = str(uuid4())
         if schema_name:
             payload_vars["schema_name"] = schema_name
@@ -151,7 +151,7 @@ class TokenGenerator:
         return self.generate_token(payload)
 
     def create_supplementary_data_token(self, schema_name, **extra_payload):
-        payload = deepcopy(PAYLOAD_V2_SUPPLEMENTARY_DATA)
+        payload = PAYLOAD_V2_SUPPLEMENTARY_DATA
 
         # iterate over a copy so items can be deleted
         for key, value in list(extra_payload.items()):
