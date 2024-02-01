@@ -24,6 +24,10 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
         self.assertInBody(
             "We calculate the grand total journeys per week to be 13. Is this correct?"
         )
+        # check the submit button text
+        self.assertEqual(
+            "Yes, I confirm this is correct", self.getSubmitButton().text.strip()
+        )
 
     def test_grand_calculated_summary_multiple_sections(self):
         """
