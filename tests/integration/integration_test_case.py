@@ -273,6 +273,9 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
     def getSignOutButton(self):
         return self.getHtmlSoup().find("a", {"data-qa": "btn-save-sign-out"})
 
+    def getSubmitButton(self):
+        return self.getHtmlSoup().find("button", {"data-qa": "btn-submit"})
+
     def saveAndSignOut(self):
         """
         Sign out of eQ using the `Save and exit survey` button and do not follow redirects since the redirect is external

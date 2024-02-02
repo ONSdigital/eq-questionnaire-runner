@@ -48,8 +48,12 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
     def test_calculated_summary(self):
         self.launchSurvey("test_calculated_summary")
         self._complete_calculated_summary_path_with_skip()
+
         self.assertInBody(
             "We calculate the total of currency values entered to be £80.00"
+        )
+        self.assertEqual(
+            "Yes, I confirm this is correct", self.getSubmitButton().text.strip()
         )
 
     def test_calculated_summary_no_skip(self):
