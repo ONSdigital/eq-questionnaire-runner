@@ -1257,12 +1257,8 @@ msgstr ""
 msgid "Continue survey"
 msgstr ""
 
-#: templates/layouts/_calculatedsummary.html:14
-msgid "Please review your answers and confirm these are correct"
-msgstr ""
-
-#: templates/layouts/_calculatedsummary.html:25
-msgid "Yes, I confirm these are correct"
+#: templates/layouts/_calculatedsummary.html:19
+msgid "Yes, I confirm this is correct"
 msgstr ""
 
 #: templates/layouts/_questionnaire.html:39
