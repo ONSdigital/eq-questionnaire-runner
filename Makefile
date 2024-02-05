@@ -116,3 +116,7 @@ dev-compose-down-linux:
 
 profile:
 	pipenv run python profile_application.py
+
+generate-integration-test:
+	pipenv run python -m scripts.generate_integration_test
+	pipenv run black .
