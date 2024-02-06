@@ -7,17 +7,17 @@
   <p>{{ _("Try again later.") }}</p>
   <p>{{ _("If you have started a survey, your answers have been saved.") }}</p>
   {% if survey_type and (survey_type in SURVEY_TYPES_BUSINESS or survey_type in SURVEY_TYPES_DEFAULT) %}
-    <p>{{ _("If you have attempted to submit your survey, you should check that this was successful. To do this, <a href='{url}'>sign in to your business survey account</a> .").format(url = business_logout_url) }}</p>
+    <p>{{ _("If you have attempted to submit your survey, you should check that this was successful. To do this, <a href='{url}'>sign in to your business survey account</a>.").format(url = business_logout_url) }}</p>
     <p>{{ _("If you need more help, <a href='{url}'>contact us</a>.").format(url=contact_us_url) }}</p>
   {% elif survey_type and survey_type in SURVEY_TYPES_SOCIAL or survey_type in SURVEY_TYPES_HEALTH %}
-    <p>{{ _("If you were trying to submit your survey, you should check that this was successful. To do this, <a href='{url}'>re-enter your code</a>.").format(url = other_logout_url) }}</p>
+    <p>{{ _("If you have attempted to submit your survey, you should check that this was successful. To do this, <a href='{url}'>re-enter your code</a>.").format(url = other_logout_url) }}</p>
     <p>{{ _("If you need more help, <a href='{url}'>contact us</a>.").format(url=contact_us_url) }}</p>
   {% else %}
     <h2>{{ _("Business surveys") }}</h2>
-    <p>{{ _("If you have attempted to submit your survey, you should check that this was successful. To do this, <a href='{url}'>sign in to your business survey account</a> .").format(url = business_logout_url) }}</p>
+    <p>{{ _("If you have attempted to submit your survey, you should check that this was successful. To do this, <a href='{url}'>sign in to your business survey account</a>.").format(url = business_logout_url) }}</p>
     <p>{{ _("If you need more help, <a href='{url}'>contact us about business surveys</a>.").format(url=business_contact_us_url) }}</p>
-    <h2>{{ _("Other surveys") }}</h2>
+    <h2>{{ _("All other surveys") }}</h2>
     <p>{{ _("If you have attempted to submit your survey, you should check that this was successful. To do this, <a href='{url}'>re-enter your code</a>.").format(url = other_logout_url) }}</p>
-    <p>{{ _("If you need more help, <a href='{url}'>contact us about other surveys</a>.").format(url=other_contact_us_url) }}</p>
+    <p>{{ _("If you need more help, <a href='{url}'>contact us about all other surveys</a>.").format(url=other_contact_us_url) }}</p>
   {% endif %}
 {% endblock %}
