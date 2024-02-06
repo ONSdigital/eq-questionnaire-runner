@@ -348,7 +348,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         # Given I launch a survey, When the 'theme' is not set in the cookie
         with patch(
             "app.routes.session.set_schema_context_in_cookie",
-            side_effect=Exception("Theme not set failed"),
+            side_effect=Exception("Theme set failed"),
         ):
             self.launchSurvey("test_introduction")
 
