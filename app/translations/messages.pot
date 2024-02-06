@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-01-31 11:15+0000\n"
+"POT-Creation-Date: 2024-02-06 15:03+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -994,7 +994,8 @@ msgid ""
 msgstr ""
 
 #: templates/errors/401.html:22 templates/errors/403.html:14
-#: templates/errors/404.html:15 templates/errors/submission-failed.html:16
+#: templates/errors/404.html:15 templates/errors/500.html:19
+#: templates/errors/submission-failed.html:16
 msgid "All other surveys"
 msgstr ""
 
@@ -1084,17 +1085,17 @@ msgstr ""
 msgid ""
 "If you have attempted to submit your survey, you should check that this "
 "was successful. To do this, <a href='{url}'>sign in to your business "
-"survey account</a> ."
+"survey account</a>."
 msgstr ""
 
 #: templates/errors/500.html:11 templates/errors/500.html:14
 msgid "If you need more help, <a href='{url}'>contact us</a>."
 msgstr ""
 
-#: templates/errors/500.html:13
+#: templates/errors/500.html:13 templates/errors/500.html:20
 msgid ""
-"If you were trying to submit your survey, you should check that this was "
-"successful. To do this, <a href='{url}'>re-enter your code</a>."
+"If you have attempted to submit your survey, you should check that this "
+"was successful. To do this, <a href='{url}'>re-enter your code</a>."
 msgstr ""
 
 #: templates/errors/500.html:18
@@ -1103,18 +1104,10 @@ msgid ""
 "surveys</a>."
 msgstr ""
 
-#: templates/errors/500.html:19
-msgid "Other surveys"
-msgstr ""
-
-#: templates/errors/500.html:20
-msgid ""
-"If you have attempted to submit your survey, you should check that this "
-"was successful. To do this, <a href='{url}'>re-enter your code</a>."
-msgstr ""
-
 #: templates/errors/500.html:21
-msgid "If you need more help, <a href='{url}'>contact us about other surveys</a>."
+msgid ""
+"If you need more help, <a href='{url}'>contact us about all other "
+"surveys</a>."
 msgstr ""
 
 #: templates/errors/previously-submitted.html:3
