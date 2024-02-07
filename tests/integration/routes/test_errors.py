@@ -35,6 +35,34 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
         "response_expires_at": get_response_expires_at(),
     }
 
+    def _assert_generic_500_page_content(self):
+        self.assertInBody(
+            "<h1>Sorry, there is a problem with this service</h1>\n"
+            "<p>Try again later.</p>\n"
+            "<p>If you have started a survey, your answers have been saved.</p>"
+        )
+
+    def _assert_default_theme_500_page_content(
+        self, *, url=DEFAULT_URL, has_header=False, contact_us_text="contact us"
+    ):
+        header_text = "<h2>Business surveys</h2>\n" if has_header else ""
+        self.assertInBody(
+            f"{header_text}<p>If you have attempted to submit your survey, you should check that this was successful. To do this, "
+            f'<a href="{url}/sign-in/logout">sign in to your business survey account</a>.</p>\n'
+            f'<p>If you need more help, <a href="{url}/contact-us/">{contact_us_text}</a>.</p>'
+        )
+
+    def _assert_social_theme_500_page_content(
+        self, has_header=False, contact_us_text="contact us"
+    ):
+        header_text = "<h2>All other surveys</h2>\n" if has_header else ""
+
+        self.assertInBody(
+            f"{header_text}<p>If you have attempted to submit your survey, you should check that this was successful. To do this, "
+            f'<a href="{SOCIAL_URL}/{DEFAULT_LANGUAGE_CODE}/start/">re-enter your code</a>.</p>\n'
+            f'<p>If you need more help, <a href="{ONS_URL}/aboutus/contactus/surveyenquiries/">{contact_us_text}</a>.</p>'
+        )
+
     def test_errors_404(self):
         self.get("/hfjdskahfjdkashfsa")
         self.assertStatusNotFound()
@@ -92,7 +120,7 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
                     self.post({"answer": "5000000"})
 
                     self.assertStatusCode(500)
-                    self.assertInBody("Sorry, there is a problem with this service")
+                    self._assert_generic_500_page_content()
 
     def test_401_theme_default_cookie_exists(self):
         # Given
@@ -291,14 +319,17 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
 
             # Then
             self.assertEqual(cookie.get("theme"), "default")
-            self.assertException()
-            self.assertInBody(
-                f'<p><a href="{DEFAULT_URL}/contact-us/">Contact us</a> if you need to speak to someone about your survey.</p>'
-            )
+            self.assertStatusCode(500)
+            self._assert_generic_500_page_content()
+            self._assert_default_theme_500_page_content()
 
     def test_500_theme_social_cookie_exists(self):
         # Given
-        self.launchSurvey("test_introduction")
+        self.launchSurveyV2(
+            schema_name="test_theme_social",
+            theme="social",
+            account_service_url=SOCIAL_URL,
+        )
         # When
         with patch(
             "app.routes.questionnaire.get_block_handler",
@@ -308,11 +339,32 @@ class TestErrors(IntegrationTestCase):  # pylint: disable=too-many-public-method
             cookie = self.getCookie()
 
             # Then
-            self.assertEqual(cookie.get("theme"), "default")
-            self.assertException()
-            self.assertInBody(
-                f'<p><a href="{DEFAULT_URL}/contact-us/">Contact us</a> if you need to speak to someone about your survey.</p>'
-            )
+            self.assertEqual(cookie.get("theme"), "social")
+            self.assertStatusCode(500)
+            self._assert_generic_500_page_content()
+            self._assert_social_theme_500_page_content()
+
+    def test_500_theme_not_set_in_cookie(self):
+        # Given I launch a survey, When the 'theme' is not set in the cookie
+        with patch(
+            "app.routes.session.set_schema_context_in_cookie",
+            side_effect=Exception("Theme set failed"),
+        ):
+            self.launchSurvey("test_introduction")
+
+        # Then I see the generic 500 error page
+        cookie = self.getCookie()
+        self.assertEqual(cookie.get("theme"), None)
+        self.assertStatusCode(500)
+        self._assert_generic_500_page_content()
+        self._assert_default_theme_500_page_content(
+            url=BUSINESS_URL,
+            has_header=True,
+            contact_us_text="contact us about business surveys",
+        )
+        self._assert_social_theme_500_page_content(
+            has_header=True, contact_us_text="contact us about all other surveys"
+        )
 
     def test_submission_failed_theme_default_cookie_exists(self):
         # Given

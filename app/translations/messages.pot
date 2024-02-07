@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-01-30 11:47+0000\n"
+"POT-Creation-Date: 2024-02-06 15:03+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -982,7 +982,7 @@ msgid ""
 msgstr ""
 
 #: templates/errors/401.html:20 templates/errors/403.html:12
-#: templates/errors/404.html:13 templates/errors/500.html:12
+#: templates/errors/404.html:13 templates/errors/500.html:16
 #: templates/errors/submission-failed.html:14
 msgid "Business surveys"
 msgstr ""
@@ -994,7 +994,7 @@ msgid ""
 msgstr ""
 
 #: templates/errors/401.html:22 templates/errors/403.html:14
-#: templates/errors/404.html:15 templates/errors/500.html:14
+#: templates/errors/404.html:15 templates/errors/500.html:19
 #: templates/errors/submission-failed.html:16
 msgid "All other surveys"
 msgstr ""
@@ -1081,22 +1081,33 @@ msgstr ""
 msgid "If you have started a survey, your answers have been saved."
 msgstr ""
 
-#: templates/errors/500.html:10
+#: templates/errors/500.html:10 templates/errors/500.html:17
 msgid ""
-"<a href='{url}'>Contact us</a> if you need to speak to someone about your"
-" survey."
+"If you have attempted to submit your survey, you should check that this "
+"was successful. To do this, <a href='{url}'>sign in to your business "
+"survey account</a>."
 msgstr ""
 
-#: templates/errors/500.html:13
-msgid ""
-"If you are completing a business survey and you need to speak to someone "
-"about your survey, please <a href='{url}'>contact us</a>."
+#: templates/errors/500.html:11 templates/errors/500.html:14
+msgid "If you need more help, <a href='{url}'>contact us</a>."
 msgstr ""
 
-#: templates/errors/500.html:15
+#: templates/errors/500.html:13 templates/errors/500.html:20
 msgid ""
-"If you started your survey using an access code and you need to speak to "
-"someone about your survey, please <a href='{url}'>contact us</a>."
+"If you have attempted to submit your survey, you should check that this "
+"was successful. To do this, <a href='{url}'>re-enter your code</a>."
+msgstr ""
+
+#: templates/errors/500.html:18
+msgid ""
+"If you need more help, <a href='{url}'>contact us about business "
+"surveys</a>."
+msgstr ""
+
+#: templates/errors/500.html:21
+msgid ""
+"If you need more help, <a href='{url}'>contact us about all other "
+"surveys</a>."
 msgstr ""
 
 #: templates/errors/previously-submitted.html:3
