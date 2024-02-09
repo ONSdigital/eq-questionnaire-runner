@@ -1,5 +1,5 @@
 import pytest
-from mock import MagicMock
+from unittest.mock import MagicMock
 from app.helpers import get_span_and_trace
 from app.setup import setup_secure_cookies
 
@@ -27,19 +27,18 @@ def test_get_span_and_trace(cloud_trace_header, expected_trace, expected_span):
     assert trace == expected_trace
     assert span == expected_span
 
-
-class MockApplication:
-    def __init__(self):
-        self.eq = {"secret_store": MockSecretStore()}
-        self.secret_key = None
-        self.session_interface = None
-
-class MockSecretStore:
-    def get_secret_by_name(self, name):
-        return None
-
 def test_setup_secure_cookies_with_missing_secret_key():
-    app = MockApplication()
+   # Create a mock Flask application
+    app = MagicMock()
+    app.eq = {"secret_store": MagicMock()}
+    app.secret_key = None
+    
+    # Mocking the get_secret_by_name method to return None
+    app.eq["secret_store"].get_secret_by_name.return_value = None
+
+    # Test setup_secure_cookies
     with pytest.raises(ValueError):
         setup_secure_cookies(app)
+    
+    # Assert that the secret_key and session_interface remain None
     assert app.secret_key is None
