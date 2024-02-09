@@ -31,7 +31,7 @@ def test_get_span_and_trace(cloud_trace_header, expected_trace, expected_span):
     assert span == expected_span
 
 
-def test_setup_secure_cookies_with_missing_secret_key():
+def test_setup_secure_cookies_missing_secret_key():
     app = MagicMock()
     app.eq = {"secret_store": MagicMock()}
     app.secret_key = None
