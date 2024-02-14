@@ -125,18 +125,28 @@ class TestCreateToken(IntegrationTestCase, AppContextTestCase):
             ).get("data").items()
 
     def test_metadata_is_removed_from_token(self):
-        tokens = {
-            "jti": self.token_generator.create_token_without_jti("test_number.json"),
-            "case_id": self.token_generator.create_token_without_case_id(
-                "test_numbers.json"
-            ),
-            "trad_as": self.token_generator.create_token_without_trad_as(
-                "test_numbers.json"
-            ),
-        }
-        for metadata in tokens:
+        metadata_tokens = [
+            {
+                "token": self.token_generator.create_token_without_jti(
+                    "test_number.json"
+                ),
+                "removed_metadata": "jti",
+            },
+            {
+                "token": self.token_generator.create_token_without_case_id(
+                    "test_numbers.json"
+                ),
+                "removed_metadata": "case_id",
+            },
+            {
+                "token": self.token_generator.create_token_without_trad_as(
+                    "test_numbers.json"
+                ),
+                "removed_metadata": "trad_as",
+            },
+        ]
+        for values in metadata_tokens:
             with self.subTest():
-                token = tokens[metadata]
                 with self.test_app.app_context():
-                    decrypted_token = decrypt_token(token)
-                    self.assertNotIn(metadata, decrypted_token)
+                    decrypted_token = decrypt_token(values.get("token"))
+                    self.assertNotIn(values.get("removed_metadata"), decrypted_token)
