@@ -83,7 +83,7 @@ def process_get(request: Request, file: TextIO) -> None:
         survey_start = False
 
 
-def create_file_skeleton(request: Request):
+def create_file_skeleton(request: Request) -> None:
     global schema_name
 
     schema_name = parse_qs(request.url)["schema_name"][0]
@@ -105,7 +105,7 @@ def request_handler(request: Request) -> None:
         process_request(request)
 
 
-def run(pw: Playwright):
+def run(pw: Playwright) -> None:
     chromium = pw.chromium
     browser = chromium.launch(headless=False)
     page = browser.new_page()
