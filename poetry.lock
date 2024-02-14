@@ -1073,17 +1073,18 @@ libcst = ["libcst (>=0.2.5)"]
 
 [[package]]
 name = "google-cloud-pubsub"
-version = "2.18.4"
+version = "2.19.4"
 description = "Google Cloud Pub/Sub API client library"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "google-cloud-pubsub-2.18.4.tar.gz", hash = "sha256:32eb61fd4c1dc6c842f594d69d9afa80544e3b327aa640a164eb6fb0201eaf2d"},
-    {file = "google_cloud_pubsub-2.18.4-py2.py3-none-any.whl", hash = "sha256:f32144ad9ed32331a80a2f8379a3ca7526bbc01e7bd76de2e8ab52e492d21f50"},
+    {file = "google-cloud-pubsub-2.19.4.tar.gz", hash = "sha256:a5f9280598f0c4a5819bb630a50c45dc8acda0c94afecae0a18368bccbfa2651"},
+    {file = "google_cloud_pubsub-2.19.4-py2.py3-none-any.whl", hash = "sha256:5eddfb8f4eb26e2a25b9856ca1a65c5f2015e5c3e365e68df3b4f5d36809d9c2"},
 ]
 
 [package.dependencies]
 google-api-core = {version = ">=1.34.0,<2.0.dev0 || >=2.11.dev0,<3.0.0dev", extras = ["grpc"]}
+google-auth = ">=2.14.1,<3.0.0dev"
 grpc-google-iam-v1 = ">=0.12.4,<1.0.0dev"
 grpcio = ">=1.51.3,<2.0dev"
 grpcio-status = ">=1.33.2"
@@ -3188,4 +3189,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11.4"
-content-hash = "4cc91fa9c1bfbfda086a5c1fe54b6e0b6d74bb7ae210526fa7ba70dabfe39814"
+content-hash = "2a6461c28bb43c3a8b1487e9f170aac7c6a5a5b5366296de3997709e4cba794f"
