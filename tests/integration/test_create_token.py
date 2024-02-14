@@ -68,14 +68,13 @@ test_parameters = [
     },
 ]
 
-"""
-The purpose of this test class is to test the creation of a token (from create_token.py) to ensure metadata in
-a decrypted token is nested/found in the correct level. create_token_v2 is used as v1 methods are intended to
-be dropped and the other tests only use methods that do not have a v2 implementation.
-"""
-
 
 class TestCreateToken(IntegrationTestCase, AppContextTestCase):
+    """
+    The purpose of this test class is to test the creation of a token (from create_token.py) to ensure
+    metadata in a decrypted token is nested/found in the correct level.
+    """
+
     def test_payload_from_token(self):
         for value in test_parameters:
             with self.subTest():
@@ -112,7 +111,7 @@ class TestCreateToken(IntegrationTestCase, AppContextTestCase):
                 "receipting_keys": ["qid"],
             }
 
-    def test_supplementary_data_included_in_token(self):
+    def test_supplementary_dataset_included_in_token(self):
         token = self.token_generator.create_supplementary_data_token(
             "test_checkbox.json", flag_1=True
         )
@@ -126,13 +125,18 @@ class TestCreateToken(IntegrationTestCase, AppContextTestCase):
             ).get("data").items()
 
     def test_metadata_is_removed_from_token(self):
-        for value in [
-            [self.token_generator.create_token_without_jti, "jti"],
-            [self.token_generator.create_token_without_case_id, "case_id"],
-            [self.token_generator.create_token_without_trad_as, "trad_as"],
-        ]:
+        tokens = {
+            "jti": self.token_generator.create_token_without_jti("test_number.json"),
+            "case_id": self.token_generator.create_token_without_case_id(
+                "test_numbers.json"
+            ),
+            "trad_as": self.token_generator.create_token_without_trad_as(
+                "test_numbers.json"
+            ),
+        }
+        for metadata in tokens:
             with self.subTest():
-                token = value[0]("test_numbers.json")
+                token = tokens[metadata]
                 with self.test_app.app_context():
                     decrypted_token = decrypt_token(token)
-                    self.assertNotIn(value[1], decrypted_token)
+                    self.assertNotIn(metadata, decrypted_token)
