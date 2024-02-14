@@ -118,5 +118,6 @@ profile:
 	pipenv run python profile_application.py
 
 generate-integration-test:
+	docker-compose -f docker-compose-dev-mac.yml up -d
 	pipenv run python -m scripts.generate_integration_test
-	pipenv run black .
+	pipenv run black scripts/test_*
