@@ -13,14 +13,13 @@ schema_name = ""
 
 LAUNCHER_ROOT_URL = "http://localhost:8000"
 RUNNER_ROOT_URL = "http://localhost:5000"
-SPACE_INDENTATION = " " * 8
 
 
 # pylint: disable=global-variable-not-assigned
 def process_runner_request(request: Request) -> None:
     global schema_name
 
-    with open(f"{schema_name}.py", "a", encoding="utf-8") as file:
+    with open(f"./scripts/{schema_name}.py", "a", encoding="utf-8") as file:
         if request.method == "POST":
             process_post(request, file)
 
@@ -46,10 +45,10 @@ def process_post(request: Request, file: TextIO) -> None:
             items[answer_id] = answer_values[0]  # A single item in list
 
     if items:
-        file.write(generate_post_code_snippet(items))
+        file.write(generate_method_request("post", items))
     else:
         # Empty post for no answers and non question pages
-        file.write(generate_post_code_snippet())
+        file.write(generate_method_request("post", ""))
 
 
 # pylint: disable=global-statement
@@ -63,7 +62,7 @@ def process_get(request: Request, file: TextIO) -> None:
         and request.url != f"{RUNNER_ROOT_URL}/questionnaire/"
     ):
         path = urlparse(request.url).path
-        file.write(generate_get_code_snippet(path))
+        file.write(generate_method_request("get", path))
 
     if not survey_start:
         previous_request_method = request.method
@@ -83,7 +82,7 @@ def process_launcher_request(request: Request) -> None:
         if survey_start:
             # start of journey, so create a skeleton file using the schema name
             schema_name = parse_qs(request.url)["schema_name"][0]
-            with open(f"{schema_name}.py", "w", encoding="utf-8") as file:
+            with open(f"./scripts/{schema_name}.py", "w", encoding="utf-8") as file:
                 file.write(
                     f"from tests.integration.integration_test_case import IntegrationTestCase\n\n\n"
                     f'class {schema_name.title().replace("_", "")}(IntegrationTestCase):\n'
@@ -93,23 +92,16 @@ def process_launcher_request(request: Request) -> None:
                 logger.info(f"self.launchSurvey('{schema_name}')")
         else:
             # capture launcher urls for sign-out, save etc
-            with open(f"{schema_name}.py", "a", encoding="utf-8") as file:
+            with open(f"./scripts/{schema_name}.py", "a", encoding="utf-8") as file:
                 path = urlparse(request.url).path
-                file.write(generate_get_code_snippet(path))
+                file.write(generate_method_request("get", path))
 
 
-def generate_post_code_snippet(post_data: dict | str | None = "") -> str:
-    snippet = f"self.post({post_data})"
+def generate_method_request(method: str, data: dict | str | None = "") -> str:
+    snippet = f"self.{method}({data})"
     logger.info(snippet)
 
-    return f"\n{SPACE_INDENTATION}{snippet}"
-
-
-def generate_get_code_snippet(url_path: str) -> str:
-    snippet = f'self.get("{url_path}")'
-    logger.info(snippet)
-
-    return f"\n{SPACE_INDENTATION}{snippet}"
+    return f"\n        {snippet}"
 
 
 def request_handler(request: Request) -> None:

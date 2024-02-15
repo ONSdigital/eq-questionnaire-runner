@@ -8,7 +8,7 @@ To generate the GET and POST requests of a user journey that can be run as an in
 make generate-integration-test
 ```
 
-This will launch a browser pointing to the Launcher UI. Now follow the below steps:
+This will launch a browser pointing to the Launcher UI (make sure the application and supporting services are running). Now follow the below steps:
 
 1. Choose a schema and launch it - the schema name will be used for the name of the file
 1. Navigate through the survey. **Note:** all GETs and POSTs will be recorded
