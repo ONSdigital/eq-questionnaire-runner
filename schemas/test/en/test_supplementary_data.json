@@ -57,7 +57,34 @@
                                 "title": "Supplementary Data",
                                 "contents": [
                                     {
-                                        "title": "You have successfully loaded Supplementary data",
+                                        "title": {
+                                            "text": "List of employees: {employees names}",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "employees names",
+                                                    "transforms": [
+                                                        {
+                                                            "transform": "concatenate_list",
+                                                            "arguments": {
+                                                                "list_to_concatenate": [
+                                                                    {
+                                                                        "source": "supplementary_data",
+                                                                        "identifier": "employees",
+                                                                        "selectors": ["personal_details", "forename"]
+                                                                    },
+                                                                    {
+                                                                        "source": "supplementary_data",
+                                                                        "identifier": "employees",
+                                                                        "selectors": ["personal_details", "surname"]
+                                                                    }
+                                                                ],
+                                                                "delimiter": ","
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
                                         "description": "Press continue to proceed to the introduction",
                                         "guidance": {
                                             "contents": [
