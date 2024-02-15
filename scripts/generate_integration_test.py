@@ -13,10 +13,11 @@ schema_name = ""
 
 LAUNCHER_ROOT_URL = "http://localhost:8000"
 RUNNER_ROOT_URL = "http://localhost:5000"
+SPACE_INDENTATION = " " * 8
 
 
 # pylint: disable=global-variable-not-assigned
-def process_request(request: Request) -> None:
+def process_runner_request(request: Request) -> None:
     global schema_name
 
     with open(f"{schema_name}.py", "a", encoding="utf-8") as file:
@@ -40,22 +41,16 @@ def process_post(request: Request, file: TextIO) -> None:
 
     items: dict[str, str | list[str]] = {}
     for answer_id, answer_values in post_data.items():
-
-        if any(
-            answer_values
-        ):  # Only populate items if non-empty answers dict in request
-            if len(answer_values) > 1:  # Handle multiple values in list
-                items[answer_id] = answer_values
-            elif len(answer_values) == 1:
-                items[answer_id] = answer_values[0]  # A single item in list
+        if len(answer_values) > 1:  # Handle multiple values in list
+            items[answer_id] = answer_values
+        elif len(answer_values) == 1:
+            items[answer_id] = answer_values[0]  # A single item in list
 
     if items:
-        file.write(f"\n        self.post({items})")
-        logger.info(f"self.post({items})")
+        file.write(generate_post_code_snippet(items))
     else:
         # Empty post for no answers and non question pages
-        file.write("\n        self.post()")
-        logger.info("self.post()")
+        file.write(generate_post_code_snippet())
 
 
 # pylint: disable=global-statement
@@ -69,8 +64,7 @@ def process_get(request: Request, file: TextIO) -> None:
         and request.url != f"{RUNNER_ROOT_URL}/questionnaire/"
     ):
         path = urlparse(request.url).path
-        file.write(f'\n        self.get("{path}")')
-        logger.info(f'self.get("{path}")')
+        file.write(generate_get_code_snippet(path))
 
     if not survey_start:
         previous_request_method = request.method
@@ -83,26 +77,47 @@ def process_get(request: Request, file: TextIO) -> None:
         survey_start = False
 
 
-def create_file_skeleton(request: Request) -> None:
+def process_launcher_request(request: Request) -> None:
     global schema_name
 
-    schema_name = parse_qs(request.url)["schema_name"][0]
-    with open(f"{schema_name}.py", "w", encoding="utf-8") as file:
-        file.write(
-            f'from tests.integration.integration_test_case import IntegrationTestCase\n\n\nclass {schema_name.title().replace("_", "")}'
-            f'(IntegrationTestCase):\n    def {schema_name}(self):\n        self.launchSurvey("{request.url.split("=")[-1]}")'
-        )
-        logger.info(f"self.launchSurvey('{schema_name}')")
+    if request.method == "GET":
+        if survey_start:
+            # start of journey, so create a skeleton file using the schema name
+            schema_name = parse_qs(request.url)["schema_name"][0]
+            with open(f"{schema_name}.py", "w", encoding="utf-8") as file:
+                file.write(
+                    f"from tests.integration.integration_test_case import IntegrationTestCase\n\n\n"
+                    f'class {schema_name.title().replace("_", "")}(IntegrationTestCase):\n'
+                    f"    def {schema_name}(self):\n"
+                    f'        self.launchSurvey("{schema_name}")'
+                )
+                logger.info(f"self.launchSurvey('{schema_name}')")
+        else:
+            # capture launcher urls for sign-out, save etc
+            with open(f"{schema_name}.py", "a", encoding="utf-8") as file:
+                path = urlparse(request.url).path
+                file.write(generate_get_code_snippet(path))
+
+
+def generate_post_code_snippet(post_data: dict | str | None = "") -> str:
+    snippet = f"self.post({post_data})"
+    logger.info(snippet)
+
+    return f"\n{SPACE_INDENTATION}{snippet}"
+
+
+def generate_get_code_snippet(url_path: str) -> str:
+    snippet = f'self.get("{url_path}")'
+    logger.info(snippet)
+
+    return f"\n{SPACE_INDENTATION}{snippet}"
 
 
 def request_handler(request: Request) -> None:
-    is_schema_launch_url = LAUNCHER_ROOT_URL in request.url and request.method == "GET"
-    is_runner_url = RUNNER_ROOT_URL in request.url
-
-    if is_schema_launch_url:
-        create_file_skeleton(request)
-    if is_runner_url:
-        process_request(request)
+    if LAUNCHER_ROOT_URL in request.url:
+        process_launcher_request(request)
+    elif RUNNER_ROOT_URL in request.url:
+        process_runner_request(request)
 
 
 def run(pw: Playwright) -> None:
