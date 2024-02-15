@@ -94,6 +94,11 @@ PAYLOAD_V2_SOCIAL = {
 }
 
 
+def populate_with_extra_payload_items(extra_payload, payload):
+    for key, value in extra_payload.items():
+        payload[key] = value
+
+
 class TokenGenerator:
     def __init__(self, key_store, upstream_kid, sr_public_kid):
         self._key_store = key_store
@@ -124,12 +129,10 @@ class TokenGenerator:
         payload_vars["case_id"] = str(uuid4())
         payload_vars["response_expires_at"] = get_response_expires_at()
 
-        for key, value in extra_payload.items():
-            if payload_vars.get("survey_metadata"):
-                survey_metadata = payload_vars["survey_metadata"].get("data")
-                survey_metadata[key] = value
-            else:
-                payload_vars[key] = value
+        if data := payload_vars.get("survey_metadata"):
+            populate_with_extra_payload_items(extra_payload, data.get("data"))
+        else:
+            populate_with_extra_payload_items(extra_payload, payload_vars)
 
         return payload_vars
 
