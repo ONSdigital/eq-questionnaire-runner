@@ -15,7 +15,7 @@ from app.data_models.data_stores import DataStores
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire import path_finder as pf
 from app.questionnaire.dependencies import (
-    get_routing_path_block_ids_by_section_for_calculated_summary_dependencies,
+    get_routing_path_block_ids_by_section_for_calculation_summary_dependencies,
     get_routing_path_block_ids_by_section_for_dependent_sections,
 )
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
@@ -176,7 +176,7 @@ class PlaceholderParser:
             return {}
 
         return (
-            get_routing_path_block_ids_by_section_for_calculated_summary_dependencies(
+            get_routing_path_block_ids_by_section_for_calculation_summary_dependencies(
                 location=self._location,
                 progress_store=self._data_stores.progress_store,
                 sections_to_ignore=sections_to_ignore,
@@ -210,7 +210,7 @@ class PlaceholderParser:
                 sections_to_ignore=["when"],
                 path_finder=self._path_finder,
                 data=transform,
-                source_type="answers",
+                source_types={"answers"},
                 dependent_sections=dependent_sections,
             )
             self._routing_path_block_ids_by_section_key.update(block_ids)

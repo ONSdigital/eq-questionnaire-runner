@@ -414,12 +414,17 @@ def test_remove_answer_and_block_if_routing_backwards():
                 "section_id": "default-section",
                 "list_item_id": None,
                 "status": CompletionStatus.COMPLETED,
+                "block_ids": ["route-backwards-block"],
+            },
+            {
+                "section_id": "section-2",
+                "list_item_id": None,
+                "status": CompletionStatus.COMPLETED,
                 "block_ids": [
-                    "route-backwards-block",
                     "number-of-employees-total-block",
                     "confirm-zero-employees-block",
                 ],
-            }
+            },
         ]
     )
 
@@ -443,10 +448,10 @@ def test_remove_answer_and_block_if_routing_backwards():
     assert (
         len(
             path_finder.data_stores.progress_store.get_completed_block_ids(
-                SectionKey("default-section")
+                SectionKey("section-2")
             )
         )
-        == 3
+        == 2
     )
     assert len(path_finder.data_stores.answer_store) == 3
 
@@ -454,17 +459,16 @@ def test_remove_answer_and_block_if_routing_backwards():
 
     expected_path = RoutingPath(
         block_ids=[
-            "route-backwards-block",
             "number-of-employees-total-block",
             "confirm-zero-employees-block",
             "number-of-employees-total-block",
         ],
-        section_id="default-section",
+        section_id="section-2",
     )
     assert routing_path == expected_path
     assert path_finder.data_stores.progress_store.get_completed_block_ids(
-        SectionKey("default-section")
-    ) == progress_store.get_completed_block_ids(SectionKey("default-section"))
+        SectionKey("section-2")
+    ) == progress_store.get_completed_block_ids(SectionKey("section-2"))
 
     assert len(path_finder.data_stores.answer_store) == 2
     assert not path_finder.data_stores.answer_store.get_answer(
@@ -472,7 +476,7 @@ def test_remove_answer_and_block_if_routing_backwards():
     )
     assert (
         path_finder.data_stores.progress_store.get_section_status(
-            SectionKey("default-section")
+            SectionKey("section-2")
         )
         == CompletionStatus.IN_PROGRESS
     )

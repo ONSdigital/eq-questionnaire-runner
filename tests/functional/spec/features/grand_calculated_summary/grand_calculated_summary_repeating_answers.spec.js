@@ -456,6 +456,8 @@ describe("Feature: Grand Calculated Summary", () => {
         "Grand Calculated Summary for total monthly household expenditure is calculated to be £1,209.00. Is this correct?",
       );
       await click(GrandCalculatedSummary5Page.submit());
+      await $(InternetBreakdownBlockPage.internetPhone()).setValue(45);
+      await click(InternetBreakdownBlockPage.submit());
       await click(Section6SummaryPage.submit());
     });
 
@@ -493,10 +495,12 @@ describe("Feature: Grand Calculated Summary", () => {
       await expect(await $(GrandCalculatedSummary5Page.grandCalculatedSummaryTitle()).getText()).toBe(
         "Grand Calculated Summary for total monthly household expenditure is calculated to be £1,199.00. Is this correct?",
       );
-      await click(GrandCalculatedSummary5Page.submit());
     });
 
     it("Given I have a further section depending on the grand calculated summary section, When I return to the Hub, Then I see the new section is available", async () => {
+      await click(GrandCalculatedSummary5Page.submit());
+      await $(InternetBreakdownBlockPage.internetPhone()).setValue(25);
+      await click(InternetBreakdownBlockPage.submit());
       await click(Section6SummaryPage.submit());
       await expect(await $(HubPage.summaryRowState("section-7")).getText()).toBe("Not started");
       await click(HubPage.submit());
@@ -518,7 +522,7 @@ describe("Feature: Grand Calculated Summary", () => {
       await expect(await $("body").getText()).toContain("Total household expenditure: £1,199.00");
       await expect(await $("body").getText()).toContain("Personal contribution: £1,100.00");
       await expect(await $("body").getText()).toContain("Total internet usage: 85 GB");
-      await expect(await $("body").getText()).toContain("Usage by phone: 40 GB");
+      await expect(await $("body").getText()).toContain("Usage by phone: 25 GB");
       await expect(await $("body").getText()).toContain("Usage by PC: 60 GB");
     });
   });

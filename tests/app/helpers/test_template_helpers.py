@@ -1,4 +1,3 @@
-# pylint: disable=too-many-lines
 from typing import Type
 
 import pytest
@@ -914,10 +913,7 @@ def test_context_set_from_app_config(app):
         current_app.config["CDN_URL"] = "test-cdn-url"
         current_app.config["CDN_ASSETS_PATH"] = "/test-assets-path"
         current_app.config["ADDRESS_LOOKUP_API_URL"] = "test-address-lookup-api-url"
-        current_app.config["EQ_GOOGLE_TAG_MANAGER_ID"] = "test-google-tag-manager-id"
-        current_app.config[
-            "EQ_GOOGLE_TAG_MANAGER_AUTH"
-        ] = "test-google-tag-manager-auth"
+        current_app.config["EQ_GOOGLE_TAG_ID"] = "test-google-tag-manager-id"
         survey_config = SurveyConfig()
 
         context = ContextHelper(
@@ -929,8 +925,7 @@ def test_context_set_from_app_config(app):
 
     assert context["cdn_url"] == "test-cdn-url/test-assets-path"
     assert context["address_lookup_api_url"] == "test-address-lookup-api-url"
-    assert context["google_tag_manager_id"] == "test-google-tag-manager-id"
-    assert context["google_tag_manager_auth"] == "test-google-tag-manager-auth"
+    assert context["google_tag_id"] == "test-google-tag-manager-id"
 
 
 @pytest.mark.parametrize(
