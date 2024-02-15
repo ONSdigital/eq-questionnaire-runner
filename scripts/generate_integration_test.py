@@ -21,7 +21,6 @@ def process_runner_request(request: Request) -> None:
     global schema_name
 
     with open(f"{schema_name}.py", "a", encoding="utf-8") as file:
-
         if request.method == "POST":
             process_post(request, file)
 
