@@ -61,7 +61,7 @@ def process_get(request: Request, file: TextIO) -> None:
         and "session?token" not in request.url
         and request.url != f"{RUNNER_ROOT_URL}/questionnaire/"
     ):
-        path = urlparse(request.url).path
+        path = f'"{urlparse(request.url).path}"'
         file.write(generate_method_request("get", path))
 
     if not survey_start:
@@ -93,7 +93,7 @@ def process_launcher_request(request: Request) -> None:
         else:
             # capture launcher urls for sign-out, save etc
             with open(f"./scripts/{schema_name}.py", "a", encoding="utf-8") as file:
-                path = urlparse(request.url).path
+                path = f'"{urlparse(request.url).path}"'
                 file.write(generate_method_request("get", path))
 
 
