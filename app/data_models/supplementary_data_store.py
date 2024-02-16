@@ -126,7 +126,9 @@ class SupplementaryDataStore:
 
         return self.resolve_value(identifier, selectors, list_item_id)
 
-    def resolve_value(self, identifier, selectors, list_item_id):
+    def resolve_value(
+        self, identifier: str, selectors: Iterable[str] | None, list_item_id: str | None
+    ) -> dict | str | list | None:
         value = self._data_map.get((identifier, list_item_id))
         # for nested data, index with each selector, or return None if there is no data to index
         for selector in selectors or []:

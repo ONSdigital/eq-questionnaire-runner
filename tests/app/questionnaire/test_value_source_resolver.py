@@ -1131,6 +1131,11 @@ def test_supplementary_data_value_source_non_list_items(
             {"identifier": "products", "selectors": ["value_sales", "answer_code"]},
             "201630601",
         ),
+        (
+            None,
+            {"identifier": "products", "selectors": ["name"]},
+            ["Articles and equipment for sports or outdoor games", "Other Minerals"],
+        ),
     ],
 )
 def test_supplementary_data_value_source_list_items(
