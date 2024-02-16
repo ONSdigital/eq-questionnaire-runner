@@ -1073,13 +1073,13 @@ libcst = ["libcst (>=0.2.5)"]
 
 [[package]]
 name = "google-cloud-pubsub"
-version = "2.19.4"
+version = "2.19.3"
 description = "Google Cloud Pub/Sub API client library"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "google-cloud-pubsub-2.19.4.tar.gz", hash = "sha256:a5f9280598f0c4a5819bb630a50c45dc8acda0c94afecae0a18368bccbfa2651"},
-    {file = "google_cloud_pubsub-2.19.4-py2.py3-none-any.whl", hash = "sha256:5eddfb8f4eb26e2a25b9856ca1a65c5f2015e5c3e365e68df3b4f5d36809d9c2"},
+    {file = "google-cloud-pubsub-2.19.3.tar.gz", hash = "sha256:9745ab5fe13270abdfb558c8512933c6a5b73ebbf69565e64b606509d65b1b46"},
+    {file = "google_cloud_pubsub-2.19.3-py2.py3-none-any.whl", hash = "sha256:b8848d8050b835d702f8206475992cf01074de4f8b5e0875035035115f98f2d9"},
 ]
 
 [package.dependencies]
@@ -3189,4 +3189,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11.4"
-content-hash = "2a6461c28bb43c3a8b1487e9f170aac7c6a5a5b5366296de3997709e4cba794f"
+content-hash = "5e039598beecddac62950befae88f7b1ae9fb0c750ecc452c10c9ae0b99c4dd6"
