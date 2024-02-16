@@ -1188,30 +1188,3 @@ def test_supplementary_data_invalid_selector_raises_exception(
         )
 
     assert e.value.args[0] == "Cannot use the selector `invalid` on non-nested data"
-
-
-def test_supplementary_data_list_item_outside_repeating_section_raises_exception(
-    supplementary_data_store_with_data,
-):
-    list_store = ListStore([{"name": "products", "items": get_list_items(2)}])
-    location = Location(
-        section_id="section",
-        block_id="block-id",
-    )
-    value_source_resolver = get_value_source_resolver(
-        data_stores=DataStores(
-            supplementary_data_store=supplementary_data_store_with_data,
-            list_store=list_store,
-        ),
-        location=location,
-    )
-    with pytest.raises(InvalidSupplementaryDataSelector) as e:
-        value_source_resolver.resolve(
-            {
-                "source": "supplementary_data",
-                "identifier": "products",
-                "selectors": ["name"],
-            }
-        )
-
-    assert e.value.args[0] == "Cannot reference items from `products` outside a repeat"

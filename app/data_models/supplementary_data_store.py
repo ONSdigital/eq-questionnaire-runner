@@ -114,40 +114,32 @@ class SupplementaryDataStore:
         For example if you wanted the identifier for the first item in "some_list"
         it would be get_data(identifier="some_list", selectors=["identifier"], list_item_id=list_item_id-1)
         """
-
-        list_item_ids = self.list_lookup[identifier]
-        values = []
-        if not list_item_id:
-            for list_item_id_key in list_item_ids:
-                list_item_id = list_item_ids[list_item_id_key]
-                value = self._data_map.get((identifier, list_item_id))
-                # for nested data, index with each selector, or return None if there is no data to index
-                for selector in selectors or []:
-                    if value is None:
-                        return None
-                    if not isinstance(value, Mapping):
-                        # if value is not None, and also not index able, raise an error
-                        raise InvalidSupplementaryDataSelector(
-                            f"Cannot use the selector `{selector}` on non-nested data"
-                        )
-                    value = value.get(selector)
-                values.append(value)
+        list_items_mapping = self.list_lookup.get(identifier)
+        if (
+            not list_item_id and list_items_mapping
+        ):  # check if we are NOT in repeat, the other method, is_data_repeating(), cannot be used here as it always evaluates to True
+            values = []
+            for list_item_id_key in list_items_mapping:
+                list_item_id = list_items_mapping[list_item_id_key]
+                values.append(self.resolve_value(identifier, selectors, list_item_id))
             return values
 
-        else:
-            value = self._data_map.get((identifier, list_item_id))
-            # for nested data, index with each selector, or return None if there is no data to index
-            for selector in selectors or []:
-                if value is None:
-                    return None
-                if not isinstance(value, Mapping):
-                    # if value is not None, and also not index able, raise an error
-                    raise InvalidSupplementaryDataSelector(
-                        f"Cannot use the selector `{selector}` on non-nested data"
-                    )
-                value = value.get(selector)
+        return self.resolve_value(identifier, selectors, list_item_id)
 
-            return value
+    def resolve_value(self, identifier, selectors, list_item_id):
+        value = self._data_map.get((identifier, list_item_id))
+        # for nested data, index with each selector, or return None if there is no data to index
+        for selector in selectors or []:
+            if value is None:
+                return None
+            if not isinstance(value, Mapping):
+                # if value is not None, and also not index able, raise an error
+                raise InvalidSupplementaryDataSelector(
+                    f"Cannot use the selector `{selector}` on non-nested data"
+                )
+            value = value.get(selector)
+
+        return value
 
     def is_data_repeating(self, identifier: str) -> bool:
         """

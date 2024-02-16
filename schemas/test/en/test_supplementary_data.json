@@ -57,39 +57,53 @@
                                 "title": "Supplementary Data",
                                 "contents": [
                                     {
-                                        "title": {
-                                            "text": "List of employees: {employees names}",
+                                        "title": "You have successfully loaded Supplementary data",
+                                        "description": {
+                                            "text": "List of products: {products}",
                                             "placeholders": [
                                                 {
-                                                    "placeholder": "employees names",
+                                                    "placeholder": "products",
                                                     "transforms": [
                                                         {
-                                                            "transform": "concatenate_list",
+                                                            "transform": "format_list",
                                                             "arguments": {
-                                                                "list_to_concatenate": [
-                                                                    {
-                                                                        "source": "supplementary_data",
-                                                                        "identifier": "employees",
-                                                                        "selectors": ["personal_details", "forename"]
-                                                                    },
-                                                                    {
-                                                                        "source": "supplementary_data",
-                                                                        "identifier": "employees",
-                                                                        "selectors": ["personal_details", "surname"]
-                                                                    }
-                                                                ],
-                                                                "delimiter": ","
+                                                                "list_to_format": {
+                                                                    "source": "supplementary_data",
+                                                                    "identifier": "products",
+                                                                    "selectors": ["name"]
+                                                                }
                                                             }
                                                         }
                                                     ]
                                                 }
                                             ]
                                         },
-                                        "description": "Press continue to proceed to the introduction",
                                         "guidance": {
                                             "contents": [
                                                 {
-                                                    "description": "The purpose of this block, is to test that supplementary data loads successfully, separate to using the supplementary data"
+                                                    "description": {
+                                                        "text": "The purpose of this block, is to test that supplementary data loads successfully, separate to using the supplementary data. The available products are: {products}",
+                                                        "placeholders": [
+                                                            {
+                                                                "placeholder": "products",
+                                                                "transforms": [
+                                                                    {
+                                                                        "transform": "concatenate_list",
+                                                                        "arguments": {
+                                                                            "list_to_concatenate": [
+                                                                                {
+                                                                                    "source": "supplementary_data",
+                                                                                    "identifier": "products",
+                                                                                    "selectors": ["name"]
+                                                                                }
+                                                                            ],
+                                                                            "delimiter": ", "
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
                                                 }
                                             ]
                                         }
