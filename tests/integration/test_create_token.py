@@ -121,7 +121,7 @@ class TestCreateToken(IntegrationTestCase, AppContextTestCase):
                 decrypted_token, PAYLOAD_V2_SUPPLEMENTARY_DATA | decrypted_token
             )
 
-    def test_structure_of_sds_metadata_in_token(self):
+    def test_additional_payload_added_in_token(self):
         token = self.token_generator.create_supplementary_data_token(
             "test_checkbox.json", flag_1=True
         )
