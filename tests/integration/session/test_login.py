@@ -11,8 +11,6 @@ from tests.integration.integration_test_case import IntegrationTestCase
 
 SCHEMA_PATH_MAP = get_schema_path_map(include_test_schemas=True)
 
-# pylint: disable=too-many-public-methods
-
 
 class TestLoginWithGetRequest(IntegrationTestCase):
     def test_login_with_no_token_should_be_unauthorized(self):
@@ -153,7 +151,7 @@ class TestLoginWithGetRequest(IntegrationTestCase):
 
         self.assertStatusForbidden()
 
-    def test_login_with_invalid_questionnaire_claims_should_be_forbidden_v2(self):
+    def test_login_with_invalid_questionnaire_claims_should_be_forbidden_v2_get(self):
         # flag_1 should be a boolean
         token = self.token_generator.create_token_v2(
             "test_metadata_routing", flag_1=123
@@ -299,7 +297,7 @@ class TestLoginWithPostRequest(IntegrationTestCase):
 
         self.assertStatusForbidden()
 
-    def test_login_with_invalid_questionnaire_claims_should_be_forbidden_v2(self):
+    def test_login_with_invalid_questionnaire_claims_should_be_forbidden_v2_post(self):
         # flag_1 should be a boolean
         token = self.token_generator.create_token_v2(
             "test_metadata_routing", flag_1=123
@@ -414,7 +412,7 @@ class TestLoginWithPostRequest(IntegrationTestCase):
 
     @staticmethod
     @urlmatch(netloc=r"eq-survey-register", path=r"\/my-test-schema")
-    def schema_url_mock(_url, _request):
+    def _schema_url_mock(_url, _request):
         schema_path = SCHEMA_PATH_MAP["test"]["en"]["test_textarea"]
 
         with open(schema_path, encoding="utf8") as json_data:
@@ -425,7 +423,7 @@ class TestLoginWithPostRequest(IntegrationTestCase):
         path=CIR_RETRIEVE_COLLECTION_INSTRUMENT_URL,
         query="guid=f0519981-426c-8b93-75c0-bfc40c66fe25",
     )
-    def cir_url_mock(_url, _request):
+    def _cir_url_mock(_url, _request):
         schema_path = SCHEMA_PATH_MAP["test"]["en"]["test_textarea"]
 
         with open(schema_path, encoding="utf8") as json_data:
@@ -436,10 +434,10 @@ class TestLoginWithPostRequest(IntegrationTestCase):
         path=CIR_RETRIEVE_COLLECTION_INSTRUMENT_URL,
         query="guid=a0df1208-dff5-4a3d-b35d-f9620c4a48ef",
     )
-    def cir_url_mock_500(_url, _request):
+    def _cir_url_mock_500(_url, _request):
         return response(500)
 
     @staticmethod
     @urlmatch(netloc=r"eq-survey-register", path=r"\/my-test-schema-not-found")
-    def schema_url_mock_500(_url, _request):
+    def _schema_url_mock_500(_url, _request):
         return response(500)
