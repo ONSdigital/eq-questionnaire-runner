@@ -114,20 +114,31 @@ class SupplementaryDataStore:
         For example if you wanted the identifier for the first item in "some_list"
         it would be get_data(identifier="some_list", selectors=["identifier"], list_item_id=list_item_id-1)
         """
-        list_items_mapping = self.list_lookup.get(identifier)
-        if (
-            not list_item_id and list_items_mapping
-        ):  # check if we are NOT in repeat, the other method, is_data_repeating(), cannot be used here as it always evaluates to True
-            values = []
-            for list_item_id_key in list_items_mapping:
-                list_item_id = list_items_mapping[list_item_id_key]
-                values.append(self.resolve_value(identifier, selectors, list_item_id))
-            return values
+        if not list_item_id and (
+            list_item_ids := self.list_lookup.get(identifier, {}).values()
+        ):
+            return [
+                value
+                for _list_item_id in list_item_ids
+                if (
+                    value := self.resolve_value(
+                        identifier=identifier,
+                        selectors=selectors,
+                        list_item_id=_list_item_id,
+                    )
+                )
+            ]
 
-        return self.resolve_value(identifier, selectors, list_item_id)
+        return self.resolve_value(
+            identifier=identifier, selectors=selectors, list_item_id=list_item_id
+        )
 
     def resolve_value(
-        self, identifier: str, selectors: Iterable[str] | None, list_item_id: str | None
+        self,
+        *,
+        identifier: str,
+        selectors: Iterable[str] | None,
+        list_item_id: str | None,
     ) -> dict | str | list | None:
         value = self._data_map.get((identifier, list_item_id))
         # for nested data, index with each selector, or return None if there is no data to index

@@ -1144,7 +1144,7 @@ def test_supplementary_data_value_source_non_list_items(
         (
             None,
             {"identifier": "products", "selectors": ["non_existing_optional_key"]},
-            [None, None],
+            [],
         ),
     ],
 )
