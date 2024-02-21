@@ -14,6 +14,14 @@ schema_name = ""
 LAUNCHER_ROOT_URL = "http://localhost:8000"
 RUNNER_ROOT_URL = "http://localhost:5000"
 
+TEST_TEMPLATE = """from tests.integration.integration_test_case import IntegrationTestCase
+
+
+class {0}(IntegrationTestCase):
+    def {1}(self):
+        self.launchSurvey("{2}")
+"""
+
 
 # pylint: disable=global-variable-not-assigned
 def process_runner_request(request: Request) -> None:
@@ -44,11 +52,8 @@ def process_post(request: Request, file: TextIO) -> None:
         elif len(answer_values) == 1:
             items[answer_id] = answer_values[0]  # A single item in list
 
-    if items:
-        file.write(generate_method_request("post", items))
-    else:
-        # Empty post for no answers and non question pages
-        file.write(generate_method_request("post", ""))
+    # Post items or empty post for no answers and non question pages
+    file.write(generate_method_request(method="post", data=items or ""))
 
 
 # pylint: disable=global-statement
@@ -62,7 +67,7 @@ def process_get(request: Request, file: TextIO) -> None:
         and request.url != f"{RUNNER_ROOT_URL}/questionnaire/"
     ):
         path = f'"{urlparse(request.url).path}"'
-        file.write(generate_method_request("get", path))
+        file.write(generate_method_request(method="get", data=path))
 
     if not survey_start:
         previous_request_method = request.method
@@ -83,21 +88,21 @@ def process_launcher_request(request: Request) -> None:
             # start of journey, so create a skeleton file using the schema name
             schema_name = parse_qs(request.url)["schema_name"][0]
             with open(f"./scripts/{schema_name}.py", "w", encoding="utf-8") as file:
+                formatted_schema_name = schema_name.title().replace("_", "")
                 file.write(
-                    f"from tests.integration.integration_test_case import IntegrationTestCase\n\n\n"
-                    f'class {schema_name.title().replace("_", "")}(IntegrationTestCase):\n'
-                    f"    def {schema_name}(self):\n"
-                    f'        self.launchSurvey("{schema_name}")'
+                    TEST_TEMPLATE.format(
+                        formatted_schema_name, schema_name, schema_name
+                    )
                 )
                 logger.info(f"self.launchSurvey('{schema_name}')")
         else:
             # capture launcher urls for sign-out, save etc
             with open(f"./scripts/{schema_name}.py", "a", encoding="utf-8") as file:
                 path = f'"{urlparse(request.url).path}"'
-                file.write(generate_method_request("get", path))
+                file.write(generate_method_request(method="get", data=path))
 
 
-def generate_method_request(method: str, data: dict | str | None = "") -> str:
+def generate_method_request(*, method: str, data: dict | str | None = None) -> str:
     snippet = f"self.{method}({data})"
     logger.info(snippet)
 
