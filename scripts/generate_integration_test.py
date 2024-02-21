@@ -6,7 +6,6 @@ from structlog import get_logger
 
 logger = get_logger()
 
-
 previous_request_method = ""
 survey_start = True
 schema_name = ""
@@ -17,9 +16,9 @@ RUNNER_ROOT_URL = "http://localhost:5000"
 TEST_TEMPLATE = """from tests.integration.integration_test_case import IntegrationTestCase
 
 
-class {0}(IntegrationTestCase):
-    def {1}(self):
-        self.launchSurvey("{2}")
+class {class_name}(IntegrationTestCase):
+    def {function_name}(self):
+        self.launchSurvey("{schema_name}")
 """
 
 
@@ -45,14 +44,12 @@ def process_post(request: Request, file: TextIO) -> None:
     post_data = parse_qs(request.post_data)
     del post_data["csrf_token"]
 
-    items: dict[str, str | list[str]] = {}
-    for answer_id, answer_values in post_data.items():
-        if len(answer_values) > 1:  # Handle multiple values in list
-            items[answer_id] = answer_values
-        elif len(answer_values) == 1:
-            items[answer_id] = answer_values[0]  # A single item in list
+    items = {
+        answer_id: answer_values[0] if len(answer_values) == 1 else answer_values
+        for answer_id, answer_values in post_data.items()
+    }
 
-    # Post items or empty post for no answers and non question pages
+    # Post items, or empty post for no answers/non-question pages
     file.write(generate_method_request(method="post", data=items or ""))
 
 
@@ -88,13 +85,15 @@ def process_launcher_request(request: Request) -> None:
             # start of journey, so create a skeleton file using the schema name
             schema_name = parse_qs(request.url)["schema_name"][0]
             with open(f"./scripts/{schema_name}.py", "w", encoding="utf-8") as file:
-                formatted_schema_name = schema_name.title().replace("_", "")
+                class_name = schema_name.title().replace("_", "")
                 file.write(
                     TEST_TEMPLATE.format(
-                        formatted_schema_name, schema_name, schema_name
+                        class_name=class_name,
+                        function_name=schema_name,
+                        schema_name=schema_name,
                     )
                 )
-                logger.info(f"self.launchSurvey('{schema_name}')")
+                logger.info(request)
         else:
             # capture launcher urls for sign-out, save etc
             with open(f"./scripts/{schema_name}.py", "a", encoding="utf-8") as file:
@@ -104,7 +103,7 @@ def process_launcher_request(request: Request) -> None:
 
 def generate_method_request(*, method: str, data: dict | str | None = None) -> str:
     snippet = f"self.{method}({data})"
-    logger.info(snippet)
+    logger.info(f'Generating the Runner code snippet for HTTP request: "{snippet}"')
 
     return f"\n        {snippet}"
 
