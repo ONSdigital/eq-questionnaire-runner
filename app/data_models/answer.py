@@ -60,7 +60,9 @@ def escape_answer_value(value: DictAnswer) -> DictAnswerEscaped:
 
 
 @overload
-def escape_answer_value(value: ListDictAnswer) -> ListDictAnswerEscaped:
+def escape_answer_value(
+    value: ListDictAnswer,
+) -> ListDictAnswerEscaped:
     ...  # pragma: no cover
 
 

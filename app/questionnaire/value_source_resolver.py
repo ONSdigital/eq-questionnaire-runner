@@ -223,9 +223,11 @@ class ValueSourceResolver:
                 block_id=identifier,
                 section_key=SectionKey(
                     section_id=section_id_for_block,
-                    list_item_id=self.location.list_item_id
-                    if self.location.section_id == section_id_for_block
-                    else None,
+                    list_item_id=(
+                        self.location.list_item_id
+                        if self.location.section_id == section_id_for_block
+                        else None
+                    ),
                 ),
             )
 

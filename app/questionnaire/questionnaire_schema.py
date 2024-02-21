@@ -92,16 +92,12 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self._when_rules_section_dependencies_by_section: dict[
             str, set[str]
         ] = defaultdict(set)
-        self._when_rules_section_dependencies_by_section_for_progress_value_source: defaultdict[
-            str, OrderedSet[str]
-        ] = defaultdict(
-            OrderedSet
-        )
-        self._when_rules_block_dependencies_by_section_for_progress_value_source: defaultdict[
-            str, DependencyDictType
-        ] = defaultdict(
-            lambda: defaultdict(OrderedSet)
-        )
+        self._when_rules_section_dependencies_by_section_for_progress_value_source: (
+            defaultdict[str, OrderedSet[str]]
+        ) = defaultdict(OrderedSet)
+        self._when_rules_block_dependencies_by_section_for_progress_value_source: (
+            defaultdict[str, DependencyDictType]
+        ) = defaultdict(lambda: defaultdict(OrderedSet))
         self.calculation_summary_section_dependencies_by_block: dict[
             str, DependencyDictType
         ] = defaultdict(lambda: defaultdict(OrderedSet))
