@@ -127,6 +127,7 @@ class SupplementaryDataStore:
                         list_item_id=_list_item_id,
                     )
                 )
+                and value is not None
             ]
 
         return self.resolve_value(
