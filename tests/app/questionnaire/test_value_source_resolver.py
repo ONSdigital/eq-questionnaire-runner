@@ -1180,6 +1180,32 @@ def test_supplementary_data_value_source_list_items(
     )
 
 
+def test_supplementary_data_value_source_list_items_extra_item_not_resolving_when_no_value(
+    supplementary_data_store_with_data_extra_item,
+):
+    list_store = ListStore([{"name": "products", "items": get_list_items(3)}])
+    location = Location(
+        section_id="section",
+        block_id="block-id",
+        list_name="products",
+        list_item_id=None,
+    )
+    value_source_resolver = get_value_source_resolver(
+        data_stores=DataStores(
+            supplementary_data_store=supplementary_data_store_with_data_extra_item,
+            list_store=list_store,
+        ),
+        location=location,
+        list_item_id=None,
+    )
+    assert value_source_resolver.resolve(
+        {
+            "source": "supplementary_data",
+            **{"identifier": "products", "selectors": ["name"]},
+        }
+    ) == ["Articles and equipment for sports or outdoor games", "Other Minerals"]
+
+
 def test_supplementary_data_invalid_selector_raises_exception(
     supplementary_data_store_with_data,
 ):

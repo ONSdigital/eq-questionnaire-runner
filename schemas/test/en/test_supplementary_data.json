@@ -82,10 +82,10 @@
                                             "contents": [
                                                 {
                                                     "description": {
-                                                        "text": "The purpose of this block, is to test that supplementary data loads successfully, separate to using the supplementary data. The available products are: {products}",
+                                                        "text": "The purpose of this block, is to test that supplementary data loads successfully, separate to using the supplementary data. The surnames of the employees: {surnames}.",
                                                         "placeholders": [
                                                             {
-                                                                "placeholder": "products",
+                                                                "placeholder": "surnames",
                                                                 "transforms": [
                                                                     {
                                                                         "transform": "concatenate_list",
@@ -93,8 +93,8 @@
                                                                             "list_to_concatenate": [
                                                                                 {
                                                                                     "source": "supplementary_data",
-                                                                                    "identifier": "products",
-                                                                                    "selectors": ["name"]
+                                                                                    "identifier": "employees",
+                                                                                    "selectors": ["personal_details", "surname"]
                                                                                 }
                                                                             ],
                                                                             "delimiter": ", "

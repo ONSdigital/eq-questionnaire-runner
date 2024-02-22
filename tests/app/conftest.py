@@ -388,6 +388,17 @@ def supplementary_data_list_mappings():
 
 
 @pytest.fixture
+def supplementary_data_list_mappings_extra_item():
+    return {
+        "products": [
+            SupplementaryDataListMapping(identifier=89929001, list_item_id="item-1"),
+            SupplementaryDataListMapping(identifier="201630601", list_item_id="item-2"),
+            SupplementaryDataListMapping(identifier="103219277", list_item_id="item-3"),
+        ],
+    }
+
+
+@pytest.fixture
 def supplementary_data_employee_list_mappings():
     return {
         "employees": [
@@ -414,6 +425,16 @@ def supplementary_data_store_with_data(
     return SupplementaryDataStore(
         supplementary_data=supplementary_data,
         list_mappings=supplementary_data_list_mappings,
+    )
+
+
+@pytest.fixture
+def supplementary_data_store_with_data_extra_item(
+    supplementary_data, supplementary_data_list_mappings_extra_item
+):
+    return SupplementaryDataStore(
+        supplementary_data=supplementary_data,
+        list_mappings=supplementary_data_list_mappings_extra_item,
     )
 
 
