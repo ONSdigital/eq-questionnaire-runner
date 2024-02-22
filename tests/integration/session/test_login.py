@@ -389,7 +389,7 @@ class TestLoginWithPostRequest(IntegrationTestCase):
         )
 
         # When
-        with HTTMock(self.cir_url_mock):
+        with HTTMock(self._cir_url_mock):
             self.post(url=f"/session?token={token}")
 
         # Then
@@ -424,7 +424,7 @@ class TestLoginWithPostRequest(IntegrationTestCase):
         path=CIR_RETRIEVE_COLLECTION_INSTRUMENT_URL,
         query="guid=f0519981-426c-8b93-75c0-bfc40c66fe25",
     )
-    def cir_url_mock(_url, _request):
+    def _cir_url_mock(_url, _request):
         schema_path = SCHEMA_PATH_MAP["test"]["en"]["test_textarea"]
 
         with open(schema_path, encoding="utf8") as json_data:
