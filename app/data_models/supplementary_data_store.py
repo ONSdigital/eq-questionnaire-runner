@@ -117,18 +117,16 @@ class SupplementaryDataStore:
         if not list_item_id and (
             list_item_ids := self.list_lookup.get(identifier, {}).values()
         ):
-            return [
-                value
-                for _list_item_id in list_item_ids
-                if (
-                    value := self.resolve_value(
-                        identifier=identifier,
-                        selectors=selectors,
-                        list_item_id=_list_item_id,
-                    )
+            values = []
+            for _list_item_id in list_item_ids:
+                value = self.resolve_value(
+                    identifier=identifier,
+                    selectors=selectors,
+                    list_item_id=_list_item_id,
                 )
-                and value is not None
-            ]
+                if value is not None:
+                    values.append(value)
+            return values
 
         return self.resolve_value(
             identifier=identifier, selectors=selectors, list_item_id=list_item_id
