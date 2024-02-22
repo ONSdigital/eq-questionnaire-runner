@@ -82,7 +82,7 @@
                                             "contents": [
                                                 {
                                                     "description": {
-                                                        "text": "The purpose of this block, is to test that supplementary data loads successfully, separate to using the supplementary data. The surnames of the employees: {surnames}.",
+                                                        "text": "The purpose of this block, is to test that supplementary data loads successfully, separate to using the supplementary data. The surnames of the employees are: {surnames}.",
                                                         "placeholders": [
                                                             {
                                                                 "placeholder": "surnames",
