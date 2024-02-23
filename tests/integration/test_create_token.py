@@ -7,29 +7,6 @@ from tests.integration.create_token import (
 )
 from tests.integration.integration_test_case import IntegrationTestCase
 
-test_parameters = [
-    {
-        "schema": "test_metadata_routing.json",
-        "theme": "default",
-        "additional_payload": {
-            "flag_1": 123,
-            "period_id": "abc",
-            "link": "https://example.com",
-        },
-        "payload": PAYLOAD_V2_BUSINESS,
-    },
-    {
-        "schema": "social_demo.json",
-        "theme": "social",
-        "additional_payload": {
-            "flag_1": True,
-            "user_id": "abc",
-            "date": "2016-05-12",
-        },
-        "payload": PAYLOAD_V2_SOCIAL,
-    },
-]
-
 
 class TestCreateToken(IntegrationTestCase, AppContextTestCase):
     """
@@ -38,6 +15,28 @@ class TestCreateToken(IntegrationTestCase, AppContextTestCase):
     """
 
     def test_payload_from_token(self):
+        test_parameters = [
+            {
+                "schema": "test_metadata_routing.json",
+                "theme": "default",
+                "additional_payload": {
+                    "flag_1": 123,
+                    "period_id": "abc",
+                    "link": "https://example.com",
+                },
+                "payload": PAYLOAD_V2_BUSINESS,
+            },
+            {
+                "schema": "social_demo.json",
+                "theme": "social",
+                "additional_payload": {
+                    "flag_1": True,
+                    "user_id": "abc",
+                    "date": "2016-05-12",
+                },
+                "payload": PAYLOAD_V2_SOCIAL,
+            },
+        ]
         for value in test_parameters:
             with self.subTest():
                 additional_payload = value.get("additional_payload")
