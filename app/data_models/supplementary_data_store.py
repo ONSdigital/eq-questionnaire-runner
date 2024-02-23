@@ -116,7 +116,7 @@ class SupplementaryDataStore:
         """
         if self.is_data_repeating(identifier) and not list_item_id:
             values = []
-            for _list_item_id in self.list_lookup.get(identifier).values():
+            for _list_item_id in self.list_lookup.get(identifier, {}).values():
                 value = self.resolve_value(
                     identifier=identifier,
                     selectors=selectors,
