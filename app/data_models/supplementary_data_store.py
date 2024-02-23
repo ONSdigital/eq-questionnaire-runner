@@ -114,11 +114,9 @@ class SupplementaryDataStore:
         For example if you wanted the identifier for the first item in "some_list"
         it would be get_data(identifier="some_list", selectors=["identifier"], list_item_id=list_item_id-1)
         """
-        if not list_item_id and (
-            list_item_ids := self.list_lookup.get(identifier, {}).values()
-        ):
+        if self.is_data_repeating(identifier) and not list_item_id:
             values = []
-            for _list_item_id in list_item_ids:
+            for _list_item_id in self.list_lookup.get(identifier).values():
                 value = self.resolve_value(
                     identifier=identifier,
                     selectors=selectors,
