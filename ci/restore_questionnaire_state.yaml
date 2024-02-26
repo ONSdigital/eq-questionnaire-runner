@@ -2,7 +2,7 @@ platform: linux
 image_resource:
   type: registry-image
   source:
-    repository: gcr.io/google.com/cloudsdktool/cloud-sdk
+    repository: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
     tag: alpine
 params:
   SERVICE_ACCOUNT_JSON: ((gcp.service_account_json))
@@ -17,6 +17,12 @@ run:
   args:
     - -exc
     - |
+      if [ -z "${BACKUP_NAME}" ]
+      then
+        echo "BACKUP_NAME is unset or set to the empty string"
+        exit 1
+      fi
+
       export GOOGLE_APPLICATION_CREDENTIALS=~/gcloud-service-key.json
       cat >$GOOGLE_APPLICATION_CREDENTIALS <<EOL
       $SERVICE_ACCOUNT_JSON
@@ -24,12 +30,6 @@ run:
 
       gcloud auth activate-service-account --key-file $GOOGLE_APPLICATION_CREDENTIALS
       gcloud config set project "${PROJECT_ID}"
-
-      if [ -z "${BACKUP_NAME}" ]
-      then
-        echo "BACKUP_NAME is unset or set to the empty string"
-        exit 1
-      fi
 
       IMPORT_OPERATION=$(gcloud datastore import gs://"${BUCKET_NAME}/${FILE_PREFIX}/${BACKUP_NAME}/${BACKUP_NAME}.overall_export_metadata" --kinds="questionnaire-state" --format="value(name.scope())")
       IMPORT_STATE=$(gcloud datastore operations describe "${IMPORT_OPERATION}" --format="value(metadata.common.state.scope())")
