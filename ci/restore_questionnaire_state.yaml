@@ -27,7 +27,7 @@ run:
 
       if [ -z "${BACKUP_NAME}" ]
       then
-        echo "BACKUP_NAME variable must be set"
+        echo "BACKUP_NAME is unset or set to the empty string"
         exit 1
       fi
 
