@@ -25,6 +25,11 @@ run:
       gcloud auth activate-service-account --key-file $GOOGLE_APPLICATION_CREDENTIALS
       gcloud config set project "${PROJECT_ID}"
 
+      if [[ -z "${BACKUP_NAME}"]]; then
+        echo "BACKUP_NAME variable is not set"
+        exit 1
+      fi
+
       IMPORT_OPERATION=$(gcloud datastore import gs://"${BUCKET_NAME}/${FILE_PREFIX}/${BACKUP_NAME}/${BACKUP_NAME}.overall_export_metadata" --kinds="questionnaire-state" --format="value(name.scope())")
       IMPORT_STATE=$(gcloud datastore operations describe "${IMPORT_OPERATION}" --format="value(metadata.common.state.scope())")
       TOTAL_ENTITIES_IMPORTED=$(gcloud datastore operations describe "${IMPORT_OPERATION}" --format="value(metadata.progressEntities.workCompleted.scope())")
