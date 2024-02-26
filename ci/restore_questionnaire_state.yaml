@@ -2,7 +2,7 @@ platform: linux
 image_resource:
   type: registry-image
   source:
-    repository: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+    repository: gcr.io/google.com/cloudsdktool/cloud-sdk
     tag: alpine
 params:
   SERVICE_ACCOUNT_JSON: ((gcp.service_account_json))
@@ -19,7 +19,7 @@ run:
     - |
       if [ -z "${BACKUP_NAME}" ]
       then
-        echo "BACKUP_NAME is unset or set to the empty string"
+        echo "BACKUP_NAME variable must be set"
         exit 1
       fi
 
