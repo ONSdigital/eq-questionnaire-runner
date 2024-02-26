@@ -25,7 +25,8 @@ run:
       gcloud auth activate-service-account --key-file $GOOGLE_APPLICATION_CREDENTIALS
       gcloud config set project "${PROJECT_ID}"
 
-      if [[ -z "${BACKUP_NAME}"]]; then
+      if [ -z "${BACKUP_NAME}" ]
+      then
         echo "BACKUP_NAME variable is not set"
         exit 1
       fi
