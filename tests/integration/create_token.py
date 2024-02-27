@@ -1,5 +1,5 @@
-import time
 from copy import deepcopy
+from time import time
 from uuid import uuid4
 
 from sdc.crypto.encrypter import encrypt
@@ -123,7 +123,7 @@ class TokenGenerator:
         if cir_instrument_id:
             payload_vars["cir_instrument_id"] = cir_instrument_id
 
-        payload_vars["iat"] = time.time()
+        payload_vars["iat"] = time()
         payload_vars["exp"] = payload_vars["iat"] + float(3600)  # one hour from now
         payload_vars["jti"] = str(uuid4())
         payload_vars["case_id"] = str(uuid4())
