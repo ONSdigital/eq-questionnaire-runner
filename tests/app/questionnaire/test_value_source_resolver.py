@@ -1180,7 +1180,7 @@ def test_supplementary_data_value_source_list_items(
     )
 
 
-def test_supplementary_data_value_source_list_items_value_missing_not_rendered(
+def test_supplementary_data_value_source_list_items_value_missing_excluded(
     supplementary_data_store_with_data_extra_item,
 ):
     list_store = ListStore([{"name": "products", "items": get_list_items(3)}])
