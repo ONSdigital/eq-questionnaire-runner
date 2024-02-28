@@ -1131,6 +1131,21 @@ def test_supplementary_data_value_source_non_list_items(
             {"identifier": "products", "selectors": ["value_sales", "answer_code"]},
             "201630601",
         ),
+        (
+            None,
+            {"identifier": "products", "selectors": ["name"]},
+            ["Articles and equipment for sports or outdoor games", "Other Minerals"],
+        ),
+        (
+            None,
+            {"identifier": "products", "selectors": ["value_sales", "answer_code"]},
+            ["89929001", "201630601"],
+        ),
+        (
+            None,
+            {"identifier": "products", "selectors": ["non_existing_optional_key"]},
+            [],
+        ),
     ],
 )
 def test_supplementary_data_value_source_list_items(
@@ -1165,6 +1180,32 @@ def test_supplementary_data_value_source_list_items(
     )
 
 
+def test_supplementary_data_value_source_list_items_value_missing_excluded(
+    supplementary_data_store_with_data_extra_item,
+):
+    list_store = ListStore([{"name": "products", "items": get_list_items(3)}])
+    location = Location(
+        section_id="section",
+        block_id="block-id",
+        list_name="products",
+        list_item_id=None,
+    )
+    value_source_resolver = get_value_source_resolver(
+        data_stores=DataStores(
+            supplementary_data_store=supplementary_data_store_with_data_extra_item,
+            list_store=list_store,
+        ),
+        location=location,
+        list_item_id=None,
+    )
+    assert value_source_resolver.resolve(
+        {
+            "source": "supplementary_data",
+            **{"identifier": "products", "selectors": ["name"]},
+        }
+    ) == ["Articles and equipment for sports or outdoor games", "Other Minerals"]
+
+
 def test_supplementary_data_invalid_selector_raises_exception(
     supplementary_data_store_with_data,
 ):
@@ -1188,30 +1229,3 @@ def test_supplementary_data_invalid_selector_raises_exception(
         )
 
     assert e.value.args[0] == "Cannot use the selector `invalid` on non-nested data"
-
-
-def test_supplementary_data_list_item_outside_repeating_section_raises_exception(
-    supplementary_data_store_with_data,
-):
-    list_store = ListStore([{"name": "products", "items": get_list_items(2)}])
-    location = Location(
-        section_id="section",
-        block_id="block-id",
-    )
-    value_source_resolver = get_value_source_resolver(
-        data_stores=DataStores(
-            supplementary_data_store=supplementary_data_store_with_data,
-            list_store=list_store,
-        ),
-        location=location,
-    )
-    with pytest.raises(InvalidSupplementaryDataSelector) as e:
-        value_source_resolver.resolve(
-            {
-                "source": "supplementary_data",
-                "identifier": "products",
-                "selectors": ["name"],
-            }
-        )
-
-    assert e.value.args[0] == "Cannot reference items from `products` outside a repeat"
