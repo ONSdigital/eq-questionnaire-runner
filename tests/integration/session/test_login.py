@@ -151,6 +151,16 @@ class TestLoginWithGetRequest(IntegrationTestCase):
 
         self.assertStatusForbidden()
 
+    def test_login_with_invalid_questionnaire_claims_should_be_forbidden_v2_get(self):
+        # flag_1 should be a boolean
+        token = self.token_generator.create_token_v2(
+            "test_metadata_routing", flag_1=123
+        )
+
+        self.get(url=f"/session?token={token}")
+
+        self.assertStatusForbidden()
+
     def test_login_with_invalid_version_should_be_forbidden(self):
         token = self.token_generator.create_token_invalid_version("test_checkbox")
 
@@ -167,7 +177,7 @@ class TestLoginWithGetRequest(IntegrationTestCase):
         )
 
         # When
-        with HTTMock(self.schema_url_mock):
+        with HTTMock(self._schema_url_mock):
             self.get(url=f"/session?token={token}")
 
         self.assertStatusOK()
@@ -182,7 +192,7 @@ class TestLoginWithGetRequest(IntegrationTestCase):
         )
 
         # When
-        with HTTMock(self.schema_url_mock_500):
+        with HTTMock(self._schema_url_mock_500):
             self.get(url=f"/session?token={token}")
 
         # Then
@@ -190,7 +200,7 @@ class TestLoginWithGetRequest(IntegrationTestCase):
 
     @staticmethod
     @urlmatch(netloc=r"eq-survey-register", path=r"\/my-test-schema")
-    def schema_url_mock(_url, _request):
+    def _schema_url_mock(_url, _request):
         schema_path = SCHEMA_PATH_MAP["test"]["en"]["test_textarea"]
 
         with open(schema_path, encoding="utf8") as json_data:
@@ -198,7 +208,7 @@ class TestLoginWithGetRequest(IntegrationTestCase):
 
     @staticmethod
     @urlmatch(netloc=r"eq-survey-register", path=r"\/my-test-schema-not-found")
-    def schema_url_mock_500(_url, _request):
+    def _schema_url_mock_500(_url, _request):
         return response(500)
 
 
@@ -287,6 +297,16 @@ class TestLoginWithPostRequest(IntegrationTestCase):
 
         self.assertStatusForbidden()
 
+    def test_login_with_invalid_questionnaire_claims_should_be_forbidden_v2_post(self):
+        # flag_1 should be a boolean
+        token = self.token_generator.create_token_v2(
+            "test_metadata_routing", flag_1=123
+        )
+
+        self.get(url=f"/session?token={token}")
+
+        self.assertStatusForbidden()
+
     def test_v2_business_login_with_invalid_questionnaire_claims_should_be_forbidden(
         self,
     ):
@@ -330,7 +350,7 @@ class TestLoginWithPostRequest(IntegrationTestCase):
         )
 
         # When
-        with HTTMock(self.schema_url_mock):
+        with HTTMock(self._schema_url_mock):
             self.post(url=f"/session?token={token}")
 
         self.assertStatusOK()
@@ -345,7 +365,7 @@ class TestLoginWithPostRequest(IntegrationTestCase):
         )
 
         # When
-        with HTTMock(self.schema_url_mock_500):
+        with HTTMock(self._schema_url_mock_500):
             self.post(url=f"/session?token={token}")
 
         # Then
@@ -368,7 +388,7 @@ class TestLoginWithPostRequest(IntegrationTestCase):
         )
 
         # When
-        with HTTMock(self.cir_url_mock):
+        with HTTMock(self._cir_url_mock):
             self.post(url=f"/session?token={token}")
 
         # Then
@@ -384,7 +404,7 @@ class TestLoginWithPostRequest(IntegrationTestCase):
         )
 
         # When
-        with HTTMock(self.cir_url_mock_500):
+        with HTTMock(self._cir_url_mock_500):
             self.post(url=f"/session?token={token}")
 
         # Then
@@ -392,7 +412,7 @@ class TestLoginWithPostRequest(IntegrationTestCase):
 
     @staticmethod
     @urlmatch(netloc=r"eq-survey-register", path=r"\/my-test-schema")
-    def schema_url_mock(_url, _request):
+    def _schema_url_mock(_url, _request):
         schema_path = SCHEMA_PATH_MAP["test"]["en"]["test_textarea"]
 
         with open(schema_path, encoding="utf8") as json_data:
@@ -403,7 +423,7 @@ class TestLoginWithPostRequest(IntegrationTestCase):
         path=CIR_RETRIEVE_COLLECTION_INSTRUMENT_URL,
         query="guid=f0519981-426c-8b93-75c0-bfc40c66fe25",
     )
-    def cir_url_mock(_url, _request):
+    def _cir_url_mock(_url, _request):
         schema_path = SCHEMA_PATH_MAP["test"]["en"]["test_textarea"]
 
         with open(schema_path, encoding="utf8") as json_data:
@@ -414,10 +434,10 @@ class TestLoginWithPostRequest(IntegrationTestCase):
         path=CIR_RETRIEVE_COLLECTION_INSTRUMENT_URL,
         query="guid=a0df1208-dff5-4a3d-b35d-f9620c4a48ef",
     )
-    def cir_url_mock_500(_url, _request):
+    def _cir_url_mock_500(_url, _request):
         return response(500)
 
     @staticmethod
     @urlmatch(netloc=r"eq-survey-register", path=r"\/my-test-schema-not-found")
-    def schema_url_mock_500(_url, _request):
+    def _schema_url_mock_500(_url, _request):
         return response(500)
