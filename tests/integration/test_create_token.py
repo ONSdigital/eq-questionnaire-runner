@@ -27,7 +27,7 @@ EXPECTED_TOKEN_BUSINESS = {
             "employment_date": "1983-06-02",
             "flag_1": 123,
             "link": "https://example.com",
-            "period_id": "abc",
+            "period_id": "202402",
             "period_str": "April 2016",
             "ref_p_end_date": "2016-04-30",
             "ref_p_start_date": "2016-04-01",
@@ -57,8 +57,8 @@ EXPECTED_TOKEN_SOCIAL = {
             "case_ref": "1000000000000001",
             "date": "2016-05-12",
             "flag_1": True,
-            "qid": PAYLOAD_V2_SOCIAL.get("survey_metadata").get("data").get("qid"),
-            "user_id": "abc",
+            "qid": PAYLOAD_V2_SOCIAL["survey_metadata"]["data"]["qid"],
+            "user_id": "64389274239",
         },
         "receipting_keys": ["qid"],
     },
@@ -93,7 +93,7 @@ class TestCreateToken(IntegrationTestCase, AppContextTestCase):
                 "theme": "default",
                 "additional_payload": {
                     "flag_1": 123,
-                    "period_id": "abc",
+                    "period_id": "202402",
                     "link": "https://example.com",
                 },
                 "payload": PAYLOAD_V2_BUSINESS,
@@ -104,7 +104,7 @@ class TestCreateToken(IntegrationTestCase, AppContextTestCase):
                 "theme": "social",
                 "additional_payload": {
                     "flag_1": True,
-                    "user_id": "abc",
+                    "user_id": "64389274239",
                     "date": "2016-05-12",
                 },
                 "payload": PAYLOAD_V2_SOCIAL,
@@ -130,12 +130,10 @@ class TestCreateToken(IntegrationTestCase, AppContextTestCase):
         )
         with self.test_app.app_context():
             decrypted_token = decrypt_token(token)
-            assert decrypted_token.get("survey_metadata") == {
+            assert decrypted_token["survey_metadata"] == {
                 "data": {
                     "case_ref": "1000000000000001",
-                    "qid": PAYLOAD_V2_SOCIAL.get("survey_metadata")
-                    .get("data")
-                    .get("qid"),
+                    "qid": PAYLOAD_V2_SOCIAL["survey_metadata"]["data"]["qid"],
                     "value": "Dummy Text",
                 },
                 "receipting_keys": ["qid"],
@@ -157,7 +155,7 @@ class TestCreateToken(IntegrationTestCase, AppContextTestCase):
         )
         with self.test_app.app_context():
             decrypted_token = decrypt_token(token)
-            assert decrypted_token.get("survey_metadata") == {
+            assert decrypted_token["survey_metadata"] == {
                 "data": {
                     "display_address": "68 Abingdon Road, Goathill",
                     "employment_date": "1983-06-02",
