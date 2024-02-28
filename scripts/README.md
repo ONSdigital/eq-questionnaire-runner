@@ -1,8 +1,9 @@
-# Integration Tests
+# Scripts
 
 ## Script to auto-generate code for integration test
 
 ### Details
+
 To speed up the process of generating integration tests for Runner, there is a dev-convenience script that records the GET and POST requests of a user journey
 and outputs this formatted in the style of an integration tests.
 
@@ -10,11 +11,13 @@ There are a points to note for this script:
 
 * All GETs and POSTs will be recorded
 * The dev will need to manually add their own assertions in the generated test file
-* It does **not** handle dynamic answers because these are generated at runtime
+* It does **not** handle dynamic answers because these are generated at runtime - you will need to update the output script to handle list_item_ids separately,
+  they will not be known beforehand.
 * It handles navigating back via clicking 'previous' links etc. To do this, some additional logic was needed to filter out the beginning of the survey journey,
-after the initial GET request from launcher into the first GET request in Runner
+  after the initial GET request from launcher into the first GET request in Runner
 
 ### Usage
+
 Run the following make command from the project root folder:
 
 ```shell

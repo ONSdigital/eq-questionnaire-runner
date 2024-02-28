@@ -196,7 +196,7 @@ Or set the `GOOGLE_CLOUD_PROJECT` environment variable to your gcp project id.
 
 
 ## Integration Tests
-There is a dev-convenience script that auto generates the lines of code for a user journey. See [README](tests/integration/README.md) for more information and how to run the script.
+There is a dev-convenience script that auto generates the lines of code for a user journey. See [README](scripts/README.md) for more information and how to run the script.
 
 ## Frontend Tests
 
