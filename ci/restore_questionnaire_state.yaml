@@ -17,11 +17,16 @@ run:
   args:
     - -exc
     - |
-      if [ -z "${BACKUP_NAME}" ]
-      then
-        echo "BACKUP_NAME variable must be set"
-        exit 1
-      fi
+      VARS=('PROJECT_ID' 'BUCKET_NAME' 'BACKUP_NAME', 'FILE_PREFIX')
+
+      for VAR in "${VARS[@]}"
+      do
+        if [ -z "${!VAR}" ]
+        then
+          echo "$VAR variable must be set"
+          exit 1
+        fi
+      done
 
       export GOOGLE_APPLICATION_CREDENTIALS=~/gcloud-service-key.json
       cat >$GOOGLE_APPLICATION_CREDENTIALS <<EOL
