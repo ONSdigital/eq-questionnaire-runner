@@ -115,10 +115,28 @@ class SupplementaryDataStore:
         it would be get_data(identifier="some_list", selectors=["identifier"], list_item_id=list_item_id-1)
         """
         if self.is_data_repeating(identifier) and not list_item_id:
-            raise InvalidSupplementaryDataSelector(
-                f"Cannot reference items from `{identifier}` outside a repeat"
-            )
+            values = []
+            for _list_item_id in self.list_lookup.get(identifier, {}).values():
+                value = self._resolve_value(
+                    identifier=identifier,
+                    selectors=selectors,
+                    list_item_id=_list_item_id,
+                )
+                if value is not None:
+                    values.append(value)
+            return values
 
+        return self._resolve_value(
+            identifier=identifier, selectors=selectors, list_item_id=list_item_id
+        )
+
+    def _resolve_value(
+        self,
+        *,
+        identifier: str,
+        selectors: Iterable[str] | None,
+        list_item_id: str | None,
+    ) -> dict | str | list | None:
         value = self._data_map.get((identifier, list_item_id))
         # for nested data, index with each selector, or return None if there is no data to index
         for selector in selectors or []:
