@@ -1,4 +1,4 @@
-from typing import TextIO
+from typing import Dict, TextIO
 from urllib.parse import parse_qs, urlparse
 
 from playwright.sync_api import Playwright, Request, sync_playwright
@@ -6,13 +6,15 @@ from structlog import get_logger
 
 logger = get_logger()
 
-previous_request_method = ""
-survey_start = True
-schema_name = ""
+survey_journey: Dict[str, str | bool] = {
+    "previous_request_method": "",
+    "started": True,
+    "schema_name": "",
+    "output_file_name": "",
+}
 
 LAUNCHER_ROOT_URL = "http://localhost:8000"
 RUNNER_ROOT_URL = "http://localhost:5000"
-
 TEST_TEMPLATE = """from tests.integration.integration_test_case import IntegrationTestCase
 
 
@@ -22,11 +24,8 @@ class {class_name}(IntegrationTestCase):
 """
 
 
-# pylint: disable=global-variable-not-assigned
 def process_runner_request(request: Request) -> None:
-    global schema_name
-
-    with open(f"./scripts/{schema_name}.py", "a", encoding="utf-8") as file:
+    with open(survey_journey["output_file_name"], "a", encoding="utf-8") as file:
         if request.method == "POST":
             process_post(request, file)
 
@@ -34,11 +33,8 @@ def process_runner_request(request: Request) -> None:
             process_get(request, file)
 
 
-# pylint: disable=global-statement
 def process_post(request: Request, file: TextIO) -> None:
-    global previous_request_method
-
-    previous_request_method = "POST"
+    survey_journey["previous_request_method"] = "POST"
 
     # Playwright Request.post_data comes formatted like a URL query string, so can be parsed
     post_data = parse_qs(request.post_data)
@@ -53,58 +49,60 @@ def process_post(request: Request, file: TextIO) -> None:
     file.write(generate_method_request(method="post", data=items or ""))
 
 
-# pylint: disable=global-statement
 def process_get(request: Request, file: TextIO) -> None:
-    global previous_request_method
-    global survey_start
-
     if (  # Logic to filter out the session and root questionnaire GET requests at the start
-        previous_request_method == "GET"
+        survey_journey["previous_request_method"] == "GET"
         and "session?token" not in request.url
         and request.url != f"{RUNNER_ROOT_URL}/questionnaire/"
     ):
         path = f'"{urlparse(request.url).path}"'
         file.write(generate_method_request(method="get", data=path))
 
-    if not survey_start:
-        previous_request_method = request.method
+    if not survey_journey["started"]:
+        survey_journey["previous_request_method"] = request.method
 
     if (
-        previous_request_method == ""
-        and survey_start
+        not survey_journey["previous_request_method"]
+        and survey_journey["started"]
         and request.url == f"{RUNNER_ROOT_URL}/questionnaire/"
     ):
-        survey_start = False
+        survey_journey["started"] = False
 
 
 def process_launcher_request(request: Request) -> None:
-    global schema_name
-
     if request.method == "GET":
-        if survey_start:
+        if survey_journey["started"]:
             # start of journey, so create a skeleton file using the schema name
-            schema_name = parse_qs(request.url)["schema_name"][0]
-            with open(f"./scripts/{schema_name}.py", "w", encoding="utf-8") as file:
-                class_name = schema_name.title().replace("_", "")
+            survey_journey["schema_name"] = parse_qs(request.url)["schema_name"][0]
+            survey_journey[
+                "output_file_name"
+            ] = f"./scripts/{survey_journey['schema_name']}.py"
+
+            with open(
+                survey_journey["output_file_name"], "w", encoding="utf-8"
+            ) as file:
+                # Type ignore: schema_name is taken as string from query string
+                class_name = survey_journey["schema_name"].title().replace("_", "")  # type: ignore
                 file.write(
                     TEST_TEMPLATE.format(
                         class_name=class_name,
-                        function_name=schema_name,
-                        schema_name=schema_name,
+                        function_name=survey_journey["schema_name"],
+                        schema_name=survey_journey["schema_name"],
                     )
                 )
                 logger.info(request)
         else:
             # capture launcher urls for sign-out, save etc
-            with open(f"./scripts/{schema_name}.py", "a", encoding="utf-8") as file:
+            with open(
+                survey_journey["output_file_name"], "a", encoding="utf-8"
+            ) as file:
                 path = f'"{urlparse(request.url).path}"'
                 file.write(generate_method_request(method="get", data=path))
 
 
 def generate_method_request(*, method: str, data: dict | str | None = None) -> str:
     snippet = f"self.{method}({data})"
-    logger.info(f'Generating the Runner code snippet for HTTP request: "{snippet}"')
-
+    logger.info(f'Generating Runner code snippet for HTTP request: "{snippet}"')
     return f"\n        {snippet}"
 
 
@@ -119,17 +117,18 @@ def run(pw: Playwright) -> None:
     chromium = pw.chromium
     browser = chromium.launch(headless=False)
     page = browser.new_page()
-
     page.goto(LAUNCHER_ROOT_URL)
 
     page.on("request", request_handler)
 
     input(
-        ""
-        "Script is paused. Start navigating through the browser for the journey & press Enter when finished to capture the output and add into a test file\n"
-        ""
+        """Script is paused. Start navigating through the browser for the journey & press Enter when finished to capture the output and add into a test file\n"""
     )
     browser.close()
+    logger.info(
+        "Integration test generated successfully",
+        integration_test_file=survey_journey["output_file_name"],
+    )
 
 
 if __name__ == "__main__":
