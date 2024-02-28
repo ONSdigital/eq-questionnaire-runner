@@ -221,7 +221,7 @@ describe("Feature: Routing on a Date", () => {
 
         const browserUrl = await browser.getUrl();
 
-        await expect(await browserUrl).toContain(CorrectAnswerPage.pageName);
+        await expect(browserUrl).toContain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter a date equal to today, Then I should be routed to the incorrect page", async () => {
@@ -232,7 +232,7 @@ describe("Feature: Routing on a Date", () => {
 
         const browserUrl = await browser.getUrl();
 
-        await expect(await browserUrl).toContain(IncorrectAnswerPage.pageName);
+        await expect(browserUrl).toContain(IncorrectAnswerPage.pageName);
       });
 
       it("When I enter a date greater than today, Then I should be routed to the incorrect page", async () => {
@@ -243,7 +243,7 @@ describe("Feature: Routing on a Date", () => {
 
         const browserUrl = await browser.getUrl();
 
-        await expect(await browserUrl).toContain(IncorrectAnswerPage.pageName);
+        await expect(browserUrl).toContain(IncorrectAnswerPage.pageName);
       });
     });
   });
@@ -273,7 +273,7 @@ describe("Feature: Routing on a Date", () => {
 
         const browserUrl = await browser.getUrl();
 
-        await expect(await browserUrl).toContain(CorrectAnswerPage.pageName);
+        await expect(browserUrl).toContain(CorrectAnswerPage.pageName);
       });
 
       it("When I enter a date greater than today, Then I should be routed to the incorrect page", async () => {
@@ -284,7 +284,7 @@ describe("Feature: Routing on a Date", () => {
 
         const browserUrl = await browser.getUrl();
 
-        await expect(await browserUrl).toContain(IncorrectAnswerPage.pageName);
+        await expect(browserUrl).toContain(IncorrectAnswerPage.pageName);
       });
     });
   });

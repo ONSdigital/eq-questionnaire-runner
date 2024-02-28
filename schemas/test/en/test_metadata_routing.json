@@ -17,7 +17,7 @@
             "type": "string"
         },
         {
-            "name": "flag_1",
+            "name": "boolean_flag",
             "type": "boolean"
         },
         {
@@ -63,7 +63,7 @@
                                     "when": {
                                         "==": [
                                             {
-                                                "identifier": "flag_1",
+                                                "identifier": "boolean_flag",
                                                 "source": "metadata"
                                             },
                                             true

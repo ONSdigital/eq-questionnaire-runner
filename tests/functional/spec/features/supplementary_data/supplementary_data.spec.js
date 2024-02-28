@@ -46,8 +46,13 @@ describe("Using supplementary data", () => {
       responseId,
     });
   });
+  it("Given I launch a survey using supplementary data, When I am outside a repeating section, Then I am able to see the list of items relating to a given supplementary data list item on the page", async () => {
+    await expect(await $("#main-content #guidance-1").getText()).toContain("The surnames of the employees are: Potter, Kent.");
+    await expect(await $$("#main-content li")[0].getText()).toBe("Articles and equipment for sports or outdoor games");
+    await expect(await $$("#main-content li")[1].getText()).toBe("Kitchen Equipment");
+  });
 
-  it("Given I launch a survey using supplementary data, When I begin the introduction block, Then I see the supplementary data piped in", async () => {
+  it("Given I progress through the interstitial block, When I begin the introduction block, Then I see the supplementary data piped in", async () => {
     await click(LoadedSuccessfullyBlockPage.submit());
     await $(IntroductionBlockPage.acceptCookies()).click();
     await expect(await $(IntroductionBlockPage.businessDetailsContent()).getText()).toContain("You are completing this survey for Tesco");

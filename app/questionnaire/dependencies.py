@@ -1,13 +1,13 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Mapping, Sequence
+from typing import TYPE_CHECKING, Iterable, Mapping, Sequence
 
 from ordered_set import OrderedSet
 from werkzeug.datastructures import MultiDict
 
 from app.data_models import ProgressStore
 from app.questionnaire import QuestionnaireSchema
-from app.questionnaire.questionnaire_schema import get_sources_for_type_from_data
+from app.questionnaire.questionnaire_schema import get_sources_for_types_from_data
 from app.utilities.mappings import get_flattened_mapping_values
 from app.utilities.types import LocationType, SectionKey
 
@@ -20,7 +20,7 @@ def get_routing_path_block_ids_by_section_for_dependent_sections(
     location: LocationType,
     progress_store: ProgressStore,
     path_finder: PathFinder,
-    source_type: str,
+    source_types: Iterable[str],
     data: MultiDict | Mapping | Sequence,
     sections_to_ignore: list | None = None,
     ignore_keys: list[str] | None = None,
@@ -35,8 +35,8 @@ def get_routing_path_block_ids_by_section_for_dependent_sections(
         else get_flattened_mapping_values(dependent_sections)
     )
 
-    if dependents and not get_sources_for_type_from_data(
-        source_type=source_type, data=data, ignore_keys=ignore_keys
+    if dependents and not get_sources_for_types_from_data(
+        source_types=source_types, data=data, ignore_keys=ignore_keys
     ):
         return block_ids_by_section
 
@@ -55,7 +55,7 @@ def get_routing_path_block_ids_by_section_for_dependent_sections(
     return block_ids_by_section
 
 
-def get_routing_path_block_ids_by_section_for_calculated_summary_dependencies(
+def get_routing_path_block_ids_by_section_for_calculation_summary_dependencies(
     *,
     location: LocationType,
     progress_store: ProgressStore,
@@ -65,7 +65,12 @@ def get_routing_path_block_ids_by_section_for_calculated_summary_dependencies(
     ignore_keys: list[str] | None = None,
     schema: QuestionnaireSchema,
 ) -> dict[SectionKey, tuple[str, ...]]:
-    dependent_sections = schema.calculated_summary_section_dependencies_by_block[
+    """
+    If the current location depends on any calculated or grand calculated summaries,
+    for all the sections that those CS or GCS values depend on, get the blocks on the path for that section.
+    These routing path block ids are then used to ensure the CS/GCS only includes answers on the path
+    """
+    dependent_sections = schema.calculation_summary_section_dependencies_by_block[
         location.section_id
     ]
     return get_routing_path_block_ids_by_section_for_dependent_sections(
@@ -74,7 +79,7 @@ def get_routing_path_block_ids_by_section_for_calculated_summary_dependencies(
         sections_to_ignore=sections_to_ignore,
         data=data,
         path_finder=path_finder,
-        source_type="calculated_summary",
+        source_types={"calculated_summary", "grand_calculated_summary"},
         ignore_keys=ignore_keys,
         dependent_sections=dependent_sections,
     )

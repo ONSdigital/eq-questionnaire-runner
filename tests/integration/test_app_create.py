@@ -139,12 +139,12 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
             csp_policy_parts = headers["Content-Security-Policy"].split("; ")
             self.assertIn(f"default-src 'self' {cdn_url}", csp_policy_parts)
             self.assertIn(
-                "script-src 'self' https://tagmanager.google.com https://*.googletagmanager.com "
-                f"'unsafe-inline' {cdn_url} 'nonce-{request.csp_nonce}'",
+                "script-src 'self' https://*.googletagmanager.com "
+                f"{cdn_url} 'nonce-{request.csp_nonce}'",
                 csp_policy_parts,
             )
             self.assertIn(
-                f"style-src 'self' https://tagmanager.google.com https://fonts.googleapis.com 'unsafe-inline' {cdn_url}",
+                f"style-src 'self' https://fonts.googleapis.com 'unsafe-inline' {cdn_url}",
                 csp_policy_parts,
             )
             self.assertIn(
@@ -395,6 +395,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
         # Given
         self._setting_overrides["OIDC_TOKEN_BACKEND"] = "gcp"
         self._setting_overrides["SDS_OAUTH2_CLIENT_ID"] = "1234567890"
+        self._setting_overrides["CIR_OAUTH2_CLIENT_ID"] = "1234567890"
 
         # When
         application = create_app(self._setting_overrides)
@@ -449,3 +450,16 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
 
         # Then
         assert "Setting SDS_OAUTH2_CLIENT_ID Missing" in str(ex.exception)
+
+    def test_cir_oauth_2_client_id_missing_raises_exception(self):
+        # Given
+        self._setting_overrides["OIDC_TOKEN_BACKEND"] = "gcp"
+        self._setting_overrides["SDS_OAUTH2_CLIENT_ID"] = "123456789"
+        self._setting_overrides["CIR_OAUTH2_CLIENT_ID"] = ""
+
+        # When
+        with self.assertRaises(MissingEnvironmentVariable) as ex:
+            create_app(self._setting_overrides)
+
+        # Then
+        assert "Setting CIR_OAUTH2_CLIENT_ID Missing" in str(ex.exception)

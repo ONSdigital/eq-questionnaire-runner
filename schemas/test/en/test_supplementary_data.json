@@ -58,11 +58,52 @@
                                 "contents": [
                                     {
                                         "title": "You have successfully loaded Supplementary data",
-                                        "description": "Press continue to proceed to the introduction",
+                                        "description": {
+                                            "text": "List of products: {products}",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "products",
+                                                    "transforms": [
+                                                        {
+                                                            "transform": "format_list",
+                                                            "arguments": {
+                                                                "list_to_format": {
+                                                                    "source": "supplementary_data",
+                                                                    "identifier": "products",
+                                                                    "selectors": ["name"]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
                                         "guidance": {
                                             "contents": [
                                                 {
-                                                    "description": "The purpose of this block, is to test that supplementary data loads successfully, separate to using the supplementary data"
+                                                    "description": {
+                                                        "text": "The purpose of this block, is to test that supplementary data loads successfully, separate to using the supplementary data. The surnames of the employees are: {surnames}.",
+                                                        "placeholders": [
+                                                            {
+                                                                "placeholder": "surnames",
+                                                                "transforms": [
+                                                                    {
+                                                                        "transform": "concatenate_list",
+                                                                        "arguments": {
+                                                                            "list_to_concatenate": [
+                                                                                {
+                                                                                    "source": "supplementary_data",
+                                                                                    "identifier": "employees",
+                                                                                    "selectors": ["personal_details", "surname"]
+                                                                                }
+                                                                            ],
+                                                                            "delimiter": ", "
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
                                                 }
                                             ]
                                         }
