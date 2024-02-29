@@ -562,7 +562,7 @@ msgid "Cannot answer questions for others in your household"
 msgstr ""
 
 #: app/views/handlers/individual_response.py:329
-msgid "How would you like <em>{person_name}</em> to receive a separate census?"
+msgid "How would you like <strong class='ons-highlight'>{person_name}</strong> to receive a separate census?"
 msgstr ""
 
 #: app/views/handlers/individual_response.py:352
@@ -602,7 +602,7 @@ msgid "Send individual access code"
 msgstr ""
 
 #: app/views/handlers/individual_response.py:455
-msgid "How would you like to answer <em>{person_name_possessive}</em> questions?"
+msgid "How would you like to answer <strong class='ons-highlight'>{person_name_possessive}</strong> questions?"
 msgstr ""
 
 #: app/views/handlers/individual_response.py:470
@@ -663,7 +663,7 @@ msgid "Who do you need to request a separate census for?"
 msgstr ""
 
 #: app/views/handlers/individual_response.py:800
-msgid "What is <em>{person_name_possessive}</em> mobile number?"
+msgid "What is <strong class='ons-highlight'>{person_name_possessive}</strong> mobile number?"
 msgstr ""
 
 #: app/views/handlers/individual_response.py:812
@@ -717,7 +717,7 @@ msgstr ""
 #: templates/confirmation-email-sent.html:25
 msgid ""
 "The email will be sent from "
-"<em>census.2021@notifications.service.gov.uk</em>"
+"<strong class='ons-highlight'>census.2021@notifications.service.gov.uk</strong>"
 msgstr ""
 
 #: templates/confirmation-email-sent.html:29
@@ -1161,7 +1161,7 @@ msgid ""
 msgstr ""
 
 #: templates/individual_response/confirmation-text-message.html:25
-msgid "The text will be sent from <em>Census2021</em>"
+msgid "The text will be sent from <strong class='ons-highlight'>Census2021</strong>"
 msgstr ""
 
 #: templates/individual_response/interstitial.html:8
@@ -1292,7 +1292,7 @@ msgstr ""
 
 #: templates/partials/individual-response-guidance.html:14
 msgid ""
-"You can <em>share your household access code</em> with the people you "
+"You can <strong class='ons-highlight'>share your household access code</strong> with the people you "
 "live with so they can complete their own sections."
 msgstr ""
 

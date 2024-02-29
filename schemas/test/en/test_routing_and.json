@@ -114,7 +114,7 @@
                                 "contents": [
                                     {
                                         "description": {
-                                            "text": "You were asked to enter <em>123</em> and <em>321</em> but you actually entered <em>{answer_1}</em> and <em>{answer_2}</em>.",
+                                            "text": "You were asked to enter <strong class='ons-highlight'>123</strong> and <strong class='ons-highlight'>321</strong> but you actually entered <strong class='ons-highlight'>{answer_1}</strong> and <strong class='ons-highlight'>{answer_2}</strong>.",
                                             "placeholders": [
                                                 {
                                                     "placeholder": "answer_1",
@@ -149,7 +149,7 @@
                                 "contents": [
                                     {
                                         "description": {
-                                            "text": "You were asked to enter <em>123</em> and <em>321</em> and you entered <em>{answer_1}</em> and <em>{answer_2}</em>.",
+                                            "text": "You were asked to enter <strong class='ons-highlight'>123</strong> and <strong class='ons-highlight'>321</strong> and you entered <strong class='ons-highlight'>{answer_1}</strong> and <strong class='ons-highlight'>{answer_2}</strong>.",
                                             "placeholders": [
                                                 {
                                                     "placeholder": "answer_1",

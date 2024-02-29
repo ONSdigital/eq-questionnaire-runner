@@ -540,8 +540,8 @@ msgid "Cannot answer questions for others in your household"
 msgstr "Cannae mak repone fur speirins anent ithers in yer hoosehaud"
 
 #: app/views/handlers/individual_response.py:311
-msgid "How would you like <em>{person_name}</em> to receive a separate census?"
-msgstr "Hoo wud ye lake <em>{person_name}</em> tae get anither heid-coont?"
+msgid "How would you like <strong class='ons-highlight'>{person_name}</strong> to receive a separate census?"
+msgstr "Hoo wud ye lake <strong class='ons-highlight'>{person_name}</strong> tae get anither heid-coont?"
 
 #: app/views/handlers/individual_response.py:334
 msgid "Text message"
@@ -576,8 +576,8 @@ msgid "Send individual access code"
 msgstr "Sen sing'l ingang code"
 
 #: app/views/handlers/individual_response.py:437
-msgid "How would you like to answer <em>{person_name_possessive}</em> questions?"
-msgstr "Hoo wud ye lake tae mak repone fur <em>{person_name_possessive}</em> speirins?"
+msgid "How would you like to answer <strong class='ons-highlight'>{person_name_possessive}</strong> questions?"
+msgstr "Hoo wud ye lake tae mak repone fur <strong class='ons-highlight'>{person_name_possessive}</strong> speirins?"
 
 #: app/views/handlers/individual_response.py:452
 msgid "I would like to request a separate census for them to complete"
@@ -633,8 +633,8 @@ msgid "Who do you need to request a separate census for?"
 msgstr "Wha's tha bodie ye need tae ax fur anither heid-coont fur?"
 
 #: app/views/handlers/individual_response.py:759
-msgid "What is <em>{person_name_possessive}</em> mobile number?"
-msgstr "Whut bes <em>{person_name_possessive}</em> mobil phone nummer?"
+msgid "What is <strong class='ons-highlight'>{person_name_possessive}</strong> mobile number?"
+msgstr "Whut bes <strong class='ons-highlight'>{person_name_possessive}</strong> mobil phone nummer?"
 
 #: app/views/handlers/individual_response.py:771
 msgid "UK mobile number"
@@ -721,8 +721,8 @@ msgid "A confirmation email has been sent to {email}"
 msgstr "An homologation email haes bin sent til {email}"
 
 #: templates/confirmation-email-sent.html:25
-msgid "The email will be sent from <em>census.2021@notifications.service.gov.uk</em>"
-msgstr "Tha email wull be sent frae <em>census.2021@notifications.service.gov.uk</em>"
+msgid "The email will be sent from <strong class='ons-highlight'>census.2021@notifications.service.gov.uk</strong>"
+msgstr "Tha email wull be sent frae <strong class='ons-highlight'>census.2021@notifications.service.gov.uk</strong>"
 
 #: templates/confirmation-email-sent.html:29
 msgid "Didn't receive an email?"
@@ -987,8 +987,8 @@ msgid "The text message with an individual access code should arrive soon for th
 msgstr "Tha text message wi a sing'l ingang code shud land shane eneuch fur thaim tae fill oot thair ain heid-coont"
 
 #: templates/individual_response/confirmation-text-message.html:26
-msgid "The text will be sent from <em>Census2021</em>"
-msgstr "Tha text wull be sent frae <em>Heid-coont 20an21</em>"
+msgid "The text will be sent from <strong class='ons-highlight'>Census2021</strong>"
+msgstr "Tha text wull be sent frae <strong class='ons-highlight'>Heid-coont 20an21</strong>"
 
 #: templates/individual_response/interstitial.html:8
 msgid "If you can't answer questions for others in your household"
@@ -1095,8 +1095,8 @@ msgid "Give feedback"
 msgstr "Gie feedbak"
 
 #: templates/partials/individual-response-guidance.html:25
-msgid "You can <em>share your household access code</em> with the people you live with so they can complete their own sections."
-msgstr "Ye can <em>gie oot yer hoosehaud ingang code</em> wi tha fowk wha leeve wi ye sae they can fill oot thair ain lay- oots."
+msgid "You can <strong class='ons-highlight'>share your household access code</strong> with the people you live with so they can complete their own sections."
+msgstr "Ye can <strong class='ons-highlight'>gie oot yer hoosehaud ingang code</strong> wi tha fowk wha leeve wi ye sae they can fill oot thair ain lay- oots."
 
 #: templates/partials/individual-response-guidance.html:26
 msgid "If this is not possible, there are <a href={url}>other ways each person can complete their own census.</a>"

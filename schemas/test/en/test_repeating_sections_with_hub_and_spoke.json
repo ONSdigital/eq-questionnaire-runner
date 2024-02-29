@@ -703,7 +703,7 @@
                                                     ]
                                                 }
                                             ],
-                                            "text": "What is <em>{person_name_possessive}</em> date of birth?"
+                                            "text": "What is <strong class='ons-highlight'>{person_name_possessive}</strong> date of birth?"
                                         },
                                         "type": "General"
                                     },
@@ -1068,7 +1068,7 @@
                                                     ]
                                                 }
                                             ],
-                                            "text": "What is <em>{person_name_possessive}</em> sex?"
+                                            "text": "What is <strong class='ons-highlight'>{person_name_possessive}</strong> sex?"
                                         },
                                         "type": "General"
                                     },
@@ -1181,7 +1181,7 @@
                                                     ]
                                                 }
                                             ],
-                                            "text": "What is <em>{person_name_possessive}</em> sex?"
+                                            "text": "What is <strong class='ons-highlight'>{person_name_possessive}</strong> sex?"
                                         },
                                         "type": "General"
                                     },
@@ -1299,7 +1299,7 @@
                                             ]
                                         }
                                     ],
-                                    "text": "What is <em>{person_name_possessive}</em> date of birth?"
+                                    "text": "What is <strong class='ons-highlight'>{person_name_possessive}</strong> date of birth?"
                                 },
                                 "type": "General"
                             }

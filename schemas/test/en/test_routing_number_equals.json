@@ -77,7 +77,7 @@
                                 "contents": [
                                     {
                                         "description": {
-                                            "text": "You were asked to enter <em>123</em> but you actually entered <em>{answer}</em>.",
+                                            "text": "You were asked to enter <strong class='ons-highlight'>123</strong> but you actually entered <strong class='ons-highlight'>{answer}</strong>.",
                                             "placeholders": [
                                                 {
                                                     "placeholder": "answer",
@@ -105,7 +105,7 @@
                                 "contents": [
                                     {
                                         "description": {
-                                            "text": "You were asked to enter <em>123</em> and you entered <em>{answer}</em>.",
+                                            "text": "You were asked to enter <strong class='ons-highlight'>123</strong> and you entered <strong class='ons-highlight'>{answer}</strong>.",
                                             "placeholders": [
                                                 {
                                                     "placeholder": "answer",

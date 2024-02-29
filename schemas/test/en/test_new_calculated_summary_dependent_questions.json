@@ -136,7 +136,7 @@
                         {
                             "id": "calculated-summary-block",
                             "type": "CalculatedSummary",
-                            "title": "We have calculated your total spend to be <em>%(total)s</em>. Is this correct?",
+                            "title": "We have calculated your total spend to be <strong class='ons-highlight'>%(total)s</strong>. Is this correct?",
                             "calculation": {
                                 "operation": {
                                     "+": [

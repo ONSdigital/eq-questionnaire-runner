@@ -576,7 +576,7 @@
                                             ]
                                         }
                                     ],
-                                    "text": "Are you <em>{person_name}?</em>"
+                                    "text": "Are you <strong class='ons-highlight'>{person_name}?</strong>"
                                 },
                                 "type": "General"
                             },

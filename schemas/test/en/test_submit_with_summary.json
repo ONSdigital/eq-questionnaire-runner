@@ -109,7 +109,7 @@
                             "question": {
                                 "id": "test-dessert-confirmation-question",
                                 "title": {
-                                    "text": "Are you sure <em>{dessert}</em> is your favourite?",
+                                    "text": "Are you sure <strong class='ons-highlight'>{dessert}</strong> is your favourite?",
                                     "placeholders": [
                                         {
                                             "placeholder": "dessert",

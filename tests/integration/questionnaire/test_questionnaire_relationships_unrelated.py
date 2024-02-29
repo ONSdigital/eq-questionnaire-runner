@@ -135,7 +135,7 @@ class TestQuestionnaireRelationshipsUnrelated(QuestionnaireTestCase):
         )
         self.post({"relationship-answer": "Unrelated"})
         self.post({"relationship-answer": "Unrelated"})
-        self.assertInBody("Are any of these people related to <em>Betty Burns</em>?")
+        self.assertInBody("Are any of these people related to <strong class='ons-highlight'>Betty Burns</strong>?")
 
     def test_variant_no_answer_routes_to_next_person(self):
         self.launch_survey_and_add_people()

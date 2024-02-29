@@ -40,14 +40,14 @@ class TestPlaceholders(IntegrationTestCase):
         self.post({"total-retail-turnover-answer": 2000})
 
         self.assertInBody(
-            "Of the <em>£2,000.00</em> total retail turnover, what was the value of internet sales?"
+            "Of the <strong class='ons-highlight'>£2,000.00</strong> total retail turnover, what was the value of internet sales?"
         )
 
         self.post({"total-retail-turnover-internet-sales-answer": 3000})
 
         self.post({"total-items-answer": 2})
 
-        self.assertInBody("Do you want to add <em>a 3rd</em> item?")
+        self.assertInBody("Do you want to add <strong class='ons-highlight'>a 3rd</strong> item?")
 
         self.post({"add-item-question": "Yes"})
 
