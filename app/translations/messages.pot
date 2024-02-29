@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-06 15:03+0000\n"
+"POT-Creation-Date: 2024-02-29 16:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.13.1\n"
+"Generated-By: Babel 2.14.0\n"
 
 #: app/forms/validators.py:389 app/jinja_filters.py:111
 #, python-format
@@ -562,7 +562,9 @@ msgid "Cannot answer questions for others in your household"
 msgstr ""
 
 #: app/views/handlers/individual_response.py:329
-msgid "How would you like <strong class='ons-highlight'>{person_name}</strong> to receive a separate census?"
+msgid ""
+"How would you like <strong class='ons-highlight'>{person_name}</strong> "
+"to receive a separate census?"
 msgstr ""
 
 #: app/views/handlers/individual_response.py:352
@@ -602,7 +604,9 @@ msgid "Send individual access code"
 msgstr ""
 
 #: app/views/handlers/individual_response.py:455
-msgid "How would you like to answer <strong class='ons-highlight'>{person_name_possessive}</strong> questions?"
+msgid ""
+"How would you like to answer <strong class='ons-"
+"highlight'>{person_name_possessive}</strong> questions?"
 msgstr ""
 
 #: app/views/handlers/individual_response.py:470
@@ -663,7 +667,9 @@ msgid "Who do you need to request a separate census for?"
 msgstr ""
 
 #: app/views/handlers/individual_response.py:800
-msgid "What is <strong class='ons-highlight'>{person_name_possessive}</strong> mobile number?"
+msgid ""
+"What is <strong class='ons-highlight'>{person_name_possessive}</strong> "
+"mobile number?"
 msgstr ""
 
 #: app/views/handlers/individual_response.py:812
@@ -716,8 +722,8 @@ msgstr ""
 
 #: templates/confirmation-email-sent.html:25
 msgid ""
-"The email will be sent from "
-"<strong class='ons-highlight'>census.2021@notifications.service.gov.uk</strong>"
+"The email will be sent from <strong class='ons-"
+"highlight'>census.2021@notifications.service.gov.uk</strong>"
 msgstr ""
 
 #: templates/confirmation-email-sent.html:29
@@ -1161,7 +1167,9 @@ msgid ""
 msgstr ""
 
 #: templates/individual_response/confirmation-text-message.html:25
-msgid "The text will be sent from <strong class='ons-highlight'>Census2021</strong>"
+msgid ""
+"The text will be sent from <strong class='ons-"
+"highlight'>Census2021</strong>"
 msgstr ""
 
 #: templates/individual_response/interstitial.html:8
@@ -1292,8 +1300,9 @@ msgstr ""
 
 #: templates/partials/individual-response-guidance.html:14
 msgid ""
-"You can <strong class='ons-highlight'>share your household access code</strong> with the people you "
-"live with so they can complete their own sections."
+"You can <strong class='ons-highlight'>share your household access "
+"code</strong> with the people you live with so they can complete their "
+"own sections."
 msgstr ""
 
 #: templates/partials/individual-response-guidance.html:15
