@@ -6,13 +6,6 @@ from structlog import get_logger
 
 logger = get_logger()
 
-survey_journey: Dict[str, str | bool] = {
-    "previous_request_method": "",
-    "started": True,
-    "schema_name": "",
-    "output_file_name": "",
-}
-
 LAUNCHER_ROOT_URL = "http://localhost:8000"
 RUNNER_ROOT_URL = "http://localhost:5000"
 TEST_TEMPLATE = """from tests.integration.integration_test_case import IntegrationTestCase
@@ -22,6 +15,13 @@ class {class_name}(IntegrationTestCase):
     def {function_name}(self):
         self.launchSurvey("{schema_name}")
 """
+
+survey_journey: Dict[str, str | bool] = {
+    "previous_request_method": "",
+    "started": True,
+    "schema_name": "",
+    "output_file_name": "",
+}
 
 
 def process_runner_request(request: Request) -> None:
@@ -122,7 +122,8 @@ def run(pw: Playwright) -> None:
     page.on("request", request_handler)
 
     input(
-        """Script is paused. Start navigating through the browser for the journey & press Enter when finished to capture the output and add into a test file\n"""
+        """Script is paused. Start navigating through the browser for the journey & press Enter when finished to capture
+         the output and add into a test file\n"""
     )
     browser.close()
     logger.info(
