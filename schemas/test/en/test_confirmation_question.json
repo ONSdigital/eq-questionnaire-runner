@@ -123,7 +123,7 @@
                                 ],
                                 "id": "confirm-zero-employees-question",
                                 "title": {
-                                    "text": "The current number of employees for {company_name} is <strong class='ons-highlight'>0</strong>, is this correct?",
+                                    "text": "The current number of employees for {company_name} is <strong class=\"ons-highlight\">0</strong>, is this correct?",
                                     "placeholders": [
                                         {
                                             "placeholder": "company_name",
@@ -198,7 +198,7 @@
                                 ],
                                 "id": "number-of-employees-split-question",
                                 "title": {
-                                    "text": "Of the <strong class='ons-highlight'>{number_of_employees_total}</strong> total employees employed, how many male and female employees worked the following hours?",
+                                    "text": "Of the <strong class=\"ons-highlight\">{number_of_employees_total}</strong> total employees employed, how many male and female employees worked the following hours?",
                                     "placeholders": [
                                         {
                                             "placeholder": "number_of_employees_total",

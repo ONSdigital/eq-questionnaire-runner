@@ -156,7 +156,7 @@
                                             }
                                         }
                                     ],
-                                    "text": "Do you live at <strong class='ons-highlight'>{household_address}</strong>?"
+                                    "text": "Do you live at <strong class=\"ons-highlight\">{household_address}</strong>?"
                                 },
                                 "answers": [
                                     {
@@ -197,7 +197,7 @@
                                             }
                                         }
                                     ],
-                                    "text": "Does anyone else live at <strong class='ons-highlight'>{household_address}</strong>?"
+                                    "text": "Does anyone else live at <strong class=\"ons-highlight\">{household_address}</strong>?"
                                 },
                                 "answers": [
                                     {
@@ -367,7 +367,7 @@
                                             }
                                         }
                                     ],
-                                    "text": "Are there any other visitors staying overnight at <strong class='ons-highlight'>{household_address}</strong>?"
+                                    "text": "Are there any other visitors staying overnight at <strong class=\"ons-highlight\">{household_address}</strong>?"
                                 },
                                 "answers": [
                                     {

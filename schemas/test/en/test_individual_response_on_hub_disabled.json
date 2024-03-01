@@ -398,7 +398,7 @@
                                             ]
                                         }
                                     ],
-                                    "text": "Are you <strong class='ons-highlight'>{person_name}?</strong>"
+                                    "text": "Are you <strong class=\"ons-highlight\">{person_name}?</strong>"
                                 },
                                 "type": "General"
                             },

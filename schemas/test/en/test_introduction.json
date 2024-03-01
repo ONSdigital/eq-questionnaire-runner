@@ -707,7 +707,7 @@
                                 "title": "Section complete",
                                 "contents": [
                                     {
-                                        "description": "<p>You have successfully completed this section</p><p>The next section covers changes in <strong class='ons-highlight'>business strategy and practices</strong>, for example, implementing changes to marketing concepts or strategies.</p>"
+                                        "description": "<p>You have successfully completed this section</p><p>The next section covers changes in <strong class=\"ons-highlight\">business strategy and practices</strong>, for example, implementing changes to marketing concepts or strategies.</p>"
                                     }
                                 ]
                             }

@@ -386,7 +386,7 @@
                                                     ]
                                                 }
                                             ],
-                                            "text": "What is <strong class='ons-highlight'>{person_name_possessive}</strong> date of birth?"
+                                            "text": "What is <strong class=\"ons-highlight\">{person_name_possessive}</strong> date of birth?"
                                         },
                                         "type": "General"
                                     },

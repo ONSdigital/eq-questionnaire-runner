@@ -5,33 +5,31 @@
 {% set sign_out_url = content.sign_out_url %}
 
 {% block main %}
-   {% call onsPanel({
-     "spacious": true,
-     "type": "success",
-     "classes": "ons-u-mb-s",
-     "iconType": "check",
-     "iconSize": "xl"
-     })
-   %}
-  <h1 data-qa="confirmation-text">{{ _("A confirmation email has been sent to {email}").format(email = content.email)  }}</h1>
- {% endcall %}
+    {% call onsPanel({
+        "spacious": true,
+        "type": "success",
+        "classes": "ons-u-mb-s",
+        "iconType": "check",
+        "iconSize": "xl"
+    }) %}
+        <h1 data-qa="confirmation-text">{{ _("A confirmation email has been sent to {email}").format(email = content.email) }}</h1>
+    {% endcall %}
 
-  {% call onsPanel({
-      "type": "bare",
-      "classes": "ons-u-mb-s",
-      "iconType": "lock"
-      })
-  %}
-      <p>{{ _("The email will be sent from <strong class='ons-highlight'>census.2021@notifications.service.gov.uk</strong>") }}</p>
-  {% endcall %}
+    {% call onsPanel({
+        "type": "bare",
+        "classes": "ons-u-mb-s",
+        "iconType": "lock"
+    }) %}
+        <p>{{ _('The email will be sent from <strong class="ons-highlight">census.2021@notifications.service.gov.uk</strong>') }}</p>
+    {% endcall %}
 
-  {% if content.show_send_another_email_guidance %}
-    <p><strong>{{ _("Didn't receive an email?")  }}</strong></p>
-    <p class="ons-u-mb-l">{{ _("It can take a few minutes for the email to arrive. If it doesn't arrive, check your junk mail, or you can <a href='{send_confirmation_email_url}' id='send-another-email'>send another confirmation email</a>.").format(send_confirmation_email_url = content.send_confirmation_email_url)}}</p>
-  {% endif %}
+    {% if content.show_send_another_email_guidance %}
+        <p><strong>{{ _("Didn't receive an email?") }}</strong></p>
+        <p class="ons-u-mb-l">{{ _("It can take a few minutes for the email to arrive. If it doesn't arrive, check your junk mail, or you can <a href='{send_confirmation_email_url}' id='send-another-email'>send another confirmation email</a>.").format(send_confirmation_email_url = content.send_confirmation_email_url)}}</p>
+    {% endif %}
 
-  {% if content.show_feedback_call_to_action %}
-    {% include 'partials/feedback-call-to-action.html' %}
-  {% endif %}
+    {% if content.show_feedback_call_to_action %}
+        {% include 'partials/feedback-call-to-action.html' %}
+    {% endif %}
 
 {% endblock %}

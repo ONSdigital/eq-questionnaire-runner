@@ -9,7 +9,7 @@ class TestQuestionnaireQuestionDefinition(IntegrationTestCase):
 
         # When I start the survey I am presented with the definitions title and content correctly
         self.assertInBody(
-            "Do you connect a LiFePO4 battery to your <strong class='ons-highlight'>photovoltaic system</strong> to store surplus energy?"
+            'Do you connect a LiFePO4 battery to your <strong class="ons-highlight">photovoltaic system</strong> to store surplus energy?'
         )
 
         self.assertInBody("What is a photovoltaic system?")

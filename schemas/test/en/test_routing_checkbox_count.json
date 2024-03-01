@@ -103,7 +103,7 @@
                                 "contents": [
                                     {
                                         "description": {
-                                            "text": "You were asked to select <strong class='ons-highlight'>2 or more</strong> toppings but you actually selected <strong class='ons-highlight'>{answer_count}</strong>.",
+                                            "text": "You were asked to select <strong class=\"ons-highlight\">2 or more</strong> toppings but you actually selected <strong class=\"ons-highlight\">{answer_count}</strong>.",
                                             "placeholders": [
                                                 {
                                                     "placeholder": "answer_count",
@@ -138,7 +138,7 @@
                                 "contents": [
                                     {
                                         "description": {
-                                            "text": "You were asked to select <strong class='ons-highlight'>2 or more</strong> toppings and you selected <strong class='ons-highlight'>{answer_count}</strong>.",
+                                            "text": "You were asked to select <strong class=\"ons-highlight\">2 or more</strong> toppings and you selected <strong class=\"ons-highlight\">{answer_count}</strong>.",
                                             "placeholders": [
                                                 {
                                                     "placeholder": "answer_count",

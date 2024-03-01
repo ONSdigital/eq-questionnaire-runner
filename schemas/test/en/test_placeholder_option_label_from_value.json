@@ -103,7 +103,7 @@
                             "question": {
                                 "id": "confirmation-question-radio",
                                 "title": {
-                                    "text": "You chose <strong class='ons-highlight'>{business_name}</strong> as your business name, is that correct ?",
+                                    "text": "You chose <strong class=\"ons-highlight\">{business_name}</strong> as your business name, is that correct ?",
                                     "placeholders": [
                                         {
                                             "placeholder": "business_name",

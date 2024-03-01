@@ -378,7 +378,7 @@
                                             ]
                                         }
                                     ],
-                                    "text": "What is <strong class='ons-highlight'>{person_name_possessive}</strong> date of birth?"
+                                    "text": "What is <strong class=\"ons-highlight\">{person_name_possessive}</strong> date of birth?"
                                 },
                                 "type": "General"
                             }
@@ -428,7 +428,7 @@
                                             ]
                                         }
                                     ],
-                                    "text": "Random question about <strong class='ons-highlight'>{person_name_possessive}</strong>"
+                                    "text": "Random question about <strong class=\"ons-highlight\">{person_name_possessive}</strong>"
                                 },
                                 "description": ["Shows because the calculated summary was completed in section 1"],
                                 "type": "General"
@@ -491,7 +491,7 @@
                                             ]
                                         }
                                     ],
-                                    "text": "Another random question about <strong class='ons-highlight'>{person_name_possessive}</strong>"
+                                    "text": "Another random question about <strong class=\"ons-highlight\">{person_name_possessive}</strong>"
                                 },
                                 "description": ["Shows because block 2 of this repeating section was completed."],
                                 "type": "General"

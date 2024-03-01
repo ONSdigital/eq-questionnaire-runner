@@ -283,7 +283,7 @@
                                             ]
                                         }
                                     ],
-                                    "text": "What is <strong class='ons-highlight'>{person_name_possessive}</strong> date of birth?"
+                                    "text": "What is <strong class=\"ons-highlight\">{person_name_possessive}</strong> date of birth?"
                                 },
                                 "type": "General"
                             }
@@ -459,7 +459,7 @@
                                             ]
                                         }
                                     ],
-                                    "text": "Does <strong class='ons-highlight'>{person_name}</strong> look after, or give any help or support to, anyone because they have long-term physical or mental health conditions or illnesses, or problems related to old age?"
+                                    "text": "Does <strong class=\"ons-highlight\">{person_name}</strong> look after, or give any help or support to, anyone because they have long-term physical or mental health conditions or illnesses, or problems related to old age?"
                                 },
                                 "answers": [
                                     {

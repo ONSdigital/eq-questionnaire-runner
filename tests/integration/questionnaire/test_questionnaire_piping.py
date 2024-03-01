@@ -21,7 +21,7 @@ class TestQuestionnairePiping(IntegrationTestCase):
         # Using raw response data rather than assertInSelectorCSS as otherwise the
         # content will be unescaped by BeautifulSoup
         assert (
-            "Does <strong class='ons-highlight'>Joe Bloggs &#34;Junior&#34;</strong> live at <strong class='ons-highlight'>44 hill side</strong>"
+            'Does <strong class="ons-highlight">Joe Bloggs &#34;Junior&#34;</strong> live at <strong class="ons-highlight">44 hill side</strong>'
             in self.getResponseData()
         )
 
@@ -42,7 +42,7 @@ class TestQuestionnairePiping(IntegrationTestCase):
         # Using raw response data rather than assertInSelectorCSS as otherwise the
         # content will be unescaped by BeautifulSoup
         assert (
-            "Does <strong class='ons-highlight'>Joe Bloggs &lt;b&gt;Junior&lt;/b&gt;</strong> live at <strong class='ons-highlight'>44 hill side</strong>"
+            'Does <strong class="ons-highlight">Joe Bloggs &lt;b&gt;Junior&lt;/b&gt;</strong> live at <strong class="ons-highlight">44 hill side</strong>'
             in self.getResponseData()
         )
 

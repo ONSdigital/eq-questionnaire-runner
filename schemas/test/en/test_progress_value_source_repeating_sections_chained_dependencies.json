@@ -414,7 +414,7 @@
                                             ]
                                         }
                                     ],
-                                    "text": "What is <strong class='ons-highlight'>{person_name_possessive}</strong> date of birth?"
+                                    "text": "What is <strong class=\"ons-highlight\">{person_name_possessive}</strong> date of birth?"
                                 },
                                 "type": "General"
                             }
@@ -464,7 +464,7 @@
                                             ]
                                         }
                                     ],
-                                    "text": "Random question about <strong class='ons-highlight'>{person_name_possessive}</strong>"
+                                    "text": "Random question about <strong class=\"ons-highlight\">{person_name_possessive}</strong>"
                                 },
                                 "description": ["Shows because section 2 was completed"],
                                 "type": "General"

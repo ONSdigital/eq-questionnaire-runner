@@ -79,7 +79,7 @@
                                 "contents": [
                                     {
                                         "description": {
-                                            "text": "The total number of employees confirmed are <strong class='ons-highlight'>{answer_employee} </strong>, now next question is about training budget",
+                                            "text": "The total number of employees confirmed are <strong class=\"ons-highlight\">{answer_employee} </strong>, now next question is about training budget",
                                             "placeholders": [
                                                 {
                                                     "placeholder": "answer_employee",
@@ -136,7 +136,7 @@
                                 "contents": [
                                     {
                                         "description": {
-                                            "text": "The average training budget per employee is <strong class='ons-highlight'>{answer_emp_training}</strong>",
+                                            "text": "The average training budget per employee is <strong class=\"ons-highlight\">{answer_emp_training}</strong>",
                                             "placeholders": [
                                                 {
                                                     "placeholder": "answer_emp_training",
