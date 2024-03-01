@@ -141,9 +141,7 @@ class TestQuestionnaireHtmlEscaping(IntegrationTestCase):
         self.post({"dessert-answer": HTML_CONTENT})
         self.post()
 
-        expected_question_text = (
-            f'Are you sure <strong class="ons-highlight">{ESCAPED_CONTENT}</strong> is your favourite?'
-        )
+        expected_question_text = f'Are you sure <strong class="ons-highlight">{ESCAPED_CONTENT}</strong> is your favourite?'
         expected_error_message = f'Select an answer <span class="ons-u-vh">to ‘Are you sure {ESCAPED_CONTENT} is your favourite?’</span>'
         assert expected_question_text in self.getResponseData()
         assert expected_error_message in self.getResponseData()

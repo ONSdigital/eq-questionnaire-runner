@@ -47,7 +47,9 @@ class TestPlaceholders(IntegrationTestCase):
 
         self.post({"total-items-answer": 2})
 
-        self.assertInBody('Do you want to add <strong class="ons-highlight">a 3rd</strong> item?')
+        self.assertInBody(
+            'Do you want to add <strong class="ons-highlight">a 3rd</strong> item?'
+        )
 
         self.post({"add-item-question": "Yes"})
 

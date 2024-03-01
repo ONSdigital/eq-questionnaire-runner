@@ -43,7 +43,9 @@ class TestQuestionnaireQuestionVariants(IntegrationTestCase):
 
         self.post({"first-name-answer": "Linus", "last-name-answer": "Torvalds"})
 
-        self.assertInBody('Are you <strong class="ons-highlight">Linus Torvalds</strong>?')
+        self.assertInBody(
+            'Are you <strong class="ons-highlight">Linus Torvalds</strong>?'
+        )
 
         proxy_answer = "No, I am answering on their behalf" if proxy else "Yes, I am"
 
@@ -51,16 +53,16 @@ class TestQuestionnaireQuestionVariants(IntegrationTestCase):
 
         self.post({"proxy-answer": proxy_answer})
 
-        expected_question = (
-            'What age is <strong class="ons-highlight">Linus Torvalds</strong>?" if proxy else "What is your age?'
-        )
+        expected_question = 'What age is <strong class="ons-highlight">Linus Torvalds</strong>?" if proxy else "What is your age?'
 
         self.assertInBody(expected_question)
 
         self.post({"age-answer": "49"})
 
         expected_question = (
-            '<strong class="ons-highlight">Linus Torvalds</strong> is over 16?' if proxy else "You are over 16?"
+            '<strong class="ons-highlight">Linus Torvalds</strong> is over 16?'
+            if proxy
+            else "You are over 16?"
         )
         self.assertInBody(expected_question)
 

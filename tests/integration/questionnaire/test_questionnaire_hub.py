@@ -140,7 +140,9 @@ class TestQuestionnaireHub(IntegrationTestCase):
         self.get(first_repeating_section_url)
         self.post({"proxy-answer": "Yes"})
 
-        self.assertInBody('What is <strong class="ons-highlight">John Doe’s</strong> date of birth?')
+        self.assertInBody(
+            'What is <strong class="ons-highlight">John Doe’s</strong> date of birth?'
+        )
 
         self.get(HUB_URL_PATH)
 
@@ -149,12 +151,16 @@ class TestQuestionnaireHub(IntegrationTestCase):
         self.get(second_repeating_section_url)
         self.post({"proxy-answer": "Yes"})
 
-        self.assertInBody('What is <strong class="ons-highlight">Anna Doe’s</strong> date of birth?')
+        self.assertInBody(
+            'What is <strong class="ons-highlight">Anna Doe’s</strong> date of birth?'
+        )
 
         # Go to visitors
         visitor_repeating_section_url = section_urls[3].attrs["href"]
         self.get(visitor_repeating_section_url)
-        self.assertInBody('What is <strong class="ons-highlight">Joe Public’s</strong> date of birth?')
+        self.assertInBody(
+            'What is <strong class="ons-highlight">Joe Public’s</strong> date of birth?'
+        )
 
     def test_hub_section_required_but_enabled_false(self):
         # Given the hub is enabled and there are two required sections
