@@ -11,8 +11,10 @@ There are a few points to note for this script:
 
 * All GETs and POSTs will be recorded
 * The dev will need to manually add their own assertions in the generated test file
+* When the script is launched, it will create a new file for the schema chosen. If you launch the script again for the same schema, it will overwrite the
+  previous file output
 * It does **not** handle dynamic answers because these are generated at runtime - you will need to update the output script to handle list_item_ids separately,
-  as they will not be known beforehand.
+  as they will not be known beforehand
 * It handles navigating back via clicking 'previous' links etc. To do this, some additional logic was needed to filter out the beginning of the survey journey,
   after the first GET request from launcher that makes the first GET request in Runner
 
