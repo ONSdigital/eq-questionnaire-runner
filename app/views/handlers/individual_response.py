@@ -327,7 +327,7 @@ class IndividualResponseHowHandler(IndividualResponseHandler):
                 "id": "individual-response-how",
                 "title": {
                     "text": lazy_gettext(
-                        'How would you like <strong>{person_name}</strong> to receive a separate census?'
+                        "How would you like <strong>{person_name}</strong> to receive a separate census?"
                     ),
                     "placeholders": IndividualResponseHandler._person_name_placeholder(
                         self._list_name
@@ -453,7 +453,7 @@ class IndividualResponseChangeHandler(IndividualResponseHandler):
                 "id": "individual-response-change-question",
                 "title": {
                     "text": lazy_gettext(
-                        'How would you like to answer <strong>{person_name_possessive}</strong> questions?'
+                        "How would you like to answer <strong>{person_name_possessive}</strong> questions?"
                     ),
                     "placeholders": IndividualResponseHandler._person_name_placeholder_possessive(
                         self._list_name
@@ -798,7 +798,7 @@ class IndividualResponseTextHandler(IndividualResponseHandler):
                 "id": "individual-response-enter-number",
                 "title": {
                     "text": lazy_gettext(
-                        'What is <strong>{person_name_possessive}</strong> mobile number?'
+                        "What is <strong>{person_name_possessive}</strong> mobile number?"
                     ),
                     "placeholders": IndividualResponseHandler._person_name_placeholder_possessive(
                         self._list_name
