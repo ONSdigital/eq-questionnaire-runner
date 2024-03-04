@@ -250,30 +250,14 @@ class TestQuestionnaireGrandCalculatedSummary(QuestionnaireTestCase):
         )
         self.post()
         self.post({"pay-debit": "110", "pay-credit": "120", "pay-other": "100"})
-        self.assertInBody(
-            "Monthly maintenance cost: <strong>£100.00</strong>"
-        )
-        self.assertInBody(
-            "Monthly fuel cost: <strong>£80.00</strong>"
-        )
-        self.assertInBody(
-            "Total base cost: <strong>£150.00</strong>"
-        )
-        self.assertInBody(
-            "Total running cost: <strong>£180.00</strong>"
-        )
-        self.assertInBody(
-            "Total owning and running cost: <strong>£330.00</strong>"
-        )
-        self.assertInBody(
-            "Paid by debit card: <strong>£110.00</strong>"
-        )
-        self.assertInBody(
-            "Paid by credit card: <strong>£120.00</strong>"
-        )
-        self.assertInBody(
-            "Paid by other means: <strong>£100.00</strong>"
-        )
+        self.assertInBody("Monthly maintenance cost: <strong>£100.00</strong>")
+        self.assertInBody("Monthly fuel cost: <strong>£80.00</strong>")
+        self.assertInBody("Total base cost: <strong>£150.00</strong>")
+        self.assertInBody("Total running cost: <strong>£180.00</strong>")
+        self.assertInBody("Total owning and running cost: <strong>£330.00</strong>")
+        self.assertInBody("Paid by debit card: <strong>£110.00</strong>")
+        self.assertInBody("Paid by credit card: <strong>£120.00</strong>")
+        self.assertInBody("Paid by other means: <strong>£100.00</strong>")
         self.post()
         self.post()
         self.post()
