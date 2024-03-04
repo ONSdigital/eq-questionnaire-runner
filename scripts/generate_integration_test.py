@@ -1,4 +1,4 @@
-from typing import Dict, TextIO
+from typing import IO, Dict
 from urllib.parse import parse_qs, urlparse
 
 from playwright.sync_api import Playwright, Request, sync_playwright
@@ -16,16 +16,17 @@ class {class_name}(IntegrationTestCase):
         self.launchSurvey("{schema_name}")
 """
 
-survey_journey: Dict[str, str | bool] = {
-    "previous_request_method": "",
+survey_journey: Dict[str, str | bool | None] = {
+    "previous_request_method": None,
     "started": True,
-    "schema_name": "",
-    "output_file_name": "",
+    "schema_name": None,
 }
+
+output: Dict[str, str] = {"file_name": ""}
 
 
 def process_runner_request(request: Request) -> None:
-    with open(survey_journey["output_file_name"], "a", encoding="utf-8") as file:
+    with open(output["file_name"], "a", encoding="utf-8") as file:
         if request.method == "POST":
             process_post(request, file)
 
@@ -33,7 +34,7 @@ def process_runner_request(request: Request) -> None:
             process_get(request, file)
 
 
-def process_post(request: Request, file: TextIO) -> None:
+def process_post(request: Request, file: IO) -> None:
     survey_journey["previous_request_method"] = "POST"
 
     # Playwright Request.post_data comes formatted like a URL query string, so can be parsed
@@ -49,7 +50,7 @@ def process_post(request: Request, file: TextIO) -> None:
     file.write(generate_method_request(method="post", data=items or ""))
 
 
-def process_get(request: Request, file: TextIO) -> None:
+def process_get(request: Request, file: IO) -> None:
     if (  # Logic to filter out the session and root questionnaire GET requests at the start
         survey_journey["previous_request_method"] == "GET"
         and "session?token" not in request.url
@@ -74,13 +75,11 @@ def process_launcher_request(request: Request) -> None:
         if survey_journey["started"]:
             # start of journey, so create a skeleton file using the schema name
             survey_journey["schema_name"] = parse_qs(request.url)["schema_name"][0]
-            survey_journey[
-                "output_file_name"
+            output[
+                "file_name"
             ] = f"./scripts/{survey_journey['schema_name']}.py"
 
-            with open(
-                survey_journey["output_file_name"], "w", encoding="utf-8"
-            ) as file:
+            with open(output["file_name"], "w", encoding="utf-8") as file:
                 # Type ignore: schema_name is taken as string from query string
                 class_name = survey_journey["schema_name"].title().replace("_", "")  # type: ignore
                 file.write(
@@ -93,9 +92,7 @@ def process_launcher_request(request: Request) -> None:
                 logger.info(request)
         else:
             # capture launcher urls for sign-out, save etc
-            with open(
-                survey_journey["output_file_name"], "a", encoding="utf-8"
-            ) as file:
+            with open(output["file_name"], "a", encoding="utf-8") as file:
                 path = f'"{urlparse(request.url).path}"'
                 file.write(generate_method_request(method="get", data=path))
 
@@ -121,14 +118,12 @@ def run(pw: Playwright) -> None:
 
     page.on("request", request_handler)
 
-    input(
-        """Script is paused. Start navigating through the browser for the journey & press Enter when finished to capture
-         the output and add into a test file\n"""
-    )
+    input("Script is paused. Start navigating through the browser for the journey & press Enter when finished to capture"
+          " the output and add into a test file\n")
     browser.close()
     logger.info(
         "Integration test generated successfully",
-        integration_test_file=survey_journey["output_file_name"],
+        integration_test_file=output["file_name"],
     )
 
 
