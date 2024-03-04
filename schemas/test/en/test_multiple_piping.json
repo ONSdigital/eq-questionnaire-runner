@@ -135,7 +135,7 @@
                             "question": {
                                 "id": "multiple-piping-question",
                                 "title": {
-                                    "text": "Does <strong class=\"ons-highlight\">{person}</strong> live at <strong class=\"ons-highlight\">{address}</strong>",
+                                    "text": "Does <strong>{person}</strong> live at <strong>{address}</strong>",
                                     "placeholders": [
                                         {
                                             "placeholder": "person",

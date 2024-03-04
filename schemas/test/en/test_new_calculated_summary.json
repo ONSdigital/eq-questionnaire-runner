@@ -391,7 +391,7 @@
                                     {
                                         "list": [
                                             {
-                                                "text": "Total currency values: <strong class=\"ons-highlight\">{currency_total}</strong>",
+                                                "text": "Total currency values: <strong>{currency_total}</strong>",
                                                 "placeholders": [
                                                     {
                                                         "placeholder": "currency_total",
@@ -410,7 +410,7 @@
                                                 ]
                                             },
                                             {
-                                                "text": "Total unformatted unit values: <strong class=\"ons-highlight\">{unit_total}</strong>",
+                                                "text": "Total unformatted unit values: <strong>{unit_total}</strong>",
                                                 "placeholders": [
                                                     {
                                                         "placeholder": "unit_total",
@@ -429,7 +429,7 @@
                                                 ]
                                             },
                                             {
-                                                "text": "Total formatted unit values: <strong class=\"ons-highlight\">{unit_total}</strong>",
+                                                "text": "Total formatted unit values: <strong>{unit_total}</strong>",
                                                 "placeholders": [
                                                     {
                                                         "placeholder": "unit_total",
@@ -450,7 +450,7 @@
                                                 ]
                                             },
                                             {
-                                                "text": "Total unformatted percentage values: <strong class=\"ons-highlight\">{percentage_total}</strong>",
+                                                "text": "Total unformatted percentage values: <strong>{percentage_total}</strong>",
                                                 "placeholders": [
                                                     {
                                                         "placeholder": "percentage_total",
@@ -469,7 +469,7 @@
                                                 ]
                                             },
                                             {
-                                                "text": "Total formatted percentage values: <strong class=\"ons-highlight\">{percentage_total}</strong>",
+                                                "text": "Total formatted percentage values: <strong>{percentage_total}</strong>",
                                                 "placeholders": [
                                                     {
                                                         "placeholder": "percentage_total",
@@ -488,7 +488,7 @@
                                                 ]
                                             },
                                             {
-                                                "text": "Total number values: <strong class=\"ons-highlight\">{number_total}</strong>",
+                                                "text": "Total number values: <strong>{number_total}</strong>",
                                                 "placeholders": [
                                                     {
                                                         "placeholder": "number_total",

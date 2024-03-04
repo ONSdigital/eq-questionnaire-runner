@@ -563,7 +563,7 @@ msgstr ""
 
 #: app/views/handlers/individual_response.py:329
 msgid ""
-"How would you like <strong class=\"ons-highlight\">{person_name}</strong>"
+"How would you like <strong>{person_name}</strong>"
 " to receive a separate census?"
 msgstr ""
 
@@ -668,7 +668,7 @@ msgstr ""
 
 #: app/views/handlers/individual_response.py:800
 msgid ""
-"What is <strong class=\"ons-highlight\">{person_name_possessive}</strong>"
+"What is <strong>{person_name_possessive}</strong>"
 " mobile number?"
 msgstr ""
 
@@ -1300,7 +1300,7 @@ msgstr ""
 
 #: templates/partials/individual-response-guidance.html:14
 msgid ""
-"You can <strong class=\"ons-highlight\">share your household access "
+"You can <strong>share your household access "
 "code</strong> with the people you live with so they can complete their "
 "own sections."
 msgstr ""

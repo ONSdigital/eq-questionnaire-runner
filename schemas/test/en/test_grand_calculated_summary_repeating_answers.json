@@ -1313,7 +1313,7 @@
                                     {
                                         "list": [
                                             {
-                                                "text": "Total household expenditure: <strong class=\"ons-highlight\">{total_expenditure}</strong>",
+                                                "text": "Total household expenditure: <strong>{total_expenditure}</strong>",
                                                 "placeholders": [
                                                     {
                                                         "placeholder": "total_expenditure",
@@ -1332,7 +1332,7 @@
                                                 ]
                                             },
                                             {
-                                                "text": "Personal contribution: <strong class=\"ons-highlight\">{personal_contribution}</strong>",
+                                                "text": "Personal contribution: <strong>{personal_contribution}</strong>",
                                                 "placeholders": [
                                                     {
                                                         "placeholder": "personal_contribution",
@@ -1351,7 +1351,7 @@
                                                 ]
                                             },
                                             {
-                                                "text": "Total internet usage: <strong class=\"ons-highlight\">{internet_usage}</strong>",
+                                                "text": "Total internet usage: <strong>{internet_usage}</strong>",
                                                 "placeholders": [
                                                     {
                                                         "placeholder": "internet_usage",
@@ -1372,7 +1372,7 @@
                                                 ]
                                             },
                                             {
-                                                "text": "Usage by phone: <strong class=\"ons-highlight\">{internet_phone}</strong>",
+                                                "text": "Usage by phone: <strong>{internet_phone}</strong>",
                                                 "placeholders": [
                                                     {
                                                         "placeholder": "internet_phone",
@@ -1393,7 +1393,7 @@
                                                 ]
                                             },
                                             {
-                                                "text": "Usage by PC: <strong class=\"ons-highlight\">{internet_pc}</strong>",
+                                                "text": "Usage by PC: <strong>{internet_pc}</strong>",
                                                 "placeholders": [
                                                     {
                                                         "placeholder": "internet_pc",

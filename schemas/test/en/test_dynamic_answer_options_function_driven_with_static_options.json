@@ -57,7 +57,7 @@
                             "question": {
                                 "id": "dynamic-checkbox-question",
                                 "title": {
-                                    "text": "In the week of {date}, which days did you <strong class=\"ons-highlight\">work</strong>?",
+                                    "text": "In the week of {date}, which days did you <strong>work</strong>?",
                                     "placeholders": [
                                         {
                                             "placeholder": "date",
@@ -131,7 +131,7 @@
                             "question": {
                                 "id": "dynamic-radio-question",
                                 "title": {
-                                    "text": "In the week of {date}, which day did you <strong class=\"ons-highlight\">work the most</strong>?",
+                                    "text": "In the week of {date}, which day did you <strong>work the most</strong>?",
                                     "placeholders": [
                                         {
                                             "placeholder": "date",
@@ -205,7 +205,7 @@
                             "question": {
                                 "id": "dynamic-dropdown-question",
                                 "title": {
-                                    "text": "In the week of {date}, which day did you <strong class=\"ons-highlight\">work the least</strong>?",
+                                    "text": "In the week of {date}, which day did you <strong>work the least</strong>?",
                                     "placeholders": [
                                         {
                                             "placeholder": "date",
@@ -280,7 +280,7 @@
                             "question": {
                                 "id": "dynamic-mutually-exclusive-question",
                                 "title": {
-                                    "text": "In the week of {date}, which days did you book <strong class=\"ons-highlight\">annual leave</strong>?",
+                                    "text": "In the week of {date}, which days did you book <strong>annual leave</strong>?",
                                     "placeholders": [
                                         {
                                             "placeholder": "date",

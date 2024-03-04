@@ -551,7 +551,7 @@
                                             {
                                                 "list": [
                                                     {
-                                                        "text": "Total weekly supermarket spending: <strong class=\"ons-highlight\">{currency_total}</strong>",
+                                                        "text": "Total weekly supermarket spending: <strong>{currency_total}</strong>",
                                                         "placeholders": [
                                                             {
                                                                 "placeholder": "currency_total",
@@ -570,7 +570,7 @@
                                                         ]
                                                     },
                                                     {
-                                                        "text": "Total weekly supermarket visits: <strong class=\"ons-highlight\">{number_total}</strong>",
+                                                        "text": "Total weekly supermarket visits: <strong>{number_total}</strong>",
                                                         "placeholders": [
                                                             {
                                                                 "placeholder": "number_total",
@@ -589,7 +589,7 @@
                                                         ]
                                                     },
                                                     {
-                                                        "text": "Total of supermarket visits by car: <strong class=\"ons-highlight\">{number_total}</strong>",
+                                                        "text": "Total of supermarket visits by car: <strong>{number_total}</strong>",
                                                         "placeholders": [
                                                             {
                                                                 "placeholder": "number_total",
@@ -628,7 +628,7 @@
                                             {
                                                 "list": [
                                                     {
-                                                        "text": "Total weekly supermarket spending: <strong class=\"ons-highlight\">{currency_total}</strong>",
+                                                        "text": "Total weekly supermarket spending: <strong>{currency_total}</strong>",
                                                         "placeholders": [
                                                             {
                                                                 "placeholder": "currency_total",
@@ -647,7 +647,7 @@
                                                         ]
                                                     },
                                                     {
-                                                        "text": "Total weekly supermarket visits: <strong class=\"ons-highlight\">{number_total}</strong>",
+                                                        "text": "Total weekly supermarket visits: <strong>{number_total}</strong>",
                                                         "placeholders": [
                                                             {
                                                                 "placeholder": "number_total",
@@ -666,7 +666,7 @@
                                                         ]
                                                     },
                                                     {
-                                                        "text": "Total of supermarket visits by car: <strong class=\"ons-highlight\">{number_total}</strong>",
+                                                        "text": "Total of supermarket visits by car: <strong>{number_total}</strong>",
                                                         "placeholders": [
                                                             {
                                                                 "placeholder": "number_total",
@@ -685,7 +685,7 @@
                                                         ]
                                                     },
                                                     {
-                                                        "text": "Total spending on parking: <strong class=\"ons-highlight\">{currency_total}</strong>",
+                                                        "text": "Total spending on parking: <strong>{currency_total}</strong>",
                                                         "placeholders": [
                                                             {
                                                                 "placeholder": "currency_total",

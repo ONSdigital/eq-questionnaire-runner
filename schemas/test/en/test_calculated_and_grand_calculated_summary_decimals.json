@@ -162,7 +162,7 @@
                                     {
                                         "list": [
                                             {
-                                                "text": "Total currency values: <strong class=\"ons-highlight\">{currency_total}</strong>",
+                                                "text": "Total currency values: <strong>{currency_total}</strong>",
                                                 "placeholders": [
                                                     {
                                                         "placeholder": "currency_total",

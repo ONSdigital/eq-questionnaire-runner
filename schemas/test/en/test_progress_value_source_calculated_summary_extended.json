@@ -52,10 +52,10 @@
                                         "description": "This schema was created in order to ensure that dependencies based on a progress value sources captured in order."
                                     },
                                     {
-                                        "description": "It is also being used to test progress value sources with chained dependents. For example, In this schema, <strong class=\"ons-highlight\">Sections 7, 8, 9 and 10 are all dependent on Section 2</strong>, and <strong class=\"ons-highlight\">Sections 11 and 12 are dependent on Section 9 and 10</strong>."
+                                        "description": "It is also being used to test progress value sources with chained dependents. For example, In this schema, <strong>Sections 7, 8, 9 and 10 are all dependent on Section 2</strong>, and <strong>Sections 11 and 12 are dependent on Section 9 and 10</strong>."
                                     },
                                     {
-                                        "description": "So we can use this schema to test journeys and ensure that all dependent sections are updated. <strong class=\"ons-highlight\">For example if we had not started Section 2 yet, but Sections 8, 9 and 10 are all Complete, and sections 11 and 12 are Partially Completed</strong>. Given the dependencies in this schema, <strong class=\"ons-highlight\">completing Section 2 would mean that the status of Sections 8, 9 and 10 would change to Partially Complete and Sections 11 and 12 to Complete</strong>."
+                                        "description": "So we can use this schema to test journeys and ensure that all dependent sections are updated. <strong>For example if we had not started Section 2 yet, but Sections 8, 9 and 10 are all Complete, and sections 11 and 12 are Partially Completed</strong>. Given the dependencies in this schema, <strong>completing Section 2 would mean that the status of Sections 8, 9 and 10 would change to Partially Complete and Sections 11 and 12 to Complete</strong>."
                                     }
                                 ]
                             },
@@ -410,7 +410,7 @@
                                             ]
                                         }
                                     ],
-                                    "text": "What is <strong class=\"ons-highlight\">{person_name_possessive}</strong> date of birth?"
+                                    "text": "What is <strong>{person_name_possessive}</strong> date of birth?"
                                 },
                                 "type": "General"
                             }
@@ -460,7 +460,7 @@
                                             ]
                                         }
                                     ],
-                                    "text": "Random question about <strong class=\"ons-highlight\">{person_name_possessive}</strong>"
+                                    "text": "Random question about <strong>{person_name_possessive}</strong>"
                                 },
                                 "description": ["Shows because the calculated summary was completed in section 1"],
                                 "type": "General"
@@ -523,7 +523,7 @@
                                             ]
                                         }
                                     ],
-                                    "text": "Another random question about <strong class=\"ons-highlight\">{person_name_possessive}</strong>"
+                                    "text": "Another random question about <strong>{person_name_possessive}</strong>"
                                 },
                                 "description": ["Shows because block 2 of this repeating section was completed."],
                                 "type": "General"

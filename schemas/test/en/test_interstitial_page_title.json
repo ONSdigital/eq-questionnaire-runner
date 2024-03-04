@@ -44,7 +44,7 @@
                                             }
                                         }
                                     ],
-                                    "text": "Your RU name: <strong class=\"ons-highlight\">{ru_name}</strong>"
+                                    "text": "Your RU name: <strong>{ru_name}</strong>"
                                 },
                                 "contents": [
                                     {
