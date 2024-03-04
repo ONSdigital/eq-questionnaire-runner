@@ -75,9 +75,7 @@ def process_launcher_request(request: Request) -> None:
         if survey_journey["started"]:
             # start of journey, so create a skeleton file using the schema name
             survey_journey["schema_name"] = parse_qs(request.url)["schema_name"][0]
-            output[
-                "file_name"
-            ] = f"./scripts/{survey_journey['schema_name']}.py"
+            output["file_name"] = f"./scripts/{survey_journey['schema_name']}.py"
 
             with open(output["file_name"], "w", encoding="utf-8") as file:
                 # Type ignore: schema_name is taken as string from query string
@@ -118,8 +116,10 @@ def run(pw: Playwright) -> None:
 
     page.on("request", request_handler)
 
-    input("Script is paused. Start navigating through the browser for the journey & press Enter when finished to capture"
-          " the output and add into a test file\n")
+    input(
+        "Script is paused. Start navigating through the browser for the journey & press Enter when finished to capture"
+        " the output and add into a test file\n"
+    )
     browser.close()
     logger.info(
         "Integration test generated successfully",
