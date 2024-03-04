@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-03-01 08:55+0000\n"
+"POT-Creation-Date: 2024-03-04 15:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -563,8 +563,8 @@ msgstr ""
 
 #: app/views/handlers/individual_response.py:329
 msgid ""
-"How would you like <strong>{person_name}</strong>"
-" to receive a separate census?"
+"How would you like <strong>{person_name}</strong> to receive a separate "
+"census?"
 msgstr ""
 
 #: app/views/handlers/individual_response.py:352
@@ -605,8 +605,8 @@ msgstr ""
 
 #: app/views/handlers/individual_response.py:455
 msgid ""
-"How would you like to answer <strong class=\"ons-"
-"highlight\">{person_name_possessive}</strong> questions?"
+"How would you like to answer <strong>{person_name_possessive}</strong> "
+"questions?"
 msgstr ""
 
 #: app/views/handlers/individual_response.py:470
@@ -667,9 +667,7 @@ msgid "Who do you need to request a separate census for?"
 msgstr ""
 
 #: app/views/handlers/individual_response.py:800
-msgid ""
-"What is <strong>{person_name_possessive}</strong>"
-" mobile number?"
+msgid "What is <strong>{person_name_possessive}</strong> mobile number?"
 msgstr ""
 
 #: app/views/handlers/individual_response.py:812
@@ -722,8 +720,8 @@ msgstr ""
 
 #: templates/confirmation-email-sent.html:23
 msgid ""
-"The email will be sent from <strong class=\"ons-"
-"highlight\">census.2021@notifications.service.gov.uk</strong>"
+"The email will be sent from "
+"<strong>census.2021@notifications.service.gov.uk</strong>"
 msgstr ""
 
 #: templates/confirmation-email-sent.html:27
@@ -1167,9 +1165,7 @@ msgid ""
 msgstr ""
 
 #: templates/individual_response/confirmation-text-message.html:25
-msgid ""
-"The text will be sent from <strong class=\"ons-"
-"highlight\">Census2021</strong>"
+msgid "The text will be sent from <strong>Census2021</strong>"
 msgstr ""
 
 #: templates/individual_response/interstitial.html:8
@@ -1300,9 +1296,8 @@ msgstr ""
 
 #: templates/partials/individual-response-guidance.html:14
 msgid ""
-"You can <strong>share your household access "
-"code</strong> with the people you live with so they can complete their "
-"own sections."
+"You can <strong>share your household access code</strong> with the people"
+" you live with so they can complete their own sections."
 msgstr ""
 
 #: templates/partials/individual-response-guidance.html:15
