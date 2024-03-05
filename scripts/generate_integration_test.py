@@ -86,7 +86,12 @@ def process_launcher_request(request: Request) -> None:
     if request.method != "GET":
         return
 
-    if not survey_journey["in_progress"]:
+    if survey_journey["in_progress"]:
+        # capture launcher urls for sign-out, save etc
+        with open(output["file_name"], "a", encoding="utf-8") as file:
+            path = f'"{urlparse(request.url).path}"'
+            file.write(generate_method_request(method="get", data=path))
+    else:
         # start of journey, so create a skeleton file using the schema name
         survey_journey["schema_name"] = parse_qs(request.url)["schema_name"][0]
         output["file_name"] = f"./scripts/{survey_journey['schema_name']}.py"
@@ -102,11 +107,6 @@ def process_launcher_request(request: Request) -> None:
                 )
             )
             logger.info(request)
-    else:
-        # capture launcher urls for sign-out, save etc
-        with open(output["file_name"], "a", encoding="utf-8") as file:
-            path = f'"{urlparse(request.url).path}"'
-            file.write(generate_method_request(method="get", data=path))
 
 
 def generate_method_request(*, method: str, data: dict | str | None = None) -> str:
