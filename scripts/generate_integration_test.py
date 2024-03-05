@@ -8,6 +8,7 @@ logger = get_logger()
 
 LAUNCHER_ROOT_URL = "http://localhost:8000"
 RUNNER_ROOT_URL = "http://localhost:5000"
+
 TEST_TEMPLATE = """from tests.integration.integration_test_case import IntegrationTestCase
 
 
@@ -18,7 +19,7 @@ class {class_name}(IntegrationTestCase):
 
 survey_journey: Dict[str, str | bool | None] = {
     "previous_request_method": None,
-    "started": True,
+    "in_progress": False,
     "schema_name": None,
 }
 
@@ -50,49 +51,62 @@ def process_post(request: Request, file: IO) -> None:
     file.write(generate_method_request(method="post", data=items or ""))
 
 
-def process_get(request: Request, file: IO) -> None:
-    if (  # Logic to filter out the session and root questionnaire GET requests at the start
+def is_recordable_survey_navigation(request: Request) -> bool:
+    return (
         survey_journey["previous_request_method"] == "GET"
         and "session?token" not in request.url
         and request.url != f"{RUNNER_ROOT_URL}/questionnaire/"
-    ):
+    )
+
+
+def process_get(request: Request, file: IO) -> None:
+    """
+    We only want to record GET requests in Runner for actions like navigating back in a survey journey. Therefore, we exclude the following:
+        - the very first GET action of a survey journey, after schema is loaded
+        - tokens/authentication
+    """
+    has_journey_started = (
+        not survey_journey["in_progress"]
+        and request.url == f"{RUNNER_ROOT_URL}/questionnaire/"
+    )
+    if has_journey_started:
+        survey_journey["in_progress"] = True
+        return
+
+    if is_recordable_survey_navigation(request):
         path = f'"{urlparse(request.url).path}"'
         file.write(generate_method_request(method="get", data=path))
 
-    if not survey_journey["started"]:
+    elif survey_journey["in_progress"]:
+        # ensure the request method is captured - allows us to record Runner GET navigation actions on the next pass through
         survey_journey["previous_request_method"] = request.method
-
-    if (
-        not survey_journey["previous_request_method"]
-        and survey_journey["started"]
-        and request.url == f"{RUNNER_ROOT_URL}/questionnaire/"
-    ):
-        survey_journey["started"] = False
 
 
 def process_launcher_request(request: Request) -> None:
-    if request.method == "GET":
-        if survey_journey["started"]:
-            # start of journey, so create a skeleton file using the schema name
-            survey_journey["schema_name"] = parse_qs(request.url)["schema_name"][0]
-            output["file_name"] = f"./scripts/{survey_journey['schema_name']}.py"
+    if request.method != "GET":
+        return
 
-            with open(output["file_name"], "w", encoding="utf-8") as file:
-                # Type ignore: schema_name is taken as string from query string
-                class_name = survey_journey["schema_name"].title().replace("_", "")  # type: ignore
-                file.write(
-                    TEST_TEMPLATE.format(
-                        class_name=class_name,
-                        function_name=survey_journey["schema_name"],
-                        schema_name=survey_journey["schema_name"],
-                    )
+    if not survey_journey["in_progress"]:
+        # start of journey, so create a skeleton file using the schema name
+        survey_journey["schema_name"] = parse_qs(request.url)["schema_name"][0]
+        output["file_name"] = f"./scripts/{survey_journey['schema_name']}.py"
+
+        with open(output["file_name"], "w", encoding="utf-8") as file:
+            # Type ignore: schema_name is taken as string from query string
+            class_name = survey_journey["schema_name"].title().replace("_", "")  # type: ignore
+            file.write(
+                TEST_TEMPLATE.format(
+                    class_name=class_name,
+                    function_name=survey_journey["schema_name"],
+                    schema_name=survey_journey["schema_name"],
                 )
-                logger.info(request)
-        else:
-            # capture launcher urls for sign-out, save etc
-            with open(output["file_name"], "a", encoding="utf-8") as file:
-                path = f'"{urlparse(request.url).path}"'
-                file.write(generate_method_request(method="get", data=path))
+            )
+            logger.info(request)
+    else:
+        # capture launcher urls for sign-out, save etc
+        with open(output["file_name"], "a", encoding="utf-8") as file:
+            path = f'"{urlparse(request.url).path}"'
+            file.write(generate_method_request(method="get", data=path))
 
 
 def generate_method_request(*, method: str, data: dict | str | None = None) -> str:
