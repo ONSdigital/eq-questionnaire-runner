@@ -71,11 +71,11 @@ class TestQuestionnaireHtmlEscaping(IntegrationTestCase):
         # https://stackoverflow.com/questions/11224362/getattributename-unescapes-html
         # pylint: disable=line-too-long
         assert (
-            'data-title="Thinking of &amp;#34;&amp;gt;&amp;lt;b&amp;gt;some html&amp;lt;/b&amp;gt; Jones, Dave Jones is their &lt;em&gt;brother or sister&lt;/em&gt;"'
+            'data-title="Thinking of &amp;#34;&amp;gt;&amp;lt;b&amp;gt;some html&amp;lt;/b&amp;gt; Jones, Dave Jones is their &lt;strong&gt;brother or sister&lt;/strong&gt;"'
             in self.getResponseData()
         )
         assert (
-            'data-playback="Dave Jones is &amp;#34;&amp;gt;&amp;lt;b&amp;gt;some html&amp;lt;/b&amp;gt; Jones’ &lt;em&gt;brother or sister&lt;/em&gt;"'
+            'data-playback="Dave Jones is &amp;#34;&amp;gt;&amp;lt;b&amp;gt;some html&amp;lt;/b&amp;gt; Jones’ &lt;strong&gt;brother or sister&lt;/strong&gt;"'
             in self.getResponseData()
         )
 
