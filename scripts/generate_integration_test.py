@@ -12,8 +12,8 @@ RUNNER_ROOT_URL = "http://localhost:5000"
 TEST_TEMPLATE = """from tests.integration.integration_test_case import IntegrationTestCase
 
 
-class {class_name}(IntegrationTestCase):
-    def {function_name}(self):
+class Test{class_name}(IntegrationTestCase):
+    def test_{function_name}(self):
         self.launchSurvey("{schema_name}")
 """
 
@@ -124,8 +124,8 @@ def request_handler(request: Request) -> None:
 
 def run(pw: Playwright) -> None:
     chromium = pw.chromium
-    browser = chromium.launch(headless=False)
-    page = browser.new_page()
+    browser = chromium.launch(headless=False, args=["--start-maximized"])
+    page = browser.new_page(no_viewport=True)
     page.goto(LAUNCHER_ROOT_URL)
 
     page.on("request", request_handler)
