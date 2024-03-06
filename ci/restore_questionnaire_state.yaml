@@ -17,15 +17,9 @@ run:
   args:
     - -exc
     - |
-      VARS=('PROJECT_ID' 'BUCKET_NAME' 'BACKUP_NAME' 'FILE_PREFIX')
-
-      for VAR in "${VARS[@]}"
-      do
-        if [ -z "${!VAR}" ]
-        then
-          echo "$VAR variable must be set"
-          exit 1
-        fi
+      PARAMS=('PROJECT_ID' 'BUCKET_NAME' 'BACKUP_NAME' 'FILE_PREFIX')
+      for PARAM in "${PARAMS[@]}"; do
+      : "${!PARAM:?"Error: $PARAM must be set"}"
       done
 
       export GOOGLE_APPLICATION_CREDENTIALS=~/gcloud-service-key.json
