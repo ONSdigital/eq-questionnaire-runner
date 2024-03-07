@@ -494,9 +494,11 @@ class MutuallyExclusiveCheck:
             raise validators.ValidationError(self.messages["MUTUALLY_EXCLUSIVE"])
         if is_mandatory and total_answered < 1:
             message = format_message_with_title(
-                self.messages["MANDATORY_CHECKBOX"]
-                if is_only_checkboxes_or_radios
-                else self.messages["MANDATORY_QUESTION"],
+                (
+                    self.messages["MANDATORY_CHECKBOX"]
+                    if is_only_checkboxes_or_radios
+                    else self.messages["MANDATORY_QUESTION"]
+                ),
                 self.question_title,
             )
             raise validators.ValidationError(message)

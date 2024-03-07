@@ -82,9 +82,11 @@ class CalculatedSummaryContext(Context):
                     return_to=return_to,
                     return_to_block_id=return_to_block_id,
                     return_to_list_item_id=self.return_location.return_to_list_item_id,
-                    return_to_answer_id=self.return_location.return_to_answer_id
-                    if self.return_location.return_to == "grand-calculated-summary"
-                    else None,
+                    return_to_answer_id=(
+                        self.return_location.return_to_answer_id
+                        if self.return_location.return_to == "grand-calculated-summary"
+                        else None
+                    ),
                 ),
             ).serialize()
             for group in section["groups"]
@@ -103,11 +105,13 @@ class CalculatedSummaryContext(Context):
 
         formatted_total = self._get_formatted_total(
             groups=groups or [],
-            calculation=ValueSourceResolver.get_calculation_operator(
-                calculation["calculation_type"]
-            )
-            if calculation.get("answers_to_calculate")
-            else calculation["operation"],
+            calculation=(
+                ValueSourceResolver.get_calculation_operator(
+                    calculation["calculation_type"]
+                )
+                if calculation.get("answers_to_calculate")
+                else calculation["operation"]
+            ),
         )
 
         return self._build_formatted_summary(

@@ -84,33 +84,33 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         self, questionnaire_json: Mapping, language_code: str = DEFAULT_LANGUAGE_CODE
     ):
         self._parent_id_map: dict[str, str] = {}
-        self._list_collector_section_ids_by_list_name: dict[
-            str, list[str]
-        ] = defaultdict(list)
+        self._list_collector_section_ids_by_list_name: dict[str, list[str]] = (
+            defaultdict(list)
+        )
         self._answer_dependencies_map: dict[str, set[Dependent]] = defaultdict(set)
         self._list_dependencies_map: dict[str, set[Dependent]] = defaultdict(set)
-        self._when_rules_section_dependencies_by_section: dict[
-            str, set[str]
-        ] = defaultdict(set)
-        self._when_rules_section_dependencies_by_section_for_progress_value_source: defaultdict[
-            str, OrderedSet[str]
-        ] = defaultdict(
+        self._when_rules_section_dependencies_by_section: dict[str, set[str]] = (
+            defaultdict(set)
+        )
+        self._when_rules_section_dependencies_by_section_for_progress_value_source: (
+            defaultdict[str, OrderedSet[str]]
+        ) = defaultdict(
             OrderedSet
         )
-        self._when_rules_block_dependencies_by_section_for_progress_value_source: defaultdict[
-            str, DependencyDictType
-        ] = defaultdict(
+        self._when_rules_block_dependencies_by_section_for_progress_value_source: (
+            defaultdict[str, DependencyDictType]
+        ) = defaultdict(
             lambda: defaultdict(OrderedSet)
         )
         self.calculation_summary_section_dependencies_by_block: dict[
             str, DependencyDictType
         ] = defaultdict(lambda: defaultdict(OrderedSet))
-        self._when_rules_section_dependencies_by_answer: dict[
-            str, set[str]
-        ] = defaultdict(set)
-        self._when_rules_section_dependencies_by_list: dict[
-            str, set[str]
-        ] = defaultdict(set)
+        self._when_rules_section_dependencies_by_answer: dict[str, set[str]] = (
+            defaultdict(set)
+        )
+        self._when_rules_section_dependencies_by_list: dict[str, set[str]] = (
+            defaultdict(set)
+        )
         self._placeholder_transform_section_dependencies_by_block: dict[
             str, dict[str, set[str]]
         ] = defaultdict(lambda: defaultdict(set))
