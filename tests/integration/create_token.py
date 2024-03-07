@@ -1,5 +1,5 @@
-import time
 from copy import deepcopy
+from time import time
 from uuid import uuid4
 
 from sdc.crypto.encrypter import encrypt
@@ -94,6 +94,11 @@ PAYLOAD_V2_SOCIAL = {
 }
 
 
+def populate_with_extra_payload_items(extra_payload, payload):
+    for key, value in extra_payload.items():
+        payload[key] = value
+
+
 class TokenGenerator:
     def __init__(self, key_store, upstream_kid, sr_public_kid):
         self._key_store = key_store
@@ -109,7 +114,7 @@ class TokenGenerator:
         payload=PAYLOAD,
         **extra_payload,
     ):  # pylint: disable=dangerous-default-value
-        payload_vars = payload.copy()
+        payload_vars = deepcopy(payload)
         payload_vars["tx_id"] = str(uuid4())
         if schema_name:
             payload_vars["schema_name"] = schema_name
@@ -118,14 +123,16 @@ class TokenGenerator:
         if cir_instrument_id:
             payload_vars["cir_instrument_id"] = cir_instrument_id
 
-        payload_vars["iat"] = time.time()
+        payload_vars["iat"] = time()
         payload_vars["exp"] = payload_vars["iat"] + float(3600)  # one hour from now
         payload_vars["jti"] = str(uuid4())
         payload_vars["case_id"] = str(uuid4())
         payload_vars["response_expires_at"] = get_response_expires_at()
 
-        for key, value in extra_payload.items():
-            payload_vars[key] = value
+        if data := payload_vars.get("survey_metadata"):
+            populate_with_extra_payload_items(extra_payload, data.get("data"))
+        else:
+            populate_with_extra_payload_items(extra_payload, payload_vars)
 
         return payload_vars
 
@@ -147,7 +154,7 @@ class TokenGenerator:
         return self.generate_token(payload)
 
     def create_supplementary_data_token(self, schema_name, **extra_payload):
-        payload = deepcopy(PAYLOAD_V2_SUPPLEMENTARY_DATA)
+        payload = PAYLOAD_V2_SUPPLEMENTARY_DATA
 
         # iterate over a copy so items can be deleted
         for key, value in list(extra_payload.items()):
