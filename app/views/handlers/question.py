@@ -163,9 +163,9 @@ class Question(BlockHandler):
     def get_context(self) -> dict[str, dict]:
         context = build_question_context(self.rendered_block, self.form)
         context["return_to_hub_url"] = self.get_return_to_hub_url()
-        context[
-            "last_viewed_question_guidance"
-        ] = self.get_last_viewed_question_guidance_context()
+        context["last_viewed_question_guidance"] = (
+            self.get_last_viewed_question_guidance_context()
+        )
 
         if "list_summary" in self.rendered_block:
             context.update(self.get_list_summary_context())

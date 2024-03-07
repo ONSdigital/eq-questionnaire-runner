@@ -178,12 +178,10 @@ def get_format_date_range(start_date: Markup, end_date: Markup) -> Markup:
 
 
 @blueprint.app_context_processor
-def format_unit_processor() -> (
-    dict[
-        str,
-        Callable[[str, int | float | Decimal, UnitLengthType], str],
-    ]
-):
+def format_unit_processor() -> dict[
+    str,
+    Callable[[str, int | float | Decimal, UnitLengthType], str],
+]:
     return {"format_unit": format_unit}
 
 

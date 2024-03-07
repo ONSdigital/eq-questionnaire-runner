@@ -113,9 +113,11 @@ def test_build_view_context_for_currency_calculated_summary(
         language=language,
         schema=test_calculated_summary_schema,
         data_stores=DataStores(
-            answer_store=test_calculated_summary_answers_skipped_fourth
-            if skip_fourth
-            else test_calculated_summary_answers
+            answer_store=(
+                test_calculated_summary_answers_skipped_fourth
+                if skip_fourth
+                else test_calculated_summary_answers
+            )
         ),
         routing_path=RoutingPath(section_id="default-section", block_ids=block_ids),
         current_location=Location(section_id="default-section", block_id=block_id),
