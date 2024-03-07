@@ -43,9 +43,9 @@ class QuestionnaireStoreUpdaterBase:
         self._progress_store = self._questionnaire_store.data_stores.progress_store
         self._router = router
 
-        self.dependent_block_id_by_section_key: Mapping[
-            SectionKey, set[str]
-        ] = defaultdict(set)
+        self.dependent_block_id_by_section_key: Mapping[SectionKey, set[str]] = (
+            defaultdict(set)
+        )
         self.dependent_sections: set[DependentSection] = set()
 
     @property
@@ -342,8 +342,10 @@ class QuestionnaireStoreUpdaterBase:
         """
         Captures a unique list of section ids that are dependents of the provided section, for progress value sources.
         """
-        dependent_sections: Iterable = self._schema.when_rules_section_dependencies_by_section_for_progress_value_source.get(
-            section_id, set()
+        dependent_sections: Iterable = (
+            self._schema.when_rules_section_dependencies_by_section_for_progress_value_source.get(
+                section_id, set()
+            )
         )
         self._update_section_dependencies(dependent_sections)
 
@@ -353,10 +355,12 @@ class QuestionnaireStoreUpdaterBase:
         """
         Captures a unique list of section ids that are dependents of the provided block, for progress value sources.
         """
-        dependent_sections: Iterable = self._schema.when_rules_block_dependencies_by_section_for_progress_value_source.get(
-            section_id, {}
-        ).get(
-            block_id, set()
+        dependent_sections: Iterable = (
+            self._schema.when_rules_block_dependencies_by_section_for_progress_value_source.get(
+                section_id, {}
+            ).get(
+                block_id, set()
+            )
         )
         self._update_section_dependencies(dependent_sections)
 
@@ -411,8 +415,10 @@ class QuestionnaireStoreUpdaterBase:
         if self.update_section_status(
             is_complete=is_path_complete, section_key=dependent_section.section_key
         ):
-            dependents_of_dependent: OrderedSet = self._schema.when_rules_section_dependencies_by_section_for_progress_value_source.get(
-                dependent_section.section_id, OrderedSet()
+            dependents_of_dependent: OrderedSet = (
+                self._schema.when_rules_section_dependencies_by_section_for_progress_value_source.get(
+                    dependent_section.section_id, OrderedSet()
+                )
             )
             for dependent_section_id in dependents_of_dependent:
                 if repeating_list := self._schema.get_repeating_list_for_section(

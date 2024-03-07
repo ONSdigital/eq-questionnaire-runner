@@ -5,7 +5,7 @@ import boto3
 import fakeredis
 import pytest
 from flask import current_app
-from moto import mock_dynamodb
+from moto import mock_aws
 
 from app.data_models.app_models import EQSession, QuestionnaireState
 from app.storage.dynamodb import Dynamodb
@@ -16,8 +16,8 @@ from app.storage.storage import StorageModel
 
 @pytest.fixture
 def dynamodb():
-    with mock_dynamodb() as mock_dynamo:
-        mock_dynamo.start()
+    with mock_aws() as mocked_aws_environment:
+        mocked_aws_environment.start()
         boto3_client = boto3.resource("dynamodb", endpoint_url=None)
         for config in StorageModel.TABLE_CONFIG_BY_TYPE.values():
             table_name = current_app.config[config["table_name_key"]]
@@ -36,7 +36,7 @@ def dynamodb():
                     },
                 )
         yield Dynamodb(boto3_client)
-        mock_dynamo.stop()
+        mocked_aws_environment.stop()
 
 
 @pytest.fixture

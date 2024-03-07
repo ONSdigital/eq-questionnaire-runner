@@ -3,6 +3,7 @@ Operations.py can't be used in placeholder_transformer due to the circular refer
 The methods here invoke operations methods, so it can be imported in placeholder transformer
 this is a temporary solution until placeholder transformer is refactored.
 """
+
 from datetime import date
 from typing import TYPE_CHECKING, Optional
 

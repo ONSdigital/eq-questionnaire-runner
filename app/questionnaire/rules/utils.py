@@ -9,13 +9,11 @@ def parse_iso_8601_datetime(iso_8601_date_string: str) -> datetime:
 
 
 @overload
-def parse_datetime(date_string: None) -> None:
-    ...  # pragma: no cover
+def parse_datetime(date_string: None) -> None: ...  # pragma: no cover
 
 
 @overload
-def parse_datetime(date_string: str) -> datetime:
-    ...  # pragma: no cover
+def parse_datetime(date_string: str) -> datetime: ...  # pragma: no cover
 
 
 def parse_datetime(date_string: Optional[str]) -> Optional[datetime]:
