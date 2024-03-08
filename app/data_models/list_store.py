@@ -45,12 +45,10 @@ class ListModel:
         yield from self.items
 
     @overload
-    def __getitem__(self, list_item_index: int) -> str:
-        ...  # pragma: no cover
+    def __getitem__(self, list_item_index: int) -> str: ...  # pragma: no cover
 
     @overload
-    def __getitem__(self, list_item_index: slice) -> list[str]:
-        ...  # pragma: no cover
+    def __getitem__(self, list_item_index: slice) -> list[str]: ...  # pragma: no cover
 
     def __getitem__(self, list_item_index: slice | int) -> str | list[str]:
         return self.items[list_item_index]
