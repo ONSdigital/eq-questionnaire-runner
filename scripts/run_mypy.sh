@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-pipenv run mypy app
+pipenv run mypy app scripts
