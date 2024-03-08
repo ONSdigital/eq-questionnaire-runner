@@ -17,6 +17,12 @@ run:
   args:
     - -exc
     - |
+      PARAMS=('PROJECT_ID' 'BUCKET_NAME' 'BACKUP_NAME' 'FILE_PREFIX')
+      for PARAM in "${PARAMS[@]}"
+      do
+        : "${!PARAM:?"Error: $PARAM must be set"}"
+      done
+
       export GOOGLE_APPLICATION_CREDENTIALS=~/gcloud-service-key.json
       cat >$GOOGLE_APPLICATION_CREDENTIALS <<EOL
       $SERVICE_ACCOUNT_JSON
