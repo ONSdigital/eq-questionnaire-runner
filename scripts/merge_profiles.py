@@ -15,4 +15,5 @@ for p in profiles:
     else:
         stats.add(profiling_dir + p)
 
-stats.dump_stats("combined_profile.prof")
+if stats:
+    stats.dump_stats("combined_profile.prof")
