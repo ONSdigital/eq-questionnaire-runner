@@ -116,3 +116,8 @@ dev-compose-down-linux:
 
 profile:
 	pipenv run python profile_application.py
+
+generate-integration-test:
+	pipenv run playwright install chromium
+	pipenv run python -m scripts.generate_integration_test
+	pipenv run black ./scripts/test_*

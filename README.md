@@ -194,6 +194,11 @@ Or set the `GOOGLE_CLOUD_PROJECT` environment variable to your gcp project id.
 
 ---
 
+
+## Integration Tests
+There is a dev-convenience script that auto generates the lines of code for a user journey. See [README](scripts/README.md) for more information and how to run
+the script.
+
 ## Frontend Tests
 
 The frontend tests use NodeJS to run. To handle different versions of NodeJS it is recommended to install `Node Version Manager` (`nvm`). It is similar to pyenv but for Node versions.
