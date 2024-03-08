@@ -73,9 +73,9 @@ class FieldHandler(ABC):
     ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes]:
         if isinstance(schema_element["value"], dict):
             return self.value_source_resolver.resolve(schema_element["value"])
-        schema_element_value: Union[
-            ValueSourceEscapedTypes, ValueSourceTypes
-        ] = schema_element["value"]
+        schema_element_value: Union[ValueSourceEscapedTypes, ValueSourceTypes] = (
+            schema_element["value"]
+        )
         return schema_element_value
 
     def get_field(self) -> Field:

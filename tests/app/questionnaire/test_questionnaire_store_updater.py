@@ -1551,9 +1551,11 @@ def test_questionnaire_store_updater_dependency_capture(
             {
                 "section_id": f"section-{idx}",
                 "block_ids": ["block-1", "block-2"],
-                "status": CompletionStatus.IN_PROGRESS
-                if f"section-{idx}" in status_unchanged_section_ids
-                else CompletionStatus.COMPLETED,
+                "status": (
+                    CompletionStatus.IN_PROGRESS
+                    if f"section-{idx}" in status_unchanged_section_ids
+                    else CompletionStatus.COMPLETED
+                ),
             }
             for idx in range(1, 8)
         ],

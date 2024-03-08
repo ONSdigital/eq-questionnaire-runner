@@ -183,7 +183,11 @@ def data_stores():
 def publisher(mocker):
     mocker.patch(
         "app.publisher.publisher.google.auth._default._get_explicit_environ_credentials",
-        return_value=(mocker.Mock(), "test-project-id"),
+        return_value=(mocker.Mock(universe_domain="test"), "test-project-id"),
+    )
+    mocker.patch(
+        "google.pubsub_v1.services.publisher.client.PublisherClient._compare_universes",
+        return_value=True,
     )
     return PubSubPublisher()
 

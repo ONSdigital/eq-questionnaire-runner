@@ -466,9 +466,10 @@ def add_blueprints(application):
 
 
 def setup_secure_cookies(application):
-    application.secret_key = application.eq["secret_store"].get_secret_by_name(
-        "EQ_SECRET_KEY"
-    )
+    secret_key = application.eq["secret_store"].get_secret_by_name("EQ_SECRET_KEY")
+    if not secret_key:
+        raise ValueError("Application secret key does not exist")
+    application.secret_key = secret_key
     application.session_interface = SHA256SecureCookieSessionInterface()
 
 

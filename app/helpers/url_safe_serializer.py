@@ -6,4 +6,5 @@ from app.settings import EQ_SESSION_ID
 
 
 def url_safe_serializer() -> URLSafeSerializer:
-    return URLSafeSerializer(current_app.secret_key, salt=cookie_session[EQ_SESSION_ID])
+    # Type Ignore: Secret key is validated on app start up, so it must exist at this point
+    return URLSafeSerializer(current_app.secret_key, salt=cookie_session[EQ_SESSION_ID])  # type: ignore
