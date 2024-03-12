@@ -1401,13 +1401,14 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
     def _populate_placeholder_transform_section_dependencies(self) -> None:
         for block in self.get_blocks():
-            answer_ids: list = []
             if block["type"] == "GrandCalculatedSummary":
                 answer_ids = self.get_answer_ids_for_grand_calculated_summary_id(
                     block["id"]
                 )
-            if block["type"] == "CalculatedSummary":
+            elif block["type"] == "CalculatedSummary":
                 answer_ids = get_calculated_summary_answer_ids(block)
+            else:
+                answer_ids = []
 
             if answer_ids:
                 dependent_blocks = [
@@ -1422,7 +1423,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                             placeholder_answer_ids, block
                         )
 
-            if placeholder_answer_ids := get_placeholder_answer_ids_for_transform(
+            elif placeholder_answer_ids := get_placeholder_answer_ids_for_transform(
                 block
             ):
                 self._update_placeholder_dependencies(placeholder_answer_ids, block)
