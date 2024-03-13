@@ -116,3 +116,8 @@ dev-compose-down-linux:
 
 profile:
 	poetry run python profile_application.py
+
+generate-integration-test:
+	poetry run playwright install chromium
+	poetry run python -m scripts.generate_integration_test
+	poetry run black ./scripts/test_*
