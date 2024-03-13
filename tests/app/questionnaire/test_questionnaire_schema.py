@@ -1102,15 +1102,12 @@ def test_placeholder_transform_section_dependencies_by_block_for_calculation_sum
         "test_placeholder_dependencies_with_calculation_summaries"
     )
 
-    assert (
-        schema._placeholder_transform_section_dependencies_by_block  # pylint: disable=protected-access
-        == {
-            "questions-section": {
-                "calc-summary-1": {"reporting-period-section"},
-                "calc-summary-2": {"reporting-period-section"},
-                "how-much-rnd": {"reporting-period-section"},
-                "how-much-rnd-2": {"reporting-period-section"},
-                "rnd-grand-calculated-summary": {"reporting-period-section"},
-            }
+    assert schema.placeholder_transform_section_dependencies_by_block == {
+        "questions-section": {
+            "calc-summary-1": {"reporting-period-section"},
+            "calc-summary-2": {"reporting-period-section"},
+            "how-much-rnd": {"reporting-period-section"},
+            "how-much-rnd-2": {"reporting-period-section"},
+            "rnd-grand-calculated-summary": {"reporting-period-section"},
         }
-    )
+    }

@@ -1385,22 +1385,25 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 if item["for_list"] == list_name and item.get("item_anchor_answer_id"):
                     return f"#{str(item['item_anchor_answer_id'])}"
 
-    def _update_placeholder_dependencies(
-        self, placeholder_answer_ids: set, block: ImmutableDict
+    def _update_dependencies_for_placeholders(
+        self, answer_ids: set[str], block: ImmutableDict
     ) -> None:
-        if placeholder_dependencies := self._get_section_ids_for_answer_ids(
-            answer_ids=placeholder_answer_ids
+        if dependent_sections := self._get_section_ids_for_answer_ids(
+            answer_ids=answer_ids
         ):
             # Type Ignore: At this point the section id and block id cannot be None
             section_id = self.get_section_id_for_block_id(block["id"])
             self._placeholder_transform_section_dependencies_by_block[section_id][  # type: ignore
                 block["id"]
             ].update(
-                placeholder_dependencies
+                dependent_sections
             )
 
     def _populate_placeholder_transform_section_dependencies(self) -> None:
         for block in self.get_blocks():
+            # Calculation summary blocks can indirectly reference placeholders from their dependent blocks, so
+            # logic is needed to identify the relevant dependent blocks that may contain placeholders and assess
+            # whether there are any dependent sections
             if block["type"] == "GrandCalculatedSummary":
                 answer_ids = self.get_answer_ids_for_grand_calculated_summary_id(
                     block["id"]
@@ -1412,21 +1415,24 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
 
             if answer_ids:
                 dependent_blocks = [
-                    self.get_block_for_answer_id(answer_id) for answer_id in answer_ids
+                    self.get_block_for_answer_id(answer_id)
+                    for answer_id in set(answer_ids)
                 ]
                 for dependent_block in dependent_blocks:
                     # Type ignore: Block will exist at this point
-                    if placeholder_answer_ids := get_placeholder_answer_ids_for_transform(
+                    if placeholder_answer_ids := get_placeholder_answer_ids_requiring_routing_path(
                         dependent_block  # type: ignore
                     ):
-                        self._update_placeholder_dependencies(
+                        self._update_dependencies_for_placeholders(
                             placeholder_answer_ids, block
                         )
 
-            elif placeholder_answer_ids := get_placeholder_answer_ids_for_transform(
+            elif placeholder_answer_ids := get_placeholder_answer_ids_requiring_routing_path(
                 block
             ):
-                self._update_placeholder_dependencies(placeholder_answer_ids, block)
+                self._update_dependencies_for_placeholders(
+                    placeholder_answer_ids, block
+                )
 
     def update_dependencies_for_dynamic_answers(
         self, *, question: Mapping, block_id: str
@@ -1493,7 +1499,7 @@ def is_list_collector_block_editable(block: Mapping) -> bool:
     return bool(block["type"] == "ListCollector")
 
 
-def get_placeholder_answer_ids_for_transform(block: ImmutableDict) -> set[str]:
+def get_placeholder_answer_ids_requiring_routing_path(block: ImmutableDict) -> set[str]:
     transforms = get_mappings_with_key("transform", data=block)
 
     return {
