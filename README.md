@@ -92,12 +92,17 @@ pyenv install
 pip install --upgrade pip setuptools
 ```
 
-Then install poetry, poetry dotenv plugin and install dependencies:
+Install poetry, poetry dotenv plugin and install dependencies:
 
 ''' shell
 curl -sSL https://install.python-poetry.org | python3 - 
 poetry self add poetry-plugin-dotenv
 poetry install
+'''
+We use [poetry-plugin-up](https://github.com/MousaZeidBaker/poetry-plugin-up) to update dependencies and bump their versions in `pyproject.toml` file:
+
+'''shell
+poetry self add poetry-plugin-up
 '''
 
 #### Design system templates
