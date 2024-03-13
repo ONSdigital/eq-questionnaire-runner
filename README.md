@@ -99,7 +99,8 @@ curl -sSL https://install.python-poetry.org | python3 -
 poetry self add poetry-plugin-dotenv
 poetry install
 '''
-We use [poetry-plugin-up](https://github.com/MousaZeidBaker/poetry-plugin-up) to update dependencies and bump their versions in `pyproject.toml` file:
+
+We use [poetry-plugin-up](https://github.com/MousaZeidBaker/poetry-plugin-up) to update dependencies in the `pyproject.toml` file:
 
 '''shell
 poetry self add poetry-plugin-up
