@@ -1,6 +1,3 @@
-[tool.black]
-target_version = ['py38']
-
 [tool.poetry]
 name = "eq-questionnaire-runner"
 version = "0.1.0"
@@ -29,7 +26,6 @@ freezegun = "*"
 pytest-xdist = "*"
 fakeredis = "*"
 mypy = "*"
-black = "*"
 pytest-flask = "*"
 pytest = "*"
 pytest-sugar = "*"
@@ -43,6 +39,7 @@ pytest-mock = "*"
 types-cachetools = "*"
 types-pytz = "*"
 playwright = "^1.42.0"
+black = "^24.2.0"
 
 
 [tool.poetry.dependencies]
