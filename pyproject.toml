@@ -42,6 +42,7 @@ types-python-dateutil = "*"
 pytest-mock = "*"
 types-cachetools = "*"
 types-pytz = "*"
+playwright = "^1.42.0"
 
 
 [tool.poetry.dependencies]
