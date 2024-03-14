@@ -1318,7 +1318,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     block["id"]
                 ].update(section_dependencies)
 
-    def _get_section_ids_for_answer_ids(self, answer_ids: set[str]) -> OrderedSet[str]:
+    def _get_section_ids_for_answer_ids(
+        self, answer_ids: Iterable[str]
+    ) -> OrderedSet[str]:
         section_dependencies: OrderedSet[str] = OrderedSet()
         for answer_id in answer_ids:
             block = self.get_block_for_answer_id(answer_id)
@@ -1386,7 +1388,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                     return f"#{str(item['item_anchor_answer_id'])}"
 
     def _update_dependencies_for_placeholders(
-        self, answer_ids: set[str], block: ImmutableDict
+        self, answer_ids: Iterable[str], block: ImmutableDict
     ) -> None:
         if dependent_sections := self._get_section_ids_for_answer_ids(
             answer_ids=answer_ids
