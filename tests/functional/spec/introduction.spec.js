@@ -6,7 +6,7 @@ describe("Introduction page", () => {
     await browser.openQuestionnaire(introductionSchema);
   });
 
-  it("Given I start a survey, When I view the introduction page, Then I should be able to see introduction information displayed correctly", async () => {
+  it("Given I start a survey, When I view the introduction page, Then I should be able to see introduction information", async () => {
     await browser.openQuestionnaire(introductionSchema);
     await expect(await $(IntroductionPage.useOfData()).getText()).toContain("How we use your data");
     await expect(await $(IntroductionPage.useOfInformation()).getText()).toContain(
@@ -17,6 +17,10 @@ describe("Introduction page", () => {
     await expect(await $(IntroductionPage.introDescription()).getText()).toBe(
       "To take part, all you need to do is check that you have the information you need to answer the survey questions.",
     );
+  });
+  it("Given I start a survey, When preview content is set on the introduction page, Then the content headings should be displayed at the correct level", async () => {
+    await browser.openQuestionnaire(introductionSchema);
+    await expect(await $(IntroductionPage.previewQuestions()).isDisplayed()).toBe(true);
     await expect(await $(IntroductionPage.introQuestion()).getHTML()).toContain("h3");
   });
   it("Given I start a survey with introduction guidance set, When I view the introduction page, Then I should be able to see introduction guidance", async () => {
