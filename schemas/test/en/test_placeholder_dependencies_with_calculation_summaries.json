@@ -1,0 +1,509 @@
+{
+    "language": "en",
+    "mime_type": "application/json/ons/eq",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Test placeholder dependencies in calculated summary pages",
+    "questionnaire_flow": {
+        "type": "Hub",
+        "options": {
+            "required_completed_sections": ["reporting-period-section"]
+        }
+    },
+    "sections": [
+        {
+            "id": "reporting-period-section",
+            "title": "Reporting period",
+            "summary": {
+                "show_on_completion": false,
+                "page_title": "Reporting period",
+                "collapsible": false
+            },
+            "show_on_hub": true,
+            "groups": [
+                {
+                    "id": "reporting-period-group",
+                    "blocks": [
+                        {
+                            "id": "reporting-date",
+                            "type": "Question",
+                            "question": {
+                                "id": "reporting-date-question",
+                                "title": {
+                                    "text": "Are you able to report for the calendar year, {ref_p_start_date} to {ref_p_end_date}?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "ref_p_start_date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "metadata",
+                                                            "identifier": "ref_p_start_date"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "placeholder": "ref_p_end_date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "metadata",
+                                                            "identifier": "ref_p_end_date"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "reporting-date-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes, I can report for this period",
+                                                "value": "Yes, I can report for this period"
+                                            },
+                                            {
+                                                "label": "No, I need to report for a different period",
+                                                "value": "No, I need to report for a different period"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "page_title": "Calendar year reporting period",
+                            "routing_rules": [
+                                {
+                                    "block": "undertake-rnd",
+                                    "when": {
+                                        "in": [
+                                            {
+                                                "identifier": "reporting-date-answer",
+                                                "source": "answers"
+                                            },
+                                            ["Yes, I can report for this period"]
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "enter-dates"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "enter-dates",
+                            "type": "Question",
+                            "question": {
+                                "id": "enter-dates-question",
+                                "title": "What dates will you be reporting for?",
+                                "type": "DateRange",
+                                "answers": [
+                                    {
+                                        "id": "date-from",
+                                        "type": "Date",
+                                        "mandatory": true,
+                                        "label": "From"
+                                    },
+                                    {
+                                        "id": "date-to",
+                                        "type": "Date",
+                                        "mandatory": true,
+                                        "label": "To"
+                                    }
+                                ],
+                                "period_limits": {
+                                    "minimum": {
+                                        "months": 3
+                                    },
+                                    "maximum": {
+                                        "months": 18
+                                    }
+                                }
+                            },
+                            "page_title": "Alternative reporting period"
+                        },
+                        {
+                            "id": "undertake-rnd",
+                            "type": "Question",
+                            "question": {
+                                "id": "undertake-rnd-question",
+                                "title": "For the reporting period, did your business undertake any in-house R&D?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "undertake-rnd-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "page_title": "In-house R&D for reporting period"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "questions-section",
+            "title": "In-house R&D",
+            "summary": {
+                "show_on_completion": false,
+                "page_title": "In-house R&D",
+                "collapsible": false
+            },
+            "show_on_hub": true,
+            "groups": [
+                {
+                    "id": "questions-group",
+                    "blocks": [
+                        {
+                            "id": "how-much-rnd",
+                            "type": "Question",
+                            "question": {
+                                "id": "how-much-rnd-question",
+                                "title": {
+                                    "text": "For the period {from} to {to} what was the expenditure on R&D for {ru_name}?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "from",
+                                            "transforms": [
+                                                {
+                                                    "transform": "first_non_empty_item",
+                                                    "arguments": {
+                                                        "items": [
+                                                            {
+                                                                "identifier": "date-from",
+                                                                "source": "answers"
+                                                            },
+                                                            {
+                                                                "source": "metadata",
+                                                                "identifier": "ref_p_start_date"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "previous_transform"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "placeholder": "to",
+                                            "transforms": [
+                                                {
+                                                    "transform": "first_non_empty_item",
+                                                    "arguments": {
+                                                        "items": [
+                                                            {
+                                                                "identifier": "date-to",
+                                                                "source": "answers"
+                                                            },
+                                                            {
+                                                                "source": "metadata",
+                                                                "identifier": "ref_p_end_date"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "previous_transform"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "placeholder": "ru_name",
+                                            "value": {
+                                                "source": "metadata",
+                                                "identifier": "ru_name"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "type": "Calculated",
+                                "answers": [
+                                    {
+                                        "id": "civil-research",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "label": "Civil Research and Development",
+                                        "description": "Enter a value to the nearest thousand (e.g. 56,000).",
+                                        "decimal_places": 0,
+                                        "currency": "GBP"
+                                    },
+                                    {
+                                        "id": "defence",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "label": "Defence Research and Development",
+                                        "description": "Enter a value to the nearest thousand (e.g. 56,000).",
+                                        "decimal_places": 0,
+                                        "currency": "GBP"
+                                    }
+                                ],
+                                "calculations": [
+                                    {
+                                        "calculation_type": "sum",
+                                        "answers_to_calculate": ["civil-research", "defence"],
+                                        "conditions": ["greater than"],
+                                        "value": 0
+                                    }
+                                ]
+                            },
+                            "page_title": "In-house expenditure on R&D"
+                        },
+                        {
+                            "id": "calc-summary-1",
+                            "type": "CalculatedSummary",
+                            "page_title": "Total in-house expenditure on R&D",
+                            "title": "We have calculated your total in-house expenditure on R&D to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "identifier": "civil-research",
+                                            "source": "answers"
+                                        },
+                                        {
+                                            "identifier": "defence",
+                                            "source": "answers"
+                                        }
+                                    ]
+                                },
+                                "title": "Total in-house expenditure on R&D"
+                            }
+                        },
+                        {
+                            "id": "how-much-rnd-2",
+                            "type": "Question",
+                            "question": {
+                                "id": "how-much-rnd-question-2",
+                                "title": {
+                                    "text": "For the period {from} to {to} what was the expenditure on R&D for {ru_name}?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "from",
+                                            "transforms": [
+                                                {
+                                                    "transform": "first_non_empty_item",
+                                                    "arguments": {
+                                                        "items": [
+                                                            {
+                                                                "identifier": "date-from",
+                                                                "source": "answers"
+                                                            },
+                                                            {
+                                                                "source": "metadata",
+                                                                "identifier": "ref_p_start_date"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "previous_transform"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "placeholder": "to",
+                                            "transforms": [
+                                                {
+                                                    "transform": "first_non_empty_item",
+                                                    "arguments": {
+                                                        "items": [
+                                                            {
+                                                                "identifier": "date-to",
+                                                                "source": "answers"
+                                                            },
+                                                            {
+                                                                "source": "metadata",
+                                                                "identifier": "ref_p_end_date"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "previous_transform"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "placeholder": "ru_name",
+                                            "value": {
+                                                "source": "metadata",
+                                                "identifier": "ru_name"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "type": "Calculated",
+                                "answers": [
+                                    {
+                                        "id": "innovation",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "label": "Innovation",
+                                        "description": "Enter a value to the nearest thousand (e.g. 56,000).",
+                                        "decimal_places": 0,
+                                        "currency": "GBP"
+                                    },
+                                    {
+                                        "id": "software",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "label": "Software Development",
+                                        "description": "Enter a value to the nearest thousand (e.g. 56,000).",
+                                        "decimal_places": 0,
+                                        "currency": "GBP"
+                                    }
+                                ],
+                                "calculations": [
+                                    {
+                                        "calculation_type": "sum",
+                                        "answers_to_calculate": ["innovation", "software"],
+                                        "conditions": ["greater than"],
+                                        "value": 0
+                                    }
+                                ]
+                            },
+                            "page_title": "In-house expenditure on R&D"
+                        },
+                        {
+                            "id": "calc-summary-2",
+                            "type": "CalculatedSummary",
+                            "page_title": "Total in-house expenditure on R&D - Part Two",
+                            "title": "We have calculated your total in-house expenditure on R&D to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "identifier": "innovation",
+                                            "source": "answers"
+                                        },
+                                        {
+                                            "identifier": "software",
+                                            "source": "answers"
+                                        }
+                                    ]
+                                },
+                                "title": "Total in-house expenditure on R&D - Part Two"
+                            }
+                        },
+                        {
+                            "type": "GrandCalculatedSummary",
+                            "id": "rnd-grand-calculated-summary",
+                            "title": "We have calculated the grand total of in-house expenditure on R&D to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "calc-summary-1"
+                                        },
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "calc-summary-2"
+                                        }
+                                    ]
+                                },
+                                "title": "Grand Total in-house expenditure on R&D"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "enabled": {
+                "when": {
+                    "in": [
+                        {
+                            "identifier": "undertake-rnd-answer",
+                            "source": "answers"
+                        },
+                        ["Yes"]
+                    ]
+                }
+            }
+        }
+    ],
+    "theme": "business",
+    "navigation": {
+        "visible": false
+    },
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        },
+        {
+            "name": "ru_ref",
+            "type": "string"
+        },
+        {
+            "name": "trad_as",
+            "type": "string",
+            "optional": true
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ref_p_start_date",
+            "type": "date"
+        },
+        {
+            "name": "ref_p_end_date",
+            "type": "date"
+        }
+    ]
+}
