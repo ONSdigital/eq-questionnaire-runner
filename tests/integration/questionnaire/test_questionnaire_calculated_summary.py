@@ -350,3 +350,83 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         )
         self.post()
         self.assertInBody("Total currency values: <em>£120.58985</em>")
+
+    def test_placeholder_rendering_in_calculated_summary_label(self):
+        """
+        Tests that a placeholder using the first_non_empty_item is rendered correctly on the calculated summary page
+        using the answer values that are on the path. In this instance it is the happy path where the user has entered
+        their own reporting dates which should be reflected on the calcualted summary label.
+        """
+        self.launchSurvey("test_placeholder_dependencies_with_calculation_summaries")
+
+        self.post(
+            {"reporting-date-answer": "No, I need to report for a different period"}
+        )
+        self.post(
+            {
+                "date-from-day": "1",
+                "date-from-month": "1",
+                "date-from-year": "2000",
+                "date-to-day": "1",
+                "date-to-month": "4",
+                "date-to-year": "2000",
+            }
+        )
+        self.post({"undertake-rnd-answer": "Yes"})
+        self.post()
+        self.post({"civil-research": "10", "defence": "10"})
+        self.assertInUrl("/questionnaire/calc-summary-1/")
+        self.assertInBody(
+            "For the period 1 January 2000 to 1 April 2000 what was the expenditure on R&amp;D for Integration Testing?"
+        )
+
+    def test_placeholder_rendering_in_calculated_summary_label_unhappy_path(self):
+        """
+        Tests that a placeholder using the first_non_empty_item is rendered correctly on the calculated summary page
+        using the answer values that are on the path. In this instance it is the unhappy path where the user has entered
+        their own reporting dates, but has then gone back to the first section and changed their answer. In this instance
+        the dates displayed in the label should come from metadata rather than the dates entered by the user (which are no longer on the path)
+        """
+        self.launchSurvey("test_placeholder_dependencies_with_calculation_summaries")
+
+        # Happy path journey
+        self.post(
+            {"reporting-date-answer": "No, I need to report for a different period"}
+        )
+        self.post(
+            {
+                "date-from-day": "1",
+                "date-from-month": "1",
+                "date-from-year": "2000",
+                "date-to-day": "1",
+                "date-to-month": "4",
+                "date-to-year": "2000",
+            }
+        )
+        self.post({"undertake-rnd-answer": "Yes"})
+        self.post()
+        self.post({"civil-research": "10", "defence": "10"})
+        self.assertInUrl("/questionnaire/calc-summary-1/")
+        self.assertInBody(
+            "For the period 1 January 2000 to 1 April 2000 what was the expenditure on R&amp;D for Integration Testing?"
+        )
+
+        # Complete the rest of the survey
+        self.post()
+        self.post({"innovation": "10", "software": "10"})
+        self.post()
+        self.post()
+
+        # Go back and change the answer and get back to the Calculated Summary page
+        self.get("/questionnaire/sections/reporting-period-section/")
+        self.get("/questionnaire/reporting-date/")
+        self.post({"reporting-date-answer": "Yes, I can report for this period"})
+        self.get("/questionnaire/sections/questions-section/")
+        self.get("/questionnaire/how-much-rnd/")
+        self.post({"civil-research": "10", "defence": "100"})
+
+        # The placeholder dates should now be taken from metadata
+        self.assertInUrl("/questionnaire/calc-summary-1/")
+        self.assertInBody(
+            "For the period 1 April 2016 to 30 April 2016 what was the expenditure on R&amp;D for Integration Testing?"
+        )

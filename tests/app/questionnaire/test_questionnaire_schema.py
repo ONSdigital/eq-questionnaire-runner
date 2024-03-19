@@ -1090,3 +1090,24 @@ def test_grand_calculated_summary_when_rule_dependencies():
             "q2-a2": {"section-4"},
         }
     )
+
+
+def test_placeholder_transform_section_dependencies_by_block_for_calculation_summaries():
+    """
+    Ensures that dependencies are captured correctly for calculation summary blocks using transforms.
+    In this schema the calculation summaries use placeholder transforms based on other blocks that have dependencies in the
+    reporting-period-section
+    """
+    schema = load_schema_from_name(
+        "test_placeholder_dependencies_with_calculation_summaries"
+    )
+
+    assert schema.placeholder_transform_section_dependencies_by_block == {
+        "questions-section": {
+            "calc-summary-1": {"reporting-period-section"},
+            "calc-summary-2": {"reporting-period-section"},
+            "how-much-rnd": {"reporting-period-section"},
+            "how-much-rnd-2": {"reporting-period-section"},
+            "rnd-grand-calculated-summary": {"reporting-period-section"},
+        }
+    }
