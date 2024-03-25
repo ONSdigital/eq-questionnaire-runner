@@ -2,15 +2,15 @@ import BasePage from "./base.page";
 
 class ViewSubmittedResponseBasePage extends BasePage {
   metadata() {
-    return ".ons-metadata";
+    return ".ons-description-list";
   }
 
   metadataTerm(number = 1) {
-    return `.ons-metadata > dt:nth-of-type(${number})`;
+    return `.ons-description-list > dt:nth-of-type(${number})`;
   }
 
   metadataValue(number = 1) {
-    return `.ons-metadata > dd:nth-of-type(${number})`;
+    return `.ons-description-list > dd:nth-of-type(${number})`;
   }
 
   informationPanel() {
