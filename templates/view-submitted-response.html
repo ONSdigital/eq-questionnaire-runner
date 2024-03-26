@@ -27,7 +27,7 @@
   <h1 class="ons-u-mt-m">
     {{ content.submitted_text}}
   </h1>
-  {{ onsMetadata(content.metadata)}}
+  {{ onsDescriptionList(content.metadata)}}
   {% if not content.view_submitted_response.expired %}
     {{
       onsButton({
