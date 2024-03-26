@@ -618,8 +618,8 @@ msgid "Cannot answer questions for others in your household"
 msgstr "Methu ateb cwestiynau ar ran pobl eraill yn eich cartref"
 
 #: app/views/handlers/individual_response.py:324
-msgid "How would you like <em>{person_name}</em> to receive a separate census?"
-msgstr "Sut hoffech chi i <em>{person_name}</em> gael cyfrifiad ar wahân?"
+msgid "How would you like <strong>{person_name}</strong> to receive a separate census?"
+msgstr "Sut hoffech chi i <strong>{person_name}</strong> gael cyfrifiad ar wahân?"
 
 #: app/views/handlers/individual_response.py:347
 msgid "Text message"
@@ -654,8 +654,8 @@ msgid "Send individual access code"
 msgstr "Anfon cod mynediad unigol"
 
 #: app/views/handlers/individual_response.py:450
-msgid "How would you like to answer <em>{person_name_possessive}</em> questions?"
-msgstr "Sut hoffech chi ateb cwestiynau <em>{person_name_possessive}</em>?"
+msgid "How would you like to answer <strong>{person_name_possessive}</strong> questions?"
+msgstr "Sut hoffech chi ateb cwestiynau <strong>{person_name_possessive}</strong>?"
 
 #: app/views/handlers/individual_response.py:465
 msgid "I would like to request a separate census for them to complete"
@@ -711,8 +711,8 @@ msgid "Who do you need to request a separate census for?"
 msgstr "Ar gyfer pwy y mae angen i chi wneud cais am gyfrifiad ar wahân?"
 
 #: app/views/handlers/individual_response.py:772
-msgid "What is <em>{person_name_possessive}</em> mobile number?"
-msgstr "Beth yw rhif ffôn symudol <em>{person_name_possessive}</em>?"
+msgid "What is <strong>{person_name_possessive}</strong> mobile number?"
+msgstr "Beth yw rhif ffôn symudol <strong>{person_name_possessive}</strong>?"
 
 #: app/views/handlers/individual_response.py:784
 msgid "UK mobile number"
@@ -815,8 +815,8 @@ msgid "A confirmation email has been sent to {email}"
 msgstr "Mae e-bost cadarnhau wedi cael ei anfon i {email}"
 
 #: templates/confirmation-email-sent.html:25
-msgid "The email will be sent from <em>census.2021@notifications.service.gov.uk</em>"
-msgstr "Caiff yr e-bost ei anfon o <em>census.2021@notifications.service.gov.uk</em>"
+msgid "The email will be sent from <strong>census.2021@notifications.service.gov.uk</strong>"
+msgstr "Caiff yr e-bost ei anfon o <strong>census.2021@notifications.service.gov.uk</strong>"
 
 #: templates/confirmation-email-sent.html:29
 msgid "Didn't receive an email?"
@@ -1208,8 +1208,8 @@ msgid "The text message with an individual access code should arrive soon for th
 msgstr "Dylai’r neges destun â chod mynediad unigol gyrraedd yn fuan er mwyn i’r unigolyn allu cwblhau ei gyfrifiad ei hun"
 
 #: templates/individual_response/confirmation-text-message.html:25
-msgid "The text will be sent from <em>Census2021</em>"
-msgstr "Caiff y neges destun ei hanfon o <em>Census2021</em>"
+msgid "The text will be sent from <strong>Census2021</strong>"
+msgstr "Caiff y neges destun ei hanfon o <strong>Census2021</strong>"
 
 #: templates/individual_response/interstitial.html:8
 msgid "If you can't answer questions for others in your household"
@@ -1322,8 +1322,8 @@ msgid "Give feedback"
 msgstr "Rhoi adborth"
 
 #: templates/partials/individual-response-guidance.html:24
-msgid "You can <em>share your household access code</em> with the people you live with so they can complete their own sections."
-msgstr "Gallwch<em> rannu cod mynediad eich cartref</em> â’r bobl rydych chi’n byw gyda nhw fel y gallant gwblhau eu hadrannau eu hunain."
+msgid "You can <strong>share your household access code</strong> with the people you live with so they can complete their own sections."
+msgstr "Gallwch<strong> rannu cod mynediad eich cartref</strong> â’r bobl rydych chi’n byw gyda nhw fel y gallant gwblhau eu hadrannau eu hunain."
 
 #: templates/partials/individual-response-guidance.html:25
 msgid "If this is not possible, there are <a href={url}>other ways each person can complete their own census.</a>"

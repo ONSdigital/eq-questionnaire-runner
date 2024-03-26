@@ -6,7 +6,7 @@ class HubPage extends BasePage {
   }
 
   summaryItems() {
-    return "div.ons-summary__items";
+    return "dl.ons-summary__items";
   }
 
   summaryRowState(sectionId) {

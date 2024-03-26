@@ -1,6 +1,6 @@
 {% extends 'layouts/_base.html' %}
 {% from 'components/panel/_macro.njk' import onsPanel %}
-{% from "components/metadata/_macro.njk" import onsMetadata %}
+{% from "components/description-list/_macro.njk" import onsDescriptionList %}
 {% from "components/timeout-panel/_macro.njk" import onsTimeoutPanel %}
 
 {% set page_title = _("We’ve received your answers") %}
@@ -25,7 +25,7 @@
 {% block main %}
 
   {% call onsPanel({
-    "type": "success",
+    "variant": "success",
     "iconType": "check",
     "iconSize": "xl",
     "classes": "ons-u-mb-m"
@@ -35,7 +35,7 @@
     <p data-qa="guidance">
       {{ content.submission_text }}
     </p>
-    {{ onsMetadata(content.metadata) }}
+    {{ onsDescriptionList(content.metadata) }}
   {% endcall %}
 
   {% if content.guidance %}

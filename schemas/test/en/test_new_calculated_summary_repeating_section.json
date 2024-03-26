@@ -669,7 +669,7 @@
                                     {
                                         "list": [
                                             {
-                                                "text": "Total currency values: <em>{currency_total}</em>",
+                                                "text": "Total currency values: <strong>{currency_total}</strong>",
                                                 "placeholders": [
                                                     {
                                                         "placeholder": "currency_total",
@@ -688,7 +688,7 @@
                                                 ]
                                             },
                                             {
-                                                "text": "Total unit values: <em>{unit_total}</em>",
+                                                "text": "Total unit values: <strong>{unit_total}</strong>",
                                                 "placeholders": [
                                                     {
                                                         "placeholder": "unit_total",
@@ -707,7 +707,7 @@
                                                 ]
                                             },
                                             {
-                                                "text": "Total percentage values: <em>{percentage_total}</em>",
+                                                "text": "Total percentage values: <strong>{percentage_total}</strong>",
                                                 "placeholders": [
                                                     {
                                                         "placeholder": "percentage_total",
@@ -726,7 +726,7 @@
                                                 ]
                                             },
                                             {
-                                                "text": "Total number values: <em>{number_total}</em>",
+                                                "text": "Total number values: <strong>{number_total}</strong>",
                                                 "placeholders": [
                                                     {
                                                         "placeholder": "number_total",

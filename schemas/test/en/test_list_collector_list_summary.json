@@ -156,7 +156,7 @@
                                             }
                                         }
                                     ],
-                                    "text": "Do you live at <em>{household_address}</em>?"
+                                    "text": "Do you live at <strong>{household_address}</strong>?"
                                 },
                                 "answers": [
                                     {
@@ -197,7 +197,7 @@
                                             }
                                         }
                                     ],
-                                    "text": "Does anyone else live at <em>{household_address}</em>?"
+                                    "text": "Does anyone else live at <strong>{household_address}</strong>?"
                                 },
                                 "answers": [
                                     {
@@ -367,7 +367,7 @@
                                             }
                                         }
                                     ],
-                                    "text": "Are there any other visitors staying overnight at <em>{household_address}</em>?"
+                                    "text": "Are there any other visitors staying overnight at <strong>{household_address}</strong>?"
                                 },
                                 "answers": [
                                     {

@@ -249,7 +249,7 @@
                                         "id": "relationship-question",
                                         "type": "General",
                                         "title": {
-                                            "text": "{second_person_name} is your <em>…</em>",
+                                            "text": "{second_person_name} is your <strong>…</strong>",
                                             "placeholders": [
                                                 {
                                                     "placeholder": "second_person_name",
@@ -288,7 +288,7 @@
                                                 "mandatory": true,
                                                 "type": "Relationship",
                                                 "playback": {
-                                                    "text": "{second_person_name} is your <em>…</em>",
+                                                    "text": "{second_person_name} is your <strong>…</strong>",
                                                     "placeholders": [
                                                         {
                                                             "placeholder": "second_person_name",
@@ -326,7 +326,7 @@
                                                         "label": "Husband or Wife",
                                                         "value": "Husband or Wife",
                                                         "title": {
-                                                            "text": "{second_person_name} is your <em>husband or wife</em>",
+                                                            "text": "{second_person_name} is your <strong>husband or wife</strong>",
                                                             "placeholders": [
                                                                 {
                                                                     "placeholder": "second_person_name",
@@ -360,7 +360,7 @@
                                                             ]
                                                         },
                                                         "playback": {
-                                                            "text": "{second_person_name} is your <em>husband or wife</em>",
+                                                            "text": "{second_person_name} is your <strong>husband or wife</strong>",
                                                             "placeholders": [
                                                                 {
                                                                     "placeholder": "second_person_name",
@@ -398,7 +398,7 @@
                                                         "label": "Legally registered civil partner",
                                                         "value": "Legally registered civil partner",
                                                         "title": {
-                                                            "text": "{second_person_name} is your <em>legally registered civil partner</em>",
+                                                            "text": "{second_person_name} is your <strong>legally registered civil partner</strong>",
                                                             "placeholders": [
                                                                 {
                                                                     "placeholder": "second_person_name",
@@ -432,7 +432,7 @@
                                                             ]
                                                         },
                                                         "playback": {
-                                                            "text": "{second_person_name} is your <em>legally registered civil partner</em>",
+                                                            "text": "{second_person_name} is your <strong>legally registered civil partner</strong>",
                                                             "placeholders": [
                                                                 {
                                                                     "placeholder": "second_person_name",
@@ -470,7 +470,7 @@
                                                         "label": "Son or daughter",
                                                         "value": "Son or daughter",
                                                         "title": {
-                                                            "text": "{second_person_name} is your <em>son or daughter</em>",
+                                                            "text": "{second_person_name} is your <strong>son or daughter</strong>",
                                                             "placeholders": [
                                                                 {
                                                                     "placeholder": "second_person_name",
@@ -504,7 +504,7 @@
                                                             ]
                                                         },
                                                         "playback": {
-                                                            "text": "{second_person_name} is your <em>son or daughter</em>",
+                                                            "text": "{second_person_name} is your <strong>son or daughter</strong>",
                                                             "placeholders": [
                                                                 {
                                                                     "placeholder": "second_person_name",
@@ -542,7 +542,7 @@
                                                         "label": "Brother or sister",
                                                         "value": "Brother or sister",
                                                         "title": {
-                                                            "text": "{second_person_name} is your <em>brother or sister</em>",
+                                                            "text": "{second_person_name} is your <strong>brother or sister</strong>",
                                                             "placeholders": [
                                                                 {
                                                                     "placeholder": "second_person_name",
@@ -576,7 +576,7 @@
                                                             ]
                                                         },
                                                         "playback": {
-                                                            "text": "{second_person_name} is your <em>brother or sister</em>",
+                                                            "text": "{second_person_name} is your <strong>brother or sister</strong>",
                                                             "placeholders": [
                                                                 {
                                                                     "placeholder": "second_person_name",
@@ -633,7 +633,7 @@
                                         "id": "relationship-question",
                                         "type": "General",
                                         "title": {
-                                            "text": "Thinking of {first_person_name}, {second_person_name} is their <em>…</em>",
+                                            "text": "Thinking of {first_person_name}, {second_person_name} is their <strong>…</strong>",
                                             "placeholders": [
                                                 {
                                                     "placeholder": "first_person_name",
@@ -701,7 +701,7 @@
                                                 "mandatory": true,
                                                 "type": "Relationship",
                                                 "playback": {
-                                                    "text": "{second_person_name} is {first_person_name_possessive} <em>…</em>",
+                                                    "text": "{second_person_name} is {first_person_name_possessive} <strong>…</strong>",
                                                     "placeholders": [
                                                         {
                                                             "placeholder": "first_person_name_possessive",
@@ -776,7 +776,7 @@
                                                         "label": "Husband or Wife",
                                                         "value": "Husband or Wife",
                                                         "title": {
-                                                            "text": "Thinking of {first_person_name}, {second_person_name} is their <em>husband or wife</em>",
+                                                            "text": "Thinking of {first_person_name}, {second_person_name} is their <strong>husband or wife</strong>",
                                                             "placeholders": [
                                                                 {
                                                                     "placeholder": "first_person_name",
@@ -839,7 +839,7 @@
                                                             ]
                                                         },
                                                         "playback": {
-                                                            "text": "{second_person_name} is {first_person_name_possessive} <em>husband or wife</em>",
+                                                            "text": "{second_person_name} is {first_person_name_possessive} <strong>husband or wife</strong>",
                                                             "placeholders": [
                                                                 {
                                                                     "placeholder": "first_person_name_possessive",
@@ -914,7 +914,7 @@
                                                         "label": "Legally registered civil partner",
                                                         "value": "Legally registered civil partner",
                                                         "title": {
-                                                            "text": "Thinking of {first_person_name}, {second_person_name} is their <em>legally registered civil partner</em>",
+                                                            "text": "Thinking of {first_person_name}, {second_person_name} is their <strong>legally registered civil partner</strong>",
                                                             "placeholders": [
                                                                 {
                                                                     "placeholder": "first_person_name",
@@ -977,7 +977,7 @@
                                                             ]
                                                         },
                                                         "playback": {
-                                                            "text": "{second_person_name} is {first_person_name_possessive} <em>legally registered civil partner</em>",
+                                                            "text": "{second_person_name} is {first_person_name_possessive} <strong>legally registered civil partner</strong>",
                                                             "placeholders": [
                                                                 {
                                                                     "placeholder": "first_person_name_possessive",
@@ -1052,7 +1052,7 @@
                                                         "label": "Son or daughter",
                                                         "value": "Son or daughter",
                                                         "title": {
-                                                            "text": "Thinking of {first_person_name}, {second_person_name} is their <em>son or daughter</em>",
+                                                            "text": "Thinking of {first_person_name}, {second_person_name} is their <strong>son or daughter</strong>",
                                                             "placeholders": [
                                                                 {
                                                                     "placeholder": "first_person_name",
@@ -1115,7 +1115,7 @@
                                                             ]
                                                         },
                                                         "playback": {
-                                                            "text": "{second_person_name} is {first_person_name_possessive} <em>son or daughter</em>",
+                                                            "text": "{second_person_name} is {first_person_name_possessive} <strong>son or daughter</strong>",
                                                             "placeholders": [
                                                                 {
                                                                     "placeholder": "first_person_name_possessive",
@@ -1190,7 +1190,7 @@
                                                         "label": "Brother or sister",
                                                         "value": "Brother or sister",
                                                         "title": {
-                                                            "text": "Thinking of {first_person_name}, {second_person_name} is their <em>brother or sister</em>",
+                                                            "text": "Thinking of {first_person_name}, {second_person_name} is their <strong>brother or sister</strong>",
                                                             "placeholders": [
                                                                 {
                                                                     "placeholder": "first_person_name",
@@ -1253,7 +1253,7 @@
                                                             ]
                                                         },
                                                         "playback": {
-                                                            "text": "{second_person_name} is {first_person_name_possessive} <em>brother or sister</em>",
+                                                            "text": "{second_person_name} is {first_person_name_possessive} <strong>brother or sister</strong>",
                                                             "placeholders": [
                                                                 {
                                                                     "placeholder": "first_person_name_possessive",

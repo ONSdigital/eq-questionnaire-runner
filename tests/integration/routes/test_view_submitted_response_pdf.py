@@ -47,7 +47,7 @@ class TestViewSubmissionResponsePDF(ViewSubmittedResponseBase):
 
         # Check content length is reasonable.
         # This is given some leeway as it can change with DS changes.
-        self.assertGreater(self.last_response.content_length, 16500)
+        self.assertGreater(self.last_response.content_length, 16000)
 
     def test_download_when_submitted_response_enabled_but_expired(self):
         settings.VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS = 3

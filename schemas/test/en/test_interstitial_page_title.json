@@ -44,7 +44,7 @@
                                             }
                                         }
                                     ],
-                                    "text": "Your RU name: <em>{ru_name}</em>"
+                                    "text": "Your RU name: <strong>{ru_name}</strong>"
                                 },
                                 "contents": [
                                     {

@@ -378,7 +378,7 @@
                                             ]
                                         }
                                     ],
-                                    "text": "What is <em>{person_name_possessive}</em> date of birth?"
+                                    "text": "What is <strong>{person_name_possessive}</strong> date of birth?"
                                 },
                                 "type": "General"
                             }
@@ -428,7 +428,7 @@
                                             ]
                                         }
                                     ],
-                                    "text": "Random question about <em>{person_name_possessive}</em>"
+                                    "text": "Random question about <strong>{person_name_possessive}</strong>"
                                 },
                                 "description": ["Shows because the calculated summary was completed in section 1"],
                                 "type": "General"
@@ -491,7 +491,7 @@
                                             ]
                                         }
                                     ],
-                                    "text": "Another random question about <em>{person_name_possessive}</em>"
+                                    "text": "Another random question about <strong>{person_name_possessive}</strong>"
                                 },
                                 "description": ["Shows because block 2 of this repeating section was completed."],
                                 "type": "General"
