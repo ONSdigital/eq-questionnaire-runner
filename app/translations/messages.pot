@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-23 11:00+0000\n"
+"POT-Creation-Date: 2024-03-26 11:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,7 +41,7 @@ msgstr ""
 msgid "%(from_date)s to %(to_date)s"
 msgstr ""
 
-#: app/jinja_filters.py:734
+#: app/jinja_filters.py:732
 #: templates/partials/summary/collapsible-summary.html:27
 #: templates/partials/summary/summary.html:25
 msgid "No answer provided"
@@ -249,55 +249,55 @@ msgid_plural "{number_of_days} days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/routes/errors.py:160
+#: app/routes/errors.py:159
 msgid "You have reached the maximum number of individual access codes"
 msgstr ""
 
-#: app/routes/errors.py:163
+#: app/routes/errors.py:162
 msgid ""
 "If you need more individual access codes, please <a "
 "href='{contact_us_url}'>contact us</a>."
 msgstr ""
 
-#: app/routes/errors.py:181
+#: app/routes/errors.py:180
 msgid "You have reached the maximum number of times for submitting feedback"
 msgstr ""
 
-#: app/routes/errors.py:184
+#: app/routes/errors.py:183
 msgid ""
 "If you need to give more feedback, please <a "
 "href='{contact_us_url}'>contact us</a>."
 msgstr ""
 
-#: app/routes/errors.py:232
+#: app/routes/errors.py:233
 msgid "Sorry, there was a problem sending the access code"
 msgstr ""
 
-#: app/routes/errors.py:239
+#: app/routes/errors.py:240
 msgid "You can try to <a href='{retry_url}'>request a new access code again</a>."
 msgstr ""
 
-#: app/routes/errors.py:242 app/routes/errors.py:267 app/routes/errors.py:289
+#: app/routes/errors.py:243 app/routes/errors.py:268 app/routes/errors.py:290
 msgid ""
 "If this problem keeps happening, please <a "
 "href='{contact_us_url}'>contact us</a> for help."
 msgstr ""
 
-#: app/routes/errors.py:263
+#: app/routes/errors.py:264
 msgid "Sorry, there was a problem sending the confirmation email"
 msgstr ""
 
-#: app/routes/errors.py:264
+#: app/routes/errors.py:265
 msgid "You can try to <a href='{retry_url}'>send the email again</a>."
 msgstr ""
 
-#: app/routes/errors.py:285 templates/errors/403.html:3
+#: app/routes/errors.py:286 templates/errors/403.html:3
 #: templates/errors/403.html:6 templates/errors/submission-failed.html:5
 #: templates/errors/submission-failed.html:8
 msgid "Sorry, there is a problem"
 msgstr ""
 
-#: app/routes/errors.py:286
+#: app/routes/errors.py:287
 msgid "You can try to <a href='{retry_url}'>submit your feedback again</a>."
 msgstr ""
 
@@ -887,6 +887,10 @@ msgstr ""
 
 #: templates/thank-you.html:47
 msgid "For more information on how we use this data."
+msgstr ""
+
+#: templates/thank-you.html:48
+msgid "Learn more about how we use this data"
 msgstr ""
 
 #: templates/thank-you.html:51 templates/view-submitted-response.html:69
