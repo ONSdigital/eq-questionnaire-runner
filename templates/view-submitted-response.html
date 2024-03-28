@@ -2,7 +2,7 @@
 
 {% from "components/panel/_macro.njk" import onsPanel %}
 {% from "components/button/_macro.njk" import onsButton %}
-{% from "components/metadata/_macro.njk" import onsMetadata %}
+{% from "components/description-list/_macro.njk" import onsDescriptionList %}
 
 {% set hide_sign_out_button = content.hide_sign_out_button %}
 {% set sign_out_url = content.sign_out_url %}
@@ -27,7 +27,7 @@
   <h1 class="ons-u-mt-m">
     {{ content.submitted_text}}
   </h1>
-  {{ onsMetadata(content.metadata)}}
+  {{ onsDescriptionList(content.metadata)}}
   {% if not content.view_submitted_response.expired %}
     {{
       onsButton({
@@ -38,7 +38,8 @@
           "data-qa": "btn-print",
           "data-ga-category": "Print button",
           "data-ga-action": "Open print Dialogue",
-          "data-ga-label": "Print button click"
+          "data-ga-label": "Print button click",
+          "data-ga": "click"
         }
       })
     }}
@@ -52,7 +53,8 @@
           "data-qa": "btn-pdf",
           "data-ga-category": "PDF button",
           "data-ga-action": "Download PDF",
-          "data-ga-label": "PDF button click"
+          "data-ga-label": "PDF button click",
+          "data-ga": "click"
         }
       })
     }}
