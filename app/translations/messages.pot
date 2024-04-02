@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-03-26 11:06+0000\n"
+"POT-Creation-Date: 2024-04-02 09:18+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -419,7 +419,7 @@ msgstr ""
 #: templates/individual_response/confirmation-text-message.html:29
 #: templates/individual_response/question.html:5 templates/interstitial.html:8
 #: templates/listcollectorcontent.html:6 templates/sectionsummary.html:10
-#: templates/sectionsummary.html:48
+#: templates/sectionsummary.html:49
 msgid "Continue"
 msgstr ""
 
@@ -831,19 +831,19 @@ msgstr ""
 msgid "Print questions"
 msgstr ""
 
-#: templates/preview.html:60
+#: templates/preview.html:61
 msgid "Save questions as PDF"
 msgstr ""
 
-#: templates/partials/introduction/preview.html:36
+#: templates/partials/introduction/preview.html:37
 #: templates/partials/summary/collapsible-summary.html:50
-#: templates/preview.html:92
+#: templates/preview.html:94
 msgid "Show all"
 msgstr ""
 
-#: templates/partials/introduction/preview.html:37
+#: templates/partials/introduction/preview.html:38
 #: templates/partials/summary/collapsible-summary.html:51
-#: templates/preview.html:93
+#: templates/preview.html:95
 msgid "Hide all"
 msgstr ""
 
@@ -886,14 +886,16 @@ msgid "We may contact you to query your answers via phone or secure message."
 msgstr ""
 
 #: templates/thank-you.html:47
-msgid "For more information on how we use this data."
+msgid ""
+"Your response will help inform decision-makers how best to support the UK"
+" population and economy."
 msgstr ""
 
 #: templates/thank-you.html:48
 msgid "Learn more about how we use this data"
 msgstr ""
 
-#: templates/thank-you.html:51 templates/view-submitted-response.html:69
+#: templates/thank-you.html:51 templates/view-submitted-response.html:71
 msgid "For security, you can no longer view or get a copy of your answers"
 msgstr ""
 
@@ -945,7 +947,7 @@ msgstr ""
 msgid "Print answers"
 msgstr ""
 
-#: templates/view-submitted-response.html:47
+#: templates/view-submitted-response.html:48
 msgid "Save answers as PDF"
 msgstr ""
 
@@ -1258,7 +1260,7 @@ msgstr ""
 msgid "Yes, I confirm this is correct"
 msgstr ""
 
-#: templates/layouts/_questionnaire.html:39
+#: templates/layouts/_questionnaire.html:40
 msgid "Choose another section and return to this later"
 msgstr ""
 
