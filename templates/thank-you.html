@@ -42,10 +42,8 @@
     {% set contents = content.guidance.contents %}
     {% include 'partials/contents.html' %}
   {% else %}
-    <p class="ons-u-mb-s">{{ _("Your answers will be processed in the next few weeks.") }}
-      {{ _("We may contact you to query your answers via phone or secure message.") }}</p>
-    <p class="ons-u-mb-s">{{ _("Your response will help inform decision-makers how best to support the UK population and economy.") }}<br>
-      <a href="https://www.ons.gov.uk/surveys">{{ _("Learn more about how we use this data") }}</a></p>
+    <p class="ons-u-mb-s">{{ _("Your response will help inform decision-makers how best to support the UK population and economy.") }}</p>
+    <p class="ons-u-mb-s"><a href="https://www.ons.gov.uk/surveys">{{ _("Learn more about how we use this data") }}</a></p>
   {% endif %}
 
   {% set countdown_expired_text = _("For security, you can no longer view or get a copy of your answers") %}
