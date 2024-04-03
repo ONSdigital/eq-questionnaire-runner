@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "eq-questionnaire-runner"
-version = "0.1.0"
-description = "Flask server side application which provide a set of functionalities that go into schemas used to create surveys"
+version = "1.0.0"
+description = "ONS Digital eQ Questionnaire Runner App"
 authors = ["ONSDigital"]
 
 [tool.poetry.group.dev.dependencies]
