@@ -24,7 +24,7 @@ jobs:
         with:
           version: 1.8.2
           virtualenvs-create: true
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         id: cache-poetry
         with:
           python-version: ${{ env.PYTHON_VERSION }}
@@ -61,7 +61,7 @@ jobs:
         with:
           version: 1.8.2
           virtualenvs-create: true
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         id: cache-poetry
         with:
           python-version: ${{ env.PYTHON_VERSION }}
@@ -100,7 +100,7 @@ jobs:
         with:
           version: 1.8.2
           virtualenvs-create: true
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         id: cache-poetry
         with:
           python-version: ${{ env.PYTHON_VERSION }}
@@ -147,7 +147,7 @@ jobs:
         with:
           version: 1.8.2
           virtualenvs-create: true
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         id: cache-poetry
         with:
           python-version: ${{ env.PYTHON_VERSION }}
