@@ -419,7 +419,7 @@ msgstr ""
 #: templates/individual_response/confirmation-text-message.html:29
 #: templates/individual_response/question.html:5 templates/interstitial.html:8
 #: templates/listcollectorcontent.html:6 templates/sectionsummary.html:10
-#: templates/sectionsummary.html:48
+#: templates/sectionsummary.html:49
 msgid "Continue"
 msgstr ""
 
@@ -831,19 +831,19 @@ msgstr ""
 msgid "Print questions"
 msgstr ""
 
-#: templates/preview.html:60
+#: templates/preview.html:61
 msgid "Save questions as PDF"
 msgstr ""
 
-#: templates/partials/introduction/preview.html:36
+#: templates/partials/introduction/preview.html:37
 #: templates/partials/summary/collapsible-summary.html:50
-#: templates/preview.html:92
+#: templates/preview.html:94
 msgid "Show all"
 msgstr ""
 
-#: templates/partials/introduction/preview.html:37
+#: templates/partials/introduction/preview.html:38
 #: templates/partials/summary/collapsible-summary.html:51
-#: templates/preview.html:93
+#: templates/preview.html:95
 msgid "Hide all"
 msgstr ""
 
@@ -878,60 +878,58 @@ msgid "Thank you for completing the {survey_title}"
 msgstr ""
 
 #: templates/thank-you.html:45
-msgid "Your answers will be processed in the next few weeks."
+msgid ""
+"Your response will help inform decision-makers how best to support the UK"
+" population and economy."
 msgstr ""
 
 #: templates/thank-you.html:46
-msgid "We may contact you to query your answers via phone or secure message."
+msgid "Learn more about how we use this data"
 msgstr ""
 
-#: templates/thank-you.html:47
-msgid "For more information on how we use this data."
-msgstr ""
-
-#: templates/thank-you.html:51 templates/view-submitted-response.html:69
+#: templates/thank-you.html:49 templates/view-submitted-response.html:71
 msgid "For security, you can no longer view or get a copy of your answers"
 msgstr ""
 
-#: templates/thank-you.html:63
+#: templates/thank-you.html:61
 msgid "For security, your answers will only be available to view for another "
 msgstr ""
 
-#: templates/thank-you.html:64
+#: templates/thank-you.html:62
 msgid "Get a copy of your answers"
 msgstr ""
 
-#: templates/thank-you.html:66
+#: templates/thank-you.html:64
 msgid ""
 "You can <a href='{url}' id='view-submitted-response-link'>save or print "
 "your answers</a> for your records."
 msgstr ""
 
-#: templates/layouts/_base.html:147 templates/thank-you.html:71
+#: templates/layouts/_base.html:147 templates/thank-you.html:69
 msgid "minute"
 msgstr ""
 
-#: templates/layouts/_base.html:148 templates/thank-you.html:72
+#: templates/layouts/_base.html:148 templates/thank-you.html:70
 msgid "minutes"
 msgstr ""
 
-#: templates/layouts/_base.html:149 templates/thank-you.html:73
+#: templates/layouts/_base.html:149 templates/thank-you.html:71
 msgid "second"
 msgstr ""
 
-#: templates/layouts/_base.html:150 templates/thank-you.html:74
+#: templates/layouts/_base.html:150 templates/thank-you.html:72
 msgid "seconds"
 msgstr ""
 
-#: templates/thank-you.html:76
+#: templates/thank-you.html:74
 msgid "For security, your answers will only be available to view for 45 minutes"
 msgstr ""
 
-#: templates/thank-you.html:85
+#: templates/thank-you.html:83
 msgid "Get confirmation email"
 msgstr ""
 
-#: templates/thank-you.html:86
+#: templates/thank-you.html:84
 msgid ""
 "If you would like to be sent confirmation that you have completed your "
 "survey, enter your email address"
@@ -941,7 +939,7 @@ msgstr ""
 msgid "Print answers"
 msgstr ""
 
-#: templates/view-submitted-response.html:47
+#: templates/view-submitted-response.html:48
 msgid "Save answers as PDF"
 msgstr ""
 
@@ -1254,7 +1252,7 @@ msgstr ""
 msgid "Yes, I confirm this is correct"
 msgstr ""
 
-#: templates/layouts/_questionnaire.html:39
+#: templates/layouts/_questionnaire.html:40
 msgid "Choose another section and return to this later"
 msgstr ""
 
