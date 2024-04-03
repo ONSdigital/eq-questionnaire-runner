@@ -155,11 +155,11 @@ jobs:
       - name: Install npm deps
         run: npm install
       - name: Docker compose
-        run: docker-compose --version && RUNNER_ENV_FILE=.functional-tests.env docker-compose up --build -d
+        run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose up --build -d
       - name: Functional tests
         run: make test-functional-suite SUITE=${{ matrix.suite }}
       - name: Docker compose shutdown
-        run: RUNNER_ENV_FILE=.functional-tests.env docker-compose kill
+        run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
   docker-push:
     runs-on: ubuntu-22.04
     steps:
