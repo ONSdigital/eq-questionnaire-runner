@@ -18,7 +18,7 @@ COPY pyproject.toml pyproject.toml
 COPY poetry.lock poetry.lock 
 
 RUN groupadd -r appuser && useradd -r -g appuser -u 9000 appuser && chown -R appuser:appuser .
-RUN pip install "poetry==1.7.1" && \
+RUN pip install "poetry==1.8.2" && \
     poetry config virtualenvs.create false && \
     poetry install --only main && \
     make build
