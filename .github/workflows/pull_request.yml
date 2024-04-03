@@ -66,9 +66,6 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "poetry"
-      - name: Install virtual environment
-        if: steps.cache-poetry.outputs.cache-hit != 'true'
-        run: poetry install
       - name: Compile translations
         run: make translate
       - name: Running translation tests
@@ -110,9 +107,6 @@ jobs:
           cache: "poetry"
       - name: Install dotenv plugin
         run: poetry self add poetry-plugin-dotenv
-      - name: Install Dependencies 
-        if: steps.cache-poetry.outputs.cache-hit != 'true'
-        run: poetry install
       - name: Load templates
         run: make load-design-system-templates
       - name: Compile translations
@@ -158,9 +152,6 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "poetry"
-      - name: Install virtual environment
-        if: steps.cache-poetry.outputs.cache-hit != 'true'
-        run: poetry install
       - name: Install npm deps
         run: npm install
       - name: Docker compose
