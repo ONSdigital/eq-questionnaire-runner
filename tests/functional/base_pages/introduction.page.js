@@ -36,6 +36,10 @@ class IntroductionBasePage extends BasePage {
   previewQuestions() {
     return 'a[href="/questionnaire/preview"]';
   }
+
+  introQuestion(number = 1) {
+    return `#intro-questions-${number}`;
+  }
 }
 
 export default IntroductionBasePage;
