@@ -100,19 +100,19 @@ run-uwsgi-async: link-development-env
 	WEB_SERVER_TYPE=uwsgi-async pipenv run ./run_app.sh
 
 dev-compose-up:
-	docker-compose -f docker-compose-dev-mac.yml pull eq-questionnaire-launcher
-	docker-compose -f docker-compose-dev-mac.yml pull sds
-	docker-compose -f docker-compose-dev-mac.yml pull cir
-	docker-compose -f docker-compose-dev-mac.yml up -d
+	docker compose -f docker-compose-dev-mac.yml pull eq-questionnaire-launcher
+	docker compose -f docker-compose-dev-mac.yml pull sds
+	docker compose -f docker-compose-dev-mac.yml pull cir
+	docker compose -f docker-compose-dev-mac.yml up -d
 
 dev-compose-up-linux:
-	docker-compose -f docker-compose-dev-linux.yml up -d
+	docker compose -f docker-compose-dev-linux.yml up -d
 
 dev-compose-down:
-	docker-compose -f docker-compose-dev-mac.yml down
+	docker compose -f docker-compose-dev-mac.yml down
 
 dev-compose-down-linux:
-	docker-compose -f docker-compose-dev-linux.yml down
+	docker compose -f docker-compose-dev-linux.yml down
 
 profile:
 	pipenv run python profile_application.py
