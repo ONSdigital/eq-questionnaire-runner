@@ -444,7 +444,8 @@ class SummaryAction:
             "data-qa": answer["id"] + "-edit",
             "data-ga": "click",
             "data-ga-category": "Summary",
-            "data-ga-action": "Edit click",
+            "data-ga-action": "Edit",
+            "data-ga-label": "Edit link click",
         }
 
 

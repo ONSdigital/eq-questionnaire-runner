@@ -742,7 +742,8 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                             "visuallyHiddenText": "edit_link_aria_label Registration number",
                             "attributes": {
                                 "data-ga": "click",
-                                "data-ga-action": "Edit click",
+                                "data-ga-action": "Edit",
+                                "data-ga-label": "Edit link click",
                                 "data-ga-category": "Summary",
                                 "data-qa": "registration-number-edit",
                             },
@@ -764,7 +765,8 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                             "insurer?",
                             "attributes": {
                                 "data-ga": "click",
-                                "data-ga-action": "Edit click",
+                                "data-ga-action": "Edit",
+                                "data-ga-label": "Edit link click",
                                 "data-ga-category": "Summary",
                                 "data-qa": "authorised-insurer-radio-edit",
                             },
@@ -1033,7 +1035,8 @@ def test_summary_item_config_with_list_collector():
                             "Registration number",
                             "attributes": {
                                 "data-ga": "click",
-                                "data-ga-action": "Edit click",
+                                "data-ga-action": "Edit",
+                                "data-ga-label": "Edit link click",
                                 "data-ga-category": "Summary",
                                 "data-qa": "registration-number-edit",
                             },
@@ -1055,7 +1058,8 @@ def test_summary_item_config_with_list_collector():
                             "insurer?",
                             "attributes": {
                                 "data-ga": "click",
-                                "data-ga-action": "Edit click",
+                                "data-ga-action": "Edit",
+                                "data-ga-label": "Edit link click",
                                 "data-ga-category": "Summary",
                                 "data-qa": "authorised-insurer-radio-edit",
                             },
@@ -1188,7 +1192,8 @@ def test_summary_item_config_with_list_collector_and_one_related_answer():
                             "Registration number",
                             "attributes": {
                                 "data-ga": "click",
-                                "data-ga-action": "Edit click",
+                                "data-ga-action": "Edit",
+                                "data-ga-label": "Edit link click",
                                 "data-ga-category": "Summary",
                                 "data-qa": "registration-number-edit",
                             },
