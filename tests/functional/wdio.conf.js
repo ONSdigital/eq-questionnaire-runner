@@ -233,7 +233,7 @@ export const config = {
           languageCode: language,
           includeLogoutUrl,
           cirInstrumentId,
-          booleanFlag: booleanFlag,
+          booleanFlag,
         });
         this.url(`/session?token=${token}`);
       },
