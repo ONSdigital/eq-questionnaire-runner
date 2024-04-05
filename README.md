@@ -510,6 +510,18 @@ To update a dependency, use:
 ```
 This will resolve the required dependencies of the project and write the exact versions into poetry.lock
 
+Using the poetry up plugin we can update dependencies and bump their versions in the pyproject.toml file
+
+To update dependencies to the latest compatible version with respect to their version constraints specified in the pyproject.toml file:
+```shell
+`poetry up`
+```
+
+To update dependencies to their latest compatible version:
+```shell
+`poetry up --latest`
+```
+
 NB: both the pyproject.toml and poetry.lock files are required in source control to accurately pin dependencies.
 
 ### JavaScript
