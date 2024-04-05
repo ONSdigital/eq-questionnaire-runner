@@ -500,13 +500,13 @@ Refer to our [profiling document](doc/profiling.md).
 ### Python
 To add a new dependency, use:
 ``` shell
-`poetry add [package-name]`,
+poetry add [package-name]
 ```
 This will add the required packages to your pyproject.toml and install them
 
 To update a dependency, use:
 ```shell
-`poetry update [package-name]`
+poetry update [package-name]
 ```
 This will resolve the required dependencies of the project and write the exact versions into poetry.lock
 
@@ -514,12 +514,12 @@ Using the poetry up plugin we can update dependencies and bump their versions in
 
 To update dependencies to the latest compatible version with respect to their version constraints specified in the pyproject.toml file:
 ```shell
-`poetry up`
+poetry up
 ```
 
 To update dependencies to their latest compatible version:
 ```shell
-`poetry up --latest`
+poetry up --latest
 ```
 
 NB: both the pyproject.toml and poetry.lock files are required in source control to accurately pin dependencies.
