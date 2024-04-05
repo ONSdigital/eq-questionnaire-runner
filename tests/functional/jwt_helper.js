@@ -76,6 +76,7 @@ export function generateToken(
     includeLogoutUrl = true,
     displayAddress = "",
     cirInstrumentId = null,
+    booleanFlag = false,
   },
 ) {
   let schemaParams = {};
@@ -119,6 +120,7 @@ export function generateToken(
       survey_metadata: getSurveyMetadata(theme, userId, displayAddress, surveyId, periodId, periodStr, ruRef, sdsDatasetId),
       version: "v2",
       response_expires_at: isoDate,
+      boolean_flag: booleanFlag
     };
   } else {
     payload = {
@@ -145,6 +147,7 @@ export function generateToken(
       language_code: languageCode,
       account_service_url: "http://localhost:8000",
       response_expires_at: isoDate,
+      boolean_flag: booleanFlag
     };
   }
 

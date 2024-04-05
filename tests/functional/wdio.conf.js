@@ -215,6 +215,7 @@ export const config = {
           language = "en",
           includeLogoutUrl = false,
           cirInstrumentId = null,
+          booleanFlag = null,
         } = {},
       ) {
         const token = await JwtHelper.generateToken(schema, {
@@ -232,6 +233,7 @@ export const config = {
           languageCode: language,
           includeLogoutUrl,
           cirInstrumentId,
+          booleanFlag: booleanFlag,
         });
         this.url(`/session?token=${token}`);
       },
