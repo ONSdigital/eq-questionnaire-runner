@@ -111,8 +111,7 @@ jobs:
       - name: Link env vars
         run: ln -sf .development.env .env 
       - name: Running unit tests
-        run:     
-          make test-unit
+        run: make test-unit
   validate-schemas:
     runs-on: ubuntu-22.04
     steps:
