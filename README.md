@@ -11,7 +11,7 @@ Install Docker for your system: [https://www.docker.com/](https://www.docker.com
 To get eq-questionnaire-runner running the following command will build and run the containers
 
 ``` shell
-RUNNER_ENV_FILE=.development.env docker-compose up -d
+RUNNER_ENV_FILE=.development.env docker compose up -d
 ```
 
 To launch a survey, navigate to [http://localhost:8000/](http://localhost:8000/)
@@ -22,13 +22,13 @@ However, any new dependencies that are added would require a re-build.
 To rebuild the eq-questionnaire-runner container, the following command can be used.
 
 ``` shell
-RUNNER_ENV_FILE=.development.env docker-compose build
+RUNNER_ENV_FILE=.development.env docker compose build
 ```
 
 If you need to rebuild the container from scratch to re-load any dependencies then you can run the following
 
 ``` shell
-RUNNER_ENV_FILE=.development.env docker-compose build --no-cache
+RUNNER_ENV_FILE=.development.env docker compose build --no-cache
 ```
 
 ## Run locally
