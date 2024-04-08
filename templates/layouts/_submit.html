@@ -12,9 +12,11 @@
 
     {% block post_title_panel %}
         {% if content.warning %}
+            {# djlint:off #}
             {% call onsPanel({ "type": "warn"}) %}
                 <p data-qa="warning">{{ content.warning }}</p>
             {% endcall %}
+            {# djlint:on #}
         {% endif %}
     {% endblock post_title_panel %}
 
@@ -32,18 +34,21 @@
     {% endblock pre_submit_button_content %}
 
     {% block submit_button %}
-        {{ onsButton({
+        {# djlint:off #}
+        {{
+            onsButton({
                 "text": content.submit_button,
                 "variants": 'timer',
                 "classes": 'ons-u-mb-m ons-u-mt-' ~ ("s" if content.guidance else "xl") ,
-        "attributes": {
-        'data-qa': 'btn-submit',
-        "data-ga-category": "Submit Button",
-        "data-ga-action": "Submit",
-        "data-ga-label": "Submit Button click",
-        "data-ga": "click"
-        }
-        })
+                "attributes": {
+                    "data-qa": "btn-submit",
+                    "data-ga-category": "Submit Button",
+                    "data-ga-action": "Submit",
+                    "data-ga-label": "Submit Button click",
+                    "data-ga": "click"
+                }
+            })
         }}
+        {# djlint:on #}
     {% endblock submit_button %}
 {% endblock %}

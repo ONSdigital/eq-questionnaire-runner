@@ -34,19 +34,22 @@
     {%- for answer in question.answers -%}
         {% include 'partials/answer.html' %}
     {%- endfor -%}
-    {{ onsButton({
+    {# djlint:off #}
+    {{
+        onsButton({
         "text": _("Send feedback") ,
-    "variants": 'timer',
-    "classes": "ons-u-mt-xl",
-    "attributes": {
-    "data-qa": "btn-submit",
-    "data-ga-category": "Submit button",
-    "data-ga-action": "Send feedback",
-    "data-ga-label": "Send feedback button click",
-    "data-ga": "click"
-    }
-    })
+        "variants": 'timer',
+        "classes": "ons-u-mt-xl",
+        "attributes": {
+            "data-qa": "btn-submit",
+            "data-ga-category": "Submit button",
+            "data-ga-action": "Send feedback",
+            "data-ga-label": "Send feedback button click",
+            "data-ga": "click"
+            }
+        })
     }}
+    {# djlint:on #}
     <br>
     <br>
 {% endblock %}

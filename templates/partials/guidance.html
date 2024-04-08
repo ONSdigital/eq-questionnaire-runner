@@ -1,5 +1,6 @@
 {% from "components/panel/_macro.njk" import onsPanel %}
 
+{# djlint:off #}
 {% call onsPanel({
     "id": guidance_id,
     "classes": "ons-u-mb-m",
@@ -10,3 +11,4 @@
     {% set contents = guidance.contents %}
     {% include 'partials/contents.html' %}
 {% endcall %}
+{# djlint:on #}

@@ -11,15 +11,18 @@
 
 {% block summary %}
     {% if content.rows %}
-        {{ onsSummary({
+        {# djlint:off #}
+        {{
+            onsSummary({
                 "variant": "hub",
                 "classes": "ons-u-mt-m",
                 "summaries": [{
-                "groups": [{
-                "rows": content.rows
+                    "groups": [{
+                        "rows": content.rows
+                    }]
                 }]
-                }]
-                }) 
+            })
         }}
+        {# djlint:on #}
     {% endif %}
 {% endblock summary %}

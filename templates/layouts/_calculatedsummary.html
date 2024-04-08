@@ -11,16 +11,19 @@
 {% endblock -%}
 
 {% block submit_button %}
-    {{ onsButton({
-        "text": _("Yes, I confirm this is correct") ,
-    "variants": 'timer',
-    "attributes": {
-    "data-qa": "btn-submit",
-    "data-ga-category": "Submit button",
-    "data-ga-action": "Confirm",
-    "data-ga-label": "Confirm button click",
-    "data-ga": "click"
-    }
-    })
+    {# djlint:off #}
+    {{
+        onsButton({
+            "text": _("Yes, I confirm this is correct") ,
+            "variants": 'timer',
+            "attributes": {
+                "data-qa": "btn-submit",
+                "data-ga-category": "Submit button",
+                "data-ga-action": "Confirm",
+                "data-ga-label": "Confirm button click",
+                "data-ga": "click"
+            }
+        })
     }}
+    {# djlint:on #}
 {% endblock %}

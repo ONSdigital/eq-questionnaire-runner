@@ -25,17 +25,20 @@
 {% endblock form_content %}
 
 {% block submit_button %}
-    {{ onsButton({
-        "text": continue_button_text | default(_("Save and continue") ),
-    "variants": 'timer',
-    "classes": "ons-u-mt-l",
-    "attributes": {
-    "data-qa": "btn-submit",
-    "data-ga-category": "Submit button",
-    "data-ga-action": "Save and continue",
-    "data-ga-label": "Save and continue button click",
-    "data-ga": "click"
-    }
-    })
+    {# djlint:off #}
+    {{
+        onsButton({
+            "text": continue_button_text | default(_("Save and continue") ),
+            "variants": 'timer',
+            "classes": "ons-u-mt-l",
+            "attributes": {
+                "data-qa": "btn-submit",
+                "data-ga-category": "Submit button",
+                "data-ga-action": "Save and continue",
+                "data-ga-label": "Save and continue button click",
+                "data-ga": "click"
+            }
+        })
     }}
+    {# djlint:on #}
 {% endblock %}

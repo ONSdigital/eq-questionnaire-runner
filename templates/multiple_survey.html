@@ -6,16 +6,20 @@
 
 {% block main %}
     <h1>{{ _("Information") }}</h1>
-    {% call onsPanel({
-        "type": "error",
-        "spacious": true,
-        "attributes": {
-        "data-qa": "multiple-survey-error"
-        }
-        }) %}
-        <p>
-            <strong>{{ _("Unfortunately you can only complete one survey at a time") }}.</strong>
-        </p>
-        <p>{{ _("Close this window to continue with your current survey") }}.</p>
+    {# djlint:off #}
+    {% call
+        onsPanel({
+            "type": "error",
+            "spacious": true,
+            "attributes": {
+                "data-qa": "multiple-survey-error"
+            }
+        })
+    %}
+    <p>
+        <strong>{{ _("Unfortunately you can only complete one survey at a time") }}.</strong>
+    </p>
+    <p>{{ _("Close this window to continue with your current survey") }}.</p>
     {% endcall %}
+    {# djlint:on #}
 {% endblock %}

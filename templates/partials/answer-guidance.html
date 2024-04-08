@@ -1,22 +1,25 @@
 {% from "components/details/_macro.njk" import onsDetails %}
 
+{# djlint:off #}
 {% call onsDetails({
     "id": "answer-guidance-" ~ answer.id,
     "classes": "ons-u-mt-s ons-u-mb-m",
     "title": _(answer_guidance.schema_item.show_guidance),
     "headingAttributes": {
-    "data-ga": "click",
-    "data-ga-category": "Answer guidance",
-    "data-ga-action": "Open panel",
-    "data-ga-label": _(answer_guidance.schema_item.show_guidance),
-    "data-qa": "answer-guidance-" ~ answer.id ~ "-title"
-    },
-    "contentAttributes": {
-    "data-qa": "answer-guidance-" ~ answer.id ~ "-content"
+        "data-ga": "click",
+        "data-ga-category": "Answer guidance",
+        "data-ga-action": "Open panel",
+        "data-ga-label": _(answer_guidance.schema_item.show_guidance),
+        "data-qa": "answer-guidance-" ~ answer.id ~ "-title"
+        },
+        "contentAttributes": {
+        "data-qa": "answer-guidance-" ~ answer.id ~ "-content"
     }
-    }) %}
+    })
+%}
     <div class="ons-u-mt-s">
         {% set content_block = answer_guidance.schema_item %}
         {% include 'partials/content-block.html' %}
     </div>
 {% endcall %}
+{# djlint:on #}
