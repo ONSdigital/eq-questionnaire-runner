@@ -7,7 +7,7 @@ class TestQuestionnaireEndpoints(IntegrationTestCase):
 
     def test_invalid_section_id_raises_404(self):
         # Given
-        self.launchSurvey("test_hub_and_spoke")
+        self.launchSurveyV2(schema_name="test_hub_and_spoke")
 
         # When I navigate to the url for a section that does not exist
         self.get(f"{self.BASE_URL}/sections/invalid-section/")
@@ -17,7 +17,7 @@ class TestQuestionnaireEndpoints(IntegrationTestCase):
 
     def test_get_invalid_questionnaire_location_raises_404(self):
         # Given
-        self.launchSurvey("test_introduction")
+        self.launchSurveyV2(schema_name="test_introduction")
 
         # When
         self.get(f"{self.BASE_URL}/test")
@@ -27,7 +27,7 @@ class TestQuestionnaireEndpoints(IntegrationTestCase):
 
     def test_post_invalid_questionnaire_location_raises_404(self):
         # Given
-        self.launchSurvey("test_introduction")
+        self.launchSurveyV2(schema_name="test_introduction")
 
         # When
         self.post(url=f"{self.BASE_URL}/test")
@@ -39,7 +39,7 @@ class TestQuestionnaireEndpoints(IntegrationTestCase):
         self,
     ):
         # Given
-        self.launchSurvey("test_textfield")
+        self.launchSurveyV2(schema_name="test_textfield")
 
         # When
         self.post(url="/questionnaire/")
@@ -49,7 +49,7 @@ class TestQuestionnaireEndpoints(IntegrationTestCase):
 
     def test_get_thank_you_data_not_deleted_when_questionnaire_is_not_complete(self):
         # Given we start a survey
-        self.launchSurvey("test_percentage", roles=["dumper"])
+        self.launchSurveyV2(schema_name="test_percentage", roles=["dumper"])
         self.post({"answer": "99"})
 
         # When we request the thank you page (without submitting the survey)
@@ -62,7 +62,7 @@ class TestQuestionnaireEndpoints(IntegrationTestCase):
 
     def test_get_thank_you_raises_404_when_questionnaire_is_not_complete(self):
         # Given we start a survey
-        self.launchSurvey("test_percentage", roles=["dumper"])
+        self.launchSurveyV2(schema_name="test_percentage", roles=["dumper"])
 
         # When we request the thank you page (without submitting the survey)
         self.get("submitted/thank-you")
@@ -72,7 +72,7 @@ class TestQuestionnaireEndpoints(IntegrationTestCase):
 
     def test_when_on_thank_you_get_thank_you_returns_thank_you(self):
         # Given we complete the test_percentage survey and are on the thank you page
-        self.launchSurvey("test_percentage", roles=["dumper"])
+        self.launchSurveyV2(schema_name="test_percentage", roles=["dumper"])
         self.post({"answer": "99"})
         self.post()
 

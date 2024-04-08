@@ -8,7 +8,7 @@ with open("tests/fixtures/blns.json", encoding="utf-8") as blns:
 
 class TestTextArea(IntegrationTestCase):
     def test_empty_submission(self):
-        self.launchSurvey("test_textarea")
+        self.launchSurveyV2(schema_name="test_textarea")
         self.post()
 
         self.assertInBody("No answer provided")
@@ -17,7 +17,7 @@ class TestTextArea(IntegrationTestCase):
         self.assertInUrl(THANK_YOU_URL_PATH)
 
     def test_too_many_characters(self):
-        self.launchSurvey("test_textarea")
+        self.launchSurveyV2(schema_name="test_textarea")
         self.post({"answer": "This is longer than twenty characters"})
 
         self.assertInBody(
@@ -25,7 +25,7 @@ class TestTextArea(IntegrationTestCase):
         )
 
     def test_acceptable_submission(self):
-        self.launchSurvey("test_textarea")
+        self.launchSurveyV2(schema_name="test_textarea")
         self.post({"answer": "Less than 20 chars"})
 
         self.assertInBody("Less than 20 chars")
@@ -34,7 +34,7 @@ class TestTextArea(IntegrationTestCase):
         self.assertInUrl(THANK_YOU_URL_PATH)
 
     def test_big_list_of_naughty_strings(self):
-        self.launchSurvey("test_big_list_naughty_strings")
+        self.launchSurveyV2(schema_name="test_big_list_naughty_strings")
 
         answers = {}
         for counter, value in enumerate(NAUGHTY_STRINGS):

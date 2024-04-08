@@ -11,7 +11,6 @@ from structlog import contextvars, get_logger
 from werkzeug.exceptions import Unauthorized
 from werkzeug.wrappers.response import Response
 
-from app.authentication.auth_payload_versions import AuthPayloadVersion
 from app.authentication.authenticator import (
     create_session_questionnaire_store,
     decrypt_token,
@@ -32,7 +31,6 @@ from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpda
 from app.questionnaire.router import Router
 from app.routes.errors import _render_error_page
 from app.services.supplementary_data import get_supplementary_data_v1
-from app.utilities.metadata_parser import validate_runner_claims
 from app.utilities.metadata_parser_v2 import (
     validate_questionnaire_claims,
     validate_runner_claims_v2,
@@ -111,17 +109,11 @@ def login() -> Response:
         decrypted_token=decrypted_token, schema_metadata=schema_metadata
     )
 
-    if metadata.version is AuthPayloadVersion.V2:
-        if questionnaire_claims:
-            runner_claims["survey_metadata"]["data"] = questionnaire_claims
-
-        claims = runner_claims
-    else:
-        claims = {**runner_claims, **questionnaire_claims}
+    runner_claims["survey_metadata"]["data"] = questionnaire_claims
 
     logger.info("decrypted token and parsed metadata")
 
-    with create_session_questionnaire_store(claims) as questionnaire_store:
+    with create_session_questionnaire_store(runner_claims) as questionnaire_store:
         _set_questionnaire_supplementary_data(
             questionnaire_store=questionnaire_store, metadata=metadata, schema=g.schema
         )
@@ -130,13 +122,13 @@ def login() -> Response:
 
     set_schema_context_in_cookie(g.schema)
 
-    if account_service_url := claims.get("account_service_url"):
+    if account_service_url := runner_claims.get("account_service_url"):
         cookie_session["account_service_base_url"] = account_service_url
 
-    if claims.get("account_service_log_out_url"):
-        cookie_session["account_service_log_out_url"] = claims.get(  # pragma: no cover
+    if runner_claims.get("account_service_log_out_url"):
+        cookie_session["account_service_log_out_url"] = runner_claims.get(
             "account_service_log_out_url"
-        )
+        )  # pragma: no cover
 
     cookie_session["language_code"] = metadata.language_code or DEFAULT_LANGUAGE_CODE
 
@@ -308,29 +300,21 @@ def get_signed_out() -> Response | str:
 
 
 def get_runner_claims(decrypted_token: Mapping[str, Any]) -> dict:
+    version = decrypted_token.get("version")
+
     try:
-        if version := decrypted_token.get("version"):
-            if version == AuthPayloadVersion.V2.value:
-                return validate_runner_claims_v2(decrypted_token)
+        return validate_runner_claims_v2(decrypted_token)
 
-            raise InvalidTokenException(f"Invalid runner claims version: {version}")
-
-        return validate_runner_claims(decrypted_token)
     except ValidationError as e:
-        raise InvalidTokenException("Invalid runner claims") from e
+        raise InvalidTokenException(f"Invalid runner claims version: {version}") from e
 
 
 def get_questionnaire_claims(
     decrypted_token: Mapping, schema_metadata: Iterable[Mapping[str, str]]
 ) -> dict:
     try:
-        if decrypted_token.get("version") == AuthPayloadVersion.V2.value:
-            claims = decrypted_token.get("survey_metadata", {}).get("data", {})
-            return validate_questionnaire_claims(
-                claims, schema_metadata, unknown=INCLUDE
-            )
-
-        return validate_questionnaire_claims(decrypted_token, schema_metadata)
+        claims = decrypted_token.get("survey_metadata", {}).get("data", {})
+        return validate_questionnaire_claims(claims, schema_metadata, unknown=INCLUDE)
 
     except ValidationError as e:
         raise InvalidTokenException("Invalid questionnaire claims") from e

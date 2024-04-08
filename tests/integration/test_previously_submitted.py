@@ -5,7 +5,7 @@ from tests.integration.questionnaire import THANK_YOU_URL_PATH
 class TestPreviouslySubmitted(IntegrationTestCase):
     def test_previously_submitted(self):
         # Given I complete the questionnaire and submit
-        self.launchSurvey("test_textfield")
+        self.launchSurveyV2(schema_name="test_textfield")
         self.post()
         self.post()
         self.assertInUrl(THANK_YOU_URL_PATH)

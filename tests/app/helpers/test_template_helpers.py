@@ -401,7 +401,9 @@ def test_service_links_context(
         if is_authenticated:
             mocker.patch(
                 "app.helpers.template_helpers.get_metadata",
-                return_value=get_metadata({"ru_ref": "12345678901A", "tx_id": "tx_id"}),
+                return_value=get_metadata(
+                    extra_metadata={"ru_ref": "12345678901A", "tx_id": "tx_id"},
+                ),
             )
 
         result = ContextHelper(
@@ -843,7 +845,7 @@ def test_account_service_log_out_url_context(
     ],
 )
 def test_get_survey_config(
-    app: Flask, theme: str, language: str, expected: SurveyConfig
+    app: Flask, theme: SurveyType, language: str, expected: SurveyConfig
 ):
     with app.app_context():
         result = get_survey_config(theme=theme, language=language)
@@ -944,7 +946,9 @@ def test_context_set_from_app_config(app):
         (SurveyType.ORR, "en", None),
     ],
 )
-def test_correct_theme_in_context(app: Flask, theme: str, language: str, expected: str):
+def test_correct_theme_in_context(
+    app: Flask, theme: SurveyType, language: str, expected: str
+):
     with app.app_context():
         survey_config = get_survey_config(theme=theme, language=language)
         result = ContextHelper(
@@ -973,7 +977,7 @@ def test_correct_theme_in_context(app: Flask, theme: str, language: str, expecte
     ],
 )
 def test_use_default_survey_title_in_context_when_no_cookie(
-    app: Flask, theme: str, language: str, expected: str
+    app: Flask, theme: SurveyType, language: str, expected: str
 ):
     with app.app_context():
         survey_config = get_survey_config(theme=theme, language=language)
@@ -1076,7 +1080,11 @@ def test_use_default_survey_title_in_context_when_no_cookie(
     ],
 )
 def test_correct_data_layer_in_context(
-    app: Flask, theme: str, language: str, schema: QuestionnaireSchema, expected: str
+    app: Flask,
+    theme: SurveyType,
+    language: str,
+    schema: QuestionnaireSchema,
+    expected: str,
 ):
     with app.app_context():
         set_schema_context_in_cookie(schema)
@@ -1094,8 +1102,8 @@ def test_correct_data_layer_in_context(
 @pytest.mark.parametrize(
     "include_csrf_token",
     [
-        (False),
-        (True),
+        False,
+        True,
     ],
 )
 def test_include_csrf_token(app: Flask, include_csrf_token: bool):

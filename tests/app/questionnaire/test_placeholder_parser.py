@@ -37,7 +37,7 @@ def test_metadata_placeholder(mock_renderer, mock_schema, mock_location):
 
     period_str = "Aug 2018"
 
-    metadata = get_metadata({"period_str": period_str})
+    metadata = get_metadata(extra_metadata={"period_str": period_str})
     parser = PlaceholderParser(
         language="en",
         data_stores=DataStores(metadata=metadata),
@@ -107,7 +107,7 @@ def test_metadata_transform_placeholder(mock_renderer, mock_schema, mock_locatio
         }
     ]
 
-    metadata = get_metadata({"ref_p_start_date": "2019-02-11"})
+    metadata = get_metadata(extra_metadata={"ref_p_start_date": "2019-02-11"})
 
     parser = PlaceholderParser(
         language="en",
@@ -143,7 +143,7 @@ def test_response_metadata_transform_placeholder(
         }
     ]
 
-    metadata = get_metadata({"ref_p_start_date": "2019-02-11"})
+    metadata = get_metadata(extra_metadata={"ref_p_start_date": "2019-02-11"})
     response_metadata = {"started_at": "2019-02-11"}
 
     parser = PlaceholderParser(
@@ -219,7 +219,7 @@ def test_first_non_empty_item_transform_placeholder(
         }
     ]
 
-    metadata = get_metadata({"trad_as": None, "ru_name": "ru_name"})
+    metadata = get_metadata(extra_metadata={"trad_as": None, "ru_name": "ru_name"})
 
     parser = PlaceholderParser(
         language="en",
@@ -342,7 +342,7 @@ def test_multiple_metadata_transform_placeholder(
         }
     ]
 
-    metadata = get_metadata({"ref_p_start_date": "2019-02-11"})
+    metadata = get_metadata(extra_metadata={"ref_p_start_date": "2019-02-11"})
 
     parser = PlaceholderParser(
         language="en",
@@ -379,7 +379,10 @@ def test_multiple_metadata_list_transform_placeholder(
     ]
 
     metadata = get_metadata(
-        {"ref_p_start_date": "2019-02-11", "ref_p_end_date": "2019-10-11"}
+        extra_metadata={
+            "ref_p_start_date": "2019-02-11",
+            "ref_p_end_date": "2019-10-11",
+        }
     )
 
     parser = PlaceholderParser(
@@ -456,7 +459,7 @@ def test_mixed_transform_placeholder(mock_renderer, mock_schema, mock_location):
     answer_store = AnswerStore(
         [{"answer_id": "date-of-birth-answer", "value": "1999-01-01"}]
     )
-    metadata = get_metadata({"second-date": "2019-02-02"})
+    metadata = get_metadata(extra_metadata={"second-date": "2019-02-02"})
 
     parser = PlaceholderParser(
         language="en",

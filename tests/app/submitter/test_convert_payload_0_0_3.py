@@ -1,9 +1,6 @@
 # pylint: disable=too-many-lines
 from datetime import datetime, timezone
 
-import pytest
-
-from app.authentication.auth_payload_versions import AuthPayloadVersion
 from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
@@ -20,15 +17,8 @@ from tests.app.submitter.schema import make_schema
 SUBMITTED_AT = datetime.now(timezone.utc)
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_convert_answers_v2_to_payload_0_0_3(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_convert_answers_v2_to_payload_0_0_3():
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [
         RoutingPath(
@@ -98,15 +88,8 @@ def test_convert_answers_v2_to_payload_0_0_3(version):
     assert data_payload["answers"][1].value, "62 Somewhere"
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_convert_payload_0_0_3_multiple_answers(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_convert_payload_0_0_3_multiple_answers():
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [RoutingPath(block_ids=["crisps"], section_id="section-1")]
     answers = AnswerStore(
@@ -150,15 +133,8 @@ def test_convert_payload_0_0_3_multiple_answers(version):
     assert data_payload["answers"][0].value == ["Ready salted", "Sweet chilli"]
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_radio_answer(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_radio_answer():
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [RoutingPath(block_ids=["radio-block"], section_id="section-1")]
     answers = AnswerStore([Answer("radio-answer", "Coffee").to_dict()])
@@ -197,15 +173,8 @@ def test_radio_answer(version):
     assert data_payload["answers"][0].value == "Coffee"
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_number_answer(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_number_answer():
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [
         RoutingPath(block_ids=["number-block"], section_id="section-1")
@@ -237,15 +206,8 @@ def test_number_answer(version):
     assert data_payload["answers"][0].value == 1.755
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_percentage_answer(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_percentage_answer():
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [
         RoutingPath(block_ids=["percentage-block"], section_id="section-1")
@@ -277,15 +239,8 @@ def test_percentage_answer(version):
     assert data_payload["answers"][0].value == 99
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_textarea_answer(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_textarea_answer():
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [
         RoutingPath(block_ids=["textarea-block"], section_id="section-1")
@@ -319,15 +274,8 @@ def test_textarea_answer(version):
     assert data_payload["answers"][0].value == "This is an example text!"
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_currency_answer(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_currency_answer():
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [
         RoutingPath(block_ids=["currency-block"], section_id="section-1")
@@ -359,15 +307,8 @@ def test_currency_answer(version):
     assert data_payload["answers"][0].value == 100
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_dropdown_answer(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_dropdown_answer():
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [
         RoutingPath(block_ids=["dropdown-block"], section_id="section-1")
@@ -410,15 +351,8 @@ def test_dropdown_answer(version):
     assert data_payload["answers"][0].value == "Rugby is better!"
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_date_answer(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_date_answer():
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [RoutingPath(block_ids=["date-block"], section_id="section-1")]
     answers = AnswerStore(
@@ -454,15 +388,8 @@ def test_date_answer(version):
     assert data_payload["answers"][0].value == "01-01-1990"
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_month_year_date_answer(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_month_year_date_answer():
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [RoutingPath(block_ids=["date-block"], section_id="section-1")]
     answers = AnswerStore(
@@ -498,15 +425,8 @@ def test_month_year_date_answer(version):
     assert data_payload["answers"][0].value == "01-1990"
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_unit_answer(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_unit_answer():
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [RoutingPath(block_ids=["unit-block"], section_id="section-1")]
     answers = AnswerStore([Answer("unit-answer", 10).to_dict()])
@@ -536,15 +456,8 @@ def test_unit_answer(version):
     assert data_payload["answers"][0].value == 10
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_primary_person_list_item_conversion(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_primary_person_list_item_conversion():
+    questionnaire_store = get_questionnaire_store()
 
     routing_path = [
         RoutingPath(
@@ -592,15 +505,8 @@ def test_primary_person_list_item_conversion(version):
     )
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_list_item_conversion(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_list_item_conversion():
+    questionnaire_store = get_questionnaire_store()
 
     routing_path = [
         RoutingPath(
@@ -647,17 +553,10 @@ def test_list_item_conversion(version):
     )
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_list_item_conversion_empty_list(version):
+def test_list_item_conversion_empty_list():
     """Test that the list store is populated with an empty list for lists which
     do not have answers yet."""
-    questionnaire_store = get_questionnaire_store(version)
+    questionnaire_store = get_questionnaire_store()
 
     routing_path = [
         RoutingPath(
@@ -699,17 +598,10 @@ def test_list_item_conversion_empty_list(version):
     )
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_default_answers_not_present_when_not_answered(version):
+def test_default_answers_not_present_when_not_answered():
     """Test that default values aren't submitted downstream when an answer with
     a default value is not present in the answer store."""
-    questionnaire_store = get_questionnaire_store(version)
+    questionnaire_store = get_questionnaire_store()
 
     schema = load_schema_from_name("test_default")
 
@@ -737,15 +629,8 @@ def test_default_answers_not_present_when_not_answered(version):
     assert "answer-one" not in answer_ids
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_list_structure_in_payload_is_as_expected(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_list_structure_in_payload_is_as_expected():
+    questionnaire_store = get_questionnaire_store()
 
     routing_path = [
         RoutingPath(
@@ -793,15 +678,8 @@ def test_list_structure_in_payload_is_as_expected(version):
     assert data_dict[0]["primary_person"] == "xJlKBy"
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_primary_person_not_in_payload_when_not_answered(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_primary_person_not_in_payload_when_not_answered():
+    questionnaire_store = get_questionnaire_store()
 
     routing_path = [
         RoutingPath(
@@ -844,15 +722,8 @@ def test_primary_person_not_in_payload_when_not_answered(version):
     assert "primary_person" not in data_dict[0]
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_relationships_in_payload(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_relationships_in_payload():
+    questionnaire_store = get_questionnaire_store()
 
     routing_path = [
         RoutingPath(
@@ -932,15 +803,8 @@ def test_relationships_in_payload(version):
     assert expected_relationships_answer == relationships_answer["value"]
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_no_relationships_in_payload(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_no_relationships_in_payload():
+    questionnaire_store = get_questionnaire_store()
 
     routing_path = [
         RoutingPath(
@@ -991,15 +855,8 @@ def test_no_relationships_in_payload(version):
     assert "relationship-answer" not in answers
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_unrelated_block_answers_in_payload(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_unrelated_block_answers_in_payload():
+    questionnaire_store = get_questionnaire_store()
 
     routing_path = [
         RoutingPath(
@@ -1103,15 +960,8 @@ def test_unrelated_block_answers_in_payload(version):
     assert expected_relationships_answer == relationships_answer["value"]
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_unrelated_block_answers_not_on_path_not_in_payload(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_unrelated_block_answers_not_on_path_not_in_payload():
+    questionnaire_store = get_questionnaire_store()
 
     routing_path = [
         RoutingPath(
@@ -1190,15 +1040,8 @@ def test_unrelated_block_answers_not_on_path_not_in_payload(version):
     assert ("related-to-anyone-else-answer", "person1") not in answers
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_relationship_answers_not_on_path_in_payload(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_relationship_answers_not_on_path_in_payload():
+    questionnaire_store = get_questionnaire_store()
 
     routing_path = [
         RoutingPath(
@@ -1312,15 +1155,8 @@ def test_relationship_answers_not_on_path_in_payload(version):
     assert expected_relationships_answer == relationships_answer["value"]
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_answers_codes_only_present_for_answered_questions(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_answers_codes_only_present_for_answered_questions():
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [
         RoutingPath(
@@ -1348,15 +1184,8 @@ def test_answers_codes_only_present_for_answered_questions(version):
     assert data_payload["answer_codes"][0]["code"] == "2"
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_all_answers_codes_for_answer_options_in_payload_when_one_is_answered(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_all_answers_codes_for_answer_options_in_payload_when_one_is_answered():
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [
         RoutingPath(block_ids=["mandatory-checkbox"], section_id="default-section")
@@ -1384,15 +1213,8 @@ def test_all_answers_codes_for_answer_options_in_payload_when_one_is_answered(ve
     )
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_no_answers_codes_in_payload_when_no_questions_answered(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_no_answers_codes_in_payload_when_no_questions_answered():
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [
         RoutingPath(block_ids=["mandatory-checkbox"], section_id="default-section")
@@ -1412,12 +1234,8 @@ def test_no_answers_codes_in_payload_when_no_questions_answered(version):
     assert "answer_codes" not in data_payload
 
 
-@pytest.mark.parametrize(
-    "version",
-    (AuthPayloadVersion.V2, None),
-)
-def test_payload_dynamic_answers(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_payload_dynamic_answers():
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [
         RoutingPath(
@@ -1460,17 +1278,10 @@ def test_payload_dynamic_answers(version):
     )
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
 def test_repeating_block_answers_present(
-    version, repeating_blocks_answer_store, repeating_blocks_list_store
+    repeating_blocks_answer_store, repeating_blocks_list_store
 ):
-    questionnaire_store = get_questionnaire_store(version)
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [
         RoutingPath(
@@ -1570,7 +1381,7 @@ def test_repeating_block_answers_present(
 
 
 def test_payload_supplementary_data():
-    questionnaire_store = get_questionnaire_store(AuthPayloadVersion.V2)
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [
         RoutingPath(

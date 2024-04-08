@@ -72,21 +72,26 @@ class FlaskClientAuthenticationTestCase(AppContextTestCase):
             "tx_id": str(uuid.uuid4()),
             "jti": str(uuid.uuid4()),
             "case_id": str(uuid.uuid4()),
-            "user_id": "jimmy",
             "iat": int(iat),
             "exp": int(exp),
-            "period_str": "2016-01-01",
-            "period_id": "12",
+            "survey_metadata": {
+                "data": {
+                    "period_str": "2016-01-01",
+                    "period_id": "12",
+                    "ref_p_start_date": "2016-01-01",
+                    "ref_p_end_date": "2016-09-01",
+                    "ru_ref": "12345678901A",
+                    "ru_name": "Test",
+                    "return_by": "2016-09-09",
+                    "user_id": "jimmy",
+                }
+            },
             "schema_name": "test_default",
             "collection_exercise_sid": "sid",
-            "ref_p_start_date": "2016-01-01",
-            "ref_p_end_date": "2016-09-01",
-            "ru_ref": "12345678901A",
             "response_id": response_id,
-            "ru_name": "Test",
-            "return_by": "2016-09-09",
             "account_service_url": "http://upstream.url/",
             "response_expires_at": get_response_expires_at(),
+            "version": "v2",
         }
 
 
