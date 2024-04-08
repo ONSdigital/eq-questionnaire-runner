@@ -3,16 +3,22 @@
 {% set page_title = _("Page not found") %}
 
 {% block main %}
-  <h1>{{ _("Page not found") }}</h1>
-  <p>{{ _("If you entered a web address, check it is correct.") }}</p>
-  <p>{{ _("If you pasted the web address, check you copied the whole address.") }}</p>
-  {% if survey_type in SURVEY_TYPES_ALL %}
-    <p>{{ _("If the web address is correct or you selected a link or button, <a href='{url}'>contact us</a> for more help.").format(url=contact_us_url) }}</p>
-  {% else %}
-    <p>{{ _("If the web address is correct or you selected a link or button, please see the following help links.") }}</p>
-    <h2>{{ _("Business surveys") }}</h2>
-    <p>{{ _("If you are completing a business survey, please <a href='{url}'>contact us</a>.").format(url=business_contact_us_url) }}</p>
-    <h2>{{ _("All other surveys") }}</h2>
-    <p>{{ _("If you started your survey using an access code, please <a href='{url}'>contact us</a>.").format(url=other_contact_us_url) }}</p>
-  {% endif %}
+    <h1>{{ _("Page not found") }}</h1>
+    <p>{{ _("If you entered a web address, check it is correct.") }}</p>
+    <p>{{ _("If you pasted the web address, check you copied the whole address.") }}</p>
+    {% if survey_type in SURVEY_TYPES_ALL %}
+        <p>
+            {{ _("If the web address is correct or you selected a link or button, <a href='{url}'>contact us</a> for more help.").format(url=contact_us_url) }}
+        </p>
+    {% else %}
+        <p>{{ _("If the web address is correct or you selected a link or button, please see the following help links.") }}</p>
+        <h2>{{ _("Business surveys") }}</h2>
+        <p>
+            {{ _("If you are completing a business survey, please <a href='{url}'>contact us</a>.").format(url=business_contact_us_url) }}
+        </p>
+        <h2>{{ _("All other surveys") }}</h2>
+        <p>
+            {{ _("If you started your survey using an access code, please <a href='{url}'>contact us</a>.").format(url=other_contact_us_url) }}
+        </p>
+    {% endif %}
 {% endblock %}

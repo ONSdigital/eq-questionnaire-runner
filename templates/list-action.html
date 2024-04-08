@@ -1,12 +1,13 @@
 {% extends 'question.html' %}
 
 {% block after_submit_button_content %}
-  {% if previous_location_url %}
-    <p class="ons-u-mt-l">
-      {% if content.block.cancel_text %}
-        {{ content.block.cancel_text }} <br>
-      {% endif %}
-      <a id="cancel-and-return" href="{{ previous_location_url }}">{{ _("Cancel and return to the previous page") }}</a>
-    </p>
-  {% endif %}
+    {% if previous_location_url %}
+        <p class="ons-u-mt-l">
+            {% if content.block.cancel_text %}
+                {{ content.block.cancel_text }}
+                <br>
+            {% endif %}
+            <a id="cancel-and-return" href="{{ previous_location_url }}">{{ _("Cancel and return to the previous page") }}</a>
+        </p>
+    {% endif %}
 {% endblock after_submit_button_content %}

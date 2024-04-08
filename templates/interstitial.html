@@ -1,10 +1,9 @@
 {% extends 'layouts/_questionnaire.html' %}
-{% from 'macros/helpers.html' import format_paragraphs %}
 
+{% from 'macros/helpers.html' import format_paragraphs %}
 {% from 'macros/helpers.html' import interviewer_note %}
 
 {% set save_on_signout = true %}
-
 {% set continue_button_text = _("Continue") %}
 
 {% block form_content %}
@@ -26,18 +25,17 @@
 {% endblock form_content %}
 
 {% block submit_button %}
-    {{
-        onsButton({
-            "text": continue_button_text | default(_("Save and continue")),
-            "variants": 'timer',
-            "classes": "ons-u-mt-l",
-            "attributes": {
-                "data-qa": "btn-submit",
-                "data-ga-category": "Submit button",
-                "data-ga-action": "Save and continue",
-                "data-ga-label": "Save and continue button click",
-                "data-ga": "click"
-            }
-        })
+    {{ onsButton({
+        "text": continue_button_text | default(_("Save and continue") ),
+    "variants": 'timer',
+    "classes": "ons-u-mt-l",
+    "attributes": {
+    "data-qa": "btn-submit",
+    "data-ga-category": "Submit button",
+    "data-ga-action": "Save and continue",
+    "data-ga-label": "Save and continue button click",
+    "data-ga": "click"
+    }
+    })
     }}
 {% endblock %}

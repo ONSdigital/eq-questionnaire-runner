@@ -1,4 +1,5 @@
 {% extends 'layouts/_base.html' %}
+
 {% from 'components/panel/_macro.njk' import onsPanel %}
 {% from "components/description-list/_macro.njk" import onsDescriptionList %}
 {% from "components/timeout-panel/_macro.njk" import onsTimeoutPanel %}
@@ -6,89 +7,88 @@
 {% set page_title = _("We’ve received your answers") %}
 {% set hide_sign_out_button = content.hide_sign_out_button %}
 {% if account_service_todo_url %}
-  {% set breadcrumbs = {
-    "ariaLabel": 'Back to surveys',
-    "itemsList": [
-      {
-        "url": account_service_todo_url,
-        "id": "back-to-surveys",
-        "text": _("Back to surveys"),
-        "attributes": {
-          "data-ga": 'click',
-          "data-ga-category": 'Navigation',
-          "data-ga-action": 'Back to surveys link click'
-        }
-      }
-    ]
-  } %}
+    {% set breadcrumbs = {
+            "ariaLabel": 'Back to surveys',
+            "itemsList": [
+                {
+                    "url": account_service_todo_url,
+                    "id": "back-to-surveys",
+                    "text": _("Back to surveys"),
+                    "attributes": {
+                        "data-ga": 'click',
+                        "data-ga-category": 'Navigation',
+                        "data-ga-action": 'Back to surveys link click'
+                    }
+                }
+            ]
+        } %}
 {% endif %}
+
 {% block main %}
-
-  {% call onsPanel({
-    "type": "success",
-    "iconType": "check",
-    "iconSize": "xl",
-    "classes": "ons-u-mb-m"
-  }) %}
-    <h1 data-qa="title">{{ _("Thank you for completing the {survey_title}").format(
-      survey_title = survey_title) }}</h1>
-    <p data-qa="guidance">
-      {{ content.submission_text }}
-    </p>
-    {{ onsDescriptionList(content.metadata) }}
-  {% endcall %}
-
-  {% if content.guidance %}
-    {% set contents = content.guidance.contents %}
-    {% include 'partials/contents.html' %}
-  {% else %}
-    <p class="ons-u-mb-s">{{ _("Your response will help inform decision-makers how best to support the UK population and economy.") }}</p>
-    <p class="ons-u-mb-s"><a href="https://www.ons.gov.uk/surveys">{{ _("Learn more about how we use this data") }}</a></p>
-  {% endif %}
-
-  {% set countdown_expired_text = _("For security, you can no longer view or get a copy of your answers") %}
-
-  {% if content.view_submitted_response.enabled %}
-    {% if content.view_submitted_response.expired %}
-      {% call onsPanel({
-        "id": "view-submitted-response-guidance",
+    {% call onsPanel({
+        "type": "success",
+        "iconType": "check",
+        "iconSize": "xl",
         "classes": "ons-u-mb-m"
-      }) %}
-        {{ countdown_expired_text }}
-      {% endcall %}
-
+        }) %}
+        <h1 data-qa="title">
+            {{ _("Thank you for completing the {survey_title}").format( 
+            survey_title = survey_title) }}
+        </h1>
+        <p data-qa="guidance">{{ content.submission_text }}</p>
+        {{ onsDescriptionList(content.metadata) }}
+    {% endcall %}
+    {% if content.guidance %}
+        {% set contents = content.guidance.contents %}
+        {% include 'partials/contents.html' %}
     {% else %}
-      {% set countdown_text = _("For security, your answers will only be available to view for another ") %}
-      <h2 data-qa="view-submitted-response-title">{{ _("Get a copy of your answers") }}</h2>
-      <p class="ons-u-mb-s">
-        {{ _("You can <a href='{url}' id='view-submitted-response-link'>save or print your answers</a> for your records.").format(url = content.view_submitted_response.url) }}
-      </p>
-      {{ onsTimeoutPanel ({
-        "id": "view-submitted-response-countdown",
-        "redirectUrl":  url_for("post_submission.get_thank_you"),
-        "minutesTextSingular": _("minute"),
-        "minutesTextPlural": _("minutes"),
-        "secondsTextSingular": _("second"),
-        "secondsTextPlural": _("seconds"),
-        "countdownText": countdown_text,
-        "nojsText": _("For security, your answers will only be available to view for 45 minutes"),
-        "countdownExpiredText": countdown_expired_text,
-        "sessionExpiresAt": content.view_submitted_response.expires_at
-      }) }}
+        <p class="ons-u-mb-s">
+            {{ _("Your response will help inform decision-makers how best to support the UK population and economy.") }}
+        </p>
+        <p class="ons-u-mb-s">
+            <a href="https://www.ons.gov.uk/surveys">{{ _("Learn more about how we use this data") }}</a>
+        </p>
     {% endif %}
-  {% endif %}
-
-  {% if content.confirmation_email_form %}
-    <hr class="ons-u-mt-no">
-    <h2 class="ons-u-mt-m">{{ _("Get confirmation email") }}</h2>
-    <p>{{ _("If you would like to be sent confirmation that you have completed your survey, enter your email address") }}</p>
-    {% with form=content.confirmation_email_form %}
-      {% include 'partials/confirmation-email-form.html' %}
-    {% endwith %}
-  {% endif %}
-
-  {% if content.show_feedback_call_to_action %}
-    {% include 'partials/feedback-call-to-action.html' %}
-  {% endif %}
-
+    {% set countdown_expired_text = _("For security, you can no longer view or get a copy of your answers") %}
+    {% if content.view_submitted_response.enabled %}
+        {% if content.view_submitted_response.expired %}
+            {% call onsPanel({
+                "id": "view-submitted-response-guidance",
+                "classes": "ons-u-mb-m"
+                }) %}
+                {{ countdown_expired_text }}
+            {% endcall %}
+        {% else %}
+            {% set countdown_text = _("For security, your answers will only be available to view for another ") %}
+            <h2 data-qa="view-submitted-response-title">{{ _("Get a copy of your answers") }}</h2>
+            <p class="ons-u-mb-s">
+                {{ _("You can <a href='{url}' id='view-submitted-response-link'>save or print your answers</a> for your records.").format(url = content.view_submitted_response.url) }}
+            </p>
+            {{ onsTimeoutPanel ({
+            "id": "view-submitted-response-countdown",
+            "redirectUrl":  url_for("post_submission.get_thank_you") ,
+            "minutesTextSingular": _("minute"),
+            "minutesTextPlural": _("minutes"),
+            "secondsTextSingular": _("second"),
+            "secondsTextPlural": _("seconds"),
+            "countdownText": countdown_text,
+            "nojsText": _("For security, your answers will only be available to view for 45 minutes"),
+            "countdownExpiredText": countdown_expired_text,
+            "sessionExpiresAt": content.view_submitted_response.expires_at
+            }) }}
+        {% endif %}
+    {% endif %}
+    {% if content.confirmation_email_form %}
+        <hr class="ons-u-mt-no">
+        <h2 class="ons-u-mt-m">{{ _("Get confirmation email") }}</h2>
+        <p>
+            {{ _("If you would like to be sent confirmation that you have completed your survey, enter your email address") }}
+        </p>
+        {% with form=content.confirmation_email_form %}
+            {% include 'partials/confirmation-email-form.html' %}
+        {% endwith %}
+    {% endif %}
+    {% if content.show_feedback_call_to_action %}
+        {% include 'partials/feedback-call-to-action.html' %}
+    {% endif %}
 {% endblock %}

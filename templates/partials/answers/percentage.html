@@ -1,28 +1,27 @@
 {% from "components/input/_macro.njk" import onsInput %}
 
 {% set input = form.fields[answer['id']] %}
-
 {{ onsInput({
-  "id": answer.id,
-  "classes": "js-totaliser-input-calculated" if answer.calculated,
-  "type": "number",
-  "label": {
-    "id": answer.id ~ "-label",
-    "text": answer.label,
-    "description": answer.description
-  },
-  "value": input._value() | e,
-  "name": input.name,
-  "attributes": {
-    "data-qa": "input-text"
-  },
-  "suffix": {
-    "id": answer.id ~ "-type",
-    "title": "Percent",
-    "text": "%"
-  },
-  "dontWrap": true if mutuallyExclusive else false,
-  "mutuallyExclusive": mutuallyExclusive,
-  "width": get_width_for_number(answer),
-  "error": error
+"id": answer.id,
+"classes": "js-totaliser-input-calculated" if answer.calculated,
+"type": "number",
+"label": {
+"id": answer.id ~ "-label",
+"text": answer.label,
+"description": answer.description
+},
+"value": input._value() | e,
+"name": input.name,
+"attributes": {
+"data-qa": "input-text"
+},
+"suffix": {
+"id": answer.id ~ "-type",
+"title": "Percent",
+"text": "%"
+},
+"dontWrap": true if mutuallyExclusive else false,
+"mutuallyExclusive": mutuallyExclusive,
+"width": get_width_for_number(answer),
+"error": error
 }) }}

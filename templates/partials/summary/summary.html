@@ -1,24 +1,22 @@
 {%- if content.summary.collapsible -%}
-  {%- include 'partials/summary/collapsible-summary.html' -%}
+    {%- include 'partials/summary/collapsible-summary.html' -%}
 {%- else -%}
-  {% from "components/summary/_macro.njk" import onsSummary %}
+    {% from "components/summary/_macro.njk" import onsSummary %}
 
-  {% set summary_sections = [] %}
-  {% set summary_type = content.summary.summary_type %}
-  {% set view_submitted_response = content.summary.view_submitted_response %}
-
-
-  {%- for section in content.summary.sections -%}
-    {% set summary_groups = [] %}
-    {%- if section.groups -%}
-      {%- for group in section.groups -%}
-        {%- if group.blocks -%}
-          {% do summary_groups.append
-            (
-              {
-                  "groupTitle": group.title if group.title else None,
-                  "id": group.id if group.id else None,
-                  "rows": map_summary_item_config(
+    {% set summary_sections = [] %}
+    {% set summary_type = content.summary.summary_type %}
+    {% set view_submitted_response = content.summary.view_submitted_response %}
+    {%- for section in content.summary.sections -%}
+        {% set summary_groups = [] %}
+        {%- if section.groups -%}
+            {%- for group in section.groups -%}
+                {%- if group.blocks -%}
+                    {% do summary_groups.append
+                    (
+                    {
+                    "groupTitle": group.title if group.title else None,
+                    "id": group.id if group.id else None,
+                    "rows": map_summary_item_config(
                     group=group,
                     summary_type=summary_type,
                     answers_are_editable=content.summary.answers_are_editable,
@@ -28,30 +26,26 @@
                     edit_link_text=_("Change") if not view_submitted_response else "",
                     edit_link_aria_label=_("Change your answer for:") if not view_submitted_response else "",
                     calculated_question=content.summary.calculated_question
-                  ),
-                  "classes": "ons-u-mt-m" if loop.index > 1 else "",
-                  "placeholderText": group.placeholder_text,
-                  "summaryLink": group.links.add_link,
-                }
-            )
-          %}
+                    ),
+                    "classes": "ons-u-mt-m" if loop.index > 1 else "",
+                    "placeholderText": group.placeholder_text,
+                    "summaryLink": group.links.add_link,
+                    }
+                    )
+                    %}
+                {%- endif -%}
+            {%- endfor -%}
         {%- endif -%}
-      {%- endfor -%}
-    {%- endif -%}
-    {% do summary_sections.append
-      (
+        {% do summary_sections.append
+        (
         {
-          "summaryTitle": section.title if summary_type == "Summary",
-          "groups": summary_groups
+        "summaryTitle": section.title if summary_type == "Summary",
+        "groups": summary_groups
         }
-      )
-    %}
-  {%- endfor -%}
-
-
-  {{ onsSummary({
-    "summaries": summary_sections
-  }) }}
-
+        )
+        %}
+    {%- endfor -%}
+    {{ onsSummary({
+        "summaries": summary_sections
+        }) }}
 {%- endif -%}
-

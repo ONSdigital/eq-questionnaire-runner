@@ -1,64 +1,58 @@
 {%- from "components/date-input/_macro.njk" import onsDateInput -%}
-
 {%- set day_field = form.fields[answer['id']]['day'] -%}
 {%- set month_field = form.fields[answer['id']]['month'] -%}
 {%- set year_field = form.fields[answer['id']]['year'] -%}
-
 {%- set config = {
-  "id": answer.id,
-  "legendOrLabel": answer.label,
-  "dontWrap": not answer.label,
-  "description": answer.description,
-  "attributes": {
-    "data-qa": "widget-date"
-  },
-  "mutuallyExclusive": mutuallyExclusive,
-  "error": error
+"id": answer.id,
+"legendOrLabel": answer.label,
+"dontWrap": not answer.label,
+"description": answer.description,
+"attributes": {
+"data-qa": "widget-date"
+},
+"mutuallyExclusive": mutuallyExclusive,
+"error": error
 } -%}
-
 {%- if day_field -%}
-  {%- set config = config | setAttributes({
-    "day": {
-      "label": {
+    {%- set config = config | setAttributes({
+        "day": {
+        "label": {
         "text": _("Day"),
         "attributes": {
-          "data-qa": "label-day"
+        "data-qa": "label-day"
         }
-      },
-      "name": day_field.name,
-      "value": day_field._value() | e
-    }
-  }) -%}
+        },
+        "name": day_field.name,
+        "value": day_field._value() | e
+        }
+        }) -%}
 {%- endif -%}
-
 {%- if month_field -%}
-  {%- set config = config | setAttributes({
-    "month": {
-      "label": {
+    {%- set config = config | setAttributes({
+        "month": {
+        "label": {
         "text": _("Month"),
         "attributes": {
-          "data-qa": "label-month"
+        "data-qa": "label-month"
         }
-      },
-      "name": month_field.name,
-      "value": month_field._value() | e
-    }
-  }) -%}
+        },
+        "name": month_field.name,
+        "value": month_field._value() | e
+        }
+        }) -%}
 {%- endif -%}
-
 {%- if year_field -%}
-  {%- set config = config | setAttributes({
-    "year": {
-      "label": {
+    {%- set config = config | setAttributes({
+        "year": {
+        "label": {
         "text": _("Year"),
         "attributes": {
-          "data-qa": "label-year"
+        "data-qa": "label-year"
         }
-      },
-      "name": year_field.name,
-      "value": year_field._value() | e
-    }
-  }) -%}
+        },
+        "name": year_field.name,
+        "value": year_field._value() | e
+        }
+        }) -%}
 {%- endif -%}
-
-{{ onsDateInput(config) }}
+{{ onsDateInput(<djlint.settings.Config object at 0x10f099650>) }}

@@ -6,46 +6,44 @@
 {% set save_on_signout = true %}
 
 {% block main %}
-  {% block page_title %}
-    <h1 class="ons-u-mt-m">{{ content.title }}</h1>
-  {% endblock page_title %}
+    {% block page_title %}
+        <h1 class="ons-u-mt-m">{{ content.title }}</h1>
+    {% endblock page_title %}
 
-  {% block post_title_panel %}
-    {% if content.warning %}
-      {% call onsPanel({ "type": "warn"}) %}
-        <p data-qa="warning">{{ content.warning }}</p>
-      {% endcall %}
+    {% block post_title_panel %}
+        {% if content.warning %}
+            {% call onsPanel({ "type": "warn"}) %}
+                <p data-qa="warning">{{ content.warning }}</p>
+            {% endcall %}
+        {% endif %}
+    {% endblock post_title_panel %}
+
+    {% block summary %}
+    {% endblock summary %}
+    {% if content.guidance %}
+        <div class="ons-u-mt-l">
+            <p class="ons-u-mb-no" data-qa="guidance">
+                <strong>{{ content.guidance }}</strong>
+            </p>
+        </div>
     {% endif %}
-  {% endblock post_title_panel %}
 
-  {% block summary %}
-  {% endblock summary %}
+    {% block pre_submit_button_content %}
+    {% endblock pre_submit_button_content %}
 
-  {% if content.guidance %}
-    <div class="ons-u-mt-l">
-      <p class="ons-u-mb-no" data-qa="guidance">
-        <strong>{{ content.guidance }}</strong>
-      </p>
-    </div>
-  {% endif %}
-
-  {% block pre_submit_button_content %}
-  {% endblock pre_submit_button_content %}
-
-  {% block submit_button %}
-    {{
-      onsButton({
-        "text": content.submit_button,
-        "variants": 'timer',
-        "classes": 'ons-u-mb-m ons-u-mt-' ~ ("s" if content.guidance else "xl"),
+    {% block submit_button %}
+        {{ onsButton({
+                "text": content.submit_button,
+                "variants": 'timer',
+                "classes": 'ons-u-mb-m ons-u-mt-' ~ ("s" if content.guidance else "xl") ,
         "attributes": {
-          'data-qa': 'btn-submit',
-          "data-ga-category": "Submit Button",
-          "data-ga-action": "Submit",
-          "data-ga-label": "Submit Button click",
-          "data-ga": "click"
+        'data-qa': 'btn-submit',
+        "data-ga-category": "Submit Button",
+        "data-ga-action": "Submit",
+        "data-ga-label": "Submit Button click",
+        "data-ga": "click"
         }
-      })
-    }}
-  {% endblock submit_button %}
+        })
+        }}
+    {% endblock submit_button %}
 {% endblock %}
