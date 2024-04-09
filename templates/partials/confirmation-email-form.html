@@ -29,17 +29,20 @@
     },
     "error": error
 } %}
-{{ onsInput(<djlint.settings.Config object at 0x110524050>) }}
-{{ onsButton({
-"text": _("Send confirmation") ,
-"variants": 'timer',
-"classes": "ons-u-mt-s",
-"attributes": {
-"data-qa": "btn-submit",
-"data-ga-category": "Submit button",
-"data-ga-action": "Send confirmation",
-"data-ga-label": "Send confirmation button click",
-"data-ga": "click"
-}
-})
+{# djlint:off #}
+{{ onsInput(config) }}
+{{
+    onsButton({
+        "text": _("Send confirmation") ,
+        "variants": 'timer',
+        "classes": "ons-u-mt-s",
+        "attributes": {
+        "data-qa": "btn-submit",
+        "data-ga-category": "Submit button",
+        "data-ga-action": "Send confirmation",
+        "data-ga-label": "Send confirmation button click",
+        "data-ga": "click"
+        }
+    })
 }}
+{# djlint:on #}

@@ -64,4 +64,6 @@
 {% else %}
     {% set config = config | setAttribute("manualEntry", true) %}
 {% endif %}
-{{ onsAddressInput(<djlint.settings.Config object at 0x1096cfe50>) }}
+{# djlint:off #}
+{{ onsAddressInput(config) }}
+{# djlint:off #}

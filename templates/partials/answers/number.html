@@ -1,6 +1,7 @@
 {% from "components/input/_macro.njk" import onsInput %}
 
 {% set input = form.fields[answer['id']] %}
+{# djlint:off #}
 {{ onsInput({
 "id": answer.id,
 "type": "number",
@@ -19,3 +20,4 @@
 "width": get_width_for_number(answer),
 "error": error
 }) }}
+{# djlint:on #}

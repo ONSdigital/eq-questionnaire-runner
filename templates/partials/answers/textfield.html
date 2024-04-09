@@ -33,7 +33,10 @@
             "autosuggestData": answer.suggestions.url,
             "allowMultiple": true if answer.suggestions.allow_multiple else false
         }) %}
-    {{ onsAutosuggest(<djlint.settings.Config object at 0x1058eb410>) }}
+
+    {# djlint:off #}
+    {{ onsAutosuggest(config) }}
+    {# djlint:off #}
 {% else %}
     {% if answer.max_length %}
         {% set config = config | setAttribute("charCheckLimit", {
@@ -44,5 +47,7 @@
                     "charCountPlural": _("You have {x} characters remaining")
                 }) %}
     {% endif %}
-    {{ onsInput(<djlint.settings.Config object at 0x1058eb410>) }}
+    {# djlint:off #}
+    {{ onsInput(config) }}
+     {# djlint:off #}
 {% endif %}

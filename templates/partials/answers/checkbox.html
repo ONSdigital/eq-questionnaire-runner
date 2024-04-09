@@ -11,4 +11,6 @@
 {% if answer.instruction != None and answer.options|length > 1 %}
     {% set config = config | setAttribute("checkboxesLabel", answer.instruction or _("Select all that apply")) %}
 {% endif %}
-{{ onsCheckboxes(<djlint.settings.Config object at 0x10ea886d0>) }}
+{# djlint:off #}
+{{ onsCheckboxes(config) }}
+{# djlint:on #}
