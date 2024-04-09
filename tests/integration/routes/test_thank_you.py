@@ -85,7 +85,9 @@ class TestThankYou(IntegrationTestCase):
         self.post()
 
         self.assertInUrl("thank-you")
-        self.assertInBody("Your answers will be processed in the next few weeks.")
+        self.assertInBody(
+            "Your response will help inform decision-makers how best to support the UK population and economy."
+        )
 
     def test_custom_guidance(self):
         self.launchSurvey("test_thank_you")
