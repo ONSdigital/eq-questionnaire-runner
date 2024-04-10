@@ -3,23 +3,25 @@
 {% set page_title = _("Page is not available") %}
 
 {% block main %}
-  <h1>{{ _("Sorry, you need to sign in again") }}</h1>
-  <p>{{ _("This is because you have either:") }}</p>
-  <ul>
-    <li>{{ _("been inactive for 45 minutes and your session has timed out to protect your information") }}</li>
-    <li>{{ _("followed a link to a page you are not signed in to") }}</li>
-    <li>{{ _("followed a link to a survey that has already been submitted") }}</li>
-  </ul>
-  {% if survey_type and (survey_type in SURVEY_TYPES_BUSINESS or survey_type in SURVEY_TYPES_DEFAULT) %}
-    <p>{{ _("You will need to <a href='{url}'>sign back in</a> to access your account").format(url = business_logout_url) }}</p>
+    {# djlint:off #}
+    <h1>{{ _("Sorry, you need to sign in again") }}</h1>
+    <p>{{ _("This is because you have either:") }}</p>
+    <ul>
+        <li>{{ _("been inactive for 45 minutes and your session has timed out to protect your information") }}</li>
+        <li>{{ _("followed a link to a page you are not signed in to") }}</li>
+        <li>{{ _("followed a link to a survey that has already been submitted") }}</li>
+    </ul>
+    {% if survey_type and (survey_type in SURVEY_TYPES_BUSINESS or survey_type in SURVEY_TYPES_DEFAULT) %}
+        <p>{{ _("You will need to <a href='{url}'>sign back in</a> to access your account").format(url = business_logout_url) }}</p>
 
-  {% elif survey_type and survey_type in SURVEY_TYPES_SOCIAL or survey_type in SURVEY_TYPES_HEALTH %}
-    <p>{{ _("To access this page you need to <a href='{url}'>re-enter your access code</a>.").format(url = other_logout_url) }}</p>
+    {% elif survey_type and survey_type in SURVEY_TYPES_SOCIAL or survey_type in SURVEY_TYPES_HEALTH %}
+        <p>{{ _("To access this page you need to <a href='{url}'>re-enter your access code</a>.").format(url = other_logout_url) }}</p>
 
-  {% else %}
-    <h2>{{ _("Business surveys") }}</h2>
-    <p>{{ _("If you are completing a business survey, you need to sign back in to <a href='{url}'>your account</a>.").format(url = business_logout_url) }}</p>
-    <h2>{{ _("All other surveys") }}</h2>
-    <p>{{ _("If you started your survey using an access code, you need to <a href='{url}'>re-enter your code</a>.").format(url = other_logout_url) }}</p>
-  {% endif %}
+    {% else %}
+        <h2>{{ _("Business surveys") }}</h2>
+        <p>{{ _("If you are completing a business survey, you need to sign back in to <a href='{url}'>your account</a>.").format(url = business_logout_url) }}</p>
+        <h2>{{ _("All other surveys") }}</h2>
+        <p>{{ _("If you started your survey using an access code, you need to <a href='{url}'>re-enter your code</a>.").format(url = other_logout_url) }}</p>
+    {% endif %}
+    {# djlint:on #}
 {% endblock %}

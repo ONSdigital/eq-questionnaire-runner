@@ -6,20 +6,20 @@
 
 {% if previous_location_url %}
     {% set breadcrumbs = {
-        "ariaLabel": 'Previous',
-        "itemsList": [
-            {
-                "url": previous_location_url,
-                "id": "top-previous",
-                "text": _("Previous"),
-                "attributes": {
-                    "data-ga": 'click',
-                    "data-ga-category": 'Navigation',
-                    "data-ga-action": 'Previous link click'
+            "ariaLabel": 'Previous',
+            "itemsList": [
+                {
+                    "url": previous_location_url,
+                    "id": "top-previous",
+                    "text": _("Previous"),
+                    "attributes": {
+                        "data-ga": 'click',
+                        "data-ga-category": 'Navigation',
+                        "data-ga-action": 'Previous link click'
+                    }
                 }
-            }
-        ]
-    } %}
+            ]
+        } %}
 {% endif %}
 {% if survey_title %}
     {% set full_page_title = page_title ~ " - " ~ survey_title %}
@@ -74,7 +74,6 @@
         <script nonce="{{ csp_nonce }}">
             dataLayer = {{ data_layer | tojson }}
         </script>
-
         <!-- Google tag (gtag.js) -->
         <script nonce="{{ csp_nonce }}">
             function loadGoogleTagScript() {
@@ -130,25 +129,25 @@
 
 {% block preFooter %}
 {% if session_expires_at %}
-    {# djlint:off #}
-    {{
-        onsTimeoutModal({
-            "showModalTimeInSeconds": 60,
-            "serverSessionExpiryEndpoint": url_for('session.session_expiry') ,
-            "sessionExpiresAt": session_expires_at,
-            "redirectUrl": url_for('session.get_session_expired'),
-            "title": _("You will be signed out soon"),
-            "textFirstLine": _("It appears you have been inactive for a while."),
-            "countdownText": _("To protect your information, your progress will be saved and you will be signed out in"),
-            "countdownExpiredText": _("You are being signed out"),
-            "btnText": _("Continue survey"),
-            "minutesTextSingular": _("minute"),
-            "minutesTextPlural": _("minutes"),
-            "secondsTextSingular": _("second"),
-            "secondsTextPlural": _("seconds"),
-            "endWithFullStop": true
-        })
-    }}
-    {# djlint:on #}
+{# djlint:off #}
+{{
+    onsTimeoutModal({
+        "showModalTimeInSeconds": 60,
+        "serverSessionExpiryEndpoint": url_for('session.session_expiry') ,
+        "sessionExpiresAt": session_expires_at,
+        "redirectUrl": url_for('session.get_session_expired'),
+        "title": _("You will be signed out soon"),
+        "textFirstLine": _("It appears you have been inactive for a while."),
+        "countdownText": _("To protect your information, your progress will be saved and you will be signed out in"),
+        "countdownExpiredText": _("You are being signed out"),
+        "btnText": _("Continue survey"),
+        "minutesTextSingular": _("minute"),
+        "minutesTextPlural": _("minutes"),
+        "secondsTextSingular": _("second"),
+        "secondsTextPlural": _("seconds"),
+        "endWithFullStop": true
+    })
+}}
+{# djlint:on #}
 {% endif %}
 {% endblock %}
