@@ -42,7 +42,7 @@ describe("Using supplementary data", () => {
   before("Starting the survey", async () => {
     await browser.openQuestionnaire("test_supplementary_data.json", {
       version: "v2",
-      sdsDatasetId: "abb98e61-7631-60fa-3058-e1f59006db31",
+      sdsDatasetId: "d8afa921-1305-d553-d2c6-955a6db2cc2d",
       responseId,
     });
   });
@@ -391,7 +391,7 @@ describe("Using supplementary data", () => {
     await expect(await $(HubPage.summaryRowState("section-6")).getText()).toBe("Completed");
     await browser.openQuestionnaire("test_supplementary_data.json", {
       version: "v2",
-      sdsDatasetId: "abb98e61-7631-60fa-3058-e1f59006db31",
+      sdsDatasetId: "d8afa921-1305-d553-d2c6-955a6db2cc2d",
       responseId,
     });
     await expect(await $(HubPage.summaryRowState("section-6")).getText()).toBe("Partially completed");
