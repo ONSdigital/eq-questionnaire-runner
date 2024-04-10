@@ -599,7 +599,7 @@ def test_map_list_collector_config():
                 {
                     "actions": [
                         {
-                            "visuallyHiddenText": "edit_link_aria_label",
+                            "visuallyHiddenText": "edit_link_aria_label Mark Bloggs (You)",
                             "attributes": {"data-qa": "list-item-change-1-link"},
                             "text": "edit_link_text",
                             "url": "/primary/change",
@@ -620,13 +620,13 @@ def test_map_list_collector_config():
                 {
                     "actions": [
                         {
-                            "visuallyHiddenText": "edit_link_aria_label",
+                            "visuallyHiddenText": "edit_link_aria_label Joe Bloggs",
                             "attributes": {"data-qa": "list-item-change-2-link"},
                             "text": "edit_link_text",
                             "url": "/nonprimary/change",
                         },
                         {
-                            "visuallyHiddenText": "remove_link_aria_label",
+                            "visuallyHiddenText": "remove_link_aria_label Joe Bloggs",
                             "attributes": {"data-qa": "list-item-remove-2-link"},
                             "text": "remove_link_text",
                             "url": "/nonprimary/remove",
@@ -715,13 +715,13 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                 {
                     "actions": [
                         {
-                            "visuallyHiddenText": "edit_link_aria_label",
+                            "visuallyHiddenText": "edit_link_aria_label Name of UK company or branch",
                             "attributes": {"data-qa": "list-item-change-1-link"},
                             "text": "edit_link_text",
                             "url": "/nonprimary/change",
                         },
                         {
-                            "visuallyHiddenText": "remove_link_aria_label",
+                            "visuallyHiddenText": "remove_link_aria_label Name of UK company or branch",
                             "attributes": {"data-qa": "list-item-remove-1-link"},
                             "text": "remove_link_text",
                             "url": "/nonprimary/remove",
@@ -1006,13 +1006,13 @@ def test_summary_item_config_with_list_collector():
                 {
                     "actions": [
                         {
-                            "visuallyHiddenText": "Change your answer for:",
+                            "visuallyHiddenText": "Change your answer for: Company A",
                             "attributes": {"data-qa": "list-item-change-1-link"},
                             "text": "Change",
                             "url": "change_link_url",
                         },
                         {
-                            "visuallyHiddenText": "Remove Company A",
+                            "visuallyHiddenText": "Remove your answer for: Company A",
                             "attributes": {"data-qa": "list-item-remove-1-link"},
                             "text": "Remove",
                             "url": "remove_link_url",
@@ -1143,7 +1143,7 @@ def test_summary_item_config_with_list_collector():
         summary_type="SectionSummary",
         answers_are_editable=True,
         no_answer_provided="No answer Provided",
-        remove_link_aria_label="Remove Company A",
+        remove_link_aria_label="Remove your answer for:",
         remove_link_text="Remove",
         edit_link_text="Change",
         edit_link_aria_label="Change your answer for:",
@@ -1161,13 +1161,15 @@ def test_summary_item_config_with_list_collector_and_one_related_answer():
                 {
                     "actions": [
                         {
-                            "visuallyHiddenText": "Change your answer for:",
+                            "visuallyHiddenText": "Change your answer for: "
+                            "Company A",
                             "attributes": {"data-qa": "list-item-change-1-link"},
                             "text": "Change",
                             "url": "change_link_url",
                         },
                         {
-                            "visuallyHiddenText": "Remove Company A",
+                            "visuallyHiddenText": "Remove your answer for: "
+                            "Company A",
                             "attributes": {"data-qa": "list-item-remove-1-link"},
                             "text": "Remove",
                             "url": "remove_link_url",
@@ -1262,7 +1264,7 @@ def test_summary_item_config_with_list_collector_and_one_related_answer():
         summary_type="SectionSummary",
         answers_are_editable=True,
         no_answer_provided="No answer Provided",
-        remove_link_aria_label="Remove Company A",
+        remove_link_aria_label="Remove your answer for:",
         remove_link_text="Remove",
         edit_link_text="Change",
         edit_link_aria_label="Change your answer for:",

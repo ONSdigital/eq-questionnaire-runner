@@ -16,23 +16,23 @@
           {% do summary_groups.append
             (
               {
-                  "groupTitle": group.title if group.title else None,
-                  "id": group.id if group.id else None,
-                  "rows": map_summary_item_config(
-                    group=group,
-                    summary_type=summary_type,
-                    answers_are_editable=content.summary.answers_are_editable,
-                    no_answer_provided=_("No answer provided"),
-                    remove_link_text=_("Remove") if not view_submitted_response else "",
-                    remove_link_aria_label=_("Remove your answer for:") if not view_submitted_response else "",
-                    edit_link_text=_("Change") if not view_submitted_response else "",
-                    edit_link_aria_label=_("Change your answer for:") if not view_submitted_response else "",
-                    calculated_question=content.summary.calculated_question
-                  ),
-                  "classes": "ons-u-mt-m" if loop.index > 1 else "",
-                  "placeholderText": group.placeholder_text,
-                  "summaryLink": group.links.add_link,
-                }
+                "groupTitle": group.title if group.title else None,
+                "id": group.id if group.id else None,
+                "rows": map_summary_item_config(
+                  group=group,
+                  summary_type=summary_type,
+                  answers_are_editable=content.summary.answers_are_editable,
+                  no_answer_provided=_("No answer provided"),
+                  remove_link_text=_("Remove") if not view_submitted_response else "",
+                  remove_link_aria_label=_("Remove your answer for:") if not view_submitted_response else "",
+                  edit_link_text=_("Change") if not view_submitted_response else "",
+                  edit_link_aria_label=_("Change your answer for:") if not view_submitted_response else "",
+                  calculated_question=content.summary.calculated_question
+                ),
+                "classes": "ons-u-mt-m" if loop.index > 1 else "",
+                "placeholderText": group.placeholder_text,
+                "summaryLink": group.links.add_link,
+              }
             )
           %}
         {%- endif -%}

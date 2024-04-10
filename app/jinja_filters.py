@@ -437,7 +437,7 @@ class SummaryAction:
         edit_link_aria_label: str,
     ) -> None:
         self.text = edit_link_text
-        self.visuallyHiddenText = edit_link_aria_label + " " + item_title
+        self.visuallyHiddenText = f'{edit_link_aria_label} {item_title}'
         self.url = answer["link"]
 
         self.attributes = {
@@ -679,7 +679,7 @@ def map_list_collector_config(
             }
 
             if edit_link_aria_label:
-                edit_link_hidden_text = edit_link_aria_label.format(item_name=item_name)
+                edit_link_hidden_text = f'{edit_link_aria_label.format(item_name=item_name)} {item_name}'
             edit_link["visuallyHiddenText"] = edit_link_hidden_text
 
             actions.append(edit_link)
@@ -693,7 +693,7 @@ def map_list_collector_config(
             actions.append(
                 {
                     "text": remove_link_text,
-                    "visuallyHiddenText": remove_link_hidden_text,
+                    "visuallyHiddenText": f'{remove_link_hidden_text} {item_name}',
                     "url": list_item.get("remove_link"),
                     "attributes": {"data-qa": f"list-item-remove-{index}-link"},
                 }
