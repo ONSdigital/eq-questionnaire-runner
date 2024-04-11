@@ -2,29 +2,30 @@
 
 {% set input = form.fields[answer['id']] %}
 {# djlint:off #}
-{{ onsInput({
-    "id": answer.id,
-    "type": "number",
-    "classes": "js-totaliser-input-calculated" if answer.calculated,
-    "name": input.name,
-    "value": input._value() | e,
-    "label": {
-        "id": answer.id ~ "-label",
-        "text": answer.label,
-        "description": answer.description
-    },
-    "suffix": {
-        "id": answer.id ~ "-type",
-        "title": format_unit_input_label(answer.unit, unit_length="long"),
-        "text": format_unit_input_label(answer.unit, unit_length=answer.unit_length)
-    },
-    "attributes": {
-        "data-qa": "input-text"
-    },
-    "dontWrap": true if mutuallyExclusive else false,
-    "mutuallyExclusive": mutuallyExclusive,
-    "width": get_width_for_number(answer),
-    "error": error
+{{
+    onsInput({
+        "id": answer.id,
+        "type": "number",
+        "classes": "js-totaliser-input-calculated" if answer.calculated,
+        "name": input.name,
+        "value": input._value() | e,
+        "label": {
+            "id": answer.id ~ "-label",
+            "text": answer.label,
+            "description": answer.description
+        },
+        "suffix": {
+            "id": answer.id ~ "-type",
+            "title": format_unit_input_label(answer.unit, unit_length="long"),
+            "text": format_unit_input_label(answer.unit, unit_length=answer.unit_length)
+        },
+        "attributes": {
+            "data-qa": "input-text"
+        },
+        "dontWrap": true if mutuallyExclusive else false,
+        "mutuallyExclusive": mutuallyExclusive,
+        "width": get_width_for_number(answer),
+        "error": error
     })
-  }}
+}}
 {# djlint:on #}

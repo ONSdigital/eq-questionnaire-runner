@@ -7,31 +7,35 @@
         {%- if group["blocks"] | length -%}
             {%- if group.title -%}
                 {%- set item = {
-                                "title": group.title,
-                                "id": group.id,
-                                "content": ""
-                                } -%}
+                    "title": group.title,
+                    "id": group.id,
+                    "content": ""
+                } -%}
                 {%- set summary %}
-                    {{ onsSummary({
-                                        "classes": "summary--no-bottom-border",
-                                        "summaries": [
+                    {# djlint:off #}
+                    {{
+                        onsSummary({
+                            "classes": "summary--no-bottom-border",
+                            "summaries": [
+                                {
+                                    "groups": [
                                         {
-                                        "groups": [
-                                        {
-                                        "rows": map_summary_item_config(
-                                        group=group,
-                                        summary_type=content.summary.summary_type,
-                                        answers_are_editable=content.summary.answers_are_editable,
-                                        no_answer_provided=_("No answer provided") ,
-                    edit_link_text=_("Change"),
-                    edit_link_aria_label=_("Change your answer for:"),
-                    calculated_question=content.summary.calculated_question
-                    )
-                    }
-                    ]
-                    }
-                    ]
-                    }) }}
+                                            "rows": map_summary_item_config(
+                                                group=group,
+                                                summary_type=content.summary.summary_type,
+                                                answers_are_editable=content.summary.answers_are_editable,
+                                                no_answer_provided=_("No answer provided"),
+                                                edit_link_text=_("Change"),
+                                                edit_link_aria_label=_("Change your answer for:"),
+                                                calculated_question=content.summary.calculated_question
+                                            )
+                                        }
+                                    ]
+                                }
+                            ]
+                        })
+                    }}
+                    {# djlint:on #}
                 {%- endset -%}
                 {%- do item | setAttribute("content", item.content + summary) -%}
                 {%- do itemList.append(item) -%}
@@ -39,17 +43,21 @@
         {%- endif -%}
     {%- endfor -%}
 {%- endfor -%}
-{{ onsAccordion({
-"id": "summary-accordion",
-"allButton": {
-"open": _('Show all') ,
-"close": _('Hide all'),
-"attributes": {
-"data-ga": "click",
-"data-ga-category": "Preview Survey",
-"data-ga-action": "Show all",
-"data-ga-label": "Show all"
-}
-},
-"itemsList": itemList
-}) }}
+{# djlint:off #}
+{{
+    onsAccordion({
+        "id": "summary-accordion",
+        "allButton": {
+            "open": _('Show all') ,
+            "close": _('Hide all'),
+            "attributes": {
+                "data-ga": "click",
+                "data-ga-category": "Preview Survey",
+                "data-ga-action": "Show all",
+                "data-ga-label": "Show all"
+            }
+        },
+        "itemsList": itemList
+    })
+}}
+{# djlint:on #}

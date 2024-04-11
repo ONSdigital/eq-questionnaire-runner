@@ -13,30 +13,33 @@
             {% include "partials/contents.html" %}
         {% endset %}
         {% set item = {
-                    "title": question.question,
-                    "titleTag": "h3",
-                    "content": content,
-                    "summaryAttributes": {
-                        "data-ga": "click",
-                        "data-ga-category": "Preview Survey",
-                        "data-ga-action": "Open panel",
-                    }
-                } %}
+            "title": question.question,
+            "titleTag": "h3",
+            "content": content,
+            "summaryAttributes": {
+                "data-ga": "click",
+                "data-ga-category": "Preview Survey",
+                "data-ga-action": "Open panel",
+            }
+        } %}
         {% do accordionItems.append(item) %}
     {% endfor %}
-    {{ onsAccordion({
+    {# djlint:off #}
+    {{
+        onsAccordion({
         "id": "intro-questions",
         "allButton": {
-        "open": _('Show all') ,
-    "close": _('Hide all'),
-    "attributes": {
-    "data-ga": "click",
-    "data-ga-category": "Preview Survey",
-    "data-ga-action": "Show all",
-    "data-ga-label": "Show all"
-    }
-    },
-    "itemsList": accordionItems
-    })
+            "open": _('Show all') ,
+            "close": _('Hide all'),
+            "attributes": {
+                "data-ga": "click",
+                "data-ga-category": "Preview Survey",
+                "data-ga-action": "Show all",
+                "data-ga-label": "Show all"
+            }
+        },
+        "itemsList": accordionItems
+        })
     }}
+    {# djlint:on #}
 {% endif %}
