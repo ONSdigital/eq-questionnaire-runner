@@ -120,10 +120,11 @@
 
 {% block scripts %}
     {% if config['EQ_ENABLE_LIVE_RELOAD'] %}
-        <script nonce="{{ csp_nonce }}" id="__bs_script__">//<![CDATA[
-      document.write("<script async nonce='{{ csp_nonce }}' src='http://HOST:35729/livereload.js'><\/script>".replace("HOST", location.hostname));
-    //]]>
-</script>
+        <script nonce="{{ csp_nonce }}" id="__bs_script__">
+            //<![CDATA[
+            document.write("<script async nonce='{{ csp_nonce }}' src='http://HOST:35729/livereload.js'><\/script>".replace("HOST", location.hostname));
+            //]]>
+        </script>
 {% endif %}
 {% endblock %}
 

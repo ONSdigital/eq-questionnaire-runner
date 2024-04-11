@@ -13,15 +13,15 @@
             {% include "partials/contents.html" %}
         {% endset %}
         {% set item = {
-            "title": question.question,
-            "titleTag": "h3",
-            "content": content,
-            "summaryAttributes": {
-                "data-ga": "click",
-                "data-ga-category": "Preview Survey",
-                "data-ga-action": "Open panel",
-            }
-        } %}
+                    "title": question.question,
+                    "titleTag": "h3",
+                    "content": content,
+                    "summaryAttributes": {
+                        "data-ga": "click",
+                        "data-ga-category": "Preview Survey",
+                        "data-ga-action": "Open panel",
+                    }
+                } %}
         {% do accordionItems.append(item) %}
     {% endfor %}
     {# djlint:off #}

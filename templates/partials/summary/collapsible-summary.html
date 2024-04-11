@@ -7,10 +7,10 @@
         {%- if group["blocks"] | length -%}
             {%- if group.title -%}
                 {%- set item = {
-                    "title": group.title,
-                    "id": group.id,
-                    "content": ""
-                } -%}
+                                "title": group.title,
+                                "id": group.id,
+                                "content": ""
+                                } -%}
                 {%- set summary %}
                     {# djlint:off #}
                     {{
