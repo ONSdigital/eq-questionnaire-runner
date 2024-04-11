@@ -23,17 +23,18 @@
         {% include 'partials/answer.html' %}
     {%- endfor -%}
     {# djlint:off #}
-    {{ onsButton({
-        "text": _("Continue") ,
-        "variants": 'timer',
-        "classes": "ons-u-mt-xl",
-        "attributes": {
-            "data-qa": "btn-submit",
-            "data-ga-category": "Submit button",
-            "data-ga-action": "Continue",
-            "data-ga-label": "Continue button click",
-            "data-ga": "click"
-        }
+    {{
+        onsButton({
+            "text": _("Continue") ,
+            "variants": 'timer',
+            "classes": "ons-u-mt-xl",
+            "attributes": {
+                "data-qa": "btn-submit",
+                "data-ga-category": "Submit button",
+                "data-ga-action": "Continue",
+                "data-ga-label": "Continue button click",
+                "data-ga": "click"
+            }
         })
     }}
     {# djlint:on #}

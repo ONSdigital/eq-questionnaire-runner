@@ -17,9 +17,9 @@
             "iconSize": "xl"
         })
     %}
-    <h1 data-qa="confirmation-text">
-        {{ _("A confirmation email has been sent to {email}").format(email = content.email) }}
-    </h1>
+        <h1 data-qa="confirmation-text">
+            {{ _("A confirmation email has been sent to {email}").format(email = content.email) }}
+        </h1>
     {% endcall %}
     {% call
         onsPanel({
@@ -28,9 +28,9 @@
             "iconType": "lock"
         })
     %}
-    <p>
-        {{ _("The email will be sent from <em>census.2021@notifications.service.gov.uk</em>") }}
-    </p>
+        <p>
+            {{ _("The email will be sent from <em>census.2021@notifications.service.gov.uk</em>") }}
+        </p>
     {% endcall %}
     {# djlint:on #}
     {% if content.show_send_another_email_guidance %}

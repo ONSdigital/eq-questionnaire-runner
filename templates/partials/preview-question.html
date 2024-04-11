@@ -14,12 +14,16 @@
     {% endif %}
     {%- if question.guidance -%}
         {% set contents = question.guidance.contents %}
-        {% call onsPanel({
-            "id": "question-guidance-" ~ question.id,
-            "classes": "ons-u-mb-m"
-            }) %}
+        {# djlint:off #}
+        {% call
+            onsPanel({
+                "id": "question-guidance-" ~ question.id,
+                "classes": "ons-u-mb-m"
+            })
+        %}
             {% include 'partials/contents.html' %}
         {% endcall %}
+        {# djlint:on #}
     {% endif %}
     {% for answer in answers %}
         {% if loop.last and question.type == "MutuallyExclusive" %}

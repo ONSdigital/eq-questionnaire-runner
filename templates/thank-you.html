@@ -33,12 +33,12 @@
         "classes": "ons-u-mb-m"
         })
     %}
-    <h1 data-qa="title">
-        {{ _("Thank you for completing the {survey_title}").format(
-        survey_title = survey_title) }}
-    </h1>
-    <p data-qa="guidance">{{ content.submission_text }}</p>
-    {{ onsDescriptionList(content.metadata) }}
+        <h1 data-qa="title">
+            {{ _("Thank you for completing the {survey_title}").format(
+            survey_title = survey_title) }}
+        </h1>
+        <p data-qa="guidance">{{ content.submission_text }}</p>
+        {{ onsDescriptionList(content.metadata) }}
     {% endcall %}
     {# djlint:on #}
     {% if content.guidance %}
@@ -61,7 +61,7 @@
                 "classes": "ons-u-mb-m"
                 })
             %}
-            {{ countdown_expired_text }}
+                {{ countdown_expired_text }}
             {% endcall %}
             {# djlint:on #}
         {% else %}

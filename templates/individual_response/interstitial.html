@@ -11,18 +11,21 @@
         {{ _("You can ask the people you live with to answer their own questions by sharing the household access code with them.") }}
     </p>
     <p>{{ _("If this is not possible, you can request a separate census for them to complete.") }}</p>
-    {{ onsButton({
-        "text": _("Request separate census") ,
-    "variants": 'timer',
-    "classes": 'ons-u-mb-m ons-u-mt-s',
-    "url": next_location_url,
-    "attributes": {
-    'data-qa': 'btn-submit',
-    "data-ga-category": "Submit button",
-    "data-ga-action": "Request separate census",
-    "data-ga-label": "Request separate census button click",
-    "data-ga": "click"
-    }
-    })
+    {# djlint:off #}
+    {{
+        onsButton({
+            "text": _("Request separate census") ,
+            "variants": 'timer',
+            "classes": 'ons-u-mb-m ons-u-mt-s',
+            "url": next_location_url,
+            "attributes": {
+            'data-qa': 'btn-submit',
+            "data-ga-category": "Submit button",
+            "data-ga-action": "Request separate census",
+            "data-ga-label": "Request separate census button click",
+            "data-ga": "click"
+            }
+        })
     }}
+    {# djlint:on #}
 {% endblock %}
