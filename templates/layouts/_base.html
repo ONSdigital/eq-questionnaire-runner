@@ -73,7 +73,7 @@
     {% if google_tag_id %}
         <script nonce="{{ csp_nonce }}">
             dataLayer = {{ data_layer | tojson }}
-        </script>
+</script>
         <!-- Google tag (gtag.js) -->
         <script nonce="{{ csp_nonce }}">
             function loadGoogleTagScript() {
@@ -98,7 +98,7 @@
                     gtag('js', new Date());
                     gtag('config', '{{ google_tag_id }}');
                 }
-        </script>
+</script>
     {% endif %}
     {# djlint:on #}
 {% endblock %}

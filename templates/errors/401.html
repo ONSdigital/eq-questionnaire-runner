@@ -1,9 +1,12 @@
 {% extends 'errors/_base.html' %}
 
 {% set page_title = _("Page is not available") %}
+{% set sign_in = _("You will need to <a href='{url}'>sign back in</a> to access your account").format(url = business_logout_url) %}
+{% set access_code = _("To access this page you need to <a href='{url}'>re-enter your access code</a>.").format(url = other_logout_url) %}
+{% set business_sign_in = _("If you are completing a business survey, you need to sign back in to <a href='{url}'>your account</a>.").format(url = business_logout_url) %}
+{% set other_access_code = _("If you started your survey using an access code, you need to <a href='{url}'>re-enter your code</a>.").format(url = other_logout_url) %}
 
 {% block main %}
-    {# djlint:off #}
     <h1>{{ _("Sorry, you need to sign in again") }}</h1>
     <p>{{ _("This is because you have either:") }}</p>
     <ul>
@@ -12,16 +15,13 @@
         <li>{{ _("followed a link to a survey that has already been submitted") }}</li>
     </ul>
     {% if survey_type and (survey_type in SURVEY_TYPES_BUSINESS or survey_type in SURVEY_TYPES_DEFAULT) %}
-        <p>{{ _("You will need to <a href='{url}'>sign back in</a> to access your account").format(url = business_logout_url) }}</p>
-
+        <p>{{ sign_in }}</p>
     {% elif survey_type and survey_type in SURVEY_TYPES_SOCIAL or survey_type in SURVEY_TYPES_HEALTH %}
-        <p>{{ _("To access this page you need to <a href='{url}'>re-enter your access code</a>.").format(url = other_logout_url) }}</p>
-
+        <p>{{ access_code }}</p>
     {% else %}
         <h2>{{ _("Business surveys") }}</h2>
-        <p>{{ _("If you are completing a business survey, you need to sign back in to <a href='{url}'>your account</a>.").format(url = business_logout_url) }}</p>
+        <p>{{ business_sign_in }}</p>
         <h2>{{ _("All other surveys") }}</h2>
-        <p>{{ _("If you started your survey using an access code, you need to <a href='{url}'>re-enter your code</a>.").format(url = other_logout_url) }}</p>
+        <p>{{ other_access_code }}</p>
     {% endif %}
-    {# djlint:on #}
 {% endblock %}

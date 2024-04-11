@@ -31,43 +31,51 @@
 
 {% block main %}
     <h1 class="ons-u-mt-m">{{ _("Preview of the questions in this survey") }}</h1>
-    {% call onsPanel({
-        "classes": 'ons-u-mb-m ons-u-ph'
-        }) %}
+    {# djlint:off #}
+    {% call
+        onsPanel({
+            "classes": 'ons-u-mb-m ons-u-ph'
+        })
+    %}
         <p>
             {{ _("To answer these questions you need to <a href='{url}'>start survey</a>").format(url=url_for('questionnaire.get_questionnaire')) }}
         </p>
     {% endcall %}
+    {# djlint:on #}
     <p>
         {{ _("You may not have to answer all of these questions. The questions you see will depend on the answers you provide.") }}
     </p>
-    {{ onsButton({
-        "type": 'button',
-        "text": _('Print questions') ,
-    "variants": ['small', 'secondary', 'print'],
-    "attributes": {
-    "data-qa": "btn-print",
-    "data-ga-category": "Print button",
-    "data-ga-action": "Open print Dialogue",
-    "data-ga-label": "Print button click",
-    "data-ga": "click"
-    }
-    })
+    {# djlint:off #}
+    {{
+        onsButton({
+            "type": 'button',
+            "text": _('Print questions'),
+            "variants": ['small', 'secondary', 'print'],
+            "attributes": {
+                "data-qa": "btn-print",
+                "data-ga-category": "Print button",
+                "data-ga-action": "Open print Dialogue",
+                "data-ga-label": "Print button click",
+                "data-ga": "click"
+            }
+        })
     }}
-    {{ onsButton({
-        "text": _('Save questions as PDF') ,
-    "variants": ['small', 'secondary', 'timer', 'download'],
-    "url": content.pdf_url,
-    "removeDownloadAttribute": true,
-    "attributes": {
-    "data-qa": "btn-pdf",
-    "data-ga-category": "PDF button",
-    "data-ga-action": "Download PDF",
-    "data-ga-label": "PDF button click",
-    "data-ga": "click"
-    }
-    })
+    {{
+        onsButton({
+            "text": _('Save questions as PDF') ,
+            "variants": ['small', 'secondary', 'timer', 'download'],
+            "url": content.pdf_url,
+            "removeDownloadAttribute": true,
+            "attributes": {
+                "data-qa": "btn-pdf",
+                "data-ga-category": "PDF button",
+                "data-ga-action": "Download PDF",
+                "data-ga-label": "PDF button click",
+                "data-ga": "click"
+            }
+        })
     }}
+    {# djlint:on #}
     <div class="ons-u-mt-l ons-u-mb-l">
         {%- if content.preview.sections | length > 1 -%}
             {%- set itemList = [] -%}
@@ -80,21 +88,24 @@
                 {%- do item | setAttribute("content", block_previews) -%}
                 {%- do itemList.append(item) -%}
             {%- endfor -%}
-            {{ onsAccordion({
-                        "id": "summary-accordion",
-                        "allButton": {
+            {# djlint:off #}
+            {{
+                onsAccordion({
+                    "id": "summary-accordion",
+                    "allButton": {
                         "open": _('Show all') ,
-            "close": _('Hide all'),
-            "attributes": {
-            "data-ga": "click",
-            "data-ga-category": "Preview Survey",
-            "data-ga-action": "Show all",
-            "data-ga-label": "Show all"
-            }
-            },
-            "itemsList": itemList
-            })
+                        "close": _('Hide all'),
+                        "attributes": {
+                        "data-ga": "click",
+                        "data-ga-category": "Preview Survey",
+                        "data-ga-action": "Show all",
+                        "data-ga-label": "Show all"
+                        }
+                    },
+                    "itemsList": itemList
+                })
             }}
+            {# djlint:on #}
         {%- else %}
             {%- for section in content.preview.sections if section.blocks -%}
                 <div class="ons-summary__group">
