@@ -1,4 +1,4 @@
-{% import 'macros/helpers.html' as helpers %}
+{% import "macros/helpers.html" as helpers %}
 
 {% set form = content.form %}
 {% set errors = form.answer_errors[answer.id] %}
@@ -8,11 +8,11 @@
     {%- set answer_guidance %}
         {% if answer.guidance %}
             {% with answer_guidance = {
-                'id': answer.id,
-                'label': answer.label,
-                'schema_item': answer.guidance
+                "id": answer.id,
+                "label": answer.label,
+                "schema_item": answer.guidance
                 } %}
-                {% include 'partials/answer-guidance.html' %}
+                {% include "partials/answer-guidance.html" %}
             {% endwith %}
         {% endif %}
     {% endset -%}
@@ -29,5 +29,5 @@
             }
         } %}
 {% endif %}
-{% include 'partials/answers/' ~ answer.type|lower ~ '.html' %}
+{% include "partials/answers/" ~ answer.type|lower ~ ".html" %}
 {{ answer_guidance }}

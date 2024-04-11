@@ -1,4 +1,4 @@
-{% extends 'layouts/_base.html' %}
+{% extends "layouts/_base.html" %}
 
 {% from 'components/panel/_macro.njk' import onsPanel %}
 
@@ -42,6 +42,6 @@
         </p>
     {% endif %}
     {% if content.show_feedback_call_to_action %}
-        {% include 'partials/feedback-call-to-action.html' %}
+        {% include "partials/feedback-call-to-action.html" %}
     {% endif %}
 {% endblock %}

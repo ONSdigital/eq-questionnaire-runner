@@ -1,4 +1,4 @@
-{% extends 'layouts/_base.html' %}
+{% extends "layouts/_base.html" %}
 
 {% from "components/panel/_macro.njk" import onsPanel %}
 {% from "components/button/_macro.njk" import onsButton %}
@@ -24,7 +24,7 @@
     {% for block in blocks %}
         {% if 'question' in block %}
             {% set question = block['question'] %}
-            {% include 'partials/preview-question.html' %}
+            {% include "partials/preview-question.html" %}
         {% endif %}
     {% endfor %}
 {%- endmacro %}

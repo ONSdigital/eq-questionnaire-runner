@@ -1,4 +1,4 @@
-{% extends 'layouts/_base.html' %}
+{% extends "layouts/_base.html" %}
 
 {% from "components/panel/_macro.njk" import onsPanel %}
 {% from "components/button/_macro.njk" import onsButton %}
@@ -59,7 +59,7 @@
         {# djlint:on #}
 
         {% block summary %}
-            <div class="ons-u-mt-l ons-u-mb-l">{% include 'partials/summary/summary.html' %}</div>
+            <div class="ons-u-mt-l ons-u-mb-l">{% include "partials/summary/summary.html" %}</div>
         {% endblock summary %}
     {% else %}
         {# djlint:off #}

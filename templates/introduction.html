@@ -1,6 +1,6 @@
-{% extends 'layouts/_base.html' %}
+{% extends "layouts/_base.html" %}
 
-{% import 'macros/helpers.html' as helpers %}
+{% import "macros/helpers.html" as helpers %}
 
 {% set form = content.form %}
 {# Test failing because section title is missing #}
@@ -12,7 +12,7 @@
         {% if content.block.primary_content %}
             {% for content_block in content.block.primary_content %}
                 {% set title_tag = "h1" %}
-                {% include 'partials/introduction/basic.html' %}
+                {% include "partials/introduction/basic.html" %}
             {% endfor %}
         {% endif %}
         {% if preview_enabled %}
@@ -26,16 +26,16 @@
         {%- endif -%}
 
         {% block start_survey %}
-            {% include 'partials/introduction/start-survey.html' %}
+            {% include "partials/introduction/start-survey.html" %}
         {% endblock start_survey %}
         {% if content.block.preview_content %}
             {% set intro = content.block.preview_content %}
-            {% include 'partials/introduction/preview.html' %}
+            {% include "partials/introduction/preview.html" %}
         {% endif %}
         {% if content.block.secondary_content %}
             {% for content_block in content.block.secondary_content %}
                 {% set title_tag = "h2" %}
-                {% include 'partials/introduction/basic.html' %}
+                {% include "partials/introduction/basic.html" %}
             {% endfor %}
         {% endif %}
     {% endblock intro_content %}

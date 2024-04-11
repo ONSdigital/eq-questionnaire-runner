@@ -1,4 +1,4 @@
-{% extends 'layouts/_questionnaire.html' %}
+{% extends "layouts/_questionnaire.html" %}
 
 {% from "components/button/_macro.njk" import onsButton %}
 {% from "components/panel/_macro.njk" import onsPanel %}
@@ -7,7 +7,7 @@
 
 {% block form_content %}
     {% block form_title %}{% endblock %}
-    <div class="ons-u-mb-m">{% include 'partials/summary/summary.html' %}</div>
+    <div class="ons-u-mb-m">{% include "partials/summary/summary.html" %}</div>
 {% endblock -%}
 
 {% block submit_button %}

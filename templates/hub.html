@@ -1,11 +1,11 @@
-{% extends 'layouts/_submit.html' %}
+{% extends "layouts/_submit.html" %}
 
 {% from "components/summary/_macro.njk" import onsSummary %}
 
 {% block pre_submit_button_content %}
     {% if content.individual_response_url %}
         {% set title = _("If you can’t answer someone else’s questions") %}
-        {% include 'partials/individual-response-guidance.html' %}
+        {% include "partials/individual-response-guidance.html" %}
     {% endif %}
 {% endblock pre_submit_button_content %}
 

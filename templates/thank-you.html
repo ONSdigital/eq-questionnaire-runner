@@ -1,4 +1,4 @@
-{% extends 'layouts/_base.html' %}
+{% extends "layouts/_base.html" %}
 
 {% from 'components/panel/_macro.njk' import onsPanel %}
 {% from "components/description-list/_macro.njk" import onsDescriptionList %}
@@ -44,7 +44,7 @@
     {# djlint:on #}
     {% if content.guidance %}
         {% set contents = content.guidance.contents %}
-        {% include 'partials/contents.html' %}
+        {% include "partials/contents.html" %}
     {% else %}
         <p class="ons-u-mb-s">
             {{ _("Your response will help inform decision-makers how best to support the UK population and economy.") }}
@@ -96,10 +96,10 @@
             {{ _("If you would like to be sent confirmation that you have completed your survey, enter your email address") }}
         </p>
         {% with form=content.confirmation_email_form %}
-            {% include 'partials/confirmation-email-form.html' %}
+            {% include "partials/confirmation-email-form.html" %}
         {% endwith %}
     {% endif %}
     {% if content.show_feedback_call_to_action %}
-        {% include 'partials/feedback-call-to-action.html' %}
+        {% include "partials/feedback-call-to-action.html" %}
     {% endif %}
 {% endblock %}

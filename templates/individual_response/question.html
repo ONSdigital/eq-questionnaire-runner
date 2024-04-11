@@ -1,4 +1,4 @@
-{% extends 'question.html' %}
+{% extends "question.html" %}
 
 {% set save_on_signout = true %}
 {% set question = content.block.question %}
@@ -6,7 +6,7 @@
 
 {% block after_submit_button_content %}
     {% if show_contact_us_guidance %}
-        <p class='ons-u-mt-xl'>
+        <p class="ons-u-mt-xl">
             {{ _("To request a census in a different format or for further help, please <a href='{contact_us_url}'>contact us</a>").format(contact_us_url=contact_us_url) }}
         </p>
     {% endif %}

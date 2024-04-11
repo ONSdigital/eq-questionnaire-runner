@@ -1,4 +1,4 @@
-{% extends 'layouts/_base.html' %}
+{% extends "layouts/_base.html" %}
 
 {% from "components/button/_macro.njk" import onsButton %}
 
@@ -14,9 +14,9 @@
     {% block form_content %}
         <div class="group">
             {% if last_viewed_question_guidance %}
-                {% include 'partials/last_viewed_question_guidance.html' %}
+                {% include "partials/last_viewed_question_guidance.html" %}
             {% endif %}
-            {% include 'partials/block.html' %}
+            {% include "partials/block.html" %}
         </div>
     {% endblock %}
 

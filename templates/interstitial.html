@@ -1,4 +1,4 @@
-{% extends 'layouts/_questionnaire.html' %}
+{% extends "layouts/_questionnaire.html" %}
 
 {% from 'macros/helpers.html' import format_paragraphs %}
 {% from 'macros/helpers.html' import interviewer_note %}
@@ -17,10 +17,10 @@
         <div class="question__instruction ons-u-mb-s">{{ interstitial_instruction | safe }}</div>
     {% endif %}
     {% set contents = block.content.contents %}
-    {% include 'partials/contents.html' %}
+    {% include "partials/contents.html" %}
     {% if content.individual_response_url %}
         {% set title = _("If you can’t answer questions for this person") %}
-        {% include 'partials/individual-response-guidance.html' %}
+        {% include "partials/individual-response-guidance.html" %}
     {% endif %}
 {% endblock form_content %}
 
