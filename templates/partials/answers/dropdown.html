@@ -1,14 +1,18 @@
 {% from "components/select/_macro.njk" import onsSelect %}
 
 {% set select = form.fields[answer['id']] %}
-{{ onsSelect({
-"id": answer.id,
-"name": select.name,
-"label": {
-"id": answer.id ~ "-label",
-"text": answer.label,
-"description": answer.description
-},
-"options": map_dropdown_config(select) ,
-"error": error
-}) }}
+{# djlint:off #}
+{{
+    onsSelect({
+        "id": answer.id,
+        "name": select.name,
+        "label": {
+            "id": answer.id ~ "-label",
+            "text": answer.label,
+            "description": answer.description
+        },
+        "options": map_dropdown_config(select),
+        "error": error
+    })
+}}
+{# djlint:on #}

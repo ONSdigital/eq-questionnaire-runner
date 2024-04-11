@@ -26,12 +26,13 @@
 
 {% block main %}
     {# djlint:off #}
-    {% call onsPanel({
-        "type": "success",
-        "iconType": "check",
-        "iconSize": "xl",
-        "classes": "ons-u-mb-m"
-        })
+    {% call
+         onsPanel({
+              "type": "success",
+              "iconType": "check",
+              "iconSize": "xl",
+              "classes": "ons-u-mb-m"
+         })
     %}
         <h1 data-qa="title">
             {{ _("Thank you for completing the {survey_title}").format(
@@ -56,9 +57,10 @@
     {% if content.view_submitted_response.enabled %}
         {% if content.view_submitted_response.expired %}
             {# djlint:off #}
-            {% call onsPanel({
-                "id": "view-submitted-response-guidance",
-                "classes": "ons-u-mb-m"
+            {% call
+                onsPanel({
+                   "id": "view-submitted-response-guidance",
+                   "classes": "ons-u-mb-m"
                 })
             %}
                 {{ countdown_expired_text }}

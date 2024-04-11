@@ -45,7 +45,11 @@
         )
         %}
     {%- endfor -%}
-    {{ onsSummary({
-        "summaries": summary_sections
-        }) }}
+    {# djlint:off #}
+    {{
+        onsSummary({
+            "summaries": summary_sections
+        })
+    }}
+    {# djlint:on #}
 {%- endif -%}
