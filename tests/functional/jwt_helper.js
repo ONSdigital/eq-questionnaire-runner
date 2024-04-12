@@ -76,7 +76,7 @@ export function generateToken(
     includeLogoutUrl = true,
     displayAddress = "",
     cirInstrumentId = null,
-    booleanFlag = null,
+    booleanFlag = false,
   },
 ) {
   let schemaParams = {};

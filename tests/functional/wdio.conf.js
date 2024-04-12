@@ -215,7 +215,7 @@ export const config = {
           language = "en",
           includeLogoutUrl = false,
           cirInstrumentId = null,
-          booleanFlag = null,
+          booleanFlag = false,
         } = {},
       ) {
         const token = await JwtHelper.generateToken(schema, {
