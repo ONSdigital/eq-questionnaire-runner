@@ -62,11 +62,7 @@ CSP_POLICY = {
         "'self'",
         "https://*.googletagmanager.com",
     ],
-    "style-src": [
-        "'self'",
-        "https://fonts.googleapis.com",
-        "'unsafe-inline'",
-    ],
+    "style-src": ["'self'", "https://fonts.googleapis.com"],
     "connect-src": [
         "'self'",
         "https://*.google-analytics.com",
