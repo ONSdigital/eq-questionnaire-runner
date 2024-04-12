@@ -14,11 +14,14 @@ ENV WEB_SERVER_UWSGI_ASYNC_CORES 10
 ENV HTTP_KEEP_ALIVE 2
 ENV GUNICORN_CMD_ARGS -c gunicorn_config.py
 
-COPY Pipfile Pipfile
-COPY Pipfile.lock Pipfile.lock
+COPY pyproject.toml pyproject.toml
+COPY poetry.lock poetry.lock 
 
 RUN groupadd -r appuser && useradd -r -g appuser -u 9000 appuser && chown -R appuser:appuser .
-RUN pip install pipenv==2023.8.22 && pipenv install --deploy --system && make build
+RUN pip install "poetry==1.8.2" && \
+    poetry config virtualenvs.create false && \
+    poetry install --only main && \
+    make build
 
 USER appuser
 

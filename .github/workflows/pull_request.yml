@@ -19,16 +19,19 @@ jobs:
       - uses: actions/checkout@v3
       - run: |
           echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
-      - uses: actions/setup-python@v4
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.8.2
+          virtualenvs-create: true
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-          cache: 'pipenv'
-      - name: Install Pipenv
-        run: pip install pipenv==2023.8.22
+          cache: 'poetry'
       - name: Install virtual environment
         run: |
           sudo apt-get install libsnappy-dev
-          pipenv install --dev
+          poetry install
   node-dependencies:
     runs-on: ubuntu-22.04
     steps:
@@ -46,24 +49,25 @@ jobs:
       - uses: actions/checkout@v3
       - run: |
           echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
-      - uses: actions/setup-python@v4
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-          cache: 'pipenv'
       - uses: actions/setup-node@v3
         with:
           node-version-file: ".nvmrc"
           cache: "npm"
       - name: Write app version
         run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
-      - name: Install pipenv
-        run: pip install pipenv==2023.8.22
-      - name: Install virtual environment
-        run: pipenv install --dev
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.8.2
+          virtualenvs-create: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: "poetry"
       - name: Compile translations
         run: make translate
       - name: Running translation tests
-        run: pipenv run python -m scripts.extract_translation_templates --test
+        run: poetry run python -m scripts.extract_translation_templates --test
       - name: Python linting
         run: make lint-python
       - name: Install npm deps
@@ -79,10 +83,6 @@ jobs:
       - uses: actions/checkout@v3
       - run: |
           echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
-      - uses: actions/setup-python@v4
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-          cache: 'pipenv'
       - name: Install apt dependencies
         run: |
             sudo apt-get install libsnappy-dev libgconf-2-4 jq
@@ -93,16 +93,23 @@ jobs:
             sudo dpkg -i wkhtmltox_0.12.6-1.bionic_amd64.deb
       - name: Write app version
         run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
-      - name: Install pipenv
-        run: pip install pipenv==2023.8.22
-      - name: Install virtual environment
-        run: pipenv install --dev
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.8.2
+          virtualenvs-create: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: "poetry"
+      - name: Install dotenv plugin
+        run: poetry self add poetry-plugin-dotenv
       - name: Load templates
         run: make load-design-system-templates
       - name: Compile translations
         run: make translate
       - name: Link env vars
-        run: ln -sf .development.env .env
+        run: ln -sf .development.env .env 
       - name: Running unit tests
         run: make test-unit
   validate-schemas:
@@ -131,14 +138,15 @@ jobs:
           cache: "npm"
       - run: |
           echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
-      - uses: actions/setup-python@v4
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.8.2
+          virtualenvs-create: true
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-          cache: 'pipenv'
-      - name: Install pipenv
-        run: pip install pipenv==2023.8.22
-      - name: Install virtual environment
-        run: pipenv install --dev
+          cache: "poetry"
       - name: Install npm deps
         run: npm install
       - name: Docker compose
