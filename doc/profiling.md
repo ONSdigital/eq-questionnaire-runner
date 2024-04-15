@@ -37,7 +37,7 @@ The profiles can also be combined to give an overview of the profile between all
 
 Combine all the profiles in the `profiling` directory using:
 ```bash
-pipenv run python scripts/merge_profiles.py
+poetry run python scripts/merge_profiles.py
 ```
 This will create a file called `combined_profile.prof`
 
