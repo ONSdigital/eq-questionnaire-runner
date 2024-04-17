@@ -2,13 +2,13 @@
 
 {% if list.editable %}
     {% set rows = map_list_collector_config(
-            list_items=list.list_items,
-            render_icon=True,
-            edit_link_text=_("Change"),
-            edit_link_aria_label=_("Change details for {item_name}"),
-            remove_link_text=_("Remove"),
-            remove_link_aria_label=_("Remove {item_name}")
-        ) %}
+        list_items=list.list_items,
+        render_icon=True,
+        edit_link_text=_("Change"),
+        edit_link_aria_label=_("Change details for {item_name}"),
+        remove_link_text=_("Remove"),
+        remove_link_aria_label=_("Remove {item_name}")
+    ) %}
 {% else %}
     {% set rows = map_list_collector_config(
             list_items=list.list_items,

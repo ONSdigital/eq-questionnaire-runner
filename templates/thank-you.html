@@ -1,6 +1,6 @@
 {% extends "layouts/_base.html" %}
 
-{% from 'components/panel/_macro.njk' import onsPanel %}
+{% from "components/panel/_macro.njk" import onsPanel %}
 {% from "components/description-list/_macro.njk" import onsDescriptionList %}
 {% from "components/timeout-panel/_macro.njk" import onsTimeoutPanel %}
 
@@ -8,20 +8,20 @@
 {% set hide_sign_out_button = content.hide_sign_out_button %}
 {% if account_service_todo_url %}
     {% set breadcrumbs = {
-            "ariaLabel": 'Back to surveys',
-            "itemsList": [
-                {
-                    "url": account_service_todo_url,
-                    "id": "back-to-surveys",
-                    "text": _("Back to surveys"),
-                    "attributes": {
-                        "data-ga": 'click',
-                        "data-ga-category": 'Navigation',
-                        "data-ga-action": 'Back to surveys link click'
-                    }
+        "ariaLabel": 'Back to surveys',
+        "itemsList": [
+            {
+                "url": account_service_todo_url,
+                "id": "back-to-surveys",
+                "text": _("Back to surveys"),
+                "attributes": {
+                    "data-ga": 'click',
+                    "data-ga-category": 'Navigation',
+                    "data-ga-action": 'Back to surveys link click'
                 }
-            ]
-        } %}
+            }
+        ]
+    } %}
 {% endif %}
 
 {% block main %}
