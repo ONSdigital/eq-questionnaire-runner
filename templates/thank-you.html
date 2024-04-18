@@ -7,6 +7,7 @@
 {% set page_title = _("We’ve received your answers") %}
 {% set hide_sign_out_button = content.hide_sign_out_button %}
 {% if account_service_todo_url %}
+    {# djlint:off #}
     {% set breadcrumbs = {
         "ariaLabel": 'Back to surveys',
         "itemsList": [
@@ -22,6 +23,7 @@
             }
         ]
     } %}
+    {# djlint:on #}
 {% endif %}
 
 {% block main %}
