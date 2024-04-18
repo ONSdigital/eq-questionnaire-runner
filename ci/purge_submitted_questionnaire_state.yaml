@@ -24,6 +24,7 @@ run:
             DATAFLOW_JOB=$(gcloud dataflow jobs run purge_submitted_questionnaire_state \
             --region europe-west2 \
             --gcs-location gs://dataflow-templates/"${DATAFLOW_TEMPLATE_VERSION}"/Firestore_to_Firestore_Delete \
+            --num-workers 1 \
             --parameters \
             firestoreReadGqlQuery="SELECT * FROM \`questionnaire-state\` WHERE submitted_at < $((`date --utc +%s` - SUBMITTED_AT_PURGE_OFFSET_IN_SECONDS)) AND submitted_at > NULL",\
             firestoreReadProjectId="${PROJECT_ID}",\

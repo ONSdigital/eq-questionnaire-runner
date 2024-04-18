@@ -23,6 +23,7 @@ run:
             DATAFLOW_JOB=$(gcloud dataflow jobs run purge_expired_questionnaire_state \
             --region europe-west2 \
             --gcs-location gs://dataflow-templates/"${DATAFLOW_TEMPLATE_VERSION}"/Firestore_to_Firestore_Delete \
+            --num-workers 1 \
             --parameters \
             firestoreReadGqlQuery="SELECT * FROM \`questionnaire-state\` WHERE expires_at < $((`date --utc +%s`))",\
             firestoreReadProjectId="${PROJECT_ID}",\
