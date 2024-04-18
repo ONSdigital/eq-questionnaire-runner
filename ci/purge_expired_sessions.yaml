@@ -26,7 +26,7 @@ run:
       --gcs-location gs://dataflow-templates/"${DATAFLOW_TEMPLATE_VERSION}"/Firestore_to_Firestore_Delete \
       --num-workers 1 \
       --parameters \
-      firestoreReadGqlQuery="SELECT * FROM \`eq-session\` WHERE expires_at < $((`date --utc +%s` - EXPIRES_AT_PURGE_OFFSET_IN_SECONDS))",\
+      firestoreReadGqlQuery="SELECT * FROM \`eq-session\`",\
       firestoreReadProjectId="${PROJECT_ID}",\
       firestoreDeleteProjectId="${PROJECT_ID}" \
       --subnetwork regions/europe-west2/subnetworks/eq \
