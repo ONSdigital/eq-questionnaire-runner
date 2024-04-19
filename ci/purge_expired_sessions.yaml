@@ -29,6 +29,7 @@ run:
       firestoreReadGqlQuery="SELECT * FROM \`eq-session\` WHERE expires_at < $((`date --utc +%s` - EXPIRES_AT_PURGE_OFFSET_IN_SECONDS))",\
       firestoreReadProjectId="${PROJECT_ID}",\
       firestoreDeleteProjectId="${PROJECT_ID}" \
+      firestoreHintNumWorkers=1 \
       --subnetwork regions/europe-west2/subnetworks/eq \
       --format="value(id.scope())")
 
