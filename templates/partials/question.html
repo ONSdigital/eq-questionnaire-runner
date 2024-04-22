@@ -80,13 +80,15 @@
             {%- set deselectionMessage = _("Selecting this will deselect any selected options") -%}
             {%- set deselectGroupAdjective = _("deselected") -%}
         {%- endif -%}
+        {# djlint:off #}
         {%- set mutuallyExclusive = {
-                "or": _("Or"),
-                "exclusiveOptions": map_select_config(form, question.answers[-1]),
-                "deselectionMessage": deselectionMessage,
-                "deselectGroupAdjective": deselectGroupAdjective,
-                "deselectExclusiveOptionAdjective": _("deselected")
-                } -%}
+            "or": _("Or"),
+            "exclusiveOptions": map_select_config(form, question.answers[-1]),
+            "deselectionMessage": deselectionMessage,
+            "deselectGroupAdjective": deselectGroupAdjective,
+            "deselectExclusiveOptionAdjective": _("deselected")
+        } -%}
+        {# djlint:on #}
         {% include "partials/answer.html" %}
     {%- else -%}
         {%- set answers -%}
@@ -113,21 +115,23 @@
     {{ individual_response_guidance }}
     {{ question_definitions }}
     {{ question_guidance }}
+    {# djlint:off #}
     {% if question_error %}
         {% set config = {
-                    "text": question_error,
-                    "id": question.id ~ '-error',
-                    "attributes": {
-                        "data-ga": "question-error",
-                        "data-ga-category": "Question error",
-                        "data-ga-action": question.type,
-                        "data-ga-label": question.id
-                    }
-                } %}
+            "text": question_error,
+            "id": question.id ~ '-error',
+            "attributes": {
+                "data-ga": "question-error",
+                "data-ga-category": "Question error",
+                "data-ga-action": question.type,
+                "data-ga-label": question.id
+            }
+        } %}
         {% call onsError(config) %}
             {{ question_answers }}
         {% endcall %}
     {% else %}
         {{ question_answers }}
     {% endif %}
+    {# djlint:on #}
 {% endcall %}

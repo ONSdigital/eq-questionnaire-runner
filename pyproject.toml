@@ -4,6 +4,7 @@ blank_line_before_tag="load,extends,block"
 max_line_length=120
 format_js=false
 exclude=".templates/layouts/_base.html"
+ignore="H008,T003,T027"
 
 [tool.poetry]
 name = "eq-questionnaire-runner"
