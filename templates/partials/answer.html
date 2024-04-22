@@ -5,6 +5,7 @@
 {% from "components/error/_macro.njk" import onsError %}
 
 {% if render_guidance != False %}
+    {# djlint:off #}
     {%- set answer_guidance %}
         {% if answer.guidance %}
             {% with answer_guidance = {
@@ -16,6 +17,7 @@
             {% endwith %}
         {% endif %}
     {% endset -%}
+    {# djlint:on #}
 {% endif %}
 {% if errors | length > 0 %}
     {# djlint:off #}

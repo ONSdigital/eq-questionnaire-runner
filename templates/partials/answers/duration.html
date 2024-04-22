@@ -9,28 +9,29 @@
 } %}
 {% set years = form.fields[answer.id].years %}
 {% set months = form.fields[answer.id].months %}
+{# djlint:off #}
 {% if years %}
     {% set config = config | setAttribute("field1", {
-            "id": years.id,
-            "name": years.name,
-            "value": years.data if years.data is not none else '',
-            "suffix": {
-                "id": years.id ~ "-type",
-                "text": _(years.label.text)
-            }
-        }) %}
+        "id": years.id,
+        "name": years.name,
+        "value": years.data if years.data is not none else '',
+        "suffix": {
+            "id": years.id ~ "-type",
+            "text": _(years.label.text)
+        }
+    }) %}
 {% endif %}
 {% if months %}
+
     {% set config = config | setAttribute("field2", {
-            "id": months.id,
-            "name": months.name,
-            "value": months.data if months.data is not none else '',
-            "suffix": {
-                "id": months.id ~ "-type",
-                "text": _(months.label.text)
-            }
-        }) %}
+        "id": months.id,
+        "name": months.name,
+        "value": months.data if months.data is not none else '',
+        "suffix": {
+            "id": months.id ~ "-type",
+            "text": _(months.label.text)
+        }
+    }) %}
 {% endif %}
-{# djlint:off #}
 {{ onsDuration(config) }}
 {# djlint:on #}

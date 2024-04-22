@@ -19,34 +19,32 @@
     "error": error
 } %}
 {% if answer.suggestions %}
+    {# djlint:off #}
     {% set config = config | setAttributes({
-            "instructions": _("Use up and down keys to navigate suggestions once you\'ve typed more than two characters. Use the enter key to select a suggestion. Touch device users, explore by touch or with swipe gestures."),
-            "moreResults": _("Continue entering to improve suggestions"),
-            "resultsTitle": _("Suggestions"),
-            "noResults": _("No results found"),
-            "typeMore": _("Continue entering to get suggestions"),
-            "ariaYouHaveSelected": "You have selected",
-            "ariaMinChars": "Enter 3 or more characters for suggestions.",
-            "ariaOneResult": "There is one suggestion available.",
-            "ariaNResults": "There are {n} suggestions available.",
-            "ariaLimitedResults": "Results have been limited to 10 suggestions. Type more characters to improve your search.",
-            "autosuggestData": answer.suggestions.url,
-            "allowMultiple": true if answer.suggestions.allow_multiple else false
-        }) %}
-    {# djlint:off #}
+        "instructions": _("Use up and down keys to navigate suggestions once you\'ve typed more than two characters. Use the enter key to select a suggestion. Touch device users, explore by touch or with swipe gestures."),
+        "moreResults": _("Continue entering to improve suggestions"),
+        "resultsTitle": _("Suggestions"),
+        "noResults": _("No results found"),
+        "typeMore": _("Continue entering to get suggestions"),
+        "ariaYouHaveSelected": "You have selected",
+        "ariaMinChars": "Enter 3 or more characters for suggestions.",
+        "ariaOneResult": "There is one suggestion available.",
+        "ariaNResults": "There are {n} suggestions available.",
+        "ariaLimitedResults": "Results have been limited to 10 suggestions. Type more characters to improve your search.",
+        "autosuggestData": answer.suggestions.url,
+        "allowMultiple": true if answer.suggestions.allow_multiple else false
+    }) %}
     {{ onsAutosuggest(config) }}
-    {# djlint:off #}
 {% else %}
     {% if answer.max_length %}
         {% set config = config | setAttribute("charCheckLimit", {
-                    "limit": answer.max_length,
-                    "charCountOverLimitSingular": _("{x} character too many"),
-                    "charCountOverLimitPlural": _("{x} characters too many"),
-                    "charCountSingular": _("You have {x} character remaining"),
-                    "charCountPlural": _("You have {x} characters remaining")
-                }) %}
+            "limit": answer.max_length,
+            "charCountOverLimitSingular": _("{x} character too many"),
+            "charCountOverLimitPlural": _("{x} characters too many"),
+            "charCountSingular": _("You have {x} character remaining"),
+            "charCountPlural": _("You have {x} characters remaining")
+        }) %}
     {% endif %}
-    {# djlint:off #}
     {{ onsInput(config) }}
-     {# djlint:off #}
+    {# djlint:on #}
 {% endif %}

@@ -1,14 +1,14 @@
 {% from "components/textarea/_macro.njk" import onsTextarea %}
 
 {% set input = form.fields[answer['id']] %}
+{# djlint:off #}
 {% if answer.label %}
     {% set label = {
-            "id": answer.id ~ "-label",
-            "text": answer.label,
-            "description": answer.description
-        } %}
+        "id": answer.id ~ "-label",
+        "text": answer.label,
+        "description": answer.description
+    } %}
 {% endif %}
-{# djlint:off #}
 {{
     onsTextarea({
         "id": answer.id,

@@ -4,16 +4,18 @@
 {% set errors = form.errors['email'] %}
 {% set email_field = form.email_field %}
 {% if errors %}
+    {# djlint:off #}
     {% set error = {
-            "text": errors[0],
-            "id": email_field.id ~ '-error',
-            "attributes": {
-                "data-ga": "error",
-                "data-ga-category": "Error",
-                "data-ga-action": "Confirmation Email",
-                "data-ga-label": email_field.id
-            }
-        } %}
+        "text": errors[0],
+        "id": email_field.id ~ '-error',
+        "attributes": {
+            "data-ga": "error",
+            "data-ga-category": "Error",
+            "data-ga-action": "Confirmation Email",
+            "data-ga-label": email_field.id
+        }
+    } %}
+    {# djlint:on #}
 {% endif %}
 {% set config = {
     "id": email_field.id,
@@ -37,11 +39,11 @@
         "variants": 'timer',
         "classes": "ons-u-mt-s",
         "attributes": {
-        "data-qa": "btn-submit",
-        "data-ga-category": "Submit button",
-        "data-ga-action": "Send confirmation",
-        "data-ga-label": "Send confirmation button click",
-        "data-ga": "click"
+            "data-qa": "btn-submit",
+            "data-ga-category": "Submit button",
+            "data-ga-action": "Send confirmation",
+            "data-ga-label": "Send confirmation button click",
+            "data-ga": "click"
         }
     })
 }}

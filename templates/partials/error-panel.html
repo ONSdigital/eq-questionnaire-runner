@@ -2,17 +2,17 @@
 {% from "components/list/_macro.njk" import onsList %}
 
 {% set error_list = [] %}
+{# djlint:off #}
 {% for error_id, error in form.mapped_errors %}
     {{ error_list.append({
         "text": error,
         "url": "#" + error_id,
         "variants": "inPageLink",
         "attributes": {
-        "data-qa": "error-link-" + loop.index|string
+            "data-qa": "error-link-" + loop.index|string
         }
-        }) or "" }}
+    }) or "" }}
 {% endfor %}
-{# djlint:off #}
 {% call
     onsPanel({
         "type": "error",

@@ -7,24 +7,24 @@
     {% from "components/accordion/_macro.njk" import onsAccordion %}
 
     {% set accordionItems = [] %}
+    {# djlint:off #}
     {% for question in intro.questions %}
         {% set content %}
             {% set contents = question.contents %}
             {% include "partials/contents.html" %}
         {% endset %}
         {% set item = {
-                    "title": question.question,
-                    "titleTag": "h3",
-                    "content": content,
-                    "summaryAttributes": {
-                        "data-ga": "click",
-                        "data-ga-category": "Preview Survey",
-                        "data-ga-action": "Open panel",
-                    }
-                } %}
+            "title": question.question,
+            "titleTag": "h3",
+            "content": content,
+            "summaryAttributes": {
+                "data-ga": "click",
+                "data-ga-category": "Preview Survey",
+                "data-ga-action": "Open panel",
+            }
+        } %}
         {% do accordionItems.append(item) %}
     {% endfor %}
-    {# djlint:off #}
     {{
         onsAccordion({
         "id": "intro-questions",

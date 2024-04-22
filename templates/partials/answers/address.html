@@ -26,41 +26,43 @@
     }
 } %}
 {% if answer.lookup_options and address_lookup_api_url %}
+    {# djlint:off #}
     {% set config = config | setAttributes({
-            "label": {
-                "text": _("Enter address or postcode and select from results")
-            },
-            "searchButton": _("Search for an address"),
-            "manualLinkText": _("Manually enter address"),
-            "isEditable": true,
-            "mandatory": answer.mandatory,
-            "APIDomain": address_lookup_api_url,
-            "APIDomainBearerToken": content.address_lookup_api_auth_token,
-            "instructions": _("Use up and down keys to navigate suggestions once you’ve typed more than two characters. Use the enter key to select a suggestion. Touch device users, explore by touch or with swipe gestures."),
-            "ariaYouHaveSelected": _("You have selected"),
-            "ariaMinChars": _("Enter 3 or more characters for suggestions."),
-            "ariaOneResult": _("There is one suggestion available."),
-            "ariaNResults": _("There are {n} suggestions available."),
-            "ariaLimitedResults": _("Results have been limited to 10 suggestions. Type more characters to improve your search"),
-            "ariaGroupedResults": _("There are {n} for {x}"),
-            "groupCount": _("{n} addresses"),
-            "moreResults": _("Enter more of the address to improve results"),
-            "resultsTitle": _("Select an address"),
-            "noResults": _("No results found. Try entering a different part of the address"),
-            "tooManyResults": _("{n} results found. Enter more of the address to improve results"),
-            "typeMore": _("Enter more of the address to get results"),
-            "autocomplete": "new-password",
-            "errorTitle": ngettext('There is a problem with your answer', 'There are %(num)s problems with your answer', 1),
-            "errorMessageEnter": _("Enter an address"),
-            "errorMessageSelect": _("Select or manually enter an address"),
-            "errorMessageAPI": _("Sorry, there was a problem loading addresses"),
-            "errorMessageAPILinkText": _("Enter address manually"),
-            "options": {
-                "regionCode": answer.lookup_options.region_code | lower,
-                "oneYearAgo": answer.lookup_options.one_year_ago if answer.lookup_options.one_year_ago is defined,
-                "addressType": answer.lookup_options.address_type | lower
-            }
-        }) %}
+        "label": {
+            "text": _("Enter address or postcode and select from results")
+        },
+        "searchButton": _("Search for an address"),
+        "manualLinkText": _("Manually enter address"),
+        "isEditable": true,
+        "mandatory": answer.mandatory,
+        "APIDomain": address_lookup_api_url,
+        "APIDomainBearerToken": content.address_lookup_api_auth_token,
+        "instructions": _("Use up and down keys to navigate suggestions once you’ve typed more than two characters. Use the enter key to select a suggestion. Touch device users, explore by touch or with swipe gestures."),
+        "ariaYouHaveSelected": _("You have selected"),
+        "ariaMinChars": _("Enter 3 or more characters for suggestions."),
+        "ariaOneResult": _("There is one suggestion available."),
+        "ariaNResults": _("There are {n} suggestions available."),
+        "ariaLimitedResults": _("Results have been limited to 10 suggestions. Type more characters to improve your search"),
+        "ariaGroupedResults": _("There are {n} for {x}"),
+        "groupCount": _("{n} addresses"),
+        "moreResults": _("Enter more of the address to improve results"),
+        "resultsTitle": _("Select an address"),
+        "noResults": _("No results found. Try entering a different part of the address"),
+        "tooManyResults": _("{n} results found. Enter more of the address to improve results"),
+        "typeMore": _("Enter more of the address to get results"),
+        "autocomplete": "new-password",
+        "errorTitle": ngettext('There is a problem with your answer', 'There are %(num)s problems with your answer', 1),
+        "errorMessageEnter": _("Enter an address"),
+        "errorMessageSelect": _("Select or manually enter an address"),
+        "errorMessageAPI": _("Sorry, there was a problem loading addresses"),
+        "errorMessageAPILinkText": _("Enter address manually"),
+        "options": {
+            "regionCode": answer.lookup_options.region_code | lower,
+            "oneYearAgo": answer.lookup_options.one_year_ago if answer.lookup_options.one_year_ago is defined,
+            "addressType": answer.lookup_options.address_type | lower
+        }
+    }) %}
+    {# djlint:off #}
 {% else %}
     {% set config = config | setAttribute("manualEntry", true) %}
 {% endif %}
