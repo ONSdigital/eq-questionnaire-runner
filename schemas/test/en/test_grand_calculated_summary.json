@@ -112,7 +112,7 @@
                         },
                         {
                             "type": "CalculatedSummary",
-                            "id": "number-calculated-summary-1",
+                            "id": "calculated-summary",
                             "title": "We calculate the total number of journeys on foot and in a car to be %(total)s. Is this correct?",
                             "calculation": {
                                 "operation": {
@@ -275,7 +275,7 @@
                                     "+": [
                                         {
                                             "source": "calculated_summary",
-                                            "identifier": "number-calculated-summary-1"
+                                            "identifier": "calculated-summary"
                                         },
                                         {
                                             "source": "calculated_summary",
