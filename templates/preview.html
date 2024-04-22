@@ -75,20 +75,18 @@
             }
         })
     }}
-    {# djlint:on #}
     <div class="ons-u-mt-l ons-u-mb-l">
         {%- if content.preview.sections | length > 1 -%}
             {%- set itemList = [] -%}
             {%- for section in content.preview.sections if section.blocks -%}
                 {%- set item = {
-                                "title": section.title,
-                                "id": section.id
-                                } -%}
+                    "title": section.title,
+                    "id": section.id
+                } -%}
                 {%- set block_previews = preview_blocks_for_sections(blocks=section["blocks"]) -%}
                 {%- do item | setAttribute("content", block_previews) -%}
                 {%- do itemList.append(item) -%}
             {%- endfor -%}
-            {# djlint:off #}
             {{
                 onsAccordion({
                     "id": "summary-accordion",
@@ -105,7 +103,6 @@
                     "itemsList": itemList
                 })
             }}
-            {# djlint:on #}
         {%- else %}
             {%- for section in content.preview.sections if section.blocks -%}
                 <div class="ons-summary__group">
@@ -115,4 +112,5 @@
             {%- endfor -%}
         {%- endif -%}
     </div>
+    {# djlint:on #}
 {% endblock main %}

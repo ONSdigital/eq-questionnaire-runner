@@ -27,7 +27,10 @@ lint-python:
 
 lint-test-python: lint-python test-unit
 
-format: format-python format-js
+format: format-python format-js format-html
+
+format-html:
+	poetry run djlint ./templates --reformat --profile=jinja
 
 format-python:
 	poetry run isort .

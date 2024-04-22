@@ -6,13 +6,13 @@
     {%- for group in section.groups -%}
         {%- if group["blocks"] | length -%}
             {%- if group.title -%}
+                {# djlint:off #}
                 {%- set item = {
-                                "title": group.title,
-                                "id": group.id,
-                                "content": ""
-                                } -%}
+                    "title": group.title,
+                    "id": group.id,
+                    "content": ""
+                } -%}
                 {%- set summary %}
-                    {# djlint:off #}
                     {{
                         onsSummary({
                             "classes": "summary--no-bottom-border",
@@ -35,8 +35,8 @@
                             ]
                         })
                     }}
-                    {# djlint:on #}
                 {%- endset -%}
+                {# djlint:on #}
                 {%- do item | setAttribute("content", item.content + summary) -%}
                 {%- do itemList.append(item) -%}
             {%- endif -%}
