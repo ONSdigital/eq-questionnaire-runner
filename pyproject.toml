@@ -3,7 +3,9 @@ blank_line_after_tag="load,extends,import,from"
 blank_line_before_tag="load,extends,block"
 max_line_length=120
 format_js=false
+# _base.html excluded because of the bad </script> nesting after format
 exclude=".templates/layouts/_base.html"
+# both error codes excluded because of how we pass the variables into strings
 ignore="H008,T027"
 
 [tool.poetry]

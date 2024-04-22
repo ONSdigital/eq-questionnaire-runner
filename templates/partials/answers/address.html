@@ -25,8 +25,8 @@
         "value": address_form.uprn._value() | e
     }
 } %}
+{# djlint:off #}
 {% if answer.lookup_options and address_lookup_api_url %}
-    {# djlint:off #}
     {% set config = config | setAttributes({
         "label": {
             "text": _("Enter address or postcode and select from results")
@@ -62,10 +62,8 @@
             "addressType": answer.lookup_options.address_type | lower
         }
     }) %}
-    {# djlint:off #}
 {% else %}
     {% set config = config | setAttribute("manualEntry", true) %}
 {% endif %}
-{# djlint:off #}
 {{ onsAddressInput(config) }}
-{# djlint:off #}
+{# djlint:on #}
