@@ -1,6 +1,6 @@
 import FeedbackBasePage from "./feedback-base.page.js";
 
-class FeedbackSentPage extends FeedbackBasePage {
+class FeedbackSentBasePage extends FeedbackBasePage {
   feedbackThankYouText() {
     return '[data-qa="feedback-thank-you-text"]';
   }
@@ -9,4 +9,4 @@ class FeedbackSentPage extends FeedbackBasePage {
     return '[data-qa="btn-done"]';
   }
 }
-export default new FeedbackSentPage("sent");
+export default new FeedbackSentBasePage("sent");

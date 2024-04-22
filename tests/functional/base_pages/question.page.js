@@ -1,6 +1,6 @@
 import BasePage from "./base.page";
 
-class QuestionPage extends BasePage {
+class QuestionBasePage extends BasePage {
   constructor(pageName) {
     super(pageName);
     this.questions = [];
@@ -51,4 +51,4 @@ class QuestionPage extends BasePage {
   }
 }
 
-export default QuestionPage;
+export default QuestionBasePage;

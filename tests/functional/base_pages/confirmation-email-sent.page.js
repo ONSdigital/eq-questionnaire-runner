@@ -1,6 +1,6 @@
 import BasePage from "./base.page";
 
-class ConfirmationEmailSentPage extends BasePage {
+class ConfirmationEmailSentBasePage extends BasePage {
   confirmationText() {
     return '[data-qa="confirmation-text"]';
   }
@@ -17,4 +17,4 @@ class ConfirmationEmailSentPage extends BasePage {
     return ".ons-feedback__link";
   }
 }
-export default new ConfirmationEmailSentPage("email-confirmation");
+export default new ConfirmationEmailSentBasePage("email-confirmation");
