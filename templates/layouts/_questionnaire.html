@@ -9,7 +9,7 @@
 {% block main %}
     <button type="submit" class="ons-u-d-no" hidden></button>
 
-    {% block form_errors %}{% endblock %}
+    {% block form_errors %}{% endblock form_errors %}
 
     {% block form_content %}
         <div class="group">
@@ -18,7 +18,7 @@
             {% endif %}
             {% include "partials/block.html" %}
         </div>
-    {% endblock %}
+    {% endblock form_content %}
 
     {% block submit_button %}
         {# djlint:off #}
@@ -36,7 +36,7 @@
             })
         }}
         {# djlint:on #}
-    {% endblock %}
+    {% endblock submit_button %}
 
     {% block after_submit_button_content %}
         {% if content.return_to_hub_url %}
@@ -45,5 +45,5 @@
                    data-ga-action="Choose another section click">{{ _("Choose another section and return to this later") }}</a>
             </p>
         {% endif %}
-    {% endblock %}
-{% endblock %}
+    {% endblock after_submit_button_content %}
+{% endblock main %}

@@ -41,7 +41,7 @@
         <h1>{{ content.summary.title }}</h1>
         <div>{% include "partials/summary/summary.html" %}</div>
     {% endif %}
-{% endblock %}
+{% endblock form_content %}
 
 {% block submit_button %}
     {# djlint:off #}
@@ -60,4 +60,4 @@
         })
     }}
     {# djlint:on #}
-{% endblock %}
+{% endblock submit_button %}

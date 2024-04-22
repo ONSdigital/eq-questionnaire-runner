@@ -66,7 +66,7 @@
         }}
     {% endif %}
     {# djlint:on #}
-{% endblock %}
+{% endblock preHeader %}
 
 {% block head %}
     {# djlint:off #}
@@ -101,9 +101,9 @@
         </script>
     {% endif %}
     {# djlint:on #}
-{% endblock %}
+{% endblock head %}
 
-{% block bodyStart %}<form class="form-class" method="POST" autocomplete="off" novalidate>{% endblock %}
+{% block bodyStart %}<form class="form-class" method="POST" autocomplete="off" novalidate>{% endblock bodyStart %}
 
     {% block skipLink %}
         {# djlint:off #}
@@ -114,9 +114,9 @@
             })
         }}
         {# djlint:on #}
-    {% endblock %}
+    {% endblock skipLink %}
 
-    {% block bodyEnd %}</form>{% endblock %}
+    {% block bodyEnd %}</form>{% endblock bodyEnd %}
 
 {% block scripts %}
     {% if config['EQ_ENABLE_LIVE_RELOAD'] %}
@@ -126,7 +126,7 @@
             //]]>
         </script>
     {% endif %}
-{% endblock %}
+{% endblock scripts %}
 
 {% block preFooter %}
 {# djlint:off #}
@@ -152,4 +152,4 @@
     }}
     {% endif %}
 {# djlint:on #}
-{% endblock %}
+{% endblock preFooter %}
