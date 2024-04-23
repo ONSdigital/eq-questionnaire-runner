@@ -306,7 +306,7 @@ def get_runner_claims(decrypted_token: Mapping[str, Any]) -> dict:
         return validate_runner_claims_v2(decrypted_token)
 
     except ValidationError as e:
-        raise InvalidTokenException(f"Invalid runner claims version: {version}") from e
+        raise InvalidTokenException("Invalid runner claims version") from e
 
 
 def get_questionnaire_claims(
