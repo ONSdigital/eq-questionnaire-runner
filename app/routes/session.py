@@ -300,8 +300,6 @@ def get_signed_out() -> Response | str:
 
 
 def get_runner_claims(decrypted_token: Mapping[str, Any]) -> dict:
-    version = decrypted_token.get("version")
-
     try:
         return validate_runner_claims_v2(decrypted_token)
 
