@@ -2,9 +2,10 @@
 blank_line_after_tag="load,extends,import,from"
 blank_line_before_tag="load,extends,block"
 max_line_length=120
-# _base.html excluded because of the bad </script> nesting after format
+# _base.html excluded due to the bad </script> nesting after format
 exclude=".templates/layouts/_base.html"
-# both error codes excluded because of how we pass the variables into strings
+# H008: attributes should be double-quoted - code excluded due to the way we pass the variables into strings
+# T027: unclosed string found in template syntax - code excluded due to the way we pass the variables into strings
 ignore="H008,T027"
 
 [tool.poetry]
