@@ -5,7 +5,7 @@ from tests.integration.questionnaire import SUBMIT_URL_PATH
 class TestRenderPercentageWidget(IntegrationTestCase):
     def setUp(self):
         super().setUp()
-        self.launchSurvey("test_percentage")
+        self.launchSurveyV2(schema_name="test_percentage")
 
     def test_percentage_widget_has_icon(self):
         self.assertInSelectorCSS(">%</abbr>", "abbr", {"class": "ons-input-type__type"})

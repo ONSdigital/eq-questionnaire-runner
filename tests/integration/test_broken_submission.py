@@ -12,7 +12,7 @@ class TestBrokenSubmission(IntegrationTestCase):
         self.instance.send_message.return_value = False
 
         super().setUp()
-        self.launchSurvey("test_percentage")
+        self.launchSurveyV2(schema_name="test_percentage")
 
     def tearDown(self):
         self.patcher.stop()

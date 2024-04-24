@@ -7,7 +7,7 @@ class TestCaseInsensitiveRouting(IntegrationTestCase):
     """
 
     def test_routing_equals_any_case_insensitive(self):
-        self.launchSurvey("test_routing_case_insensitive_text_field")
+        self.launchSurveyV2(schema_name="test_routing_case_insensitive_text_field")
 
         # Given I launch the case insensiitive routing rules schema
         self.post(action="start_questionnaire")
@@ -19,7 +19,7 @@ class TestCaseInsensitiveRouting(IntegrationTestCase):
         self.assertInBody("You submitted India or Azerbaijan.")
 
     def test_routing_equals_case_insensitive(self):
-        self.launchSurvey("test_routing_case_insensitive_text_field")
+        self.launchSurveyV2(schema_name="test_routing_case_insensitive_text_field")
 
         # Given I launch the case insensiitive routing rules schema
         self.post(action="start_questionnaire")

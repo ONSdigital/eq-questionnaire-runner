@@ -39,7 +39,7 @@ describe("View Submitted Response", () => {
   it("Given I have completed a questionnaire with view submitted response enabled, When I am on the view submitted response page within 45 minutes of submission, Then the summary is displayed correctly", async () => {
     await expect(await $(ViewSubmittedResponsePage.informationPanel()).isDisplayed()).toBe(false);
     await expect(await $(ViewSubmittedResponsePage.printButton()).isDisplayed()).toBe(true);
-    await expect(await $(ViewSubmittedResponsePage.heading()).getText()).toBe("Answers submitted for Apple");
+    await expect(await $(ViewSubmittedResponsePage.heading()).getText()).toBe("Answers submitted for Apple (Apple)");
     await expect(await $(ViewSubmittedResponsePage.metadataTerm(1)).getText()).toBe("Submitted on:");
     await expect(await $(ViewSubmittedResponsePage.metadataTerm(2)).getText()).toBe("Submission reference:");
     await expect(await $(ViewSubmittedResponsePage.personalDetailsGroupTitle()).getText()).toBe("Personal Details");
@@ -132,7 +132,7 @@ describe("View Submitted Response Summary Page With Repeating Sections", () => {
   it("Given I have completed a questionnaire with a repeating section and view submitted response enabled, When I am on the view submitted response page within 45 minutes of submission, Then the summary is displayed correctly", async () => {
     await expect(await $(ViewSubmittedResponseRepeatingPage.informationPanel()).isDisplayed()).toBe(false);
     await expect(await $(ViewSubmittedResponseRepeatingPage.printButton()).isDisplayed()).toBe(true);
-    await expect(await $(ViewSubmittedResponseRepeatingPage.heading()).getText()).toBe("Answers submitted for Apple");
+    await expect(await $(ViewSubmittedResponseRepeatingPage.heading()).getText()).toBe("Answers submitted for Apple (Apple)");
     await expect(await $(ViewSubmittedResponseRepeatingPage.metadataTerm(1)).getText()).toBe("Submitted on:");
     await expect(await $(ViewSubmittedResponseRepeatingPage.metadataTerm(2)).getText()).toBe("Submission reference:");
     await expect(await $(ViewSubmittedResponseRepeatingPage.personalDetailsGroupTitle()).getText()).toBe("Personal Details");

@@ -6,7 +6,7 @@ class TestPreviewPDF(IntegrationTestCase):
         super().setUp()
 
         # Given I launch a questionnaire and open preview of questions
-        self.launchSurvey("test_introduction")
+        self.launchSurveyV2(schema_name="test_introduction")
         self.get("/questionnaire/preview/")
 
         # When I try to download preview of questions from the preview page
@@ -25,7 +25,7 @@ class TestPreviewPDF(IntegrationTestCase):
         super().setUp()
 
         # Given I launch a questionnaire without preview enabled
-        self.launchSurvey("test_checkbox")
+        self.launchSurveyV2(schema_name="test_checkbox")
 
         # When I try to download preview of questions
         self.get("/questionnaire/preview/download-pdf")
@@ -37,7 +37,7 @@ class TestPreviewPDF(IntegrationTestCase):
         super().setUp()
 
         # Given I launch a questionnaire and open preview of questions
-        self.launchSurvey("test_introduction")
+        self.launchSurveyV2(schema_name="test_introduction")
         self.get("/questionnaire/preview/")
 
         # Then the print button is displayed correctly

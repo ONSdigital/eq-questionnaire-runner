@@ -12,7 +12,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         super().setUp()
 
     def _launch_and_complete_questionnaire(self):
-        self.launchSurvey("test_confirmation_email")
+        self.launchSurveyV2(schema_name="test_confirmation_email")
         self.post({"answer_id": "Yes"})
         self.post()
 
@@ -70,7 +70,7 @@ class TestEmailConfirmation(IntegrationTestCase):
 
     def test_confirm_email_with_confirmation_email_not_set(self):
         # Given I launch the test_thank_you questionnaire, which doesn't have email confirmation set in the schema
-        self.launchSurvey("test_thank_you")
+        self.launchSurveyV2(schema_name="test_thank_you")
         self.post()
         self.post()
 
@@ -83,7 +83,7 @@ class TestEmailConfirmation(IntegrationTestCase):
 
     def test_confirmation_email_send_with_confirmation_email_not_set(self):
         # Given I launch the test_thank_you questionnaire, which doesn't have email confirmation set in the schema
-        self.launchSurvey("test_thank_you")
+        self.launchSurveyV2(schema_name="test_thank_you")
         self.post()
         self.post()
 
@@ -109,7 +109,7 @@ class TestEmailConfirmation(IntegrationTestCase):
 
     def test_thank_you_page_get_not_allowed(self):
         # Given I launch the test_confirmation_email questionnaire
-        self.launchSurvey("test_confirmation_email")
+        self.launchSurveyV2(schema_name="test_confirmation_email")
 
         # When I try to view the thank you page without completing the questionnaire
         self.get("/submitted/thank-you/")
@@ -119,7 +119,7 @@ class TestEmailConfirmation(IntegrationTestCase):
 
     def test_thank_you_page_post_not_allowed(self):
         # Given I launch the test_confirmation_email questionnaire
-        self.launchSurvey("test_confirmation_email")
+        self.launchSurveyV2(schema_name="test_confirmation_email")
 
         # When I try to POST to the thank you page without completing the questionnaire
         self.post(url="/submitted/thank-you/")
@@ -150,7 +150,7 @@ class TestEmailConfirmation(IntegrationTestCase):
 
     def test_default_themed_schema_with_confirmation_email_not_set(self):
         # Given I launch the test_checkbox questionnaire, which doesn't have email confirmation set in the schema
-        self.launchSurvey("test_checkbox")
+        self.launchSurveyV2(schema_name="test_checkbox")
 
         # When I complete the questionnaire
         self.post({"mandatory-checkbox-answer": "Tuna"})
