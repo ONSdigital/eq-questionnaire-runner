@@ -9,7 +9,7 @@ class TestCheckboxSingleCheckboxOverride(IntegrationTestCase):
 
     def setUp(self):
         super().setUp()
-        self.launchSurvey("test_mutually_exclusive")
+        self.launchSurveyV2(schema_name="test_mutually_exclusive")
 
     def test_non_exclusive_answer(self):
         # When

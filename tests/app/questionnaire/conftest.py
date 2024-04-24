@@ -6,7 +6,7 @@ from app.data_models import CompletionStatus, QuestionnaireStore, SupplementaryD
 from app.data_models.answer_store import Answer, AnswerStore
 from app.data_models.data_stores import DataStores
 from app.data_models.list_store import ListStore
-from app.data_models.metadata_proxy import MetadataProxy
+from app.data_models.metadata_proxy import TOP_LEVEL_METADATA_KEYS, MetadataProxy
 from app.data_models.progress import ProgressDict
 from app.data_models.progress_store import ProgressStore
 from app.questionnaire import QuestionnaireSchema
@@ -23,15 +23,23 @@ from app.utilities.schema import load_schema_from_name
 
 
 def get_metadata(extra_metadata: dict | None = None):
-    extra_metadata = extra_metadata or {}
     metadata = {
         "response_id": "1",
         "account_service_url": "account_service_url",
         "tx_id": "tx_id",
         "collection_exercise_sid": "collection_exercise_sid",
         "case_id": "case_id",
-        **extra_metadata,
+        "version": "v2",
+        "survey_metadata": {"data": {}},
     }
+
+    if extra_metadata:
+        for key, value in extra_metadata.items():
+            if key in TOP_LEVEL_METADATA_KEYS:
+                metadata[key] = value
+            else:
+                metadata["survey_metadata"]["data"][key] = value
+
     return MetadataProxy.from_dict(metadata)
 
 
@@ -1116,16 +1124,15 @@ def placeholder_renderer(option_label_from_value_schema):
             {"answer_id": "mandatory-checkbox-answer", "value": ["Body"]},
         ]
     )
-    renderer = PlaceholderRenderer(
+    return PlaceholderRenderer(
         language="en",
         data_stores=DataStores(
             answer_store=answer_store,
-            metadata=get_metadata({"trad_as": "ESSENTIAL SERVICES LTD"}),
+            metadata=get_metadata(extra_metadata={"trad_as": "ESSENTIAL SERVICES LTD"}),
         ),
         schema=option_label_from_value_schema,
         location=Location(section_id="checkbox-section"),
     )
-    return renderer
 
 
 @pytest.fixture

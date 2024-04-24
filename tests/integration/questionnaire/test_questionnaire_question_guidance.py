@@ -5,7 +5,7 @@ from tests.integration.questionnaire import SUBMIT_URL_PATH, THANK_YOU_URL_PATH
 class TestQuestionnaireQuestionGuidance(IntegrationTestCase):
     def test_question_guidance(self):
         # Given I launch a questionnaire with various guidance
-        self.launchSurvey("test_question_guidance")
+        self.launchSurveyV2(schema_name="test_question_guidance")
         self.post(action="start_questionnaire")
 
         # When I start the survey I am presented with the title guidance correctly

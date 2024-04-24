@@ -6,7 +6,7 @@ class ViewSubmittedResponseBase(IntegrationTestCase):
     VIEW_RESPONSE_PAGE_URL = "/submitted/view-response"
 
     def _launch_and_complete_questionnaire(self):
-        self.launchSurvey("test_view_submitted_response")
+        self.launchSurveyV2(schema_name="test_view_submitted_response")
         self.post({"name-answer": "John Smith"})
         self.post({"address-answer": "NP10 8XG"})
         self.post()
@@ -61,7 +61,7 @@ class TestViewSubmissionResponse(ViewSubmittedResponseBase):
 
     def test_not_enabled(self):
         # Given I launch and complete a questionnaire that does not have view-submitted-response enabled
-        self.launchSurvey("test_confirmation_email")
+        self.launchSurveyV2(schema_name="test_confirmation_email")
         self.post()
         self.post()
 

@@ -60,7 +60,7 @@ def test_role_required_authenticated_with_metadata_none_roles(
     # Given I am authenticated but my metadata contains a
     # roles list set to None
     mock_current_user.is_authenticated = True
-    mock_get_metadata.return_value = get_metadata({"roles": None})
+    mock_get_metadata.return_value = get_metadata(extra_metadata={"roles": None})
 
     # And I have decorated a function with role_required
     wrapper = role_required("dumper")
@@ -78,7 +78,7 @@ def test_role_required_authenticated_with_metadata_empty_roles(
     # Given I am authenticated and my metadata contains an empty
     # roles list
     mock_current_user.is_authenticated = True
-    mock_get_metadata.return_value = get_metadata({"roles": []})
+    mock_get_metadata.return_value = get_metadata(extra_metadata={"roles": []})
 
     # And I have decorated a function with role_required
     wrapper = role_required("dumper")
@@ -95,7 +95,7 @@ def test_role_required_authenticated_with_metadata_wrong_role(
 ):
     # Given I am authenticated and my metadata contains a single role.
     mock_current_user.is_authenticated = True
-    mock_get_metadata.return_value = get_metadata({"roles": ["flusher"]})
+    mock_get_metadata.return_value = get_metadata(extra_metadata={"roles": ["flusher"]})
 
     # And I have decorated a function with role_required, specifying a
     # role that isn't in the metadata roles list.
@@ -113,7 +113,7 @@ def test_role_required_authenticated_with_metadata_matching_role(
 ):
     # Given I am authenticated and my metadata contains a single role.
     mock_current_user.is_authenticated = True
-    mock_get_metadata.return_value = get_metadata({"roles": ["dumper"]})
+    mock_get_metadata.return_value = get_metadata(extra_metadata={"roles": ["dumper"]})
 
     # And I have decorated a function with role_required, specifying a
     # role that is listed in the metadata roles list.
@@ -131,7 +131,7 @@ def test_role_required_authenticated_with_metadata_matching_multiple_role(
     # Given I am authenticated but my metadata contains multiples roles
     mock_current_user.is_authenticated = True
     mock_get_metadata.return_value = get_metadata(
-        {"roles": ["flusher", "other", "dumper"]}
+        extra_metadata={"roles": ["flusher", "other", "dumper"]}
     )
 
     # And I have decorated a function with role_required, specifying a
@@ -150,7 +150,7 @@ def test_role_required_wrapped_with_positional_arguments(
     # Given I am authenticated and my metadata contains roles
     mock_current_user.is_authenticated = True
     mock_get_metadata.return_value = get_metadata(
-        {"roles": ["flusher", "other", "dumper"]}
+        extra_metadata={"roles": ["flusher", "other", "dumper"]}
     )
 
     # And I have decorated a function that takes multiple positional arguments
@@ -170,7 +170,7 @@ def test_role_required_wrapped_with_keyword_arguments(
     # Given I am authenticated and my metadata contains roles
     mock_current_user.is_authenticated = True
     mock_get_metadata.return_value = get_metadata(
-        {"roles": ["flusher", "other", "dumper"]}
+        extra_metadata={"roles": ["flusher", "other", "dumper"]}
     )
 
     # And I have decorated a function that takes multiple positional arguments
@@ -190,7 +190,7 @@ def test_role_required_wrapped_with_positional_and_keyword_arguments(
     # Given I am authenticated and my metadata contains roles
     mock_current_user.is_authenticated = True
     mock_get_metadata.return_value = get_metadata(
-        {"roles": ["flusher", "other", "dumper"]}
+        extra_metadata={"roles": ["flusher", "other", "dumper"]}
     )
 
     # And I have decorated a function that takes multiple positional arguments
@@ -227,7 +227,7 @@ def test_role_required_unauthenticated_wrapped_with_keyword_arguments(
     # Given I am not authenticated
     mock_current_user.is_authenticated = False
     mock_get_metadata.return_value = get_metadata(
-        {"roles": ["flusher", "other", "dumper"]}
+        extra_metadata={"roles": ["flusher", "other", "dumper"]}
     )
 
     # And I have decorated a function that takes multiple positional arguments
@@ -248,7 +248,7 @@ def test_role_required_unauthenticated_wrapped_with_positional_and_keyword_argum
     # Given I am not authenticated
     mock_current_user.is_authenticated = False
     mock_get_metadata.return_value = get_metadata(
-        {"roles": ["flusher", "other", "dumper"]}
+        extra_metadata={"roles": ["flusher", "other", "dumper"]}
     )
 
     # And I have decorated a function that takes multiple positional arguments

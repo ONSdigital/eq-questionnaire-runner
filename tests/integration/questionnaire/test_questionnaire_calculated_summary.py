@@ -46,7 +46,7 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         self.post({"sixth-percent-answer": "60", "sixth-number-answer": "60"})
 
     def test_calculated_summary(self):
-        self.launchSurvey("test_calculated_summary")
+        self.launchSurveyV2(schema_name="test_calculated_summary")
         self._complete_calculated_summary_path_with_skip()
 
         self.assertInBody(
@@ -57,21 +57,21 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         )
 
     def test_calculated_summary_no_skip(self):
-        self.launchSurvey("test_calculated_summary")
+        self.launchSurveyV2(schema_name="test_calculated_summary")
         self._complete_calculated_summary_path_no_skip()
         self.assertInBody(
             "We calculate the total of currency values entered to be £180.00"
         )
 
     def test_new_calculated_summary(self):
-        self.launchSurvey("test_new_calculated_summary")
+        self.launchSurveyV2(schema_name="test_new_calculated_summary")
         self._complete_calculated_summary_path_with_skip()
         self.assertInBody(
             "We calculate the total of currency values entered to be £80.00"
         )
 
     def test_calculated_summary_total_playback(self):
-        self.launchSurvey("test_new_calculated_summary")
+        self.launchSurveyV2(schema_name="test_new_calculated_summary")
         self._complete_calculated_summary_path_with_skip()
         self.post()
         self.post()
@@ -80,14 +80,14 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         self.assertInBody("Total currency values: <em>£80.00</em>")
 
     def test_new_calculated_summary_no_skip(self):
-        self.launchSurvey("test_new_calculated_summary")
+        self.launchSurveyV2(schema_name="test_new_calculated_summary")
         self._complete_calculated_summary_path_no_skip()
         self.assertInBody(
             "We calculate the total of currency values entered to be £180.00"
         )
 
     def test_new_calculated_summary_repeating_section(self):
-        self.launchSurvey("test_new_calculated_summary_repeating_section")
+        self.launchSurveyV2(schema_name="test_new_calculated_summary_repeating_section")
         self._add_list_items()
         self.post()
 
@@ -97,7 +97,7 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         )
 
     def test_new_calculated_summary_no_skip_repeating_section(self):
-        self.launchSurvey("test_new_calculated_summary_repeating_section")
+        self.launchSurveyV2(schema_name="test_new_calculated_summary_repeating_section")
         self._add_list_items()
         self.post()
 
@@ -107,7 +107,9 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         )
 
     def test_calculated_summary_value_sources_across_sections(self):
-        self.launchSurvey("test_calculated_summary_cross_section_dependencies")
+        self.launchSurveyV2(
+            schema_name="test_calculated_summary_cross_section_dependencies"
+        )
 
         # Complete the first section
         self.post()
@@ -152,8 +154,8 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         self.assertInBody("Enter an answer more than or equal to £60.00")
 
     def test_calculated_summary_value_sources_across_sections_repeating(self):
-        self.launchSurvey(
-            "test_new_calculated_summary_cross_section_dependencies_repeating"
+        self.launchSurveyV2(
+            schema_name="test_new_calculated_summary_cross_section_dependencies_repeating"
         )
 
         # Add  household members
@@ -204,7 +206,9 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         """
         Tests a calculated summary with a dynamic answer source resolving to a list of repeating answers
         """
-        self.launchSurvey("test_new_calculated_summary_repeating_answers_only")
+        self.launchSurveyV2(
+            schema_name="test_new_calculated_summary_repeating_answers_only"
+        )
 
         self.post({"any-transport-answer": "Yes"})
         self.post({"transport-name": "Bus"})
@@ -230,7 +234,7 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         """
         Tests a calculated summary with a repeating block answer id source resolving to a list of answers
         """
-        self.launchSurvey("test_new_calculated_summary_repeating_blocks")
+        self.launchSurveyV2(schema_name="test_new_calculated_summary_repeating_blocks")
         self.post({"answer-car": "100"})
         self.post({"answer-skip": "No"})
         self.post({"list-collector-answer": "Yes"})
@@ -313,7 +317,9 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         are entered then we should default to two decimal places on the calculated summary page
         and the playback page
         """
-        self.launchSurvey("test_calculated_and_grand_calculated_summary_decimals")
+        self.launchSurveyV2(
+            schema_name="test_calculated_and_grand_calculated_summary_decimals"
+        )
         self.post({"first-number-answer": "10"})
         self.post(
             {
@@ -335,7 +341,9 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         places are entered then we should use the largest number of decimal places that are below the decimal limit
         on the calculated summary page and the playback page
         """
-        self.launchSurvey("test_calculated_and_grand_calculated_summary_decimals")
+        self.launchSurveyV2(
+            schema_name="test_calculated_and_grand_calculated_summary_decimals"
+        )
         self.post({"first-number-answer": "10.1"})
         self.post(
             {
@@ -357,7 +365,9 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         using the answer values that are on the path. In this instance it is the happy path where the user has entered
         their own reporting dates which should be reflected on the calcualted summary label.
         """
-        self.launchSurvey("test_placeholder_dependencies_with_calculation_summaries")
+        self.launchSurveyV2(
+            schema_name="test_placeholder_dependencies_with_calculation_summaries"
+        )
 
         self.post(
             {"reporting-date-answer": "No, I need to report for a different period"}
@@ -387,7 +397,9 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         their own reporting dates, but has then gone back to the first section and changed their answer. In this instance
         the dates displayed in the label should come from metadata rather than the dates entered by the user (which are no longer on the path)
         """
-        self.launchSurvey("test_placeholder_dependencies_with_calculation_summaries")
+        self.launchSurveyV2(
+            schema_name="test_placeholder_dependencies_with_calculation_summaries"
+        )
 
         # Happy path journey
         self.post(

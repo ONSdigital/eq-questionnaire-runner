@@ -17,7 +17,7 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
         )
 
     def test_happy_path(self):
-        self.launchSurvey("test_list_collector_content_page")
+        self.launchSurveyV2(schema_name="test_list_collector_content_page")
 
         self.post({"any-companies-or-branches-answer": "Yes"})
         self.add_company("Company A", "123", "No")
@@ -93,7 +93,7 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
         self.assertInUrl("/questionnaire/")
 
     def test_hub_section_in_progress(self):
-        self.launchSurvey("test_list_collector_content_page")
+        self.launchSurveyV2(schema_name="test_list_collector_content_page")
 
         self.post({"any-companies-or-branches-answer": "Yes"})
         self.add_company("Company A", "123", "No")
@@ -130,7 +130,7 @@ class TestQuestionnaireListCollectorContent(QuestionnaireTestCase):
         self.assertInBody("Partially completed")
 
     def test_hub_section_in_progress_when_one_complete(self):
-        self.launchSurvey("test_list_collector_content_page")
+        self.launchSurveyV2(schema_name="test_list_collector_content_page")
 
         self.post({"any-companies-or-branches-answer": "Yes"})
         self.add_company("Company A", "123", "No")

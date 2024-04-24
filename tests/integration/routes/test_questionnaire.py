@@ -3,22 +3,22 @@ from tests.integration.integration_test_case import IntegrationTestCase
 
 class TestQuestionnaire(IntegrationTestCase):
     def test_head_request_on_root_url(self):
-        self.launchSurvey("test_hub_and_spoke")
+        self.launchSurveyV2(schema_name="test_hub_and_spoke")
         self.head("/questionnaire/")
         self.assertStatusOK()
 
     def test_head_request_on_section_url(self):
-        self.launchSurvey("test_hub_and_spoke")
+        self.launchSurveyV2(schema_name="test_hub_and_spoke")
         self.head("/questionnaire/sections/employment-section")
         self.assertStatusCode(302)
 
     def test_head_request_on_block_url(self):
-        self.launchSurvey("test_textfield")
+        self.launchSurveyV2(schema_name="test_textfield")
         self.head("/questionnaire/name-block")
         self.assertStatusOK()
 
     def test_head_request_on_block_with_optional_date_answer(self):
-        self.launchSurvey("test_dates")
+        self.launchSurveyV2(schema_name="test_dates")
         self.post(
             {
                 "date-range-from-answer-day": "1",
@@ -46,7 +46,7 @@ class TestQuestionnaire(IntegrationTestCase):
         self.assertStatusOK()
 
     def test_options_request_before_request(self):
-        self.launchSurvey("test_hub_and_spoke")
+        self.launchSurveyV2(schema_name="test_hub_and_spoke")
         with self.assertLogs() as logs:
             self.options("/questionnaire/")
             self.assertStatusOK()
@@ -55,7 +55,7 @@ class TestQuestionnaire(IntegrationTestCase):
             self.assertNotIn("questionnaire request", output)
 
     def test_get_request_logs_output(self):
-        self.launchSurvey("test_hub_and_spoke")
+        self.launchSurveyV2(schema_name="test_hub_and_spoke")
         with self.assertLogs() as logs:
             self.get("/questionnaire/")
             self.assertStatusOK()
