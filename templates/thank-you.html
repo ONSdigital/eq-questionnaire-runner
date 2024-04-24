@@ -72,7 +72,7 @@
             {% set countdown_text = _("For security, your answers will only be available to view for another ") %}
             <h2 data-qa="view-submitted-response-title">{{ _("Get a copy of your answers") }}</h2>
             <p class="ons-u-mb-s">
-                {{ _("You can <a href='{url}' id='view-submitted-response-link'>save or print your answers</a> for your records.").format(url = content.view_submitted_response.url) }}
+                {{ _('You can <a href="{url}" id="view-submitted-response-link">save or print your answers</a> for your records.').format(url = content.view_submitted_response.url) }}
             </p>
             {# djlint:off #}
             {{ onsTimeoutPanel ({

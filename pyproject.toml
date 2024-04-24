@@ -4,9 +4,6 @@ blank_line_before_tag="load,extends,block"
 max_line_length=120
 # _base.html excluded due to the bad </script> nesting after format
 exclude=".templates/layouts/_base.html"
-# H008: attributes should be double-quoted - code excluded due to the way we pass the variables into strings
-# T027: unclosed string found in template syntax - code excluded due to the way we pass the variables into strings
-ignore="H008,T027"
 
 [tool.poetry]
 name = "eq-questionnaire-runner"
