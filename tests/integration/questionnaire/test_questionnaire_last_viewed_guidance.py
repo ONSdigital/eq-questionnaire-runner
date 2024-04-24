@@ -11,14 +11,14 @@ class TestLastViewedGuidance(IntegrationTestCase):
 
     def test_not_shown_on_survey_launch(self):
         # Given
-        self.launchSurvey("test_last_viewed_question_guidance")
+        self.launchSurveyV2(schema_name="test_last_viewed_question_guidance")
 
         # Then last viewed question guidance should not be shown
         self._assert_last_viewed_question_guidance_not_shown()
 
     def test_not_shown_on_linear_journey(self):
         # Given
-        self.launchSurvey("test_last_viewed_question_guidance")
+        self.launchSurveyV2(schema_name="test_last_viewed_question_guidance")
 
         # When I complete the journey as normal, without resuming
         self.post()
@@ -28,8 +28,9 @@ class TestLastViewedGuidance(IntegrationTestCase):
 
     def test_not_shown_on_section_resume_first_block_in_new_section(self):
         # Given
-        self.launchSurvey(
-            "test_last_viewed_question_guidance", reponse_id=self.response_id
+        self.launchSurveyV2(
+            schema_name="test_last_viewed_question_guidance",
+            reponse_id=self.response_id,
         )
 
         # When I sign out and resume on the first block of a new section
@@ -38,8 +39,9 @@ class TestLastViewedGuidance(IntegrationTestCase):
         self._post_you_live_here_answer()
         self._post_list_collector_answers()
         self.signOut()
-        self.launchSurvey(
-            "test_last_viewed_question_guidance", reponse_id=self.response_id
+        self.launchSurveyV2(
+            schema_name="test_last_viewed_question_guidance",
+            reponse_id=self.response_id,
         )
 
         # Then the last viewed question guidance is not shown
@@ -47,14 +49,16 @@ class TestLastViewedGuidance(IntegrationTestCase):
 
     def test_not_shown_on_resume_section_not_started(self):
         # Given
-        self.launchSurvey(
-            "test_last_viewed_question_guidance", reponse_id=self.response_id
+        self.launchSurveyV2(
+            schema_name="test_last_viewed_question_guidance",
+            reponse_id=self.response_id,
         )
 
         # When I sign out without starting the section and I resume the survey
         self.signOut()
-        self.launchSurvey(
-            "test_last_viewed_question_guidance", reponse_id=self.response_id
+        self.launchSurveyV2(
+            schema_name="test_last_viewed_question_guidance",
+            reponse_id=self.response_id,
         )
 
         # Then the last viewed question guidance should not be shown
@@ -62,15 +66,17 @@ class TestLastViewedGuidance(IntegrationTestCase):
 
     def test_shown_on_resume_section_in_progress(self):
         # Given
-        self.launchSurvey(
-            "test_last_viewed_question_guidance", reponse_id=self.response_id
+        self.launchSurveyV2(
+            schema_name="test_last_viewed_question_guidance",
+            reponse_id=self.response_id,
         )
 
         # When I sign out after I have started the section and I resume the survey
         self.post()
         self.signOut()
-        self.launchSurvey(
-            "test_last_viewed_question_guidance", reponse_id=self.response_id
+        self.launchSurveyV2(
+            schema_name="test_last_viewed_question_guidance",
+            reponse_id=self.response_id,
         )
 
         # Then the last viewed guidance should be shown
@@ -81,16 +87,18 @@ class TestLastViewedGuidance(IntegrationTestCase):
 
     def test_shown_on_section_in_progress_resume_primary_person_list_collector(self):
         # Given
-        self.launchSurvey(
-            "test_last_viewed_question_guidance", reponse_id=self.response_id
+        self.launchSurveyV2(
+            schema_name="test_last_viewed_question_guidance",
+            reponse_id=self.response_id,
         )
 
         # When I sign out and resume on a primary person list collector
         self.post()
         self._post_address_confirmation_answer()
         self.signOut()
-        self.launchSurvey(
-            "test_last_viewed_question_guidance", reponse_id=self.response_id
+        self.launchSurveyV2(
+            schema_name="test_last_viewed_question_guidance",
+            reponse_id=self.response_id,
         )
 
         # Then the last viewed guidance is shown
@@ -103,8 +111,9 @@ class TestLastViewedGuidance(IntegrationTestCase):
         self,
     ):
         # Given
-        self.launchSurvey(
-            "test_last_viewed_question_guidance", reponse_id=self.response_id
+        self.launchSurveyV2(
+            schema_name="test_last_viewed_question_guidance",
+            reponse_id=self.response_id,
         )
 
         # When I sign out and resume on a primary person list collector add person page
@@ -112,8 +121,9 @@ class TestLastViewedGuidance(IntegrationTestCase):
         self._post_address_confirmation_answer()
         self._post_you_live_here_answer()
         self.signOut()
-        self.launchSurvey(
-            "test_last_viewed_question_guidance", reponse_id=self.response_id
+        self.launchSurveyV2(
+            schema_name="test_last_viewed_question_guidance",
+            reponse_id=self.response_id,
         )
 
         # Then the last viewed guidance is shown on the parent page
@@ -124,8 +134,9 @@ class TestLastViewedGuidance(IntegrationTestCase):
 
     def test_shown_on_section_in_progress_resume_list_collector(self):
         # Given
-        self.launchSurvey(
-            "test_last_viewed_question_guidance", reponse_id=self.response_id
+        self.launchSurveyV2(
+            schema_name="test_last_viewed_question_guidance",
+            reponse_id=self.response_id,
         )
 
         # When I sign out and resume on a list collector
@@ -134,8 +145,9 @@ class TestLastViewedGuidance(IntegrationTestCase):
         self._post_you_live_here_answer()
         self._post_primary_person_answer()
         self.signOut()
-        self.launchSurvey(
-            "test_last_viewed_question_guidance", reponse_id=self.response_id
+        self.launchSurveyV2(
+            schema_name="test_last_viewed_question_guidance",
+            reponse_id=self.response_id,
         )
 
         # Then the last viewed guidance is shown
@@ -146,8 +158,9 @@ class TestLastViewedGuidance(IntegrationTestCase):
 
     def test_shown_on_section_in_progress_resume_list_collector_add_person(self):
         # Given
-        self.launchSurvey(
-            "test_last_viewed_question_guidance", reponse_id=self.response_id
+        self.launchSurveyV2(
+            schema_name="test_last_viewed_question_guidance",
+            reponse_id=self.response_id,
         )
 
         # When I sign out and resume on a list collector add person
@@ -157,8 +170,9 @@ class TestLastViewedGuidance(IntegrationTestCase):
         self._post_primary_person_answer()
         self.post({"anyone-else": "Yes"})
         self.signOut()
-        self.launchSurvey(
-            "test_last_viewed_question_guidance", reponse_id=self.response_id
+        self.launchSurveyV2(
+            schema_name="test_last_viewed_question_guidance",
+            reponse_id=self.response_id,
         )
 
         # Then the last viewed guidance is shown on the parent page
@@ -169,8 +183,9 @@ class TestLastViewedGuidance(IntegrationTestCase):
 
     def test_not_shown_on_section_in_progress_resume_relationships(self):
         # Given
-        self.launchSurvey(
-            "test_last_viewed_question_guidance", reponse_id=self.response_id
+        self.launchSurveyV2(
+            schema_name="test_last_viewed_question_guidance",
+            reponse_id=self.response_id,
         )
 
         # When I sign out and resume on a relationship question
@@ -182,8 +197,9 @@ class TestLastViewedGuidance(IntegrationTestCase):
         self.post()
         self.post()
         self.signOut()
-        self.launchSurvey(
-            "test_last_viewed_question_guidance", reponse_id=self.response_id
+        self.launchSurveyV2(
+            schema_name="test_last_viewed_question_guidance",
+            reponse_id=self.response_id,
         )
 
         # Then the last viewed guidance is not shown
@@ -191,14 +207,14 @@ class TestLastViewedGuidance(IntegrationTestCase):
 
     def test_not_shown_on_survey_launch_hub_not_available(self):
         # Given
-        self.launchSurvey("test_last_viewed_question_guidance_hub")
+        self.launchSurveyV2(schema_name="test_last_viewed_question_guidance_hub")
 
         # When the hub is not available, then last viewed guidance should not be shown
         self._assert_last_viewed_question_guidance_not_shown()
 
     def test_not_shown_on_section_not_started_hub(self):
         # Given
-        self.launchSurvey("test_last_viewed_question_guidance_hub")
+        self.launchSurveyV2(schema_name="test_last_viewed_question_guidance_hub")
 
         # When clicking on a link from the hub to a section not started
         self._posts_for_hub_required_section_to_complete()
@@ -209,7 +225,7 @@ class TestLastViewedGuidance(IntegrationTestCase):
 
     def test_shown_on_section_in_progress_hub_using_link_from_hub(self):
         # Given
-        self.launchSurvey("test_last_viewed_question_guidance_hub")
+        self.launchSurveyV2(schema_name="test_last_viewed_question_guidance_hub")
 
         # When clicking on a link from the hub to a section that is in progress
         self._posts_for_hub_required_section_to_complete()
@@ -222,7 +238,7 @@ class TestLastViewedGuidance(IntegrationTestCase):
 
     def test_shown_on_section_in_progress_hub_using_continue_from_hub(self):
         # Given
-        self.launchSurvey("test_last_viewed_question_guidance_hub")
+        self.launchSurveyV2(schema_name="test_last_viewed_question_guidance_hub")
 
         # When clicking on continue from the hub to a section that is in progress
         self._posts_for_hub_required_section_to_complete()

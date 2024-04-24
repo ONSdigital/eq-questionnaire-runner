@@ -6,7 +6,7 @@ SECTION_SUMMARY_URL_PATH = "/questionnaire/sections/{section_id}/"
 class TestRoutingToSectionEnd(IntegrationTestCase):
     def test_section_summary_not_available_if_any_question_in_section_incomplete(self):
         # Given I launch questionnaire and have not answered questions for a section
-        self.launchSurvey("test_routing_to_section_end")
+        self.launchSurveyV2(schema_name="test_routing_to_section_end")
 
         # When I try access the section summary
         self.get(SECTION_SUMMARY_URL_PATH.format(section_id="test-section"))
@@ -16,14 +16,14 @@ class TestRoutingToSectionEnd(IntegrationTestCase):
 
     def test_section_summary_available_after_completing_section(self):
         # Given I launch questionnaire and have completed a section
-        self.launchSurvey("test_routing_to_section_end")
+        self.launchSurveyV2(schema_name="test_routing_to_section_end")
         self.post({"test-answer": "No"})
         self.assertInBody("Were you forced to complete section 1?")
         self.assertInUrl(SECTION_SUMMARY_URL_PATH.format(section_id="test-section"))
 
     def test_section_summary_not_available_after_invalidating_section(self):
         # Given I launch questionnaire and have completed a section
-        self.launchSurvey("test_routing_to_section_end")
+        self.launchSurveyV2(schema_name="test_routing_to_section_end")
         self.post({"test-answer": "No"})
         self.assertInBody("Were you forced to complete section 1?")
         self.assertInUrl(SECTION_SUMMARY_URL_PATH.format(section_id="test-section"))
@@ -42,7 +42,7 @@ class TestRoutingToSectionEnd(IntegrationTestCase):
         self,
     ):
         # Given I launch questionnaire and have completed a section
-        self.launchSurvey("test_routing_number_equals")
+        self.launchSurveyV2(schema_name="test_routing_number_equals")
         self.post({"answer": "123"})
         self.post()
         self.assertInBody("Check your answers and submit")

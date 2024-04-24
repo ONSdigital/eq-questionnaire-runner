@@ -74,7 +74,7 @@ class TestSession(IntegrationTestCase):
         )
 
     def test_session_jti_token_expired(self):
-        self.launchSurvey(exp=time.time() - float(60))
+        self.launchSurveyV2(exp=time.time() - float(60))
         self.assertStatusUnauthorised()
 
     def test_head_request_on_session_expired(self):
@@ -82,13 +82,13 @@ class TestSession(IntegrationTestCase):
         self.assertStatusOK()
 
     def test_head_request_on_session_signed_out(self):
-        self.launchSurvey("test_introduction")
+        self.launchSurveyV2(schema_name="test_introduction")
         self.get("/signed-out")
         self.assertStatusOK()
 
     @freeze_time(TIME_TO_FREEZE)
     def test_get_session_expiry_doesnt_extend_session(self):
-        self.launchSurvey()
+        self.launchSurveyV2()
         # Advance time by 20 mins...
         with freeze_time(TIME_TO_FREEZE + timedelta(minutes=20)):
             self.get("/session-expiry")
@@ -105,7 +105,7 @@ class TestSession(IntegrationTestCase):
 
     @freeze_time(TIME_TO_FREEZE)
     def test_patch_session_expiry_extends_session(self):
-        self.launchSurvey()
+        self.launchSurveyV2()
         # Advance time by 20 mins...
         request_time = TIME_TO_FREEZE + timedelta(minutes=20)
         with freeze_time(request_time):

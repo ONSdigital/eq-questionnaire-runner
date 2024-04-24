@@ -14,7 +14,7 @@ class MultipleClientTestCase(IntegrationTestCase):
         self.cache = {}
 
     def launchSurvey(self, client, schema_name, **payload_kwargs):
-        token = self.token_generator.create_token(schema_name, **payload_kwargs)
+        token = self.token_generator.create_token_v2(schema_name, **payload_kwargs)
         self.get(client, "/session?token=" + token)
 
     # pylint: disable=arguments-renamed
@@ -81,11 +81,11 @@ class TestMultipleLogin(MultipleClientTestCase):
         input_data = "foo bar"
 
         # user A inputs an answer
-        self.launchSurvey(self.client_a, "test_textfield")
+        self.launchSurvey(self.client_a, schema_name="test_textfield")
         self.post(self.client_a, {"name-answer": input_data})
 
         # user B gets taken straight to summary as survey is complete
-        self.launchSurvey(self.client_b, "test_textfield")
+        self.launchSurvey(self.client_b, schema_name="test_textfield")
         last_url_b = self.cache[self.client_b]["last_url"]
         self.assertIn(SUBMIT_URL_PATH, last_url_b)
 
@@ -110,7 +110,9 @@ class TestMultipleLogin(MultipleClientTestCase):
         """
 
         # user A launches the test language questionnaire in English
-        self.launchSurvey(self.client_a, "test_language", language_code="en")
+        self.launchSurvey(
+            self.client_a, schema_name="test_language", language_code="en"
+        )
         self.post(self.client_a)
         last_response_a = self.cache[self.client_a]["last_response"]
         self.assertIn("Please enter a name", last_response_a.get_data(True))
@@ -127,7 +129,9 @@ class TestMultipleLogin(MultipleClientTestCase):
         self.assertIn("Please enter a name", last_response_a.get_data(True))
 
         # user B launches the same questionnaire but in Welsh
-        self.launchSurvey(self.client_b, "test_language", language_code="cy")
+        self.launchSurvey(
+            self.client_b, schema_name="test_language", language_code="cy"
+        )
         self.post(self.client_b)
         last_response_b = self.cache[self.client_b]["last_response"]
         self.assertIn("Rhowch enw", last_response_b.get_data(True))
@@ -169,7 +173,9 @@ class TestCollectionMetadataStorage(MultipleClientTestCase):
         Ensure that started_at is retained between collections
         """
         # User A starts a survey
-        self.launchSurvey(self.client_a, "test_introduction", roles=["dumper"])
+        self.launchSurvey(
+            self.client_a, schema_name="test_introduction", roles=["dumper"]
+        )
         # And starts the questionnaire
         self.post(self.client_a, action="start_questionnaire")
 
@@ -177,7 +183,9 @@ class TestCollectionMetadataStorage(MultipleClientTestCase):
         a_submission = self.dumpSubmission(self.client_a)["submission"]
 
         # User B loads the survey
-        self.launchSurvey(self.client_b, "test_introduction", roles=["dumper"])
+        self.launchSurvey(
+            self.client_b, schema_name="test_introduction", roles=["dumper"]
+        )
         # And we dump their submission
         b_submission = self.dumpSubmission(self.client_b)["submission"]
 

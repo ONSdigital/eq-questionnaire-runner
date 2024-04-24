@@ -7,7 +7,9 @@ from tests.integration.integration_test_case import IntegrationTestCase
 
 class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
     def launch_repeating_blocks_test_survey(self):
-        self.launchSurvey("test_list_collector_repeating_blocks_section_summary")
+        self.launchSurveyV2(
+            schema_name="test_list_collector_repeating_blocks_section_summary"
+        )
         self.post({"responsible-party-answer": "Yes"})
 
     def add_company(self, company_name: str):
@@ -478,7 +480,7 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
     def test_previous_link_in_two_list_collectors_with_repeating_blocks_returns_to_previous_location(
         self,
     ):
-        self.launchSurvey("test_list_collector_repeating_blocks_with_hub")
+        self.launchSurveyV2(schema_name="test_list_collector_repeating_blocks_with_hub")
         self.post({"responsible-party-answer": "Yes"})
 
         # Add some items to first list collector in first section

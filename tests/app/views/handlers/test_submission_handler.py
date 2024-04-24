@@ -19,7 +19,7 @@ def test_submission_language_code_uses_session_data_language_if_present(
         return_value=submission_payload_session_store,
     )
     mocker.patch(
-        "app.views.handlers.submission.convert_answers", mocker.Mock(return_value={})
+        "app.views.handlers.submission.convert_answers_v2", mocker.Mock(return_value={})
     )
     submission_handler = SubmissionHandler(
         QuestionnaireSchema({}), mock_questionnaire_store, {}
@@ -35,7 +35,7 @@ def test_submission_language_code_uses_default_language_if_session_data_language
     mocker,
 ):
     mocker.patch(
-        "app.views.handlers.submission.convert_answers", mocker.Mock(return_value={})
+        "app.views.handlers.submission.convert_answers_v2", mocker.Mock(return_value={})
     )
     submission_payload_session_data.language_code = None
     submission_payload_session_data.launch_language_code = None
@@ -82,48 +82,6 @@ def test_submit_view_submitted_response_true_submitted_at_set(
         assert mock_questionnaire_store.submitted_at == datetime.now(timezone.utc)
         assert mock_questionnaire_store.save.called
         assert not mock_questionnaire_store.delete.called
-
-
-@freeze_time(datetime.now(timezone.utc).replace(second=0, microsecond=0))
-@pytest.mark.usefixtures("app")
-def test_submission_payload_structure_v1(
-    app, submission_payload_session_store, mock_questionnaire_store, mocker
-):
-    expected_payload = {
-        "case_id": "case_id",
-        "collection": {
-            "exercise_sid": "ce_sid",
-            "period": "2016-02-01",
-            "schema_name": "1_0000",
-        },
-        "data": {"answers": [], "lists": []},
-        "flushed": False,
-        "launch_language_code": "en",
-        "metadata": {"ru_ref": "12345678901A", "user_id": "789473423"},
-        "origin": "uk.gov.ons.edc.eq",
-        "submission_language_code": "cy",
-        "submitted_at": datetime.now(timezone.utc).isoformat(),
-        "survey_id": "0",
-        "tx_id": "tx_id",
-        "type": "uk.gov.ons.edc.eq:surveyresponse",
-        "version": "0.0.3",
-    }
-
-    with app.test_request_context():
-        mocker.patch(
-            "app.views.handlers.submission.get_session_store",
-            return_value=submission_payload_session_store,
-        )
-        schema = load_schema_from_name("test_checkbox")
-
-        submission_handler = SubmissionHandler(
-            schema,
-            mock_questionnaire_store,
-            full_routing_path=[],
-        )
-        payload = submission_handler.get_payload()
-
-        assert expected_payload == payload
 
 
 @freeze_time(datetime.now(timezone.utc).replace(second=0, microsecond=0))

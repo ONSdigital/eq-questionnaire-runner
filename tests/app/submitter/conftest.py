@@ -17,33 +17,6 @@ from app.settings import ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from app.submitter import RabbitMQSubmitter
 from tests.app.parser.conftest import get_response_expires_at
 
-METADATA_V1 = MetadataProxy.from_dict(
-    {
-        "tx_id": str(uuid.uuid4()),
-        "user_id": "789473423",
-        "schema_name": "1_0000",
-        "collection_exercise_sid": "test-sid",
-        "account_service_url": ACCOUNT_SERVICE_BASE_URL_SOCIAL,
-        "period_id": "2016-02-01",
-        "period_str": "2016-01-01",
-        "ref_p_start_date": "2016-02-02",
-        "ref_p_end_date": "2016-03-03",
-        "ru_ref": "12345678901A",
-        "response_id": "1234567890123456",
-        "ru_name": "Apple",
-        "return_by": "2016-07-07",
-        "case_id": str(uuid.uuid4()),
-        "form_type": "I",
-        "case_type": "SPG",
-        "region_code": "GB-ENG",
-        "channel": "RH",
-        "display_address": "68 Abingdon Road, Goathill",
-        "case_ref": "1000000000000001",
-        "jti": str(uuid.uuid4()),
-        "response_expires_at": get_response_expires_at(),
-    }
-)
-
 RAW_METADATA_V2 = {
     "version": AuthPayloadVersion.V2.value,
     "tx_id": str(uuid.uuid4()),
@@ -75,7 +48,7 @@ RAW_METADATA_V2 = {
 METADATA_V2 = MetadataProxy.from_dict(RAW_METADATA_V2)
 
 
-def get_questionnaire_store(version):
+def get_questionnaire_store():
     user_answer = Answer(answer_id="GHI", value=0, list_item_id=None)
 
     storage = MagicMock()
@@ -87,24 +60,13 @@ def get_questionnaire_store(version):
     store.data_stores.answer_store = AnswerStore()
     store.supplementary_data_store = SupplementaryDataStore()
     store.data_stores.answer_store.add_or_update(user_answer)
-    store.data_stores.metadata = (
-        METADATA_V2 if version is AuthPayloadVersion.V2 else METADATA_V1
-    )
+    store.data_stores.metadata = METADATA_V2
+
     store.data_stores.response_metadata = {
         "started_at": "2018-07-04T14:49:33.448608+00:00"
     }
 
     return store
-
-
-@pytest.fixture
-def fake_metadata():
-    return METADATA_V1
-
-
-@pytest.fixture
-def fake_metadata_v2():
-    return METADATA_V2
 
 
 @pytest.fixture

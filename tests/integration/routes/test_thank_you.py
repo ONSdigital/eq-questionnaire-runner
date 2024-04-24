@@ -5,7 +5,7 @@ ACCOUNT_SERVICE_TODO_PATH = "/surveys/todo"
 
 class TestThankYou(IntegrationTestCase):
     def test_thank_you_page_no_sign_out(self):
-        self.launchSurvey("test_currency")
+        self.launchSurveyV2(schema_name="test_currency")
 
         # We fill in our answers
         form_data = {
@@ -27,7 +27,7 @@ class TestThankYou(IntegrationTestCase):
         self.assertIsNone(self.getSignOutButton())
 
     def test_can_switch_language_on_thank_you_page(self):
-        self.launchSurvey("test_language")
+        self.launchSurveyV2(schema_name="test_language")
         self.post()
         # We fill in our answers
         self.post({"first-name": "Kevin", "last-name": "Bacon"})
@@ -61,14 +61,14 @@ class TestThankYou(IntegrationTestCase):
         self.assertNotInBody("Cymraeg")
 
     def test_head_request_on_thank_you(self):
-        self.launchSurvey("test_confirmation_email")
+        self.launchSurveyV2(schema_name="test_confirmation_email")
         self.post()
         self.post()
         self.head("/submitted/thank-you")
         self.assertStatusOK()
 
     def test_options_request_post_submission_before_request(self):
-        self.launchSurvey("test_confirmation_email")
+        self.launchSurveyV2(schema_name="test_confirmation_email")
         self.post()
         self.post()
 
@@ -80,7 +80,7 @@ class TestThankYou(IntegrationTestCase):
             self.assertNotIn("questionnaire request", output)
 
     def test_default_guidance(self):
-        self.launchSurvey("test_textfield")
+        self.launchSurveyV2(schema_name="test_textfield")
         self.post({"name-answer": "Adam"})
         self.post()
 
@@ -90,7 +90,7 @@ class TestThankYou(IntegrationTestCase):
         )
 
     def test_custom_guidance(self):
-        self.launchSurvey("test_thank_you")
+        self.launchSurveyV2(schema_name="test_thank_you")
         self.post({"answer": "Yes"})
         self.post()
 
@@ -99,7 +99,7 @@ class TestThankYou(IntegrationTestCase):
         self.assertInBody('<a href="">Important link</a>')
 
     def test_back_to_surveys_link_on_thank_you(self):
-        self.launchSurvey("test_thank_you")
+        self.launchSurveyV2(schema_name="test_thank_you")
         self.post({"answer": "Yes"})
         self.post()
 
@@ -117,7 +117,7 @@ class TestThankYou(IntegrationTestCase):
         self.assertNotInBody(ACCOUNT_SERVICE_TODO_PATH)
 
     def test_view_answers_after_submission_guidance(self):
-        self.launchSurvey("test_thank_you")
+        self.launchSurveyV2(schema_name="test_thank_you")
         self.post({"answer": "Yes"})
         self.post()
 

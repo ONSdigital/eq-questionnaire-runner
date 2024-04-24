@@ -14,7 +14,7 @@ TEST_TEMPLATE = """from tests.integration.integration_test_case import Integrati
 
 class Test{class_name}(IntegrationTestCase):
     def test_{function_name}(self):
-        self.launchSurvey("{schema_name}")
+        self.launchSurveyV2(schema_name="{schema_name}")
 """
 
 survey_journey: Dict[str, str | bool | None] = {

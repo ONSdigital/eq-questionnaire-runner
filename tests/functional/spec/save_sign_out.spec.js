@@ -60,7 +60,7 @@ describe("Save sign out / Exit", () => {
   });
 
   it("Given a I have started a social questionnaire, when I select save and sign out, then I am redirected to the signed out page and the correct access code link is shown", async () => {
-    await browser.openQuestionnaire("test_theme_social.json", { version: "v2", theme: "social" });
+    await browser.openQuestionnaire("test_theme_social.json", { theme: "social" });
     await $(SubmitPage.saveSignOut()).click();
     await expect(browser).toHaveUrlContaining("/signed-out");
     await expect(await $("body").getHTML()).toContain("Your progress has been saved");

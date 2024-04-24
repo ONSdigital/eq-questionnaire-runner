@@ -4,7 +4,6 @@ from typing import Optional, Union
 import pytest
 from mock import MagicMock, Mock
 
-from app.authentication.auth_payload_versions import AuthPayloadVersion
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.answer import Answer, AnswerDict
 from app.data_models.data_stores import DataStores
@@ -549,7 +548,9 @@ def test_answer_source_repeating_block_answers_in_repeat(
 )
 def test_metadata_source(metadata_identifier, expected_result):
     value_source_resolver = get_value_source_resolver(
-        data_stores=DataStores(metadata=get_metadata({"region_code": "GB-ENG"}))
+        data_stores=DataStores(
+            metadata=get_metadata(extra_metadata={"region_code": "GB-ENG"})
+        )
     )
 
     source = {"source": "metadata", "identifier": metadata_identifier}
@@ -575,13 +576,10 @@ def test_resolve_metadata_source_with_no_metadata_raises_exception():
 )
 def test_metadata_source_v2_metadata_structure(metadata_identifier, expected_result):
     metadata = get_metadata(
-        {
-            "version": AuthPayloadVersion.V2,
+        extra_metadata={
             "region_code": "GB-ENG",
-            "survey_metadata": {
-                "data": {"display_address": "68 Abingdon Road, Goathill"}
-            },
-        }
+            "display_address": "68 Abingdon Road, Goathill",
+        },
     )
 
     value_source_resolver = get_value_source_resolver(

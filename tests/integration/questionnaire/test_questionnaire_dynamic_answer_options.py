@@ -30,7 +30,7 @@ class TestQuestionnaireDynamicAnswerOptionsFunctionDriven(IntegrationTestCase):
 
     def assert_dynamic_answer_options(self, schema_name):
         # Given I launch a schema with dynamic options with additional static option
-        self.launchSurvey(schema_name)
+        self.launchSurveyV2(schema_name=schema_name)
 
         # When I answer the questions using the dynamic options
         self.complete_reference_date_question()
@@ -65,7 +65,7 @@ class TestQuestionnaireDynamicAnswerOptionsFunctionDriven(IntegrationTestCase):
 
     def assert_dynamic_answer_options_no_answer_provided(self, schema_name):
         # Given I launch a schema with dynamic options with additional static option
-        self.launchSurvey(schema_name, roles=["dumper"])
+        self.launchSurveyV2(schema_name=schema_name, roles=["dumper"])
 
         # When I Save and continue without answering any questions
         self.complete_reference_date_question()
@@ -128,8 +128,8 @@ class TestQuestionnaireDynamicAnswerOptionsFunctionDriven(IntegrationTestCase):
 
     def test_static_answer_options(self):
         # Given I launch a schema with dynamic options with additional static option
-        self.launchSurvey(
-            "test_dynamic_answer_options_function_driven_with_static_options"
+        self.launchSurveyV2(
+            schema_name="test_dynamic_answer_options_function_driven_with_static_options"
         )
 
         # When I answer the questions using the static options
@@ -165,8 +165,8 @@ class TestQuestionnaireDynamicAnswerOptionsFunctionDriven(IntegrationTestCase):
 
     def test_dynamic_options_answer_cleared_on_dependency_change(self):
         # Given I launch a schema and submit an answer for a question which has dynamic options
-        self.launchSurvey(
-            "test_dynamic_answer_options_function_driven_with_static_options"
+        self.launchSurveyV2(
+            schema_name="test_dynamic_answer_options_function_driven_with_static_options"
         )
         self.complete_reference_date_question()
         self.answer_checkbox_question(["2020-12-29", "2020-12-30"])

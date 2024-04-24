@@ -11,7 +11,7 @@ class TestQuestionnaireListChangeEvaluatesSections(QuestionnaireTestCase):
         return filtered[0].get("href")
 
     def test_without_primary_person(self):
-        self.launchSurvey("test_list_change_evaluates_sections")
+        self.launchSurveyV2(schema_name="test_list_change_evaluates_sections")
 
         self.get("/questionnaire/sections/who-lives-here/")
         self.assertEqualUrl("/questionnaire/primary-person-list-collector/")
@@ -45,7 +45,7 @@ class TestQuestionnaireListChangeEvaluatesSections(QuestionnaireTestCase):
         self.assertEqualUrl("/questionnaire/own-or-rent/?resume=True")
 
     def test_with_primary_person(self):
-        self.launchSurvey("test_list_change_evaluates_sections")
+        self.launchSurveyV2(schema_name="test_list_change_evaluates_sections")
 
         self.get("/questionnaire/sections/accommodation-section/")
         self.post()
