@@ -26,7 +26,7 @@ class SubmissionTestCase(IntegrationTestCase):
 class TestQuestionnaireSubmission(SubmissionTestCase):
     def _launch_and_submit_questionnaire(self):
         # Launch questionnaire
-        self.launchSurvey("test_submit_with_custom_submission_text")
+        self.launchSurveyV2(schema_name="test_submit_with_custom_submission_text")
 
         # Answer questions and submit survey
         self.post(action="start_questionnaire")
@@ -63,7 +63,7 @@ class TestQuestionnaireSubmissionSchemaURL(SubmissionTestCase):
 
         # Given
         token = self.token_generator.create_token_with_schema_url(
-            "test_textarea", schema_url
+            schema_name=None, schema_url=schema_url
         )
 
         # When
@@ -88,7 +88,7 @@ class TestQuestionnaireSubmissionSchemaURL(SubmissionTestCase):
 class TestQuestionnaireSubmissionHub(SubmissionTestCase):
     def _launch_and_submit_questionnaire(self):
         # Launch questionnaire
-        self.launchSurvey("test_hub_and_spoke")
+        self.launchSurveyV2(schema_name="test_hub_and_spoke")
 
         # Answer questions and submit questionnaire
         self.post()
@@ -131,7 +131,7 @@ class TestQuestionnaireSubmissionHub(SubmissionTestCase):
 class TestQuestionnaireSubmissionWithSummary(SubmissionTestCase):
     def _launch_and_submit_questionnaire(self):
         # Launch questionnaire
-        self.launchSurvey("test_submit_with_summary")
+        self.launchSurveyV2(schema_name="test_submit_with_summary")
 
         # Answer questions and submit survey
         self.post()
@@ -154,7 +154,7 @@ class TestQuestionnaireSubmissionWithSummary(SubmissionTestCase):
         self._mock_submission_failure()
 
         # Given I launch and answer a questionnaire, When I submit but the submissions fails
-        self.launchSurvey("test_submit_with_summary")
+        self.launchSurveyV2(schema_name="test_submit_with_summary")
         self.post()
         self.post({"dessert-answer": "Cake"})
         self.post({"dessert-confirmation-answer": "Yes"})

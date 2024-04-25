@@ -5,7 +5,7 @@ from tests.integration.questionnaire import SUBMIT_URL_PATH, THANK_YOU_URL_PATH
 class TestQuestionnaireQuestionDefinition(IntegrationTestCase):
     def test_question_definition(self):
         # Given I launch a questionnaire with definitions
-        self.launchSurvey("test_question_definition")
+        self.launchSurveyV2(schema_name="test_question_definition")
 
         # When I start the survey I am presented with the definitions title and content correctly
         self.assertInBody(

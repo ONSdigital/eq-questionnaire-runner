@@ -7,7 +7,6 @@ from sdc.crypto.encrypter import encrypt
 from sdc.crypto.key_store import KeyStore
 from structlog import contextvars, get_logger
 
-from app.authentication.auth_payload_versions import AuthPayloadVersion
 from app.authentication.user import User
 from app.authentication.user_id_generator import UserIDGenerator
 from app.data_models import QuestionnaireStore
@@ -18,7 +17,6 @@ from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.router import Router
 from app.questionnaire.routing_path import RoutingPath
 from app.submitter import GCSSubmitter, LogSubmitter, RabbitMQSubmitter
-from app.submitter.converter import convert_answers
 from app.submitter.converter_v2 import convert_answers_v2
 from app.submitter.submission_failed import SubmissionFailedException
 from app.utilities.bind_context import bind_contextvars_schema_from_metadata
@@ -87,7 +85,6 @@ def _submit_data(user: User) -> bool:
 
         message: str = _get_converted_answers_message(
             full_routing_path=full_routing_path,
-            metadata=metadata,
             questionnaire_store=questionnaire_store,
             schema=schema,
             submitted_at=submitted_at,
@@ -120,24 +117,17 @@ def _submit_data(user: User) -> bool:
 
 def _get_converted_answers_message(
     full_routing_path: Iterable[RoutingPath],
-    metadata: MetadataProxy,
     questionnaire_store: QuestionnaireStore,
     schema: QuestionnaireSchema,
     submitted_at: datetime,
 ) -> str:
     """
-    This gets converted answer message based on the selected version.
-    For version 1 `app.submitter.converter.convert_answers` is used whereas for version 2 `app.submitter.converter_v2.convert_answers_v2` is used
+    This gets converted answer message based on the selected version, currently only v2 is supported so `app.submitter.converter_v2.convert_answers_v2` is used
     Returns:
         object: str
     """
-    answer_converter = (
-        convert_answers_v2
-        if metadata.version is AuthPayloadVersion.V2
-        else convert_answers
-    )
     return json_dumps(
-        answer_converter(
+        convert_answers_v2(
             schema=schema,
             questionnaire_store=questionnaire_store,
             full_routing_path=full_routing_path,

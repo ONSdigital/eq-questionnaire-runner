@@ -76,13 +76,8 @@ class MetadataProxy:
         )
 
         survey_metadata = None
-        if version is AuthPayloadVersion.V2:
-            serialized_metadata = cls.serialize(_metadata.pop("survey_metadata", {}))
-            if serialized_metadata:
-                survey_metadata = SurveyMetadata(**serialized_metadata)
-        else:
-            serialized_metadata = cls.serialize(_metadata)
-            survey_metadata = SurveyMetadata(data=serialized_metadata)
+        if serialized_metadata := cls.serialize(_metadata.pop("survey_metadata", {})):
+            survey_metadata = SurveyMetadata(**serialized_metadata)
 
         top_level_data = {
             key: _metadata.pop(key, None) for key in TOP_LEVEL_METADATA_KEYS

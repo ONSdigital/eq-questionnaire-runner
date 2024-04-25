@@ -15,7 +15,6 @@ from app.questionnaire.questionnaire_schema import (
     QuestionnaireSchema,
 )
 from app.questionnaire.routing_path import RoutingPath
-from app.submitter.converter import convert_answers
 from app.submitter.converter_v2 import convert_answers_v2
 from app.submitter.submission_failed import SubmissionFailedException
 from app.utilities.json import json_dumps
@@ -82,13 +81,7 @@ class SubmissionHandler:
         self._questionnaire_store.save()
 
     def get_payload(self) -> dict:
-        answer_converter = (
-            convert_answers_v2
-            if self._metadata.version is AuthPayloadVersion.V2
-            else convert_answers
-        )
-
-        payload = answer_converter(
+        payload = convert_answers_v2(
             self._schema,
             self._questionnaire_store,
             self._full_routing_path,

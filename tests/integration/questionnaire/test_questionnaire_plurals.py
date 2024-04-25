@@ -3,7 +3,7 @@ from tests.integration.integration_test_case import IntegrationTestCase
 
 class TestQuestionnairePlurals(IntegrationTestCase):
     def test_plural_page(self):
-        self.launchSurvey("test_plural_forms")
+        self.launchSurveyV2(schema_name="test_plural_forms")
 
         self.post({"number-of-people-answer": 0})
 

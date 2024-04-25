@@ -7,7 +7,7 @@ ESCAPED_CONTENT = "&#34;&gt;&lt;b&gt;some html&lt;/b&gt;"
 
 class TestQuestionnaireHtmlEscaping(IntegrationTestCase):
     def test_quotes_in_textfield(self):
-        self.launchSurvey("test_textfield")
+        self.launchSurveyV2(schema_name="test_textfield")
         self.post({"name-answer": HTML_CONTENT})
 
         self.get("/questionnaire/name-block")
@@ -15,7 +15,7 @@ class TestQuestionnaireHtmlEscaping(IntegrationTestCase):
         assert ESCAPED_CONTENT in self.getResponseData()
 
     def test_quotes_in_textarea(self):
-        self.launchSurvey("test_textarea")
+        self.launchSurveyV2(schema_name="test_textarea")
         self.post({"answer": HTML_CONTENT})
 
         self.get("/questionnaire/textarea-block")
@@ -23,7 +23,9 @@ class TestQuestionnaireHtmlEscaping(IntegrationTestCase):
         assert ESCAPED_CONTENT in self.getResponseData()
 
     def test_quotes_in_detail_answer(self):
-        self.launchSurvey("test_radio_mandatory_with_detail_answer_mandatory")
+        self.launchSurveyV2(
+            schema_name="test_radio_mandatory_with_detail_answer_mandatory"
+        )
         self.post(
             {"radio-mandatory-answer": "Other", "other-answer-mandatory": HTML_CONTENT}
         )
@@ -44,18 +46,18 @@ class TestQuestionnaireHtmlEscaping(IntegrationTestCase):
         ]
         for schema, answer_id in testdata:
             with self.subTest(schema=schema, answer_id=answer_id):
-                self.launchSurvey(schema)
+                self.launchSurveyV2(schema_name=schema)
                 self.post({answer_id: HTML_CONTENT})
 
                 assert ESCAPED_CONTENT in self.getResponseData()
 
     def test_textfield_summary(self):
-        self.launchSurvey("test_textfield")
+        self.launchSurveyV2(schema_name="test_textfield")
         self.post({"name-answer": HTML_CONTENT})
         assert ESCAPED_CONTENT in self.getResponseData()
 
     def test_relationships(self):
-        self.launchSurvey("test_relationships")
+        self.launchSurveyV2(schema_name="test_relationships")
         self.post({"anyone-else": "Yes"})
         self.post({"first-name": HTML_CONTENT, "last-name": "Jones"})
         self.post({"anyone-else": "Yes"})
@@ -80,7 +82,7 @@ class TestQuestionnaireHtmlEscaping(IntegrationTestCase):
         )
 
     def test_composite_address(self):
-        self.launchSurvey("test_address")
+        self.launchSurveyV2(schema_name="test_address")
         self.post(
             {
                 "address-mandatory-line1": "<p>7 Evelyn Street</p>",
@@ -94,7 +96,7 @@ class TestQuestionnaireHtmlEscaping(IntegrationTestCase):
         )
 
     def test_composite_address_summary(self):
-        self.launchSurvey("test_address")
+        self.launchSurveyV2(schema_name="test_address")
         self.post(
             {
                 "address-mandatory-line1": "<p>7 Evelyn Street</p>",
@@ -107,7 +109,7 @@ class TestQuestionnaireHtmlEscaping(IntegrationTestCase):
         self.assertInBody("&lt;p&gt;7 Evelyn Street&lt;/p&gt;")
 
     def test_list_collector(self):
-        self.launchSurvey("test_list_collector")
+        self.launchSurveyV2(schema_name="test_list_collector")
         self.post({"anyone-else": "Yes"})
         self.post(
             {
@@ -122,7 +124,7 @@ class TestQuestionnaireHtmlEscaping(IntegrationTestCase):
         assert expected_remove_aria_label in self.getResponseData()
 
     def test_summary(self):
-        self.launchSurvey("test_submit_with_summary")
+        self.launchSurveyV2(schema_name="test_submit_with_summary")
         self.post({"radio-answer": "Bacon"})
         self.post({"dessert-answer": HTML_CONTENT})
         self.post({"dessert-confirmation-answer": "Yes"})
@@ -136,7 +138,7 @@ class TestQuestionnaireHtmlEscaping(IntegrationTestCase):
         assert expected_change_aria_label in self.getResponseData()
 
     def test_radio_mandatory_error_with_placeholders(self):
-        self.launchSurvey("test_submit_with_summary")
+        self.launchSurveyV2(schema_name="test_submit_with_summary")
         self.post({"radio-answer": "Bacon"})
         self.post({"dessert-answer": HTML_CONTENT})
         self.post()

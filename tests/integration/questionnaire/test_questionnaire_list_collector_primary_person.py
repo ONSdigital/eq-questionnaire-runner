@@ -7,14 +7,14 @@ from tests.integration.questionnaire import QuestionnaireTestCase
 
 class TestQuestionnaireListCollector(QuestionnaireTestCase):
     def test_invalid_list_on_primary_person_collector(self):
-        self.launchSurvey("test_list_collector_primary_person")
+        self.launchSurveyV2(schema_name="test_list_collector_primary_person")
 
         self.get("/questionnaire/invalid/123423/add-or-edit-person/")
 
         self.assertStatusNotFound()
 
     def test_invalid_list_item_id_for_primary_person_add_block(self):
-        self.launchSurvey("test_list_collector_primary_person")
+        self.launchSurveyV2(schema_name="test_list_collector_primary_person")
         self.post({"you-live-here": "Yes"})
 
         self.assertInUrl("add-or-edit-primary-person/")
@@ -24,7 +24,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
         self.assertStatusNotFound()
 
     def test_non_primary_person_list_item_id_for_primary_person_add_block(self):
-        self.launchSurvey("test_list_collector_primary_person")
+        self.launchSurveyV2(schema_name="test_list_collector_primary_person")
 
         # Add a non-primary person
         self.post({"you-live-here": "No"})
@@ -52,7 +52,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
         self.assertStatusNotFound()
 
     def test_adding_then_removing_primary_person(self):
-        self.launchSurvey("test_list_collector_primary_person")
+        self.launchSurveyV2(schema_name="test_list_collector_primary_person")
 
         self.post({"you-live-here": "Yes"})
 
@@ -83,7 +83,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
         self.assertInBody("James May")
 
     def test_cannot_remove_primary_person_from_list_collector(self):
-        self.launchSurvey("test_list_collector_primary_person")
+        self.launchSurveyV2(schema_name="test_list_collector_primary_person")
 
         self.post({"you-live-here": "Yes"})
 
@@ -112,7 +112,9 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
         response_id = random.choices(string.digits, k=16)
 
         # Given I initially answer 'No' to the primary person list collector
-        self.launchSurvey("test_list_collector_primary_person", reponse_id=response_id)
+        self.launchSurveyV2(
+            schema_name="test_list_collector_primary_person", reponse_id=response_id
+        )
         self.post({"you-live-here": "No"})
 
         # When I change my answer to 'Yes' and sign out
@@ -121,14 +123,16 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
         self.signOut()
 
         # Then on resuming, I am returned to the primary-person-list-collector
-        self.launchSurvey("test_list_collector_primary_person", reponse_id=response_id)
+        self.launchSurveyV2(
+            schema_name="test_list_collector_primary_person", reponse_id=response_id
+        )
         self.assertInUrl("/questionnaire/primary-person-list-collector/")
 
     def test_section_summary_with_primary_no_driving_question_on_path(
         self,
     ):
-        self.launchSurvey(
-            "test_list_collector_primary_and_collector_with_driving_question"
+        self.launchSurveyV2(
+            schema_name="test_list_collector_primary_and_collector_with_driving_question"
         )
 
         self.assertInBody("Start section")

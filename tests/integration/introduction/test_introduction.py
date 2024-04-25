@@ -6,7 +6,7 @@ from tests.integration.integration_test_case import IntegrationTestCase
 class TestIntroduction(IntegrationTestCase):
     def test_mail_link_contains_ru_ref_in_subject(self):
         # Given a business survey
-        self.launchSurvey("test_introduction")
+        self.launchSurveyV2(schema_name="test_introduction")
 
         # When on the introduction page
         # Then the email link is present with the ru_ref in the subject
@@ -14,7 +14,7 @@ class TestIntroduction(IntegrationTestCase):
 
     def test_intro_description_displayed(self):
         # Given survey containing intro description
-        self.launchSurvey("test_introduction")
+        self.launchSurveyV2(schema_name="test_introduction")
 
         # When on the introduction page
         # Then description should be displayed
@@ -24,7 +24,7 @@ class TestIntroduction(IntegrationTestCase):
 
     def test_intro_description_not_displayed(self):
         # Given survey without introduction description
-        self.launchSurvey("test_textfield")
+        self.launchSurveyV2(schema_name="test_textfield")
 
         # When on the introduction page
         # Then description should not be displayed
@@ -32,7 +32,7 @@ class TestIntroduction(IntegrationTestCase):
 
     def test_intro_basis_for_completion_displayed(self):
         # Given survey with basis for completion
-        self.launchSurvey("test_introduction")
+        self.launchSurveyV2(schema_name="test_introduction")
 
         # When on the introduction page
         # Then basis for completion should be displayed
@@ -40,7 +40,7 @@ class TestIntroduction(IntegrationTestCase):
 
     def test_intro_basis_for_completion_not_displayed(self):
         # Given survey without basis for completion
-        self.launchSurvey("test_introduction")
+        self.launchSurveyV2(schema_name="test_introduction")
 
         # When on the introduction page
         # Then basis for completion should not be displayed
@@ -48,7 +48,7 @@ class TestIntroduction(IntegrationTestCase):
 
     def test_start_survey_sets_started_at(self):
         # Given survey with a start survey button
-        self.launchSurvey("test_introduction", roles=["dumper"])
+        self.launchSurveyV2(schema_name="test_introduction", roles=["dumper"])
 
         self.post(action="start_questionnaire")
 
@@ -64,7 +64,7 @@ class TestIntroduction(IntegrationTestCase):
 
     def test_legal_basis_should_be_visible(self):
         # Given survey with legal_basis for completion
-        self.launchSurvey("test_introduction")
+        self.launchSurveyV2(schema_name="test_introduction")
 
         # When on the introduction page
         # Then legal_basis should be displayed
@@ -72,14 +72,14 @@ class TestIntroduction(IntegrationTestCase):
 
     def test_legal_basis_northern_ireland(self):
         # Given northernireland survey with legal_basis
-        self.launchSurvey("test_introduction")
+        self.launchSurveyV2(schema_name="test_introduction")
 
         # When on the introduction page
         # Then legal_basis should be displayed
         self.assertInBody("Your response is legally required")
 
     def test_contact_links(self):
-        self.launchSurvey("test_introduction")
+        self.launchSurveyV2(schema_name="test_introduction")
         self.assertInBody(
             'If the company details or structure have changed contact us on <a href="tel:03001234931">0300 1234 931</a> '
             'or email <a href="mailto:surveys@ons.gov.uk?subject=Change%20of%20details%20reference%2012345678901A">surveys@ons.gov.uk</a>'

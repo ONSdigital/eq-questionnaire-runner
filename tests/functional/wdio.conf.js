@@ -201,7 +201,7 @@ export const config = {
       async function (
         schema,
         {
-          version = "v1",
+          launchVersion = "v2",
           theme = "default",
           userId = JwtHelper.getRandomString(10),
           collectionId = JwtHelper.getRandomString(10),
@@ -218,7 +218,7 @@ export const config = {
         } = {},
       ) {
         const token = await JwtHelper.generateToken(schema, {
-          version,
+          launchVersion,
           theme,
           userId,
           collectionId,

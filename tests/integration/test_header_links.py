@@ -66,7 +66,7 @@ class TestHeaderLinks(IntegrationTestCase):
 class TestHeaderLinksPreSubmission(TestHeaderLinks):
     def test_links_in_header_when_valid_session(self):
         # Given
-        self.launchSurvey("test_thank_you")
+        self.launchSurveyV2(schema_name="test_thank_you")
 
         # When
         self.assertStatusOK()
@@ -78,7 +78,7 @@ class TestHeaderLinksPreSubmission(TestHeaderLinks):
 
     def test_links_in_header_when_no_session_but_cookie_exists(self):
         # Given
-        self.launchSurvey("test_thank_you")
+        self.launchSurveyV2(schema_name="test_thank_you")
         self.assertInUrl("questionnaire/did-you-know/")
         self.saveAndSignOut()
 
@@ -140,7 +140,7 @@ class TestHeaderLinksPreSubmission(TestHeaderLinks):
 class TestHeaderLinksPostSubmission(TestHeaderLinks):
     def test_links_in_header_when_valid_session(self):
         # Given
-        self.launchSurvey("test_thank_you")
+        self.launchSurveyV2(schema_name="test_thank_you")
         self.post()
         self.post()
 
@@ -184,7 +184,7 @@ class TestHeaderLinksPostSubmission(TestHeaderLinks):
 class TestHeaderLinksPostSignOut(TestHeaderLinks):
     def test_links_not_in_header_after_sign_out(self):
         # Given
-        self.launchSurvey("test_thank_you")
+        self.launchSurveyV2(schema_name="test_thank_you")
         self.assert_my_account_link_exist()
         self.assert_sign_out_link_exist()
         self.assert_help_link_exist()
@@ -202,7 +202,7 @@ class TestHeaderLinksPostSignOut(TestHeaderLinks):
 
     def test_links_not_in_header_after_sign_out_theme_social(self):
         # Given
-        self.launchSurvey("test_theme_social")
+        self.launchSurveyV2(schema_name="test_theme_social")
         self.assert_my_account_link_does_not_exist()
         self.assert_sign_out_link_does_not_exist()
         self.assert_help_link_does_not_exist()

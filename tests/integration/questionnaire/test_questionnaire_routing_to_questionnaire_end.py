@@ -4,7 +4,7 @@ from tests.integration.questionnaire import SUBMIT_URL_PATH
 
 class TestRoutingToQuestionnaireEndBase(IntegrationTestCase):
     def _launch_and_complete_questionnaire(self, schema):
-        self.launchSurvey(schema)
+        self.launchSurveyV2(schema_name=schema)
         self.post({"test-answer": "No"})
 
 
