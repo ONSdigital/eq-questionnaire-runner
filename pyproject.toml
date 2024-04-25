@@ -4,6 +4,7 @@ blank_line_before_tag="load,extends,block"
 max_line_length=120
 # _base.html excluded due to the bad </script> nesting after format
 exclude=".templates/layouts/_base.html"
+ignore="H025"
 
 [tool.poetry]
 name = "eq-questionnaire-runner"
