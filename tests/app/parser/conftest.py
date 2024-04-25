@@ -6,20 +6,12 @@ import pytest
 from app.authentication.auth_payload_versions import AuthPayloadVersion
 
 
-def get_metadata(version):
-    return (
-        fake_metadata_runner_v2()
-        if version is AuthPayloadVersion.V2
-        else fake_metadata_runner()
-    )
+def get_metadata():
+    return fake_metadata_runner_v2()
 
 
-def get_metadata_full(version):
-    return (
-        fake_metadata_full_v2_business()
-        if version is AuthPayloadVersion.V2
-        else fake_metadata_full()
-    )
+def get_metadata_full():
+    return fake_metadata_full_v2_business()
 
 
 def get_metadata_social():
@@ -44,7 +36,7 @@ def fake_metadata_runner():
 @pytest.fixture()
 def fake_business_metadata_runner():
     """Generate a set of claims required for runner using business parameters instead of schema_name"""
-    metadata = get_metadata(version=None)
+    metadata = get_metadata()
     del metadata["schema_name"]
 
     metadata["eq_id"] = "mbs"
@@ -52,27 +44,6 @@ def fake_business_metadata_runner():
     metadata["response_expires_at"] = get_response_expires_at()
 
     return metadata
-
-
-def fake_metadata_full():
-    """Generate a fake set of claims
-    These claims should represent all claims known to runner, including common questionnaire
-    level claims.
-    """
-    fake_questionnaire_claims = {
-        "user_id": "1",
-        "period_id": "3",
-        "period_str": "2016-01-01",
-        "ref_p_start_date": "2016-02-02",
-        "ref_p_end_date": "2016-03-03",
-        "ru_name": "Apple",
-        "return_by": "2016-07-07",
-        "case_ref": "1000000000000001",
-        "case_id": str(uuid.uuid4()),
-        "response_expires_at": get_response_expires_at(),
-    }
-
-    return dict(fake_metadata_runner(), **fake_questionnaire_claims)
 
 
 def fake_metadata_runner_v2():

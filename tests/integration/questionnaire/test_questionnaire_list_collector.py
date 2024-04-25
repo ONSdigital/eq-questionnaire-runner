@@ -10,28 +10,28 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
         return selected[0].get("href")
 
     def test_invalid_add_block_url(self):
-        self.launchSurvey("test_list_collector")
+        self.launchSurveyV2(schema_name="test_list_collector")
 
         self.get("/questionnaire/people/123/add-person")
 
         self.assertStatusNotFound()
 
     def test_invalid_list_name(self):
-        self.launchSurvey("test_list_collector")
+        self.launchSurveyV2(schema_name="test_list_collector")
 
         self.get("/questionnaire/invalid-list-name/add-person/")
 
         self.assertStatusNotFound()
 
     def test_invalid_list_item_id_for_edit_block(self):
-        self.launchSurvey("test_list_collector")
+        self.launchSurveyV2(schema_name="test_list_collector")
 
         self.get("/questionnaire/people/123/edit-person")
 
         self.assertStatusNotFound()
 
     def test_happy_path(self):
-        self.launchSurvey("test_list_collector")
+        self.launchSurveyV2(schema_name="test_list_collector")
 
         self.assertInBody("Does anyone else live here?")
 
@@ -105,7 +105,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
         self.assertEqualUrl("/questionnaire/list-collector/")
 
     def test_list_collector_submission(self):
-        self.launchSurvey("test_list_collector")
+        self.launchSurveyV2(schema_name="test_list_collector")
 
         self.post(action="start_questionnaire")
 
@@ -152,7 +152,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
         self.assertInUrl("thank-you")
 
     def test_optional_list_collector_submission(self):
-        self.launchSurvey("test_list_collector")
+        self.launchSurveyV2(schema_name="test_list_collector")
 
         self.post(action="start_questionnaire")
 
@@ -171,7 +171,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
         self.assertInUrl(SUBMIT_URL_PATH)
 
     def test_list_summary_on_question(self):
-        self.launchSurvey("test_list_summary_on_question")
+        self.launchSurveyV2(schema_name="test_list_summary_on_question")
 
         self.post(action="start_questionnaire")
 
@@ -196,7 +196,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
         self.assertInBody("Marie Claire Doe")
 
     def test_questionnaire_summary_with_custom_section_summary(self):
-        self.launchSurvey("test_list_summary_on_question")
+        self.launchSurveyV2(schema_name="test_list_summary_on_question")
 
         self.post(action="start_questionnaire")
 
@@ -219,7 +219,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
         self.assertNotInBody("No, all household members are unrelated")
 
     def test_cancel_text_displayed_on_add_block_if_exists(self):
-        self.launchSurvey("test_list_collector")
+        self.launchSurveyV2(schema_name="test_list_collector")
 
         self.post(action="start_questionnaire")
 
@@ -228,7 +228,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
         self.assertInBody("Don’t need to add anyone else?")
 
     def test_cancel_text_displayed_on_edit_block_if_exists(self):
-        self.launchSurvey("test_list_collector")
+        self.launchSurveyV2(schema_name="test_list_collector")
 
         self.post(action="start_questionnaire")
 
@@ -243,7 +243,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
         self.assertInBody("Don’t need to change anything?")
 
     def test_warning_text_displayed_on_remove_block_if_exists(self):
-        self.launchSurvey("test_list_collector")
+        self.launchSurveyV2(schema_name="test_list_collector")
 
         self.post(action="start_questionnaire")
 
@@ -263,7 +263,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
 
     def test_list_collector_return_to_when_section_summary_cant_be_displayed(self):
         # Given I have completed a section and returned to a list_collector from the section summary
-        self.launchSurvey("test_relationships", roles=["dumper"])
+        self.launchSurveyV2(schema_name="test_relationships", roles=["dumper"])
 
         self.add_person("Marie", "Doe")
 
@@ -285,7 +285,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
     def test_adding_person_using_second_list_collector_when_no_people(
         self,
     ):
-        self.launchSurvey("test_list_collector_two_list_collectors")
+        self.launchSurveyV2(schema_name="test_list_collector_two_list_collectors")
 
         self.assertInBody("Does anyone live at your address?")
 
@@ -326,7 +326,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
     def test_adding_from_the_summary_page_adds_the_return_to_param_to_the_url(
         self,
     ):
-        self.launchSurvey("test_list_collector")
+        self.launchSurveyV2(schema_name="test_list_collector")
 
         self.assertInBody("Does anyone else live here?")
 
@@ -355,7 +355,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
     def test_removing_from_the_summary_page_adds_the_return_to_param_to_the_url(
         self,
     ):
-        self.launchSurvey("test_list_collector")
+        self.launchSurveyV2(schema_name="test_list_collector")
 
         self.assertInBody("Does anyone else live here?")
 
@@ -384,7 +384,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
     def test_changing_item_from_the_summary_page_adds_the_return_to_param_to_the_url(
         self,
     ):
-        self.launchSurvey("test_list_collector")
+        self.launchSurveyV2(schema_name="test_list_collector")
 
         self.assertInBody("Does anyone else live here?")
 
@@ -411,7 +411,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
     def test_adding_from_the_summary_page_and_then_removing_from_parent_page_keeps_return_to_url_param(
         self,
     ):
-        self.launchSurvey("test_list_collector")
+        self.launchSurveyV2(schema_name="test_list_collector")
 
         self.assertInBody("Does anyone else live here?")
 
@@ -452,7 +452,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
     def test_adding_from_the_summary_page_and_then_changing_from_parent_page_keeps_return_to_url_param(
         self,
     ):
-        self.launchSurvey("test_list_collector")
+        self.launchSurveyV2(schema_name="test_list_collector")
 
         self.assertInBody("Does anyone else live here?")
 
@@ -493,7 +493,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
     def test_adding_from_the_summary_page_and_then_clicking_previous_link_from_edit_question_block_persists_return_to_url_param(
         self,
     ):
-        self.launchSurvey("test_list_collector")
+        self.launchSurveyV2(schema_name="test_list_collector")
 
         self.assertInBody("Does anyone else live here?")
 
@@ -532,7 +532,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
     def test_adding_from_the_summary_page_and_then_clicking_previous_link_from_remove_question_block_persists_return_to_url_param(
         self,
     ):
-        self.launchSurvey("test_list_collector")
+        self.launchSurveyV2(schema_name="test_list_collector")
 
         self.assertInBody("Does anyone else live here?")
 
@@ -571,7 +571,7 @@ class TestQuestionnaireListCollector(QuestionnaireTestCase):
     def test_adding_from_the_summary_page_and_then_adding_again_from_list_collector_persists_the_return_to_url_param(
         self,
     ):
-        self.launchSurvey("test_list_collector")
+        self.launchSurveyV2(schema_name="test_list_collector")
 
         self.assertInBody("Does anyone else live here?")
 

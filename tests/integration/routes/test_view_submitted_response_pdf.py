@@ -11,7 +11,7 @@ from tests.integration.routes.test_view_submitted_response import (
 class TestViewSubmissionResponsePDF(ViewSubmittedResponseBase):
     def test_download_when_submitted_response_not_enabled(self):
         # Given I launch and complete a questionnaire that does not have view-submitted-response enabled
-        self.launchSurvey("test_confirmation_email")
+        self.launchSurveyV2(schema_name="test_confirmation_email")
         self.post()
         self.post()
 

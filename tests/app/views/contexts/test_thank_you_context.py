@@ -19,7 +19,7 @@ def test_default_survey_context(app: Flask):
     with app.app_context():
         context = build_thank_you_context(
             SCHEMA,
-            get_metadata({"ru_name": "ESSENTIAL ENTERPRISE LTD"}),
+            get_metadata(extra_metadata={"ru_name": "ESSENTIAL ENTERPRISE LTD"}),
             SUBMITTED_AT,
             SURVEY_TYPE_DEFAULT,
         )
@@ -52,7 +52,9 @@ def test_default_survey_context_with_trad_as(app: Flask):
     with app.app_context():
         context = build_thank_you_context(
             SCHEMA,
-            get_metadata({"ru_name": "ESSENTIAL ENTERPRISE LTD", "trad_as": "EE"}),
+            get_metadata(
+                extra_metadata={"ru_name": "ESSENTIAL ENTERPRISE LTD", "trad_as": "EE"}
+            ),
             SUBMITTED_AT,
             SURVEY_TYPE_DEFAULT,
         )

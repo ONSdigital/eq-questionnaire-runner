@@ -3,7 +3,7 @@ from tests.integration.integration_test_case import IntegrationTestCase
 
 class TestCookie(IntegrationTestCase):
     def test_cookie_contents(self):
-        self.launchSurvey()
+        self.launchSurveyV2()
         cookie = self.getCookie()
 
         self.assertIsNotNone(cookie.get("_fresh"))

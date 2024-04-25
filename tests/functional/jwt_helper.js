@@ -61,7 +61,7 @@ export function getRandomString(length) {
 export function generateToken(
   schema,
   {
-    version,
+    launchVersion,
     theme,
     userId,
     collectionId,
@@ -93,7 +93,6 @@ export function generateToken(
   };
 
   // Payload
-  let payload = {};
   const txId = uuidv4();
   const jti = uuidv4();
   const iat = KJUR.jws.IntDate.get("now");
@@ -102,53 +101,22 @@ export function generateToken(
   const currentDate = new Date();
   currentDate.setUTCDate(currentDate.getUTCDate() + 1);
   const isoDate = currentDate.toISOString();
-
-  if (version === "v2") {
-    payload = {
-      tx_id: txId,
-      jti,
-      iat,
-      exp,
-      case_id: caseId,
-      response_id: responseId,
-      ...schemaParams,
-      collection_exercise_sid: collectionId,
-      region_code: regionCode,
-      language_code: languageCode,
-      account_service_url: "http://localhost:8000",
-      survey_metadata: getSurveyMetadata(theme, userId, displayAddress, surveyId, periodId, periodStr, ruRef, sdsDatasetId),
-      version: "v2",
-      response_expires_at: isoDate,
-    };
-  } else {
-    payload = {
-      tx_id: txId,
-      jti,
-      iat,
-      exp,
-      user_id: userId,
-      case_id: caseId,
-      ru_ref: "12345678901A",
-      response_id: responseId,
-      ru_name: "Apple",
-      trad_as: "Apple",
-      ...schemaParams,
-      collection_exercise_sid: collectionId,
-      period_id: periodId,
-      period_str: periodStr,
-      ref_p_start_date: "2017-01-01",
-      ref_p_end_date: "2017-02-01",
-      employment_date: "2016-06-10",
-      return_by: "2017-03-01",
-      display_address: displayAddress,
-      region_code: regionCode,
-      language_code: languageCode,
-      account_service_url: "http://localhost:8000",
-      response_expires_at: isoDate,
-    };
-  }
-
-  const oPayload = payload;
+  const oPayload = {
+    tx_id: txId,
+    jti,
+    iat,
+    exp,
+    case_id: caseId,
+    response_id: responseId,
+    ...schemaParams,
+    collection_exercise_sid: collectionId,
+    region_code: regionCode,
+    language_code: languageCode,
+    account_service_url: "http://localhost:8000",
+    survey_metadata: getSurveyMetadata(theme, userId, displayAddress, surveyId, periodId, periodStr, ruRef, sdsDatasetId),
+    version: launchVersion,
+    response_expires_at: isoDate,
+  };
 
   if (includeLogoutUrl) {
     oPayload.account_service_log_out_url = "http://localhost:8000";
