@@ -4,6 +4,7 @@ blank_line_before_tag="load,extends,block"
 max_line_length=120
 # _base.html excluded due to the bad </script> nesting after format
 exclude=".templates/layouts/_base.html"
+# when using double quote escape sequence in strings we get "H025 Tag seems to be an orphan" false positives
 ignore="H025"
 
 [tool.poetry]
