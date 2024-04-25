@@ -4,7 +4,7 @@ import IntroductionPageLinear from "../generated_pages/introduction/introduction
 describe("Introduction preview questions", () => {
   const introductionSchemaHub = "test_introduction_hub.json";
   const introductionSchemaLinear = "test_introduction.json";
-  const showButton = 'button[data-ga-category="Preview Survey"]';
+  const showButton = 'button[data-ga-label="Hide all"]';
   const previewSummaryContent = "#summary-accordion-1-content";
   const previewSectionTitle = ".ons-summary__group-title";
   const previewQuestion = ".ons-summary__item";
