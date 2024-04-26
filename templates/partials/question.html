@@ -1,148 +1,137 @@
 {% from "components/question/_macro.njk" import onsQuestion %}
 {% from "components/panel/_macro.njk" import onsPanel %}
 {% from "components/error/_macro.njk" import onsError %}
-
-{% from 'macros/helpers.html' import format_paragraphs %}
-{% from 'macros/helpers.html' import interviewer_note %}
+{% from "macros/helpers.html" import format_paragraphs %}
+{% from "macros/helpers.html" import interviewer_note %}
 
 {% set form = content.form %}
 {% set display = namespace(guidance=False) %}
-
-{% set title= interviewer_note(question.title) if block.interviewer_only else question.title %}
-{% set question_title= question.title %}
+{% set title = interviewer_note(question.title) if block.interviewer_only else question.title %}
+{% set question_title = question.title %}
 {% set question_description = format_paragraphs(question.description) %}
 {% set question_instruction = format_paragraphs(question.instruction) %}
 {% set question_error = form.question_errors[question.id] %}
-
 {%- if question.definition -%}
-  {% set definition_id = "question-definition" %}
-  {% set definition_content %}
-    {% set contents = question.definition.contents %}
-    {% include 'partials/contents.html' %}
-  {% endset %}
-  {% set question_definition = {
-    "title": question.definition.title,
-    "id": definition_id,
-    "content": definition_content,
-    "headingAttributes": {
-      "data-ga": "click",
-      "data-ga-category": "Question definition",
-      "data-ga-action": "Open panel",
-      "data-ga-label": question.definition.title,
-      "data-qa": definition_id ~ "-title"
-    },
-    "contentAttributes": {
-      "data-qa": definition_id ~ "-content"
-    }
-  } %}
+    {% set definition_id = "question-definition" %}
+    {% set definition_content %}
+        {% set contents = question.definition.contents %}
+        {% include "partials/contents.html" %}
+    {% endset %}
+    {% set question_definition = {
+            "title": question.definition.title,
+            "id": definition_id,
+            "content": definition_content,
+            "headingAttributes": {
+                "data-ga": "click",
+                "data-ga-category": "Question definition",
+                "data-ga-action": "Open panel",
+                "data-ga-label": question.definition.title,
+                "data-qa": definition_id ~ "-title"
+            },
+            "contentAttributes": {
+                "data-qa": definition_id ~ "-content"
+            }
+        } %}
 {% elif question.definitions %}
-  {%- set question_definitions -%}
-    {% for definition in question.definitions %}
-      {% set definition_id = "question-definition" %}
-      {% set category = 'Question definition' %}
-      {%- include 'partials/definition.html' -%}
-    {% endfor %}
-  {%- endset -%}
-{%- endif -%}
-
-{% set individual_response_guidance %}
-  {%- if show_individual_response_guidance == True -%}
-    {% set title = _("If you can’t answer questions for this person") %}
-    {% include 'partials/individual-response-guidance.html' %}
-  {%- endif -%}
-{% endset %}
-
-{%- if question.warning -%}
-  {% set question_warning = {"body": question.warning} %}
-{% endif %}
-
-{% set question_guidance %}
-  {%- if question.guidance -%}
-    {% set contents = question.guidance.contents %}
-    {% for item in contents %}
-      {%- if (item['title'], item['description'], item['list'], item['definition'], item['guidance'])|select|first -%}
-        {%  set display.guidance=True %}
-      {%- endif -%}
-    {% endfor %}
-    {%- if display.guidance -%}
-        {% call onsPanel({
-          "id": "question-guidance-" ~ question.id,
-          "classes": "ons-u-mb-m"
-        }) %}
-          {% include 'partials/contents.html' %}
-        {% endcall %}
-    {%- endif -%}
-  {% endif %}
-{% endset %}
-
-{%- set mutually_exclusive_question = question.type == 'MutuallyExclusive' -%}
-
-{% set question_answers %}
-  {% if mutually_exclusive_question %}
-    {%- set answer = question.answers[0] -%}
-
-    {%- set deselectionMessage = _("Selecting this will clear your answer") -%}
-    {%- set deselectGroupAdjective = _("cleared") -%}
-
-    {%- if answer.type == 'checkbox' -%}
-      {%- set deselectionMessage = _("Selecting this will deselect any selected options") -%}
-      {%- set deselectGroupAdjective = _("deselected") -%}
-    {%- endif -%}
-
-    {%- set mutuallyExclusive = {
-      "or": _("Or"),
-      "exclusiveOptions": map_select_config(form, question.answers[-1]),
-      "deselectionMessage": deselectionMessage,
-      "deselectGroupAdjective": deselectGroupAdjective,
-      "deselectExclusiveOptionAdjective": _("deselected")
-    } -%}
-
-    {% include 'partials/answer.html' %}
-  {%- else -%}
-    {%- set answers -%}
-      {%- for answer in question.answers -%}
-        {% include 'partials/answer.html' %}
-      {%- endfor -%}
+    {%- set question_definitions -%}
+        {% for definition in question.definitions %}
+            {% set definition_id = "question-definition" %}
+            {% set category = "Question definition" %}
+            {%- include 'partials/definition.html' -%}
+        {% endfor %}
     {%- endset -%}
-    {{ answers }}
-  {%- endif -%}
+{%- endif -%}
+{% set individual_response_guidance %}
+    {%- if show_individual_response_guidance == True -%}
+        {% set title = _("If you can’t answer questions for this person") %}
+        {% include "partials/individual-response-guidance.html" %}
+    {%- endif -%}
 {% endset %}
-
+{%- if question.warning -%}
+    {% set question_warning = {"body": question.warning} %}
+{% endif %}
+{% set question_guidance %}
+    {%- if question.guidance -%}
+        {% set contents = question.guidance.contents %}
+        {% for item in contents %}
+            {%- if (item['title'], item['description'], item['list'], item['definition'], item['guidance'])|select|first -%}
+                {% set display.guidance = True %}
+            {%- endif -%}
+        {% endfor %}
+        {%- if display.guidance -%}
+            {# djlint:off #}
+            {% call onsPanel({
+                "id": "question-guidance-" ~ question.id,
+                "classes": "ons-u-mb-m"
+            }) %}
+                {% include "partials/contents.html" %}
+            {% endcall %}
+            {# djlint:on #}
+        {%- endif -%}
+    {% endif %}
+{% endset %}
+{%- set mutually_exclusive_question = question.type == 'MutuallyExclusive' -%}
+{% set question_answers %}
+    {% if mutually_exclusive_question %}
+        {%- set answer = question.answers[0] -%}
+        {%- set deselectionMessage = _("Selecting this will clear your answer") -%}
+        {%- set deselectGroupAdjective = _("cleared") -%}
+        {%- if answer.type == 'checkbox' -%}
+            {%- set deselectionMessage = _("Selecting this will deselect any selected options") -%}
+            {%- set deselectGroupAdjective = _("deselected") -%}
+        {%- endif -%}
+        {# djlint:off #}
+        {%- set mutuallyExclusive = {
+            "or": _("Or"),
+            "exclusiveOptions": map_select_config(form, question.answers[-1]),
+            "deselectionMessage": deselectionMessage,
+            "deselectGroupAdjective": deselectGroupAdjective,
+            "deselectExclusiveOptionAdjective": _("deselected")
+        } -%}
+        {# djlint:on #}
+        {% include "partials/answer.html" %}
+    {%- else -%}
+        {%- set answers -%}
+            {%- for answer in question.answers -%}
+                {% include "partials/answer.html" %}
+            {%- endfor -%}
+        {%- endset -%}
+        {{ answers }}
+    {%- endif -%}
+{% endset %}
 {% call onsQuestion({
-  "id": question.id,
-  "title": title,
-  "description": question_description,
-  "instruction": question_instruction,
-  "warning": question_warning,
-  "definition": question_definition,
-  "legendIsQuestionTitle": should_wrap_with_fieldset(question)
-}) %}
-  {%- if content.list and content.list.list_items -%}
-    {% set list = content.list %}
-    <div class="ons-u-mb-m">
-      {% include 'partials/summary/list-summary.html' %}
-    </div>
-  {% endif %}
-  {{ individual_response_guidance }}
-  {{ question_definitions }}
-  {{ question_guidance }}
-
-  {% if question_error %}
-    {% set config = {
-      "text": question_error,
-      "id": question.id ~ '-error',
-      "attributes": {
-        "data-ga": "question-error",
-        "data-ga-category": "Question error",
-        "data-ga-action": question.type,
-        "data-ga-label": question.id
-      }
-    } %}
-    {% call onsError(config) %}
-      {{ question_answers }}
-    {% endcall %}
-  {% else %}
-    {{ question_answers }}
-  {% endif %}
-
+    "id": question.id,
+    "title": title,
+    "description": question_description,
+    "instruction": question_instruction,
+    "warning": question_warning,
+    "definition": question_definition,
+    "legendIsQuestionTitle": should_wrap_with_fieldset(question)
+    }) %}
+    {%- if content.list and content.list.list_items -%}
+        {% set list = content.list %}
+        <div class="ons-u-mb-m">{% include "partials/summary/list-summary.html" %}</div>
+    {% endif %}
+    {{ individual_response_guidance }}
+    {{ question_definitions }}
+    {{ question_guidance }}
+    {# djlint:off #}
+    {% if question_error %}
+        {% set config = {
+            "text": question_error,
+            "id": question.id ~ '-error',
+            "attributes": {
+                "data-ga": "question-error",
+                "data-ga-category": "Question error",
+                "data-ga-action": question.type,
+                "data-ga-label": question.id
+            }
+        } %}
+        {% call onsError(config) %}
+            {{ question_answers }}
+        {% endcall %}
+    {% else %}
+        {{ question_answers }}
+    {% endif %}
+    {# djlint:on #}
 {% endcall %}

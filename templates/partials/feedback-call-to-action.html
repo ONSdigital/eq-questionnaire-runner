@@ -1,5 +1,6 @@
-{% from 'components/feedback/_macro.njk' import onsFeedback %}
+{% from "components/feedback/_macro.njk" import onsFeedback %}
 
+{# djlint:off #}
 {{
     onsFeedback({
         "id": "feedback",
@@ -9,3 +10,4 @@
         "linkText": _("Give feedback")
     })
 }}
+{# djlint:on #}
