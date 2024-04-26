@@ -4,7 +4,7 @@ import Block3Page from "../../../generated_pages/metadata_routing/block3.page";
 import { click } from "../../../helpers";
 
 describe("Feature: Routing - Boolean Flag", () => {
-  it("Given I have a routing rule that uses a boolean flag and it is False, When I press continue, Then I should be taken to the Block2Page", async () => {
+  it("Given I have a routing rule that uses a boolean flag and it is False, When I press continue, Then I should be routed to the correct page", async () => {
     await browser.openQuestionnaire("test_metadata_routing.json", {
       booleanFlag: false,
     });
@@ -12,7 +12,7 @@ describe("Feature: Routing - Boolean Flag", () => {
     await expect(browser).toHaveUrlContaining(Block2Page.pageName);
   });
 
-  it("Given I have a routing rule that uses a boolean flag and it is True, When I press continue, Then I should skip Block2Page and be taken to Block3Page", async () => {
+  it("Given I have a routing rule that uses a boolean flag and it is True, When I press continue, Then I should be routed to the correct page ", async () => {
     await browser.openQuestionnaire("test_metadata_routing.json", {
       booleanFlag: true,
     });
