@@ -26,7 +26,7 @@ class TestFlushData(IntegrationTestCase):
         self.encrypt_instance = mock_encrypter_class
 
         super().setUp()
-        self.launchSurvey("test_textfield")
+        self.launchSurveyV2(schema_name="test_textfield")
 
         form_data = {"name-answer": "Joe Bloggs"}
         self.post(form_data)
@@ -137,49 +137,12 @@ class TestFlushData(IntegrationTestCase):
             "exp": time.time() + 1000,
             "response_id": "1234567890123456",
             "roles": ["flusher"],
+            "version": "v2",
+            "survey_metadata": {"data": {}},
         }
 
     @patch("app.routes.flush.convert_answers_v2")
-    @patch("app.routes.flush.convert_answers")
-    def test_flush_data_successful_v1(
-        self, mock_convert_answers, mock_convert_answers_v2
-    ):
-        mock_convert_answer_payload = {
-            "case_id": "7e0fd167-36af-4506-806d-421e5ba3544b",
-            "tx_id": "5432e910-c6ef-418a-abcc-a8de8c23b0f9",
-            "type": "uk.gov.ons.edc.eq:surveyresponse",
-            "version": "0.0.3",
-            "origin": "uk.gov.ons.edc.eq",
-            "survey_id": "001",
-            "flushed": True,
-            "submitted_at": "2023-02-07T11:41:12.126783+00:00",
-            "collection": {
-                "exercise_sid": "f9fb5e81-9820-44cc-a2c3-16bf382b4d8d",
-                "schema_name": "test_textfield",
-                "period": "201605",
-            },
-            "metadata": {"user_id": "UNKNOWN", "ru_ref": "12345678901A"},
-            "launch_language_code": "en",
-            "data": {
-                "answers": [{"answer_id": "name-answer", "value": "sdfsdaf"}],
-                "lists": [],
-            },
-            "started_at": "2023-02-07T11:40:46.845149+00:00",
-        }
-        mock_convert_answers.return_value = mock_convert_answer_payload
-        self.post(
-            url="/flush?token="
-            + self.token_generator.generate_token(self.get_payload())
-        )
-        self.assertStatusOK()
-        mock_convert_answers.assert_called_once()
-        mock_convert_answers_v2.assert_not_called()
-
-    @patch("app.routes.flush.convert_answers_v2")
-    @patch("app.routes.flush.convert_answers")
-    def test_flush_data_successful_v2(
-        self, mock_convert_answers, mock_convert_answers_v2
-    ):
+    def test_flush_data_successful_v2(self, mock_convert_answers_v2):
         mock_convert_answer_payload = {
             "case_id": "19300487-87e7-42df-9330-718efb08e660",
             "tx_id": "5d8b97f7-c8bd-42e1-88c9-e7721388463b",
@@ -216,15 +179,14 @@ class TestFlushData(IntegrationTestCase):
         )
         self.assertStatusOK()
         mock_convert_answers_v2.assert_called_once()
-        mock_convert_answers.assert_not_called()
 
     def test_flush_logs_output(self):
         with self.assertLogs() as logs:
             self.post(
-                url=f"/flush?token={self.token_generator.create_token(schema_name='test_textfield', payload=self.get_payload())}"
+                url=f"/flush?token={self.token_generator.create_token_v2(schema_name='test_textfield', **self.get_payload())}"
             )
 
-            flush_log = logs.output[5]
+            flush_log = logs.output[6]
 
             self.assertIn("successfully flushed answers", flush_log)
             self.assertIn("tx_id", flush_log)
@@ -234,23 +196,20 @@ class TestFlushData(IntegrationTestCase):
 
     def test_flush_logs_output_schema_url(self):
         schema_url = "http://eq-survey-register.url/my-test-schema"
-        token = self.token_generator.create_token_with_schema_url(
-            "test_textfield", schema_url
-        )
+        token = self.token_generator.create_token_with_schema_url(schema_url=schema_url)
         with HTTMock(self.schema_url_mock):
             self.get(url=f"/session?token={token}")
             self.assertStatusOK()
             with self.assertLogs() as logs:
                 self.post(
-                    url=f"/flush?token={self.token_generator.create_token_with_schema_url('test_textfield', schema_url, payload=self.get_payload())}"
+                    url=f"/flush?token={self.token_generator.create_token_with_schema_url(schema_url=schema_url, **self.get_payload())}"
                 )
 
-                flush_log = logs.output[5]
+                flush_log = logs.output[6]
 
                 self.assertIn("successfully flushed answers", flush_log)
                 self.assertIn("tx_id", flush_log)
                 self.assertIn("ce_id", flush_log)
-                self.assertIn("schema_name", flush_log)
                 self.assertIn("schema_url", flush_log)
 
     def test_flush_logs_output_cir_instrument_id(self):

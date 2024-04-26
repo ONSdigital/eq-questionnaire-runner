@@ -6,21 +6,21 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
 
     def test_load_cy_survey(self):
         # When: load a cy survey
-        self.launchSurvey("test_language", language_code="cy")
+        self.launchSurveyV2(schema_name="test_language", language_code="cy")
         # Then: welsh
         self.post()
         self.assertInBody("Rhowch enw")
 
     def test_load_non_existent_lang_fallback(self):
         # When: load a hindi survey
-        self.launchSurvey("test_language", language_code="hi")
+        self.launchSurveyV2(schema_name="test_language", language_code="hi")
         # Then: Falls back to english
         self.post()
         self.assertInBody("First Name")
 
     def test_language_switch_in_flight(self):
         # load a english survey
-        self.launchSurvey("test_language", language_code="en")
+        self.launchSurveyV2(schema_name="test_language", language_code="en")
         # The language is english
         self.post()
         self.assertInBody("First Name")
@@ -30,7 +30,7 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
 
     def test_switch_to_invalid_language(self):
         # load a english survey
-        self.launchSurvey("test_language", language_code="en")
+        self.launchSurveyV2(schema_name="test_language", language_code="en")
         # The language is english
         self.post()
         self.assertInBody("First Name")
@@ -132,7 +132,7 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
         for data in test_data_sets:
             with self.subTest(data=data):
                 self.setUp()
-                self.launchSurvey("test_language")
+                self.launchSurveyV2(schema_name="test_language")
 
                 self.post()
                 self.post({"first-name": "Kevin", "last-name": "Bacon"})
@@ -155,7 +155,7 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
 
     def test_error_messages(self):
         # load a welsh survey
-        self.launchSurvey("test_language", language_code="cy")
+        self.launchSurveyV2(schema_name="test_language", language_code="cy")
         # Submit and check the error message is in Welsh
         self.post()
         self.post()
@@ -164,7 +164,7 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
 
     def test_language_switch_hub_submission(self):
         # load an English survey
-        self.launchSurvey("test_language", language_code="en")
+        self.launchSurveyV2(schema_name="test_language", language_code="en")
 
         # Complete the survey
         self.post()
@@ -196,7 +196,7 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
 
     def test_last_viewed_guidance_is_displayed_after_language_switch(self):
         # load a welsh survey
-        self.launchSurvey("test_language", language_code="en")
+        self.launchSurveyV2(schema_name="test_language", language_code="en")
         self.post()
         self.post({"first-name": "John", "last-name": "Smith"})
 
@@ -210,7 +210,7 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
 
     def test_sign_out_cy_survey(self):
         # When: load a cy survey
-        self.launchSurvey("test_language", language_code="cy")
+        self.launchSurveyV2(schema_name="test_language", language_code="cy")
         # Then: sign out
         self.get(self.getSignOutButton()["href"], follow_redirects=True)
         # Check the text and logos are in Welsh

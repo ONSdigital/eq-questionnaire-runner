@@ -44,7 +44,7 @@ class TestQuestionnaireProgressValueSource(IntegrationTestCase):
 
     # pylint: disable=locally-disabled, too-many-statements
     def test_happy_path(self):
-        self.launchSurvey("test_progress_value_source_calculated_summary")
+        self.launchSurveyV2(schema_name="test_progress_value_source_calculated_summary")
 
         self.assertInBody("Choose another section to complete")
         self.assertInBody("Calculated Summary")
@@ -146,7 +146,7 @@ class TestQuestionnaireProgressValueSource(IntegrationTestCase):
 
     # pylint: disable=locally-disabled, too-many-statements
     def test_calculated_summary_first_incomplete_then_complete(self):
-        self.launchSurvey("test_progress_value_source_calculated_summary")
+        self.launchSurveyV2(schema_name="test_progress_value_source_calculated_summary")
 
         # 1. Start completing the first section
         self.go_to_section("section-1")
@@ -258,7 +258,7 @@ class TestQuestionnaireProgressValueSource(IntegrationTestCase):
         self.assert_section_status(4, "Completed", ["James Bond"])
 
     def test_happy_path_then_make_calculated_summary_incomplete(self):
-        self.launchSurvey("test_progress_value_source_calculated_summary")
+        self.launchSurveyV2(schema_name="test_progress_value_source_calculated_summary")
 
         # 1. Complete section 1
         self.go_to_section("section-1")
@@ -339,7 +339,9 @@ class TestQuestionnaireProgressValueSource(IntegrationTestCase):
         self.assertNotInBody("Random question about")
 
     def test_progress_value_source_with_backward_chained_dependencies(self):
-        self.launchSurvey("test_progress_value_source_calculated_summary_extended")
+        self.launchSurveyV2(
+            schema_name="test_progress_value_source_calculated_summary_extended"
+        )
         self.post()
 
         # 1. Complete section 7
@@ -375,7 +377,9 @@ class TestQuestionnaireProgressValueSource(IntegrationTestCase):
         self.assert_section_status(6, "Completed")
 
     def test_progress_value_source_with_chained_dependencies(self):
-        self.launchSurvey("test_progress_value_source_calculated_summary_extended")
+        self.launchSurveyV2(
+            schema_name="test_progress_value_source_calculated_summary_extended"
+        )
         self.post()
 
         # 1. Complete section 8, 9, 10, 11 and 12

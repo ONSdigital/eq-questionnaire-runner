@@ -3,7 +3,7 @@ from tests.integration.questionnaire import QuestionnaireTestCase
 
 class TestQuestionnaireCustomPageTitles(QuestionnaireTestCase):
     def test_custom_page_titles(self):
-        self.launchSurvey("test_custom_page_titles")
+        self.launchSurveyV2(schema_name="test_custom_page_titles")
         self.post()
         self.assertEqualPageTitle("Custom page title - Test Custom Page Titles")
 
@@ -38,7 +38,7 @@ class TestQuestionnaireCustomPageTitles(QuestionnaireTestCase):
         )
 
     def test_custom_repeating_page_titles(self):
-        self.launchSurvey("test_custom_page_titles")
+        self.launchSurveyV2(schema_name="test_custom_page_titles")
         self.post()
         self.post({"anyone-else": "Yes"})
         self.post({"first-name": "Marie", "last-name": "Doe"})

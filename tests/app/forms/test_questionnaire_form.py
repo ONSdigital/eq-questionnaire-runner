@@ -283,7 +283,7 @@ def test_date_combined_single_validation(app):
             "ref_p_end_date": "2017-02-21",
         }
 
-        metadata = get_metadata(test_metadata)
+        metadata = get_metadata(extra_metadata=test_metadata)
 
         expected_form_data = {
             "csrf_token": None,
@@ -331,7 +331,7 @@ def test_date_combined_range_too_small_validation(app):
             "ref_p_end_date": "2017-02-20",
         }
 
-        metadata = get_metadata(test_metadata)
+        metadata = get_metadata(extra_metadata=test_metadata)
 
         expected_form_data = {
             "csrf_token": None,
@@ -375,7 +375,7 @@ def test_date_combined_range_too_large_validation(app):
             "ref_p_end_date": "2017-02-20",
         }
 
-        metadata = get_metadata(test_metadata)
+        metadata = get_metadata(extra_metadata=test_metadata)
 
         expected_form_data = {
             "csrf_token": None,
@@ -417,7 +417,7 @@ def test_date_mm_yyyy_combined_single_validation(app):
             "ref_p_end_date": "2017-02-12",
         }
 
-        metadata = get_metadata(test_metadata)
+        metadata = get_metadata(extra_metadata=test_metadata)
 
         expected_form_data = {
             "csrf_token": None,
@@ -463,7 +463,7 @@ def test_date_mm_yyyy_combined_range_too_small_validation(app):
             "ref_p_end_date": "2017-02-12",
         }
 
-        metadata = get_metadata(test_metadata)
+        metadata = get_metadata(extra_metadata=test_metadata)
 
         expected_form_data = {
             "csrf_token": None,
@@ -505,7 +505,7 @@ def test_date_mm_yyyy_combined_range_too_large_validation(app):
             "ref_p_end_date": "2017-02-12",
         }
 
-        metadata = get_metadata(test_metadata)
+        metadata = get_metadata(extra_metadata=test_metadata)
 
         expected_form_data = {
             "csrf_token": None,
@@ -542,7 +542,7 @@ def test_date_yyyy_combined_single_validation(app):
             "ref_p_end_date": "2017-02-12",
         }
 
-        metadata = get_metadata(test_metadata)
+        metadata = get_metadata(extra_metadata=test_metadata)
 
         expected_form_data = {
             "csrf_token": None,
@@ -583,7 +583,7 @@ def test_date_yyyy_combined_range_too_small_validation(app):
             "ref_p_end_date": "2017-02-12",
         }
 
-        metadata = get_metadata(test_metadata)
+        metadata = get_metadata(extra_metadata=test_metadata)
 
         expected_form_data = {
             "csrf_token": None,
@@ -620,7 +620,7 @@ def test_date_yyyy_combined_range_too_large_validation(app):
             "ref_p_end_date": "2017-02-12",
         }
 
-        metadata = get_metadata(test_metadata)
+        metadata = get_metadata(extra_metadata=test_metadata)
 
         expected_form_data = {
             "csrf_token": None,

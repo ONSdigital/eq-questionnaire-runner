@@ -11,7 +11,7 @@ class TestQuestionnaireProgressValueSourceBlocks(IntegrationTestCase):
         Test that a block is skipped if the progress value source is not complete
         """
 
-        self.launchSurvey("test_progress_value_source_blocks")
+        self.launchSurveyV2(schema_name="test_progress_value_source_blocks")
 
         self.assertInBody("Section 1 Question 1")
         self.post({"s1-b1-q1-a1": 0})
@@ -28,7 +28,7 @@ class TestQuestionnaireProgressValueSourceBlocks(IntegrationTestCase):
         Test that routes to proper block if the progress value source is not complete
         """
 
-        self.launchSurvey("test_progress_value_source_blocks")
+        self.launchSurveyV2(schema_name="test_progress_value_source_blocks")
 
         self.assertInBody("Section 1 Question 1")
         self.post({"s1-b1-q1-a1": 0})
@@ -50,7 +50,7 @@ class TestQuestionnaireProgressValueSourceBlocks(IntegrationTestCase):
         Test that the block value source dependencies are updated when a dependent block progress changes
         """
 
-        self.launchSurvey("test_progress_value_source_blocks")
+        self.launchSurveyV2(schema_name="test_progress_value_source_blocks")
 
         self.assertInBody("Section 1 Question 1")
         self.post({"s1-b1-q1-a1": 0})
@@ -110,7 +110,7 @@ class TestQuestionnaireProgressValueSourceBlocks(IntegrationTestCase):
         Test that the block value source dependencies are updated when a dependent block progress changes and gets removed from path
         """
 
-        self.launchSurvey("test_progress_value_source_blocks")
+        self.launchSurveyV2(schema_name="test_progress_value_source_blocks")
 
         self.assertInBody("Section 1 Question 1")
         self.post({"s1-b1-q1-a1": 1})
@@ -155,7 +155,9 @@ class TestQuestionnaireProgressValueSourceBlocks(IntegrationTestCase):
         Test that the block value source dependencies are updated when a dependent block progress changes and gets removed from path
         """
 
-        self.launchSurvey("test_progress_value_source_blocks_cross_section")
+        self.launchSurveyV2(
+            schema_name="test_progress_value_source_blocks_cross_section"
+        )
 
         self.post()
 

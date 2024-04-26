@@ -2,7 +2,6 @@ from datetime import datetime, timezone
 
 import pytest
 
-from app.authentication.auth_payload_versions import AuthPayloadVersion
 from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
@@ -19,15 +18,8 @@ def create_answer(answer_id, value):
     return {"answer_id": answer_id, "value": value}
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_convert_answers_v2_to_payload_0_0_1_with_key_error(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_convert_answers_v2_to_payload_0_0_1_with_key_error():
+    questionnaire_store = get_questionnaire_store()
 
     questionnaire_store.data_stores.answer_store = AnswerStore(
         [
@@ -61,15 +53,8 @@ def test_convert_answers_v2_to_payload_0_0_1_with_key_error(version):
     assert len(answer_object) == 1
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_answer_with_zero(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_answer_with_zero():
+    questionnaire_store = get_questionnaire_store()
 
     questionnaire_store.data_stores.answer_store = AnswerStore(
         [Answer("GHI", 0).to_dict()]
@@ -98,15 +83,8 @@ def test_answer_with_zero(version):
     assert data_payload["003"] == "0"
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_answer_with_float(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_answer_with_float():
+    questionnaire_store = get_questionnaire_store()
 
     questionnaire_store.data_stores.answer_store = AnswerStore(
         [Answer("GHI", 10.02).to_dict()]
@@ -136,15 +114,8 @@ def test_answer_with_float(version):
     assert data_payload["003"] == "10.02"
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_answer_with_string(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_answer_with_string():
+    questionnaire_store = get_questionnaire_store()
 
     questionnaire_store.data_stores.answer_store = AnswerStore(
         [Answer("GHI", "String test + !").to_dict()]
@@ -174,15 +145,8 @@ def test_answer_with_string(version):
     assert data_payload["003"] == "String test + !"
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_answer_without_qcode(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_answer_without_qcode():
+    questionnaire_store = get_questionnaire_store()
 
     questionnaire_store.data_stores.answer_store = AnswerStore(
         [Answer("GHI", "String test + !").to_dict()]
@@ -211,15 +175,8 @@ def test_answer_without_qcode(version):
     assert not data_payload
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_converter_checkboxes_with_q_codes(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_converter_checkboxes_with_q_codes():
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [RoutingPath(block_ids=["crisps"], section_id="food")]
     questionnaire_store.data_stores.answer_store = AnswerStore(
@@ -278,18 +235,16 @@ def test_converter_checkboxes_with_q_codes(version):
 
 
 @pytest.mark.parametrize(
-    "detail_answer_q_code_field, expected_data_length, version",
+    "detail_answer_q_code_field, expected_data_length",
     [
-        ({"q_code": "401"}, 3, None),
-        ({}, 2, None),
-        ({"q_code": "401"}, 3, AuthPayloadVersion.V2),
-        ({}, 2, AuthPayloadVersion.V2),
+        ({"q_code": "401"}, 3),
+        ({}, 2),
     ],
 )
 def test_converter_checkboxes_with_q_codes_and_other_value(
-    detail_answer_q_code_field, expected_data_length, version
+    detail_answer_q_code_field, expected_data_length
 ):
-    questionnaire_store = get_questionnaire_store(version)
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [RoutingPath(block_ids=["crisps"], section_id="food")]
 
@@ -356,15 +311,8 @@ def test_converter_checkboxes_with_q_codes_and_other_value(
         assert data_payload[detail_answer_q_code_field["q_code"]] == "Bacon"
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_converter_checkboxes_with_missing_detail_answer_value_in_answer_store(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_converter_checkboxes_with_missing_detail_answer_value_in_answer_store():
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [RoutingPath(block_ids=["crisps"], section_id="food")]
 
@@ -425,15 +373,8 @@ def test_converter_checkboxes_with_missing_detail_answer_value_in_answer_store(v
     assert data_payload["4"] == "Other"
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_converter_checkboxes_with_missing_q_codes_uses_answer_q_code(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_converter_checkboxes_with_missing_q_codes_uses_answer_q_code():
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [RoutingPath(block_ids=["crisps"], section_id="food")]
 
@@ -492,15 +433,8 @@ def test_converter_checkboxes_with_missing_q_codes_uses_answer_q_code(version):
     assert data_payload["0"], "['Ready salted' == 'Sweet chilli']"
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_converter_q_codes_for_empty_strings(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_converter_q_codes_for_empty_strings():
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [RoutingPath(block_ids=["crisps"], section_id="food")]
     questionnaire_store.data_stores.answer_store = AnswerStore(
@@ -542,15 +476,8 @@ def test_converter_q_codes_for_empty_strings(version):
     assert data_payload["2"] == "Ready salted"
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_radio_answer(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_radio_answer():
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [
         RoutingPath(
@@ -609,15 +536,8 @@ def test_radio_answer(version):
     assert data_payload["101"] == "Water"
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_number_answer(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_number_answer():
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [
         RoutingPath(
@@ -652,15 +572,8 @@ def test_number_answer(version):
     assert data_payload["1"] == "0.9999"
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_percentage_answer(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_percentage_answer():
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [
         RoutingPath(
@@ -695,15 +608,8 @@ def test_percentage_answer(version):
     assert data_payload["1"] == "100"
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_textarea_answer(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_textarea_answer():
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [
         RoutingPath(
@@ -738,15 +644,8 @@ def test_textarea_answer(version):
     assert data_payload["1"] == "example text."
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_currency_answer(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_currency_answer():
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [
         RoutingPath(
@@ -781,15 +680,8 @@ def test_currency_answer(version):
     assert data_payload["1"] == "99.99"
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_dropdown_answer(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_dropdown_answer():
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [
         RoutingPath(
@@ -835,15 +727,8 @@ def test_dropdown_answer(version):
     assert data_payload["1"] == "Liverpool"
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_date_answer(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_date_answer():
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [RoutingPath(block_ids=["date-block"], section_id="section-1")]
 
@@ -882,15 +767,8 @@ def test_date_answer(version):
     assert data_payload["2"] == "01/1990"
 
 
-@pytest.mark.parametrize(
-    "version",
-    (
-        None,
-        AuthPayloadVersion.V2,
-    ),
-)
-def test_unit_answer(version):
-    questionnaire_store = get_questionnaire_store(version)
+def test_unit_answer():
+    questionnaire_store = get_questionnaire_store()
 
     full_routing_path = [RoutingPath(block_ids=["unit-block"], section_id="section-1")]
     questionnaire_store.data_stores.answer_store = AnswerStore(
