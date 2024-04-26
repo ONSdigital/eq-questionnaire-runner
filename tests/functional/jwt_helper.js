@@ -186,7 +186,7 @@ function getSurveyMetadata(theme, userId, displayAddress, surveyId, periodId, pe
         return_by: "2017-03-01",
         ru_name: "Apple",
         trad_as: "Apple",
-        boolean_flag: booleanFlag
+        boolean_flag: booleanFlag,
       },
     };
   }
