@@ -225,7 +225,7 @@ def test_load_schema_from_metadata_with_schema_url():
     load_schema_from_url.cache_clear()
 
     metadata = get_metadata(
-        {"schema_url": TEST_SCHEMA_URL, "language_code": "cy"},
+        extra_metadata={"schema_url": TEST_SCHEMA_URL, "language_code": "cy"},
     )
     mock_schema = QuestionnaireSchema({}, language_code="cy")
     responses.add(responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=200)
@@ -240,7 +240,9 @@ def test_load_schema_from_metadata_with_schema_url_and_override_language_code():
     load_schema_from_url.cache_clear()
     language_code = "en"
 
-    metadata = get_metadata({"schema_url": TEST_SCHEMA_URL, "language_code": "cy"})
+    metadata = get_metadata(
+        extra_metadata={"schema_url": TEST_SCHEMA_URL, "language_code": "cy"}
+    )
 
     mock_schema = QuestionnaireSchema({}, language_code="cy")
     responses.add(responses.GET, TEST_SCHEMA_URL, json=mock_schema.json, status=200)

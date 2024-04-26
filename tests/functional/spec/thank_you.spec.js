@@ -8,7 +8,7 @@ import { click } from "../helpers";
 describe("Thank You Social", () => {
   describe("Given I launch a social themed questionnaire", () => {
     beforeEach(async () => {
-      await browser.openQuestionnaire("test_theme_social.json", { version: "v2", theme: "social" });
+      await browser.openQuestionnaire("test_theme_social.json", { theme: "social" });
     });
 
     it("When I navigate to the thank you page, Then I should see social theme content", async () => {

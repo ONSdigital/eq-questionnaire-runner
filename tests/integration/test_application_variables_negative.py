@@ -8,6 +8,6 @@ class TestApplicationVariablesNegative(IntegrationTestCase):
         super().setUp()
 
     def test_livereload_script_not_rendered(self):
-        self.launchSurvey("test_textfield")
+        self.launchSurveyV2(schema_name="test_textfield")
         self.assertStatusOK()
         self.assertFalse("__bs_script__" in self.getResponseData())

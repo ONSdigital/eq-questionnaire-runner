@@ -1,6 +1,3 @@
----
-version: '3'
-
 services:
   ajv-validator:
     image: onsdigital/eq-questionnaire-validator:${TAG}-ajv

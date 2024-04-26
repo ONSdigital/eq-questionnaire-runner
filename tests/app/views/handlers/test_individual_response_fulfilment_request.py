@@ -89,11 +89,15 @@ def test_individual_case_id_not_present_when_case_type_spg():
     metadata = {
         "region_code": "GB-ENG",
         "case_id": str(uuid4()),
-        "case_type": "SPG",
         "tx_id": "tx_id",
         "response_id": "response_id",
         "account_service_url": "account_service_url",
         "collection_exercise_sid": "collection_exercise_sid",
+        "survey_metadata": {
+            "data": {
+                "case_type": "SPG",
+            }
+        },
     }
 
     metadata = MetadataProxy.from_dict(metadata)
@@ -109,11 +113,15 @@ def test_individual_case_id_not_present_when_case_type_ce():
     metadata = {
         "region_code": "GB-ENG",
         "case_id": str(uuid4()),
-        "case_type": "CE",
         "tx_id": "tx_id",
         "response_id": "response_id",
         "account_service_url": "account_service_url",
         "collection_exercise_sid": "collection_exercise_sid",
+        "survey_metadata": {
+            "data": {
+                "case_type": "CE",
+            }
+        },
     }
 
     metadata = MetadataProxy.from_dict(metadata)
