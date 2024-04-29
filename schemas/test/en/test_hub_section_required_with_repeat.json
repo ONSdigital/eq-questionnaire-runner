@@ -406,7 +406,7 @@
                                                     ]
                                                 }
                                             ],
-                                            "text": "What is <em>{person_name_possessive}</em> date of birth?"
+                                            "text": "What is <strong>{person_name_possessive}</strong> date of birth?"
                                         },
                                         "type": "General"
                                     },
