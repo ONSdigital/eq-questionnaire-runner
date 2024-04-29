@@ -6,7 +6,7 @@ class TestQuestionnairePiping(IntegrationTestCase):
         self,
     ):
         # Given
-        self.launchSurvey("test_multiple_piping")
+        self.launchSurveyV2(schema_name="test_multiple_piping")
         self.post(action="start_questionnaire")
         self.post({"address-line-1": "44 hill side"})
         self.post()
@@ -27,7 +27,7 @@ class TestQuestionnairePiping(IntegrationTestCase):
 
     def test_given_html_in_answer_when_piped_into_page_then_html_escaped_on_page(self):
         # Given
-        self.launchSurvey("test_multiple_piping")
+        self.launchSurveyV2(schema_name="test_multiple_piping")
         self.post(action="start_questionnaire")
         self.post({"address-line-1": "44 hill side"})
         self.post()
@@ -50,7 +50,7 @@ class TestQuestionnairePiping(IntegrationTestCase):
         self,
     ):
         # Given
-        self.launchSurvey("test_multiple_piping")
+        self.launchSurveyV2(schema_name="test_multiple_piping")
         self.post(action="start_questionnaire")
         self.post({"address-line-1": "44 hill side"})
         self.post()
@@ -66,7 +66,7 @@ class TestQuestionnairePiping(IntegrationTestCase):
 
     def test_answer_piped_into_option(self):
         # Given
-        self.launchSurvey("test_multiple_piping")
+        self.launchSurveyV2(schema_name="test_multiple_piping")
         self.post(action="start_questionnaire")
         self.post({"address-line-1": "44 hill side", "town-city": "newport"})
         self.post()
@@ -87,7 +87,7 @@ class TestQuestionnairePiping(IntegrationTestCase):
         the option label on the form it is rendered with a validation error
         """
         # Given
-        self.launchSurvey("test_multiple_piping")
+        self.launchSurveyV2(schema_name="test_multiple_piping")
         self.post(action="start_questionnaire")
         self.post({"address-line-1": "44 hill side", "town-city": "newport"})
         self.post()

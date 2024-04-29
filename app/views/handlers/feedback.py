@@ -19,11 +19,6 @@ from app.questionnaire.questionnaire_schema import (
     QuestionnaireSchema,
 )
 from app.submitter import GCSFeedbackSubmitter, LogFeedbackSubmitter, converter_v2
-from app.submitter.converter import (
-    build_collection,
-    build_metadata,
-    get_optional_payload_properties,
-)
 from app.views.contexts.feedback_form_context import build_feedback_context
 from app.views.handlers.submission import get_receipting_metadata
 
@@ -92,12 +87,7 @@ class Feedback:
         case_id = metadata.case_id
         tx_id = metadata.tx_id
 
-        feedback_converter = (
-            FeedbackPayloadV2
-            if metadata.version is AuthPayloadVersion.V2
-            else FeedbackPayload
-        )
-        feedback_message = feedback_converter(
+        feedback_message = FeedbackPayloadV2(
             metadata=metadata,
             response_metadata=self._questionnaire_store.data_stores.response_metadata,
             schema=self._schema,
@@ -206,108 +196,6 @@ class FeedbackMetadata:
 
     def __call__(self) -> dict[str, str]:
         return vars(self)
-
-
-class FeedbackPayload:
-    """
-    Create the feedback payload object for down stream processing in the following format:
-    ```
-    {
-        "collection": {
-            "exercise_sid": "eedbdf46-adac-49f7-b4c3-2251807381c3",
-            "schema_name": "carbon_0007",
-            "period": "3003"
-        },
-        "data": {
-                "feedback_text": "Page design feedback",
-                "feedback_type": "Page design and structure",
-                "feedback_count": "7",
-        },
-        "metadata": {
-            "ref_period_end_date": "2021-03-29",
-            "ref_period_start_date": "2021-03-01",
-            "ru_ref": "12345678901A",
-            "user_id": "d98d78eb-d23a-494d-b67c-e770399de383"
-        },
-        "origin": "uk.gov.ons.edc.eq",
-        "submitted_at": "2021-10-12T10:41:23+00:00",
-        "started_at": "2021-10-12T10:41:23+00:00",
-        "case_id": "c39e1246-debd-473a-894f-85c8397ba5ea",
-        "case_type": "I",
-        "flushed": False,
-        "survey_id": "001",
-        "form_type: "0007",
-        "submission_language_code": "en",
-        "tx_id": "5d4e1a37-ed21-440a-8c4d-3054a124a104",
-        "type": "uk.gov.ons.edc.eq:feedback",
-        "launch_language_code: "en",
-        "submission_language_code: "en",
-        "version": "0.0.1"
-    }
-    ```
-    :param metadata: Questionnaire metadata
-    :param response_metadata: Response metadata
-    :param schema: QuestionnaireSchema class with populated schema json
-    :param case_id: Questionnaire case id
-    :param submission_language_code: Language being used at the point of feedback submission
-    :param feedback_count: Number of feedback submissions attempted by the user
-    :param feedback_text: Feedback text input by the user
-    :param feedback_type: Type of feedback selected by the user
-
-
-    :return payload: Feedback payload object
-    """
-
-    def __init__(
-        self,
-        metadata: MetadataProxy,
-        response_metadata: MutableMapping[str, Union[str, int, list]],
-        schema: QuestionnaireSchema,
-        case_id: Optional[str],
-        submission_language_code: Optional[str],
-        feedback_count: int,
-        feedback_text: str,
-        feedback_type: str,
-    ):
-        self.metadata = metadata
-        self.response_metadata = response_metadata
-        self.case_id = case_id
-        self.schema = schema
-        self.submission_language_code = submission_language_code
-        self.feedback_count = feedback_count
-        self.feedback_text = feedback_text
-        self.feedback_type = feedback_type
-
-    def __call__(self) -> dict[str, Any]:
-        payload = {
-            "origin": "uk.gov.ons.edc.eq",
-            "case_id": self.case_id,
-            "submitted_at": datetime.now(tz=timezone.utc).isoformat(),
-            "flushed": False,
-            "collection": build_collection(self.metadata),
-            "metadata": build_metadata(self.metadata),
-            "survey_id": self.schema.json["survey_id"],
-            "submission_language_code": (
-                self.submission_language_code or DEFAULT_LANGUAGE_CODE
-            ),
-            "tx_id": self.metadata.tx_id,
-            "type": "uk.gov.ons.edc.eq:feedback",
-            "launch_language_code": self.metadata.language_code
-            or DEFAULT_LANGUAGE_CODE,
-            "version": "0.0.1",
-        }
-
-        optional_properties = get_optional_payload_properties(
-            self.metadata, self.response_metadata
-        )
-
-        payload["data"] = {
-            "feedback_text": self.feedback_text,
-            "feedback_type": self.feedback_type,
-            "feedback_count": str(self.feedback_count),
-        }
-
-        return payload | optional_properties
 
 
 class FeedbackPayloadV2:

@@ -11,7 +11,7 @@ from tests.integration.routes.test_view_submitted_response import (
 class TestViewSubmissionResponsePDF(ViewSubmittedResponseBase):
     def test_download_when_submitted_response_not_enabled(self):
         # Given I launch and complete a questionnaire that does not have view-submitted-response enabled
-        self.launchSurvey("test_confirmation_email")
+        self.launchSurveyV2(schema_name="test_confirmation_email")
         self.post()
         self.post()
 
@@ -47,7 +47,7 @@ class TestViewSubmissionResponsePDF(ViewSubmittedResponseBase):
 
         # Check content length is reasonable.
         # This is given some leeway as it can change with DS changes.
-        self.assertGreater(self.last_response.content_length, 16000)
+        self.assertGreater(self.last_response.content_length, 10000)
 
     def test_download_when_submitted_response_enabled_but_expired(self):
         settings.VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS = 3

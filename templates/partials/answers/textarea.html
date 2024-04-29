@@ -1,27 +1,29 @@
 {% from "components/textarea/_macro.njk" import onsTextarea %}
 
 {% set input = form.fields[answer['id']] %}
-
+{# djlint:off #}
 {% if answer.label %}
-  {% set label = {
-  "id": answer.id ~ "-label",
-  "text": answer.label,
-  "description": answer.description
-  } %}
+    {% set label = {
+        "id": answer.id ~ "-label",
+        "text": answer.label,
+        "description": answer.description
+    } %}
 {% endif %}
-
-{{ onsTextarea({
-  "id": answer.id,
-  "name": input.name,
-  "label": label,
-  "value": input._value() | e,
-  "charCheckLimit": {
-    "limit": answer.max_length | default(input.maxlength, true),
-    "charCountSingular": _("You have {x} character remaining"),
-    "charCountPlural": _("You have {x} characters remaining")
-  },
-  "rows": answer.rows,
-  "dontWrap": true if mutuallyExclusive else false,
-  "mutuallyExclusive": mutuallyExclusive,
-  "error": error
-}) }}
+{{
+    onsTextarea({
+        "id": answer.id,
+        "name": input.name,
+        "label": label,
+        "value": input._value() | e,
+        "charCheckLimit": {
+            "limit": answer.max_length | default(input.maxlength, true),
+            "charCountSingular": _("You have {x} character remaining"),
+            "charCountPlural": _("You have {x} characters remaining")
+        },
+        "rows": answer.rows,
+        "dontWrap": true if mutuallyExclusive else false,
+        "mutuallyExclusive": mutuallyExclusive,
+        "error": error
+    })
+}}
+{# djlint:on #}

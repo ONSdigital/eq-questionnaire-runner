@@ -253,7 +253,9 @@ def test_answer_source_with_dict_answer_selector(answer_value, expected_result):
 )
 def test_metadata_source(metadata_value, expected_result):
     rule_evaluator = get_rule_evaluator(
-        data_stores=DataStores(metadata=get_metadata({"some_key": metadata_value}))
+        data_stores=DataStores(
+            metadata=get_metadata(extra_metadata={"some_key": metadata_value})
+        )
     )
 
     assert (
@@ -585,7 +587,9 @@ def test_nested_rules(operator, operands, expected_result):
                     },
                 ]
             ),
-            metadata=get_metadata({"region_code": "GB-NIR", "language_code": "en"}),
+            metadata=get_metadata(
+                extra_metadata={"region_code": "GB-NIR", "language_code": "en"}
+            ),
             list_store=ListStore(
                 [
                     {
@@ -778,7 +782,9 @@ def test_date_value(rule, expected_result):
                     }
                 ]
             ),
-            metadata=get_metadata({"some-metadata": current_date_as_yyyy_mm_dd}),
+            metadata=get_metadata(
+                extra_metadata={"some-metadata": current_date_as_yyyy_mm_dd}
+            ),
         ),
     )
 

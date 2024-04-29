@@ -1,7 +1,8 @@
 {% macro include_with(path, data, dataHandle='data') %}
-    {% with dataHandle = data %}{% include path %}{% endwith %}
+    {% with dataHandle = data %}
+        {% include path %}
+    {% endwith %}
 {% endmacro %}
-
 {%- macro format_paragraphs(paragraphs) -%}
     {%- for paragraph in paragraphs -%}
         {%- if paragraph -%}
@@ -10,7 +11,6 @@
     {%- else -%}
     {%- endfor -%}
 {%- endmacro -%}
-
 {%- macro interviewer_note(title=None) -%}
-    <mark>{{ _("Interviewer note:") }}</mark>{{ " " + title }}
+    <mark class="instruction">{{ _("Interviewer note:") }}</mark>{{ title }}
 {%- endmacro -%}

@@ -1,28 +1,38 @@
-{% extends 'layouts/_base.html' %}
-{% from 'components/button/_macro.njk' import onsButton %}
-{% from 'components/panel/_macro.njk' import onsPanel %}
+{% extends "layouts/_base.html" %}
+
+{% from "components/button/_macro.njk" import onsButton %}
+{% from "components/panel/_macro.njk" import onsPanel %}
 
 {% set save_on_signout = true %}
 
 {% block main %}
-    {% call onsPanel({
-        "variant": "success",
-        "classes": "ons-u-mb-m",
-        "iconType": "check",
-        "iconSize": "l"
-    }) %}
-        <h1 id="question-title"class="question__title ons-u-mb-xs ons-u-fs-l js-piping">
+    {# djlint:off #}
+    {% call
+        onsPanel({
+            "type": "success",
+            "classes": "ons-u-mb-m",
+            "iconType": "check",
+            "iconSize": "l"
+        })
+    %}
+        <h1 id="question-title"
+            class="question__title ons-u-mb-xs ons-u-fs-l js-piping">
             {{ _("We have sent a text to {mobile_number}").format(mobile_number=mobile_number) }}
         </h1>
-        <p>{{ _("The text message with an individual access code should arrive soon for them to complete their own census") }}</p>
+        <p>
+            {{ _("The text message with an individual access code should arrive soon for them to complete their own census") }}
+        </p>
     {% endcall %}
-
-    {% call onsPanel({
-        "variant": "bare",
-        "classes": "ons-u-mb-s",
-        "iconType": "lock"
-    }) %}
-        <p>{{ _("The text will be sent from <strong>Census2021</strong>") }}</p>
+    {% call
+        onsPanel({
+            "type": "bare",
+            "classes": "ons-u-mb-s",
+            "iconType": "lock"
+        })
+    %}
+        <p>
+            {{ _("The text will be sent from <strong>Census2021</strong>") }}
+        </p>
     {% endcall %}
     {{
         onsButton({
@@ -38,4 +48,5 @@
             }
         })
     }}
-{% endblock %}
+    {# djlint:on #}
+{% endblock main %}

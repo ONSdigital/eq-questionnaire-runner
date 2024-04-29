@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-03-04 15:27+0000\n"
+"POT-Creation-Date: 2024-04-24 15:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,9 +41,9 @@ msgstr ""
 msgid "%(from_date)s to %(to_date)s"
 msgstr ""
 
-#: app/jinja_filters.py:734
+#: app/jinja_filters.py:732
 #: templates/partials/summary/collapsible-summary.html:27
-#: templates/partials/summary/summary.html:25
+#: templates/partials/summary/summary.html:24
 msgid "No answer provided"
 msgstr ""
 
@@ -73,7 +73,7 @@ msgstr ""
 msgid "Enter a date"
 msgstr ""
 
-#: app/forms/error_messages.py:23 templates/partials/answers/address.html:56
+#: app/forms/error_messages.py:23 templates/partials/answers/address.html:55
 msgid "Enter an address"
 msgstr ""
 
@@ -249,55 +249,55 @@ msgid_plural "{number_of_days} days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/routes/errors.py:160
+#: app/routes/errors.py:159
 msgid "You have reached the maximum number of individual access codes"
 msgstr ""
 
-#: app/routes/errors.py:163
+#: app/routes/errors.py:162
 msgid ""
 "If you need more individual access codes, please <a "
 "href='{contact_us_url}'>contact us</a>."
 msgstr ""
 
-#: app/routes/errors.py:181
+#: app/routes/errors.py:180
 msgid "You have reached the maximum number of times for submitting feedback"
 msgstr ""
 
-#: app/routes/errors.py:184
+#: app/routes/errors.py:183
 msgid ""
 "If you need to give more feedback, please <a "
 "href='{contact_us_url}'>contact us</a>."
 msgstr ""
 
-#: app/routes/errors.py:232
+#: app/routes/errors.py:233
 msgid "Sorry, there was a problem sending the access code"
 msgstr ""
 
-#: app/routes/errors.py:239
+#: app/routes/errors.py:240
 msgid "You can try to <a href='{retry_url}'>request a new access code again</a>."
 msgstr ""
 
-#: app/routes/errors.py:242 app/routes/errors.py:267 app/routes/errors.py:289
+#: app/routes/errors.py:243 app/routes/errors.py:268 app/routes/errors.py:290
 msgid ""
 "If this problem keeps happening, please <a "
 "href='{contact_us_url}'>contact us</a> for help."
 msgstr ""
 
-#: app/routes/errors.py:263
+#: app/routes/errors.py:264
 msgid "Sorry, there was a problem sending the confirmation email"
 msgstr ""
 
-#: app/routes/errors.py:264
+#: app/routes/errors.py:265
 msgid "You can try to <a href='{retry_url}'>send the email again</a>."
 msgstr ""
 
-#: app/routes/errors.py:285 templates/errors/403.html:3
-#: templates/errors/403.html:6 templates/errors/submission-failed.html:5
-#: templates/errors/submission-failed.html:8
+#: app/routes/errors.py:286 templates/errors/403.html:3
+#: templates/errors/403.html:9 templates/errors/submission-failed.html:4
+#: templates/errors/submission-failed.html:11
 msgid "Sorry, there is a problem"
 msgstr ""
 
-#: app/routes/errors.py:286
+#: app/routes/errors.py:287
 msgid "You can try to <a href='{retry_url}'>submit your feedback again</a>."
 msgstr ""
 
@@ -414,12 +414,12 @@ msgstr ""
 msgid "Choose another section to complete"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:65 templates/confirm-email.html:25
-#: templates/individual_response/confirmation-post.html:21
-#: templates/individual_response/confirmation-text-message.html:29
-#: templates/individual_response/question.html:5 templates/interstitial.html:8
-#: templates/listcollectorcontent.html:6 templates/sectionsummary.html:10
-#: templates/sectionsummary.html:48
+#: app/views/contexts/hub_context.py:65 templates/confirm-email.html:28
+#: templates/individual_response/confirmation-post.html:26
+#: templates/individual_response/confirmation-text-message.html:39
+#: templates/individual_response/question.html:5 templates/interstitial.html:7
+#: templates/listcollectorcontent.html:6 templates/sectionsummary.html:11
+#: templates/sectionsummary.html:50
 msgid "Continue"
 msgstr ""
 
@@ -702,7 +702,7 @@ msgstr ""
 msgid "View Submitted Response"
 msgstr ""
 
-#: templates/confirm-email.html:12 templates/partials/answers/address.html:55
+#: templates/confirm-email.html:14 templates/partials/answers/address.html:54
 #: templates/question.html:10
 #, python-format
 msgid "There is a problem with your answer"
@@ -710,32 +710,33 @@ msgid_plural "There are %(num)s problems with your answer"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/confirmation-email-sent.html:3
+#: templates/confirmation-email-sent.html:5
 msgid "Confirmation email sent"
 msgstr ""
 
-#: templates/confirmation-email-sent.html:15
+#: templates/confirmation-email-sent.html:21
 msgid "A confirmation email has been sent to {email}"
 msgstr ""
 
-#: templates/confirmation-email-sent.html:23
+#: templates/confirmation-email-sent.html:32
 msgid ""
 "The email will be sent from "
 "<strong>census.2021@notifications.service.gov.uk</strong>"
 msgstr ""
 
-#: templates/confirmation-email-sent.html:27
-msgid "Didn't receive an email?"
+#: templates/confirmation-email-sent.html:38
+msgid "Didn’t receive an email?"
 msgstr ""
 
-#: templates/confirmation-email-sent.html:28
+#: templates/confirmation-email-sent.html:41
 msgid ""
-"It can take a few minutes for the email to arrive. If it doesn't arrive, "
-"check your junk mail, or you can <a href='{send_confirmation_email_url}' "
-"id='send-another-email'>send another confirmation email</a>."
+"It can take a few minutes for the email to arrive. If it doesn’t arrive, "
+"check your junk mail, or you can <a "
+"href=\"{send_confirmation_email_url}\" id=\"send-another-email\">send "
+"another confirmation email</a>."
 msgstr ""
 
-#: templates/confirmation-email.html:8
+#: templates/confirmation-email.html:9
 msgid "There is a problem with this page"
 msgstr ""
 
@@ -743,37 +744,37 @@ msgstr ""
 msgid "Send a confirmation email"
 msgstr ""
 
-#: templates/feedback-sent.html:6
+#: templates/feedback-sent.html:7
 msgid "Feedback sent"
 msgstr ""
 
-#: templates/feedback-sent.html:17
+#: templates/feedback-sent.html:21
 msgid "Thank you for your feedback"
 msgstr ""
 
-#: templates/feedback-sent.html:18
+#: templates/feedback-sent.html:23
 msgid ""
 "Your comments will help us make improvements to our surveys. We are not "
 "able to reply to comments, but we appreciate your feedback"
 msgstr ""
 
-#: templates/feedback-sent.html:24
+#: templates/feedback-sent.html:29
 msgid "Done"
 msgstr ""
 
-#: templates/feedback.html:14 templates/preview.html:15
-#: templates/view-submitted-response.html:16
+#: templates/feedback.html:16 templates/preview.html:14
+#: templates/view-submitted-response.html:15
 msgid "Back"
 msgstr ""
 
-#: templates/feedback.html:28
+#: templates/feedback.html:30
 #, python-format
 msgid "There is a problem with your feedback"
 msgid_plural "There are %(num)s problems with your feedback"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/feedback.html:39
+#: templates/feedback.html:40
 msgid "Send feedback"
 msgstr ""
 
@@ -781,43 +782,43 @@ msgstr ""
 msgid "If you can’t answer someone else’s questions"
 msgstr ""
 
-#: templates/interstitial.html:23 templates/partials/question.html:50
+#: templates/interstitial.html:22 templates/partials/question.html:46
 msgid "If you can’t answer questions for this person"
 msgstr ""
 
-#: templates/interstitial.html:31 templates/layouts/_questionnaire.html:26
+#: templates/interstitial.html:31 templates/layouts/_questionnaire.html:29
 msgid "Save and continue"
 msgstr ""
 
-#: templates/introduction.html:10
+#: templates/introduction.html:8
 msgid "Introduction"
 msgstr ""
 
-#: templates/introduction.html:24
+#: templates/introduction.html:20
 msgid "<a href='{url}'>View the questions you will be asked in this survey</a>"
 msgstr ""
 
-#: templates/introduction.html:29
+#: templates/introduction.html:24
 msgid "Your response is legally required"
 msgstr ""
 
-#: templates/list-action.html:9
+#: templates/list-action.html:10
 msgid "Cancel and return to the previous page"
 msgstr ""
 
-#: templates/multiple_survey.html:4 templates/multiple_survey.html:7
+#: templates/multiple_survey.html:5 templates/multiple_survey.html:8
 msgid "Information"
 msgstr ""
 
-#: templates/multiple_survey.html:16
+#: templates/multiple_survey.html:20
 msgid "Unfortunately you can only complete one survey at a time"
 msgstr ""
 
-#: templates/multiple_survey.html:17
+#: templates/multiple_survey.html:22
 msgid "Close this window to continue with your current survey"
 msgstr ""
 
-#: templates/preview.html:36
+#: templates/preview.html:33
 msgid "Preview of the questions in this survey"
 msgstr ""
 
@@ -825,29 +826,29 @@ msgstr ""
 msgid "To answer these questions you need to <a href='{url}'>start survey</a>"
 msgstr ""
 
-#: templates/preview.html:43
+#: templates/preview.html:46
 msgid ""
 "You may not have to answer all of these questions. The questions you see "
 "will depend on the answers you provide."
 msgstr ""
 
-#: templates/preview.html:48
+#: templates/preview.html:52
 msgid "Print questions"
 msgstr ""
 
-#: templates/preview.html:60
+#: templates/preview.html:65
 msgid "Save questions as PDF"
 msgstr ""
 
-#: templates/partials/introduction/preview.html:36
-#: templates/partials/summary/collapsible-summary.html:50
-#: templates/preview.html:92
+#: templates/partials/introduction/preview.html:32
+#: templates/partials/summary/collapsible-summary.html:51
+#: templates/preview.html:94
 msgid "Show all"
 msgstr ""
 
-#: templates/partials/introduction/preview.html:37
-#: templates/partials/summary/collapsible-summary.html:51
-#: templates/preview.html:93
+#: templates/partials/introduction/preview.html:33
+#: templates/partials/summary/collapsible-summary.html:52
+#: templates/preview.html:95
 msgid "Hide all"
 msgstr ""
 
@@ -859,93 +860,91 @@ msgstr ""
 msgid "<h1>Your progress has been saved</h1>"
 msgstr ""
 
-#: templates/signed-out.html:21
+#: templates/signed-out.html:22
 msgid ""
 "To find further information or resume the survey, <a href='{url}'>return "
 "to My Account</a>."
 msgstr ""
 
-#: templates/signed-out.html:23
+#: templates/signed-out.html:26
 msgid "To resume the survey, <a href='{url}'>re-enter your access code</a>."
 msgstr ""
 
-#: templates/thank-you.html:6
+#: templates/thank-you.html:7
 msgid "We’ve received your answers"
 msgstr ""
 
-#: templates/thank-you.html:15
+#: templates/thank-you.html:17
 msgid "Back to surveys"
 msgstr ""
 
-#: templates/thank-you.html:33
+#: templates/thank-you.html:40
 msgid "Thank you for completing the {survey_title}"
 msgstr ""
 
-#: templates/thank-you.html:45
-msgid "Your answers will be processed in the next few weeks."
+#: templates/thank-you.html:52
+msgid ""
+"Your response will help inform decision-makers how best to support the UK"
+" population and economy."
 msgstr ""
 
-#: templates/thank-you.html:46
-msgid "We may contact you to query your answers via phone or secure message."
+#: templates/thank-you.html:55
+msgid "Learn more about how we use this data"
 msgstr ""
 
-#: templates/thank-you.html:47
-msgid "For more information on how we use this data."
-msgstr ""
-
-#: templates/thank-you.html:51 templates/view-submitted-response.html:69
+#: templates/thank-you.html:58 templates/view-submitted-response.html:72
 msgid "For security, you can no longer view or get a copy of your answers"
 msgstr ""
 
-#: templates/thank-you.html:63
+#: templates/thank-you.html:72
 msgid "For security, your answers will only be available to view for another "
 msgstr ""
 
-#: templates/thank-you.html:64
+#: templates/thank-you.html:73
 msgid "Get a copy of your answers"
 msgstr ""
 
-#: templates/thank-you.html:66
+#: templates/thank-you.html:75
 msgid ""
-"You can <a href='{url}' id='view-submitted-response-link'>save or print "
-"your answers</a> for your records."
+"You can <a href=\"{url}\" id=\"view-submitted-response-link\">save or "
+"print your answers</a> for your records."
 msgstr ""
 
-#: templates/layouts/_base.html:147 templates/thank-you.html:71
+#: templates/layouts/_base.html:146 templates/thank-you.html:81
 msgid "minute"
 msgstr ""
 
-#: templates/layouts/_base.html:148 templates/thank-you.html:72
+#: templates/layouts/_base.html:147 templates/thank-you.html:82
 msgid "minutes"
 msgstr ""
 
-#: templates/layouts/_base.html:149 templates/thank-you.html:73
+#: templates/layouts/_base.html:148 templates/thank-you.html:83
 msgid "second"
 msgstr ""
 
-#: templates/layouts/_base.html:150 templates/thank-you.html:74
+#: templates/layouts/_base.html:149 templates/thank-you.html:84
 msgid "seconds"
 msgstr ""
 
-#: templates/thank-you.html:76
+#: templates/thank-you.html:86
 msgid "For security, your answers will only be available to view for 45 minutes"
 msgstr ""
 
-#: templates/thank-you.html:85
+#: templates/thank-you.html:96
 msgid "Get confirmation email"
 msgstr ""
 
-#: templates/thank-you.html:86
+#: templates/thank-you.html:98
 msgid ""
 "If you would like to be sent confirmation that you have completed your "
 "survey, enter your email address"
 msgstr ""
 
-#: templates/view-submitted-response.html:35
+#: templates/view-submitted-response.html:33
 msgid "Print answers"
 msgstr ""
 
-#: templates/view-submitted-response.html:47
+#: templates/view-submitted-response.html:46
 msgid "Save answers as PDF"
 msgstr ""
 
@@ -953,316 +952,316 @@ msgstr ""
 msgid "Page is not available"
 msgstr ""
 
-#: templates/errors/401.html:6
-msgid "Sorry, you need to sign in again"
-msgstr ""
-
-#: templates/errors/401.html:7
-msgid "This is because you have either:"
-msgstr ""
-
-#: templates/errors/401.html:9
-msgid ""
-"been inactive for 45 minutes and your session has timed out to protect "
-"your information"
-msgstr ""
-
-#: templates/errors/401.html:10
-msgid "followed a link to a page you are not signed in to"
-msgstr ""
-
-#: templates/errors/401.html:11
-msgid "followed a link to a survey that has already been submitted"
-msgstr ""
-
-#: templates/errors/401.html:14
+#: templates/errors/401.html:4
 msgid "You will need to <a href='{url}'>sign back in</a> to access your account"
 msgstr ""
 
-#: templates/errors/401.html:17
+#: templates/errors/401.html:5
 msgid ""
 "To access this page you need to <a href='{url}'>re-enter your access "
 "code</a>."
 msgstr ""
 
-#: templates/errors/401.html:20 templates/errors/403.html:12
-#: templates/errors/404.html:13 templates/errors/500.html:16
-#: templates/errors/submission-failed.html:14
-msgid "Business surveys"
-msgstr ""
-
-#: templates/errors/401.html:21
+#: templates/errors/401.html:6
 msgid ""
 "If you are completing a business survey, you need to sign back in to <a "
 "href='{url}'>your account</a>."
 msgstr ""
 
-#: templates/errors/401.html:22 templates/errors/403.html:14
-#: templates/errors/404.html:15 templates/errors/500.html:19
-#: templates/errors/submission-failed.html:16
-msgid "All other surveys"
-msgstr ""
-
-#: templates/errors/401.html:23
+#: templates/errors/401.html:7
 msgid ""
 "If you started your survey using an access code, you need to <a "
 "href='{url}'>re-enter your code</a>."
 msgstr ""
 
-#: templates/errors/403.html:7
-msgid "You may need to update your browser to a newer version."
+#: templates/errors/401.html:10
+msgid "Sorry, you need to sign in again"
 msgstr ""
 
-#: templates/errors/403.html:8
-msgid "If the problem still occurs, try using a different browser or device."
+#: templates/errors/401.html:11
+msgid "This is because you have either:"
 msgstr ""
 
-#: templates/errors/403.html:10
+#: templates/errors/401.html:13
+msgid ""
+"been inactive for 45 minutes and your session has timed out to protect "
+"your information"
+msgstr ""
+
+#: templates/errors/401.html:14
+msgid "followed a link to a page you are not signed in to"
+msgstr ""
+
+#: templates/errors/401.html:15
+msgid "followed a link to a survey that has already been submitted"
+msgstr ""
+
+#: templates/errors/401.html:22 templates/errors/403.html:15
+#: templates/errors/404.html:16 templates/errors/500.html:21
+#: templates/errors/submission-failed.html:17
+msgid "Business surveys"
+msgstr ""
+
+#: templates/errors/401.html:24 templates/errors/403.html:17
+#: templates/errors/404.html:18 templates/errors/500.html:24
+#: templates/errors/submission-failed.html:19
+msgid "All other surveys"
+msgstr ""
+
+#: templates/errors/403.html:4
 msgid "For further help, please <a href='{url}'>contact us</a>."
 msgstr ""
 
-#: templates/errors/403.html:13
+#: templates/errors/403.html:5
 msgid ""
 "If you are completing a business survey and you need further help, please"
 " <a href='{url}'>contact us</a>."
 msgstr ""
 
-#: templates/errors/403.html:15
+#: templates/errors/403.html:6
 msgid ""
 "If you started your survey using an access code and you need further "
 "help, please <a href='{url}'>contact us</a>."
 msgstr ""
 
-#: templates/errors/404.html:3 templates/errors/404.html:6
+#: templates/errors/403.html:10
+msgid "You may need to update your browser to a newer version."
+msgstr ""
+
+#: templates/errors/403.html:11
+msgid "If the problem still occurs, try using a different browser or device."
+msgstr ""
+
+#: templates/errors/404.html:3 templates/errors/404.html:9
 msgid "Page not found"
 msgstr ""
 
-#: templates/errors/404.html:7
-msgid "If you entered a web address, check it is correct."
-msgstr ""
-
-#: templates/errors/404.html:8
-msgid "If you pasted the web address, check you copied the whole address."
-msgstr ""
-
-#: templates/errors/404.html:10
+#: templates/errors/404.html:4
 msgid ""
 "If the web address is correct or you selected a link or button, <a "
 "href='{url}'>contact us</a> for more help."
 msgstr ""
 
-#: templates/errors/404.html:12
-msgid ""
-"If the web address is correct or you selected a link or button, please "
-"see the following help links."
-msgstr ""
-
-#: templates/errors/404.html:14 templates/errors/submission-failed.html:15
+#: templates/errors/404.html:5 templates/errors/submission-failed.html:7
 msgid ""
 "If you are completing a business survey, please <a href='{url}'>contact "
 "us</a>."
 msgstr ""
 
-#: templates/errors/404.html:16 templates/errors/submission-failed.html:17
+#: templates/errors/404.html:6 templates/errors/submission-failed.html:8
 msgid ""
 "If you started your survey using an access code, please <a "
 "href='{url}'>contact us</a>."
+msgstr ""
+
+#: templates/errors/404.html:10
+msgid "If you entered a web address, check it is correct."
+msgstr ""
+
+#: templates/errors/404.html:11
+msgid "If you pasted the web address, check you copied the whole address."
+msgstr ""
+
+#: templates/errors/404.html:15
+msgid ""
+"If the web address is correct or you selected a link or button, please "
+"see the following help links."
 msgstr ""
 
 #: templates/errors/500.html:3
 msgid "An error has occurred"
 msgstr ""
 
-#: templates/errors/500.html:6
-msgid "Sorry, there is a problem with this service"
-msgstr ""
-
-#: templates/errors/500.html:7
-msgid "Try again later."
-msgstr ""
-
-#: templates/errors/500.html:8
-msgid "If you have started a survey, your answers have been saved."
-msgstr ""
-
-#: templates/errors/500.html:10 templates/errors/500.html:17
+#: templates/errors/500.html:4
 msgid ""
 "If you have attempted to submit your survey, you should check that this "
 "was successful. To do this, <a href='{url}'>sign in to your business "
 "survey account</a>."
 msgstr ""
 
-#: templates/errors/500.html:11 templates/errors/500.html:14
+#: templates/errors/500.html:5
 msgid "If you need more help, <a href='{url}'>contact us</a>."
 msgstr ""
 
-#: templates/errors/500.html:13 templates/errors/500.html:20
+#: templates/errors/500.html:6
 msgid ""
 "If you have attempted to submit your survey, you should check that this "
 "was successful. To do this, <a href='{url}'>re-enter your code</a>."
 msgstr ""
 
-#: templates/errors/500.html:18
+#: templates/errors/500.html:7
 msgid ""
 "If you need more help, <a href='{url}'>contact us about business "
 "surveys</a>."
 msgstr ""
 
-#: templates/errors/500.html:21
+#: templates/errors/500.html:8
 msgid ""
 "If you need more help, <a href='{url}'>contact us about all other "
 "surveys</a>."
+msgstr ""
+
+#: templates/errors/500.html:11
+msgid "Sorry, there is a problem with this service"
+msgstr ""
+
+#: templates/errors/500.html:12
+msgid "Try again later."
+msgstr ""
+
+#: templates/errors/500.html:13
+msgid "If you have started a survey, your answers have been saved."
 msgstr ""
 
 #: templates/errors/previously-submitted.html:3
 msgid "Submission Complete"
 msgstr ""
 
-#: templates/errors/previously-submitted.html:6
-msgid "This page is no longer available"
-msgstr ""
-
-#: templates/errors/previously-submitted.html:7
-msgid "Your survey has been submitted"
-msgstr ""
-
-#: templates/errors/previously-submitted.html:8
+#: templates/errors/previously-submitted.html:4
 msgid "<a href='{url}'>Return to previous page</a>"
 msgstr ""
 
-#: templates/errors/submission-failed.html:9
+#: templates/errors/previously-submitted.html:7
+msgid "This page is no longer available"
+msgstr ""
+
+#: templates/errors/previously-submitted.html:8
+msgid "Your survey has been submitted"
+msgstr ""
+
+#: templates/errors/submission-failed.html:5
 msgid "You can try to <a href='{url}'>submit your survey again</a>"
 msgstr ""
 
-#: templates/errors/submission-failed.html:11
+#: templates/errors/submission-failed.html:6
 msgid ""
 "If this problem keeps happening, please <a href='{url}'>contact us</a> "
 "for help."
 msgstr ""
 
-#: templates/errors/submission-failed.html:13
+#: templates/errors/submission-failed.html:16
 msgid "If this problem keeps happening, please see the following help links."
 msgstr ""
 
-#: templates/individual_response/confirmation-post.html:15
+#: templates/individual_response/confirmation-post.html:20
 msgid "A letter has been sent to Individual Resident at {display_address}"
 msgstr ""
 
-#: templates/individual_response/confirmation-post.html:17
+#: templates/individual_response/confirmation-post.html:22
 msgid ""
 "The letter with an individual access code should arrive soon for them to "
 "complete their own census"
 msgstr ""
 
-#: templates/individual_response/confirmation-text-message.html:15
+#: templates/individual_response/confirmation-text-message.html:20
 msgid "We have sent a text to {mobile_number}"
 msgstr ""
 
-#: templates/individual_response/confirmation-text-message.html:17
+#: templates/individual_response/confirmation-text-message.html:23
 msgid ""
 "The text message with an individual access code should arrive soon for "
 "them to complete their own census"
 msgstr ""
 
-#: templates/individual_response/confirmation-text-message.html:25
+#: templates/individual_response/confirmation-text-message.html:34
 msgid "The text will be sent from <strong>Census2021</strong>"
 msgstr ""
 
-#: templates/individual_response/interstitial.html:8
+#: templates/individual_response/interstitial.html:9
 msgid "If you can't answer questions for others in your household"
 msgstr ""
 
-#: templates/individual_response/interstitial.html:9
+#: templates/individual_response/interstitial.html:11
 msgid ""
 "You can ask the people you live with to answer their own questions by "
 "sharing the household access code with them."
 msgstr ""
 
-#: templates/individual_response/interstitial.html:10
+#: templates/individual_response/interstitial.html:13
 msgid ""
 "If this is not possible, you can request a separate census for them to "
 "complete."
 msgstr ""
 
-#: templates/individual_response/interstitial.html:13
+#: templates/individual_response/interstitial.html:17
 msgid "Request separate census"
 msgstr ""
 
-#: templates/individual_response/question.html:9
+#: templates/individual_response/question.html:10
 msgid ""
 "To request a census in a different format or for further help, please <a "
 "href='{contact_us_url}'>contact us</a>"
 msgstr ""
 
-#: templates/layouts/_base.html:13
+#: templates/layouts/_base.html:15
 msgid "Previous"
 msgstr ""
 
-#: templates/layouts/_base.html:62
+#: templates/layouts/_base.html:58
 msgid "Tell us whether you accept cookies"
 msgstr ""
 
-#: templates/layouts/_base.html:63
+#: templates/layouts/_base.html:59
 msgid ""
 "We use <a href='{cookie_settings_url}'>cookies to collect information</a>"
 " about how you use {cookie_domain}. We use this information to make the "
 "website work as well as possible and improve our services."
 msgstr ""
 
-#: templates/layouts/_base.html:64
+#: templates/layouts/_base.html:60
 msgid ""
 "You’ve accepted all cookies. You can <a "
 "href='{cookie_settings_url}'>change your cookie preferences</a> at any "
 "time."
 msgstr ""
 
-#: templates/layouts/_base.html:65
+#: templates/layouts/_base.html:61
 msgid "Accept all cookies"
 msgstr ""
 
-#: templates/layouts/_base.html:66
+#: templates/layouts/_base.html:62
 msgid "Set cookie preferences"
 msgstr ""
 
-#: templates/layouts/_base.html:67
+#: templates/layouts/_base.html:63
 msgid "Hide"
 msgstr ""
 
-#: templates/layouts/_base.html:117
+#: templates/layouts/_base.html:113
 msgid "Skip to main content"
 msgstr ""
 
-#: templates/layouts/_base.html:142
+#: templates/layouts/_base.html:141
 msgid "You will be signed out soon"
 msgstr ""
 
-#: templates/layouts/_base.html:143
+#: templates/layouts/_base.html:142
 msgid "It appears you have been inactive for a while."
 msgstr ""
 
-#: templates/layouts/_base.html:144
+#: templates/layouts/_base.html:143
 msgid ""
 "To protect your information, your progress will be saved and you will be "
 "signed out in"
 msgstr ""
 
-#: templates/layouts/_base.html:145
+#: templates/layouts/_base.html:144
 msgid "You are being signed out"
 msgstr ""
 
-#: templates/layouts/_base.html:146
+#: templates/layouts/_base.html:145
 msgid "Continue survey"
 msgstr ""
 
-#: templates/layouts/_calculatedsummary.html:19
+#: templates/layouts/_calculatedsummary.html:18
 msgid "Yes, I confirm this is correct"
 msgstr ""
 
-#: templates/layouts/_questionnaire.html:39
+#: templates/layouts/_questionnaire.html:46
 msgid "Choose another section and return to this later"
 msgstr ""
 
-#: templates/layouts/configs/_header.html:11
+#: templates/layouts/configs/_header.html:10
 msgid "Exit"
 msgstr ""
 
@@ -1270,11 +1269,11 @@ msgstr ""
 msgid "Interviewer note:"
 msgstr ""
 
-#: templates/partials/confirmation-email-form.html:25
+#: templates/partials/confirmation-email-form.html:26
 msgid "Email address"
 msgstr ""
 
-#: templates/partials/confirmation-email-form.html:26
+#: templates/partials/confirmation-email-form.html:27
 msgid "This will not be stored and only used once to send your confirmation"
 msgstr ""
 
@@ -1282,252 +1281,252 @@ msgstr ""
 msgid "Send confirmation"
 msgstr ""
 
-#: templates/partials/feedback-call-to-action.html:6
+#: templates/partials/feedback-call-to-action.html:7
 msgid "What do you think about this service?"
 msgstr ""
 
-#: templates/partials/feedback-call-to-action.html:7
+#: templates/partials/feedback-call-to-action.html:8
 msgid "Your comments will help us make improvements"
 msgstr ""
 
-#: templates/partials/feedback-call-to-action.html:9
+#: templates/partials/feedback-call-to-action.html:10
 msgid "Give feedback"
 msgstr ""
 
-#: templates/partials/individual-response-guidance.html:14
+#: templates/partials/individual-response-guidance.html:18
 msgid ""
 "You can <strong>share your household access code</strong> with the people"
 " you live with so they can complete their own sections."
 msgstr ""
 
-#: templates/partials/individual-response-guidance.html:15
+#: templates/partials/individual-response-guidance.html:21
 msgid ""
 "If this is not possible, there are <a href={url}>other ways each person "
 "can complete their own census.</a>"
 msgstr ""
 
-#: templates/partials/last_viewed_question_guidance.html:7
+#: templates/partials/last_viewed_question_guidance.html:10
 msgid "This is the last viewed question in this section"
 msgstr ""
 
-#: templates/partials/last_viewed_question_guidance.html:10
+#: templates/partials/last_viewed_question_guidance.html:12
 msgid ""
 "You can also <a id='section-start-link' href='{url}'>go back to the start"
 " of the section</a>"
 msgstr ""
 
-#: templates/partials/preview-question.html:34
-#: templates/partials/question.html:93
+#: templates/partials/preview-question.html:31
+#: templates/partials/question.html:85
 msgid "Or"
 msgstr ""
 
-#: templates/partials/preview-question.html:55
+#: templates/partials/preview-question.html:51
 msgid "{max_characters} characters can be added."
 msgstr ""
 
-#: templates/partials/question.html:84
+#: templates/partials/question.html:77
 msgid "Selecting this will clear your answer"
 msgstr ""
 
-#: templates/partials/question.html:85
+#: templates/partials/question.html:78
 msgid "cleared"
 msgstr ""
 
-#: templates/partials/question.html:88
+#: templates/partials/question.html:80
 msgid "Selecting this will deselect any selected options"
 msgstr ""
 
-#: templates/partials/question.html:89 templates/partials/question.html:97
+#: templates/partials/question.html:81 templates/partials/question.html:89
 msgid "deselected"
 msgstr ""
 
-#: templates/partials/answers/address.html:9
+#: templates/partials/answers/address.html:8
 msgid "Address line 1"
 msgstr ""
 
-#: templates/partials/answers/address.html:14
+#: templates/partials/answers/address.html:13
 msgid "Address line 2"
 msgstr ""
 
-#: templates/partials/answers/address.html:18
+#: templates/partials/answers/address.html:17
 msgid "Town or city"
 msgstr ""
 
-#: templates/partials/answers/address.html:22
+#: templates/partials/answers/address.html:21
 msgid "Postcode"
 msgstr ""
 
-#: templates/partials/answers/address.html:33
+#: templates/partials/answers/address.html:32
 msgid "Enter address or postcode and select from results"
 msgstr ""
 
-#: templates/partials/answers/address.html:35
+#: templates/partials/answers/address.html:34
 msgid "Search for an address"
 msgstr ""
 
-#: templates/partials/answers/address.html:36
+#: templates/partials/answers/address.html:35
 msgid "Manually enter address"
 msgstr ""
 
-#: templates/partials/answers/address.html:41
+#: templates/partials/answers/address.html:40
 msgid ""
 "Use up and down keys to navigate suggestions once you’ve typed more than "
 "two characters. Use the enter key to select a suggestion. Touch device "
 "users, explore by touch or with swipe gestures."
 msgstr ""
 
-#: templates/partials/answers/address.html:42
+#: templates/partials/answers/address.html:41
 msgid "You have selected"
 msgstr ""
 
-#: templates/partials/answers/address.html:43
+#: templates/partials/answers/address.html:42
 msgid "Enter 3 or more characters for suggestions."
 msgstr ""
 
-#: templates/partials/answers/address.html:44
+#: templates/partials/answers/address.html:43
 msgid "There is one suggestion available."
 msgstr ""
 
-#: templates/partials/answers/address.html:45
+#: templates/partials/answers/address.html:44
 msgid "There are {n} suggestions available."
 msgstr ""
 
-#: templates/partials/answers/address.html:46
+#: templates/partials/answers/address.html:45
 msgid ""
 "Results have been limited to 10 suggestions. Type more characters to "
 "improve your search"
 msgstr ""
 
-#: templates/partials/answers/address.html:47
+#: templates/partials/answers/address.html:46
 msgid "There are {n} for {x}"
 msgstr ""
 
-#: templates/partials/answers/address.html:48
+#: templates/partials/answers/address.html:47
 msgid "{n} addresses"
 msgstr ""
 
-#: templates/partials/answers/address.html:49
+#: templates/partials/answers/address.html:48
 msgid "Enter more of the address to improve results"
 msgstr ""
 
-#: templates/partials/answers/address.html:50
+#: templates/partials/answers/address.html:49
 msgid "Select an address"
 msgstr ""
 
-#: templates/partials/answers/address.html:51
+#: templates/partials/answers/address.html:50
 msgid "No results found. Try entering a different part of the address"
 msgstr ""
 
-#: templates/partials/answers/address.html:52
+#: templates/partials/answers/address.html:51
 msgid "{n} results found. Enter more of the address to improve results"
 msgstr ""
 
-#: templates/partials/answers/address.html:53
+#: templates/partials/answers/address.html:52
 msgid "Enter more of the address to get results"
 msgstr ""
 
-#: templates/partials/answers/address.html:57
+#: templates/partials/answers/address.html:56
 msgid "Select or manually enter an address"
 msgstr ""
 
-#: templates/partials/answers/address.html:58
+#: templates/partials/answers/address.html:57
 msgid "Sorry, there was a problem loading addresses"
 msgstr ""
 
-#: templates/partials/answers/address.html:59
+#: templates/partials/answers/address.html:58
 msgid "Enter address manually"
 msgstr ""
 
-#: templates/partials/answers/checkbox.html:13
+#: templates/partials/answers/checkbox.html:12
 msgid "Select all that apply"
 msgstr ""
 
-#: templates/partials/answers/date.html:23
+#: templates/partials/answers/date.html:21
 msgid "Day"
 msgstr ""
 
-#: templates/partials/answers/date.html:38
+#: templates/partials/answers/date.html:35
 msgid "Month"
 msgstr ""
 
-#: templates/partials/answers/date.html:53
+#: templates/partials/answers/date.html:49
 msgid "Year"
 msgstr ""
 
-#: templates/partials/answers/radio.html:15
+#: templates/partials/answers/radio.html:14
 msgid "Clear selection"
 msgstr ""
 
 #: templates/partials/answers/textarea.html:20
-#: templates/partials/answers/textfield.html:45
+#: templates/partials/answers/textfield.html:44
 msgid "You have {x} character remaining"
 msgstr ""
 
 #: templates/partials/answers/textarea.html:21
-#: templates/partials/answers/textfield.html:46
+#: templates/partials/answers/textfield.html:45
 msgid "You have {x} characters remaining"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:25
+#: templates/partials/answers/textfield.html:24
 msgid ""
 "Use up and down keys to navigate suggestions once you've typed more than "
 "two characters. Use the enter key to select a suggestion. Touch device "
 "users, explore by touch or with swipe gestures."
 msgstr ""
 
-#: templates/partials/answers/textfield.html:26
+#: templates/partials/answers/textfield.html:25
 msgid "Continue entering to improve suggestions"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:27
+#: templates/partials/answers/textfield.html:26
 msgid "Suggestions"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:28
+#: templates/partials/answers/textfield.html:27
 msgid "No results found"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:29
+#: templates/partials/answers/textfield.html:28
 msgid "Continue entering to get suggestions"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:43
+#: templates/partials/answers/textfield.html:42
 msgid "{x} character too many"
 msgstr ""
 
-#: templates/partials/answers/textfield.html:44
+#: templates/partials/answers/textfield.html:43
 msgid "{x} characters too many"
 msgstr ""
 
-#: templates/partials/introduction/start-survey.html:5
+#: templates/partials/introduction/start-survey.html:6
 msgid "Start survey"
 msgstr ""
 
 #: templates/partials/summary/collapsible-summary.html:28
-#: templates/partials/summary/list-summary.html:7
-#: templates/partials/summary/summary.html:28
+#: templates/partials/summary/list-summary.html:8
+#: templates/partials/summary/summary.html:27
 msgid "Change"
 msgstr ""
 
 #: templates/partials/summary/collapsible-summary.html:29
-#: templates/partials/summary/summary.html:29
+#: templates/partials/summary/summary.html:28
 msgid "Change your answer for:"
 msgstr ""
 
-#: templates/partials/summary/list-summary.html:8
+#: templates/partials/summary/list-summary.html:9
 msgid "Change details for {item_name}"
 msgstr ""
 
-#: templates/partials/summary/list-summary.html:9
-#: templates/partials/summary/summary.html:26
+#: templates/partials/summary/list-summary.html:10
+#: templates/partials/summary/summary.html:25
 msgid "Remove"
 msgstr ""
 
-#: templates/partials/summary/list-summary.html:10
+#: templates/partials/summary/list-summary.html:11
 msgid "Remove {item_name}"
 msgstr ""
 
-#: templates/partials/summary/summary.html:27
+#: templates/partials/summary/summary.html:26
 msgid "Remove your answer for:"
 msgstr ""
 

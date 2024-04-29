@@ -2,25 +2,27 @@
 {% from "components/list/_macro.njk" import onsList %}
 
 {% set error_list = [] %}
+{# djlint:off #}
 {% for error_id, error in form.mapped_errors %}
-    {{ error_list.append( {
+    {{ error_list.append({
         "text": error,
         "url": "#" + error_id,
         "variants": "inPageLink",
         "attributes": {
             "data-qa": "error-link-" + loop.index|string
         }
-    } ) or "" }}
+    }) or "" }}
 {% endfor %}
-
-{% call onsPanel({
-    "variant": "error",
-    "classes": "ons-u-mb-s",
-    "title": error_title,
-    "attributes": {
-        "data-qa": "error-body"
-    }
-}) %}
+{% call
+    onsPanel({
+        "type": "error",
+        "classes": "ons-u-mb-s",
+        "title": error_title,
+        "attributes": {
+            "data-qa": "error-body"
+        }
+    })
+%}
     {{
         onsList({
             "element": "ol",
@@ -31,3 +33,4 @@
         })
     }}
 {% endcall %}
+{# djlint:on #}

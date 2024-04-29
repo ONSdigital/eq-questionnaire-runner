@@ -6,7 +6,7 @@ from app.utilities.schema import (
     CIR_RETRIEVE_COLLECTION_INSTRUMENT_URL,
     get_schema_path_map,
 )
-from tests.integration.create_token import PAYLOAD
+from tests.integration.create_token import PAYLOAD_V2_BUSINESS
 from tests.integration.integration_test_case import IntegrationTestCase
 
 SCHEMA_PATH_MAP = get_schema_path_map(include_test_schemas=True)
@@ -32,17 +32,6 @@ class TestLoginWithGetRequest(IntegrationTestCase):
 
         # Then
         self.assertStatusForbidden()
-
-    def test_login_with_valid_token_should_redirect_to_survey(self):
-        # Given
-        token = self.token_generator.create_token("test_checkbox")
-
-        # When
-        self.get(url=f"/session?token={token}")
-
-        # Then
-        self.assertStatusOK()
-        self.assertInUrl("/questionnaire")
 
     def test_login_with_valid_v2_business_token_should_redirect_to_survey(self):
         # Given
@@ -70,7 +59,7 @@ class TestLoginWithGetRequest(IntegrationTestCase):
 
     def test_login_with_token_twice_is_unauthorised_when_same_jti_provided(self):
         # Given
-        token = self.token_generator.create_token("test_checkbox")
+        token = self.token_generator.create_token_v2("test_checkbox")
         self.get(url=f"/session?token={token}")
 
         # When
@@ -82,16 +71,6 @@ class TestLoginWithGetRequest(IntegrationTestCase):
     def test_login_without_jti_in_token_is_unauthorised(self):
         # Given
         token = self.token_generator.create_token_without_jti("test_checkbox")
-        self.get(url=f"/session?token={token}")
-
-        # Then
-        self.assertStatusForbidden()
-
-    def test_login_with_valid_token_no_schema_name(self):
-        # Given
-        token = self.token_generator.create_token("")
-
-        # When
         self.get(url=f"/session?token={token}")
 
         # Then
@@ -119,7 +98,7 @@ class TestLoginWithGetRequest(IntegrationTestCase):
 
     def test_http_head_request_to_login_returns_successfully_and_get_still_works(self):
         # Given
-        token = self.token_generator.create_token("test_checkbox")
+        token = self.token_generator.create_token_v2("test_checkbox")
 
         # When
         self.head("/session?token=" + token)
@@ -131,7 +110,7 @@ class TestLoginWithGetRequest(IntegrationTestCase):
 
     def test_login_with_missing_mandatory_claims_should_be_forbidden(self):
         # Given
-        payload_vars = PAYLOAD.copy()
+        payload_vars = PAYLOAD_V2_BUSINESS.copy()
         payload_vars["iat"] = time.time()
         payload_vars["exp"] = payload_vars["iat"] + float(3600)  # one hour from now
 
@@ -141,14 +120,6 @@ class TestLoginWithGetRequest(IntegrationTestCase):
         self.get(url=f"/session?token={token}")
 
         # Then
-        self.assertStatusForbidden()
-
-    def test_login_with_invalid_questionnaire_claims_should_be_forbidden(self):
-        # flag_1 should be a boolean
-        token = self.token_generator.create_token("test_metadata_routing", flag_1=123)
-
-        self.get(url=f"/session?token={token}")
-
         self.assertStatusForbidden()
 
     def test_login_with_invalid_questionnaire_claims_should_be_forbidden_v2_get(self):
@@ -172,9 +143,7 @@ class TestLoginWithGetRequest(IntegrationTestCase):
         schema_url = "http://eq-survey-register.url/my-test-schema"
 
         # Given
-        token = self.token_generator.create_token_with_schema_url(
-            "test_textarea", schema_url
-        )
+        token = self.token_generator.create_token_with_schema_url(schema_url)
 
         # When
         with HTTMock(self._schema_url_mock):
@@ -187,9 +156,7 @@ class TestLoginWithGetRequest(IntegrationTestCase):
         schema_url = "http://eq-survey-register.url/my-test-schema-not-found"
 
         # Given
-        token = self.token_generator.create_token_with_schema_url(
-            "test_textarea", schema_url
-        )
+        token = self.token_generator.create_token_with_schema_url(schema_url)
 
         # When
         with HTTMock(self._schema_url_mock_500):
@@ -235,7 +202,7 @@ class TestLoginWithPostRequest(IntegrationTestCase):
 
     def test_login_with_valid_token_should_redirect_to_survey(self):
         # Given
-        token = self.token_generator.create_token("test_checkbox")
+        token = self.token_generator.create_token_v2("test_checkbox")
 
         # When
         self.post(url=f"/session?token={token}")
@@ -246,7 +213,7 @@ class TestLoginWithPostRequest(IntegrationTestCase):
 
     def test_login_with_token_twice_is_unauthorised_when_same_jti_provided(self):
         # Given
-        token = self.token_generator.create_token("test_checkbox")
+        token = self.token_generator.create_token_v2("test_checkbox")
         self.post(url=f"/session?token={token}")
 
         # When
@@ -265,7 +232,7 @@ class TestLoginWithPostRequest(IntegrationTestCase):
 
     def test_http_head_request_to_login_returns_successfully_and_post_still_works(self):
         # Given
-        token = self.token_generator.create_token("test_checkbox")
+        token = self.token_generator.create_token_v2("test_checkbox")
 
         # When
         self.head(f"/session?token={token}")
@@ -277,7 +244,7 @@ class TestLoginWithPostRequest(IntegrationTestCase):
 
     def test_login_with_missing_mandatory_claims_should_be_forbidden(self):
         # Given
-        payload_vars = PAYLOAD.copy()
+        payload_vars = PAYLOAD_V2_BUSINESS.copy()
         payload_vars["iat"] = time.time()
         payload_vars["exp"] = payload_vars["iat"] + float(3600)  # one hour from now
 
@@ -287,14 +254,6 @@ class TestLoginWithPostRequest(IntegrationTestCase):
         self.post(url=f"/session?token={token}")
 
         # Then
-        self.assertStatusForbidden()
-
-    def test_login_with_invalid_questionnaire_claims_should_be_forbidden(self):
-        # flag_1 should be a boolean
-        token = self.token_generator.create_token("test_metadata_routing", flag_1=123)
-
-        self.post(url=f"/session?token={token}")
-
         self.assertStatusForbidden()
 
     def test_login_with_invalid_questionnaire_claims_should_be_forbidden_v2_post(self):
@@ -345,9 +304,7 @@ class TestLoginWithPostRequest(IntegrationTestCase):
         schema_url = "http://eq-survey-register.url/my-test-schema"
 
         # Given
-        token = self.token_generator.create_token_with_schema_url(
-            "test_textarea", schema_url
-        )
+        token = self.token_generator.create_token_with_schema_url(schema_url)
 
         # When
         with HTTMock(self._schema_url_mock):
@@ -360,9 +317,7 @@ class TestLoginWithPostRequest(IntegrationTestCase):
         schema_url = "http://eq-survey-register.url/my-test-schema-not-found"
 
         # Given
-        token = self.token_generator.create_token_with_schema_url(
-            "test_textarea", schema_url
-        )
+        token = self.token_generator.create_token_with_schema_url(schema_url)
 
         # When
         with HTTMock(self._schema_url_mock_500):

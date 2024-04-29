@@ -1,4 +1,4 @@
-{% extends 'layouts/_base.html' %}
+{% extends "layouts/_base.html" %}
 
 {% from "components/panel/_macro.njk" import onsPanel %}
 {% from "components/button/_macro.njk" import onsButton %}
@@ -6,48 +6,49 @@
 {% set save_on_signout = true %}
 
 {% block main %}
-  {% block page_title %}
-    <h1 class="ons-u-mt-m">{{ content.title }}</h1>
-  {% endblock page_title %}
+    {% block page_title %}
+        <h1 class="ons-u-mt-m">{{ content.title }}</h1>
+    {% endblock page_title %}
 
-  {% block post_title_panel %}
-    {% if content.warning %}
-      {% call onsPanel({
-        "variant": "warn"
-      }) %}
-        <p data-qa="warning">{{ content.warning }}</p>
-      {% endcall %}
+    {% block post_title_panel %}
+        {% if content.warning %}
+            {# djlint:off #}
+            {% call onsPanel({ "type": "warn"}) %}
+                <p data-qa="warning">{{ content.warning }}</p>
+            {% endcall %}
+            {# djlint:on #}
+        {% endif %}
+    {% endblock post_title_panel %}
+
+    {% block summary %}
+    {% endblock summary %}
+    {% if content.guidance %}
+        <div class="ons-u-mt-l">
+            <p class="ons-u-mb-no" data-qa="guidance">
+                <strong>{{ content.guidance }}</strong>
+            </p>
+        </div>
     {% endif %}
-  {% endblock post_title_panel %}
 
-  {% block summary %}
-  {% endblock summary %}
+    {% block pre_submit_button_content %}
+    {% endblock pre_submit_button_content %}
 
-  {% if content.guidance %}
-    <div class="ons-u-mt-l">
-      <p class="ons-u-mb-no" data-qa="guidance">
-        <strong>{{ content.guidance }}</strong>
-      </p>
-    </div>
-  {% endif %}
-
-  {% block pre_submit_button_content %}
-  {% endblock pre_submit_button_content %}
-
-  {% block submit_button %}
-    {{
-      onsButton({
-        "text": content.submit_button,
-        "variants": 'timer',
-        "classes": 'ons-u-mb-m ons-u-mt-' ~ ("s" if content.guidance else "xl"),
-        "attributes": {
-          'data-qa': 'btn-submit',
-          "data-ga-category": "Submit Button",
-          "data-ga-action": "Submit",
-          "data-ga-label": "Submit Button click",
-          "data-ga": "click"
-        }
-      })
-    }}
-  {% endblock submit_button %}
-{% endblock %}
+    {% block submit_button %}
+        {# djlint:off #}
+        {{
+            onsButton({
+                "text": content.submit_button,
+                "variants": 'timer',
+                "classes": 'ons-u-mb-m ons-u-mt-' ~ ("s" if content.guidance else "xl"),
+                "attributes": {
+                    "data-qa": "btn-submit",
+                    "data-ga-category": "Submit Button",
+                    "data-ga-action": "Submit",
+                    "data-ga-label": "Submit Button click",
+                    "data-ga": "click"
+                }
+            })
+        }}
+        {# djlint:on #}
+    {% endblock submit_button %}
+{% endblock main %}

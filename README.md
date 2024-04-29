@@ -1,8 +1,13 @@
 # eQ Questionnaire Runner
 
-![Build Status](https://github.com/ONSdigital/eq-questionnaire-runner/workflows/main/badge.svg)
-[![codecov](https://codecov.io/gh/ONSdigital/eq-questionnaire-runner/branch/main/graph/badge.svg)](https://codecov.io/gh/ONSdigital/eq-questionnaire-runner/branch/main)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4c39ddd3285748f8bfb6b70fd5aaf9cc)](https://www.codacy.com/manual/ONSDigital/eq-questionnaire-runner?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ONSdigital/eq-questionnaire-runner&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://github.com/ONSdigital/eq-questionnaire-runner/actions/workflows/main.yml/badge.svg)](https://github.com/ONSdigital/eq-questionnaire-runner/actions/workflows/main.yml)
+[![Build Status](https://github.com/ONSdigital/eq-questionnaire-runner/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/ONSdigital/eq-questionnaire-runner/actions/workflows/codeql-analysis.yml)
+![Coverage](https://img.shields.io/badge/Coverage-100%25-2FC050.svg)
+
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
+[![poetry-managed](https://img.shields.io/badge/poetry-managed-blue)](https://python-poetry.org/)
+[![License - MIT](https://img.shields.io/badge/licence%20-MIT-1ac403.svg)](https://github.com/ONSdigital/eq-questionnaire-runner/blob/main/LICENSE)
 
 ## Run with Docker
 
@@ -11,7 +16,7 @@ Install Docker for your system: [https://www.docker.com/](https://www.docker.com
 To get eq-questionnaire-runner running the following command will build and run the containers
 
 ``` shell
-RUNNER_ENV_FILE=.development.env docker-compose up -d
+RUNNER_ENV_FILE=.development.env docker compose up -d
 ```
 
 To launch a survey, navigate to [http://localhost:8000/](http://localhost:8000/)
@@ -22,13 +27,13 @@ However, any new dependencies that are added would require a re-build.
 To rebuild the eq-questionnaire-runner container, the following command can be used.
 
 ``` shell
-RUNNER_ENV_FILE=.development.env docker-compose build
+RUNNER_ENV_FILE=.development.env docker compose build
 ```
 
 If you need to rebuild the container from scratch to re-load any dependencies then you can run the following
 
 ``` shell
-RUNNER_ENV_FILE=.development.env docker-compose build --no-cache
+RUNNER_ENV_FILE=.development.env docker compose build --no-cache
 ```
 
 ## Run locally
@@ -85,17 +90,25 @@ Python versions can be changed with the `pyenv local` or `pyenv global` commands
 
 #### Python & dependencies
 
-Inside the project directory install python version, upgrade pip and install dependencies:
+Inside the project directory install python version, upgrade pip:
 
 ``` shell
 pyenv install
-pip install --upgrade pip setuptools pipenv
-pipenv install --dev
+pip install --upgrade pip setuptools
 ```
 
-**NOTE: You may encounter an issue with the `python-snappy` installation with `pipenv` above on Mac OSX. If so, install with the recommended [workaround command](https://github.com/andrix/python-snappy#frequently-asked-questions) instead:**
+Install poetry, poetry dotenv plugin and install dependencies:
+
 ``` shell
-CPPFLAGS="-I/usr/local/include -L/usr/local/lib" pipenv install --dev
+curl -sSL https://install.python-poetry.org | python3 - --version 1.8.2
+poetry self add poetry-plugin-dotenv
+poetry install
+```
+
+We use [poetry-plugin-up](https://github.com/MousaZeidBaker/poetry-plugin-up) to update dependencies in the `pyproject.toml` file:
+
+``` shell
+poetry self add poetry-plugin-up
 ```
 
 #### Design system templates
@@ -116,7 +129,7 @@ make load-schemas
 
 #### Run server
 
-Run the server inside the virtual env created by Pipenv with:
+Run the server inside the virtual env created by Poetry with:
 
 ``` shell
 make run
@@ -490,9 +503,31 @@ Refer to our [profiling document](doc/profiling.md).
 ## Updating / Installing dependencies
 
 ### Python
-To add a new dependency, use `pipenv install [package-name]`, which not only installs the package but Pipenv will also go to the trouble of updating the Pipfile as well.
+To add a new dependency, use:
+``` shell
+poetry add [package-name]
+```
+This will add the required packages to your pyproject.toml and install them
 
-NB: both the Pipfile and Pipfile.lock files are required in source control to accurately pin dependencies.
+To update a dependency, use:
+```shell
+poetry update [package-name]
+```
+This will resolve the required dependencies of the project and write the exact versions into poetry.lock
+
+Using the poetry up plugin we can update dependencies and bump their versions in the pyproject.toml file
+
+To update dependencies to the latest compatible version with respect to their version constraints specified in the pyproject.toml file:
+```shell
+poetry up
+```
+
+To update dependencies to their latest compatible version:
+```shell
+poetry up --latest
+```
+
+NB: both the pyproject.toml and poetry.lock files are required in source control to accurately pin dependencies.
 
 ### JavaScript
 To add a new dependency, use `npm install [dev dependency] --save-dev` or `npm install [dependency]` then use `npm install` to install all the packages locally.

@@ -15,12 +15,12 @@ class TestTimeout(IntegrationTestCase):
         super().tearDown()
 
     def test_timeout_continue_valid_session_returns_200(self):
-        self.launchSurvey("test_timeout")
+        self.launchSurveyV2(schema_name="test_timeout")
         self.get(self.last_url)
         self.assertStatusOK()
 
     def test_when_session_times_out_server_side_401_is_returned(self):
-        self.launchSurvey("test_timeout")
+        self.launchSurveyV2(schema_name="test_timeout")
         time.sleep(5)
         self.get(self.last_url)
         self.assertStatusUnauthorised()
@@ -33,7 +33,7 @@ class TestTimeout(IntegrationTestCase):
         self.assertEqualPageTitle("Page is not available - ONS Surveys")
 
     def test_schema_defined_timeout_cant_be_higher_than_server(self):
-        self.launchSurvey("test_timeout")
+        self.launchSurveyV2(schema_name="test_timeout")
         time.sleep(4)
         self.get(self.last_url)
         self.assertStatusUnauthorised()
@@ -43,7 +43,7 @@ class TestTimeout(IntegrationTestCase):
         self.assertEqualPageTitle("Page is not available - Timeout test")
 
     def test_submission_complete_timeout(self):
-        self.launchSurvey("test_timeout")
+        self.launchSurveyV2(schema_name="test_timeout")
         self.post()
         self.post()
         time.sleep(4)
