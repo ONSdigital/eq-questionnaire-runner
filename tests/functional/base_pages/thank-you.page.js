@@ -1,6 +1,6 @@
 import BasePage from "./base.page";
 
-class ThankYouPage extends BasePage {
+class ThankYouBasePage extends BasePage {
   url() {
     return `/submitted/${this.pageName}`;
   }
@@ -57,4 +57,4 @@ class ThankYouPage extends BasePage {
     return ".ons-feedback__link";
   }
 }
-export default new ThankYouPage("thank-you");
+export default new ThankYouBasePage("thank-you");
