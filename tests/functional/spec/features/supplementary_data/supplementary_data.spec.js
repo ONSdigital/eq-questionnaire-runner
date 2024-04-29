@@ -341,7 +341,7 @@ describe("Using supplementary data", () => {
   it("Given I relaunch the survey with new supplementary data and new list items for the repeating section, When I open the Hub page, Then I see the new supplementary list items as new incomplete sections and not any old ones", async () => {
     await browser.openQuestionnaire("test_supplementary_data.json", {
       version: "v2",
-      sdsDatasetId: "693dc252-2e90-4412-bd9c-c4d953e36fcd",
+      sdsDatasetId: "1f61750f-51dd-e933-0df9-40261b06d93f",
       responseId,
     });
     await expect(await $(HubPage.summaryItems("section-4-1")).getText()).toContain("Harry Potter");
@@ -401,7 +401,7 @@ describe("Using supplementary data", () => {
   it("Given I return to the new data resulting in a new incomplete section, When I start the section, Then I see the new supplementary data piped in accordingly", async () => {
     await browser.openQuestionnaire("test_supplementary_data.json", {
       version: "v2",
-      sdsDatasetId: "693dc252-2e90-4412-bd9c-c4d953e36fcd",
+      sdsDatasetId: "1f61750f-51dd-e933-0df9-40261b06d93f",
       responseId,
     });
     await click(HubPage.submit());
