@@ -1,34 +1,37 @@
-{% import 'macros/helpers.html' as helpers %}
+{% import "macros/helpers.html" as helpers %}
+
 {% set form = content.form %}
 {% set errors = form.answer_errors[answer.id] %}
 {% from "components/error/_macro.njk" import onsError %}
 
 {% if render_guidance != False %}
-  {%- set answer_guidance %}
-    {% if answer.guidance %}
-      {% with answer_guidance = {
-        'id': answer.id,
-        'label': answer.label,
-        'schema_item': answer.guidance
-      } %}
-        {% include 'partials/answer-guidance.html' %}
-      {% endwith %}
-    {% endif %}
-  {% endset -%}
+    {# djlint:off #}
+    {%- set answer_guidance %}
+        {% if answer.guidance %}
+            {% with answer_guidance = {
+                "id": answer.id,
+                "label": answer.label,
+                "schema_item": answer.guidance
+            } %}
+                {% include "partials/answer-guidance.html" %}
+            {% endwith %}
+        {% endif %}
+    {% endset -%}
+    {# djlint:on #}
 {% endif %}
-
 {% if errors | length > 0 %}
-  {% set error = {
-    "text": errors[0],
-    "id": answer.id ~ '-error',
-    "attributes": {
-      "data-ga": "error",
-      "data-ga-category": "Error",
-      "data-ga-action": answer.type,
-      "data-ga-label": question.id
-    }
-  } %}
+    {# djlint:off #}
+    {% set error = {
+        "text": errors[0],
+        "id": answer.id ~ '-error',
+        "attributes": {
+            "data-ga": "error",
+            "data-ga-category": "Error",
+            "data-ga-action": answer.type,
+            "data-ga-label": question.id
+        }
+    } %}
+    {# djlint:on #}
 {% endif %}
-
-{% include 'partials/answers/' ~ answer.type|lower ~ '.html' %}
+{% include "partials/answers/" ~ answer.type|lower ~ ".html" %}
 {{ answer_guidance }}

@@ -1,17 +1,25 @@
 {% from "components/details/_macro.njk" import onsDetails %}
 
-{% call onsDetails({
-  "classes": "ons-u-mt-s",
-  "title": title,
-  "headingAttributes": {
-    "data-ga": "click",
-    "data-ga-category": "definition",
-    "data-ga-action": "Open panel",
-    "data-ga-label": title
-  }
-}) %}
-  <div class="ons-u-mt-s">
-    <p>{{ _("You can <em>share your household access code</em> with the people you live with so they can complete their own sections.") }}</p>
-    <p data-qa=individual-response-url >{{ _("If this is not possible, there are <a href={url}>other ways each person can complete their own census.</a>").format(url=content.individual_response_url)}}</p>
-  </div>
+{# djlint:off #}
+{% call
+    onsDetails({
+        "classes": "ons-u-mt-s",
+        "title": title,
+        "headingAttributes": {
+            "data-ga": "click",
+            "data-ga-category": "definition",
+            "data-ga-action": "Open panel",
+            "data-ga-label": title
+        }
+    })
+%}
+    <div class="ons-u-mt-s">
+        <p>
+            {{ _("You can <em>share your household access code</em> with the people you live with so they can complete their own sections.") }}
+        </p>
+        <p data-qa=individual-response-url>
+            {{ _("If this is not possible, there are <a href={url}>other ways each person can complete their own census.</a>").format(url=content.individual_response_url) }}
+        </p>
+    </div>
 {% endcall %}
+{# djlint:on #}

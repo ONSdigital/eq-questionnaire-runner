@@ -1,9 +1,9 @@
-{% extends 'layouts/_base.html' %}
+{% extends "layouts/_base.html" %}
 
 {% block main %}
-<h1>{{ heading }}</h1>
-{%- if retry_message and retry_url -%}
-  <p data-qa="retry">{{ retry_message.format(retry_url=retry_url) }}</p>
-{%- endif -%}
-<p>{{ contact_us_message.format(contact_us_url=contact_us_url)  }}</p>
-{% endblock %}
+    <h1>{{ heading }}</h1>
+    {%- if retry_message and retry_url -%}
+        <p data-qa="retry">{{ retry_message.format(retry_url=retry_url) }}</p>
+    {%- endif -%}
+    <p>{{ contact_us_message.format(contact_us_url=contact_us_url) }}</p>
+{% endblock main %}
