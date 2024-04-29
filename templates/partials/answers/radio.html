@@ -1,22 +1,21 @@
 {% from "components/radios/_macro.njk" import onsRadios %}
 
-
 {% set config = {
-  "id": answer.id,
-  "name": answer.id,
-  "legend": answer.label,
-  "dontWrap": not answer.label,
-  "radios": map_select_config(form, answer),
-  "error": error
+    "id": answer.id,
+    "name": answer.id,
+    "legend": answer.label,
+    "dontWrap": not answer.label,
+    "radios": map_select_config(form, answer),
+    "error": error
 } %}
-
+{# djlint:off #}
 {% if answer.voluntary %}
-  {% set config = config | setAttribute("clearRadios", {
-    "text": _("Clear selection"),
-    "name": "action[clear_radios]",
-    "ariaClearText": "You can clear your answer using the clear selection button after the radio inputs",
-    "ariaClearedText": "You have cleared your answer"
-  }) %}
+    {% set config = config | setAttribute("clearRadios", {
+        "text": _("Clear selection"),
+        "name": "action[clear_radios]",
+        "ariaClearText": "You can clear your answer using the clear selection button after the radio inputs",
+        "ariaClearedText": "You have cleared your answer"
+    }) %}
 {% endif %}
-
 {{ onsRadios(config) }}
+{# djlint:off #}

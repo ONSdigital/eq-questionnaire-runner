@@ -1,4 +1,4 @@
-{% extends 'layouts/_base.html' %}
+{% extends "layouts/_base.html" %}
 
 {% from "components/panel/_macro.njk" import onsPanel %}
 {% from "components/button/_macro.njk" import onsButton %}
@@ -6,73 +6,75 @@
 
 {% set hide_sign_out_button = content.hide_sign_out_button %}
 {% set sign_out_url = content.sign_out_url %}
-
 {% set breadcrumbs = {
-  "ariaLabel": 'Back',
-  "itemsList": [
-    {
-      "url": url_for("post_submission.get_thank_you"),
-      "id": "top-previous",
-      "text": _("Back"),
-      "attributes": {
-        "data-ga": 'click',
-        "data-ga-category": 'Link',
-        "data-ga-action": 'Navigate',
-        "data-ga-label": "Previous",
-        "data-ga-page": "View Submitted Response",
-      }
-    }
-  ]
+    "ariaLabel": 'Back',
+    "itemsList": [
+        {
+            "url": url_for("post_submission.get_thank_you"),
+            "id": "top-previous",
+            "text": _("Back"),
+            "attributes": {
+                "data-ga": "click",
+                "data-ga-category": "Link",
+                "data-ga-action": "Navigate",
+                "data-ga-label": "Previous",
+                "data-ga-page": "View Submitted Response",
+            }
+        }
+    ]
 } %}
 
 {% block main %}
-  <h1 class="ons-u-mt-m">
-    {{ content.submitted_text}}
-  </h1>
-  {{ onsDescriptionList(content.metadata)}}
-  {% if not content.view_submitted_response.expired %}
-    {{
-      onsButton({
-        "type": 'button',
-        "text": _('Print answers'),
-        "variants": ['small', 'secondary', 'print'],
-        "attributes": {
-          "data-qa": "btn-print",
-          "data-ga-category": "Button",
-          "data-ga-action": "View",
-          "data-ga-label": "Print Dialogue",
-          "data-ga-page": "View Submitted Response",
-          "data-ga": "click",
-        }
-      })
-    }}
-    {{
-      onsButton({
-        "text": _('Save answers as PDF'),
-        "variants": ['small', 'secondary', 'timer', 'download'],
-        "url": content.pdf_url,
-        "removeDownloadAttribute": true,
-        "attributes": {
-          "data-qa": "btn-pdf",
-          "data-ga-category": "Button",
-          "data-ga-action": "Download",
-          "data-ga-label": "Download PDF",
-          "data-ga-page": "View Submitted Response",
-          "data-ga": "click",
-        }
-      })
-    }}
-    {% block summary %}
-      <div class="ons-u-mt-l ons-u-mb-l">
-        {% include 'partials/summary/summary.html' %}
-      </div>
-    {% endblock summary %}
-  {% else %}
-    {% call onsPanel({
-      "id": "view-submitted-guidance",
-      "classes": "ons-u-mb-m"
-     }) %}
-      {{ _("For security, you can no longer view or get a copy of your answers") }}
-    {% endcall %}
-  {% endif %}
-{% endblock %}
+    <h1 class="ons-u-mt-m">{{ content.submitted_text }}</h1>
+    {{ onsDescriptionList(content.metadata) }}
+    {% if not content.view_submitted_response.expired %}
+        {# djlint:off #}
+        {{
+            onsButton({
+                "type": 'button',
+                "text": _('Print answers'),
+                "variants": ['small', 'secondary', 'print'],
+                "attributes": {
+                    "data-qa": "btn-print",
+                    "data-ga-category": "Button",
+                    "data-ga-action": "View",
+                    "data-ga-label": "Print Dialogue",
+                    "data-ga-page": "View Submitted Response",
+                    "data-ga": "click",
+                }
+            })
+        }}
+        {{
+            onsButton({
+                "text": _('Save answers as PDF') ,
+                "variants": ['small', 'secondary', 'timer', 'download'],
+                "url": content.pdf_url,
+                "removeDownloadAttribute": true,
+                "attributes": {
+                    "data-qa": "btn-pdf",
+                    "data-ga-category": "Button",
+                    "data-ga-action": "Download",
+                    "data-ga-label": "Download PDF",
+                    "data-ga-page": "View Submitted Response",
+                    "data-ga": "click",
+                }
+            })
+        }}
+        {# djlint:on #}
+
+        {% block summary %}
+            <div class="ons-u-mt-l ons-u-mb-l">{% include "partials/summary/summary.html" %}</div>
+        {% endblock summary %}
+    {% else %}
+        {# djlint:off #}
+        {% call
+            onsPanel({
+                "id": "view-submitted-guidance",
+                "classes": "ons-u-mb-m"
+            })
+        %}
+            {{ _("For security, you can no longer view or get a copy of your answers") }}
+        {% endcall %}
+        {# djlint:on #}
+    {% endif %}
+{% endblock main %}

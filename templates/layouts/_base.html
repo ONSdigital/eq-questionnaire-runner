@@ -1,157 +1,157 @@
 {% extends "layout/_template.njk" %}
+
 {% from "components/cookies-banner/_macro.njk" import onsCookiesBanner %}
 {% from "components/skip-to-content/_macro.njk" import onsSkipToContent %}
 {% from "components/timeout-modal/_macro.njk" import onsTimeoutModal %}
 
 {% if previous_location_url %}
-  {% set breadcrumbs = {
-    "ariaLabel": 'Previous',
-    "itemsList": [
-      {
-        "url": previous_location_url,
-        "id": "top-previous",
-        "text": _("Previous"),
-        "attributes": {
-          "data-ga": 'click',
-          "data-ga-category": 'Link',
-          "data-ga-action": 'Navigate',
-          "data-ga-label": "Previous",
-          "data-ga-page": "Questionnaire",
-        }
-      }
-    ]
-  } %}
+    {# djlint:off #}
+    {% set breadcrumbs = {
+        "ariaLabel": 'Previous',
+        "itemsList": [
+            {
+                "url": previous_location_url,
+                "id": "top-previous",
+                "text": _("Previous"),
+                "attributes": {
+                    "data-ga": "click",
+                    "data-ga-category": "Link",
+                    "data-ga-action": "Navigate",
+                    "data-ga-label": "Previous",
+                    "data-ga-page": "Questionnaire",
+                }
+            }
+        ]
+    } %}
+    {# djlint:on #}
 {% endif %}
-
 {% if survey_title %}
-  {% set full_page_title = page_title ~ " - " ~ survey_title %}
+    {% set full_page_title = page_title ~ " - " ~ survey_title %}
 {% else %}
-  {% set full_page_title = page_title %}
+    {% set full_page_title = page_title %}
 {% endif %}
-
 {% set pageConfig = {
-  "title": full_page_title,
-  "pageColNumber": 8,
-  "footer": footer,
-  "cdn": {
-    "url": cdn_url
-  },
-  "breadcrumbs": breadcrumbs,
-  "cspNonce": csp_nonce
+    "title": full_page_title,
+    "pageColNumber": 8,
+    "footer": footer,
+    "cdn": {
+        "url": cdn_url
+    },
+    "breadcrumbs": breadcrumbs,
+    "cspNonce": csp_nonce
 } %}
-
 {% if theme %}
-  {% do pageConfig.update({"theme":theme}) %}
+    {% do pageConfig.update({"theme":theme}) %}
 {% endif %}
-
-{% include 'layouts/configs/_header.html' %}
-
-
+{% include "layouts/configs/_header.html" %}
 {# if there is not a previous link add extra margin top to the page #}
 {% if not previous_location_url %}
-  {% set pageClasses = pageClasses + " ons-u-mt-m" if pageClasses else "ons-u-mt-m" %}
+    {% set pageClasses = pageClasses + " ons-u-mt-m" if pageClasses else "ons-u-mt-m" %}
 {% endif %}
 
 {% block preHeader %}
-  {% if include_csrf_token %}
-    <input id="csrf_token" name="csrf_token" type="hidden" value="{{ csrf_token() }}"/>
-  {% endif %}
-
-  {% if cookie_settings_url and cookie_domain %}
-    {{
-      onsCookiesBanner({
-        "secondaryButtonUrl": cookie_settings_url,
-        "statementTitle": _('Tell us whether you accept cookies'),
-        "statementText": _("We use <a href='{cookie_settings_url}'>cookies to collect information</a> about how you use {cookie_domain}. We use this information to make the website work as well as possible and improve our services.").format(cookie_settings_url=cookie_settings_url, cookie_domain=cookie_domain),
-        "confirmationText": _("You’ve accepted all cookies. You can <a href='{cookie_settings_url}'>change your cookie preferences</a> at any time.").format(cookie_settings_url=cookie_settings_url),
-        "primaryButtonText": _('Accept all cookies'),
-        "secondaryButtonText": _('Set cookie preferences'),
-        "confirmationButtonText": _('Hide'),
-        'lang': language_code
-      })
-    }}
-  {% endif %}
-{% endblock %}
-
+    {# djlint:off #}
+    {% if include_csrf_token %}
+        <input id="csrf_token" name="csrf_token" type="hidden" value="{{ csrf_token() }}"/>
+    {% endif %}
+    {% if cookie_settings_url and cookie_domain %}
+        {{ onsCookiesBanner({
+            "secondaryButtonUrl": cookie_settings_url,
+            "statementTitle": _('Tell us whether you accept cookies') ,
+            "statementText": _("We use <a href='{cookie_settings_url}'>cookies to collect information</a> about how you use {cookie_domain}. We use this information to make the website work as well as possible and improve our services.").format(cookie_settings_url=cookie_settings_url, cookie_domain=cookie_domain),
+            "confirmationText": _("You’ve accepted all cookies. You can <a href='{cookie_settings_url}'>change your cookie preferences</a> at any time.").format(cookie_settings_url=cookie_settings_url),
+            "primaryButtonText": _('Accept all cookies'),
+            "secondaryButtonText": _('Set cookie preferences'),
+            "confirmationButtonText": _('Hide'),
+            'lang': language_code
+            })
+        }}
+    {% endif %}
+    {# djlint:on #}
+{% endblock preHeader %}
 
 {% block head %}
-  {% if google_tag_id %}
-    <script nonce="{{ csp_nonce }}">
-      dataLayer = {{ data_layer | tojson }}
-    </script>
+    {# djlint:off #}
+    {% if google_tag_id %}
+        <script nonce="{{ csp_nonce }}">
+            dataLayer = {{ data_layer | tojson }}
+        </script>
+        <!-- Google tag (gtag.js) -->
+        <script nonce="{{ csp_nonce }}">
+            function loadGoogleTagScript() {
+                (function (document, script, google_tag_id) {
+                    var f = document.getElementsByTagName(script)[0],
+                        j = document.createElement(script);
+                    j.async = true;
+                    j.src =
+                        "https://www.googletagmanager.com/gtag/js?id=" +
+                        google_tag_id;
+                    var n = document.querySelector("[nonce]");
+                    n && j.setAttribute("nonce", n.nonce || n.getAttribute("nonce"));
+                    f.parentNode.insertBefore(j, f);
+                })(document, "script", "{{ google_tag_id }}");
+            }
 
-    <!-- Google tag (gtag.js) -->
-    <script nonce="{{ csp_nonce }}">
-      function loadGoogleTagScript() {
-        (function (document, script, google_tag_id) {
-          var f = document.getElementsByTagName(script)[0],
-            j = document.createElement(script);
-          j.async = true;
-          j.src =
-            "https://www.googletagmanager.com/gtag/js?id=" +
-            google_tag_id;
-          var n = document.querySelector("[nonce]");
-          n && j.setAttribute("nonce", n.nonce || n.getAttribute("nonce"));
-          f.parentNode.insertBefore(j, f);
-        })(document, "script", "{{ google_tag_id }}");
-      }
+            window.dataLayer = window.dataLayer || [];
+            var cookie_usage_regex = /^(.*)?\s*'usage':true\s*[^;]+(.*)?$/;
+                if (document.cookie.match(cookie_usage_regex)) {
+                    loadGoogleTagScript()
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    gtag('config', '{{ google_tag_id }}');
+                }
+        </script>
+    {% endif %}
+    {# djlint:on #}
+{% endblock head %}
 
-      window.dataLayer = window.dataLayer || [];
-      var cookie_usage_regex = /^(.*)?\s*'usage':true\s*[^;]+(.*)?$/;
-      if (document.cookie.match(cookie_usage_regex)) {
-        loadGoogleTagScript()
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', '{{ google_tag_id }}');
-      }
-    </script>
-  {% endif %}
-{% endblock %}
+{% block bodyStart %}<form class="form-class" method="POST" autocomplete="off" novalidate>{% endblock bodyStart %}
 
-{% block bodyStart %}
-  <form class="form-class" method="POST" autocomplete="off" novalidate>
-{% endblock %}
+    {% block skipLink %}
+        {# djlint:off #}
+        {{
+            onsSkipToContent({
+                "url": "#main-content",
+                "text": _("Skip to main content")
+            })
+        }}
+        {# djlint:on #}
+    {% endblock skipLink %}
 
-{% block skipLink %}
-  {{
-    onsSkipToContent({
-      "url": "#main-content",
-      "text": _("Skip to main content")
-    })
-  }}
-{% endblock %}
-
-{% block bodyEnd %}
-  </form>
-{% endblock %}
+    {% block bodyEnd %}</form>{% endblock bodyEnd %}
 
 {% block scripts %}
-  {% if config['EQ_ENABLE_LIVE_RELOAD'] %}
-    <script nonce="{{ csp_nonce }}" id="__bs_script__">//<![CDATA[
-      document.write("<script async nonce='{{ csp_nonce }}' src='http://HOST:35729/livereload.js'><\/script>".replace("HOST", location.hostname));
-    //]]></script>
-  {% endif %}
-{% endblock %}
+    {% if config['EQ_ENABLE_LIVE_RELOAD'] %}
+        <script nonce="{{ csp_nonce }}" id="__bs_script__">
+            //<![CDATA[
+            document.write("<script async nonce='{{ csp_nonce }}' src='http://HOST:35729/livereload.js'><\/script>".replace("HOST", location.hostname));
+            //]]>
+        </script>
+    {% endif %}
+{% endblock scripts %}
 
 {% block preFooter %}
-  {% if session_expires_at %}
+{# djlint:off #}
+    {% if session_expires_at %}
+
     {{
-      onsTimeoutModal({
-        "showModalTimeInSeconds": 60,
-        "serverSessionExpiryEndpoint": url_for('session.session_expiry'),
-        "sessionExpiresAt": session_expires_at,
-        "redirectUrl": url_for('session.get_session_expired'),
-        "title": _("You will be signed out soon"),
-        "textFirstLine": _("It appears you have been inactive for a while."),
-        "countdownText": _("To protect your information, your progress will be saved and you will be signed out in"),
-        "countdownExpiredText": _("You are being signed out"),
-        "btnText": _("Continue survey"),
-        "minutesTextSingular": _("minute"),
-        "minutesTextPlural": _("minutes"),
-        "secondsTextSingular": _("second"),
-        "secondsTextPlural": _("seconds"),
-        "endWithFullStop": true
-      })
+        onsTimeoutModal({
+            "showModalTimeInSeconds": 60,
+            "serverSessionExpiryEndpoint": url_for('session.session_expiry') ,
+            "sessionExpiresAt": session_expires_at,
+            "redirectUrl": url_for('session.get_session_expired'),
+            "title": _("You will be signed out soon"),
+            "textFirstLine": _("It appears you have been inactive for a while."),
+            "countdownText": _("To protect your information, your progress will be saved and you will be signed out in"),
+            "countdownExpiredText": _("You are being signed out"),
+            "btnText": _("Continue survey"),
+            "minutesTextSingular": _("minute"),
+            "minutesTextPlural": _("minutes"),
+            "secondsTextSingular": _("second"),
+            "secondsTextPlural": _("seconds"),
+            "endWithFullStop": true
+        })
     }}
-  {% endif %}
-{% endblock %}
+    {% endif %}
+{# djlint:on #}
+{% endblock preFooter %}

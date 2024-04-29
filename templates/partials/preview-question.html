@@ -1,72 +1,65 @@
-{% from 'components/panel/_macro.njk' import onsPanel %}
-{% from 'macros/helpers.html' import format_paragraphs %}
+{% from "components/panel/_macro.njk" import onsPanel %}
+{% from "macros/helpers.html" import format_paragraphs %}
 
 {% set answers = question.answers %}
-
 <div class="ons-summary__item">
-
-  <h3 class="ons-u-mt-m ons-u-fs-r--b">{{ question.title }}</h3>
-
-  {% set answers_length = answers | length %}
-
-  {% if question.descriptions %}
-    {% set descriptions = question.descriptions %}
-    {% set descriptions_length = descriptions | length %}
-
-    {% for description in descriptions %}
-      <div class="ons-question__description ons-u-mb-m">{{- description | safe -}}</div>
-    {% endfor %}
-  {% endif %}
-
-  {%- if question.guidance -%}
-    {% set contents = question.guidance.contents %}
-    {% call onsPanel({
-      "id": "question-guidance-" ~ question.id,
-      "classes": "ons-u-mb-m"
-    }) %}
-      {% include 'partials/contents.html' %}
-    {% endcall %}
-  {% endif %}
-
-  {% for answer in answers %}
-
-    {% if loop.last and question.type == "MutuallyExclusive" %}
-      <p><strong>{{ _("Or") }}</strong></p>
-    {% endif %}
-
-    {% if not loop.last or (answer.options and answers_length == 1) %}
-      <p>{{ answer.options_text }}</p>
-    {%  endif %}
-
-    {% if answer.options %}
-      {% if answer.label %}
-        <p><strong>{{- answer.label | safe -}}</strong></p>
-      {% endif %}
-      <ul>
-        {% for option in answer.options %}
-          <li>{{ option }}</li>
+    <h3 class="ons-u-mt-m ons-u-fs-r--b">{{ question.title }}</h3>
+    {% set answers_length = answers | length %}
+    {% if question.descriptions %}
+        {% set descriptions = question.descriptions %}
+        {% set descriptions_length = descriptions | length %}
+        {% for description in descriptions %}
+            <div class="ons-question__description ons-u-mb-m">{{- description | safe -}}</div>
         {% endfor %}
-      </ul>
-    {% else %}
-      {% if answer.label %}
-        <p><strong>{{- answer.label | safe -}}</strong></p>
-      {% endif %}
-      {% if answer.max_length %}
-        <p>{{ _("{max_characters} characters can be added.").format(max_characters = answer.max_length) }}</p>
-      {% endif %}
-    {%  endif %}
-
-    {# answer guidance not implemented yet due to some work that needs to be done in the DS will be implemented in iteration 2 #}
-    {# {% if answer.guidance %}
+    {% endif %}
+    {%- if question.guidance -%}
+        {% set contents = question.guidance.contents %}
+        {# djlint:off #}
+        {% call
+            onsPanel({
+                "id": "question-guidance-" ~ question.id,
+                "classes": "ons-u-mb-m"
+            })
+        %}
+            {% include "partials/contents.html" %}
+        {% endcall %}
+        {# djlint:on #}
+    {% endif %}
+    {% for answer in answers %}
+        {% if loop.last and question.type == "MutuallyExclusive" %}
+            <p>
+                <strong>{{ _("Or") }}</strong>
+            </p>
+        {% endif %}
+        {% if not loop.last or (answer.options and answers_length == 1) %}<p>{{ answer.options_text }}</p>{% endif %}
+        {% if answer.options %}
+            {% if answer.label %}
+                <p>
+                    <strong>{{- answer.label | safe -}}</strong>
+                </p>
+            {% endif %}
+            <ul>
+                {% for option in answer.options %}<li>{{ option }}</li>{% endfor %}
+            </ul>
+        {% else %}
+            {% if answer.label %}
+                <p>
+                    <strong>{{- answer.label | safe -}}</strong>
+                </p>
+            {% endif %}
+            {% if answer.max_length %}
+                <p>{{ _("{max_characters} characters can be added.").format(max_characters = answer.max_length) }}</p>
+            {% endif %}
+        {% endif %}
+        {# answer guidance not implemented yet due to some work that needs to be done in the DS will be implemented in iteration 2 #}
+        {# {% if answer.guidance %}
       {% with answer_guidance = {
         'id': answer.id,
         'label': answer.label,
         'schema_item': answer.guidance
       } %}
-        {% include 'partials/answer-guidance.html' %}
+        {% include "partials/answer-guidance.html" %}
       {% endwith %}
-    {% endif %} #}
-
-  {% endfor %}
-
+{% endif %} #}
+    {% endfor %}
 </div>

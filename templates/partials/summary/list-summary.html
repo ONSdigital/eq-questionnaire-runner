@@ -1,46 +1,46 @@
 {% from "components/summary/_macro.njk" import onsSummary %}
 
 {% if list.editable %}
-  {% set rows = map_list_collector_config(
-    list_items=list.list_items,
-    render_icon=True,
-    edit_link_text=_("Change"),
-    edit_link_aria_label=_("Change details for {item_name}"),
-    remove_link_text=_("Remove"),
-    remove_link_aria_label=_("Remove {item_name}")
-  ) %}
+    {# djlint:off #}
+    {% set rows = map_list_collector_config(
+        list_items=list.list_items,
+        render_icon=True,
+        edit_link_text=_("Change"),
+        edit_link_aria_label=_("Change details for {item_name}"),
+        remove_link_text=_("Remove"),
+        remove_link_aria_label=_("Remove {item_name}")
+    ) %}
+    {# djlint:on #}
 {% else %}
-  {% set rows = map_list_collector_config(
-    list_items=list.list_items,
-    render_icon=True
-  ) %}
+    {% set rows = map_list_collector_config(
+            list_items=list.list_items,
+            render_icon=True
+        ) %}
 {% endif %}
-
 {% set group_config = {
-  "groupTitle": list_title,
-  "rows": rows,
-  "placeholderText": empty_list_text,
+    "groupTitle": list_title,
+    "rows": rows,
+    "placeholderText": empty_list_text,
 } %}
-
 {% if add_link %}
-  {% set group_config = group_config | setAttribute("summaryLink", {
-    "url": add_link,
-    "text": add_link_text,
-    "attributes": {
-      "data-qa": "add-item-link"
-    }
-  }) %}
+    {% set group_config = group_config | setAttribute("summaryLink", {
+            "url": add_link,
+            "text": add_link_text,
+            "attributes": {
+                "data-qa": "add-item-link"
+            }
+        }) %}
 {% endif %}
-
 {% set config = {
-  "withinQuestion": true,
-  "summaries": [
-    {
-      "groups": [
-        group_config
-      ]
-    }
-  ]
+    "withinQuestion": true,
+    "summaries": [
+        {
+            "groups": [
+                group_config
+            ]
+        }
+    ]
 } %}
-
+{# djlint:off #}
 {{ onsSummary(config) }}
+{# djlint:on #}

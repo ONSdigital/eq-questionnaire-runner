@@ -1,12 +1,16 @@
 {% from "components/panel/_macro.njk" import onsPanel %}
 
-{% call onsPanel({
-    "id": guidance_id,
-    "classes": "ons-u-mb-m",
-    "attributes": {
-        "data-qa": guidance_id
-    }
-}) %}
+{# djlint:off #}
+{% call
+    onsPanel({
+        "id": guidance_id,
+        "classes": "ons-u-mb-m",
+        "attributes": {
+            "data-qa": guidance_id
+        }
+    })
+%}
     {% set contents = guidance.contents %}
-    {% include 'partials/contents.html' %}
+    {% include "partials/contents.html" %}
 {% endcall %}
+{# djlint:on #}

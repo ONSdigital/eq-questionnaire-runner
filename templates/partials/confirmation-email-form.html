@@ -1,51 +1,52 @@
 {% from "components/button/_macro.njk" import onsButton %}
 {% from "components/input/_macro.njk" import onsInput %}
+
 {% set errors = form.errors['email'] %}
 {% set email_field = form.email_field %}
-
 {% if errors %}
-  {% set error = {
-    "text": errors[0],
-    "id": email_field.id ~ '-error',
-    "attributes": {
-      "data-ga": "error",
-      "data-ga-category": "Error",
-      "data-ga-action": "Display",
-      "data-ga-label": "Invalid / Missing Email",
-      "data-ga-page": "Confirmation Email",
-    }
-  } %}
+    {# djlint:off #}
+    {% set error = {
+        "text": errors[0],
+        "id": email_field.id ~ '-error',
+        "attributes": {
+            "data-ga": "error",
+            "data-ga-category": "Error",
+            "data-ga-action": "Display",
+            "data-ga-label": "Invalid / Missing Email",
+            "data-ga-page": "Confirmation Email",
+        }
+    } %}
+    {# djlint:on #}
 {% endif %}
-
 {% set config = {
-  "id": email_field.id,
-  "name": email_field.name,
-  "value": email_field._value() | e,
-  "label": {
-    "id": email_field.id ~ "-label",
-    "text": _("Email address"),
-    "description": _("This will not be stored and only used once to send your confirmation")
-  },
-  "attributes": {
-    "data-qa": "input-text",
-  },
-  "error": error
-} %}
-
-{{ onsInput(config) }}
-
-{{
-  onsButton({
-    "text": _("Send confirmation"),
-    "variants": 'timer',
-    "classes": "ons-u-mt-s",
+    "id": email_field.id,
+    "name": email_field.name,
+    "value": email_field._value() | e,
+    "label": {
+        "id": email_field.id ~ "-label",
+        "text": _("Email address"),
+        "description": _("This will not be stored and only used once to send your confirmation")
+    },
     "attributes": {
-      "data-qa": "btn-submit",
-      "data-ga-category": "Button",
-      "data-ga-action": "Submit",
-      "data-ga-label": "Send",
-      "data-ga-page": "Confirmation Email",
-      "data-ga": "click",
-    }
-  })
+        "data-qa": "input-text",
+    },
+    "error": error
+} %}
+{# djlint:off #}
+{{ onsInput(config) }}
+{{
+    onsButton({
+        "text": _("Send confirmation"),
+        "variants": 'timer',
+        "classes": "ons-u-mt-s",
+        "attributes": {
+            "data-qa": "btn-submit",
+            "data-ga-category": "Button",
+            "data-ga-action": "Submit",
+            "data-ga-label": "Send",
+            "data-ga-page": "Confirmation Email",
+            "data-ga": "click",
+        }
+    })
 }}
+{# djlint:on #}

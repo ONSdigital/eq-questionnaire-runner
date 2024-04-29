@@ -1,14 +1,14 @@
-{% extends 'layouts/_base.html' %}
+{% extends "layouts/_base.html" %}
+
 {% set hide_sign_out_button = content.hide_sign_out_button %}
 {% set sign_out_url = content.sign_out_url %}
 
 {% block main %}
-  {% set form = content.form %}
-  {% if form.mapped_errors %}
-    {% set error_title = _("There is a problem with this page") %}
-    {% include 'partials/error-panel.html' %}
-  {% endif %}
-
-  <h1 data-qa="title">{{ _("Send a confirmation email")  }}</h1>
-  {% include 'partials/confirmation-email-form.html' %}
-{% endblock %}
+    {% set form = content.form %}
+    {% if form.mapped_errors %}
+        {% set error_title = _("There is a problem with this page") %}
+        {% include "partials/error-panel.html" %}
+    {% endif %}
+    <h1 data-qa="title">{{ _("Send a confirmation email") }}</h1>
+    {% include "partials/confirmation-email-form.html" %}
+{% endblock main %}

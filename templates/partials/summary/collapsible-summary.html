@@ -2,60 +2,63 @@
 {% from "components/summary/_macro.njk" import onsSummary %}
 
 {%- set itemList = [] -%}
-
 {%- for section in content.summary.sections -%}
-  {%- for group in section.groups -%}
-    {%- if group["blocks"] | length -%}
-      {%- if group.title -%}
-        {%- set item = {
-          "title": group.title,
-          "id": group.id,
-          "content": ""
-        } -%}
-
-        {%- set summary %}
-          {{ onsSummary({
-            "classes": "summary--no-bottom-border",
-            "summaries": [
-              {
-                "groups": [
-                  {
-                    "rows": map_summary_item_config(
-                      group=group,
-                      summary_type=content.summary.summary_type,
-                      answers_are_editable=content.summary.answers_are_editable,
-                      no_answer_provided=_("No answer provided"),
-                      edit_link_text=_("Change"),
-                      edit_link_aria_label=_("Change your answer for:"),
-                      calculated_question=content.summary.calculated_question
-                    )
-                  }
-                ]
-              }
-            ]
-          }) }}
-        {%- endset -%}
-
-        {%- do item | setAttribute("content", item.content + summary) -%}
-
-        {%- do itemList.append(item) -%}
-      {%- endif -%}
-    {%- endif -%}
-  {%- endfor -%}
+    {%- for group in section.groups -%}
+        {%- if group["blocks"] | length -%}
+            {%- if group.title -%}
+                {# djlint:off #}
+                {%- set item = {
+                    "title": group.title,
+                    "id": group.id,
+                    "content": ""
+                } -%}
+                {%- set summary %}
+                    {{
+                        onsSummary({
+                            "classes": "summary--no-bottom-border",
+                            "summaries": [
+                                {
+                                    "groups": [
+                                        {
+                                            "rows": map_summary_item_config(
+                                                group=group,
+                                                summary_type=content.summary.summary_type,
+                                                answers_are_editable=content.summary.answers_are_editable,
+                                                no_answer_provided=_("No answer provided"),
+                                                edit_link_text=_("Change"),
+                                                edit_link_aria_label=_("Change your answer for:"),
+                                                calculated_question=content.summary.calculated_question
+                                            )
+                                        }
+                                    ]
+                                }
+                            ]
+                        })
+                    }}
+                {%- endset -%}
+                {# djlint:on #}
+                {%- do item | setAttribute("content", item.content + summary) -%}
+                {%- do itemList.append(item) -%}
+            {%- endif -%}
+        {%- endif -%}
+    {%- endfor -%}
 {%- endfor -%}
-
-{{ onsAccordion({
-  "id": "summary-accordion",
-  "allButton": {
-      "open": _('Show all'),
-      "close": _('Hide all'),
-      "attributes": {
-        "data-ga": "click",
-        "data-ga-category": "Button",
-        "data-ga-action": "View",
-        "data-ga-label": "Collapsible Answers",
-        "data-ga-page": "Summary",
-      }
-  },
-  "itemsList": itemList
-}) }}
+{# djlint:off #}
+{{
+    onsAccordion({
+        "id": "summary-accordion",
+        "allButton": {
+            "open": _('Show all') ,
+            "close": _('Hide all'),
+            "attributes": {
+                "data-ga": "click",
+                "data-ga-category": "Button",
+                "data-ga-action": "View",
+                "data-ga-label": "Collapsible Answers",
+                "data-ga-page": "Summary",
+            }
+        },
+        "itemsList": itemList
+    })
+}}
+{# djlint:on #}
