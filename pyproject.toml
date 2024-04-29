@@ -1,3 +1,12 @@
+[tool.djlint]
+blank_line_after_tag="load,extends,import,from"
+blank_line_before_tag="load,extends,block"
+max_line_length=120
+# _base.html excluded due to the bad </script> nesting after format
+exclude=".templates/layouts/_base.html"
+# when using double quote escape sequence in strings we get "H025 Tag seems to be an orphan" false positives
+ignore="H025"
+
 [tool.poetry]
 name = "eq-questionnaire-runner"
 version = "1.0.0"
@@ -40,6 +49,7 @@ types-cachetools = "^5.3.0.7"
 types-pytz = "^2024.1.0.20240203"
 playwright = "^1.42.0"
 black = "^24.2.0"
+djlint = "^1.34.1"
 
 
 [tool.poetry.dependencies]
@@ -51,7 +61,7 @@ flask-login = "^0.6.3"
 flask-wtf = "^1.2.1"
 google-cloud-datastore = "^2.19.0"
 grpcio = "^1.62.1"
-gunicorn = "^21.2.0"
+gunicorn = "^22.0.0"
 pika = "^1.3.2"
 pyyaml = "^6.0.1"
 requests = "^2.31.0"

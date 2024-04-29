@@ -76,6 +76,8 @@ jobs:
         run: ./scripts/lint_functional_test_specs.sh
       - name: Javascript linting
         run: make lint-js
+      - name: HTML linting
+        run: make lint-html
   test-unit:
     needs: python-dependencies
     runs-on: ubuntu-22.04
@@ -109,7 +111,7 @@ jobs:
       - name: Compile translations
         run: make translate
       - name: Link env vars
-        run: ln -sf .development.env .env 
+        run: ln -sf .development.env .env
       - name: Running unit tests
         run: make test-unit
   validate-schemas:

@@ -1,10 +1,9 @@
-{% extends 'layouts/_questionnaire.html' %}
-{% from 'macros/helpers.html' import format_paragraphs %}
+{% extends "layouts/_questionnaire.html" %}
 
-{% from 'macros/helpers.html' import interviewer_note %}
+{% from "macros/helpers.html" import format_paragraphs %}
+{% from "macros/helpers.html" import interviewer_note %}
 
 {% set save_on_signout = true %}
-
 {% set continue_button_text = _("Continue") %}
 
 {% block form_content %}
@@ -18,14 +17,15 @@
         <div class="question__instruction ons-u-mb-s">{{ interstitial_instruction | safe }}</div>
     {% endif %}
     {% set contents = block.content.contents %}
-    {% include 'partials/contents.html' %}
+    {% include "partials/contents.html" %}
     {% if content.individual_response_url %}
         {% set title = _("If you can’t answer questions for this person") %}
-        {% include 'partials/individual-response-guidance.html' %}
+        {% include "partials/individual-response-guidance.html" %}
     {% endif %}
 {% endblock form_content %}
 
 {% block submit_button %}
+    {# djlint:off #}
     {{
         onsButton({
             "text": continue_button_text | default(_("Save and continue")),
@@ -40,4 +40,5 @@
             }
         })
     }}
-{% endblock %}
+    {# djlint:on #}
+{% endblock submit_button %}
