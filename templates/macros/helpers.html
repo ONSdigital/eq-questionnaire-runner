@@ -12,5 +12,5 @@
     {%- endfor -%}
 {%- endmacro -%}
 {%- macro interviewer_note(title=None) -%}
-    <mark class="instruction">{{ _("Interviewer note:") }}</mark>{{ title }}
+    <mark>{{ _("Interviewer note:") }}</mark>{{ " " + title }}
 {%- endmacro -%}
