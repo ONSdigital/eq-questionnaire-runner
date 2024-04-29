@@ -1,6 +1,6 @@
 import BasePage from "./base.page";
 
-class GrandCalculatedSummaryPage extends BasePage {
+class GrandCalculatedSummaryBasePage extends BasePage {
   grandCalculatedSummaryTitle() {
     return '[data-qa="grand-calculated-summary-title"]';
   }
@@ -14,4 +14,4 @@ class GrandCalculatedSummaryPage extends BasePage {
   }
 }
 
-export default GrandCalculatedSummaryPage;
+export default GrandCalculatedSummaryBasePage;
