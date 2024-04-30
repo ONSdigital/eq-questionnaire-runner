@@ -138,7 +138,7 @@
                             "question": {
                                 "id": "turnover-breakdown-question",
                                 "title": {
-                                    "text": "Please breakdown your total turnover of <em>{total_turnover}</em>",
+                                    "text": "Please breakdown your total turnover of <strong>{total_turnover}</strong>",
                                     "placeholders": [
                                         {
                                             "placeholder": "total_turnover",
@@ -200,7 +200,7 @@
                             "question": {
                                 "id": "employees-breakdown-question",
                                 "title": {
-                                    "text": "Please breakdown your number of employees of <em>{total_employees}</em>",
+                                    "text": "Please breakdown your number of employees of <strong>{total_employees}</strong>",
                                     "placeholders": [
                                         {
                                             "placeholder": "total_employees",

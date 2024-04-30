@@ -558,8 +558,8 @@ msgid "Cannot answer questions for others in your household"
 msgstr "Ní thig liom ceisteanna a fhreagairt do dhaoine eile i do theaghlach"
 
 #: app/views/handlers/individual_response.py:311
-msgid "How would you like <em>{person_name}</em> to receive a separate census?"
-msgstr "Cén dóigh ar ar mhaith leat go bhfaigheadh <em>{person_name}</em> daonáireamh ar leith?"
+msgid "How would you like <strong>{person_name}</strong> to receive a separate census?"
+msgstr "Cén dóigh ar ar mhaith leat go bhfaigheadh <strong>{person_name}</strong> daonáireamh ar leith?"
 
 #: app/views/handlers/individual_response.py:334
 msgid "Text message"
@@ -594,8 +594,8 @@ msgid "Send individual access code"
 msgstr "Cuir cód rochtana ar leith"
 
 #: app/views/handlers/individual_response.py:437
-msgid "How would you like to answer <em>{person_name_possessive}</em> questions?"
-msgstr "Cén dóigh ar mhaith leat ceisteanna <em>{person_name_possessive}</em> a fhreagairt?"
+msgid "How would you like to answer <strong>{person_name_possessive}</strong> questions?"
+msgstr "Cén dóigh ar mhaith leat ceisteanna <strong>{person_name_possessive}</strong> a fhreagairt?"
 
 #: app/views/handlers/individual_response.py:452
 msgid "I would like to request a separate census for them to complete"
@@ -651,8 +651,8 @@ msgid "Who do you need to request a separate census for?"
 msgstr "Cé dó a bhfuil tú ag iarraidh daonáireamh ar leith>?"
 
 #: app/views/handlers/individual_response.py:759
-msgid "What is <em>{person_name_possessive}</em> mobile number?"
-msgstr "Cén uimhir ghuthán póca atá ag <em>{person_name_possessive}</em>?"
+msgid "What is <strong>{person_name_possessive}</strong> mobile number?"
+msgstr "Cén uimhir ghuthán póca atá ag <strong>{person_name_possessive}</strong>?"
 
 #: app/views/handlers/individual_response.py:771
 msgid "UK mobile number"
@@ -742,8 +742,8 @@ msgid "A confirmation email has been sent to {email}"
 msgstr "Seoladh r-phost dearbhaithe chuig {email}"
 
 #: templates/confirmation-email-sent.html:25
-msgid "The email will be sent from <em>census.2021@notifications.service.gov.uk</em>"
-msgstr "Seolfar an r-phost ó <em>census.2021@notifications.service.gov.uk</em>"
+msgid "The email will be sent from <strong>census.2021@notifications.service.gov.uk</strong>"
+msgstr "Seolfar an r-phost ó <strong>census.2021@notifications.service.gov.uk</strong>"
 
 #: templates/confirmation-email-sent.html:29
 msgid "Didn't receive an email?"
@@ -1011,8 +1011,8 @@ msgid "The text message with an individual access code should arrive soon for th
 msgstr "Ba chóir go dtiocfadh an téacstheachtaireacht ina bhfuil cód rochtana duine aonair dóibh gan mhoill le go dtig leo a ndaonáireamh féin a chomhlánú"
 
 #: templates/individual_response/confirmation-text-message.html:26
-msgid "The text will be sent from <em>Census2021</em>"
-msgstr "Seolfar an téacs ó <em>Census2021</em>"
+msgid "The text will be sent from <strong>Census2021</strong>"
+msgstr "Seolfar an téacs ó <strong>Census2021</strong>"
 
 #: templates/individual_response/interstitial.html:8
 msgid "If you can't answer questions for others in your household"
@@ -1119,8 +1119,8 @@ msgid "Give feedback"
 msgstr "Tabhair aiseolas"
 
 #: templates/partials/individual-response-guidance.html:25
-msgid "You can <em>share your household access code</em> with the people you live with so they can complete their own sections."
-msgstr "Tig leat <em>do chód rochtana teaghlaigh a roinnt</em> leis na daoine a gcónaíonn tú leo sa dóigh go dtig leo a míreanna féin a chomhlánú."
+msgid "You can <strong>share your household access code</strong> with the people you live with so they can complete their own sections."
+msgstr "Tig leat <strong>do chód rochtana teaghlaigh a roinnt</strong> leis na daoine a gcónaíonn tú leo sa dóigh go dtig leo a míreanna féin a chomhlánú."
 
 #: templates/partials/individual-response-guidance.html:26
 msgid "If this is not possible, there are <a href={url}>other ways each person can complete their own census.</a>"

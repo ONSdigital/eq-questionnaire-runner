@@ -364,7 +364,7 @@
                             "question": {
                                 "id": "spending-breakdown-question",
                                 "title": {
-                                    "text": "How do you spending the monthly budget of <em>{total_spending}</em>?",
+                                    "text": "How do you spending the monthly budget of <strong>{total_spending}</strong>?",
                                     "placeholders": [
                                         {
                                             "placeholder": "total_spending",
@@ -426,7 +426,7 @@
                             "question": {
                                 "id": "second-spending-breakdown-question",
                                 "title": {
-                                    "text": "How do you spend the monthly entertainment budget of <em>{entertainment}</em>?",
+                                    "text": "How do you spend the monthly entertainment budget of <strong>{entertainment}</strong>?",
                                     "placeholders": [
                                         {
                                             "placeholder": "entertainment",

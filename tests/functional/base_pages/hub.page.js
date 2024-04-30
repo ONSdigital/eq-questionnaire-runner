@@ -1,6 +1,6 @@
 import BasePage from "./base.page";
 
-class HubPage extends BasePage {
+class HubBasePage extends BasePage {
   url() {
     return `/${this.pageName}/`;
   }
@@ -22,4 +22,4 @@ class HubPage extends BasePage {
   }
 }
 
-export default new HubPage("questionnaire");
+export default new HubBasePage("questionnaire");

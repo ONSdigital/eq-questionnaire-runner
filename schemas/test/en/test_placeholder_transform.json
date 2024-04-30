@@ -108,7 +108,7 @@
                                 "title": "Please enter the value of internet sales",
                                 "description": [
                                     {
-                                        "text": "Of the <em>{total_turnover}</em> total retail turnover, what was the value of internet sales?",
+                                        "text": "Of the <strong>{total_turnover}</strong> total retail turnover, what was the value of internet sales?",
                                         "placeholders": [
                                             {
                                                 "placeholder": "total_turnover",
@@ -221,7 +221,7 @@
                                             ]
                                         }
                                     ],
-                                    "text": "Do you want to add <em>{item}</em> item?"
+                                    "text": "Do you want to add <strong>{item}</strong> item?"
                                 },
                                 "type": "General"
                             },
@@ -253,7 +253,7 @@
                                 "contents": [
                                     {
                                         "description": {
-                                            "text": "The percentage of the company budget you spend on training is <em>{answer_percentage}</em>",
+                                            "text": "The percentage of the company budget you spend on training is <strong>{answer_percentage}</strong>",
                                             "placeholders": [
                                                 {
                                                     "placeholder": "answer_percentage",
@@ -303,7 +303,7 @@
                                 "contents": [
                                     {
                                         "description": {
-                                            "text": "The average commuting distance of an employee is <em>{answer_distance}</em>",
+                                            "text": "The average commuting distance of an employee is <strong>{answer_distance}</strong>",
                                             "placeholders": [
                                                 {
                                                     "placeholder": "answer_distance",

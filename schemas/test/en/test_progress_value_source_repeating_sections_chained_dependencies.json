@@ -414,7 +414,7 @@
                                             ]
                                         }
                                     ],
-                                    "text": "What is <em>{person_name_possessive}</em> date of birth?"
+                                    "text": "What is <strong>{person_name_possessive}</strong> date of birth?"
                                 },
                                 "type": "General"
                             }
@@ -464,7 +464,7 @@
                                             ]
                                         }
                                     ],
-                                    "text": "Random question about <em>{person_name_possessive}</em>"
+                                    "text": "Random question about <strong>{person_name_possessive}</strong>"
                                 },
                                 "description": ["Shows because section 2 was completed"],
                                 "type": "General"

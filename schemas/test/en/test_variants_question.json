@@ -66,7 +66,7 @@
                             "question": {
                                 "id": "proxy-question",
                                 "title": {
-                                    "text": "Are you <em>{person_name}</em>?",
+                                    "text": "Are you <strong>{person_name}</strong>?",
                                     "placeholders": [
                                         {
                                             "placeholder": "person_name",
@@ -157,7 +157,7 @@
                                         "id": "age-question",
                                         "type": "General",
                                         "title": {
-                                            "text": "What age is <em>{person_name}</em>?",
+                                            "text": "What age is <strong>{person_name}</strong>?",
                                             "placeholders": [
                                                 {
                                                     "placeholder": "person_name",
@@ -304,7 +304,7 @@
                                         "id": "age-confirmation-question",
                                         "type": "General",
                                         "title": {
-                                            "text": "<em>{person_name}</em> is over 16?",
+                                            "text": "<strong>{person_name}</strong> is over 16?",
                                             "placeholders": [
                                                 {
                                                     "placeholder": "person_name",
@@ -375,7 +375,7 @@
                                         "id": "age-confirmation-question",
                                         "type": "General",
                                         "title": {
-                                            "text": "<em>{person_name}</em> is under 16?",
+                                            "text": "<strong>{person_name}</strong> is under 16?",
                                             "placeholders": [
                                                 {
                                                     "placeholder": "person_name",

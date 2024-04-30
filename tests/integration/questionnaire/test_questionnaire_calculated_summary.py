@@ -77,7 +77,7 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         self.post()
         self.post()
         self.post()
-        self.assertInBody("Total currency values: <em>£80.00</em>")
+        self.assertInBody("Total currency values: <strong>£80.00</strong>")
 
     def test_new_calculated_summary_no_skip(self):
         self.launchSurveyV2(schema_name="test_new_calculated_summary")
@@ -333,7 +333,7 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
             "We calculate the total of currency values entered to be £120.00"
         )
         self.post()
-        self.assertInBody("Total currency values: <em>£120.00</em>")
+        self.assertInBody("Total currency values: <strong>£120.00</strong>")
 
     def test_calculated_summary_with_varying_decimal_places(self):
         """
@@ -357,7 +357,7 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
             "We calculate the total of currency values entered to be £120.58985"
         )
         self.post()
-        self.assertInBody("Total currency values: <em>£120.58985</em>")
+        self.assertInBody("Total currency values: <strong>£120.58985</strong>")
 
     def test_placeholder_rendering_in_calculated_summary_label(self):
         """

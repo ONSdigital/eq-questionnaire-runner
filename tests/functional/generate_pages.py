@@ -881,15 +881,15 @@ def process_block(
     with open(page_path, "w", encoding="utf-8") as page_spec:
         page_name = generate_pascal_case_from_id(block["id"])
 
-        base_page = "QuestionPage"
+        base_page = "QuestionBasePage"
         base_page_file = "question.page"
 
         if block["type"] == "CalculatedSummary":
-            base_page = "CalculatedSummaryPage"
+            base_page = "CalculatedSummaryBasePage"
             base_page_file = "calculated-summary.page"
 
         if block["type"] == "GrandCalculatedSummary":
-            base_page = "GrandCalculatedSummaryPage"
+            base_page = "GrandCalculatedSummaryBasePage"
             base_page_file = "grand-calculated-summary.page"
 
         if block["type"] == "Introduction":
