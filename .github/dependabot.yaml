@@ -1,3 +1,4 @@
+version: 2
 groups:
   production-dependencies:
     dependency-type: "production"
@@ -54,7 +55,7 @@ groups:
     - "djlint"
 
 updates:
-  - package-ecosystem: "poetry"
+  - package-ecosystem: "pip"
     directory: "/"
     ignore:
       - dependency-name: "pytest*"
