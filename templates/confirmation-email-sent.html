@@ -11,7 +11,7 @@
     {% call
         onsPanel({
             "spacious": true,
-            "type": "success",
+            "variant": "success",
             "classes": "ons-u-mb-s",
             "iconType": "check",
             "iconSize": "xl"
@@ -23,13 +23,13 @@
     {% endcall %}
     {% call
         onsPanel({
-            "type": "bare",
+            "variant": "bare",
             "classes": "ons-u-mb-s",
             "iconType": "lock"
         })
     %}
         <p>
-            {{ _("The email will be sent from <em>census.2021@notifications.service.gov.uk</em>") }}
+            {{ _("The email will be sent from <strong>census.2021@notifications.service.gov.uk</strong>") }}
         </p>
     {% endcall %}
     {# djlint:on #}

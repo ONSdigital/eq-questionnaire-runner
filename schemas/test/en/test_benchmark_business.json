@@ -260,7 +260,7 @@
                             "type": "Question",
                             "question": {
                                 "id": "question-381",
-                                "title": "What was the <em>total value</em> of stocks held (net of progress payments on long-term contracts)?",
+                                "title": "What was the <strong>total value</strong> of stocks held (net of progress payments on long-term contracts)?",
                                 "guidance": {
                                     "contents": [
                                         {

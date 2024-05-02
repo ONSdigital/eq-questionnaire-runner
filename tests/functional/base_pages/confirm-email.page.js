@@ -1,6 +1,6 @@
 import BasePage from "./base.page";
 
-class ConfirmEmailPage extends BasePage {
+class ConfirmEmailBasePage extends BasePage {
   questionTitle() {
     return '[data-qa="confirm-email-title"]';
   }
@@ -17,4 +17,4 @@ class ConfirmEmailPage extends BasePage {
     return `[data-qa=error-body] div.ons-panel__body > [data-qa=error-list]`;
   }
 }
-export default new ConfirmEmailPage("confirm-email");
+export default new ConfirmEmailBasePage("confirm-email");
