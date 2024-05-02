@@ -443,8 +443,10 @@ class SummaryAction:
         self.attributes = {
             "data-qa": answer["id"] + "-edit",
             "data-ga": "click",
-            "data-ga-category": "Summary",
-            "data-ga-action": "Edit click",
+            "data-ga-category": "Link",
+            "data-ga-action": "Edit",
+            "data-ga-label": "Edit",
+            "data-ga-page": "Summary",
         }
 
 

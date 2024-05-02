@@ -23,10 +23,11 @@
             "content": definition_content,
             "headingAttributes": {
                 "data-ga": "click",
-                "data-ga-category": "Question definition",
-                "data-ga-action": "Open panel",
-                "data-ga-label": question.definition.title,
-                "data-qa": definition_id ~ "-title"
+                "data-ga-category": "Accordion",
+                "data-ga-action": "View",
+                "data-ga-label": "Question Definition",
+                "data-ga-page": "Questionnaire",
+                "data-qa": definition_id ~ "-title",
             },
             "contentAttributes": {
                 "data-qa": definition_id ~ "-content"
@@ -121,10 +122,13 @@
             "text": question_error,
             "id": question.id ~ '-error',
             "attributes": {
-                "data-ga": "question-error",
-                "data-ga-category": "Question error",
-                "data-ga-action": question.type,
-                "data-ga-label": question.id
+                "data-ga": "error",
+                "data-ga-category": "Error",
+                "data-ga-action": "Display",
+                "data-ga-label": "Question Error",
+                "data-ga-type": question.type,
+                "data-ga-identifier": question.id,
+                "data-ga-page": "Questionnaire",
             }
         } %}
         {% call onsError(config) %}
