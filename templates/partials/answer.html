@@ -27,8 +27,11 @@
         "attributes": {
             "data-ga": "error",
             "data-ga-category": "Error",
-            "data-ga-action": answer.type,
-            "data-ga-label": question.id
+            "data-ga-action": "Display",
+            "data-ga-label": "Answer Error",
+            "data-ga-type": answer.type,
+            "data-ga-identifier": question.id,
+            "data-ga-page": "Questionnaire",
         }
     } %}
     {# djlint:on #}

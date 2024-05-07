@@ -11,8 +11,9 @@
         "attributes": {
             "data-ga": "error",
             "data-ga-category": "Error",
-            "data-ga-action": "Confirmation Email",
-            "data-ga-label": email_field.id
+            "data-ga-action": "Display",
+            "data-ga-label": "Invalid / Missing Email",
+            "data-ga-page": "Confirmation Email",
         }
     } %}
     {# djlint:on #}
@@ -40,10 +41,11 @@
         "classes": "ons-u-mt-s",
         "attributes": {
             "data-qa": "btn-submit",
-            "data-ga-category": "Submit button",
-            "data-ga-action": "Send confirmation",
-            "data-ga-label": "Send confirmation button click",
-            "data-ga": "click"
+            "data-ga-category": "Button",
+            "data-ga-action": "Submit",
+            "data-ga-label": "Send",
+            "data-ga-page": "Confirmation Email",
+            "data-ga": "click",
         }
     })
 }}
