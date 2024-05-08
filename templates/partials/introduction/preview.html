@@ -1,49 +1,48 @@
 <h2 class="ons-u-mt-m">{{ intro.title }}</h2>
-
 <div class="collapsible__introduction">
-  {% set contents = intro.contents %}
-  {% include "partials/contents.html" %}
+    {% set contents = intro.contents %}
+    {% include "partials/contents.html" %}
 </div>
-
 {% if intro.questions %}
-  {% from "components/accordion/_macro.njk" import onsAccordion %}
+    {% from "components/accordion/_macro.njk" import onsAccordion %}
 
-  {% set accordionItems = [] %}
-
-  {% for question in intro.questions %}
-    {% set content %}
-      {% set contents = question.contents %}
-      {% include "partials/contents.html" %}
-    {% endset %}
-
-    {% set item = {
-      "title": question.question,
-      "titleTag": "h3",
-      "content": content,
-      "summaryAttributes": {
-          "data-ga": "click",
-          "data-ga-category": "Preview Survey",
-          "data-ga-action": "Open panel",
-      }
-    } %}
-
-    {% do accordionItems.append(item) %}
-  {% endfor %}
-
-  {{
-      onsAccordion({
-          "id": "intro-questions",
-          "allButton": {
-            "open": _('Show all'),
+    {% set accordionItems = [] %}
+    {# djlint:off #}
+    {% for question in intro.questions %}
+        {% set content %}
+            {% set contents = question.contents %}
+            {% include "partials/contents.html" %}
+        {% endset %}
+        {% set item = {
+            "title": question.question,
+            "titleTag": "h3",
+            "content": content,
+            "summaryAttributes": {
+                "data-ga": "click",
+                "data-ga-category": "Accordion",
+                "data-ga-action": "Preview",
+                "data-ga-label": "Preview Question",
+                "data-ga-page": "Introduction",
+            }
+        } %}
+        {% do accordionItems.append(item) %}
+    {% endfor %}
+    {{
+        onsAccordion({
+        "id": "intro-questions",
+        "allButton": {
+            "open": _('Show all') ,
             "close": _('Hide all'),
             "attributes": {
-              "data-ga": "click",
-              "data-ga-category": "Preview Survey",
-              "data-ga-action": "Show all",
-              "data-ga-label": "Show all"
+                "data-ga": "click",
+                "data-ga-category": "Button",
+                "data-ga-action": "View",
+                "data-ga-label": "Show all",
+                "data-ga-page": "Introduction",
             }
-          },
-          "itemsList": accordionItems
-      })
-  }}
+        },
+        "itemsList": accordionItems
+        })
+    }}
+    {# djlint:on #}
 {% endif %}

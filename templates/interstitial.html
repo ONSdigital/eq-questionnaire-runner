@@ -1,10 +1,9 @@
-{% extends 'layouts/_questionnaire.html' %}
-{% from 'macros/helpers.html' import format_paragraphs %}
+{% extends "layouts/_questionnaire.html" %}
 
-{% from 'macros/helpers.html' import interviewer_note %}
+{% from "macros/helpers.html" import format_paragraphs %}
+{% from "macros/helpers.html" import interviewer_note %}
 
 {% set save_on_signout = true %}
-
 {% set continue_button_text = _("Continue") %}
 
 {% block form_content %}
@@ -18,14 +17,15 @@
         <div class="question__instruction ons-u-mb-s">{{ interstitial_instruction | safe }}</div>
     {% endif %}
     {% set contents = block.content.contents %}
-    {% include 'partials/contents.html' %}
+    {% include "partials/contents.html" %}
     {% if content.individual_response_url %}
         {% set title = _("If you can’t answer questions for this person") %}
-        {% include 'partials/individual-response-guidance.html' %}
+        {% include "partials/individual-response-guidance.html" %}
     {% endif %}
 {% endblock form_content %}
 
 {% block submit_button %}
+    {# djlint:off #}
     {{
         onsButton({
             "text": continue_button_text | default(_("Save and continue")),
@@ -33,11 +33,13 @@
             "classes": "ons-u-mt-l",
             "attributes": {
                 "data-qa": "btn-submit",
-                "data-ga-category": "Submit button",
-                "data-ga-action": "Save and continue",
-                "data-ga-label": "Save and continue button click",
-                "data-ga": "click"
+                "data-ga-category": "Button",
+                "data-ga-action": "Submit",
+                "data-ga-label": "Save and Continue",
+                "data-ga-page": "Interstitial",
+                "data-ga": "click",
             }
         })
     }}
-{% endblock %}
+    {# djlint:on #}
+{% endblock submit_button %}

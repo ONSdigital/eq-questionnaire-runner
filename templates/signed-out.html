@@ -1,26 +1,29 @@
-{% extends 'errors/_base.html' %}
+{% extends "errors/_base.html" %}
 
 {% from "components/panel/_macro.njk" import onsPanel %}
 
 {% set page_title = _("Signed out") %}
 
 {% block main %}
-
-  {{
-    onsPanel({
-      "id": '',
-      "type": 'success',
-      "iconType": 'check',
-      "iconSize": 'xl',
-      "classes": "ons-u-mb-xl",
-      "body": _("<h1>Your progress has been saved</h1>")
-    })
-  }}
-
-  {% if survey_type in SURVEY_TYPES_BUSINESS + SURVEY_TYPES_DEFAULT %}
-    <p>{{ _("To find further information or resume the survey, <a href='{url}'>return to My Account</a>.").format(url = redirect_url) }}</p>
-  {% elif survey_type in SURVEY_TYPES_SOCIAL + SURVEY_TYPES_HEALTH %}
-    <p>{{ _("To resume the survey, <a href='{url}'>re-enter your access code</a>.").format(url = redirect_url) }}</p>
-  {% endif %}
-
-{% endblock %}
+    {# djlint:off #}
+    {{
+        onsPanel({
+            "id": '',
+            "variant": 'success',
+            "iconType": 'check',
+            "iconSize": 'xl',
+            "classes": "ons-u-mb-xl",
+            "body": _("<h1>Your progress has been saved</h1>")
+        })
+    }}
+    {# djlint:on #}
+    {% if survey_type in SURVEY_TYPES_BUSINESS + SURVEY_TYPES_DEFAULT %}
+        <p>
+            {{ _("To find further information or resume the survey, <a href='{url}'>return to My Account</a>.").format(url = redirect_url) }}
+        </p>
+    {% elif survey_type in SURVEY_TYPES_SOCIAL + SURVEY_TYPES_HEALTH %}
+        <p>
+            {{ _("To resume the survey, <a href='{url}'>re-enter your access code</a>.").format(url = redirect_url) }}
+        </p>
+    {% endif %}
+{% endblock main %}

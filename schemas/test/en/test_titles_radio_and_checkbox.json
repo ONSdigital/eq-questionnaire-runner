@@ -81,7 +81,7 @@
                                     "question": {
                                         "id": "checkbox-question",
                                         "type": "General",
-                                        "title": "Did <em>Peter</em> make changes to this business?",
+                                        "title": "Did <strong>Peter</strong> make changes to this business?",
                                         "answers": [
                                             {
                                                 "id": "checkbox-answer",
@@ -122,7 +122,7 @@
                                     "question": {
                                         "id": "checkbox-question",
                                         "type": "General",
-                                        "title": "Did <em>Mary</em> make changes to this business?",
+                                        "title": "Did <strong>Mary</strong> make changes to this business?",
                                         "answers": [
                                             {
                                                 "id": "checkbox-answer",
@@ -210,7 +210,7 @@
                                     "question": {
                                         "id": "radio-question",
                                         "type": "General",
-                                        "title": "Is <em>Peter</em> the boss?",
+                                        "title": "Is <strong>Peter</strong> the boss?",
                                         "answers": [
                                             {
                                                 "id": "radio-answer",
@@ -255,7 +255,7 @@
                                     "question": {
                                         "id": "radio-question",
                                         "type": "General",
-                                        "title": "Is <em>Mary</em> the boss?",
+                                        "title": "Is <strong>Mary</strong> the boss?",
                                         "answers": [
                                             {
                                                 "id": "radio-answer",
@@ -301,7 +301,7 @@
                                         "id": "radio-question",
                                         "type": "General",
                                         "title": {
-                                            "text": "Is <em>{name}</em> the boss?",
+                                            "text": "Is <strong>{name}</strong> the boss?",
                                             "placeholders": [
                                                 {
                                                     "placeholder": "name",

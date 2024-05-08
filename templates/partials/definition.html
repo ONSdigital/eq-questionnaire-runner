@@ -1,20 +1,25 @@
 {% from "components/details/_macro.njk" import onsDetails %}
 
-{% call onsDetails({
-  "id": definition_id,
-  "title": definition.title,
-  "classes": "ons-u-mb-s",
-  "headingAttributes": {
-    "data-ga": "click",
-    "data-ga-category": category,
-    "data-ga-action": "Open panel",
-    "data-ga-label": definition.title,
-    "data-qa": definition_id ~ "-title"
-  },
-  "contentAttributes": {
-    "data-qa": definition_id ~ "-content"
-  }
-}) %}
-  {% set contents = definition.contents %}
-  {% include 'partials/contents.html' %}
+{# djlint:off #}
+{% call
+    onsDetails({
+        "id": definition_id,
+        "title": definition.title,
+        "classes": "ons-u-mb-s",
+        "headingAttributes": {
+            "data-ga": "click",
+            "data-ga-category": "Accordion",
+            "data-ga-action": "View",
+            "data-ga-label": "Definition",
+            "data-ga-page": "Questionnaire",
+            "data-qa": definition_id ~ "-title",
+        },
+        "contentAttributes": {
+            "data-qa": definition_id ~ "-content"
+        }
+    })
+  %}
+    {% set contents = definition.contents %}
+    {% include "partials/contents.html" %}
 {% endcall %}
+{# djlint:on #}

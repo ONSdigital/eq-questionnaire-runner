@@ -1,118 +1,121 @@
-{% extends 'layouts/_base.html' %}
+{% extends "layouts/_base.html" %}
 
 {% from "components/panel/_macro.njk" import onsPanel %}
 {% from "components/button/_macro.njk" import onsButton %}
 {% from "components/accordion/_macro.njk" import onsAccordion %}
 
 {% set save_on_signout = true %}
-
 {% set breadcrumbs = {
-  "ariaLabel": 'Back',
-  "itemsList": [
-    {
-      "url": url_for("questionnaire.get_questionnaire"),
-      "id": "top-previous",
-      "text": _("Back"),
-      "attributes": {
-        "data-ga": 'click',
-        "data-ga-category": 'Navigation',
-        "data-ga-action": 'Previous link click'
-      }
-    }
-  ]
+    "ariaLabel": 'Back',
+    "itemsList": [
+        {
+            "url": url_for("questionnaire.get_questionnaire"),
+            "id": "top-previous",
+            "text": _("Back"),
+            "attributes": {
+                "data-ga": "click",
+                "data-ga-category": "Link",
+                "data-ga-action": "Navigate",
+                "data-ga-label": "Previous",
+                "data-ga-page": "Preview",
+            }
+        }
+    ]
 } %}
-
 {% macro preview_blocks_for_sections(blocks) -%}
-  {% for block in blocks %}
-    {% if 'question' in block %}
-      {% set question = block['question'] %}
-      {% include 'partials/preview-question.html' %}
-    {% endif %}
-  {% endfor %}
+    {% for block in blocks %}
+        {% if 'question' in block %}
+            {% set question = block['question'] %}
+            {% include "partials/preview-question.html" %}
+        {% endif %}
+    {% endfor %}
 {%- endmacro %}
 
 {% block main %}
-
-  <h1 class="ons-u-mt-m">{{ _("Preview of the questions in this survey") }}</h1>
-
-  {% call onsPanel({
-    "classes": 'ons-u-mb-m ons-u-ph'
-  }) %}
-    <p>{{ _("To answer these questions you need to <a href='{url}'>start survey</a>").format(url=url_for('questionnaire.get_questionnaire')) }}</p>
-  {% endcall %}
-  <p>{{ _("You may not have to answer all of these questions. The questions you see will depend on the answers you provide.") }}</p>
-
-  {{
-    onsButton({
-      "type": 'button',
-      "text": _('Print questions'),
-      "variants": ['small', 'secondary', 'print'],
-      "attributes": {
-        "data-qa": "btn-print",
-        "data-ga-category": "Print button",
-        "data-ga-action": "Open print Dialogue",
-        "data-ga-label": "Print button click",
-        "data-ga": "click"
-      }
-    })
-  }}
-  {{
-    onsButton({
-      "text": _('Save questions as PDF'),
-      "variants": ['small', 'secondary', 'timer', 'download'],
-      "url": content.pdf_url,
-      "removeDownloadAttribute": true,
-      "attributes": {
-        "data-qa": "btn-pdf",
-        "data-ga-category": "PDF button",
-        "data-ga-action": "Download PDF",
-        "data-ga-label": "PDF button click",
-        "data-ga": "click"
-      }
-    })
-  }}
-  <div class="ons-u-mt-l ons-u-mb-l">
-
-    {%- if content.preview.sections | length > 1 -%}
-      {%- set itemList = [] -%}
-      {%- for section in content.preview.sections if section.blocks -%}
-        {%- set item = {
-          "title": section.title,
-          "id": section.id
-        } -%}
-
-        {%- set block_previews = preview_blocks_for_sections(blocks=section["blocks"]) -%}
-        {%- do item | setAttribute("content", block_previews) -%}
-
-        {%- do itemList.append(item) -%}
-      {%- endfor -%}
-
-      {{
-        onsAccordion({
-          "id": "summary-accordion",
-          "allButton": {
-            "open": _('Show all'),
-            "close": _('Hide all'),
-            "attributes": {
-              "data-ga": "click",
-              "data-ga-category": "Preview Survey",
-              "data-ga-action": "Show all",
-              "data-ga-label": "Show all"
-            }
-          },
-          "itemsList": itemList
+    <h1 class="ons-u-mt-m">{{ _("Preview of the questions in this survey") }}</h1>
+    {# djlint:off #}
+    {% call
+        onsPanel({
+            "classes": 'ons-u-mb-m ons-u-ph'
         })
-      }}
-
-    {%- else %}
-      {%- for section in content.preview.sections if section.blocks -%}
-        <div class="ons-summary__group">
-          <h2 class="ons-summary__group-title">{{ section.title }}</h2>
-          {{ preview_blocks_for_sections(blocks=section["blocks"]) }}
-        </div>
-      {%- endfor -%}
-    {%- endif -%}
-
-  </div>
-
+    %}
+        <p>
+            {{ _("To answer these questions you need to <a href='{url}'>start survey</a>").format(url=url_for('questionnaire.get_questionnaire')) }}
+        </p>
+    {% endcall %}
+    {# djlint:on #}
+    <p>
+        {{ _("You may not have to answer all of these questions. The questions you see will depend on the answers you provide.") }}
+    </p>
+    {# djlint:off #}
+    {{
+        onsButton({
+            "type": 'button',
+            "text": _('Print questions'),
+            "variants": ['small', 'secondary', 'print'],
+            "attributes": {
+                "data-qa": "btn-print",
+                "data-ga-category": "Button",
+                "data-ga-action": "View",
+                "data-ga-label": "Print Dialogue",
+                "data-ga-page": "Preview",
+                "data-ga": "click",
+            }
+        })
+    }}
+    {{
+        onsButton({
+            "text": _('Save questions as PDF') ,
+            "variants": ['small', 'secondary', 'timer', 'download'],
+            "url": content.pdf_url,
+            "removeDownloadAttribute": true,
+            "attributes": {
+                "data-qa": "btn-pdf",
+                "data-ga-category": "Button",
+                "data-ga-action": "Download",
+                "data-ga-label": "Download PDF",
+                "data-ga-page": "Preview",
+                "data-ga": "click",
+            }
+        })
+    }}
+    <div class="ons-u-mt-l ons-u-mb-l">
+        {%- if content.preview.sections | length > 1 -%}
+            {%- set itemList = [] -%}
+            {%- for section in content.preview.sections if section.blocks -%}
+                {%- set item = {
+                    "title": section.title,
+                    "id": section.id
+                } -%}
+                {%- set block_previews = preview_blocks_for_sections(blocks=section["blocks"]) -%}
+                {%- do item | setAttribute("content", block_previews) -%}
+                {%- do itemList.append(item) -%}
+            {%- endfor -%}
+            {{
+                onsAccordion({
+                    "id": "summary-accordion",
+                    "allButton": {
+                        "open": _('Show all') ,
+                        "close": _('Hide all'),
+                            "attributes": {
+                            "data-ga": "click",
+                            "data-ga-category": "Button",
+                            "data-ga-action": "View",
+                            "data-ga-label": "Show all",
+                            "data-ga-page": "Preview",
+                        }
+                    },
+                    "itemsList": itemList
+                })
+            }}
+        {%- else %}
+            {%- for section in content.preview.sections if section.blocks -%}
+                <div class="ons-summary__group">
+                    <h2 class="ons-summary__group-title">{{ section.title }}</h2>
+                    {{ preview_blocks_for_sections(blocks=section["blocks"]) }}
+                </div>
+            {%- endfor -%}
+        {%- endif -%}
+    </div>
+    {# djlint:on #}
 {% endblock main %}

@@ -1,19 +1,22 @@
-{% extends 'errors/_base.html' %}
+{% extends "errors/_base.html" %}
 
 {% set hide_sign_out_button = True %}
-
 {% set page_title = _("Sorry, there is a problem") %}
+{% set resubmit_survey = _("You can try to <a href='{url}'>submit your survey again</a>").format(url=url_for('questionnaire.get_questionnaire')) %}
+{% set contact_us = _("If this problem keeps happening, please <a href='{url}'>contact us</a> for help.").format(url=contact_us_url) %}
+{% set business_contact_us = _("If you are completing a business survey, please <a href='{url}'>contact us</a>.").format(url=business_contact_us_url) %}
+{% set other_contact_us = _("If you started your survey using an access code, please <a href='{url}'>contact us</a>.").format(url=other_contact_us_url) %}
 
 {% block main %}
-<h1>{{ _("Sorry, there is a problem") }}</h1>
-<p data-qa="retry">{{ _("You can try to <a href='{url}'>submit your survey again</a>").format(url=url_for('questionnaire.get_questionnaire')) }}</p>
-  {% if survey_type and (survey_type in SURVEY_TYPES_ALL) %}
-    <p>{{ _("If this problem keeps happening, please <a href='{url}'>contact us</a> for help.").format(url=contact_us_url) }}</p>
-  {% else %}
-    <p>{{ _("If this problem keeps happening, please see the following help links.") }}</p>
-    <h2>{{ _("Business surveys") }}</h2>
-    <p>{{ _("If you are completing a business survey, please <a href='{url}'>contact us</a>.").format(url=business_contact_us_url) }}</p>
-    <h2>{{ _("All other surveys") }}</h2>
-    <p>{{ _("If you started your survey using an access code, please <a href='{url}'>contact us</a>.").format(url=other_contact_us_url) }}</p>
-  {% endif %}
-{% endblock %}
+    <h1>{{ _("Sorry, there is a problem") }}</h1>
+    <p data-qa="retry">{{ resubmit_survey }}</p>
+    {% if survey_type and (survey_type in SURVEY_TYPES_ALL) %}
+        <p>{{ contact_us }}</p>
+    {% else %}
+        <p>{{ _("If this problem keeps happening, please see the following help links.") }}</p>
+        <h2>{{ _("Business surveys") }}</h2>
+        <p>{{ business_contact_us }}</p>
+        <h2>{{ _("All other surveys") }}</h2>
+        <p>{{ other_contact_us }}</p>
+    {% endif %}
+{% endblock main %}

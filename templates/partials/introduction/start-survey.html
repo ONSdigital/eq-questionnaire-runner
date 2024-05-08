@@ -1,17 +1,20 @@
 {% from "components/button/_macro.njk" import onsButton %}
 
+{# djlint:off #}
 {{
-  onsButton({
-    "text": _("Start survey"),
-    "variants": 'timer',
-    "classes": "qa-btn-get-started",
-    "name": "action[start_questionnaire]",
-    "attributes": {
-      "data-qa": "btn-submit",
-      "data-ga-category": "Submit button",
-      "data-ga-action": "Start survey",
-      "data-ga-label": "Start button click",
-      "data-ga": "click"
-    }
-  })
+    onsButton({
+        "text": _("Start survey"),
+        "variants": 'timer',
+        "classes": "qa-btn-get-started",
+        "name": "action[start_questionnaire]",
+        "attributes": {
+            "data-qa": "btn-submit",
+            "data-ga-category": "Button",
+            "data-ga-action": "Start",
+            "data-ga-label": "Start Survey",
+            "data-ga-page": "Introduction",
+            "data-ga": "click",
+        }
+    })
 }}
+{# djlint:on #}

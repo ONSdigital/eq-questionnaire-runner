@@ -10,7 +10,7 @@ describe("Component: Mutually Exclusive Month Year Date With Single Checkbox Ove
   });
 
   describe("Given the user has entered a value for the non-exclusive month year date answer", () => {
-    it("When then user clicks the mutually exclusive checkbox answer, Then only the mutually exclusive checkbox should be answered.", async () => {
+    it("When the user clicks the mutually exclusive checkbox answer, Then only the mutually exclusive checkbox should be answered.", async () => {
       // Given
       await $(MonthYearDatePage.monthYearDateMonth()).setValue("3");
       await $(MonthYearDatePage.monthYearDateYear()).setValue("2018");

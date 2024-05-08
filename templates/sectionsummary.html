@@ -1,61 +1,65 @@
-{% extends 'layouts/_questionnaire.html' %}
+{% extends "layouts/_questionnaire.html" %}
+
 {% from "components/button/_macro.njk" import onsButton %}
 
-{% import 'macros/helpers.html' as helpers %}
+{% import "macros/helpers.html" as helpers %}
 
 {% set save_on_signout = true %}
-
+{# djlint:off #}
 {{
-  onsButton({
-    "text": _("Continue"),
-    "attributes": {
-      "data-qa": "btn-submit",
-      "data-ga-category": "Submit button",
-      "data-ga-action": "Continue",
-      "data-ga-label": "Continue button click",
-      "data-ga": "click"
-    }
-  })
+    onsButton({
+        "text": _("Continue"),
+        "attributes": {
+            "data-qa": "btn-submit",
+            "data-ga-category": "Button",
+            "data-ga-action": "Submit",
+            "data-ga-label": "Continue",
+            "data-ga-page": "Section Summary",
+            "data-ga": "click",
+        }
+    })
 }}
+{# djlint:on #}
+
 {% block form_content %}
     {% if content.summary.custom_summary %}
-      <h1>{{content.summary.title}}</h1>
-      {% for summary in content.summary.custom_summary %}
-        {% if summary.type == 'List' %}
-          {% set add_link = summary.add_link %}
-          {% set add_link_text = summary.add_link_text %}
-          {% set empty_list_text = summary.empty_list_text %}
-          {% set list_title = summary.title %}
-
-          <div {{'class="ons-u-mb-l"' if not loop.last }} data-qa="{{summary.list_name}}-list-summary">
-            {% if summary.list %}
-              {% set list = summary.list %}
-              {% include 'partials/summary/list-summary.html' %}
+        <h1>{{ content.summary.title }}</h1>
+        {% for summary in content.summary.custom_summary %}
+            {% if summary.type == 'List' %}
+                {% set add_link = summary.add_link %}
+                {% set add_link_text = summary.add_link_text %}
+                {% set empty_list_text = summary.empty_list_text %}
+                {% set list_title = summary.title %}
+                <div {{ 'class="ons-u-mb-l"' if not loop.last }} data-qa="{{ summary.list_name }}-list-summary">
+                    {% if summary.list %}
+                        {% set list = summary.list %}
+                        {% include "partials/summary/list-summary.html" %}
+                    {% endif %}
+                </div>
             {% endif %}
-          </div>
-        {% endif %}
         {% endfor %}
     {%- else -%}
-      <h1>{{content.summary.title}}</h1>
-      <div>
-        {% include 'partials/summary/summary.html' %}
-      </div>
+        <h1>{{ content.summary.title }}</h1>
+        <div>{% include "partials/summary/summary.html" %}</div>
     {% endif %}
-{% endblock %}
+{% endblock form_content %}
 
 {% block submit_button %}
-  {{
-    onsButton({
-      "text": continue_button_text | default(_("Continue")),
-      "variants": 'timer',
-      "classes": "ons-u-mt-xl",
-      "attributes": {
-        "data-qa": "btn-submit",
-        "data-ga-category": "Submit button",
-        "data-ga-action": "Continue",
-        "data-ga-label": "Continue button click",
-        "data-ga": "click"
-      }
-    })
-  }}
-{% endblock %}
+    {# djlint:off #}
+    {{
+        onsButton({
+            "text": continue_button_text | default(_("Continue")),
+            "variants": 'timer',
+            "classes": "ons-u-mt-xl",
+            "attributes": {
+                "data-qa": "btn-submit",
+                "data-ga-category": "Button",
+                "data-ga-action": "Submit",
+                "data-ga-label": "Continue",
+                "data-ga-page": "Section Summary",
+                "data-ga": "click",
+            }
+        })
+    }}
+    {# djlint:on #}
+{% endblock submit_button %}

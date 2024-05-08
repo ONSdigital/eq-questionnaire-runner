@@ -99,17 +99,17 @@ pip install --upgrade pip setuptools
 
 Install poetry, poetry dotenv plugin and install dependencies:
 
-''' shell
+``` shell
 curl -sSL https://install.python-poetry.org | python3 - --version 1.8.2
 poetry self add poetry-plugin-dotenv
 poetry install
-'''
+```
 
 We use [poetry-plugin-up](https://github.com/MousaZeidBaker/poetry-plugin-up) to update dependencies in the `pyproject.toml` file:
 
-'''shell
+``` shell
 poetry self add poetry-plugin-up
-'''
+```
 
 #### Design system templates
 
