@@ -76,6 +76,7 @@ export function generateToken(
     includeLogoutUrl = true,
     displayAddress = "",
     cirInstrumentId = null,
+    booleanFlag = false,
   },
 ) {
   let schemaParams = {};
@@ -113,7 +114,7 @@ export function generateToken(
     region_code: regionCode,
     language_code: languageCode,
     account_service_url: "http://localhost:8000",
-    survey_metadata: getSurveyMetadata(theme, userId, displayAddress, surveyId, periodId, periodStr, ruRef, sdsDatasetId),
+    survey_metadata: getSurveyMetadata(theme, userId, displayAddress, surveyId, periodId, periodStr, ruRef, sdsDatasetId, booleanFlag),
     version: launchVersion,
     response_expires_at: isoDate,
   };
@@ -158,7 +159,7 @@ export function generateToken(
     });
 }
 
-function getSurveyMetadata(theme, userId, displayAddress, surveyId, periodId, periodStr, ruRef, sdsDatasetId) {
+function getSurveyMetadata(theme, userId, displayAddress, surveyId, periodId, periodStr, ruRef, sdsDatasetId, booleanFlag) {
   let surveyMetadata = {};
 
   if (theme === "social") {
@@ -185,6 +186,7 @@ function getSurveyMetadata(theme, userId, displayAddress, surveyId, periodId, pe
         return_by: "2017-03-01",
         ru_name: "Apple",
         trad_as: "Apple",
+        boolean_flag: booleanFlag,
       },
     };
   }
