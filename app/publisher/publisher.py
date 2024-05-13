@@ -14,7 +14,9 @@ logger = get_logger(__name__)
 
 class Publisher(ABC):
     @abstractmethod
-    def publish(self, topic_id: str, message: bytes, fulfilment_request_transaction_id: str) -> Any:
+    def publish(
+        self, topic_id: str, message: bytes, fulfilment_request_transaction_id: str
+    ) -> Any:
         pass  # pragma: no cover
 
 
@@ -29,7 +31,9 @@ class PubSubPublisher(Publisher):
         response: Future = self._client.publish(topic_path, message)
         return response
 
-    def publish(self, topic_id: str, message: bytes, fulfilment_request_transaction_id: str) -> None:
+    def publish(
+        self, topic_id: str, message: bytes, fulfilment_request_transaction_id: str
+    ) -> None:
         response = self._publish(topic_id, message)
         try:
             # Resolve the future
@@ -49,7 +53,9 @@ class PubSubPublisher(Publisher):
 
 
 class LogPublisher(Publisher):
-    def publish(self, topic_id: str, message: bytes, fulfilment_request_transaction_id: str) -> None:
+    def publish(
+        self, topic_id: str, message: bytes, fulfilment_request_transaction_id: str
+    ) -> None:
         logger.info(
             "publishing message",
             topic_id=topic_id,
