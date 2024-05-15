@@ -16,7 +16,7 @@ class Publisher(ABC):
     @abstractmethod
     def publish(
         self, topic_id: str, message: bytes, fulfilment_request_transaction_id: str
-    ) -> Any:
+    ) -> None:
         pass  # pragma: no cover
 
 
