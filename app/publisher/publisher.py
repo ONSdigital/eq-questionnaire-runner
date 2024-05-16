@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import Any
 
 import google.auth
 from google.cloud.pubsub import PublisherClient
