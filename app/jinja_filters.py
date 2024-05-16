@@ -711,6 +711,7 @@ def map_list_collector_config(
 
         row_item = {
             "iconType": icon,
+            "iconVisuallyHiddenText": "Section complete",
             "actions": actions,
             "id": list_item.get("list_item_id"),
             "rowTitleAttributes": {
