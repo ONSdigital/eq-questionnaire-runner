@@ -1288,7 +1288,7 @@ def test_summary_item_config_with_list_collector_and_one_related_answer():
 
     assert to_dict(expected) == to_dict(result)
 
-def test_map_list_collector_config_set_icon_type():
+def test_map_list_collector_config_render_icon_set():
     list_items = [
         {"item_title": "Mark Bloggs", "list_item_id": "one", "repeating_blocks": True, "is_complete": True},
         {"item_title": "Joe Bloggs", "list_item_id": "two", "repeating_block": True, "is_complete": False},
