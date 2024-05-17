@@ -709,11 +709,7 @@ def map_list_collector_config(
             else None
         )
 
-        iconVisuallyHiddenText = (
-            "Section complete"
-            if icon == "check"
-            else None
-        )
+        iconVisuallyHiddenText = "Section complete" if icon == "check" else None
 
         row_item = {
             "iconType": icon,
