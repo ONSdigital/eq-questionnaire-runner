@@ -434,15 +434,13 @@ class SummaryAction:
         answer: SelectFieldBase._Option,
         item_title: str,
         edit_link_text: str,
-        edit_link_aria_label: str,
         item_name: str | None = None
     ) -> None:
         self.text = edit_link_text
         if item_name:
-            self.visuallyHiddenText = (edit_link_aria_label.format(item_name=item_name) + ": " + item_title).replace("Change details for", "Change answer for")
+            self.visuallyHiddenText = flask_babel.lazy_gettext("Change answer for {item_name}: {question_title_or_answer_label}").format(item_name=item_name, question_title_or_answer_label=item_title)
         else:
-            self.visuallyHiddenText = f"Change your answer for: {item_title}"
-        self.url = answer["link"]
+            self.visuallyHiddenText = flask_babel.lazy_gettext("Change your answer for: {question_title_or_answer_label}").format(question_title_or_answer_label=item_title)
 
         self.attributes = {
             "data-qa": answer["id"] + "-edit",
@@ -470,7 +468,6 @@ class SummaryRowItem:
         answers_are_editable: bool,
         no_answer_provided: str,
         edit_link_text: str,
-        edit_link_aria_label: str,
         summary_type: str,
         use_answer_label: bool = False,
         item_name: str | None = None
@@ -546,7 +543,7 @@ class SummaryRowItem:
         if answers_are_editable:
             self.actions = [
                 SummaryAction(
-                    answer, self.rowTitle, edit_link_text, edit_link_aria_label, item_name
+                    answer, self.rowTitle, edit_link_text, item_name
                 )
             ]
 
@@ -559,7 +556,6 @@ class SummaryRow:
         answers_are_editable: bool,
         no_answer_provided: str,
         edit_link_text: str,
-        edit_link_aria_label: str,
         use_answer_label: bool = False,
         item_name: str | None = None
     ) -> None:
@@ -579,7 +575,6 @@ class SummaryRow:
                     answers_are_editable,
                     no_answer_provided,
                     edit_link_text,
-                    edit_link_aria_label,
                     summary_type,
                     use_answer_label,
                     item_name
@@ -610,7 +605,6 @@ def map_summary_item_config(
                     answers_are_editable,
                     no_answer_provided,
                     edit_link_text,
-                    edit_link_aria_label,
                 )
             )
         elif block.get("calculated_summary"):
@@ -621,7 +615,6 @@ def map_summary_item_config(
                     answers_are_editable,
                     no_answer_provided,
                     edit_link_text,
-                    edit_link_aria_label,
                 )
             )
         else:
@@ -740,7 +733,6 @@ def map_list_collector_config(
                     answers_are_editable=True,
                     no_answer_provided=flask_babel.lazy_gettext("No answer provided"),
                     edit_link_text=edit_link_text,
-                    edit_link_aria_label=edit_link_aria_label,
                     use_answer_label=True,
                     item_name=item_name
                 )

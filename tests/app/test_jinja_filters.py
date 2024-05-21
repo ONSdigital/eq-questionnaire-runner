@@ -898,7 +898,6 @@ def test_calculated_summary_config():
             answers_are_editable=True,
             no_answer_provided="No answer Provided",
             edit_link_text="Change",
-            edit_link_aria_label="Change your answer for",
         ),
         SummaryRow(
             question={
@@ -921,7 +920,6 @@ def test_calculated_summary_config():
             answers_are_editable=True,
             no_answer_provided="No answer Provided",
             edit_link_text="Change",
-            edit_link_aria_label="Change your answer for",
         ),
         SummaryRow(
             question={
@@ -933,7 +931,6 @@ def test_calculated_summary_config():
             answers_are_editable=False,
             no_answer_provided=None,
             edit_link_text=None,
-            edit_link_aria_label=None,
         ),
     ]
 
