@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 
 import google.auth
 from google.cloud.pubsub import PublisherClient
-from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1.futures import Future
 from structlog import get_logger
 
@@ -24,7 +23,7 @@ class PubSubPublisher(Publisher):
         self._client = PublisherClient()
         _, self._project_id = google.auth.default()
 
-    def _publish(self, topic_id: str, message: bytes) -> "publisher.futures.Future":
+    def _publish(self, topic_id: str, message: bytes) -> Future:
         logger.info("publishing message", topic_id=topic_id)
         topic_path = self._client.topic_path(self._project_id, topic_id)
         response: Future = self._client.publish(topic_path, message)
