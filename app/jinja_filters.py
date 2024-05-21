@@ -435,9 +435,13 @@ class SummaryAction:
         item_title: str,
         edit_link_text: str,
         edit_link_aria_label: str,
+        item_name: str | None = None
     ) -> None:
         self.text = edit_link_text
-        self.visuallyHiddenText = edit_link_aria_label + " " + item_title
+        if item_name:
+            self.visuallyHiddenText = (edit_link_aria_label.format(item_name=item_name) + ": " + item_title).replace("Change details for", "Change answer for")
+        else:
+            self.visuallyHiddenText = f"Change your answer for: {item_title}"
         self.url = answer["link"]
 
         self.attributes = {
@@ -469,6 +473,7 @@ class SummaryRowItem:
         edit_link_aria_label: str,
         summary_type: str,
         use_answer_label: bool = False,
+        item_name: str | None = None
     ) -> None:
         answer_type = answer.get("type", "calculated")
         if (
@@ -541,7 +546,7 @@ class SummaryRowItem:
         if answers_are_editable:
             self.actions = [
                 SummaryAction(
-                    answer, self.rowTitle, edit_link_text, edit_link_aria_label
+                    answer, self.rowTitle, edit_link_text, edit_link_aria_label, item_name
                 )
             ]
 
@@ -556,6 +561,7 @@ class SummaryRow:
         edit_link_text: str,
         edit_link_aria_label: str,
         use_answer_label: bool = False,
+        item_name: str | None = None
     ) -> None:
         self.rowTitle = strip_tags(question["title"])
         self.id = question["id"]
@@ -576,6 +582,7 @@ class SummaryRow:
                     edit_link_aria_label,
                     summary_type,
                     use_answer_label,
+                    item_name
                 )
             )
 
@@ -735,6 +742,7 @@ def map_list_collector_config(
                     edit_link_text=edit_link_text,
                     edit_link_aria_label=edit_link_aria_label,
                     use_answer_label=True,
+                    item_name=item_name
                 )
                 row_items.extend(summary_row.rowItems)
 
