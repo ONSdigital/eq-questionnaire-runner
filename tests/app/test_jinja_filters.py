@@ -1312,7 +1312,7 @@ def test_map_list_collector_config_render_icon_set():
             "rowItems": [
                 {
                     "actions": [],
-                    "iconVisuallyHiddenText": "Section complete",
+                    "iconVisuallyHiddenText": "Completed",
                     "iconType": "check",
                     "id": "one",
                     "rowTitleAttributes": {

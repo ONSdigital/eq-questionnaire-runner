@@ -709,11 +709,9 @@ def map_list_collector_config(
             else None
         )
 
-        iconVisuallyHiddenText = "Section complete" if icon == "check" else None
-
         row_item = {
             "iconType": icon,
-            "iconVisuallyHiddenText": iconVisuallyHiddenText,
+            "iconVisuallyHiddenText": "Completed" if icon else None,
             "actions": actions,
             "id": list_item.get("list_item_id"),
             "rowTitleAttributes": {
