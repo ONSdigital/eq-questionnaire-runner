@@ -434,13 +434,14 @@ class SummaryAction:
         answer: SelectFieldBase._Option,
         item_title: str,
         edit_link_text: str,
-        item_name: str | None = None
+        item_name: str | None = None,
     ) -> None:
         self.text = edit_link_text
         if item_name:
             self.visuallyHiddenText = flask_babel.lazy_gettext("Change answer for {item_name}: {question_title_or_answer_label}").format(item_name=item_name, question_title_or_answer_label=item_title)
         else:
             self.visuallyHiddenText = flask_babel.lazy_gettext("Change your answer for: {question_title_or_answer_label}").format(question_title_or_answer_label=item_title)
+        self.url = answer["link"]
 
         self.attributes = {
             "data-qa": answer["id"] + "-edit",
