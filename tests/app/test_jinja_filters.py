@@ -1007,13 +1007,13 @@ def test_summary_item_config_with_list_collector():
                 {
                     "actions": [
                         {
-                            "visuallyHiddenText": "Change your answer for:",
+                            "visuallyHiddenText": "Change details for Company A",
                             "attributes": {"data-qa": "list-item-change-1-link"},
                             "text": "Change",
                             "url": "change_link_url",
                         },
                         {
-                            "visuallyHiddenText": "Remove Company A",
+                            "visuallyHiddenText": "Remove details for Company A",
                             "attributes": {"data-qa": "list-item-remove-1-link"},
                             "text": "Remove",
                             "url": "remove_link_url",
@@ -1147,10 +1147,10 @@ def test_summary_item_config_with_list_collector():
         summary_type="SectionSummary",
         answers_are_editable=True,
         no_answer_provided="No answer Provided",
-        remove_link_aria_label="Remove Company A",
+        remove_link_aria_label="Remove details for {item_name}",
         remove_link_text="Remove",
         edit_link_text="Change",
-        edit_link_aria_label="Change your answer for:",
+        edit_link_aria_label="Change details for {item_name}",
         calculated_question={},
     )
 
