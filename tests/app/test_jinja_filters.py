@@ -1030,8 +1030,7 @@ def test_summary_item_config_with_list_collector():
                 {
                     "actions": [
                         {
-                            "visuallyHiddenText": "Change answer for Company A: Registration number"
-                            "Registration number",
+                            "visuallyHiddenText": "Change answer for Company A: Registration number",
                             "attributes": {
                                 "data-ga": "click",
                                 "data-ga-action": "Edit",

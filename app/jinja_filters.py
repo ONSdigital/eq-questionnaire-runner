@@ -438,9 +438,13 @@ class SummaryAction:
     ) -> None:
         self.text = edit_link_text
         if item_name:
-            self.visuallyHiddenText = flask_babel.lazy_gettext("Change answer for {item_name}: {question_title_or_answer_label}").format(item_name=item_name, question_title_or_answer_label=item_title)
+            self.visuallyHiddenText = flask_babel.lazy_gettext(
+                "Change answer for {item_name}: {question_title_or_answer_label}"
+            ).format(item_name=item_name, question_title_or_answer_label=item_title)
         else:
-            self.visuallyHiddenText = flask_babel.lazy_gettext("Change your answer for: {question_title_or_answer_label}").format(question_title_or_answer_label=item_title)
+            self.visuallyHiddenText = flask_babel.lazy_gettext(
+                "Change your answer for: {question_title_or_answer_label}"
+            ).format(question_title_or_answer_label=item_title)
         self.url = answer["link"]
 
         self.attributes = {
@@ -471,7 +475,7 @@ class SummaryRowItem:
         edit_link_text: str,
         summary_type: str,
         use_answer_label: bool = False,
-        item_name: str | None = None
+        item_name: str | None = None,
     ) -> None:
         answer_type = answer.get("type", "calculated")
         if (
@@ -543,9 +547,7 @@ class SummaryRowItem:
 
         if answers_are_editable:
             self.actions = [
-                SummaryAction(
-                    answer, self.rowTitle, edit_link_text, item_name
-                )
+                SummaryAction(answer, self.rowTitle, edit_link_text, item_name)
             ]
 
 
@@ -558,7 +560,7 @@ class SummaryRow:
         no_answer_provided: str,
         edit_link_text: str,
         use_answer_label: bool = False,
-        item_name: str | None = None
+        item_name: str | None = None,
     ) -> None:
         self.rowTitle = strip_tags(question["title"])
         self.id = question["id"]
@@ -578,7 +580,7 @@ class SummaryRow:
                     edit_link_text,
                     summary_type,
                     use_answer_label,
-                    item_name
+                    item_name,
                 )
             )
 
@@ -735,7 +737,7 @@ def map_list_collector_config(
                     no_answer_provided=flask_babel.lazy_gettext("No answer provided"),
                     edit_link_text=edit_link_text,
                     use_answer_label=True,
-                    item_name=item_name
+                    item_name=item_name,
                 )
                 row_items.extend(summary_row.rowItems)
 
