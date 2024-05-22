@@ -739,7 +739,7 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                 {
                     "actions": [
                         {
-                            "visuallyHiddenText": "edit_link_aria_label Registration number",
+                            "visuallyHiddenText": "Change answer for Name of UK company or branch: Registration number",
                             "attributes": {
                                 "data-ga": "click",
                                 "data-ga-action": "Edit",
@@ -761,7 +761,7 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                 {
                     "actions": [
                         {
-                            "visuallyHiddenText": "edit_link_aria_label Is this UK "
+                            "visuallyHiddenText": "Change answer for Name of UK company or branch: Is this UK "
                             "company or branch an authorised "
                             "insurer?",
                             "attributes": {
@@ -1030,7 +1030,7 @@ def test_summary_item_config_with_list_collector():
                 {
                     "actions": [
                         {
-                            "visuallyHiddenText": "Change your answer for: "
+                            "visuallyHiddenText": "Change answer for Company A: Registration number"
                             "Registration number",
                             "attributes": {
                                 "data-ga": "click",
@@ -1053,7 +1053,7 @@ def test_summary_item_config_with_list_collector():
                 {
                     "actions": [
                         {
-                            "visuallyHiddenText": "Change your answer for: Is this UK "
+                            "visuallyHiddenText": "Change answer for Company A: Is this UK "
                             "company or branch an authorised "
                             "insurer?",
                             "attributes": {
@@ -1189,7 +1189,7 @@ def test_summary_item_config_with_list_collector_and_one_related_answer():
                 {
                     "actions": [
                         {
-                            "visuallyHiddenText": "Change your answer for: "
+                            "visuallyHiddenText": "Change answer for Company A: "
                             "Registration number",
                             "attributes": {
                                 "data-ga": "click",
