@@ -1305,7 +1305,7 @@ def test_map_list_collector_config_render_icon_set():
         },
     ]
 
-    output = map_list_collector_config(list_items, True, True)
+    output = map_list_collector_config(list_items, editable=True, render_icon=True)
 
     expected = [
         {
