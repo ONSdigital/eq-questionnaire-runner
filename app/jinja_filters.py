@@ -434,17 +434,19 @@ class SummaryAction:
         answer: SelectFieldBase._Option,
         item_title: str,
         edit_link_text: str,
-        item_name: str | None = None,
+        item_name: str = "",
     ) -> None:
         self.text = edit_link_text
-        if item_name:
+        self.visuallyHiddenText = ""
+        if item_name and edit_link_text:
             self.visuallyHiddenText = flask_babel.lazy_gettext(
                 "Change answer for {item_name}: {question_title_or_answer_label}"
             ).format(item_name=item_name, question_title_or_answer_label=item_title)
-        else:
+        elif edit_link_text:
             self.visuallyHiddenText = flask_babel.lazy_gettext(
                 "Change your answer for: {question_title_or_answer_label}"
             ).format(question_title_or_answer_label=item_title)
+
         self.url = answer["link"]
 
         self.attributes = {
@@ -475,7 +477,7 @@ class SummaryRowItem:
         edit_link_text: str,
         summary_type: str,
         use_answer_label: bool = False,
-        item_name: str | None = None,
+        item_name: str = "",
     ) -> None:
         answer_type = answer.get("type", "calculated")
         if (
@@ -560,7 +562,7 @@ class SummaryRow:
         no_answer_provided: str,
         edit_link_text: str,
         use_answer_label: bool = False,
-        item_name: str | None = None,
+        item_name: str = "",
     ) -> None:
         self.rowTitle = strip_tags(question["title"])
         self.id = question["id"]
@@ -636,7 +638,7 @@ def map_summary_item_config(
             rows.extend(list_collector_rows)
 
     if is_summary_with_calculation(summary_type):
-        rows.append(SummaryRow(calculated_question, summary_type, False, "", "", ""))
+        rows.append(SummaryRow(calculated_question, summary_type, False, "", ""))
 
     return rows
 
@@ -663,7 +665,7 @@ def map_list_collector_config(
     rows: list[dict[str, list] | SummaryRow] = []
 
     for index, list_item in enumerate(list_items, start=1):
-        item_name = list_item.get("item_title")
+        item_name = str(list_item.get("item_title", ""))
 
         actions = []
         edit_link_hidden_text = None
