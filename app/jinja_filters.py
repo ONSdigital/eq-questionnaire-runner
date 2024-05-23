@@ -437,6 +437,10 @@ class SummaryAction:
         item_name: str = "",
     ) -> None:
         self.text = edit_link_text
+        # On post submission summary the change link text is not supposed to be created as there are no change links on the page,
+        # we still create SummaryAction class instance even if it's not used (the code is shared and executed by all summaries).
+        # Instead of passing an extra argument we check edit_link_text variable contents to find out if we are on post submission or other summary.
+        # Also, depending on (list) item_name contents different text is created for list item related answer change link or normal answer change link.
         self.visuallyHiddenText = ""
         if item_name and edit_link_text:
             self.visuallyHiddenText = flask_babel.lazy_gettext(
