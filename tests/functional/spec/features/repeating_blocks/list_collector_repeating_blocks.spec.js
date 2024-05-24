@@ -96,7 +96,7 @@ describe("List Collector Repeating Blocks", () => {
       await $(AnyOtherCompaniesOrBranchesPage.listEditLink(2)).click();
       await $(EditCompanyPage.companyOrBranchName()).setValue("Government");
       await click(EditCompanyPage.submit());
-      await checkItemsInList(["ONS", "GOV", "Government"], AnyOtherCompaniesOrBranchesPage.listLabel);
+      await checkItemsInList(["ONS", "Government", "MOD"], AnyOtherCompaniesOrBranchesPage.listLabel);
     });
 
     it("When the user clicks the remove link, Then the item selected is removed", async () => {
