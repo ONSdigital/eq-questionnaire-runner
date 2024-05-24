@@ -10,7 +10,7 @@ updates:
         patterns:
           - "flask*"
           - "google*"
-          - "python"
+          - "python*"
           - "colorama"
           - "grpcio"
           - "gunicorn"
