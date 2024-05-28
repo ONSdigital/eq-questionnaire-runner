@@ -711,6 +711,7 @@ def map_list_collector_config(
 
         row_item = {
             "iconType": icon,
+            "iconVisuallyHiddenText": "Completed" if icon else None,
             "actions": actions,
             "id": list_item.get("list_item_id"),
             "rowTitleAttributes": {
