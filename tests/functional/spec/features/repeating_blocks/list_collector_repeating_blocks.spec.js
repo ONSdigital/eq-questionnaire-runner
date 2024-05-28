@@ -96,7 +96,7 @@ describe("List Collector Repeating Blocks", () => {
       await $(AnyOtherCompaniesOrBranchesPage.listEditLink(2)).click();
       await $(EditCompanyPage.companyOrBranchName()).setValue("Government");
       await click(EditCompanyPage.submit());
-      await expect(await $(AnyOtherCompaniesOrBranchesPage.listLabel(2)).getText()).toBe("Government");
+      await checkItemsInList(["ONS", "Government", "MOD"], AnyOtherCompaniesOrBranchesPage.listLabel);
     });
 
     it("When the user clicks the remove link, Then the item selected is removed", async () => {
@@ -105,7 +105,6 @@ describe("List Collector Repeating Blocks", () => {
       await click(RemoveCompanyPage.submit());
       await checkItemsInList(["ONS", "MOD"], AnyOtherCompaniesOrBranchesPage.listLabel);
       await expect(await $(AnyOtherCompaniesOrBranchesPage.listLabel(2)).getText()).not.toContain("Government");
-      await expect(await $(AnyOtherCompaniesOrBranchesPage.listLabel(2)).getText()).toBe("MOD");
     });
 
     it("When a user has finished editing or removing from the list, Then they are still able to add additional companies", async () => {
