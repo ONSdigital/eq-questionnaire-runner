@@ -6,7 +6,7 @@
     "survey_id": "0",
     "title": "Test ONSNHS ONS Survey",
     "theme": "ons-nhs",
-    "description": "A questionnaire to demo the UKHSA ONS survey theme",
+    "description": "A questionnaire to demo the ons-nhs survey theme",
     "metadata": [
         {
             "name": "user_id",
