@@ -534,6 +534,7 @@ def test_map_list_collector_config_no_actions():
             "rowItems": [
                 {
                     "actions": [],
+                    "iconVisuallyHiddenText": None,
                     "iconType": None,
                     "id": "one",
                     "rowTitleAttributes": {
@@ -548,6 +549,7 @@ def test_map_list_collector_config_no_actions():
             "rowItems": [
                 {
                     "actions": [],
+                    "iconVisuallyHiddenText": None,
                     "iconType": None,
                     "id": "two",
                     "rowTitleAttributes": {
@@ -605,6 +607,7 @@ def test_map_list_collector_config():
                             "url": "/primary/change",
                         }
                     ],
+                    "iconVisuallyHiddenText": None,
                     "iconType": None,
                     "id": "primary",
                     "rowTitleAttributes": {
@@ -633,6 +636,7 @@ def test_map_list_collector_config():
                         },
                     ],
                     "iconType": None,
+                    "iconVisuallyHiddenText": None,
                     "id": "nonprimary",
                     "rowTitleAttributes": {
                         "data-list-item-id": "nonprimary",
@@ -727,6 +731,7 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                             "url": "/nonprimary/remove",
                         },
                     ],
+                    "iconVisuallyHiddenText": None,
                     "iconType": None,
                     "id": "VHoiow",
                     "rowTitle": "Name of UK company or branch",
@@ -1019,6 +1024,7 @@ def test_summary_item_config_with_list_collector():
                             "url": "remove_link_url",
                         },
                     ],
+                    "iconVisuallyHiddenText": None,
                     "iconType": None,
                     "id": "vmmPmD",
                     "rowTitle": "Company A",
@@ -1177,6 +1183,7 @@ def test_summary_item_config_with_list_collector_and_one_related_answer():
                             "url": "remove_link_url",
                         },
                     ],
+                    "iconVisuallyHiddenText": None,
                     "iconType": None,
                     "id": "vmmPmD",
                     "rowTitle": "Company A",
@@ -1276,6 +1283,60 @@ def test_summary_item_config_with_list_collector_and_one_related_answer():
     )
 
     assert to_dict(expected) == to_dict(result)
+
+
+def test_map_list_collector_config_render_icon_set():
+    list_items = [
+        {
+            "item_title": "Mark Bloggs",
+            "list_item_id": "one",
+            "repeating_blocks": True,
+            "is_complete": True,
+        },
+        {
+            "item_title": "Joe Bloggs",
+            "list_item_id": "two",
+            "repeating_block": True,
+            "is_complete": False,
+        },
+    ]
+
+    output = map_list_collector_config(list_items, editable=True, render_icon=True)
+
+    expected = [
+        {
+            "rowItems": [
+                {
+                    "actions": [],
+                    "iconVisuallyHiddenText": "Completed",
+                    "iconType": "check",
+                    "id": "one",
+                    "rowTitleAttributes": {
+                        "data-list-item-id": "one",
+                        "data-qa": "list-item-1-label",
+                    },
+                    "rowTitle": "Mark Bloggs",
+                }
+            ]
+        },
+        {
+            "rowItems": [
+                {
+                    "actions": [],
+                    "iconVisuallyHiddenText": None,
+                    "iconType": None,
+                    "id": "two",
+                    "rowTitleAttributes": {
+                        "data-list-item-id": "two",
+                        "data-qa": "list-item-2-label",
+                    },
+                    "rowTitle": "Joe Bloggs",
+                }
+            ]
+        },
+    ]
+
+    assert output == expected
 
 
 def to_dict(obj):

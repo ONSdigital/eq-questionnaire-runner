@@ -2,7 +2,7 @@ export const checkItemsInList = async (itemsExpected, listLabel) => {
   await $(listLabel(1)).waitForDisplayed();
 
   for (let i = 1; i <= itemsExpected.length; i++) {
-    await expect(await $(listLabel(i)).getText()).toEqual(itemsExpected[i - 1]);
+    await expect(await $(listLabel(i)).getText()).toContain(itemsExpected[i - 1]);
   }
 };
 

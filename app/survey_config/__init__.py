@@ -11,12 +11,14 @@ from app.survey_config.business_config import (
 )
 from app.survey_config.link import Link
 from app.survey_config.social_survey_config import (
+    ONSNHSSocialSurveyConfig,
     SocialSurveyConfig,
     UKHSAONSSocialSurveyConfig,
 )
 from app.survey_config.survey_config import SurveyConfig
 
 __all__ = [
+    "ONSNHSSocialSurveyConfig",
     "SocialSurveyConfig",
     "UKHSAONSSocialSurveyConfig",
     "SurveyConfig",

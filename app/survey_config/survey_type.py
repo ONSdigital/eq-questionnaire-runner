@@ -15,3 +15,4 @@ class SurveyType(Enum):
     DESNZ = "desnz"
     DESNZ_NI = "desnz-ni"
     UKHSA_ONS = "ukhsa-ons"
+    ONS_NHS = "ons-nhs"
