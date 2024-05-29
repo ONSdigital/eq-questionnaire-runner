@@ -22,6 +22,7 @@ from app.survey_config import (
     DESNZBusinessSurveyConfig,
     DESNZNIBusinessSurveyConfig,
     NIBusinessSurveyConfig,
+    ONSNHSSocialSurveyConfig,
     ORRBusinessSurveyConfig,
     SocialSurveyConfig,
     SurveyConfig,
@@ -188,6 +189,7 @@ def survey_config_mapping(
         SurveyType.DESNZ_NI: DESNZNIBusinessSurveyConfig,
         SurveyType.ORR: ORRBusinessSurveyConfig,
         SurveyType.UKHSA_ONS: UKHSAONSSocialSurveyConfig,
+        SurveyType.ONS_NHS: ONSNHSSocialSurveyConfig,
     }
 
     return survey_type_to_config[theme](

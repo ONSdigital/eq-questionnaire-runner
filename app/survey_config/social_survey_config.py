@@ -73,3 +73,10 @@ class UKHSAONSSocialSurveyConfig(SocialSurveyConfig):
     masthead_logo_mobile: str = read_file(
         "./templates/assets/images/ukhsa-logo-stacked.svg"
     ) + read_file("./templates/assets/images/ons-logo-stacked.svg")
+
+
+@dataclass
+class ONSNHSSocialSurveyConfig(SocialSurveyConfig):
+    masthead_logo: str = read_file(
+        "./templates/assets/images/ons-logo-stacked.svg"
+    ) + read_file("./templates/assets/images/nhs-logo.svg")

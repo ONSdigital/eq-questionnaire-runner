@@ -23,6 +23,7 @@ from app.survey_config import (
     DESNZBusinessSurveyConfig,
     DESNZNIBusinessSurveyConfig,
     NIBusinessSurveyConfig,
+    ONSNHSSocialSurveyConfig,
     ORRBusinessSurveyConfig,
     SocialSurveyConfig,
     SurveyConfig,
@@ -298,6 +299,17 @@ def test_footer_context(app: Flask, theme, survey_config, language, expected_foo
                 + read_file("./templates/assets/images/ons-logo-stacked.svg"),
             ],
         ),
+        (
+            SurveyType.ONS_NHS,
+            "Test",
+            ONSNHSSocialSurveyConfig(),
+            [
+                "Test",
+                read_file("./templates/assets/images/ons-logo-stacked.svg")
+                + read_file("./templates/assets/images/nhs-logo.svg"),
+                None,
+            ],
+        ),
     ),
 )
 def test_header_context(app: Flask, theme, survey_title, survey_config, expected):
@@ -484,6 +496,11 @@ def test_service_links_context(
             "en",
             f"{ONS_URL}/aboutus/contactus/surveyenquiries/",
         ),
+        (
+            ONSNHSSocialSurveyConfig(),
+            "en",
+            f"{ONS_URL}/aboutus/contactus/surveyenquiries/",
+        ),
     ],
 )
 def test_contact_us_url_context(
@@ -587,6 +604,11 @@ def test_sign_out_button_text_context(
             True,
             f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/en/cookies/",
         ),
+        (
+            ONSNHSSocialSurveyConfig(),
+            True,
+            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/en/cookies/",
+        ),
         (SurveyConfig(), False, None),
     ],
 )
@@ -668,6 +690,11 @@ def test_cookie_settings_url_context(
         ),
         (
             UKHSAONSSocialSurveyConfig(),
+            "en",
+            ACCOUNT_SERVICE_BASE_URL_SOCIAL,
+        ),
+        (
+            ONSNHSSocialSurveyConfig(),
             "en",
             ACCOUNT_SERVICE_BASE_URL_SOCIAL,
         ),
@@ -814,6 +841,10 @@ def test_account_service_my_todo_url_context(
             UKHSAONSSocialSurveyConfig(),
             f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/en/start/",
         ),
+        (
+            ONSNHSSocialSurveyConfig(),
+            f"{ACCOUNT_SERVICE_BASE_URL_SOCIAL}/en/start/",
+        ),
     ],
 )
 def test_account_service_log_out_url_context(
@@ -841,6 +872,7 @@ def test_account_service_log_out_url_context(
         (SurveyType.DBT_DSIT_NI, "en", DBTDSITNIBusinessSurveyConfig),
         (SurveyType.ORR, "en", ORRBusinessSurveyConfig),
         (SurveyType.UKHSA_ONS, "en", UKHSAONSSocialSurveyConfig),
+        (SurveyType.ONS_NHS, "en", ONSNHSSocialSurveyConfig),
         (None, None, BusinessSurveyConfig),
     ],
 )
