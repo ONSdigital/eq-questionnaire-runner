@@ -434,13 +434,15 @@ class SummaryAction:
         answer: SelectFieldBase._Option,
         item_title: str,
         edit_link_text: str,
-        item_name: str = "",
+        item_name: str | None = None,
     ) -> None:
+        """
+        On post submission summary the change link text is not supposed to be created as there are no change links on the page,
+        we still create SummaryAction class instance even if it's not used (the code is shared and executed by all summaries).
+        Instead of passing an extra argument we check edit_link_text variable contents to find out if we are on post submission or other summary.
+        Also, depending on (list) item_name contents different text is created for list item related answer change link or normal answer change link.
+        """
         self.text = edit_link_text
-        # On post submission summary the change link text is not supposed to be created as there are no change links on the page,
-        # we still create SummaryAction class instance even if it's not used (the code is shared and executed by all summaries).
-        # Instead of passing an extra argument we check edit_link_text variable contents to find out if we are on post submission or other summary.
-        # Also, depending on (list) item_name contents different text is created for list item related answer change link or normal answer change link.
         self.visuallyHiddenText = ""
         if item_name and edit_link_text:
             self.visuallyHiddenText = flask_babel.lazy_gettext(
@@ -481,7 +483,7 @@ class SummaryRowItem:
         edit_link_text: str,
         summary_type: str,
         use_answer_label: bool = False,
-        item_name: str = "",
+        item_name: str | None = None,
     ) -> None:
         answer_type = answer.get("type", "calculated")
         if (
@@ -566,7 +568,7 @@ class SummaryRow:
         no_answer_provided: str,
         edit_link_text: str,
         use_answer_label: bool = False,
-        item_name: str = "",
+        item_name: str | None = None,
     ) -> None:
         self.rowTitle = strip_tags(question["title"])
         self.id = question["id"]
@@ -669,7 +671,7 @@ def map_list_collector_config(
     rows: list[dict[str, list] | SummaryRow] = []
 
     for index, list_item in enumerate(list_items, start=1):
-        item_name = str(list_item.get("item_title", ""))
+        item_name = str(list_item.get("item_title"))
 
         actions = []
         edit_link_hidden_text = None
