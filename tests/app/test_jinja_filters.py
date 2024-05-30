@@ -744,7 +744,7 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                 {
                     "actions": [
                         {
-                            "visuallyHiddenText": "edit_link_aria_label Registration number",
+                            "visuallyHiddenText": "Change answer for Name of UK company or branch: Registration number",
                             "attributes": {
                                 "data-ga": "click",
                                 "data-ga-action": "Edit",
@@ -766,7 +766,7 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                 {
                     "actions": [
                         {
-                            "visuallyHiddenText": "edit_link_aria_label Is this UK "
+                            "visuallyHiddenText": "Change answer for Name of UK company or branch: Is this UK "
                             "company or branch an authorised "
                             "insurer?",
                             "attributes": {
@@ -903,7 +903,6 @@ def test_calculated_summary_config():
             answers_are_editable=True,
             no_answer_provided="No answer Provided",
             edit_link_text="Change",
-            edit_link_aria_label="Change your answer for",
         ),
         SummaryRow(
             question={
@@ -926,7 +925,6 @@ def test_calculated_summary_config():
             answers_are_editable=True,
             no_answer_provided="No answer Provided",
             edit_link_text="Change",
-            edit_link_aria_label="Change your answer for",
         ),
         SummaryRow(
             question={
@@ -938,7 +936,6 @@ def test_calculated_summary_config():
             answers_are_editable=False,
             no_answer_provided=None,
             edit_link_text=None,
-            edit_link_aria_label=None,
         ),
     ]
 
@@ -1015,13 +1012,13 @@ def test_summary_item_config_with_list_collector():
                 {
                     "actions": [
                         {
-                            "visuallyHiddenText": "Change your answer for:",
+                            "visuallyHiddenText": "Change details for Company A",
                             "attributes": {"data-qa": "list-item-change-1-link"},
                             "text": "Change",
                             "url": "change_link_url",
                         },
                         {
-                            "visuallyHiddenText": "Remove Company A",
+                            "visuallyHiddenText": "Remove details for Company A",
                             "attributes": {"data-qa": "list-item-remove-1-link"},
                             "text": "Remove",
                             "url": "remove_link_url",
@@ -1039,8 +1036,7 @@ def test_summary_item_config_with_list_collector():
                 {
                     "actions": [
                         {
-                            "visuallyHiddenText": "Change your answer for: "
-                            "Registration number",
+                            "visuallyHiddenText": "Change answer for Company A: Registration number",
                             "attributes": {
                                 "data-ga": "click",
                                 "data-ga-action": "Edit",
@@ -1062,7 +1058,7 @@ def test_summary_item_config_with_list_collector():
                 {
                     "actions": [
                         {
-                            "visuallyHiddenText": "Change your answer for: Is this UK "
+                            "visuallyHiddenText": "Change answer for Company A: Is this UK "
                             "company or branch an authorised "
                             "insurer?",
                             "attributes": {
@@ -1157,10 +1153,10 @@ def test_summary_item_config_with_list_collector():
         summary_type="SectionSummary",
         answers_are_editable=True,
         no_answer_provided="No answer Provided",
-        remove_link_aria_label="Remove Company A",
+        remove_link_aria_label="Remove details for {item_name}",
         remove_link_text="Remove",
         edit_link_text="Change",
-        edit_link_aria_label="Change your answer for:",
+        edit_link_aria_label="Change details for {item_name}",
         calculated_question={},
     )
 
@@ -1175,13 +1171,13 @@ def test_summary_item_config_with_list_collector_and_one_related_answer():
                 {
                     "actions": [
                         {
-                            "visuallyHiddenText": "Change your answer for:",
+                            "visuallyHiddenText": "Change details for Company A",
                             "attributes": {"data-qa": "list-item-change-1-link"},
                             "text": "Change",
                             "url": "change_link_url",
                         },
                         {
-                            "visuallyHiddenText": "Remove Company A",
+                            "visuallyHiddenText": "Remove details for Company A",
                             "attributes": {"data-qa": "list-item-remove-1-link"},
                             "text": "Remove",
                             "url": "remove_link_url",
@@ -1199,7 +1195,7 @@ def test_summary_item_config_with_list_collector_and_one_related_answer():
                 {
                     "actions": [
                         {
-                            "visuallyHiddenText": "Change your answer for: "
+                            "visuallyHiddenText": "Change answer for Company A: "
                             "Registration number",
                             "attributes": {
                                 "data-ga": "click",
@@ -1279,10 +1275,10 @@ def test_summary_item_config_with_list_collector_and_one_related_answer():
         summary_type="SectionSummary",
         answers_are_editable=True,
         no_answer_provided="No answer Provided",
-        remove_link_aria_label="Remove Company A",
+        remove_link_aria_label="Remove details for {item_name}",
         remove_link_text="Remove",
         edit_link_text="Change",
-        edit_link_aria_label="Change your answer for:",
+        edit_link_aria_label="Change details for {item_name}",
         calculated_question={},
     )
 
