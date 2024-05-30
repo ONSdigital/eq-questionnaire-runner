@@ -434,10 +434,18 @@ class SummaryAction:
         answer: SelectFieldBase._Option,
         item_title: str,
         edit_link_text: str,
-        edit_link_aria_label: str,
+        item_name: str | None = None,
     ) -> None:
         self.text = edit_link_text
-        self.visuallyHiddenText = edit_link_aria_label + " " + item_title
+        if item_name:
+            self.visuallyHiddenText = flask_babel.lazy_gettext(
+                "Change answer for {item_name}: {question_title_or_answer_label}"
+            ).format(item_name=item_name, question_title_or_answer_label=item_title)
+        else:
+            self.visuallyHiddenText = flask_babel.lazy_gettext(
+                "Change your answer for: {question_title_or_answer_label}"
+            ).format(question_title_or_answer_label=item_title)
+
         self.url = answer["link"]
 
         self.attributes = {
@@ -466,9 +474,9 @@ class SummaryRowItem:
         answers_are_editable: bool,
         no_answer_provided: str,
         edit_link_text: str,
-        edit_link_aria_label: str,
         summary_type: str,
         use_answer_label: bool = False,
+        item_name: str | None = None,
     ) -> None:
         answer_type = answer.get("type", "calculated")
         if (
@@ -540,9 +548,7 @@ class SummaryRowItem:
 
         if answers_are_editable:
             self.actions = [
-                SummaryAction(
-                    answer, self.rowTitle, edit_link_text, edit_link_aria_label
-                )
+                SummaryAction(answer, self.rowTitle, edit_link_text, item_name)
             ]
 
 
@@ -554,8 +560,8 @@ class SummaryRow:
         answers_are_editable: bool,
         no_answer_provided: str,
         edit_link_text: str,
-        edit_link_aria_label: str,
         use_answer_label: bool = False,
+        item_name: str | None = None,
     ) -> None:
         self.rowTitle = strip_tags(question["title"])
         self.id = question["id"]
@@ -573,9 +579,9 @@ class SummaryRow:
                     answers_are_editable,
                     no_answer_provided,
                     edit_link_text,
-                    edit_link_aria_label,
                     summary_type,
                     use_answer_label,
+                    item_name,
                 )
             )
 
@@ -603,7 +609,6 @@ def map_summary_item_config(
                     answers_are_editable,
                     no_answer_provided,
                     edit_link_text,
-                    edit_link_aria_label,
                 )
             )
         elif block.get("calculated_summary"):
@@ -614,7 +619,6 @@ def map_summary_item_config(
                     answers_are_editable,
                     no_answer_provided,
                     edit_link_text,
-                    edit_link_aria_label,
                 )
             )
         else:
@@ -628,12 +632,13 @@ def map_summary_item_config(
                 related_answers=block.get("related_answers"),
                 item_label=block.get("item_label"),
                 item_anchor=block.get("item_anchor"),
+                answers_are_editable=answers_are_editable,
             )
 
             rows.extend(list_collector_rows)
 
     if is_summary_with_calculation(summary_type):
-        rows.append(SummaryRow(calculated_question, summary_type, False, "", "", ""))
+        rows.append(SummaryRow(calculated_question, summary_type, False, "", ""))
 
     return rows
 
@@ -656,11 +661,12 @@ def map_list_collector_config(
     related_answers: dict | None = None,
     item_label: str | None = None,
     item_anchor: str | None = None,
+    answers_are_editable: bool = True,
 ) -> list[dict[str, list] | SummaryRow]:
     rows: list[dict[str, list] | SummaryRow] = []
 
     for index, list_item in enumerate(list_items, start=1):
-        item_name = list_item.get("item_title")
+        item_name = str(list_item.get("item_title"))
 
         actions = []
         edit_link_hidden_text = None
@@ -731,11 +737,11 @@ def map_list_collector_config(
                 summary_row = SummaryRow(
                     block["question"],
                     summary_type="SectionSummary",
-                    answers_are_editable=True,
+                    answers_are_editable=answers_are_editable,
                     no_answer_provided=flask_babel.lazy_gettext("No answer provided"),
                     edit_link_text=edit_link_text,
-                    edit_link_aria_label=edit_link_aria_label,
                     use_answer_label=True,
+                    item_name=item_name,
                 )
                 row_items.extend(summary_row.rowItems)
 
