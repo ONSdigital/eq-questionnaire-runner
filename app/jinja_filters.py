@@ -436,19 +436,12 @@ class SummaryAction:
         edit_link_text: str,
         item_name: str | None = None,
     ) -> None:
-        """
-        On post submission summary the change link text is not supposed to be created as there are no change links on the page,
-        we still create SummaryAction class instance even if it's not used (the code is shared and executed by all summaries).
-        Instead of passing an extra argument we check edit_link_text variable contents to find out if we are on post submission or other summary.
-        Also, depending on (list) item_name contents different text is created for list item related answer change link or normal answer change link.
-        """
         self.text = edit_link_text
-        self.visuallyHiddenText = ""
-        if item_name and edit_link_text:
+        if item_name:
             self.visuallyHiddenText = flask_babel.lazy_gettext(
                 "Change answer for {item_name}: {question_title_or_answer_label}"
             ).format(item_name=item_name, question_title_or_answer_label=item_title)
-        elif edit_link_text:
+        else:
             self.visuallyHiddenText = flask_babel.lazy_gettext(
                 "Change your answer for: {question_title_or_answer_label}"
             ).format(question_title_or_answer_label=item_title)
@@ -639,6 +632,7 @@ def map_summary_item_config(
                 related_answers=block.get("related_answers"),
                 item_label=block.get("item_label"),
                 item_anchor=block.get("item_anchor"),
+                answers_are_editable=answers_are_editable,
             )
 
             rows.extend(list_collector_rows)
@@ -667,6 +661,7 @@ def map_list_collector_config(
     related_answers: dict | None = None,
     item_label: str | None = None,
     item_anchor: str | None = None,
+    answers_are_editable: bool = True,
 ) -> list[dict[str, list] | SummaryRow]:
     rows: list[dict[str, list] | SummaryRow] = []
 
@@ -742,7 +737,7 @@ def map_list_collector_config(
                 summary_row = SummaryRow(
                     block["question"],
                     summary_type="SectionSummary",
-                    answers_are_editable=True,
+                    answers_are_editable=answers_are_editable,
                     no_answer_provided=flask_babel.lazy_gettext("No answer provided"),
                     edit_link_text=edit_link_text,
                     use_answer_label=True,
