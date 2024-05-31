@@ -8,11 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-<<<<<<< update-dev-dependencies
-"POT-Creation-Date: 2024-05-31 12:27+0100\n"
-=======
-"POT-Creation-Date: 2024-05-21 12:29+0100\n"
->>>>>>> main
+"POT-Creation-Date: 2024-05-31 12:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,19 +41,15 @@ msgstr ""
 msgid "%(from_date)s to %(to_date)s"
 msgstr ""
 
-<<<<<<< update-dev-dependencies
-#: app/jinja_filters.py:735
-=======
 #: app/jinja_filters.py:441
 msgid "Change answer for {item_name}: {question_title_or_answer_label}"
 msgstr ""
 
-#: app/jinja_filters.py:443
+#: app/jinja_filters.py:445
 msgid "Change your answer for: {question_title_or_answer_label}"
 msgstr ""
 
-#: app/jinja_filters.py:734
->>>>>>> main
+#: app/jinja_filters.py:741
 #: templates/partials/summary/collapsible-summary.html:27
 #: templates/partials/summary/summary.html:24
 msgid "No answer provided"
