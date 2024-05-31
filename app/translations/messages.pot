@@ -8,7 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+<<<<<<< update-dev-dependencies
 "POT-Creation-Date: 2024-05-31 12:27+0100\n"
+=======
+"POT-Creation-Date: 2024-05-21 12:29+0100\n"
+>>>>>>> main
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,7 +45,19 @@ msgstr ""
 msgid "%(from_date)s to %(to_date)s"
 msgstr ""
 
+<<<<<<< update-dev-dependencies
 #: app/jinja_filters.py:735
+=======
+#: app/jinja_filters.py:441
+msgid "Change answer for {item_name}: {question_title_or_answer_label}"
+msgstr ""
+
+#: app/jinja_filters.py:443
+msgid "Change your answer for: {question_title_or_answer_label}"
+msgstr ""
+
+#: app/jinja_filters.py:734
+>>>>>>> main
 #: templates/partials/summary/collapsible-summary.html:27
 #: templates/partials/summary/summary.html:24
 msgid "No answer provided"
@@ -1509,11 +1525,8 @@ msgid "Change"
 msgstr ""
 
 #: templates/partials/summary/collapsible-summary.html:29
-#: templates/partials/summary/summary.html:28
-msgid "Change your answer for:"
-msgstr ""
-
 #: templates/partials/summary/list-summary.html:9
+#: templates/partials/summary/summary.html:28
 msgid "Change details for {item_name}"
 msgstr ""
 
@@ -1527,6 +1540,6 @@ msgid "Remove {item_name}"
 msgstr ""
 
 #: templates/partials/summary/summary.html:26
-msgid "Remove your answer for:"
+msgid "Remove details for {item_name}"
 msgstr ""
 
