@@ -79,9 +79,9 @@ class TestQuestionnaireQuestionGuidance(IntegrationTestCase):
         self.assertInBody(">Item Other 1<")
         self.assertInBody(">Item Other 4<")
 
-        self.assertInBody("Guidance <b>include</b> description text")
-        self.assertInBody("Guidance <b>exclude</b> description text")
-        self.assertInBody("Guidance <b>other</b> description text")
+        self.assertInBody("Guidance <strong>include</strong> description text")
+        self.assertInBody("Guidance <strong>exclude</strong> description text")
+        self.assertInBody("Guidance <strong>other</strong> description text")
 
         # When we continue we go to the summary page
         self.post()

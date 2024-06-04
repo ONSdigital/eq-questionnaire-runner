@@ -69,7 +69,7 @@ def test_build_preview_context(
                                 }
                             ],
                             "descriptions": [
-                                "<p>Your return should relate to the calendar year 2021.</p>"
+                                "Your return should relate to the calendar year 2021."
                             ],
                             "guidance": {
                                 "contents": [
@@ -90,30 +90,30 @@ def test_build_preview_context(
                                 {"label": "Period to"},
                             ],
                             "descriptions": [
-                                "<p>If figures are not available for the calendar year 2021, your return should "
-                                "relate to a 12 month business year that ends between 6 April 2021 and 5 April 2022.</p>"
+                                "If figures are not available for the calendar year 2021, your return should "
+                                "relate to a 12 month business year that ends between 6 April 2021 and 5 April 2022."
                             ],
                             "guidance": {
                                 "contents": [
                                     {
-                                        "description": "<p><strong>Only traded for a part of the year?</strong></p>"
+                                        "description": "<strong>Only traded for a part of the year?</strong>"
                                     },
                                     {
-                                        "description": "<p>Please provide figures for the period in which you were trading.</p>"
+                                        "description": "Please provide figures for the period in which you were trading."
                                     },
                                     {
-                                        "description": "<p><strong>Only commenced trading during 2021?</strong></p>"
+                                        "description": "<strong>Only commenced trading during 2021?</strong>"
                                     },
                                     {
-                                        "description": "<p>Your return should cover the period from the commencement of "
-                                        "your business until 31 December 2021 or, alternatively, any date up to 5 April 2022.</p>"
+                                        "description": "Your return should cover the period from the commencement of "
+                                        "your business until 31 December 2021 or, alternatively, any date up to 5 April 2022."
                                     },
                                     {
-                                        "description": "<p><strong>Ceased trading during 2021?</strong></p>"
+                                        "description": "<strong>Ceased trading during 2021?</strong>"
                                     },
                                     {
-                                        "description": "<p>Your return should cover the period 1 January 2021 to the date "
-                                        "you ceased to trade or, alternatively, from the beginning of your last business year up to the cessation date.</p>"
+                                        "description": "Your return should cover the period 1 January 2021 to the date "
+                                        "you ceased to trade or, alternatively, from the beginning of your last business year up to the cessation date."
                                     },
                                 ]
                             },
@@ -133,7 +133,7 @@ def test_build_preview_context(
                                 }
                             ],
                             "descriptions": [
-                                "<p>Your return should relate to the calendar year 2021.</p>"
+                                "Your return should relate to the calendar year 2021."
                             ],
                             "guidance": None,
                             "id": "report-radio-second",
@@ -244,7 +244,7 @@ def test_build_preview_context(
                                 }
                             ],
                             "descriptions": [
-                                "<p>Answer for ESSENTIAL ENTERPRISE LTD.</p>"
+                                "Answer for ESSENTIAL ENTERPRISE LTD."
                             ],
                             "guidance": None,
                             "id": "further-details-text-area",

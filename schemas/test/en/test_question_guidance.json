@@ -250,7 +250,7 @@
                                             "title": "Include"
                                         },
                                         {
-                                            "description": "<p>Guidance <b>include</b> description text</p>"
+                                            "description": "Guidance <strong>include</strong> description text"
                                         },
                                         {
                                             "list": ["Item Include 1", "Item Include 2", "Item Include 3", "Item Include 4"]
@@ -259,7 +259,7 @@
                                             "title": "Exclude"
                                         },
                                         {
-                                            "description": "<p>Guidance <b>exclude</b> description text</p>"
+                                            "description": "Guidance <strong>exclude</strong> description text"
                                         },
                                         {
                                             "list": ["Item Exclude 1", "Item Exclude 2", "Item Exclude 3", "Item Exclude 4"]
@@ -268,7 +268,7 @@
                                             "title": "Other"
                                         },
                                         {
-                                            "description": "<p>Guidance <b>other</b> description text</p>"
+                                            "description": "Guidance <strong>other</strong> description text"
                                         },
                                         {
                                             "list": ["Item Other 1", "Item Other 2", "Item Other 3", "Item Other 4"]
