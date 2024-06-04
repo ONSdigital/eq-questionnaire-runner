@@ -243,9 +243,7 @@ def test_build_preview_context(
                                     "max_length": 2000,
                                 }
                             ],
-                            "descriptions": [
-                                "Answer for ESSENTIAL ENTERPRISE LTD."
-                            ],
+                            "descriptions": ["Answer for ESSENTIAL ENTERPRISE LTD."],
                             "guidance": None,
                             "id": "further-details-text-area",
                             "title": "Please provide any further details",
