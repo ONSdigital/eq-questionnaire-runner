@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-21 12:29+0100\n"
+"POT-Creation-Date: 2024-06-03 08:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,11 +45,11 @@ msgstr ""
 msgid "Change answer for {item_name}: {question_title_or_answer_label}"
 msgstr ""
 
-#: app/jinja_filters.py:443
+#: app/jinja_filters.py:445
 msgid "Change your answer for: {question_title_or_answer_label}"
 msgstr ""
 
-#: app/jinja_filters.py:734
+#: app/jinja_filters.py:741
 #: templates/partials/summary/collapsible-summary.html:27
 #: templates/partials/summary/summary.html:24
 msgid "No answer provided"
@@ -221,19 +221,19 @@ msgstr[1] ""
 msgid "Not a valid choice."
 msgstr ""
 
-#: app/helpers/template_helpers.py:48
+#: app/helpers/template_helpers.py:49
 msgid "ONS Surveys"
 msgstr ""
 
-#: app/helpers/template_helpers.py:110
+#: app/helpers/template_helpers.py:111
 msgid "Menu"
 msgstr ""
 
-#: app/helpers/template_helpers.py:141
+#: app/helpers/template_helpers.py:142
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:166
+#: app/helpers/template_helpers.py:167
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
