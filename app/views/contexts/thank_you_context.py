@@ -6,6 +6,7 @@ from flask_babel import lazy_gettext
 
 from app.data_models.metadata_proxy import MetadataProxy
 from app.forms.email_form import EmailForm
+from app.forms.questionnaire_form import QuestionnaireForm
 from app.globals import (
     get_view_submitted_response_expiration_time,
     has_view_submitted_response_expired,
@@ -13,9 +14,11 @@ from app.globals import (
 from app.questionnaire import QuestionnaireSchema
 from app.survey_config.survey_type import SurveyType
 from app.views.contexts.email_form_context import build_email_form_context
+from app.views.contexts.feedback_form_context import build_feedback_context
 from app.views.contexts.submission_metadata_context import (
     build_submission_metadata_context,
 )
+from app.views.handlers.feedback import Feedback
 
 
 def build_thank_you_context(
@@ -25,6 +28,7 @@ def build_thank_you_context(
     survey_type: SurveyType,
     guidance_content: Optional[dict] = None,
     confirmation_email_form: Optional[EmailForm] = None,
+    feedback: Optional[Feedback] = None,
 ) -> dict[str, Any]:
     if (ru_name := metadata["ru_name"]) and (trad_as := metadata["trad_as"]):
         submission_text = lazy_gettext(
@@ -58,6 +62,9 @@ def build_thank_you_context(
         context["confirmation_email_form"] = build_email_form_context(
             confirmation_email_form
         )
+
+    if feedback:
+        context["feedback_form"] = feedback.get_context()
     return context
 
 

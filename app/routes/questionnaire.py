@@ -393,39 +393,44 @@ def get_thank_you(
     session_store: SessionStore,
     questionnaire_store: QuestionnaireStore,
 ) -> Response | str:
-    # Type ignore: Endpoint is only called upon submission
-    thank_you = ThankYou(schema, session_store, questionnaire_store.submitted_at)  # type: ignore
+    thank_you = ThankYou(schema, session_store, questionnaire_store)
 
     if request.method == "POST":
-        confirmation_email = thank_you.confirmation_email
-        if not confirmation_email:
+        if confirmation_email := thank_you.confirmation_email:
+            if confirmation_email.form.validate():
+                return redirect(
+                    url_for(
+                        ".confirm_confirmation_email",
+                        email=confirmation_email.get_url_safe_serialized_email(),
+                    )
+                )
+            logger.info(
+                "email validation error",
+                error_message=str(confirmation_email.form.errors["email"][0]),
+            )
+        elif feedback := thank_you.feedback:
+            if feedback.form.validate():
+                feedback.handle_post()
+                return redirect(url_for(".get_user_research"))
+        else:
             return redirect(url_for(".get_thank_you"))
 
-        if confirmation_email.form.validate():
-            return redirect(
-                url_for(
-                    ".confirm_confirmation_email",
-                    email=confirmation_email.get_url_safe_serialized_email(),
-                )
-            )
-
-        logger.info(
-            "email validation error",
-            error_message=str(confirmation_email.form.errors["email"][0]),
-        )
-
-    # Type ignore:  Session data exists at point of submission
-    show_feedback_call_to_action = Feedback.is_enabled(
-        schema
-    ) and not Feedback.is_limit_reached(
-        session_store.session_data  # type: ignore
-    )
+    # # Type ignore:  Session data exists at point of submission
+    # show_feedback_call_to_action = Feedback.is_enabled(
+    #     schema
+    # ) and not Feedback.is_limit_reached(
+    #     session_store.session_data  # type: ignore
+    # )
+    #
+    # if request.method == "POST" and feedback.form.validate():
+    #     feedback.handle_post()
+    #     return redirect(url_for(".get_feedback_sent"))
 
     return render_template(
         template=thank_you.template,
         content={
             **thank_you.get_context(),
-            "show_feedback_call_to_action": show_feedback_call_to_action,
+            # "show_feedback_call_to_action": show_feedback_call_to_action,
         },
         survey_id=schema.json["survey_id"],
         page_title=thank_you.get_page_title(),
@@ -595,6 +600,8 @@ def get_confirmation_email_sent(
     show_send_another_email_guidance = not ConfirmationEmail.is_limit_reached(
         session_store.session_data  # type: ignore
     )
+
+    # TODO: Remove this?
     show_feedback_call_to_action = Feedback.is_enabled(
         schema
     ) and not Feedback.is_limit_reached(
@@ -657,6 +664,44 @@ def get_feedback_sent(session_store: SessionStore) -> str:
             "sign_out_url": url_for("session.get_sign_out"),
         },
     )
+
+
+# @post_submission_blueprint.route("user-research/send", methods=["GET", "POST"])
+# @with_questionnaire_store
+# @with_session_store
+# @with_schema
+# def send_user_research(
+#     schema: QuestionnaireSchema,
+#     session_store: SessionStore,
+#     questionnaire_store: QuestionnaireStore,
+# ) -> Response | str:
+#     try:
+#         feedback = Feedback(
+#             questionnaire_store, schema, session_store, form_data=request.form
+#         )
+#     except FeedbackNotEnabled as exc:
+#         raise NotFound from exc
+#
+#     if request.method == "POST" and feedback.form.validate():
+#         feedback.handle_post()
+#         return redirect(url_for(".get_feedback_sent"))
+#
+#     return render_template(
+#         template="feedback",
+#         content=feedback.get_context(),
+#         page_title=feedback.get_page_title(),
+#     )
+
+
+# # Take parts out of this function and move to thank-you
+# # We want to use this function to handle the user research bits
+#
+# # Do we want a try catch to handle if this page has been completed once?
+# # Type ignore: Session data exists for routes decorated with @login_required, which this is
+# if not session_store.session_data.feedback_count:  # type: ignore
+#     raise NotFound
+
+
 
 
 def _render_page(

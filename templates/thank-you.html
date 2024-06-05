@@ -103,7 +103,9 @@
             {% include "partials/confirmation-email-form.html" %}
         {% endwith %}
     {% endif %}
-    {% if content.show_feedback_call_to_action %}
+    {% if content.feedback_form %}
+      {% with form=content.feedback_form %}
         {% include "partials/feedback-call-to-action.html" %}
+      {% endwith %}
     {% endif %}
 {% endblock main %}

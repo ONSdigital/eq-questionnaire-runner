@@ -1,13 +1,141 @@
-{% from "components/feedback/_macro.njk" import onsFeedback %}
+{% from "components/radios/_macro.njk" import onsRadios %}
+{% from "components/textarea/_macro.njk" import onsTextarea %}
+{% from "components/button/_macro.njk" import onsButton %}
+
+{% set question = form.question %}
+
+{#{% set form = content.form %}#}
+{#{% if form.mapped_errors %}#}
+  {#  {% set error_title = _("There is a problem with your feedback") %}#}
+{#  {% set error_title = _("Select an answer for how easy or difficult it was to use this service") %}#}
+{#  {% include "partials/error-panel.html" %}#}
+{#{% endif %}#}
 
 {# djlint:off #}
-{{
-    onsFeedback({
-        "id": "feedback",
-        "heading": _("What do you think about this service?"),
-        "content": _("Your comments will help us make improvements"),
-        "url": url_for('post_submission.send_feedback'),
-        "linkText": _("Give feedback")
-    })
-}}
+<div class="ons-feedback">
+  <h2 data-qa="feedback-title">{{ _("Give feedback about this service") }}</h2>
+
+  {%- for answer in question.answers -%}
+    {% include "partials/answer.html" %}
+  {%- endfor -%}
+  {# djlint:off #}
+  {{ onsButton({
+            "text": _("Send feedback"),
+            "variants": 'timer',
+            "classes": "ons-u-mt-xl",
+            "attributes": {
+                "data-qa": "btn-submit",
+                "data-ga-category": "Button",
+                "data-ga-action": "Submit",
+                "data-ga-label": "Send",
+                "data-ga-page": "Feedback",
+                "data-ga": "click",
+            }
+        }) }}
+  {# djlint:on #}
+
+
+  {##}
+  {#        {{#}
+  {#            onsRadios({#}
+  {#                "legend": "Select what your feedback is about",#}
+  {#                "name": "feedback-type",#}
+  {#                "radios": [#}
+  {#                    {#}
+  {#                        "id": "questions-example-feedback-form",#}
+  {#                        "label": {#}
+  {#                            "text": "The questions",#}
+  {#                            "description": "For example, questions not clear, answer options not relevant"#}
+  {#                        },#}
+  {#                        "value": "questions",#}
+  {#                        "other": {#}
+  {#                            "otherType": "select",#}
+  {#                            "id": "other-select-feedback-form",#}
+  {#                            "classes": "ons-input--block",#}
+  {#                            "name": "topic",#}
+  {#                            "label": {#}
+  {#                            "text": "Question topic"#}
+  {#                            },#}
+  {#                            "options": [#}
+  {#                                {#}
+  {#                                    "value": "",#}
+  {#                                    "text": "Select an option",#}
+  {#                                    "disabled": true,#}
+  {#                                    "selected": true#}
+  {#                                },#}
+  {#                                {#}
+  {#                                    "value": "general",#}
+  {#                                    "text": "General"#}
+  {#                                },#}
+  {#                                {#}
+  {#                                    "value": "people-who-live-here",#}
+  {#                                    "text": "People who live here"#}
+  {#                                },#}
+  {#                                {#}
+  {#                                    "value": "visitors",#}
+  {#                                    "text": "Visitors"#}
+  {#                                },#}
+  {#                                {#}
+  {#                                    "value": "household-accommodation",#}
+  {#                                    "text": "Household and accommodation"#}
+  {#                                },#}
+  {#                                {#}
+  {#                                    "value": "personal-details",#}
+  {#                                    "text": "Personal details"#}
+  {#                                },#}
+  {#                                {#}
+  {#                                    "value": "health",#}
+  {#                                    "text": "Health"#}
+  {#                                },#}
+  {#                                {#}
+  {#                                    "value": "qualifications",#}
+  {#                                    "text": "Qualifications"#}
+  {#                                },#}
+  {#                                {#}
+  {#                                    "value": "employment",#}
+  {#                                    "text": "Employment"#}
+  {#                                }#}
+  {#                            ]#}
+  {#                        }#}
+  {#                    },#}
+  {#                    {#}
+  {#                        "id": "design-example-feedback-form",#}
+  {#                        "label": {#}
+  {#                            "text": "Page design and structure"#}
+  {#                        },#}
+  {#                        "value": "design"#}
+  {#                    },#}
+  {#                    {#}
+  {#                        "id": "general-example-feedback-form",#}
+  {#                        "label": {#}
+  {#                            "text": "General feedback about this service"#}
+  {#                        },#}
+  {#                        "value": "general"#}
+  {#                    }#}
+  {#                ]#}
+  {#            })#}
+  {#        }}#}
+  {#        {{#}
+  {#            onsTextarea({#}
+  {#                "id": "feedback-textarea-example-feedback-form",#}
+  {#                "name": "feedback-text",#}
+{#                  "width": "30", - TODO: REMOVE THIS WIDTH#}
+  {#                "label": {#}
+  {#                    "text": "Enter your feedback",#}
+  {#                    "description": "Do not include confidential information, such as your contact details"#}
+  {#                },#}
+  {#                "charCheckLimit": {#}
+  {#                    "limit": 2000,#}
+  {#                    "charCountSingular": "You have {x} character remaining",#}
+  {#                    "charCountPlural": "You have {x} characters remaining"#}
+  {#                }#}
+  {#            })#}
+  {#        }}#}
+  {#        {{#}
+  {#            onsButton({#}
+  {#                "text": "Send feedback",#}
+  {#                "classes": "ons-u-mt-m"#}
+  {#            })#}
+  {#        }}#}
+</div>
 {# djlint:on #}

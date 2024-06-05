@@ -12,8 +12,8 @@ def build_feedback_context(
 ) -> dict[str, Union[str, bool, dict]]:
     block = {"question": question_schema}
     context = build_question_context(block, form)
-    context["hide_sign_out_button"] = False
+    context["hide_sign_out_button"] = False # TODO: Needed now?
     context["question"] = question_schema
-    context["sign_out_url"] = url_for("session.get_sign_out")
+    context["sign_out_url"] = url_for("session.get_sign_out") # TODO: Needed now?
 
     return context

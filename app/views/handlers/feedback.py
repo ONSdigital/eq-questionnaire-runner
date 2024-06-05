@@ -36,14 +36,13 @@ class FeedbackUploadFailed(Exception):
 
 
 class Feedback:
-    PAGE_TITLE: str = lazy_gettext("Feedback")
-
     def __init__(
         self,
-        questionnaire_store: QuestionnaireStore,
-        schema: QuestionnaireSchema,
+        *,
         session_store: SessionStore,
-        form_data: Optional[MultiDict[str, Any]],
+        schema: QuestionnaireSchema,
+        questionnaire_store: QuestionnaireStore,
+        page_title: str | None = None,
     ):
         if not self.is_enabled(schema):
             raise FeedbackNotEnabled
@@ -53,7 +52,8 @@ class Feedback:
         self._questionnaire_store = questionnaire_store
         self._schema = schema
         self._session_store = session_store
-        self._form_data = form_data
+        self._page_title = page_title
+
 
     @cached_property
     def form(self) -> QuestionnaireForm:
@@ -62,7 +62,6 @@ class Feedback:
             question_schema=self.question_schema,
             data_stores=self._questionnaire_store.data_stores,
             data=None,
-            form_data=self._form_data,
         )
 
     def get_context(self) -> Mapping[str, Union[str, bool, dict]]:
@@ -119,38 +118,41 @@ class Feedback:
         return {
             "type": "General",
             "id": "feedback",
-            "title": lazy_gettext("Give feedback about this service"),
+            "title": lazy_gettext("Give feedback about this service"), #TODO: Should this change? We need it as <h2> so might need to hardcode it instead?
             "answers": [
                 {
                     "type": "Radio",
                     "id": "feedback-type",
                     "mandatory": True,
-                    "label": lazy_gettext("Select what your feedback is about"),
+                    "label": lazy_gettext("How easy or difficult was it to use this service?"),
+
+                    # TODO: Make this an enum instead?
                     "options": [
                         {
-                            "label": lazy_gettext("The survey questions"),
-                            "value": lazy_gettext("The survey questions"),
-                            "description": lazy_gettext(
-                                "For example, questions not clear, answer options not relevant"
-                            ),
+                            "label": lazy_gettext("Very easy"),
+                            "value": lazy_gettext("Very easy"),
                         },
                         {
-                            "label": lazy_gettext("Page design and structure"),
-                            "value": lazy_gettext("Page design and structure"),
+                            "label": lazy_gettext("Easy"),
+                            "value": lazy_gettext("Easy"),
                         },
                         {
-                            "label": lazy_gettext(
-                                "General feedback about this service"
-                            ),
-                            "value": lazy_gettext(
-                                "General feedback about this service"
-                            ),
+                            "label": lazy_gettext("Neutral"),
+                            "value": lazy_gettext("Neutral"),
+                        },
+                        {
+                            "label": lazy_gettext("Difficult"),
+                            "value": lazy_gettext("Difficult"),
+                        },
+                        {
+                            "label": lazy_gettext("Very difficult"),
+                            "value": lazy_gettext("Very difficult"),
                         },
                     ],
                     "validation": {
                         "messages": {
                             "MANDATORY_RADIO": lazy_gettext(
-                                "Select what your feedback is about"
+                                "Select an answer for how easy or difficult it was to use this service"
                             )
                         }
                     },

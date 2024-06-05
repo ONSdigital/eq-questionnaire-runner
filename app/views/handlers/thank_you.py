@@ -4,6 +4,7 @@ from functools import cached_property
 from flask_babel import LazyString, gettext
 from flask_login import current_user
 
+from app.data_models import QuestionnaireStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.session_store import SessionStore
 from app.globals import get_metadata
@@ -15,6 +16,7 @@ from app.views.handlers.confirmation_email import (
     ConfirmationEmailLimitReached,
     ConfirmationEmailNotEnabled,
 )
+from app.views.handlers.feedback import Feedback, FeedbackNotEnabled, FeedbackLimitReached
 
 
 class ThankYou:
@@ -25,11 +27,11 @@ class ThankYou:
         self,
         schema: QuestionnaireSchema,
         session_store: SessionStore,
-        submitted_at: datetime,
+        questionnaire_store: QuestionnaireStore,
     ):
         self._session_store: SessionStore = session_store
         self._schema: QuestionnaireSchema = schema
-        self._submitted_at = submitted_at
+        self._questionnaire_store: QuestionnaireStore = questionnaire_store
 
         self.template = self.DEFAULT_THANK_YOU_TEMPLATE
 
@@ -40,6 +42,13 @@ class ThankYou:
         except (ConfirmationEmailNotEnabled, ConfirmationEmailLimitReached):
             return None
 
+    @cached_property
+    def feedback(self) -> Feedback | None:
+        try:
+            return Feedback(session_store=self._session_store, schema=self._schema, questionnaire_store=self._questionnaire_store, page_title=self.PAGE_TITLE)
+        except (FeedbackNotEnabled, FeedbackLimitReached):
+            return None
+
     def get_context(self) -> dict:
         metadata: MetadataProxy = get_metadata(current_user)  # type: ignore
 
@@ -47,14 +56,22 @@ class ThankYou:
             self.confirmation_email.form if self.confirmation_email else None
         )
 
+        # feedback_form = self.feedback.form if self.feedback else None
+        feedback = self.feedback or None
+
         guidance_content = self._schema.get_post_submission().get("guidance")
+
+        # Type ignore: thank-you context is only called upon submission
+        submitted_at = self._questionnaire_store.submitted_at
+
         return build_thank_you_context(
             self._schema,
             metadata,
-            self._submitted_at,
+            submitted_at,      # type: ignore
             get_survey_type(),
             guidance_content,
             confirmation_email_form,
+            feedback,
         )
 
     def get_page_title(self) -> str | LazyString:
