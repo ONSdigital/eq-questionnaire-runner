@@ -36,13 +36,13 @@ tests-no-zope = ["attrs[tests-mypy]", "cloudpickle", "hypothesis", "pympler", "p
 
 [[package]]
 name = "babel"
-version = "2.14.0"
+version = "2.15.0"
 description = "Internationalization utilities"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "Babel-2.14.0-py3-none-any.whl", hash = "sha256:efb1a25b7118e67ce3a259bed20545c29cb68be8ad2c784c83689981b7a57287"},
-    {file = "Babel-2.14.0.tar.gz", hash = "sha256:6919867db036398ba21eb5c7a0f6b28ab8cbc3ae7a73a44ebe34ae74a4e7d363"},
+    {file = "Babel-2.15.0-py3-none-any.whl", hash = "sha256:08706bdad8d0a3413266ab61bd6c34d0c28d6e1e7badf40a2cebe67644e2e1fb"},
+    {file = "babel-2.15.0.tar.gz", hash = "sha256:8daf0e265d05768bc6c7a314cf1321e9a123afc328cc635c18622a2f30a04413"},
 ]
 
 [package.extras]
@@ -126,17 +126,17 @@ files = [
 
 [[package]]
 name = "boto3"
-version = "1.34.119"
+version = "1.34.121"
 description = "The AWS SDK for Python"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "boto3-1.34.119-py3-none-any.whl", hash = "sha256:8f9c43c54b3dfaa36c4a0d7b42c417227a515bc7a2e163e62802780000a5a3e2"},
-    {file = "boto3-1.34.119.tar.gz", hash = "sha256:cea2365a25b2b83a97e77f24ac6f922ef62e20636b42f9f6ee9f97188f9c1c03"},
+    {file = "boto3-1.34.121-py3-none-any.whl", hash = "sha256:4e79e400d6d44b4eee5deda6ac0ecd08a3f5a30c45a0d30712795cdc4459fd79"},
+    {file = "boto3-1.34.121.tar.gz", hash = "sha256:ec89f3e0b0dc959c418df29e14d3748c0b05ab7acf7c0b90c839e9f340a659fa"},
 ]
 
 [package.dependencies]
-botocore = ">=1.34.119,<1.35.0"
+botocore = ">=1.34.121,<1.35.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.10.0,<0.11.0"
 
@@ -145,13 +145,13 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.34.119"
+version = "1.34.121"
 description = "Low-level, data-driven core of boto 3."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "botocore-1.34.119-py3-none-any.whl", hash = "sha256:4bdf7926a1290b2650d62899ceba65073dd2693e61c35f5cdeb3a286a0aaa27b"},
-    {file = "botocore-1.34.119.tar.gz", hash = "sha256:b253f15b24b87b070e176af48e8ef146516090429d30a7d8b136a4c079b28008"},
+    {file = "botocore-1.34.121-py3-none-any.whl", hash = "sha256:25b05c7646a9f240cde1c8f839552a43f27e71e15c42600275dea93e219f7dd9"},
+    {file = "botocore-1.34.121.tar.gz", hash = "sha256:1a8f94b917c47dfd84a0b531ab607dc53570efb0d073d8686600f2d2be985323"},
 ]
 
 [package.dependencies]
@@ -160,7 +160,7 @@ python-dateutil = ">=2.1,<3.0.0"
 urllib3 = {version = ">=1.25.4,<2.2.0 || >2.2.0,<3", markers = "python_version >= \"3.10\""}
 
 [package.extras]
-crt = ["awscrt (==0.20.9)"]
+crt = ["awscrt (==0.20.11)"]
 
 [[package]]
 name = "brotli"
@@ -1951,13 +1951,13 @@ files = [
 
 [[package]]
 name = "marshmallow"
-version = "3.21.2"
+version = "3.21.3"
 description = "A lightweight library for converting complex datatypes to and from native Python datatypes."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "marshmallow-3.21.2-py3-none-any.whl", hash = "sha256:70b54a6282f4704d12c0a41599682c5c5450e843b9ec406308653b47c59648a1"},
-    {file = "marshmallow-3.21.2.tar.gz", hash = "sha256:82408deadd8b33d56338d2182d455db632c6313aa2af61916672146bb32edc56"},
+    {file = "marshmallow-3.21.3-py3-none-any.whl", hash = "sha256:86ce7fb914aa865001a4b2092c4c2872d13bc347f3d42673272cabfdbad386f1"},
+    {file = "marshmallow-3.21.3.tar.gz", hash = "sha256:4f57c5e050a54d66361e826f94fba213eb10b67b2fdb02c3e0343ce207ba1662"},
 ]
 
 [package.dependencies]
@@ -2626,13 +2626,13 @@ files = [
 
 [[package]]
 name = "redis"
-version = "5.0.4"
+version = "5.0.5"
 description = "Python client for Redis database and key-value store"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "redis-5.0.4-py3-none-any.whl", hash = "sha256:7adc2835c7a9b5033b7ad8f8918d09b7344188228809c98df07af226d39dec91"},
-    {file = "redis-5.0.4.tar.gz", hash = "sha256:ec31f2ed9675cc54c21ba854cfe0462e6faf1d83c8ce5944709db8a4700b9c61"},
+    {file = "redis-5.0.5-py3-none-any.whl", hash = "sha256:30b47d4ebb6b7a0b9b40c1275a19b87bb6f46b3bed82a89012cf56dea4024ada"},
+    {file = "redis-5.0.5.tar.gz", hash = "sha256:3417688621acf6ee368dec4a04dd95881be24efd34c79f00d31f62bb528800ae"},
 ]
 
 [package.extras]
@@ -3600,4 +3600,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11.4"
-content-hash = "57fe7588586070f2228427286b9e93b3b2ff2e4321c5acb571af49dd719588ac"
+content-hash = "8ccd5be1a07c18648c7a3b159fdc93553bf81dd0495312466dca602e46e60636"
