@@ -37,6 +37,7 @@ updates:
           - "ordered-set"
           - "cachetools"
           - "gevent"
+          - "babel"
       development-dependencies:
         dependency-type: "development"
         patterns:
@@ -58,11 +59,13 @@ updates:
           - "black"
           - "djlint"
     ignore:
+      - dependency-name: "pylint*"
+        update-types: [ "version-update:semver-major" ]
+      - dependency-name: "babel"
+        update-types: [ "version-update:semver-major" ]
       - dependency-name: "pytest*"
         update-types: ["version-update:semver-minor"]
       - dependency-name: "flake8*"
-        update-types: ["version-update:semver-minor"]
-      - dependency-name: "pylint*"
         update-types: ["version-update:semver-minor"]
       - dependency-name: "types*"
         update-types: ["version-update:semver-minor"]
