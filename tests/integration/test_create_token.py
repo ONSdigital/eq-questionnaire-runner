@@ -150,6 +150,7 @@ class TestCreateToken(IntegrationTestCase, AppContextTestCase):
             )
 
     def test_additional_payload_added_in_token(self):
+        self.test_app.do_teardown_appcontext()
         token = self.token_generator.create_supplementary_data_token(
             "test_checkbox.json", flag_1=True
         )

@@ -9,7 +9,7 @@ def test_string_field(value_source_resolver, rule_evaluator):
         "id": "job-title-answer",
         "label": "Job title",
         "mandatory": False,
-        "guidance": "<p>Please enter your job title in the space provided.</p>",
+        "guidance": "Please enter your job title in the space provided.",
         "type": "TextField",
     }
     string_handler = StringHandler(
