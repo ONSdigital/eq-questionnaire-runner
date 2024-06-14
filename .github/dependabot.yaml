@@ -59,9 +59,9 @@ updates:
           - "black"
           - "djlint"
     ignore:
-      - dependency-name: "pylint*"
-        update-types: [ "version-update:semver-major" ]
       - dependency-name: "babel"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
+      - dependency-name: "pylint*"
         update-types: [ "version-update:semver-major" ]
       - dependency-name: "pytest*"
         update-types: ["version-update:semver-minor"]
