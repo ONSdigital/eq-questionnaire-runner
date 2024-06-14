@@ -91,7 +91,7 @@ pdfkit = "^1.0.0"
 ordered-set = "^4.1.0"
 cachetools = "^5.3.0.7"
 gevent = "^24.2.1"
-babel = "==2.14.0"
+babel = "==2.14.0"  # problem for translations found with v2.15.0 , see: https://github.com/ONSdigital/eq-questionnaire-runner/pull/1384
 
 [build-system]
 requires = ["poetry-core"]
