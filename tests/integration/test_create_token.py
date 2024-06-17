@@ -151,7 +151,9 @@ class TestCreateToken(IntegrationTestCase, AppContextTestCase):
 
     def test_additional_payload_added_in_token(self):
         token = self.token_generator.create_supplementary_data_token(
-            "test_address.json", flag_1=True, sds_dataset_id="54f1b432-9421-49e5-bd26-e63e18a30b69"
+            "test_address.json",
+            flag_1=True,
+            sds_dataset_id="54f1b432-9421-49e5-bd26-e63e18a30b69",
         )
         with self.test_app.app_context():
             decrypted_token = decrypt_token(token)
