@@ -423,7 +423,8 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
             "For the period 1 January 2000 to 1 April 2000 what was the expenditure on R&amp;D for Integration Testing?"
         )
         self.assertInBody(
-            "We have calculated your total in-house expenditure on R&amp;D for Integration Testing for the period 1 January 2000 to 1 April 2000 to be £20. Is this correct?"
+            "We have calculated your total in-house expenditure on R&amp;D for Integration Testing for the period 1 January 2000 to 1 April 2000 to be £20. "
+            "Is this correct?"
         )
 
         # Complete the rest of the survey
@@ -446,5 +447,6 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
             "For the period 1 April 2016 to 30 April 2016 what was the expenditure on R&amp;D for Integration Testing?"
         )
         self.assertInBody(
-            "We have calculated your total in-house expenditure on R&amp;D for Integration Testing for the period 1 April 2016 to 30 April 2016 to be £110. Is this correct?"
+            "We have calculated your total in-house expenditure on R&amp;D for Integration Testing for the period 1 April 2016 to 30 April 2016 to be £110. "
+            "Is this correct?"
         )
