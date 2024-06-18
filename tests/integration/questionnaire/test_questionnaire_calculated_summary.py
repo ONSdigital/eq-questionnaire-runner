@@ -390,7 +390,7 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
             "For the period 1 January 2000 to 1 April 2000 what was the expenditure on R&amp;D for Integration Testing?"
         )
 
-    def test_placeholder_rendering_in_calculated_summary_label_unhappy_path(self):
+    def test_placeholders_rendering_in_calculated_summary_unhappy_path(self):
         """
         Tests that a placeholder using the first_non_empty_item is rendered correctly on the calculated summary page
         using the answer values that are on the path. In this instance it is the unhappy path where the user has entered
@@ -422,6 +422,9 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         self.assertInBody(
             "For the period 1 January 2000 to 1 April 2000 what was the expenditure on R&amp;D for Integration Testing?"
         )
+        self.assertInBody(
+            "We have calculated your total in-house expenditure on R&amp;D for Integration Testing for the period 1 January 2000 to 1 April 2000 to be £20. Is this correct?"
+        )
 
         # Complete the rest of the survey
         self.post()
@@ -441,4 +444,7 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         self.assertInUrl("/questionnaire/calc-summary-1/")
         self.assertInBody(
             "For the period 1 April 2016 to 30 April 2016 what was the expenditure on R&amp;D for Integration Testing?"
+        )
+        self.assertInBody(
+            "We have calculated your total in-house expenditure on R&amp;D for Integration Testing for the period 1 April 2016 to 30 April 2016 to be £110. Is this correct?"
         )
