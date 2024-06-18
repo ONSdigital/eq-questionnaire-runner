@@ -37,6 +37,7 @@ updates:
           - "ordered-set"
           - "cachetools"
           - "gevent"
+          - "babel"
       development-dependencies:
         dependency-type: "development"
         patterns:
@@ -58,11 +59,14 @@ updates:
           - "black"
           - "djlint"
     ignore:
+      # Temporarily pinned to v2.14.0 - problem for translations found in v2.15.0, see: https://github.com/ONSdigital/eq-questionnaire-runner/pull/1384
+      - dependency-name: "babel"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
+      - dependency-name: "pylint*"
+        update-types: [ "version-update:semver-major" ]
       - dependency-name: "pytest*"
         update-types: ["version-update:semver-minor"]
       - dependency-name: "flake8*"
-        update-types: ["version-update:semver-minor"]
-      - dependency-name: "pylint*"
         update-types: ["version-update:semver-minor"]
       - dependency-name: "types*"
         update-types: ["version-update:semver-minor"]
