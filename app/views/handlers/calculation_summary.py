@@ -16,6 +16,7 @@ class _SummaryWithCalculation(Content):
             current_location=self._current_location,
             routing_path=self._routing_path,
             return_location=self._return_location,
+            rendered_block=self.rendered_block,
         )
         context = summary_context.build_view_context()
 

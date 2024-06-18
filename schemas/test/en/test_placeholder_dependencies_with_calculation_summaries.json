@@ -185,7 +185,7 @@
                             "question": {
                                 "id": "how-much-rnd-question",
                                 "title": {
-                                    "text": "For the period {from} to {to} what was the expenditure on R&D for {ru_name}?",
+                                    "text": "QUESTION For the period {from} to {to} what was the expenditure on R&D for {ru_name}?",
                                     "placeholders": [
                                         {
                                             "placeholder": "from",
@@ -290,7 +290,76 @@
                             "id": "calc-summary-1",
                             "type": "CalculatedSummary",
                             "page_title": "Total in-house expenditure on R&D",
-                            "title": "We have calculated your total in-house expenditure on R&D to be %(total)s. Is this correct?",
+                            "title": {
+                                "text": "TEST TITLE For the period {from} to {to} what was the expenditure on R&D for {ru_name}?",
+                                "placeholders": [
+                                    {
+                                        "placeholder": "from",
+                                        "transforms": [
+                                            {
+                                                "transform": "first_non_empty_item",
+                                                "arguments": {
+                                                    "items": [
+                                                        {
+                                                            "identifier": "date-from",
+                                                            "source": "answers"
+                                                        },
+                                                        {
+                                                            "source": "metadata",
+                                                            "identifier": "ref_p_start_date"
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "transform": "format_date",
+                                                "arguments": {
+                                                    "date_to_format": {
+                                                        "source": "previous_transform"
+                                                    },
+                                                    "date_format": "d MMMM yyyy"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "placeholder": "to",
+                                        "transforms": [
+                                            {
+                                                "transform": "first_non_empty_item",
+                                                "arguments": {
+                                                    "items": [
+                                                        {
+                                                            "identifier": "date-to",
+                                                            "source": "answers"
+                                                        },
+                                                        {
+                                                            "source": "metadata",
+                                                            "identifier": "ref_p_end_date"
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "transform": "format_date",
+                                                "arguments": {
+                                                    "date_to_format": {
+                                                        "source": "previous_transform"
+                                                    },
+                                                    "date_format": "d MMMM yyyy"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "placeholder": "ru_name",
+                                        "value": {
+                                            "source": "metadata",
+                                            "identifier": "ru_name"
+                                        }
+                                    }
+                                ]
+                            },
                             "calculation": {
                                 "operation": {
                                     "+": [
@@ -304,7 +373,76 @@
                                         }
                                     ]
                                 },
-                                "title": "Total in-house expenditure on R&D"
+                                "title": {
+                                    "text": "TEST For the period {from} to {to} what was the expenditure on R&D for {ru_name}?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "from",
+                                            "transforms": [
+                                                {
+                                                    "transform": "first_non_empty_item",
+                                                    "arguments": {
+                                                        "items": [
+                                                            {
+                                                                "identifier": "date-from",
+                                                                "source": "answers"
+                                                            },
+                                                            {
+                                                                "source": "metadata",
+                                                                "identifier": "ref_p_start_date"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "previous_transform"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "placeholder": "to",
+                                            "transforms": [
+                                                {
+                                                    "transform": "first_non_empty_item",
+                                                    "arguments": {
+                                                        "items": [
+                                                            {
+                                                                "identifier": "date-to",
+                                                                "source": "answers"
+                                                            },
+                                                            {
+                                                                "source": "metadata",
+                                                                "identifier": "ref_p_end_date"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "previous_transform"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "placeholder": "ru_name",
+                                            "value": {
+                                                "source": "metadata",
+                                                "identifier": "ru_name"
+                                            }
+                                        }
+                                    ]
+                                }
                             }
                         },
                         {
