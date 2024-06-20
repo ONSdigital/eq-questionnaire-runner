@@ -151,7 +151,7 @@ class TestCreateToken(IntegrationTestCase, AppContextTestCase):
 
     def test_additional_payload_added_in_token(self):
         token = self.token_generator.create_supplementary_data_token(
-            "test_checkbox.json", flag_1=True
+            "test_checkbox.json", flag_1=True, sds_dataset_id="54f1b432-9421-49e5-bd26-e63e18a30b69"
         )
         with self.test_app.app_context():
             decrypted_token = decrypt_token(token)
@@ -166,7 +166,7 @@ class TestCreateToken(IntegrationTestCase, AppContextTestCase):
                     "ref_p_start_date": "2016-04-01",
                     "ru_name": "Integration Testing",
                     "ru_ref": "12345678901A",
-                    "sds_dataset_id": "44f1b432-9421-49e5-bd26-e63e18a30b69",
+                    "sds_dataset_id": "54f1b432-9421-49e5-bd26-e63e18a30b69",
                     "survey_id": "123",
                     "trad_as": "Integration Tests",
                     "user_id": "integration-test",
