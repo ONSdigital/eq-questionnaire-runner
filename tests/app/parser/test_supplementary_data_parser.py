@@ -190,7 +190,9 @@ def test_validate_supplementary_data_invalid_schema_version():
             survey_id="123",
         )
 
-    assert str(error.value) == "{'data': {'schema_version': ['Must be one of: v1, v2.']}}"
+    assert (
+        str(error.value) == "{'data': {'schema_version': ['Must be one of: v1, v2.']}}"
+    )
 
 
 def test_validate_supplementary_data_payload_missing_identifier_in_items():

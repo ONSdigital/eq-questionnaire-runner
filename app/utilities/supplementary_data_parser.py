@@ -36,7 +36,12 @@ class ItemsData(Schema, StripWhitespaceMixin):
 class SupplementaryData(Schema, StripWhitespaceMixin):
     identifier = VALIDATORS["string"](validate=validate.Length(min=1))
     schema_version = VALIDATORS["string"](
-        validate=validate.OneOf([SupplementaryDataSchemaVersion.V1.value, SupplementaryDataSchemaVersion.V2.value])
+        validate=validate.OneOf(
+            [
+                SupplementaryDataSchemaVersion.V1.value,
+                SupplementaryDataSchemaVersion.V2.value,
+            ]
+        )
     )
     items = fields.Nested(ItemsData, required=False, unknown=INCLUDE)
 
