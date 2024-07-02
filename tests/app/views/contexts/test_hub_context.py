@@ -23,7 +23,7 @@ def test_get_not_started_row_for_section(schema, data_stores):
                 "actions": [
                     {
                         "text": "Start section",
-                        "visuallyHiddenText": "Start Breakfast section",
+                        "visuallyHiddenText": "Start section: Breakfast",
                         "url": "http://some/url",
                         "attributes": {"data-qa": "hub-row-section-1-link"},
                     }
@@ -56,7 +56,7 @@ def test_get_completed_row_for_section(schema, data_stores):
                 "actions": [
                     {
                         "text": "View answers",
-                        "visuallyHiddenText": "View answers for Breakfast",
+                        "visuallyHiddenText": "View answers: Breakfast",
                         "url": "http://some/url",
                         "attributes": {"data-qa": "hub-row-section-1-link"},
                     }
@@ -105,7 +105,7 @@ def test_get_context_custom_content_incomplete(router, data_stores):
         "individual_response_url": None,
         "rows": [],
         "guidance": None,
-        "submit_button": "Continue",
+        "submit_button": "Continue ",
         "title": "Choose another section to complete",
         "warning": None,
     }
