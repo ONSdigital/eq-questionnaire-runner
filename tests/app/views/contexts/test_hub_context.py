@@ -137,7 +137,7 @@ def test_get_context_custom_content_incomplete(router, data_stores):
         "individual_response_url": None,
         "rows": [],
         "guidance": None,
-        "submit_button": "Continue ",
+        "submit_button": "Continue",
         "title": "Choose another section to complete",
         "warning": None,
     }
