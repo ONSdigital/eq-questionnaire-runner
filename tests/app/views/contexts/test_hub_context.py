@@ -44,6 +44,38 @@ def test_get_not_started_row_for_section(schema, data_stores):
     assert expected == actual
 
 
+def test_get_in_progress_row_for_section(schema, data_stores):
+    expected = {
+        "rowItems": [
+            {
+                "rowTitle": "Breakfast",
+                "rowTitleAttributes": {"data-qa": "hub-row-section-1-title"},
+                "attributes": {"data-qa": "hub-row-section-1-state"},
+                "valueList": [{"text": "Partially completed"}],
+                "actions": [
+                    {
+                        "text": "Continue with section",
+                        "visuallyHiddenText": "Continue with section: Breakfast",
+                        "url": "http://some/url",
+                        "attributes": {"data-qa": "hub-row-section-1-link"},
+                    }
+                ],
+            }
+        ]
+    }
+
+    hub = HubContext(language=None, schema=schema, data_stores=data_stores)
+
+    actual = hub.get_row_context_for_section(
+        section_name="Breakfast",
+        section_status=CompletionStatus.IN_PROGRESS,
+        section_url="http://some/url",
+        row_id="section-1",
+    )
+
+    assert expected == actual
+
+
 def test_get_completed_row_for_section(schema, data_stores):
     expected = {
         "rowItems": [
