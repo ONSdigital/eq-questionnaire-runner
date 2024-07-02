@@ -40,7 +40,7 @@ describe("Introduction preview questions", () => {
     // answer guidance not implemented yet due to some work that needs to be done in the DS will be implemented in iteration 2
     // $(detailsHeading).click();
     // expect($(previewQuestion).$("#answer-guidance--content div p").getText()).to.equal("For example select `yes` if you can report for this period");
-    expect(await $(previewQuestion).$$("p")[2].getText()).toBe("You can answer with one of the following options:");
+    expect(await $(previewQuestion).$$("p")[1].getText()).toBe("You can answer with one of the following options:");
     expect(await $(previewQuestion).$$("ul")[0].getText()).toBe("Yes\nNo");
   }
 
