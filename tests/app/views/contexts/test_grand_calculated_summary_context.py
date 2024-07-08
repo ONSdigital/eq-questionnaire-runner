@@ -4,6 +4,7 @@ from app.data_models import CompletionStatus
 from app.data_models.data_stores import DataStores
 from app.data_models.progress_store import ProgressStore
 from app.questionnaire import Location
+from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.return_location import ReturnLocation
 from app.questionnaire.routing_path import RoutingPath
 from app.views.contexts.grand_calculated_summary_context import (
@@ -30,6 +31,7 @@ from tests.app.views.contexts import assert_summary_context
         ),
     ),
 )
+# pylint: disable=too-many-locals
 def test_build_view_context_for_grand_calculated_summary(
     block_id,
     title,
@@ -55,39 +57,56 @@ def test_build_view_context_for_grand_calculated_summary(
         "number-calculated-summary-2",
     ]
 
-    grand_calculated_summary_context = GrandCalculatedSummaryContext(
-        language="en",
-        schema=test_grand_calculated_summary_schema,
-        data_stores=DataStores(
-            answer_store=test_grand_calculated_summary_answers,
-            progress_store=ProgressStore(
-                progress=[
-                    {
-                        "section_id": "section-1",
-                        "status": CompletionStatus.COMPLETED,
-                        "block_ids": [
-                            "first-number-block",
-                            "second-number-block",
-                            "distance-calculated-summary-1",
-                            "number-calculated-summary-1",
-                        ],
-                    },
-                    {
-                        "section_id": "section-2",
-                        "status": CompletionStatus.COMPLETED,
-                        "block_ids": [
-                            "third-number-block",
-                            "fourth-number-block",
-                            "distance-calculated-summary-2",
-                            "number-calculated-summary-2",
-                        ],
-                    },
-                ]
-            ),
+    current_location = Location(section_id="default-section", block_id=block_id)
+    data_stores = DataStores(
+        answer_store=test_grand_calculated_summary_answers,
+        progress_store=ProgressStore(
+            progress=[
+                {
+                    "section_id": "section-1",
+                    "status": CompletionStatus.COMPLETED,
+                    "block_ids": [
+                        "first-number-block",
+                        "second-number-block",
+                        "distance-calculated-summary-1",
+                        "number-calculated-summary-1",
+                    ],
+                },
+                {
+                    "section_id": "section-2",
+                    "status": CompletionStatus.COMPLETED,
+                    "block_ids": [
+                        "third-number-block",
+                        "fourth-number-block",
+                        "distance-calculated-summary-2",
+                        "number-calculated-summary-2",
+                    ],
+                },
+            ]
         ),
+    )
+    block = test_grand_calculated_summary_schema.get_block(block_id)
+    language = "en"
+
+    placeholder_renderer = PlaceholderRenderer(
+        language=language,
+        data_stores=data_stores,
+        schema=test_grand_calculated_summary_schema,
+        location=current_location,
+    )
+
+    rendered_block = placeholder_renderer.render(
+        data_to_render=block, list_item_id=current_location.list_item_id
+    )
+
+    grand_calculated_summary_context = GrandCalculatedSummaryContext(
+        language=language,
+        schema=test_grand_calculated_summary_schema,
+        data_stores=data_stores,
         routing_path=RoutingPath(section_id="default-section", block_ids=block_ids),
-        current_location=Location(section_id="default-section", block_id=block_id),
+        current_location=current_location,
         return_location=ReturnLocation(),
+        rendered_block=rendered_block,
     )
 
     context = grand_calculated_summary_context.build_view_context()

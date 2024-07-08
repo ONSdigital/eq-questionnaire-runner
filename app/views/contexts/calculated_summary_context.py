@@ -1,4 +1,3 @@
-from functools import cached_property
 from typing import Callable, Iterable, Mapping, Tuple
 
 from werkzeug.datastructures import ImmutableDict
@@ -32,6 +31,7 @@ class CalculatedSummaryContext(Context):
         routing_path: RoutingPath,
         current_location: LocationType,
         return_location: ReturnLocation,
+        rendered_block: dict,
     ) -> None:
         super().__init__(
             language,
@@ -42,16 +42,7 @@ class CalculatedSummaryContext(Context):
         self.routing_path_block_ids = routing_path.block_ids
         self.current_location = current_location
         self.return_location = return_location
-
-    @cached_property
-    def rendered_block(self) -> dict:
-        # Type ignore block is guaranteed to exist at this point
-        block_id: str = self.current_location.block_id  # type: ignore
-        block: ImmutableDict = self._schema.get_block(block_id)  # type: ignore
-
-        return self._placeholder_renderer.render(
-            data_to_render=block, list_item_id=self.current_location.list_item_id
-        )
+        self.rendered_block = rendered_block
 
     def build_groups_for_section(
         self,
