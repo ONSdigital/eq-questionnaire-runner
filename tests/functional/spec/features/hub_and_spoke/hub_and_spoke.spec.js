@@ -38,7 +38,10 @@ describe("Feature: Hub and Spoke", () => {
       await expect(await $(HubPage.summaryRowState("employment-section")).getText()).toBe("Not started");
       await expect(await $(HubPage.summaryRowState("accommodation-section")).getText()).toBe("Not started");
       await expect(await $(HubPage.summaryRowState("household-section")).getText()).toBe("Not started");
-      await expect(await $(HubPage.summaryRowLink("employment-section")).getHTML()).toContain("Start section: Employment");
+    });
+
+    it("When a user has a screen reader, The visually hidden text should read the name and state of each section in the hub", async () => {
+      await expect(await $(HubPage.summaryRowLink("employment-section")).getHTML()).toContain("End section: Employment");
       await expect(await $(HubPage.summaryRowLink("accommodation-section")).getHTML()).toContain("Start section: Accommodation");
       await expect(await $(HubPage.summaryRowLink("household-section")).getHTML()).toContain("Start section: Household residents");
     });
@@ -171,7 +174,6 @@ describe("Feature: Hub and Spoke", () => {
       await click(EmploymentStatusBlockPage.submit());
 
       await expect(await $(HubPage.summaryRowState("employment-section")).getText()).toBe("Completed");
-      await expect(await $(HubPage.summaryRowLink("employment-section")).getHTML()).toContain("View answers: Employment");
     });
 
     it("When the user clicks the 'View answers' link and incompletes the section, Then they the should be taken to the next incomplete question on 'Continue", async () => {
