@@ -40,7 +40,7 @@ describe("Feature: Hub and Spoke", () => {
       await expect(await $(HubPage.summaryRowState("household-section")).getText()).toBe("Not started");
     });
 
-    it("When a user has a screen reader, The visually hidden text should read the name and state of each section in the hub", async () => {
+    it("When a user utilises a screen reader, The visually hidden text read aloud should be the state and name of each section in the hub", async () => {
       await expect(await $(HubPage.summaryRowLink("employment-section")).getHTML()).toContain("Start section: Employment");
       await expect(await $(HubPage.summaryRowLink("accommodation-section")).getHTML()).toContain("Start section: Accommodation");
       await expect(await $(HubPage.summaryRowLink("household-section")).getHTML()).toContain("Start section: Household residents");
