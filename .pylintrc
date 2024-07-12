@@ -335,10 +335,6 @@ single-line-class-stmt=no
 # else.
 single-line-if-stmt=no
 
-string-quote=double-avoid-escape
-triple-quote=double
-docstring-quote=double
-
 [IMPORTS]
 
 # List of modules that can be imported at any level, not just the top level
@@ -409,8 +405,7 @@ disable=
     missing-docstring,
     invalid-name,
     inconsistent-return-statements,
-    duplicate-code,
-    unrecognized-option
+    duplicate-code
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option
 # multiple time (only on the command line, not in the configuration file where
