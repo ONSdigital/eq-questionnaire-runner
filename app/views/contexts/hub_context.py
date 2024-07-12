@@ -7,7 +7,7 @@ from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import CompletionStatus
 from app.questionnaire.location import SectionKey
-from app.views.contexts import Context
+from app.views.contexts import Context   # pylint: disable=cyclic-import;
 
 
 class HubContext(Context):
