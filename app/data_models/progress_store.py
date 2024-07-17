@@ -1,7 +1,6 @@
 from typing import Iterable, MutableMapping
 
-from app.data_models import CompletionStatus  # pylint: disable=cyclic-import
-from app.data_models.progress import Progress, ProgressDict
+from app.data_models.progress import CompletionStatus, Progress, ProgressDict
 from app.questionnaire.location import Location, SectionKey
 from app.utilities.types import LocationType
 
