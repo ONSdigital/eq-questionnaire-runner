@@ -62,7 +62,7 @@ jobs:
         with:
           version: 1.8.2
           virtualenvs-create: true
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v4
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "poetry"
