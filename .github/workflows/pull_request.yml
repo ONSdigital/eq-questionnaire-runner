@@ -24,16 +24,14 @@ jobs:
         with:
           version: 1.8.2
           virtualenvs-create: true
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'poetry'
       - name: Install virtual environment
         run: |
           sudo apt-get install libsnappy-dev
-          poetry update
           poetry install
-          poetry show
   node-dependencies:
     runs-on: ubuntu-22.04
     steps:
@@ -62,7 +60,7 @@ jobs:
         with:
           version: 1.8.2
           virtualenvs-create: true
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "poetry"
