@@ -9,6 +9,9 @@ from app.data_models import CompletionStatus
 from app.questionnaire.location import SectionKey
 from app.views.contexts import Context  # pylint: disable=cyclic-import
 
+"""Removing Pylint disable above will not fail linting locally, but via GHA,
+this issue has been raised here: https://github.com/pylint-dev/pylint/issues/9168 """
+
 
 class HubContext(Context):
     SECTION_CONTENT_STATES = {
