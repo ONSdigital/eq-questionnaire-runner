@@ -213,7 +213,7 @@
                                 },
                                 "answers": [
                                     {
-                                        "id": "answerb6748be3-e49c-43c1-8b9a-36a97262d7bb",
+                                        "id": "additional-sites-answer",
                                         "mandatory": true,
                                         "type": "Radio",
                                         "options": [
@@ -243,7 +243,7 @@
                                         "in": [
                                             {
                                                 "source": "answers",
-                                                "identifier": "answerb6748be3-e49c-43c1-8b9a-36a97262d7bb"
+                                                "identifier": "additional-sites-answer"
                                             },
                                             ["No"]
                                         ]
@@ -266,7 +266,7 @@
                                 "title": "On 20th of June 2019, did you have any other sites that were staffed for a minimum of 20 hours per week or had planned activity for more than a year?",
                                 "answers": [
                                     {
-                                        "id": "answerfee7b49a-d573-4ddb-8361-4b2b9ce14bcf",
+                                        "id": "any-other-additional-sites-answer",
                                         "mandatory": true,
                                         "type": "Radio",
                                         "options": [
