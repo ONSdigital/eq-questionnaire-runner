@@ -7,8 +7,10 @@
     "title": "A test schema to demo Calculated Summary",
     "description": "A schema to showcase Calculated Summary with dependent questions.",
     "questionnaire_flow": {
-        "type": "Linear",
-        "options": {}
+        "type": "Hub",
+        "options": {
+            "required_completed_sections": ["default-section", "list-collector-section"]
+        }
     },
     "sections": [
         {
@@ -142,6 +144,412 @@
                                 "calculation_type": "sum",
                                 "answers_to_calculate": ["answer-1", "answer-3"],
                                 "title": "Total capital expenditure"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "list-collector-section",
+            "title": "Additional sites",
+            "summary": {
+                "show_on_completion": false,
+                "collapsible": false,
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "additional_sites_name",
+                        "title": "On 20th of June 2019, what was the business name for this site?",
+                        "item_anchor_answer_id": "business-name",
+                        "item_label": "<p>Business name</p>",
+                        "add_link_text": "Add item to this list",
+                        "empty_list_text": "There are no items"
+                    }
+                ],
+                "show_non_item_answers": true
+            },
+            "show_on_hub": true,
+            "groups": [
+                {
+                    "id": "groupb7a6ddd9-063f-4baf-8a33-1c232899bdd3",
+                    "blocks": [
+                        {
+                            "type": "Interstitial",
+                            "id": "additional-sites",
+                            "page_title": "Additional sites",
+                            "content": {
+                                "title": "Additional sites",
+                                "contents": [
+                                    {
+                                        "description": "In this section you will be asked for information about any additional sites your business has in Great Britain. Great Britain consists of England, Scotland and Wales."
+                                    },
+                                    {
+                                        "description": "Exclude any sites that we have already specified in this survey."
+                                    },
+                                    {
+                                        "description": "<strong>This includes:</strong>"
+                                    },
+                                    {
+                                        "list": ["business name"]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "additional-sites-for-your-business",
+                            "type": "ListCollectorDrivingQuestion",
+                            "for_list": "additional_sites_name",
+                            "question": {
+                                "id": "question-driving-further-additional-sites-for-your-business",
+                                "type": "General",
+                                "title": "On 20th of June 2019, did your business have any additional sites that were staffed for a minimum of 20 hours per week or had planned activity for more than a year?",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "If you answer <strong>no</strong> to this question, include any employees associated with this site in the figures you have reported for your main or head site.<br><br>You will be able to amend your figures in the business structure section once you have answered this question."
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "answerb6748be3-e49c-43c1-8b9a-36a97262d7bb",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock",
+                                                    "params": {
+                                                        "block_id": "add-block-business-name-trading-style-and-address-for-this-additional-site",
+                                                        "list_name": "additional_sites_name"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "section": "End",
+                                    "when": {
+                                        "in": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "answerb6748be3-e49c-43c1-8b9a-36a97262d7bb"
+                                            },
+                                            ["No"]
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "further-additional-sites-for-your-business"
+                                }
+                            ],
+                            "page_title": "Additional sites for your business"
+                        },
+                        {
+                            "id": "further-additional-sites-for-your-business",
+                            "type": "ListCollector",
+                            "page_title": "Further additional sites for your business",
+                            "for_list": "additional_sites_name",
+                            "question": {
+                                "id": "list-collector-question-further-additional-sites-for-your-business",
+                                "type": "General",
+                                "title": "On 20th of June 2019, did you have any other sites that were staffed for a minimum of 20 hours per week or had planned activity for more than a year?",
+                                "answers": [
+                                    {
+                                        "id": "answerfee7b49a-d573-4ddb-8361-4b2b9ce14bcf",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "add_block": {
+                                "id": "add-block-business-name-trading-style-and-address-for-this-additional-site",
+                                "type": "ListAddQuestion",
+                                "page_title": "Business name, trading style and address for this additional site",
+                                "cancel_text": "Don’t need to add this item",
+                                "question": {
+                                    "id": "add-block-question-business-name-trading-style-and-address-for-this-additional-site",
+                                    "guidance": {
+                                        "contents": [
+                                            {
+                                                "description": "<strong>Include:</strong>"
+                                            },
+                                            {
+                                                "list": ["trading style, only if it is different to the business name", "the property number, where applicable"]
+                                            },
+                                            {
+                                                "description": "<strong>Exclude:</strong>"
+                                            },
+                                            {
+                                                "list": [
+                                                    "sites that have previously been provided",
+                                                    "sites staffed for fewer than 20 hours per week",
+                                                    "sites where planned activity was for less than a year"
+                                                ]
+                                            },
+                                            {
+                                                "description": "Any <strong>excluded sites</strong> should be included in figures reported for your main or head site."
+                                            }
+                                        ]
+                                    },
+                                    "type": "General",
+                                    "title": "On 20th of June 2019, what was the business name for this site?",
+                                    "answers": [
+                                        {
+                                            "id": "business-name",
+                                            "mandatory": true,
+                                            "type": "TextField",
+                                            "label": "Business name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "edit_block": {
+                                "id": "edit-block-business-name-trading-style-and-address-for-this-additional-site",
+                                "type": "ListEditQuestion",
+                                "page_title": "Business name, trading style and address for this additional site",
+                                "cancel_text": "Don’t need to edit this item",
+                                "question": {
+                                    "id": "edit-block-question-business-name-trading-style-and-address-for-this-additional-site",
+                                    "guidance": {
+                                        "contents": [
+                                            {
+                                                "description": "<strong>Include:</strong>"
+                                            },
+                                            {
+                                                "list": ["trading style, only if it is different to the business name", "the property number, where applicable"]
+                                            },
+                                            {
+                                                "description": "<strong>Exclude:</strong>"
+                                            },
+                                            {
+                                                "list": [
+                                                    "sites that have previously been provided",
+                                                    "sites staffed for fewer than 20 hours per week",
+                                                    "sites where planned activity was for less than a year"
+                                                ]
+                                            },
+                                            {
+                                                "description": "Any <strong>excluded sites</strong> should be included in figures reported for your main or head site."
+                                            }
+                                        ]
+                                    },
+                                    "type": "General",
+                                    "title": "On 20th of June, what was the business name, trading style and address for this site?",
+                                    "answers": [
+                                        {
+                                            "id": "business-name",
+                                            "mandatory": true,
+                                            "type": "TextField",
+                                            "label": "Business name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "remove_block": {
+                                "id": "remove-block-business-name-trading-style-and-address-for-this-additional-site",
+                                "type": "ListRemoveQuestion",
+                                "cancel_text": "Don’t need to remove this item?",
+                                "question": {
+                                    "id": "remove-block-question-business-name-trading-style-and-address-for-this-additional-site",
+                                    "type": "General",
+                                    "title": "Are you sure you want to remove this item?",
+                                    "warning": "All of the information about this item will be deleted",
+                                    "answers": [
+                                        {
+                                            "id": "remove-confirmation-business-name-trading-style-and-address-for-this-additional-site",
+                                            "mandatory": true,
+                                            "type": "Radio",
+                                            "options": [
+                                                {
+                                                    "label": "Yes",
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
+                                                },
+                                                {
+                                                    "label": "No",
+                                                    "value": "No"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "summary": {
+                                "title": "Summary",
+                                "item_title": {
+                                    "text": "{listcollector_summary_placeholder}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "listcollector_summary_placeholder",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "business-name"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "repeating-section",
+            "title": "Additional site details",
+            "repeat": {
+                "for_list": "additional_sites_name",
+                "title": {
+                    "text": "{repeat_title_placeholder}",
+                    "placeholders": [
+                        {
+                            "placeholder": "repeat_title_placeholder",
+                            "transforms": [
+                                {
+                                    "arguments": {
+                                        "delimiter": " ",
+                                        "list_to_concatenate": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "business-name"
+                                            }
+                                        ]
+                                    },
+                                    "transform": "concatenate_list"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "summary": {
+                "show_on_completion": false,
+                "page_title": "Details of Additional Sites in Great Britain",
+                "collapsible": false
+            },
+            "show_on_hub": true,
+            "groups": [
+                {
+                    "id": "list-collector-group",
+                    "blocks": [
+                        {
+                            "id": "number-of-employees-working-at-this-additional-site",
+                            "type": "Question",
+                            "question": {
+                                "id": "question-number-of-employees-working-at-this-additional-site",
+                                "title": "On 20th of June 2019, what was the number of full-time and part-time employees that your business paid from its payroll, for this site?",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "<strong>Include:</strong>"
+                                        },
+                                        {
+                                            "list": [
+                                                "full-time, over 30 hours a week, and part-time, 30 hours or less, employees aged 16 years and over. This includes individuals <strong>working from home</strong> and those temporarily absent but still employed, for example those on parental leave or sick leave",
+                                                "agency workers paid direct from the agency payroll",
+                                                "North Sea oil workers and any other employees working on the UK Continental Shelf (UKCS). The UKCS is the region of waters surrounding the United Kingdom in which the country claims mineral rights",
+                                                "home or field workers whose work was organised from this site"
+                                            ]
+                                        },
+                                        {
+                                            "description": "<strong>Exclude:</strong>"
+                                        },
+                                        {
+                                            "list": [
+                                                "directors and working owners <strong>not</strong> paid via PAYE",
+                                                "voluntary employees",
+                                                "former employees only receiving a pension"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "definitions": [
+                                    {
+                                        "title": "What we mean by &#39;employees&#39;",
+                                        "contents": [
+                                            {
+                                                "description": "An employee is anyone aged 16 years or over who was working directly for the business.&#xA0;They may have been paid direct from the business, from elsewhere within the wider group, or by an external payroll provider on behalf of the company.&#xA0;If your business uses a central payroll to pay employees who work within the wider group, only include employees who worked directly for the business."
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "number-full-time-employees",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "label": "Number of full-time employees",
+                                        "description": "This refers to employees working more than 30 hours per week",
+                                        "decimal_places": 0
+                                    },
+                                    {
+                                        "id": "number-part-time-employees",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "label": "Number of part-time employees",
+                                        "description": "This refers to employees working 30 hours or fewer per week",
+                                        "decimal_places": 0
+                                    }
+                                ]
+                            },
+                            "page_title": "Number of employees working at this additional site"
+                        },
+                        {
+                            "id": "calculated-number-of-employees-for-this-additional-site",
+                            "type": "CalculatedSummary",
+                            "page_title": "Calculated number of employees for this additional site",
+                            "title": "On 20th of June 2019, we have calculated the total number of employees that your business paid from its payroll, for this site, to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "identifier": "number-full-time-employees",
+                                            "source": "answers"
+                                        },
+                                        {
+                                            "identifier": "number-part-time-employees",
+                                            "source": "answers"
+                                        }
+                                    ]
+                                },
+                                "title": "Total number of employees paid from your business&#39;s payroll"
                             }
                         }
                     ]
