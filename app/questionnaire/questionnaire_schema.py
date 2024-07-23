@@ -504,8 +504,11 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             calculated_summary_block
         )
         dependent = self._get_dependent_for_block_id(block_id=dependent_block["id"])
+        value_source_update = False
         for answer_id in calculated_summary_answer_ids:
-            if list_name := self.get_list_name_for_answer_id(answer_id):
+            if list_name := self.get_list_name_for_answer_id(
+                answer_id, value_source_update
+            ):
                 # dynamic/repeating answers means the calculated summary also depends on the list those answers loop over
                 self._list_dependencies_map[list_name].add(dependent)
             self._answer_dependencies_map[answer_id].add(dependent)
@@ -589,10 +592,13 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         dependent = self._get_dependent_for_block_id(
             block_id=block_id, answer_id=answer_id
         )
+        value_source_update = True
         for answer_id_for_block in answer_ids_for_block:
             self._answer_dependencies_map[answer_id_for_block].add(dependent)
             # if the answer is repeating, then the calculated summary also depends on the list it loops over
-            if list_name := self.get_list_name_for_answer_id(answer_id_for_block):
+            if list_name := self.get_list_name_for_answer_id(
+                answer_id_for_block, value_source_update
+            ):
                 self._list_dependencies_map[list_name].add(dependent)
 
     def _update_dependencies_for_value_source(
@@ -859,7 +865,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             or self.is_answer_dynamic(answer_id)
         )
 
-    def get_list_name_for_answer_id(self, answer_id: str) -> str | None:
+    def get_list_name_for_answer_id(
+        self, answer_id: str, value_source_update: bool = True
+    ) -> str | None:
         """
         if the answer is dynamic or in a repeating block or section, return the name of the list it repeats over, otherwise None.
         """
@@ -872,7 +880,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             return self.list_names_by_list_repeating_block_id[block_id]
         if self.is_answer_in_list_collector_block(answer_id):
             return block["for_list"]  # type: ignore
-        if self.is_answer_in_repeating_section(answer_id):
+        if self.is_answer_in_repeating_section(answer_id) and value_source_update:
             section_id: str = self.get_section_id_for_block_id(block_id)  # type: ignore
             return self.get_repeating_list_for_section(section_id)
 
