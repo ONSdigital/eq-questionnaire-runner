@@ -160,7 +160,7 @@
                     {
                         "type": "List",
                         "for_list": "additional_sites_name",
-                        "title": "In June 2019, what was the business name for this site?",
+                        "title": "What was the business name for this site?",
                         "item_anchor_answer_id": "business-name",
                         "item_label": "<p>Business name</p>",
                         "add_link_text": "Add item to this list",
@@ -181,7 +181,7 @@
                             "question": {
                                 "id": "question-driving-further-additional-sites-for-your-business",
                                 "type": "General",
-                                "title": "In June 2019, did your business have any additional sites that were staffed for a minimum of 20 hours per week or had planned activity for more than a year?",
+                                "title": "Did your business have any additional sites that were staffed for a minimum of 20 hours per week or had planned activity for more than a year?",
                                 "answers": [
                                     {
                                         "id": "additional-sites-answer",
@@ -234,7 +234,7 @@
                             "question": {
                                 "id": "list-collector-question-further-additional-sites-for-your-business",
                                 "type": "General",
-                                "title": "In June 2019, did you have any other sites that were staffed for a minimum of 20 hours per week or had planned activity for more than a year?",
+                                "title": "Did you have any other sites that were staffed for a minimum of 20 hours per week or had planned activity for more than a year?",
                                 "answers": [
                                     {
                                         "id": "any-other-additional-sites-answer",
@@ -264,7 +264,7 @@
                                 "question": {
                                     "id": "add-block-question-business-name-trading-style-and-address-for-this-additional-site",
                                     "type": "General",
-                                    "title": "In June 2019, what was the business name for this site?",
+                                    "title": "What was the business name for this site?",
                                     "answers": [
                                         {
                                             "id": "business-name",
@@ -283,7 +283,7 @@
                                 "question": {
                                     "id": "edit-block-question-business-name-trading-style-and-address-for-this-additional-site",
                                     "type": "General",
-                                    "title": "In June 2019, what was the business name, trading style and address for this site?",
+                                    "title": "What was the business name, trading style and address for this site?",
                                     "answers": [
                                         {
                                             "id": "business-name",
@@ -398,7 +398,7 @@
                             "type": "Question",
                             "question": {
                                 "id": "question-number-of-employees-working-at-this-additional-site",
-                                "title": "In June 2019, what was the number of full-time and part-time employees that your business paid from its payroll, for this site?",
+                                "title": "What was the number of full-time and part-time employees that your business paid from its payroll, for this site?",
                                 "type": "General",
                                 "answers": [
                                     {
@@ -423,7 +423,7 @@
                             "id": "calculated-number-of-employees-for-this-additional-site",
                             "type": "CalculatedSummary",
                             "page_title": "Calculated number of employees for this additional site",
-                            "title": "In June 2019, we have calculated the total number of employees that your business paid from its payroll, for this site, to be %(total)s. Is this correct?",
+                            "title": "We have calculated the total number of employees that your business paid from its payroll, for this site, to be %(total)s. Is this correct?",
                             "calculation": {
                                 "operation": {
                                     "+": [
