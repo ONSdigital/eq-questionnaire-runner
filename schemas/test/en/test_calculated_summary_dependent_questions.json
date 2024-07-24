@@ -172,30 +172,8 @@
             "show_on_hub": true,
             "groups": [
                 {
-                    "id": "groupb7a6ddd9-063f-4baf-8a33-1c232899bdd3",
+                    "id": "list-collector-group",
                     "blocks": [
-                        {
-                            "type": "Interstitial",
-                            "id": "additional-sites",
-                            "page_title": "Additional sites",
-                            "content": {
-                                "title": "Additional sites",
-                                "contents": [
-                                    {
-                                        "description": "In this section you will be asked for information about any additional sites your business has in Great Britain. Great Britain consists of England, Scotland and Wales."
-                                    },
-                                    {
-                                        "description": "Exclude any sites that we have already specified in this survey."
-                                    },
-                                    {
-                                        "description": "<strong>This includes:</strong>"
-                                    },
-                                    {
-                                        "list": ["business name"]
-                                    }
-                                ]
-                            }
-                        },
                         {
                             "id": "additional-sites-for-your-business",
                             "type": "ListCollectorDrivingQuestion",
@@ -204,13 +182,6 @@
                                 "id": "question-driving-further-additional-sites-for-your-business",
                                 "type": "General",
                                 "title": "In June 2019, did your business have any additional sites that were staffed for a minimum of 20 hours per week or had planned activity for more than a year?",
-                                "guidance": {
-                                    "contents": [
-                                        {
-                                            "description": "If you answer <strong>no</strong> to this question, include any employees associated with this site in the figures you have reported for your main or head site.<br><br>You will be able to amend your figures in the business structure section once you have answered this question."
-                                        }
-                                    ]
-                                },
                                 "answers": [
                                     {
                                         "id": "additional-sites-answer",
@@ -292,29 +263,6 @@
                                 "cancel_text": "Don’t need to add this item",
                                 "question": {
                                     "id": "add-block-question-business-name-trading-style-and-address-for-this-additional-site",
-                                    "guidance": {
-                                        "contents": [
-                                            {
-                                                "description": "<strong>Include:</strong>"
-                                            },
-                                            {
-                                                "list": ["trading style, only if it is different to the business name", "the property number, where applicable"]
-                                            },
-                                            {
-                                                "description": "<strong>Exclude:</strong>"
-                                            },
-                                            {
-                                                "list": [
-                                                    "sites that have previously been provided",
-                                                    "sites staffed for fewer than 20 hours per week",
-                                                    "sites where planned activity was for less than a year"
-                                                ]
-                                            },
-                                            {
-                                                "description": "Any <strong>excluded sites</strong> should be included in figures reported for your main or head site."
-                                            }
-                                        ]
-                                    },
                                     "type": "General",
                                     "title": "In June 2019, what was the business name for this site?",
                                     "answers": [
@@ -334,29 +282,6 @@
                                 "cancel_text": "Don’t need to edit this item",
                                 "question": {
                                     "id": "edit-block-question-business-name-trading-style-and-address-for-this-additional-site",
-                                    "guidance": {
-                                        "contents": [
-                                            {
-                                                "description": "<strong>Include:</strong>"
-                                            },
-                                            {
-                                                "list": ["trading style, only if it is different to the business name", "the property number, where applicable"]
-                                            },
-                                            {
-                                                "description": "<strong>Exclude:</strong>"
-                                            },
-                                            {
-                                                "list": [
-                                                    "sites that have previously been provided",
-                                                    "sites staffed for fewer than 20 hours per week",
-                                                    "sites where planned activity was for less than a year"
-                                                ]
-                                            },
-                                            {
-                                                "description": "Any <strong>excluded sites</strong> should be included in figures reported for your main or head site."
-                                            }
-                                        ]
-                                    },
                                     "type": "General",
                                     "title": "In June 2019, what was the business name, trading style and address for this site?",
                                     "answers": [
@@ -466,7 +391,7 @@
             "show_on_hub": true,
             "groups": [
                 {
-                    "id": "list-collector-group",
+                    "id": "repeating-group",
                     "blocks": [
                         {
                             "id": "number-of-employees-working-at-this-additional-site",
@@ -474,41 +399,6 @@
                             "question": {
                                 "id": "question-number-of-employees-working-at-this-additional-site",
                                 "title": "In June 2019, what was the number of full-time and part-time employees that your business paid from its payroll, for this site?",
-                                "guidance": {
-                                    "contents": [
-                                        {
-                                            "description": "<strong>Include:</strong>"
-                                        },
-                                        {
-                                            "list": [
-                                                "full-time, over 30 hours a week, and part-time, 30 hours or less, employees aged 16 years and over. This includes individuals <strong>working from home</strong> and those temporarily absent but still employed, for example those on parental leave or sick leave",
-                                                "agency workers paid direct from the agency payroll",
-                                                "North Sea oil workers and any other employees working on the UK Continental Shelf (UKCS). The UKCS is the region of waters surrounding the United Kingdom in which the country claims mineral rights",
-                                                "home or field workers whose work was organised from this site"
-                                            ]
-                                        },
-                                        {
-                                            "description": "<strong>Exclude:</strong>"
-                                        },
-                                        {
-                                            "list": [
-                                                "directors and working owners <strong>not</strong> paid via PAYE",
-                                                "voluntary employees",
-                                                "former employees only receiving a pension"
-                                            ]
-                                        }
-                                    ]
-                                },
-                                "definitions": [
-                                    {
-                                        "title": "What we mean by &#39;employees&#39;",
-                                        "contents": [
-                                            {
-                                                "description": "An employee is anyone aged 16 years or over who was working directly for the business.&#xA0;They may have been paid direct from the business, from elsewhere within the wider group, or by an external payroll provider on behalf of the company.&#xA0;If your business uses a central payroll to pay employees who work within the wider group, only include employees who worked directly for the business."
-                                            }
-                                        ]
-                                    }
-                                ],
                                 "type": "General",
                                 "answers": [
                                     {
@@ -516,7 +406,6 @@
                                         "mandatory": true,
                                         "type": "Number",
                                         "label": "Number of full-time employees",
-                                        "description": "This refers to employees working more than 30 hours per week",
                                         "decimal_places": 0
                                     },
                                     {
@@ -524,7 +413,6 @@
                                         "mandatory": true,
                                         "type": "Number",
                                         "label": "Number of part-time employees",
-                                        "description": "This refers to employees working 30 hours or fewer per week",
                                         "decimal_places": 0
                                     }
                                 ]

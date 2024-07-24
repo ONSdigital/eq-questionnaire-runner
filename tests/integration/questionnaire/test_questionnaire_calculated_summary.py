@@ -461,7 +461,6 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
         self.post({"answer-3": "100"})
         self.post({"answer-4": "100"})
         self.post()
-        self.post()
         self.post({"additional-sites-answer": "Yes"})
         self.post({"business-name": "Ebay"})
         self.post({"any-other-additional-sites-answer": "No"})
