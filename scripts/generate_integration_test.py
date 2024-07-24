@@ -124,9 +124,7 @@ def request_handler(request: Request) -> None:
 
 def run(pw: Playwright) -> None:
     chromium = pw.chromium
-    browser = chromium.launch(
-        headless=False, args=["--start-maximized"], channel="chrome"
-    )
+    browser = chromium.launch(headless=False, args=["--start-maximized"])
     page = browser.new_page(no_viewport=True)
     page.goto(LAUNCHER_ROOT_URL)
 
