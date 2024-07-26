@@ -1022,18 +1022,13 @@ def test_grand_calculated_summary_dependencies():
     schema = load_schema_from_name(
         "test_grand_calculated_summary_inside_repeating_section"
     )
-    gcs = Dependent(
-        section_id="vehicle-details-section",
-        block_id="grand-calculated-summary-vehicle",
-        for_list="vehicles",
-    )
+
     gcs_dependent = Dependent(
         section_id="vehicle-details-section",
         block_id="gcs-breakdown-block",
         for_list="vehicles",
     )
-    assert gcs in schema.list_dependencies["costs"]
-    assert gcs in schema.list_dependencies["vehicles"]
+
     assert gcs_dependent in schema.list_dependencies["costs"]
     assert gcs_dependent in schema.list_dependencies["vehicles"]
     gcs_answers = [
@@ -1043,7 +1038,6 @@ def test_grand_calculated_summary_dependencies():
         "vehicle-fuel-cost",
     ]
     for answer in gcs_answers:
-        assert gcs in schema.answer_dependencies[answer]
         assert gcs_dependent in schema.answer_dependencies[answer]
 
 

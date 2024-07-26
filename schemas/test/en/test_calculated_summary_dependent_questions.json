@@ -7,8 +7,10 @@
     "title": "A test schema to demo Calculated Summary",
     "description": "A schema to showcase Calculated Summary with dependent questions.",
     "questionnaire_flow": {
-        "type": "Linear",
-        "options": {}
+        "type": "Hub",
+        "options": {
+            "required_completed_sections": ["default-section", "list-collector-section"]
+        }
     },
     "sections": [
         {
@@ -142,6 +144,300 @@
                                 "calculation_type": "sum",
                                 "answers_to_calculate": ["answer-1", "answer-3"],
                                 "title": "Total capital expenditure"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "list-collector-section",
+            "title": "Additional sites",
+            "summary": {
+                "show_on_completion": false,
+                "collapsible": false,
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "additional_sites_name",
+                        "title": "What was the business name for this site?",
+                        "item_anchor_answer_id": "business-name",
+                        "item_label": "<p>Business name</p>",
+                        "add_link_text": "Add item to this list",
+                        "empty_list_text": "There are no items"
+                    }
+                ],
+                "show_non_item_answers": true
+            },
+            "show_on_hub": true,
+            "groups": [
+                {
+                    "id": "list-collector-group",
+                    "blocks": [
+                        {
+                            "id": "additional-sites-for-your-business",
+                            "type": "ListCollectorDrivingQuestion",
+                            "for_list": "additional_sites_name",
+                            "question": {
+                                "id": "question-driving-further-additional-sites-for-your-business",
+                                "type": "General",
+                                "title": "Did your business have any additional sites that were staffed for a minimum of 20 hours per week or had planned activity for more than a year?",
+                                "answers": [
+                                    {
+                                        "id": "additional-sites-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock",
+                                                    "params": {
+                                                        "block_id": "add-block-business-name-trading-style-and-address-for-this-additional-site",
+                                                        "list_name": "additional_sites_name"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "section": "End",
+                                    "when": {
+                                        "in": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "additional-sites-answer"
+                                            },
+                                            ["No"]
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "further-additional-sites-for-your-business"
+                                }
+                            ],
+                            "page_title": "Additional sites for your business"
+                        },
+                        {
+                            "id": "further-additional-sites-for-your-business",
+                            "type": "ListCollector",
+                            "page_title": "Further additional sites for your business",
+                            "for_list": "additional_sites_name",
+                            "question": {
+                                "id": "list-collector-question-further-additional-sites-for-your-business",
+                                "type": "General",
+                                "title": "Did you have any other sites that were staffed for a minimum of 20 hours per week or had planned activity for more than a year?",
+                                "answers": [
+                                    {
+                                        "id": "any-other-additional-sites-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "add_block": {
+                                "id": "add-block-business-name-trading-style-and-address-for-this-additional-site",
+                                "type": "ListAddQuestion",
+                                "page_title": "Business name, trading style and address for this additional site",
+                                "cancel_text": "Don’t need to add this item",
+                                "question": {
+                                    "id": "add-block-question-business-name-trading-style-and-address-for-this-additional-site",
+                                    "type": "General",
+                                    "title": "What was the business name for this site?",
+                                    "answers": [
+                                        {
+                                            "id": "business-name",
+                                            "mandatory": true,
+                                            "type": "TextField",
+                                            "label": "Business name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "edit_block": {
+                                "id": "edit-block-business-name-trading-style-and-address-for-this-additional-site",
+                                "type": "ListEditQuestion",
+                                "page_title": "Business name, trading style and address for this additional site",
+                                "cancel_text": "Don’t need to edit this item",
+                                "question": {
+                                    "id": "edit-block-question-business-name-trading-style-and-address-for-this-additional-site",
+                                    "type": "General",
+                                    "title": "What was the business name, trading style and address for this site?",
+                                    "answers": [
+                                        {
+                                            "id": "business-name",
+                                            "mandatory": true,
+                                            "type": "TextField",
+                                            "label": "Business name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "remove_block": {
+                                "id": "remove-block-business-name-trading-style-and-address-for-this-additional-site",
+                                "type": "ListRemoveQuestion",
+                                "cancel_text": "Don’t need to remove this item?",
+                                "question": {
+                                    "id": "remove-block-question-business-name-trading-style-and-address-for-this-additional-site",
+                                    "type": "General",
+                                    "title": "Are you sure you want to remove this item?",
+                                    "warning": "All of the information about this item will be deleted",
+                                    "answers": [
+                                        {
+                                            "id": "remove-confirmation-business-name-trading-style-and-address-for-this-additional-site",
+                                            "mandatory": true,
+                                            "type": "Radio",
+                                            "options": [
+                                                {
+                                                    "label": "Yes",
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
+                                                },
+                                                {
+                                                    "label": "No",
+                                                    "value": "No"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "summary": {
+                                "title": "Summary",
+                                "item_title": {
+                                    "text": "{listcollector_summary_placeholder}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "listcollector_summary_placeholder",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "business-name"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "repeating-section",
+            "title": "Additional site details",
+            "repeat": {
+                "for_list": "additional_sites_name",
+                "title": {
+                    "text": "{repeat_title_placeholder}",
+                    "placeholders": [
+                        {
+                            "placeholder": "repeat_title_placeholder",
+                            "transforms": [
+                                {
+                                    "arguments": {
+                                        "delimiter": " ",
+                                        "list_to_concatenate": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "business-name"
+                                            }
+                                        ]
+                                    },
+                                    "transform": "concatenate_list"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "summary": {
+                "show_on_completion": false,
+                "page_title": "Details of Additional Sites in Great Britain",
+                "collapsible": false
+            },
+            "show_on_hub": true,
+            "groups": [
+                {
+                    "id": "repeating-group",
+                    "blocks": [
+                        {
+                            "id": "number-of-employees-working-at-this-additional-site",
+                            "type": "Question",
+                            "question": {
+                                "id": "question-number-of-employees-working-at-this-additional-site",
+                                "title": "What was the number of full-time and part-time employees that your business paid from its payroll, for this site?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "number-full-time-employees",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "label": "Number of full-time employees",
+                                        "decimal_places": 0
+                                    },
+                                    {
+                                        "id": "number-part-time-employees",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "label": "Number of part-time employees",
+                                        "decimal_places": 0
+                                    }
+                                ]
+                            },
+                            "page_title": "Number of employees working at this additional site"
+                        },
+                        {
+                            "id": "calculated-number-of-employees-for-this-additional-site",
+                            "type": "CalculatedSummary",
+                            "page_title": "Calculated number of employees for this additional site",
+                            "title": "We have calculated the total number of employees that your business paid from its payroll, for this site, to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "identifier": "number-full-time-employees",
+                                            "source": "answers"
+                                        },
+                                        {
+                                            "identifier": "number-part-time-employees",
+                                            "source": "answers"
+                                        }
+                                    ]
+                                },
+                                "title": "Total number of employees paid from your business&#39;s payroll"
                             }
                         }
                     ]
