@@ -10,6 +10,7 @@ describe("Feature: Hub and Spoke with custom content", () => {
     await browser.openQuestionnaire(hubAndSpokeSchema);
     await expect(await $(HubPage.heading()).getText()).toBe("Choose another section to complete");
     await expect(await $(HubPage.guidance()).isExisting()).toBe(false);
+    await expect(await $(HubPage.summaryRowLink("household-section")).getHTML()).toContain("Start section: Household residents");
     await expect(await $(HubPage.submit()).getText()).toBe("Continue");
     await expect(await $(HubPage.warning()).isExisting()).toBe(false);
   });
@@ -22,6 +23,7 @@ describe("Feature: Hub and Spoke with custom content", () => {
     await $(HowManyPeopleLiveHere.answer1()).click();
     await click(HowManyPeopleLiveHere.submit());
     await click(HouseholdSummary.submit());
+    await expect(await $(HubPage.summaryRowLink("household-section")).getHTML()).toContain("View answers: Household residents");
     await expect(await $(HubPage.heading()).getText()).toBe("Submission title");
     await expect(await $(HubPage.guidance()).getText()).toBe("Submission guidance");
     await expect(await $(HubPage.submit()).getText()).toBe("Submission button");

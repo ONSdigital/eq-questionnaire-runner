@@ -450,3 +450,34 @@ class TestQuestionnaireCalculatedSummary(QuestionnaireTestCase):
             "We have calculated your total in-house expenditure on R&amp;D for Integration Testing for the period 1 April 2016 to 30 April 2016 to be £110. "
             "Is this correct?"
         )
+
+    def test_calculated_summary_repeating_sections_complete_after_adding_list_item(
+        self,
+    ):
+        self.launchSurveyV2(schema_name="test_calculated_summary_dependent_questions")
+
+        self.post({"answer-1": "100"})
+        self.post({"answer-2": "100"})
+        self.post({"answer-3": "100"})
+        self.post({"answer-4": "100"})
+        self.post()
+        self.post({"additional-sites-answer": "Yes"})
+        self.post({"business-name": "Ebay"})
+        self.post({"any-other-additional-sites-answer": "No"})
+        self.post()
+        self.assertInUrl("/number-of-employees-working-at-this-additional-site")
+        self.post(
+            {"number-full-time-employees": "1", "number-part-time-employees": "1"}
+        )
+        self.post()
+        self.get("/questionnaire/sections/list-collector-section/")
+        self.post({"any-other-additional-sites-answer": "No"})
+        self.assertInBody("Completed")
+        self.get(
+            "/questionnaire/additional_sites_name/add-block-business-name-trading-style-and-address-for-this-additional-site/"
+        )
+        self.post({"business-name": "Amazon"})
+        self.post({"any-other-additional-sites-answer": "No"})
+        self.assertInUrl("/questionnaire")
+        self.assertInBody("Completed")
+        self.assertNotInBody("Partially completed")

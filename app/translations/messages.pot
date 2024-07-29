@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-03 08:34+0100\n"
+"POT-Creation-Date: 2024-07-02 16:54+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -375,7 +375,7 @@ msgid "View answers"
 msgstr ""
 
 #: app/views/contexts/hub_context.py:19
-msgid "View answers for {section_name}"
+msgid "View answers: {section_name}"
 msgstr ""
 
 #: app/views/contexts/hub_context.py:23
@@ -387,7 +387,7 @@ msgid "Continue with section"
 msgstr ""
 
 #: app/views/contexts/hub_context.py:26
-msgid "Continue with {section_name} section"
+msgid "Continue with section: {section_name}"
 msgstr ""
 
 #: app/views/contexts/hub_context.py:30
@@ -399,7 +399,7 @@ msgid "Start section"
 msgstr ""
 
 #: app/views/contexts/hub_context.py:33
-msgid "Start {section_name} section"
+msgid "Start section: {section_name}"
 msgstr ""
 
 #: app/views/contexts/hub_context.py:37
