@@ -77,7 +77,7 @@ limit-inference-results=100
 
 # List of plugins (as comma separated values of python module names) to load,
 # usually to register additional checkers.
-load-plugins=pylint.extensions.mccabe,pylint_quotes,pylint.extensions.no_self_use,pylint_absolute_imports
+load-plugins=pylint.extensions.mccabe,pylint.extensions.no_self_use,pylint_absolute_imports
 
 # Pickle collected data for later comparisons.
 persistent=yes
@@ -335,10 +335,6 @@ single-line-class-stmt=no
 # else.
 single-line-if-stmt=no
 
-string-quote=double-avoid-escape
-triple-quote=double
-docstring-quote=double
-
 [IMPORTS]
 
 # List of modules that can be imported at any level, not just the top level
@@ -409,7 +405,7 @@ disable=
     missing-docstring,
     invalid-name,
     inconsistent-return-statements,
-    duplicate-code,
+    duplicate-code
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option
 # multiple time (only on the command line, not in the configuration file where
