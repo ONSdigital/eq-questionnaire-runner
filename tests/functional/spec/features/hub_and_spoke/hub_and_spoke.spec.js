@@ -320,7 +320,7 @@ describe("Feature: Hub and Spoke", () => {
 
       await browser.openQuestionnaire("test_hub_section_required_with_repeat_supplementary.json.json", {
         version: "v2",
-        sdsDatasetId: "d8afa921-1305-d553-d2c6-955a6db2cc2d",
+        sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
         responseId,
       });
     });
