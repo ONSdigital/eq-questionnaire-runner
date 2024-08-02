@@ -91,7 +91,7 @@ def process_launcher_request(request: Request) -> None:
         with open(output["file_name"], "a", encoding="utf-8") as file:
             path = f'"{urlparse(request.url).path}"'
             file.write(generate_method_request(method="get", data=path))
-    else:
+    elif "schema_name" in parse_qs(request.url):
         # start of journey, so create a skeleton file using the schema name
         survey_journey["schema_name"] = parse_qs(request.url)["schema_name"][0]
         output["file_name"] = f"./scripts/{survey_journey['schema_name']}.py"
@@ -99,10 +99,14 @@ def process_launcher_request(request: Request) -> None:
         with open(output["file_name"], "w", encoding="utf-8") as file:
             # Type ignore: schema_name is taken as string from query string
             class_name = survey_journey["schema_name"].title().replace("_", "")  # type: ignore
+            function_name = survey_journey["schema_name"]
+            if not class_name.lower().startswith("test"):
+                class_name = f"Test{class_name}"
+                function_name = f"test_{survey_journey['schema_name']}"
             file.write(
                 TEST_TEMPLATE.format(
                     class_name=class_name,
-                    function_name=survey_journey["schema_name"],
+                    function_name=function_name,
                     schema_name=survey_journey["schema_name"],
                 )
             )
