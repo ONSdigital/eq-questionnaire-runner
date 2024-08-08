@@ -99,6 +99,7 @@
                     function gtag(){dataLayer.push(arguments);}
                     gtag('js', new Date());
                     gtag('config', '{{ google_tag_id }}');
+                    gtag('event', 'screen_view', { 'app_name': 'myAppName', 'screen_name': 'Home' });
                 }
         </script>
     {% endif %}
