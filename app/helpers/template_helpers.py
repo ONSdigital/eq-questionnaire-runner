@@ -119,7 +119,7 @@ class ContextHelper:
     @property
     def data_layer_context(
         self,
-    ) -> list[dict]:
+    ) -> dict[str, str]:
         tx_id_context = (
             {"tx_id": metadata.tx_id}
             if (metadata := get_metadata(current_user))
@@ -134,7 +134,7 @@ class ContextHelper:
         if tx_id_context:
             context.append(tx_id_context)
 
-        flattened_context = {}
+        flattened_context: dict[str, str] = {}
         for d in context:
             flattened_context |= d
         return flattened_context
