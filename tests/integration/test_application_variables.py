@@ -24,7 +24,7 @@ class TestApplicationVariables(IntegrationTestCase):
         self.get("/questionnaire/feedback/")
         self.assertStatusOK()
         self.assertInHead(
-            f'dataLayer = [{{"form_type": "H", "survey_id": "0", "title": "Feedback test schema"}}, {{"tx_id": "{actual["METADATA"]["tx_id"]}"}}]'
+            f'"form_type": "H", "survey_id": "0", "title": "Feedback test schema", "tx_id": "{actual["METADATA"]["tx_id"]}"'
         )
         self.assertInHead("https://www.googletagmanager.com")
         self.assertInHead(settings.EQ_GOOGLE_TAG_ID)
@@ -40,7 +40,7 @@ class TestApplicationVariables(IntegrationTestCase):
         self.assertStatusOK()
         # form_type is empty so should not be present
         self.assertInHead(
-            f'dataLayer = [{{"survey_id": "001", "title": "Other input fields"}}, {{"tx_id": "{actual["METADATA"]["tx_id"]}"}}]'
+            f'"survey_id": "001", "title": "Other input fields", "tx_id": "{actual["METADATA"]["tx_id"]}"'
         )
 
     def test_livereload_script_rendered(self):
