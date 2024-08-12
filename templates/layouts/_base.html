@@ -95,7 +95,7 @@
                     loadGoogleTagScript()
                     function gtag(){dataLayer.push(arguments);}
                     gtag('js', new Date());
-                    gtag('config', '{{ google_tag_id }}');
+                    gtag('config', '{{ google_tag_id }}', {{ data_layer | tojson }});
                     gtag('event', 'survey_data', {{ data_layer | tojson }});
                 }
         </script>
