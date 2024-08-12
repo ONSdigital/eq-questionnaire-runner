@@ -49,7 +49,7 @@ describe('Checkbox with "other" option', () => {
     );
   });
 
-  it("Given a mandatory checkbox answer, when there is an error on the page for other field and I enter valid value and submit page, then the error is cleared and I navigate to next page.s", async () => {
+  it("Given a mandatory checkbox answer, when there is an error on the page for other field and I enter valid value and submit page, then the error is cleared and I navigate to next page.", async () => {
     await $(MandatoryCheckboxPage.other()).click();
     await click(MandatoryCheckboxPage.submit());
     await expect(await $(MandatoryCheckboxPage.error()).isDisplayed()).toBe(true);
