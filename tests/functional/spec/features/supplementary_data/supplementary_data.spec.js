@@ -42,7 +42,7 @@ describe("Using supplementary data", () => {
   before("Starting the survey", async () => {
     await browser.openQuestionnaire("test_supplementary_data.json", {
       version: "v2",
-      sdsDatasetId: "d8afa921-1305-d553-d2c6-955a6db2cc2d",
+      sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
       responseId,
     });
   });
@@ -341,7 +341,7 @@ describe("Using supplementary data", () => {
   it("Given I relaunch the survey with new supplementary data and new list items for the repeating section, When I open the Hub page, Then I see the new supplementary list items as new incomplete sections and not any old ones", async () => {
     await browser.openQuestionnaire("test_supplementary_data.json", {
       version: "v2",
-      sdsDatasetId: "1f61750f-51dd-e933-0df9-40261b06d93f",
+      sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
       responseId,
     });
     await expect(await $(HubPage.summaryItems("section-4-1")).getText()).toContain("Harry Potter");
@@ -391,7 +391,7 @@ describe("Using supplementary data", () => {
     await expect(await $(HubPage.summaryRowState("section-6")).getText()).toBe("Completed");
     await browser.openQuestionnaire("test_supplementary_data.json", {
       version: "v2",
-      sdsDatasetId: "d8afa921-1305-d553-d2c6-955a6db2cc2d",
+      sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
       responseId,
     });
     await expect(await $(HubPage.summaryRowState("section-6")).getText()).toBe("Partially completed");
@@ -401,7 +401,7 @@ describe("Using supplementary data", () => {
   it("Given I return to the new data resulting in a new incomplete section, When I start the section, Then I see the new supplementary data piped in accordingly", async () => {
     await browser.openQuestionnaire("test_supplementary_data.json", {
       version: "v2",
-      sdsDatasetId: "1f61750f-51dd-e933-0df9-40261b06d93f",
+      sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
       responseId,
     });
     await click(HubPage.submit());

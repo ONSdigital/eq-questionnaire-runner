@@ -7,7 +7,9 @@ from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import CompletionStatus
 from app.questionnaire.location import SectionKey
-from app.views.contexts import Context
+from app.views.contexts import Context  # pylint: disable=cyclic-import
+
+# Removing Pylint disable causes linting fail in GHA but not locally this issue has been raised here: https://github.com/pylint-dev/pylint/issues/9168
 
 
 class HubContext(Context):
@@ -16,21 +18,21 @@ class HubContext(Context):
             "text": lazy_gettext("Completed"),
             "link": {
                 "text": lazy_gettext("View answers"),
-                "aria_label": lazy_gettext("View answers for {section_name}"),
+                "aria_label": lazy_gettext("View answers: {section_name}"),
             },
         },
         CompletionStatus.IN_PROGRESS: {
             "text": lazy_gettext("Partially completed"),
             "link": {
                 "text": lazy_gettext("Continue with section"),
-                "aria_label": lazy_gettext("Continue with {section_name} section"),
+                "aria_label": lazy_gettext("Continue with section: {section_name}"),
             },
         },
         CompletionStatus.NOT_STARTED: {
             "text": lazy_gettext("Not started"),
             "link": {
                 "text": lazy_gettext("Start section"),
-                "aria_label": lazy_gettext("Start {section_name} section"),
+                "aria_label": lazy_gettext("Start section: {section_name}"),
             },
         },
         CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED: {
