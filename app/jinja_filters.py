@@ -648,6 +648,33 @@ def map_summary_item_config_processor() -> dict[str, Callable]:
     return {"map_summary_item_config": map_summary_item_config}
 
 
+@blueprint.app_context_processor
+def map_list_config_processor() -> dict[str, Callable]:
+    return {"map_list_config": map_list_config}
+
+
+@blueprint.app_template_filter()
+def map_list_config(list_values: list[dict[str, str | bool]]) -> list[dict[str, str]]:
+    items_list: list[dict[str, str]] = []
+
+    for index, value in enumerate(list_values):
+        item = {"text": value["item_title"]}
+
+        if value["is_complete"]:
+            item["iconType"] = "check"
+        else:
+            value.pop("iconType", None)
+
+        value["attributes"] = {
+            "data-qa": f"list-item-{index}-label",
+            "data-list-item-id": value.get("list_item_id"),
+        }
+
+        items_list.append(item)
+
+    return items_list
+
+
 # pylint: disable=too-many-locals
 @blueprint.app_template_filter()
 def map_list_collector_config(
