@@ -1,9 +1,56 @@
 version: 2
 updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      day: "friday"
+      time: "08:00"
+      timezone: "Europe/London"
+    labels:
+      - "dependencies"
+      - "github-actions"
+
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      day: "friday"
+      time: "08:00"
+      timezone: "Europe/London"
+    versioning-strategy: increase-if-necessary
+    labels:
+      - "dependencies"
+      - "node"
+
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "friday"
+      time: "08:00"
+      timezone: "Europe/London"
+    versioning-strategy: increase-if-necessary
+    labels:
+      - "dependencies"
+      - "python"
+    allow:
+      - dependency-type: "production"
+
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      day: "friday"
+      time: "08:00"
+      timezone: "Europe/London"
+    versioning-strategy: increase-if-necessary
+    labels:
+      - "dependencies"
+      - "python-dev"
+    allow:
+      - dependency-type: "development"
+
     groups:
       production-dependencies:
         dependency-type: "production"
@@ -58,39 +105,3 @@ updates:
           - "playwright"
           - "black"
           - "djlint"
-    ignore:
-      # Temporarily pinned to v2.14.0 - problem for translations found in v2.15.0, see: https://github.com/ONSdigital/eq-questionnaire-runner/pull/1384
-      - dependency-name: "babel"
-        update-types: ["version-update:semver-major", "version-update:semver-minor"]
-      - dependency-name: "pytest*"
-        update-types: ["version-update:semver-minor"]
-      - dependency-name: "flake8*"
-        update-types: ["version-update:semver-minor"]
-      - dependency-name: "types*"
-        update-types: ["version-update:semver-minor"]
-      - dependency-name: "pep8"
-        update-types: ["version-update:semver-minor"]
-      - dependency-name: "mock"
-        update-types: ["version-update:semver-minor"]
-      - dependency-name: "jsonschema"
-        update-types: ["version-update:semver-minor"]
-      - dependency-name: "beautifulsoup4"
-        update-types: ["version-update:semver-minor"]
-      - dependency-name: "httmock"
-        update-types: ["version-update:semver-minor"]
-      - dependency-name: "moto"
-        update-types: ["version-update:semver-minor"]
-      - dependency-name: "freezegun"
-        update-types: ["version-update:semver-minor"]
-      - dependency-name: "fakeredis"
-        update-types: ["version-update:semver-minor"]
-      - dependency-name: "mypy"
-        update-types: ["version-update:semver-minor"]
-      - dependency-name: "responses"
-        update-types: ["version-update:semver-minor"]
-      - dependency-name: "playwright"
-        update-types: ["version-update:semver-minor"]
-      - dependency-name: "black"
-        update-types: ["version-update:semver-minor"]
-      - dependency-name: "djlint"
-        update-types: ["version-update:semver-minor"]
