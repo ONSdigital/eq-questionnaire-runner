@@ -654,15 +654,11 @@ def map_list_config_processor() -> dict[str, Callable]:
 
 
 @blueprint.app_template_filter()
-def map_list_config(
-    list_values: list[dict[str, str | bool]]
-) -> list[dict[str, str | bool | dict[str, str | bool]]]:
-    items_list: list[dict[str, str | bool | dict[str, str | bool]]] = []
+def map_list_config(list_values: list[dict]) -> list[dict]:
+    items_list: list[dict] = []
 
     for index, value in enumerate(list_values):
-        item: dict[str, str | bool | dict[str, str | bool]] = {
-            "text": value["item_title"]
-        }
+        item: dict = {"text": value["item_title"]}
 
         if value["is_complete"]:
             item["iconType"] = "check"
