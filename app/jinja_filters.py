@@ -662,10 +662,8 @@ def map_list_config(list_values: list[dict[str, str | bool]]) -> list[dict[str, 
 
         if value["is_complete"]:
             item["iconType"] = "check"
-        else:
-            value.pop("iconType", None)
 
-        value["attributes"] = {
+        item["attributes"] = {
             "data-qa": f"list-item-{index}-label",
             "data-list-item-id": value.get("list_item_id"),
         }
