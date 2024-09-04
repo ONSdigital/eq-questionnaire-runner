@@ -37,21 +37,6 @@ updates:
       - "python"
     allow:
       - dependency-type: "production"
-
-  - package-ecosystem: "pip"
-    directory: "/"
-    schedule:
-      interval: "monthly"
-      day: "friday"
-      time: "08:00"
-      timezone: "Europe/London"
-    versioning-strategy: increase-if-necessary
-    labels:
-      - "dependencies"
-      - "python-dev"
-    allow:
-      - dependency-type: "development"
-
     groups:
       production-dependencies:
         dependency-type: "production"
@@ -86,6 +71,21 @@ updates:
           - "cachetools"
           - "gevent"
           - "babel"
+
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      day: "friday"
+      time: "08:00"
+      timezone: "Europe/London"
+    versioning-strategy: increase-if-necessary
+    labels:
+      - "dependencies"
+      - "python-dev"
+    allow:
+      - dependency-type: "development"
+    groups:
       development-dependencies:
         dependency-type: "development"
         patterns:
