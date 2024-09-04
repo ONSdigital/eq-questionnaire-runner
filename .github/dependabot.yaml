@@ -30,6 +30,7 @@ updates:
       day: "friday"
       time: "08:00"
       timezone: "Europe/London"
+    target-branch: main
     versioning-strategy: increase-if-necessary
     labels:
       - "dependencies"
