@@ -657,7 +657,7 @@ def map_list_config_processor() -> dict[str, Callable]:
 def map_list_config(list_values: list[dict]) -> list[dict]:
     items_list: list[dict] = []
 
-    for index, value in enumerate(list_values):
+    for index, value in enumerate(list_values, 1):
         item: dict = {"text": value["item_title"]}
 
         if value["is_complete"]:
@@ -690,7 +690,7 @@ def map_list_collector_config(
 ) -> list[dict[str, list] | SummaryRow]:
     rows: list[dict[str, list] | SummaryRow] = []
 
-    for index, list_item in enumerate(list_items, start=1):
+    for index, list_item in enumerate(list_items, 1):
         item_name = str(list_item.get("item_title"))
 
         actions = []

@@ -92,13 +92,13 @@ describe("List Collector Section Summary and Summary Items", () => {
       await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).toBe("Partially completed");
       await click(HubPage.submit());
       await expect(browser).toHaveUrlContaining(ListCollectorContentPage.pageName);
-      await checkListItemComplete(`dt[data-qa="list-item-1-label"]`);
-      await checkListItemComplete(`dt[data-qa="list-item-2-label"]`);
-      await checkListItemIncomplete(`dt[data-qa="list-item-3-label"]`);
+      await checkListItemComplete(`li[data-qa="list-item-1-label"]`);
+      await checkListItemComplete(`li[data-qa="list-item-2-label"]`);
+      await checkListItemIncomplete(`li[data-qa="list-item-3-label"]`);
       await click(ListCollectorContentPage.submit());
       await expect(browser).toHaveUrlContaining(ListCollectorFirstRepeatingBlockPage.pageName);
       await completeRepeatingBlocks(666, 2, 5, 1995, true, true);
-      await checkListItemComplete(`dt[data-qa="list-item-3-label"]`);
+      await checkListItemComplete(`li[data-qa="list-item-3-label"]`);
       await click(ListCollectorContentPage.submit());
       await click(ListCollectorContentSectionSummaryPage.submit());
       await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).toBe("Completed");
@@ -114,7 +114,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await click(CompaniesSummaryPage.submit());
       await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).toBe("Partially completed");
       await click(HubPage.submit());
-      await checkListItemComplete(`dt[data-qa="list-item-1-label"]`);
+      await checkListItemComplete(`p[data-qa="list-item-1-label"]`);
       await click(ListCollectorContentPage.submit());
       await expect(browser).toHaveUrlContaining(ListCollectorContentSectionSummaryPage.pageName);
       await click(ListCollectorContentSectionSummaryPage.submit());
