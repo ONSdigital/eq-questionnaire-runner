@@ -22,6 +22,22 @@ updates:
     labels:
       - "dependencies"
       - "node"
+    groups:
+      development-dependencies:
+        dependency-type: "development"
+        patterns:
+          - "@wdio*"
+          - "@babel*"
+          - "eslint*"
+          - "json*"
+          - "jsrsasign*"
+          - "lint-staged*"
+          - "livereload*"
+          - "node-forge*"
+          - "prettier*"
+          - "typescript*"
+          - "uuid*"
+          - "webdriverio*"
 
   - package-ecosystem: "pip"
     directory: "/"
