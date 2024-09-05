@@ -51,6 +51,8 @@ updates:
     labels:
       - "dependencies"
       - "python"
+    allow:
+      - dependency-type: "production"
     groups:
       production-dependencies:
         dependency-type: "production"
@@ -97,6 +99,8 @@ updates:
     labels:
       - "dependencies"
       - "python-dev"
+    allow:
+      - dependency-type: "development"
     groups:
       development-dependencies:
         dependency-type: "development"
