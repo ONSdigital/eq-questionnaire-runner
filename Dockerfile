@@ -15,10 +15,10 @@ ENV HTTP_KEEP_ALIVE 2
 ENV GUNICORN_CMD_ARGS -c gunicorn_config.py
 
 COPY pyproject.toml pyproject.toml
-COPY poetry.lock poetry.lock 
+COPY poetry.lock poetry.lock
 
 RUN groupadd -r appuser && useradd -r -g appuser -u 9000 appuser && chown -R appuser:appuser .
-RUN pip install "poetry==1.8.2" && \
+RUN pip install "poetry==1.8.3" && \
     poetry config virtualenvs.create false && \
     poetry install --only main && \
     make build
