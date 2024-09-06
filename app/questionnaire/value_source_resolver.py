@@ -15,7 +15,7 @@ from app.data_models.list_store import ListModel
 from app.data_models.metadata_proxy import NoMetadataException
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException, SectionKey
-from app.questionnaire.rules import rule_evaluator  # pylint: disable=cyclic-import
+from app.questionnaire.rules import rule_evaluator
 from app.utilities.types import LocationType
 
 ValueSourceTypes: TypeAlias = None | str | int | Decimal | list | dict
