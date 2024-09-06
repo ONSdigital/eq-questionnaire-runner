@@ -60,14 +60,12 @@ task() {
 }
 
 
-N=4
+N=2
 (
 for schema in ${file_path_name}; do
    ((i=i%N)); ((i++==0)) && wait
    task "$schema" &
 done
 )
-
-echo -e "\\n${green}$passed Passed${default} - ${red}$failed Failed${default}"
 
 exit "$exit"
