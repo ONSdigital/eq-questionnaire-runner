@@ -120,24 +120,13 @@ class ContextHelper:
     def data_layer_context(
         self,
     ) -> dict[str, str]:
-        tx_id_context = (
+        return (
             {"tx_id": metadata.tx_id}
             if (metadata := get_metadata(current_user))
-            else None
-        )
-        additional_context = self._survey_config.get_additional_data_layer_context()
-        schema_context = {
+            else {}
+        ) | {
             key: value for key in DATA_LAYER_KEYS if (value := cookie_session.get(key))
         }
-        context = [*additional_context, schema_context]
-
-        if tx_id_context:
-            context.append(tx_id_context)
-
-        flattened_context: dict[str, str] = {}
-        for d in context:
-            flattened_context |= d
-        return flattened_context
 
     @property
     def footer_context(self) -> dict[str, Any]:
