@@ -36,6 +36,7 @@ fi
 echo "--- Testing Schemas in $file_path ---"
 failed=0
 passed=0
+exit=0
 
 file_path_name=$(find "$file_path" -name '*.json')
 
@@ -58,11 +59,14 @@ task() {
     fi
 }
 
+
+N=4
+(
 for schema in ${file_path_name}; do
-    task "$schema" &
-
-
+   ((i=i%N)); ((i++==0)) && wait
+   task "$schema" &
 done
+)
 
 echo -e "\\n${green}$passed Passed${default} - ${red}$failed Failed${default}"
 
