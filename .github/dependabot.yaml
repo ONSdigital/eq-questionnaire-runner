@@ -46,6 +46,7 @@ updates:
       day: "friday"
       time: "08:00"
       timezone: "Europe/London"
+    # Workaround to have two "pip" ecosystems: actively setting "target-branch: main" for one config, and leaving it unset for the other config
     target-branch: main
     versioning-strategy: increase-if-necessary
     labels:
@@ -122,3 +123,7 @@ updates:
           - "playwright"
           - "black"
           - "djlint"
+        ignore:
+          # "black" temporarily pinned to v2.14.0 - problem for translations found in v2.15.0, see: https://github.com/ONSdigital/eq-questionnaire-runner/pull/1384
+          - dependency-name: "babel"
+            update-types: [ "version-update:semver-major", "version-update:semver-minor" ]
