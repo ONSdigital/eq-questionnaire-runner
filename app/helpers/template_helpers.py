@@ -120,13 +120,15 @@ class ContextHelper:
     def data_layer_context(
         self,
     ) -> dict[str, str]:
-        return (
+        tx_id_context = (
             {"tx_id": metadata.tx_id}
             if (metadata := get_metadata(current_user))
             else {}
-        ) | {
+        )
+        schema_context = {
             key: value for key in DATA_LAYER_KEYS if (value := cookie_session.get(key))
         }
+        return tx_id_context | schema_context
 
     @property
     def footer_context(self) -> dict[str, Any]:
