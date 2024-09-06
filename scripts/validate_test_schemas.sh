@@ -60,10 +60,10 @@ task() {
 }
 
 
-N=2
+N_TIMES_IN_PARALLEL=4
 (
 for schema in ${file_path_name}; do
-   ((i=i%N)); ((i++==0)) && wait
+   ((i=i%N_TIMES_IN_PARALLEL)); ((i++==0)) && wait
    task "$schema" &
 done
 )
