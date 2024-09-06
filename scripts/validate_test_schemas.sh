@@ -39,24 +39,28 @@ passed=0
 
 file_path_name=$(find "$file_path" -name '*.json')
 
-for schema in ${file_path_name}; do
-
-    result="$(curl -s -w 'HTTPSTATUS:%{http_code}' -X POST -H "Content-Type: application/json" -d @"$schema" http://localhost:5001/validate | tr -d '\n')"
+task() {
+    result="$(curl -s -w 'HTTPSTATUS:%{http_code}' -X POST -H "Content-Type: application/json" -d @"$1" http://localhost:5001/validate | tr -d '\n')"
     # shellcheck disable=SC2001
     HTTP_BODY=$(echo "${result}" | sed -e 's/HTTPSTATUS\:.*//g')
     result_response="${result//*HTTPSTATUS:/}"
     result_body=$(echo "$HTTP_BODY"  | python -m json.tool)
 
     if [ "$result_response" == "200" ] && [ "$result_body" == "{}" ]; then
-        echo -e "${green}$schema - PASSED${default}"
+        echo -e "${green}$1 - PASSED${default}"
         (( passed++ ))
     else
-        echo -e "\\n${red}$schema - FAILED"
+        echo -e "\\n${red}$1 - FAILED"
         echo "HTTP Status @ /validate: [$result_response]"
         echo -e "Error: [$result_body]${default}\\n"
         (( failed++ ))
         exit=1
     fi
+}
+
+for schema in ${file_path_name}; do
+    task "$schema" &
+
 
 done
 
