@@ -1,9 +1,4 @@
-from uuid import uuid4
-
-import pytest
 from google.pubsub_v1.types.pubsub import PubsubMessage
-
-from app.publisher.exceptions import PublicationFailed
 
 
 def test_publish(publisher, mocker):
@@ -29,15 +24,3 @@ def test_publish(publisher, mocker):
 
     # Check mock.
     batch.publish.assert_has_calls([mocker.call(PubsubMessage(data=b"test-message"))])
-
-# TODO: Temporarily prevent test from running during investigation
-# def test_resolving_message_raises_exception_on_error(publisher):
-#     with pytest.raises(PublicationFailed) as ex:
-#         # Try resolve the future with an invalid credentials
-#         publisher.publish(
-#             "test-topic-id",
-#             b"test-message",
-#             fulfilment_request_transaction_id=str(uuid4()),
-#         )
-#
-#     assert "403 The request is missing a valid API key." in str(ex.value)
