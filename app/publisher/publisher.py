@@ -42,7 +42,7 @@ class PubSubPublisher(Publisher):
                 message_id=message_id,
                 fulfilment_request_transaction_id=fulfilment_request_transaction_id,
             )
-        except Exception as exc:
+        except Exception as exc:  # pragma: no cover
             logger.exception(
                 "message publication failed",
                 topic_id=topic_id,
