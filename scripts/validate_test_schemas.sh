@@ -5,6 +5,10 @@ red="$(tput setaf 1)"
 default="$(tput sgr0)"
 checks=4
 
+
+start=$SECONDS
+
+
 until [ "$checks" == 0 ]; do
     response="$(curl -so /dev/null -w '%{http_code}' http://localhost:5002/status)"
 
@@ -40,7 +44,7 @@ exit=0
 
 file_path_name=$(find "$file_path" -name '*.json')
 
-task() {
+validate() {
     result="$(curl -s -w 'HTTPSTATUS:%{http_code}' -X POST -H "Content-Type: application/json" -d @"$1" http://localhost:5001/validate | tr -d '\n')"
     # shellcheck disable=SC2001
     HTTP_BODY=$(echo "${result}" | sed -e 's/HTTPSTATUS\:.*//g')
@@ -60,12 +64,14 @@ task() {
 }
 
 
-N_TIMES_IN_PARALLEL=4
+N_TIMES_IN_PARALLEL=20
 (
 for schema in ${file_path_name}; do
    ((i=i%N_TIMES_IN_PARALLEL)); ((i++==0)) && wait
-   task "$schema" &
+   validate "$schema" &
 done
 )
+
+echo "SECONDS: $(( SECONDS - start ))"
 
 exit "$exit"
