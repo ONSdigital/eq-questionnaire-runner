@@ -6,7 +6,6 @@ default="$(tput sgr0)"
 checks=4
 
 
-start=$SECONDS
 
 
 until [ "$checks" == 0 ]; do
@@ -72,6 +71,5 @@ for schema in ${file_path_name}; do
 done
 )
 
-echo "SECONDS: $(( SECONDS - start ))"
 
 exit "$exit"
