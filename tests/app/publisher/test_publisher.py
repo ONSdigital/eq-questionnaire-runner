@@ -36,14 +36,13 @@ def test_resolving_message_raises_exception_on_error(publisher):
     mock_future = Mock()
     mock_future.result.side_effect = Exception("Test exception during publish")
 
-    # Patch the _publish method to return the mocked future object
     with patch(
         "app.publisher.publisher.PubSubPublisher._publish", return_value=mock_future
     ):
-        with pytest.raises(PublicationFailed) as exc_info:
+        with pytest.raises(PublicationFailed) as ex:
             publisher.publish(
                 "test-topic-id",
                 b"test-message",
                 fulfilment_request_transaction_id=str(uuid4()),
             )
-        assert "Test exception during publish" in str(exc_info.value)
+        assert "Test exception during publish" in str(ex.value)
