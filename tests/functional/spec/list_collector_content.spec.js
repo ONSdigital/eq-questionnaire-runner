@@ -114,7 +114,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await click(CompaniesSummaryPage.submit());
       await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).toBe("Partially completed");
       await click(HubPage.submit());
-      await listItemComplete(`p[data-qa="list-item-1-label"]`);
+      await listItemComplete(`li[data-qa="list-item-1-label"]`);
       await click(ListCollectorContentPage.submit());
       await expect(browser).toHaveUrlContaining(ListCollectorContentSectionSummaryPage.pageName);
       await click(ListCollectorContentSectionSummaryPage.submit());
