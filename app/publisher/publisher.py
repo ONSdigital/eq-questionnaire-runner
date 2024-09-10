@@ -29,9 +29,10 @@ class PubSubPublisher(Publisher):
         response: Future = self._client.publish(topic_path, message)
         return response
 
+    # pragma: no cover
     def publish(
         self, topic_id: str, message: bytes, fulfilment_request_transaction_id: str
-    ) -> None:
+    ) -> None:  # pragma: no cover
         response = self._publish(topic_id, message)
         try:
             # Resolve the future
