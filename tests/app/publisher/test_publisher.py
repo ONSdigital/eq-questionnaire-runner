@@ -1,10 +1,7 @@
-from http import HTTPStatus
-from unittest.mock import Mock, patch
 from uuid import uuid4
 
 import pytest
 from google.pubsub_v1.types.pubsub import PubsubMessage
-from google.cloud.pubsub_v1.futures import Future
 
 from app.publisher.exceptions import PublicationFailed
 
