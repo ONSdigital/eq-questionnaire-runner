@@ -1,6 +1,8 @@
+from unittest.mock import Mock, patch
 from uuid import uuid4
 
 import pytest
+from google.cloud.pubsub_v1.futures import Future
 from google.pubsub_v1.types.pubsub import PubsubMessage
 
 from app.publisher.exceptions import PublicationFailed
@@ -32,11 +34,15 @@ def test_publish(publisher, mocker):
 
 
 def test_resolving_message_raises_exception_on_error(publisher):
-    with pytest.raises(PublicationFailed) as ex:
-        publisher.publish(
-            "test-topic-id",
-            b"test-message",
-            fulfilment_request_transaction_id=str(uuid4()),
-        )
+    mock_future = Mock()
+    mock_future.result.side_effect = Exception()
 
-    assert str(ex.value).startswith("403")
+    with patch(
+        "app.publisher.publisher.PubSubPublisher._publish", return_value=mock_future
+    ):
+        with pytest.raises(PublicationFailed):
+            publisher.publish(
+                "test-topic-id",
+                b"test-message",
+                fulfilment_request_transaction_id=str(uuid4()),
+            )
