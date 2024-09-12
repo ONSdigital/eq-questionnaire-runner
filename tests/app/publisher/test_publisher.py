@@ -2,7 +2,6 @@ from unittest.mock import Mock, patch
 from uuid import uuid4
 
 import pytest
-from google.cloud.pubsub_v1.futures import Future
 from google.pubsub_v1.types.pubsub import PubsubMessage
 
 from app.publisher.exceptions import PublicationFailed
