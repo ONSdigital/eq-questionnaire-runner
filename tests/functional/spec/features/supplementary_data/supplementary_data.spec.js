@@ -374,7 +374,7 @@ describe("Using supplementary data", () => {
     await summaryItemComplete(`li[data-qa="list-item-2-label"]`);
     await summaryItemIncomplete(`li[data-qa="list-item-3-label"]`);
     await click(ListCollectorProductsPage.submit());
-    await expect(await (browser).toHaveUrlContaining(ProductRepeatingBlock1Page.pageName));
+    await expect(await browser.toHaveUrlContaining(ProductRepeatingBlock1Page.pageName));
   });
 
   it("Given I complete the section and relaunch with the old data that has fewer items in the products list, When I am on the Hub, Then I see the products section and sales targets sections are now in progress", async () => {
