@@ -372,9 +372,9 @@ describe("Using supplementary data", () => {
     await expect(browser).toHaveUrlContaining(ListCollectorProductsPage.pageName);
     await listItemComplete(`li[data-qa="list-item-1-label"]`, true);
     await listItemComplete(`li[data-qa="list-item-2-label"]`, true);
-    await listItemComplete(`li[data-qa="list-item-3-label"]`, true);
+    await listItemComplete(`li[data-qa="list-item-3-label"]`, false);
     await click(ListCollectorProductsPage.submit());
-    await expect(await browser.toHaveUrlContaining(ProductRepeatingBlock1Page.pageName));
+    await expect(browser).toHaveUrlContaining(ProductRepeatingBlock1Page.pageName);
   });
 
   it("Given I complete the section and relaunch with the old data that has fewer items in the products list, When I am on the Hub, Then I see the products section and sales targets sections are now in progress", async () => {
