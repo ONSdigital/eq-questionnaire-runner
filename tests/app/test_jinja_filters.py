@@ -23,6 +23,7 @@ from app.jinja_filters import (
     get_width_for_number,
     map_list_collector_config,
     map_summary_item_config,
+    map_list_config,
     should_wrap_with_fieldset,
     strip_tags,
 )
@@ -1334,6 +1335,50 @@ def test_map_list_collector_config_render_icon_set():
                 }
             ]
         },
+    ]
+
+    assert output == expected
+
+def test_map_list_config():
+    list_values = [
+        [
+            {
+                'item_title': 'Harry Potter',
+                'primary_person': False,
+                'list_item_id': '1',
+                'is_complete': True,
+                'repeating_blocks': False
+            },
+            {
+                'item_title': 'Clark Kent',
+                'primary_person': False,
+                'list_item_id': '2',
+                'is_complete': False,
+                'repeating_blocks': False
+            }
+        ]
+    ]
+
+    output = map_list_config(list_values)
+
+    expected = [
+        [
+            {
+                'text': 'Harry Potter',
+                'iconType': 'check',
+                'attributes': {
+                    'data-qa': 'list-item-1-label',
+                    'data-list-item-id': '1'
+                }
+            },
+            {
+                'text': 'Clark Kent',
+                'attributes': {
+                    'data-qa': 'list-item-2-label',
+                    'data-list-item-id': '2'
+                }
+            }
+        ]
     ]
 
     assert output == expected
