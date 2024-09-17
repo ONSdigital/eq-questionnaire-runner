@@ -1,4 +1,4 @@
-import { assertSummaryItems, assertSummaryTitles, assertSummaryValues, summaryItemComplete, summaryItemIncomplete, click } from "../../../helpers";
+import { assertSummaryItems, assertSummaryTitles, assertSummaryValues, listItemComplete, click } from "../../../helpers";
 import { expect } from "@wdio/globals";
 import { getRandomString } from "../../../jwt_helper";
 import AddAdditionalEmployeePage from "../../../generated_pages/supplementary_data/list-collector-additional-add.page.js";
@@ -370,9 +370,9 @@ describe("Using supplementary data", () => {
   it("Given there is now an additional product, When I resume the Product Details Section, Then I start from the list collector content block and see the new product is incomplete", async () => {
     await $(HubPage.summaryRowLink("section-6")).click();
     await expect(browser).toHaveUrlContaining(ListCollectorProductsPage.pageName);
-    await summaryItemComplete(`li[data-qa="list-item-1-label"]`);
-    await summaryItemComplete(`li[data-qa="list-item-2-label"]`);
-    await summaryItemIncomplete(`li[data-qa="list-item-3-label"]`);
+    await listItemComplete(`li[data-qa="list-item-1-label"]`);
+    await listItemComplete(`li[data-qa="list-item-2-label"]`);
+    await listItemComplete(`li[data-qa="list-item-3-label"]`);
     await click(ListCollectorProductsPage.submit());
     await expect(await browser.toHaveUrlContaining(ProductRepeatingBlock1Page.pageName));
   });
