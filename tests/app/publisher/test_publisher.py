@@ -1,3 +1,4 @@
+from unittest.mock import Mock, patch
 from uuid import uuid4
 
 import pytest
@@ -32,12 +33,15 @@ def test_publish(publisher, mocker):
 
 
 def test_resolving_message_raises_exception_on_error(publisher):
-    with pytest.raises(PublicationFailed) as ex:
-        # Try resolve the future with an invalid credentials
-        publisher.publish(
-            "test-topic-id",
-            b"test-message",
-            fulfilment_request_transaction_id=str(uuid4()),
-        )
+    mock_future = Mock()
+    mock_future.result.side_effect = Exception()
 
-    assert "403 The request is missing a valid API key." in str(ex.value)
+    with patch(
+        "app.publisher.publisher.PubSubPublisher._publish", return_value=mock_future
+    ):
+        with pytest.raises(PublicationFailed):
+            publisher.publish(
+                "test-topic-id",
+                b"test-message",
+                fulfilment_request_transaction_id=str(uuid4()),
+            )
