@@ -665,7 +665,6 @@ def map_list_config(list_values: list[dict]) -> list[dict]:
 
         item["attributes"] = {
             "data-qa": f"list-item-{index}-label",
-            "data-list-item-id": value["list_item_id"],
         }
 
         items_list.append(item)

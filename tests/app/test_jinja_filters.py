@@ -1367,14 +1367,12 @@ def test_map_list_config():
                 "iconType": "check",
                 "attributes": {
                     "data-qa": "list-item-1-label",
-                    "data-list-item-id": "1",
                 },
             },
             {
                 "text": "Clark Kent",
                 "attributes": {
                     "data-qa": "list-item-2-label",
-                    "data-list-item-id": "2",
                 },
             },
         ]
