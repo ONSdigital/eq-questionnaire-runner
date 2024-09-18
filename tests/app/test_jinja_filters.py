@@ -1342,22 +1342,20 @@ def test_map_list_collector_config_render_icon_set():
 
 def test_map_list_config():
     list_values = [
-        [
-            {
-                "item_title": "Harry Potter",
-                "primary_person": False,
-                "list_item_id": "1",
-                "is_complete": True,
-                "repeating_blocks": False,
-            },
-            {
-                "item_title": "Clark Kent",
-                "primary_person": False,
-                "list_item_id": "2",
-                "is_complete": False,
-                "repeating_blocks": False,
-            },
-        ]
+        {
+            "item_title": "Harry Potter",
+            "primary_person": False,
+            "list_item_id": "1",
+            "is_complete": True,
+            "repeating_blocks": False,
+        },
+        {
+            "item_title": "Clark Kent",
+            "primary_person": False,
+            "list_item_id": "2",
+            "is_complete": False,
+            "repeating_blocks": False,
+        },
     ]
 
     output = map_list_config(list_values)
