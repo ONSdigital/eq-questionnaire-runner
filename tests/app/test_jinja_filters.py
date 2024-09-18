@@ -1361,21 +1361,19 @@ def test_map_list_config():
     output = map_list_config(list_values)
 
     expected = [
-        [
-            {
-                "text": "Harry Potter",
-                "iconType": "check",
-                "attributes": {
-                    "data-qa": "list-item-1-label",
-                },
+        {
+            "text": "Harry Potter",
+            "iconType": "check",
+            "attributes": {
+                "data-qa": "list-item-1-label",
             },
-            {
-                "text": "Clark Kent",
-                "attributes": {
-                    "data-qa": "list-item-2-label",
-                },
+        },
+        {
+            "text": "Clark Kent",
+            "attributes": {
+                "data-qa": "list-item-2-label",
             },
-        ]
+        },
     ]
 
     assert output == expected
