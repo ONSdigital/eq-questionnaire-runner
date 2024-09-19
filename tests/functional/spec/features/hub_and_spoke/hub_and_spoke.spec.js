@@ -325,6 +325,10 @@ describe("Feature: Hub and Spoke", () => {
       });
     });
 
+    it("When schema is opened, Then the supplementary data should successfully loaded", async () => {
+      await expect(browser).toHaveUrlContaining(LoadedSuccessfullyBlockPage.url());
+    });
+
     it("When all the repeating sections are complete, Then the hub should be displayed", async () => {
       await click(LoadedSuccessfullyBlockPage.submit());
       await click(IntroductionBlockPage.submit());
