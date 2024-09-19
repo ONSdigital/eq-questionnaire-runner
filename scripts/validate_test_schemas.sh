@@ -39,22 +39,22 @@ fi
 echo "--- Testing Schemas in $file_path ---"
 failed=0
 passed=0
-exit=0
 
 file_path_name=$(find "$file_path" -name '*.json')
 
 validate() {
-    result="$(curl -s -w 'HTTPSTATUS:%{http_code}' -X POST -H "Content-Type: application/json" -d @"$1" http://localhost:5001/validate | tr -d '\n')"
+    schema=$1
+    result="$(curl -s -w 'HTTPSTATUS:%{http_code}' -X POST -H "Content-Type: application/json" -d @"$schema" http://localhost:5001/validate | tr -d '\n')"
     # shellcheck disable=SC2001
     HTTP_BODY=$(echo "${result}" | sed -e 's/HTTPSTATUS\:.*//g')
     result_response="${result//*HTTPSTATUS:/}"
     result_body=$(echo "$HTTP_BODY"  | python -m json.tool)
 
     if [ "$result_response" == "200" ] && [ "$result_body" == "{}" ]; then
-        echo -e "${green}$1 - PASSED${default}"
+        echo -e "${green}$schema - PASSED${default}"
         (( passed++ ))
     else
-        echo -e "\\n${red}$1 - FAILED"
+        echo -e "\\n${red}$schema - FAILED"
         echo "HTTP Status @ /validate: [$result_response]"
         echo -e "Error: [$result_body]${default}\\n"
         (( failed++ ))
@@ -64,12 +64,13 @@ validate() {
 
 
 N_TIMES_IN_PARALLEL=20
-(
+
 for schema in ${file_path_name}; do
    ((i=i%N_TIMES_IN_PARALLEL)); ((i++==0)) && wait
+#  Spawn multiple (N_TIMES_IN_PARALLEL) processes in subshells and send to background, but keep printing outputs.
    validate "$schema" &
 done
-)
+
 
 
 exit "$exit"
