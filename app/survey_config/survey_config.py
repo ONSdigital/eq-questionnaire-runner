@@ -70,8 +70,3 @@ class SurveyConfig:
         self, cookie_has_theme: bool
     ) -> Optional[list[dict]]:
         return None
-
-    def get_additional_data_layer_context(  # pylint: disable=no-self-use
-        self,
-    ) -> list:
-        return []
