@@ -73,9 +73,6 @@
 {% block head %}
     {# djlint:off #}
     {% if google_tag_id %}
-        <script nonce="{{ csp_nonce }}">
-            dataLayer = {{ data_layer | tojson }}
-        </script>
         <!-- Google tag (gtag.js) -->
         <script nonce="{{ csp_nonce }}">
             function loadGoogleTagScript() {
@@ -98,7 +95,9 @@
                     loadGoogleTagScript()
                     function gtag(){dataLayer.push(arguments);}
                     gtag('js', new Date());
+                    gtag('set', {{ data_layer }});
                     gtag('config', '{{ google_tag_id }}');
+                    gtag('event', 'survey_data', {{ data_layer | tojson }});
                 }
         </script>
     {% endif %}
