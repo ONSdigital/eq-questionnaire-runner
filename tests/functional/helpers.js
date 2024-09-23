@@ -6,11 +6,12 @@ export const checkItemsInList = async (itemsExpected, listLabel) => {
   }
 };
 
-export const checkListItemComplete = async (listItemLabel) => {
-  await expect(await $(listItemLabel).$(`.ons-summary__item-title-icon.ons-summary__item-title-icon--check`).isExisting()).toBe(true);
+export const summaryItemComplete = async (summaryItemLabel, status) => {
+  await expect(await $(summaryItemLabel).$(`.ons-summary__item-title-icon.ons-summary__item-title-icon--check`).isExisting()).toBe(status);
 };
-export const checkListItemIncomplete = async (listItemLabel) => {
-  await expect(await $(listItemLabel).$(`.ons-summary__item-title-icon.ons-summary__item-title-icon--check`).isExisting()).toBe(false);
+
+export const listItemComplete = async (listItemLabel, status) => {
+  await expect(await $(listItemLabel).$(`.ons-list__prefix.ons-list__prefix--icon-check`).isExisting()).toBe(status);
 };
 
 const assertSummaryFunction = (selector) => {
