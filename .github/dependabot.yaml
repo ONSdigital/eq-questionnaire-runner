@@ -38,6 +38,18 @@ updates:
           - "typescript*"
           - "uuid*"
           - "webdriverio*"
+    ignore:
+      # temporarily pinned to minor/patch only - eslint v9 not supported in eslint-config-standard v17.1.0: https://github.com/standard/eslint-config-standard/issues/410
+      - dependency-name: "eslint"
+        update-types: [ "version-update:semver-major" ]
+
+      # temporarily pinned to minor/patch only - eslint v9 not supported in eslint-config-standard v17.1.0: https://github.com/standard/eslint-config-standard/issues/410
+      - dependency-name: "eslint-plugin-n"
+        update-types: [ "version-update:semver-major" ]
+
+      # temporarily pinned to minor/patch only - eslint v9 not supported in eslint-config-standard v17.1.0: https://github.com/standard/eslint-config-standard/issues/410
+      - dependency-name: "eslint-plugin-promise"
+        update-types: [ "version-update:semver-major" ]
 
   - package-ecosystem: "pip"
     directory: "/"
