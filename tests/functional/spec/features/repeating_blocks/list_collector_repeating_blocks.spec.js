@@ -9,7 +9,7 @@ import AnyOtherCompaniesOrBranchesPage from "../../../generated_pages/list_colle
 import SectionCompaniesPage from "../../../generated_pages/list_collector_repeating_blocks_section_summary/section-companies-summary.page";
 import AnyOtherTradingDetailsPage from "../../../generated_pages/list_collector_repeating_blocks_section_summary/any-other-trading-details.page";
 import SubmitPage from "../../../generated_pages/list_collector_repeating_blocks_section_summary/submit.page";
-import { repeatingAnswerChangeLink, checkItemsInList, checkListItemComplete, checkListItemIncomplete, click } from "../../../helpers";
+import { repeatingAnswerChangeLink, checkItemsInList, summaryItemComplete, click } from "../../../helpers";
 import HubPage from "../../../base_pages/hub.page";
 import ResponsiblePartyHubPage from "../../../generated_pages/list_collector_repeating_blocks_with_hub/responsible-party-business.page";
 import { expect } from "@wdio/globals";
@@ -159,10 +159,10 @@ describe("List Collector Repeating Blocks", () => {
 
       // Only the ONS and NAV items should be complete
       await checkItemsInList(["ONS", "GOV", "MOD", "NAV"], AnyOtherCompaniesOrBranchesPage.listLabel);
-      await checkListItemComplete(`dt[data-qa="list-item-1-label"]`);
-      await checkListItemIncomplete(`dt[data-qa="list-item-2-label"]`);
-      await checkListItemIncomplete(`dt[data-qa="list-item-3-label"]`);
-      await checkListItemComplete(`dt[data-qa="list-item-1-label"]`);
+      await summaryItemComplete(`dt[data-qa="list-item-1-label"]`, true);
+      await summaryItemComplete(`dt[data-qa="list-item-2-label"]`, false);
+      await summaryItemComplete(`dt[data-qa="list-item-3-label"]`, false);
+      await summaryItemComplete(`dt[data-qa="list-item-1-label"]`, true);
     });
 
     it("When an item has incomplete repeating blocks, Then using submit on the list collector page will navigate the user to the first incomplete repeating block.", async () => {
@@ -192,10 +192,10 @@ describe("List Collector Repeating Blocks", () => {
     it("When the last remaining incomplete repeating block is completed, Then all items are marked as completed with the checkmark icon.", async () => {
       await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioNo()).click();
       await click(CompaniesRepeatingBlock2Page.submit());
-      await checkListItemComplete(`dt[data-qa="list-item-1-label"]`);
-      await checkListItemComplete(`dt[data-qa="list-item-2-label"]`);
-      await checkListItemComplete(`dt[data-qa="list-item-3-label"]`);
-      await checkListItemComplete(`dt[data-qa="list-item-4-label"]`);
+      await summaryItemComplete(`dt[data-qa="list-item-1-label"]`, true);
+      await summaryItemComplete(`dt[data-qa="list-item-2-label"]`, true);
+      await summaryItemComplete(`dt[data-qa="list-item-3-label"]`, true);
+      await summaryItemComplete(`dt[data-qa="list-item-4-label"]`, true);
     });
 
     it("When the user clicks a change link from the section summary and submits without changing an answer, Then the user is returned to the section summary anchored to the answer they clicked on", async () => {
@@ -304,8 +304,8 @@ describe("List Collector Repeating Blocks", () => {
       await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioNo()).click();
       await click(CompaniesRepeatingBlock2Page.submit());
       await expect(browser).toHaveUrlContaining(AnyOtherCompaniesOrBranchesPage.pageName);
-      await checkListItemComplete(`dt[data-qa="list-item-1-label"]`);
-      await checkListItemComplete(`dt[data-qa="list-item-2-label"]`);
+      await summaryItemComplete(`dt[data-qa="list-item-1-label"]`, true);
+      await summaryItemComplete(`dt[data-qa="list-item-2-label"]`, true);
     });
 
     it("When another incomplete item is added via the section summary, Then navigating to the submit page of the section will redirect to the list collector page.", async () => {
