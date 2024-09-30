@@ -22,7 +22,7 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
-          version: 1.8.2
+          version: 1.8.3
           virtualenvs-create: true
       - uses: actions/setup-python@v5
         with:
@@ -58,7 +58,7 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
-          version: 1.8.2
+          version: 1.8.3
           virtualenvs-create: true
       - uses: actions/setup-python@v5
         with:
@@ -98,7 +98,7 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
-          version: 1.8.2
+          version: 1.8.3
           virtualenvs-create: true
       - uses: actions/setup-python@v5
         with:
@@ -143,7 +143,7 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
-          version: 1.8.2
+          version: 1.8.3
           virtualenvs-create: true
       - uses: actions/setup-python@v5
         with:
@@ -158,9 +158,20 @@ jobs:
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
   docker-push:
+    permissions:
+      contents: 'read'
+      id-token: 'write'
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
+      - id: auth
+        name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          token_format: 'access_token'
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.SERVICE_ACCOUNT }}
+
       - name: Set Tag and SHA
         run: |
           CLEAN_TAG=$(echo "${{ github.event.pull_request.head.ref  }}"  | tr / -)
@@ -181,10 +192,7 @@ jobs:
           docker push onsdigital/eq-questionnaire-runner:$TAG
 
       - name: Push to GAR
-        env:
-          GAR_SERVICE_KEY: ${{ secrets.GAR_SERVICE_KEY }}
         run: |
-          echo $GAR_SERVICE_KEY | docker login -u _json_key --password-stdin https://${{ secrets.GAR_LOCATION }}
           gcloud auth configure-docker ${{ secrets.GAR_LOCATION }}
           echo "Pushing to GAR with tag $TAG"
           docker push ${{ secrets.GAR_LOCATION }}/${{ secrets.GAR_PROJECT_ID }}/docker-images/eq-questionnaire-runner:$TAG

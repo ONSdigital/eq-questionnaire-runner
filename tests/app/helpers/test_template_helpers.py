@@ -1029,13 +1029,13 @@ def test_use_default_survey_title_in_context_when_no_cookie(
             SurveyType.DEFAULT,
             "en",
             QuestionnaireSchema({"survey_id": "001"}),
-            [{"survey_id": "001"}],
+            {"survey_id": "001"},
         ),
         (
             SurveyType.DEFAULT,
             "en",
             QuestionnaireSchema({"survey_id": "001", "form_type": "test"}),
-            [{"form_type": "test", "survey_id": "001"}],
+            {"form_type": "test", "survey_id": "001"},
         ),
         (
             SurveyType.BUSINESS,
@@ -1043,7 +1043,7 @@ def test_use_default_survey_title_in_context_when_no_cookie(
             QuestionnaireSchema(
                 {"survey_id": "001", "form_type": "test", "title": "test_title"}
             ),
-            [{"form_type": "test", "survey_id": "001", "title": "test_title"}],
+            {"form_type": "test", "survey_id": "001", "title": "test_title"},
         ),
         (
             SurveyType.HEALTH,
@@ -1051,7 +1051,7 @@ def test_use_default_survey_title_in_context_when_no_cookie(
             QuestionnaireSchema(
                 {"survey_id": "001", "form_type": "test", "title": "test_title"}
             ),
-            [{"form_type": "test", "survey_id": "001", "title": "test_title"}],
+            {"form_type": "test", "survey_id": "001", "title": "test_title"},
         ),
         (
             SurveyType.SOCIAL,
@@ -1059,55 +1059,55 @@ def test_use_default_survey_title_in_context_when_no_cookie(
             QuestionnaireSchema(
                 {"survey_id": "001", "form_type": "test", "title": "test_title"}
             ),
-            [{"form_type": "test", "survey_id": "001", "title": "test_title"}],
+            {"form_type": "test", "survey_id": "001", "title": "test_title"},
         ),
         (
             SurveyType.NORTHERN_IRELAND,
             "en",
             QuestionnaireSchema({"survey_id": "001"}),
-            [{"survey_id": "001"}],
+            {"survey_id": "001"},
         ),
         (
             SurveyType.DBT_DSIT,
             "en",
             QuestionnaireSchema({"survey_id": "001"}),
-            [{"survey_id": "001"}],
+            {"survey_id": "001"},
         ),
         (
             SurveyType.DBT_DSIT_NI,
             "en",
             QuestionnaireSchema({"survey_id": "001"}),
-            [{"survey_id": "001"}],
+            {"survey_id": "001"},
         ),
         (
             SurveyType.DBT,
             "en",
             QuestionnaireSchema({"survey_id": "001"}),
-            [{"survey_id": "001"}],
+            {"survey_id": "001"},
         ),
         (
             SurveyType.DBT_NI,
             "en",
             QuestionnaireSchema({"survey_id": "001"}),
-            [{"survey_id": "001"}],
+            {"survey_id": "001"},
         ),
         (
             SurveyType.ORR,
             "en",
             QuestionnaireSchema({"survey_id": "001"}),
-            [{"survey_id": "001"}],
+            {"survey_id": "001"},
         ),
         (
             SurveyType.DESNZ,
             "en",
             QuestionnaireSchema({"survey_id": "001"}),
-            [{"survey_id": "001"}],
+            {"survey_id": "001"},
         ),
         (
             SurveyType.DESNZ_NI,
             "en",
             QuestionnaireSchema({"survey_id": "001"}),
-            [{"survey_id": "001"}],
+            {"survey_id": "001"},
         ),
     ],
 )
