@@ -2,8 +2,10 @@ from unittest.mock import Mock, patch
 from uuid import uuid4
 
 import pytest
+from google.cloud.pubsub_v1.open_telemetry.publish_message_wrapper import (
+    PublishMessageWrapper,
+)
 from google.pubsub_v1.types.pubsub import PubsubMessage
-from google.cloud.pubsub_v1.open_telemetry.publish_message_wrapper import PublishMessageWrapper
 
 from app.publisher.exceptions import PublicationFailed
 
@@ -30,7 +32,9 @@ def test_publish(publisher, mocker):
     assert future is mocker.sentinel.future
 
     # Check mock.
-    batch.publish.assert_has_calls([mocker.call(PublishMessageWrapper(PubsubMessage({"data": b"test-message"})))])
+    batch.publish.assert_has_calls(
+        [mocker.call(PublishMessageWrapper(PubsubMessage({"data": b"test-message"})))]
+    )
 
 
 def test_resolving_message_raises_exception_on_error(publisher):
