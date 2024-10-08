@@ -55,7 +55,7 @@ flake8-quotes = "^3.4.0"
 
 [tool.poetry.dependencies]
 # update dependabot.yaml when adding new dependencies
-python = "^3.11.4"
+python = "^3.12.6"
 colorama = "^0.4.6"
 flask = "^3.0.2"
 flask-babel = "^4.0.0"
