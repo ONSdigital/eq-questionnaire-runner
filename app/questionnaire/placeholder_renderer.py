@@ -1,15 +1,17 @@
 from copy import deepcopy
-from typing import Mapping, MutableMapping
+from typing import TYPE_CHECKING, Mapping, MutableMapping
 
 from jsonpointer import resolve_pointer, set_pointer
 
 from app.data_models.answer import AnswerValueTypes
 from app.data_models.data_stores import DataStores
 from app.questionnaire import QuestionnaireSchema
-from app.questionnaire.placeholder_parser import PlaceholderParser
 from app.questionnaire.plural_forms import get_plural_form_key
 from app.questionnaire.schema_utils import find_pointers_containing
 from app.utilities.types import LocationType
+
+if TYPE_CHECKING:
+    from app.questionnaire.placeholder_parser import PlaceholderParser
 
 
 class PlaceholderRenderer:
@@ -69,6 +71,8 @@ class PlaceholderRenderer:
         placeholder_parser: PlaceholderParser | None = None,
     ) -> str:
         if not placeholder_parser:
+            from app.questionnaire.placeholder_parser import PlaceholderParser
+
             placeholder_parser = PlaceholderParser(
                 language=self._language,
                 data_stores=self._data_stores,
