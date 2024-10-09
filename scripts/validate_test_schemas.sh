@@ -5,6 +5,9 @@ red="$(tput setaf 1)"
 default="$(tput sgr0)"
 checks=4
 
+
+
+
 until [ "$checks" == 0 ]; do
     response="$(curl -so /dev/null -w '%{http_code}' http://localhost:5002/status)"
 
@@ -39,8 +42,8 @@ passed=0
 
 file_path_name=$(find "$file_path" -name '*.json')
 
-for schema in ${file_path_name}; do
-
+validate() {
+    schema=$1
     result="$(curl -s -w 'HTTPSTATUS:%{http_code}' -X POST -H "Content-Type: application/json" -d @"$schema" http://localhost:5001/validate | tr -d '\n')"
     # shellcheck disable=SC2001
     HTTP_BODY=$(echo "${result}" | sed -e 's/HTTPSTATUS\:.*//g')
@@ -57,9 +60,17 @@ for schema in ${file_path_name}; do
         (( failed++ ))
         exit=1
     fi
+}
 
+
+N_TIMES_IN_PARALLEL=20
+
+for schema in ${file_path_name}; do
+   ((i=i%N_TIMES_IN_PARALLEL)); ((i++==0)) && wait
+#  Spawn multiple (N_TIMES_IN_PARALLEL) processes in subshells and send to background, but keep printing outputs.
+   validate "$schema" &
 done
 
-echo -e "\\n${green}$passed Passed${default} - ${red}$failed Failed${default}"
+
 
 exit "$exit"
