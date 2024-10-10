@@ -44,7 +44,7 @@ class InvalidSupplementaryData(Exception):
 
 
 def get_supplementary_data_v1(
-    *, dataset_id: str, identifier: str, survey_id: str
+    *, dataset_id: str, identifier: str, survey_id: str, sds_schema_version: str = None
 ) -> dict:
     # Type ignore: current_app is a singleton in this application and has the key_store key in its eq attribute.
     key_store = current_app.eq["key_store"]  # type: ignore
@@ -93,6 +93,7 @@ def get_supplementary_data_v1(
             dataset_id=dataset_id,
             identifier=identifier,
             survey_id=survey_id,
+            sds_schema_version=sds_schema_version
         )
 
     logger.error(
@@ -121,7 +122,7 @@ def decrypt_supplementary_data(
 
 
 def validate_supplementary_data(
-    supplementary_data: Mapping, dataset_id: str, identifier: str, survey_id: str
+    supplementary_data: Mapping, dataset_id: str, identifier: str, survey_id: str, sds_schema_version: str = None
 ) -> dict:
     try:
         return validate_supplementary_data_v1(
@@ -129,6 +130,7 @@ def validate_supplementary_data(
             dataset_id=dataset_id,
             identifier=identifier,
             survey_id=survey_id,
+            sds_schema_version=sds_schema_version
         )
     except ValidationError as e:
         raise ValidationError("Invalid supplementary data") from e
