@@ -54,6 +54,34 @@ def test_invalid_supplementary_data_payload_raises_error():
     assert str(error.value) == "Invalid supplementary data"
 
 
+def test_invalid_supplementary_dataset_version_raises_error():
+    with pytest.raises(ValidationError) as error:
+        validate_supplementary_data_v1(
+            supplementary_data=SUPPLEMENTARY_DATA_PAYLOAD,
+            dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
+            identifier="12345678901",
+            survey_id="123",
+            sds_schema_version="v6"
+        )
+
+    assert (
+        str(error.value)
+        == "{'_schema': ['The Supplementary Dataset version does not match the version set in the schema']}"
+    )
+
+
+def test_valid_supplementary_dataset_version():
+    validated_payload = validate_supplementary_data_v1(
+        supplementary_data=SUPPLEMENTARY_DATA_PAYLOAD,
+        dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
+        identifier="12345678901",
+        survey_id="123",
+        sds_schema_version="v1"
+    )
+
+    assert validated_payload == SUPPLEMENTARY_DATA_PAYLOAD
+
+
 def test_validate_supplementary_data_payload():
     validated_payload = validate_supplementary_data_v1(
         supplementary_data=SUPPLEMENTARY_DATA_PAYLOAD,
