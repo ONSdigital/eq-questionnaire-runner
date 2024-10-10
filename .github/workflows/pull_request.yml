@@ -39,7 +39,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file : ".nvmrc"
-          cache: "npm"
       - name: Install npm deps
         run: npm install
   lint:
@@ -52,7 +51,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: ".nvmrc"
-          cache: "npm"
       - name: Write app version
         run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
       - name: Install Poetry
@@ -137,7 +135,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: ".nvmrc"
-          cache: "npm"
       - run: |
           echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
       - name: Install Poetry
