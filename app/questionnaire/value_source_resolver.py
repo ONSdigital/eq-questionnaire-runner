@@ -1,6 +1,8 @@
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from datetime import date
 from decimal import Decimal
-from typing import Callable, Iterable, Mapping, TypeAlias
+from typing import Callable, Iterable, Mapping, Sequence, TypeAlias
 
 from markupsafe import Markup
 from werkzeug.datastructures import ImmutableDict
@@ -15,13 +17,21 @@ from app.data_models.list_store import ListModel
 from app.data_models.metadata_proxy import NoMetadataException
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException, SectionKey
-from app.questionnaire.rules import rule_evaluator
 from app.utilities.types import LocationType
 
 ValueSourceTypes: TypeAlias = None | str | int | Decimal | list | dict
 ValueSourceEscapedTypes: TypeAlias = Markup | list[Markup]
 IntOrDecimal: TypeAlias = int | Decimal
 ResolvedAnswerList: TypeAlias = list[AnswerValueTypes | AnswerValueEscapedTypes | None]
+RuleEvaluatorTypes: TypeAlias = (
+    bool | date | list[str] | list[date] | int | float | Decimal | None
+)
+
+
+class RuleEvaluatorBase(ABC):
+    @abstractmethod
+    def evaluate(self, rule: dict[str, Sequence]) -> RuleEvaluatorTypes:
+        pass
 
 
 @dataclass
@@ -34,6 +44,7 @@ class ValueSourceResolver:
     use_default_answer: bool = False
     escape_answer_values: bool = False
     assess_routing_path: bool | None = True
+    evaluator: RuleEvaluatorBase
 
     def _is_answer_on_path(self, answer_id: str) -> bool:
         if self.routing_path_block_ids:
@@ -267,14 +278,7 @@ class ValueSourceResolver:
             ]
             return operator([value for value in values if value])  # type: ignore
 
-        evaluator = rule_evaluator.RuleEvaluator(
-            self.schema,
-            data_stores=self.data_stores,
-            location=self.location,
-            routing_path_block_ids=self.routing_path_block_ids,
-        )
-
-        return evaluator.evaluate(calculation["operation"])  # type: ignore
+        return self.evaluator.evaluate(calculation["operation"])  # type: ignore
 
     def _resolve_metadata_source(self, value_source: Mapping) -> str | None:
         if not self.data_stores.metadata:
