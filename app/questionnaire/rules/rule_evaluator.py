@@ -39,6 +39,7 @@ class RuleEvaluator:
             list_item_id=list_item_id,
             routing_path_block_ids=self.routing_path_block_ids,
             use_default_answer=True,
+            evaluator=self,
         )
 
         renderer: PlaceholderRenderer = PlaceholderRenderer(
