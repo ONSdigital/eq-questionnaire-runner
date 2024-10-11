@@ -12,6 +12,7 @@ from app.data_models.supplementary_data_store import InvalidSupplementaryDataSel
 from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException
 from app.questionnaire.relationship_location import RelationshipLocation
+from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from tests.app.data_model.test_answer import ESCAPED_CONTENT, HTML_CONTENT
 from tests.app.questionnaire.conftest import get_metadata
@@ -81,7 +82,14 @@ def get_value_source_resolver(
     if not use_default_answer:
         schema.get_default_answer = Mock(return_value=None)
 
+    evaluator = RuleEvaluator(
+        schema=schema,
+        data_stores=data_stores,
+        location=location,
+        routing_path_block_ids=routing_path_block_ids,
+    )
     return ValueSourceResolver(
+        evaluator=evaluator,
         data_stores=data_stores,
         schema=schema,
         location=location,

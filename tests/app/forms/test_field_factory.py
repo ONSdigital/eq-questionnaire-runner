@@ -40,7 +40,7 @@ def test_invalid_field_type_raises_on_invalid():
     )
 
     value_source_resolver = ValueSourceResolver(
-        evaluator=rule_evaluator
+        evaluator=rule_evaluator,
         data_stores=DataStores(metadata=metadata, response_metadata={}),
         schema=schema,
         location=None,

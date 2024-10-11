@@ -27,6 +27,7 @@ def value_source_resolver(mock_schema, response_metadata):
         location=None,
     )
     resolver = ValueSourceResolver(
+        evaluator=evaluator,
         data_stores=DataStores(response_metadata=response_metadata),
         schema=mock_schema,
         location=None,
