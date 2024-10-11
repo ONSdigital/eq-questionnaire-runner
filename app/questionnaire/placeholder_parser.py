@@ -107,8 +107,6 @@ class PlaceholderParser:
         routing_path_block_ids: Iterable[str] | None = None,
         assess_routing_path: bool | None = False,
     ) -> ValueSourceResolver:
-        from app.questionnaire.value_source_resolver import ValueSourceResolver
-
         return ValueSourceResolver(
             data_stores=self._data_stores,
             schema=self._schema,
