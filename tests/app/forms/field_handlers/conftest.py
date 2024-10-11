@@ -35,14 +35,19 @@ def rule_evaluator():
 
 @pytest.fixture
 def value_source_resolver():
+    evaluator = RuleEvaluator(
+        data_stores=DataStores(response_metadata=get_mock_response_metadata()),
+        schema=get_mock_schema(),
+        location=None,
+    )
     resolver = ValueSourceResolver(
+        evaluator= evaluator,
         data_stores=DataStores(response_metadata=get_mock_response_metadata()),
         schema=get_mock_schema(),
         location=None,
         list_item_id=None,
         escape_answer_values=False,
     )
-
     return resolver
 
 

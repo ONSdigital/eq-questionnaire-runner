@@ -33,18 +33,19 @@ def test_invalid_field_type_raises_on_invalid():
         "case_ref": "1000000000000001",
     }
 
+    rule_evaluator = RuleEvaluator(
+        data_stores=DataStores(),
+        schema=schema,
+        location=None,
+    )
+
     value_source_resolver = ValueSourceResolver(
+        evaluator=rule_evaluator
         data_stores=DataStores(metadata=metadata, response_metadata={}),
         schema=schema,
         location=None,
         list_item_id=None,
         escape_answer_values=False,
-    )
-
-    rule_evaluator = RuleEvaluator(
-        data_stores=DataStores(),
-        schema=schema,
-        location=None,
     )
 
     # Given
