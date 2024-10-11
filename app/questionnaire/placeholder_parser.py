@@ -23,6 +23,7 @@ from app.questionnaire.questionnaire_schema import (
     TRANSFORMS_REQUIRING_ROUTING_PATH,
     TRANSFORMS_REQUIRING_UNRESOLVED_ARGUMENTS,
 )
+from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import (
     ValueSourceEscapedTypes,
     ValueSourceResolver,
@@ -65,6 +66,7 @@ class PlaceholderParser:
         self._schema = schema
         self._location = location
         self._placeholder_preview_mode = placeholder_preview_mode
+        self._language = language
 
         self._path_finder = pf.PathFinder(
             schema=self._schema, data_stores=self._data_stores
@@ -107,7 +109,15 @@ class PlaceholderParser:
         routing_path_block_ids: Iterable[str] | None = None,
         assess_routing_path: bool | None = False,
     ) -> ValueSourceResolver:
+        rule_evaluator = RuleEvaluator(
+            schema=self._schema,
+            data_stores=self._data_stores,
+            location=self._location,
+            routing_path_block_ids=routing_path_block_ids,
+            language=self._language,
+        )
         return ValueSourceResolver(
+            evaluator=rule_evaluator,
             data_stores=self._data_stores,
             schema=self._schema,
             location=self._location,

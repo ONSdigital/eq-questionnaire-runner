@@ -54,6 +54,7 @@ class Question:
         )
 
         self._value_source_resolver = ValueSourceResolver(
+            evaluator=self._rule_evaluator,
             data_stores=data_stores,
             schema=self.schema,
             location=self.location,
