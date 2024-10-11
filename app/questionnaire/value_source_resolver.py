@@ -1,8 +1,7 @@
-from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from datetime import date
 from decimal import Decimal
-from typing import Callable, Iterable, Mapping, Sequence, TypeAlias
+from typing import Callable, Iterable, Mapping, TypeAlias
 
 from markupsafe import Markup
 from werkzeug.datastructures import ImmutableDict
@@ -17,6 +16,7 @@ from app.data_models.list_store import ListModel
 from app.data_models.metadata_proxy import NoMetadataException
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException, SectionKey
+from app.questionnaire.rules.evaluator import Evaluator
 from app.utilities.types import LocationType
 
 ValueSourceTypes: TypeAlias = None | str | int | Decimal | list | dict
@@ -26,12 +26,6 @@ ResolvedAnswerList: TypeAlias = list[AnswerValueTypes | AnswerValueEscapedTypes 
 RuleEvaluatorTypes: TypeAlias = (
     bool | date | list[str] | list[date] | int | float | Decimal | None
 )
-
-
-class RuleEvaluatorBase(ABC):
-    @abstractmethod
-    def evaluate(self, rule: dict[str, Sequence]) -> RuleEvaluatorTypes:
-        pass
 
 
 @dataclass
@@ -44,7 +38,7 @@ class ValueSourceResolver:
     use_default_answer: bool = False
     escape_answer_values: bool = False
     assess_routing_path: bool | None = True
-    evaluator: RuleEvaluatorBase
+    evaluator: Evaluator
 
     def _is_answer_on_path(self, answer_id: str) -> bool:
         if self.routing_path_block_ids:

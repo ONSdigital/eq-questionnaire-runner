@@ -7,7 +7,8 @@ from app.data_models.data_stores import DataStores
 from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.routing_path import RoutingPath
-from app.questionnaire.rules.rule_evaluator import RuleEvaluator, RuleEvaluatorTypes
+from app.questionnaire.rules.evaluator import EvaluatorTypes
+from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.utilities.types import LocationType
 
 
@@ -220,7 +221,7 @@ class PathFinder:
         routing_path_block_ids: list[str],
         skip_conditions: ImmutableDict[str, dict] | None,
         when_rules_block_dependencies: list[str],
-    ) -> RuleEvaluatorTypes:
+    ) -> EvaluatorTypes:
         if not skip_conditions:
             return False
 

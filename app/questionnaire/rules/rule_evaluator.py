@@ -1,12 +1,12 @@
 from dataclasses import dataclass
 from datetime import date
-from decimal import Decimal
 from typing import Generator, Iterable, Sequence, TypeAlias
 
 from app.data_models.data_stores import DataStores
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
+from app.questionnaire.rules.evaluator import Evaluator, EvaluatorTypes
 from app.questionnaire.rules.operations import Operations
 from app.questionnaire.rules.operator import Operator
 from app.questionnaire.value_source_resolver import (
@@ -15,14 +15,11 @@ from app.questionnaire.value_source_resolver import (
 )
 from app.utilities.types import LocationType
 
-RuleEvaluatorTypes: TypeAlias = (
-    bool | date | list[str] | list[date] | int | float | Decimal | None
-)
 ResolvedOperand: TypeAlias = bool | date | ValueSourceTypes | None
 
 
 @dataclass
-class RuleEvaluator:
+class RuleEvaluator(Evaluator):
     schema: QuestionnaireSchema
     data_stores: DataStores
     location: LocationType | None
@@ -87,5 +84,5 @@ class RuleEvaluator:
         for operand in operands:
             yield self._resolve_operand(operand)
 
-    def evaluate(self, rule: dict[str, Sequence]) -> RuleEvaluatorTypes:
+    def evaluate(self, rule: dict[str, Sequence]) -> EvaluatorTypes:
         return self._evaluate(rule)
