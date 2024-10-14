@@ -7,7 +7,8 @@ from werkzeug.datastructures import ImmutableDict
 
 from app.data_models import CompletionStatus
 from app.questionnaire.location import SectionKey
-from app.views.contexts import Context # pylint: disable=cyclic-import
+from app.views.contexts import Context  # pylint: disable=cyclic-import
+
 # Removing Pylint disable causes linting fail in GHA but not locally this issue has been raised here: https://github.com/pylint-dev/pylint/issues/9168. 
 
 
