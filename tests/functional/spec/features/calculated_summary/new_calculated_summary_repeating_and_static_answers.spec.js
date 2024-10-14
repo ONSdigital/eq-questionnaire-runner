@@ -22,7 +22,6 @@ describe("Calculated summary with repeating answers", () => {
   before("Completing the list collector and dynamic answer", async () => {
     await browser.openQuestionnaire("test_new_calculated_summary_repeating_and_static_answers.json");
     await $(HubPage.acceptCookies()).click();
-    await click(HubPage.submit());
     await $(AnySupermarketPage.yes()).click();
     await click(AnySupermarketPage.submit());
     await $(ListCollectorAddPage.supermarketName()).setValue("Tesco");
