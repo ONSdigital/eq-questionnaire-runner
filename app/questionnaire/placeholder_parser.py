@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from decimal import Decimal
 from typing import (
-    TYPE_CHECKING,
     Any,
     Iterable,
     Mapping,
@@ -23,6 +22,7 @@ from app.questionnaire.questionnaire_schema import (
     TRANSFORMS_REQUIRING_ROUTING_PATH,
     TRANSFORMS_REQUIRING_UNRESOLVED_ARGUMENTS,
 )
+from app.questionnaire.renderer import Renderer
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import (
     ValueSourceEscapedTypes,
@@ -31,12 +31,6 @@ from app.questionnaire.value_source_resolver import (
 )
 from app.utilities.mappings import get_flattened_mapping_values, get_values_for_key
 from app.utilities.types import LocationType, SectionKey
-
-if TYPE_CHECKING:
-    from app.questionnaire.placeholder_renderer import (  # pragma: no cover
-        PlaceholderRenderer,
-    )
-
 
 TransformedValueTypes: TypeAlias = None | str | int | Decimal | bool
 
@@ -52,7 +46,7 @@ class PlaceholderParser:
         language: str,
         data_stores: DataStores,
         schema: QuestionnaireSchema,
-        renderer: PlaceholderRenderer,
+        renderer: Renderer,
         list_item_id: str | None = None,
         location: LocationType | None = None,
         placeholder_preview_mode: bool | None = False,
