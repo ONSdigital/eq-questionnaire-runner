@@ -7,6 +7,7 @@ from app.data_models.data_stores import DataStores
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.return_location import ReturnLocation
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
+from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.utilities.types import LocationType
 
 NumericType: TypeAlias = int | float | Decimal
@@ -43,12 +44,19 @@ class CalculatedSummaryBlock:
         else:
             self._list_item_id = None
             self._list_name = None
-
+        self._value_source_resolver = ValueSourceResolver(
+            list_item_id=self._list_item_id,
+            schema=schema,
+            data_stores=data_stores,
+            location=location,
+            routing_path_block_ids=routing_path_block_ids,
+        )
         self._rule_evaluator = RuleEvaluator(
             schema=schema,
             data_stores=self._data_stores,
             location=location,
             routing_path_block_ids=routing_path_block_ids,
+            value_source_resolver=self._value_source_resolver,
         )
 
         # Type ignore: for a calculated summary the resolved answer would only ever be one of these 3

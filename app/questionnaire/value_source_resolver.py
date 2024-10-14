@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from datetime import date
 from decimal import Decimal
 from typing import Callable, Iterable, Mapping, TypeAlias
 
@@ -16,23 +15,20 @@ from app.data_models.list_store import ListModel
 from app.data_models.metadata_proxy import NoMetadataException
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException, SectionKey
-from app.questionnaire.rules.evaluator import Evaluator
+from app.questionnaire.resolver import Resolver
+from app.questionnaire.rules import rule_evaluator  # pylint: disable=cyclic-import
 from app.utilities.types import LocationType
 
 ValueSourceTypes: TypeAlias = None | str | int | Decimal | list | dict
 ValueSourceEscapedTypes: TypeAlias = Markup | list[Markup]
 IntOrDecimal: TypeAlias = int | Decimal
 ResolvedAnswerList: TypeAlias = list[AnswerValueTypes | AnswerValueEscapedTypes | None]
-RuleEvaluatorTypes: TypeAlias = (
-    bool | date | list[str] | list[date] | int | float | Decimal | None
-)
 
 
 @dataclass
-class ValueSourceResolver:
+class ValueSourceResolver(Resolver):
     data_stores: DataStores
     schema: QuestionnaireSchema
-    evaluator: Evaluator
     location: LocationType | None
     list_item_id: str | None
     routing_path_block_ids: Iterable[str] | None = None
@@ -272,7 +268,15 @@ class ValueSourceResolver:
             ]
             return operator([value for value in values if value])  # type: ignore
 
-        return self.evaluator.evaluate(calculation["operation"])  # type: ignore
+        evaluator = rule_evaluator.RuleEvaluator(
+            self.schema,
+            data_stores=self.data_stores,
+            location=self.location,
+            routing_path_block_ids=self.routing_path_block_ids,
+            value_source_resolver=self,
+        )
+
+        return evaluator.evaluate(calculation["operation"])  # type: ignore
 
     def _resolve_metadata_source(self, value_source: Mapping) -> str | None:
         if not self.data_stores.metadata:

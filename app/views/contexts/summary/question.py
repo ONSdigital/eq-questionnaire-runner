@@ -46,20 +46,18 @@ class Question:
             question_schema.get("title") or question_schema["answers"][0]["label"]
         )
         self.number = question_schema.get("number", None)
-
-        self._rule_evaluator = RuleEvaluator(
-            schema=self.schema,
-            data_stores=data_stores,
-            location=self.location,
-        )
-
         self._value_source_resolver = ValueSourceResolver(
-            evaluator=self._rule_evaluator,
             data_stores=data_stores,
             schema=self.schema,
             location=self.location,
             list_item_id=self.list_item_id,
             use_default_answer=True,
+        )
+        self._rule_evaluator = RuleEvaluator(
+            value_source_resolver=self._value_source_resolver,
+            schema=self.schema,
+            data_stores=data_stores,
+            location=self.location,
         )
 
         # no need to call the method if no list item id

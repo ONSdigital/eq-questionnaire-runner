@@ -7,8 +7,8 @@ from app.data_models.data_stores import DataStores
 from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.routing_path import RoutingPath
-from app.questionnaire.rules.evaluator import EvaluatorTypes
-from app.questionnaire.rules.rule_evaluator import RuleEvaluator
+from app.questionnaire.rules.rule_evaluator import RuleEvaluator, RuleEvaluatorTypes
+from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.utilities.types import LocationType
 
 
@@ -180,12 +180,18 @@ class PathFinder:
         block_ids_for_dependencies = (
             list(routing_path_block_ids) + when_rules_block_dependencies
         )
-
         when_rule_evaluator = RuleEvaluator(
-            self.schema,
-            self.data_stores,
+            schema=self.schema,
+            data_stores=self.data_stores,
             location=this_location,
             routing_path_block_ids=block_ids_for_dependencies,
+            value_source_resolver=ValueSourceResolver(
+                list_item_id=this_location.list_item_id,
+                schema=self.schema,
+                data_stores=self.data_stores,
+                location=this_location,
+                routing_path_block_ids=block_ids_for_dependencies,
+            ),
         )
         for rule in routing_rules:
             rule_valid = (
@@ -221,19 +227,26 @@ class PathFinder:
         routing_path_block_ids: list[str],
         skip_conditions: ImmutableDict[str, dict] | None,
         when_rules_block_dependencies: list[str],
-    ) -> EvaluatorTypes:
+    ) -> RuleEvaluatorTypes:
         if not skip_conditions:
             return False
 
         block_ids_for_dependencies = (
             list(routing_path_block_ids) + when_rules_block_dependencies
         )
-
+        value_source_resolver = ValueSourceResolver(
+            list_item_id=current_location.list_item_id,
+            schema=self.schema,
+            data_stores=self.data_stores,
+            location=current_location,
+            routing_path_block_ids=block_ids_for_dependencies,
+        )
         when_rule_evaluator = RuleEvaluator(
             schema=self.schema,
             data_stores=self.data_stores,
             location=current_location,
             routing_path_block_ids=block_ids_for_dependencies,
+            value_source_resolver=value_source_resolver,
         )
 
         return when_rule_evaluator.evaluate(skip_conditions["when"])

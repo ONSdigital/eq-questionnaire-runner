@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from decimal import Decimal
 from typing import (
+    TYPE_CHECKING,
     Any,
     Iterable,
     Mapping,
@@ -22,8 +23,6 @@ from app.questionnaire.questionnaire_schema import (
     TRANSFORMS_REQUIRING_ROUTING_PATH,
     TRANSFORMS_REQUIRING_UNRESOLVED_ARGUMENTS,
 )
-from app.questionnaire.renderer import Renderer
-from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import (
     ValueSourceEscapedTypes,
     ValueSourceResolver,
@@ -33,6 +32,10 @@ from app.utilities.mappings import get_flattened_mapping_values, get_values_for_
 from app.utilities.types import LocationType, SectionKey
 
 TransformedValueTypes: TypeAlias = None | str | int | Decimal | bool
+if TYPE_CHECKING:
+    from app.questionnaire.placeholder_renderer import (  # pragma: no cover
+        PlaceholderRenderer,
+    )
 
 
 class PlaceholderParser:
@@ -46,7 +49,7 @@ class PlaceholderParser:
         language: str,
         data_stores: DataStores,
         schema: QuestionnaireSchema,
-        renderer: Renderer,
+        renderer: "PlaceholderRenderer",
         list_item_id: str | None = None,
         location: LocationType | None = None,
         placeholder_preview_mode: bool | None = False,
@@ -103,15 +106,7 @@ class PlaceholderParser:
         routing_path_block_ids: Iterable[str] | None = None,
         assess_routing_path: bool | None = False,
     ) -> ValueSourceResolver:
-        rule_evaluator = RuleEvaluator(
-            schema=self._schema,
-            data_stores=self._data_stores,
-            location=self._location,
-            routing_path_block_ids=routing_path_block_ids,
-            language=self._language,
-        )
         return ValueSourceResolver(
-            evaluator=rule_evaluator,
             data_stores=self._data_stores,
             schema=self._schema,
             location=self._location,

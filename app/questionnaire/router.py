@@ -10,6 +10,7 @@ from app.questionnaire.path_finder import PathFinder
 from app.questionnaire.return_location import ReturnLocation
 from app.questionnaire.routing_path import RoutingPath
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
+from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.utilities.types import LocationType
 
 
@@ -535,16 +536,26 @@ class Router:
 
         enabled = section["enabled"]
         section_id = section["id"]
-
+        location = Location(section_id=section_id)
         routing_path_block_ids = self._path_finder.get_when_rules_block_dependencies(
             section_id
+        )
+        list_item_id = location.list_item_id if location else None
+
+        value_source_resolver = ValueSourceResolver(
+            list_item_id=list_item_id,
+            schema=self._schema,
+            data_stores=self._data_stores,
+            location=location,
+            routing_path_block_ids=routing_path_block_ids,
         )
 
         when_rule_evaluator = RuleEvaluator(
             data_stores=self._data_stores,
             schema=self._schema,
-            location=Location(section_id=section_id),
+            location=location,
             routing_path_block_ids=routing_path_block_ids,
+            value_source_resolver=value_source_resolver,
         )
 
         return bool(when_rule_evaluator.evaluate(enabled["when"]))

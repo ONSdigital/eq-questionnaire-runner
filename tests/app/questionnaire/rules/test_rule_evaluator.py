@@ -20,7 +20,10 @@ from app.questionnaire.rules.operator import Operator
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.utilities.schema import load_schema_from_name
 from tests.app.questionnaire.conftest import get_metadata
-from tests.app.questionnaire.test_value_source_resolver import get_list_items
+from tests.app.questionnaire.test_value_source_resolver import (
+    get_list_items,
+    get_value_source_resolver,
+)
 
 current_date = datetime.now(timezone.utc).date()
 current_date_as_yyyy_mm_dd = current_date.strftime("%Y-%m-%d")
@@ -59,7 +62,14 @@ def get_rule_evaluator(
         schema.is_answer_dynamic = Mock(return_value=False)
         schema.is_answer_in_list_collector_repeating_block = Mock(return_value=False)
 
+    value_source_resolver = get_value_source_resolver(
+        schema=schema,
+        data_stores=data_stores,
+        location=location,
+        routing_path_block_ids=routing_path_block_ids,
+    )
     return RuleEvaluator(
+        value_source_resolver=value_source_resolver,
         language=language,
         schema=schema,
         data_stores=data_stores,

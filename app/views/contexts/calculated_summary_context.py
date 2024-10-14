@@ -221,7 +221,17 @@ class CalculatedSummaryContext(Context):
         """
         For a calculation in the new style and the list of involved block ids (possibly across sections) evaluate the total
         """
+        list_item_id = (
+            self.current_location.list_item_id if self.current_location else None
+        )
         evaluate_calculated_summary = RuleEvaluator(
+            value_source_resolver=ValueSourceResolver(
+                schema=self._schema,
+                data_stores=self._data_stores,
+                routing_path_block_ids=routing_path_block_ids,
+                location=self.current_location,
+                list_item_id=list_item_id,
+            ),
             data_stores=self._data_stores,
             schema=self._schema,
             routing_path_block_ids=routing_path_block_ids,

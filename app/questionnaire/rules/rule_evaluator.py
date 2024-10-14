@@ -1,44 +1,34 @@
 from dataclasses import dataclass
 from datetime import date
+from decimal import Decimal
 from typing import Generator, Iterable, Sequence, TypeAlias
 
 from app.data_models.data_stores import DataStores
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
-from app.questionnaire.rules.evaluator import Evaluator, EvaluatorTypes
+from app.questionnaire.resolver import Resolver, ResolverTypes
 from app.questionnaire.rules.operations import Operations
 from app.questionnaire.rules.operator import Operator
-from app.questionnaire.value_source_resolver import (
-    ValueSourceResolver,
-    ValueSourceTypes,
-)
 from app.utilities.types import LocationType
 
-ResolvedOperand: TypeAlias = bool | date | ValueSourceTypes | None
+RuleEvaluatorTypes: TypeAlias = (
+    bool | date | list[str] | list[date] | int | float | Decimal | None
+)
+ResolvedOperand: TypeAlias = bool | date | ResolverTypes | None
 
 
 @dataclass
-class RuleEvaluator(Evaluator):
+class RuleEvaluator:
     schema: QuestionnaireSchema
     data_stores: DataStores
     location: LocationType | None
+    value_source_resolver: Resolver
     routing_path_block_ids: Iterable[str] | None = None
     language: str = DEFAULT_LANGUAGE_CODE
 
     # pylint: disable=attribute-defined-outside-init
     def __post_init__(self) -> None:
-        list_item_id = self.location.list_item_id if self.location else None
-        self.value_source_resolver = ValueSourceResolver(
-            data_stores=self.data_stores,
-            schema=self.schema,
-            location=self.location,
-            list_item_id=list_item_id,
-            routing_path_block_ids=self.routing_path_block_ids,
-            use_default_answer=True,
-            evaluator=self,
-        )
-
         renderer: PlaceholderRenderer = PlaceholderRenderer(
             language=self.language,
             data_stores=self.data_stores,
@@ -69,7 +59,7 @@ class RuleEvaluator(Evaluator):
 
         return operator.evaluate(resolved_operands)
 
-    def _resolve_operand(self, operand: ValueSourceTypes) -> ResolvedOperand:
+    def _resolve_operand(self, operand: ResolverTypes) -> ResolvedOperand:
         if isinstance(operand, dict) and "source" in operand:
             return self.value_source_resolver.resolve(operand)
 
@@ -79,10 +69,10 @@ class RuleEvaluator(Evaluator):
         return operand
 
     def get_resolved_operands(
-        self, operands: Sequence[ValueSourceTypes]
+        self, operands: Sequence[ResolverTypes]
     ) -> Generator[ResolvedOperand, None, None]:
         for operand in operands:
             yield self._resolve_operand(operand)
 
-    def evaluate(self, rule: dict[str, Sequence]) -> EvaluatorTypes:
+    def evaluate(self, rule: dict[str, Sequence]) -> RuleEvaluatorTypes:
         return self._evaluate(rule)

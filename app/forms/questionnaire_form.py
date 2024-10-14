@@ -55,11 +55,8 @@ class QuestionnaireForm(FlaskForm):
         self.options_with_detail_answer: dict = {}
         self.question_title = self.question.get("title", "")
         self.data_stores = data_stores
-        self.rule_evaluator = RuleEvaluator(
-            schema=self.schema, data_stores=data_stores, location=self.location
-        )
+
         self.value_source_resolver = ValueSourceResolver(
-            evaluator=self.rule_evaluator,
             schema=self.schema,
             data_stores=data_stores,
             location=self.location,
@@ -313,20 +310,19 @@ class QuestionnaireForm(FlaskForm):
         date_to: Mapping[str, dict],
     ) -> timedelta:
         list_item_id = self.location.list_item_id if self.location else None
-
-        rule_evaluator = RuleEvaluator(
-            data_stores=self.data_stores,
-            schema=self.schema,
-            location=self.location,
-        )
-
         value_source_resolver = ValueSourceResolver(
-            evaluator=rule_evaluator,
             data_stores=self.data_stores,
             schema=self.schema,
             location=self.location,
             list_item_id=list_item_id,
             escape_answer_values=False,
+        )
+
+        rule_evaluator = RuleEvaluator(
+            value_source_resolver=value_source_resolver,
+            data_stores=self.data_stores,
+            schema=self.schema,
+            location=self.location,
         )
 
         handler = DateHandler(
@@ -485,16 +481,8 @@ def get_answer_fields(
     if block_ids_by_section:
         block_ids = get_flattened_mapping_values(block_ids_by_section)
 
-    rule_evaluator = RuleEvaluator(
-        schema=schema,
-        data_stores=data_stores,
-        location=location,
-    )
-
     def _get_value_source_resolver(list_item: str | None = None) -> ValueSourceResolver:
-
         return ValueSourceResolver(
-            evaluator=rule_evaluator,
             data_stores=data_stores,
             schema=schema,
             location=location,
@@ -503,6 +491,13 @@ def get_answer_fields(
             routing_path_block_ids=block_ids,
             assess_routing_path=False,
         )
+
+    rule_evaluator = RuleEvaluator(
+        value_source_resolver=_get_value_source_resolver(list_item=list_item_id),
+        schema=schema,
+        data_stores=data_stores,
+        location=location,
+    )
 
     answer_fields = {}
     question_title = question.get("title")
