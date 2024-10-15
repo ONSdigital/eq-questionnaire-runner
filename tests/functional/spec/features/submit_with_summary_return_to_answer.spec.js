@@ -81,7 +81,9 @@ describe("Summary Anchor Scrolling", () => {
       await click(HouseholdDetailsSummaryPage.submit());
       await $(SubmitPage.summaryShowAllButton()).click();
       await $(SubmitPage.insuranceAddressAnswer2Edit()).click();
-      await expect(browser).toHaveUrl(expect.stringContaining("?return_to=final-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2"));
+      await expect(browser).toHaveUrl(
+        expect.stringContaining("?return_to=final-summary&return_to_answer_id=insurance-address-answer2#insurance-address-answer2"),
+      );
     });
   });
 });
