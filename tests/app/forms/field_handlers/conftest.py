@@ -23,18 +23,6 @@ def get_mock_response_metadata():
 
 
 @pytest.fixture
-def rule_evaluator():
-    evaluator = RuleEvaluator(
-        value_source_resolver=value_source_resolver(),
-        data_stores=DataStores(response_metadata=get_mock_response_metadata()),
-        schema=get_mock_schema(),
-        location=None,
-    )
-
-    return evaluator
-
-
-@pytest.fixture
 def value_source_resolver():
     resolver = ValueSourceResolver(
         data_stores=DataStores(response_metadata=get_mock_response_metadata()),
@@ -44,6 +32,18 @@ def value_source_resolver():
         escape_answer_values=False,
     )
     return resolver
+
+
+@pytest.fixture
+def rule_evaluator(value_source_resolver):
+    evaluator = RuleEvaluator(
+        value_source_resolver=value_source_resolver,
+        data_stores=DataStores(response_metadata=get_mock_response_metadata()),
+        schema=get_mock_schema(),
+        location=None,
+    )
+
+    return evaluator
 
 
 def static_answer_options_schema():
