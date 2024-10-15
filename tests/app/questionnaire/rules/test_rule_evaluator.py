@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 from typing import Optional, Union
 
+from app.questionnaire.value_source_resolver import ValueSourceResolver
 import pytest
 from freezegun import freeze_time
 from mock import MagicMock, Mock
@@ -62,11 +63,13 @@ def get_rule_evaluator(
         schema.is_answer_dynamic = Mock(return_value=False)
         schema.is_answer_in_list_collector_repeating_block = Mock(return_value=False)
 
-    value_source_resolver = get_value_source_resolver(
+    list_item_id = location.list_item_id if location else None
+    value_source_resolver =ValueSourceResolver(
         schema=schema,
         data_stores=data_stores,
         location=location,
         routing_path_block_ids=routing_path_block_ids,
+        list_item_id=list_item_id
     )
     return RuleEvaluator(
         value_source_resolver=value_source_resolver,
@@ -126,7 +129,6 @@ def test_answer_source(answer_value, expected_result):
             )
         ),
     )
-
     assert (
         rule_evaluator.evaluate(
             rule={
