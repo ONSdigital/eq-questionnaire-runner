@@ -45,12 +45,12 @@ describe("List Collector With Variants", () => {
     it("The questionnaire shows the confirmation page when no more people to add", async () => {
       await $(ListCollectorPage.anyoneElseNo()).click();
       await click(ListCollectorPage.submit());
-      await expect(browser).toHaveUrlContaining(SubmitPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.url()));
     });
 
     it("The questionnaire allows submission", async () => {
       await click(SubmitPage.submit());
-      await expect(browser).toHaveUrlContaining("thank-you");
+      await expect(browser).toHaveUrl(expect.stringContaining("thank-you"));
     });
   });
 
@@ -91,12 +91,12 @@ describe("List Collector With Variants", () => {
     it("The questionnaire shows the confirmation page when no more people to add", async () => {
       await $(ListCollectorPage.anyoneElseNo()).click();
       await click(ListCollectorPage.submit());
-      await expect(browser).toHaveUrlContaining(SubmitPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.url()));
     });
 
     it("The questionnaire allows submission", async () => {
       await click(SubmitPage.submit());
-      await expect(browser).toHaveUrlContaining(ThankYouPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(ThankYouPage.url()));
     });
   });
 });

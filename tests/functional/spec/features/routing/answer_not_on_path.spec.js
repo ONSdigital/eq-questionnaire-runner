@@ -13,13 +13,13 @@ describe("Answers not on path are not considered when routing", () => {
     await $(InitialChoicePage.goHereFirst()).click();
     await click(InitialChoicePage.submit());
 
-    await expect(browser).toHaveUrlContaining(InvalidPathPage.pageName);
+    await expect(browser).toHaveUrl(expect.stringContaining(InvalidPathPage.pageName));
     await $(InvalidPathPage.answer()).setValue(123);
     await click(InvalidPathPage.submit());
 
     // We now have an answer in the store on the 'invalid' path
 
-    await expect(browser).toHaveUrlContaining(InvalidPathInterstitialPage.pageName);
+    await expect(browser).toHaveUrl(expect.stringContaining(InvalidPathInterstitialPage.pageName));
     await $(InvalidPathInterstitialPage.previous()).click();
     await $(InvalidPathPage.previous()).click();
 
@@ -32,6 +32,6 @@ describe("Answers not on path are not considered when routing", () => {
     await click(ValidPathPage.submit());
 
     // We should be routed to the valid interstitial page since the invalid path answer should not be considered whilst routing.
-    await expect(browser).toHaveUrlContaining(ValidFinalInterstitialPage.pageName);
+    await expect(browser).toHaveUrl(expect.stringContaining(ValidFinalInterstitialPage.pageName));
   });
 });

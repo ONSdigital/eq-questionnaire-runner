@@ -96,7 +96,7 @@ describe("Primary Person List Collector Survey", () => {
 
     it("When the user submits, then they are allowed to submit the survey", async () => {
       await click(SubmitPage.submit());
-      await expect(browser).toHaveUrlContaining(ThankYouPage.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(ThankYouPage.pageName));
     });
   });
 

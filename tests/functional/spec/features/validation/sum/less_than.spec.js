@@ -16,7 +16,7 @@ describe("Feature: Sum of grouped answers validation (less than) against total",
       await $(BreakdownAnswerPage.breakdown3()).setValue("2");
       await $(BreakdownAnswerPage.breakdown4()).setValue("2");
       await click(BreakdownAnswerPage.submit());
-      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.pageName));
     });
   });
 
@@ -29,7 +29,7 @@ describe("Feature: Sum of grouped answers validation (less than) against total",
       await $(BreakdownAnswerPage.breakdown3()).setValue("");
       await $(BreakdownAnswerPage.breakdown4()).setValue("");
       await click(BreakdownAnswerPage.submit());
-      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.pageName));
     });
   });
 

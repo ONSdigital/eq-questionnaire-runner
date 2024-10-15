@@ -58,8 +58,8 @@ describe("Multiple Answers", () => {
 
     it("When I click 'Change' an answer, Then I should be taken to the correct page and the answer input should be focused", async () => {
       await $(SubmitPage.currencyAnswerEdit()).click();
-      await expect(browser).toHaveUrlContaining(AboutYou.url());
-      await expect(browser).toHaveUrlContaining(AboutYou.currency());
+      await expect(browser).toHaveUrl(expect.stringContaining(AboutYou.url()));
+      await expect(browser).toHaveUrl(expect.stringContaining(AboutYou.currency()));
       await expect(await $(AboutYou.currency()).isFocused()).toBe(true);
     });
   });

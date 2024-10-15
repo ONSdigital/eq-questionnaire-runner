@@ -23,7 +23,7 @@ describe("Durations", () => {
     await $(DurationPage.mandatoryMonthMonths()).setValue(1);
     await click(DurationPage.submit());
 
-    await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
+    await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.pageName));
     await expect(await $(SubmitPage.yearMonthAnswer()).getText()).toBe("1 year 2 months");
     await click(SubmitPage.submit());
   });
@@ -37,7 +37,7 @@ describe("Durations", () => {
     await $(DurationPage.mandatoryMonthMonths()).setValue(1);
     await click(DurationPage.submit());
 
-    await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
+    await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.pageName));
     await expect(await $(SubmitPage.yearMonthAnswer()).getText()).toBe("2 months");
     await click(SubmitPage.submit());
   });
@@ -49,7 +49,7 @@ describe("Durations", () => {
     await $(DurationPage.mandatoryMonthMonths()).setValue(1);
     await click(DurationPage.submit());
 
-    await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
+    await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.pageName));
     await expect(await $(SubmitPage.yearMonthAnswer()).getText()).toBe("No answer provided");
     await click(SubmitPage.submit());
   });

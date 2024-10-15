@@ -19,7 +19,7 @@ describe("Summary Screen", () => {
     await click(NameBlockPage.submit());
     await click(AddressBlockPage.submit());
     await click(AgeBlock.submit());
-    await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
+    await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.pageName));
     await expect(await $(SubmitPage.summaryRowState("name-question-concatenated-answer")).getText()).toBe("No answer provided");
   });
 

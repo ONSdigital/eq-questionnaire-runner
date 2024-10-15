@@ -14,7 +14,7 @@ describe("Feature: Confirmation Question", () => {
       await click(NumberOfEmployeesTotalBlockPage.submit());
       await $(ConfirmZeroEmployeesBlockPage.yesThisIsCorrect()).click();
       await click(ConfirmZeroEmployeesBlockPage.submit());
-      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.pageName));
       await expect(await $(SubmitPage.numberOfEmployeesTotal()).getText()).toBe("0");
       await expect(await $$(SubmitPage.confirmZeroEmployeesAnswer())).toHaveLength(0);
     });
@@ -25,7 +25,7 @@ describe("Feature: Confirmation Question", () => {
       await click(NumberOfEmployeesTotalBlockPage.submit());
       await $(ConfirmZeroEmployeesBlockPage.noINeedToCorrectThis()).click();
       await click(ConfirmZeroEmployeesBlockPage.submit());
-      await expect(browser).toHaveUrlContaining(NumberOfEmployeesTotalBlockPage.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(NumberOfEmployeesTotalBlockPage.pageName));
     });
   });
   describe("Given a number of employees Question", () => {

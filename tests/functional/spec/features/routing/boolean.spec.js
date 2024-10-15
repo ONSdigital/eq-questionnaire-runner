@@ -9,7 +9,7 @@ describe("Feature: Routing - Boolean Flag", () => {
       booleanFlag: false,
     });
     await click(Block1Page.submit());
-    await expect(browser).toHaveUrlContaining(Block2Page.pageName);
+    await expect(browser).toHaveUrl(expect.stringContaining(Block2Page.pageName));
   });
 
   it("Given I have a routing rule that uses a boolean flag and it is True, When I press continue, Then I should be routed to the correct page ", async () => {
@@ -17,6 +17,6 @@ describe("Feature: Routing - Boolean Flag", () => {
       booleanFlag: true,
     });
     await click(Block1Page.submit());
-    await expect(browser).toHaveUrlContaining(Block3Page.pageName);
+    await expect(browser).toHaveUrl(expect.stringContaining(Block3Page.pageName));
   });
 });

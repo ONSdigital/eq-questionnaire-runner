@@ -15,7 +15,7 @@ describe("Feature: Repeating Section Summaries", () => {
       // Ensure the questionnaire fully loads
       await browser.pause(100);
       // Ensure we are on the Hub
-      await expect(browser).toHaveUrlContaining(HubPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(HubPage.url()));
       // Start first section to add household members
       await $(HubPage.summaryRowLink("section")).click();
 
