@@ -23,19 +23,19 @@ def choose_variant(  # type: ignore
         return block[single_key]  # type: ignore
     for variant in block.get(variants_key, []):
         list_item_id = current_location.list_item_id if current_location else None
-        when_rules = variant["when"]
         value_source_resolver = ValueSourceResolver(
             list_item_id=list_item_id,
             schema=schema,
             data_stores=data_stores,
             location=current_location,
-            use_default_answer=True,
         )
+        when_rules = variant["when"]
         when_rule_evaluator = RuleEvaluator(
             schema,
             data_stores=data_stores,
             location=current_location,
             value_source_resolver=value_source_resolver,
+            use_default_answer=True,
         )
 
         if when_rule_evaluator.evaluate(when_rules):
