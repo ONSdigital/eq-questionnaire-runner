@@ -274,7 +274,6 @@ class ValueSourceResolver(Resolver):
             location=self.location,
             routing_path_block_ids=self.routing_path_block_ids,
             value_source_resolver=self,
-            use_default_answer=True,
         )
 
         return evaluator.evaluate(calculation["operation"])  # type: ignore
