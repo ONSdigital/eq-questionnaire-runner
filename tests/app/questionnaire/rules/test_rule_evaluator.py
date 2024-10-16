@@ -1,7 +1,6 @@
 from datetime import datetime, timezone
 from typing import Optional, Union
 
-from app.questionnaire.value_source_resolver import ValueSourceResolver
 import pytest
 from freezegun import freeze_time
 from mock import MagicMock, Mock
@@ -19,6 +18,7 @@ from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.operator import Operator
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
+from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.utilities.schema import load_schema_from_name
 from tests.app.questionnaire.conftest import get_metadata
 from tests.app.questionnaire.test_value_source_resolver import (
@@ -64,12 +64,13 @@ def get_rule_evaluator(
         schema.is_answer_in_list_collector_repeating_block = Mock(return_value=False)
 
     list_item_id = location.list_item_id if location else None
-    value_source_resolver =ValueSourceResolver(
+    value_source_resolver = ValueSourceResolver(
         schema=schema,
         data_stores=data_stores,
         location=location,
         routing_path_block_ids=routing_path_block_ids,
-        list_item_id=list_item_id
+        list_item_id=list_item_id,
+        use_default_answer=True
     )
     return RuleEvaluator(
         value_source_resolver=value_source_resolver,
@@ -926,7 +927,6 @@ def test_answer_source_default_answer_used_when_no_answer(
             answer_store=AnswerStore([{"answer_id": "some-answer", "value": "No"}])
         ),
     )
-
     assert (
         rule_evaluator.evaluate(
             rule={
