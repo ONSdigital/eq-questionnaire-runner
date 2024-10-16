@@ -24,6 +24,7 @@ export const config = {
     components: ["./spec/components/**/*.js"],
     features: ["./spec/features/**/*.js"],
     summaries: ["./spec/summaries/**/*.js"],
+    journeys: ["./spec/journeys/**/*.js"],
     general: ["./spec/*.spec.js"],
   },
   // Patterns to exclude.
