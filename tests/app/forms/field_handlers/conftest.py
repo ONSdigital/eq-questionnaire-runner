@@ -36,7 +36,7 @@ def value_source_resolver():
 
 
 @pytest.fixture
-def rule_evaluator(value_source_resolver):
+def rule_evaluator(value_source_resolver):  # pylint: disable=redefined-outer-name
     evaluator = RuleEvaluator(
         value_source_resolver=value_source_resolver,
         data_stores=DataStores(response_metadata=get_mock_response_metadata()),
