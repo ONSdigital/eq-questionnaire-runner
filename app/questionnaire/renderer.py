@@ -23,7 +23,7 @@ class Renderer(ABC):
         self._location = location
 
     @abstractmethod
-    def render(
+    def render(  # pragma: no cover
         self,
         *,
         data_to_render: Mapping,

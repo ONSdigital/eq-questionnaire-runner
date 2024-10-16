@@ -7,6 +7,7 @@ from app.questionnaire.dynamic_answer_options import DynamicAnswerOptions
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 
+
 @pytest.fixture
 def value_source_resolver(mock_schema, response_metadata):
     resolver = ValueSourceResolver(
@@ -20,6 +21,7 @@ def value_source_resolver(mock_schema, response_metadata):
 
     return resolver
 
+
 @pytest.fixture
 def rule_evaluator(mock_schema, response_metadata, value_source_resolver):
     evaluator = RuleEvaluator(
@@ -30,6 +32,7 @@ def rule_evaluator(mock_schema, response_metadata, value_source_resolver):
     )
 
     return evaluator
+
 
 def test_dynamic_answer_options(rule_evaluator, value_source_resolver):
     dynamic_options = DynamicAnswerOptions(

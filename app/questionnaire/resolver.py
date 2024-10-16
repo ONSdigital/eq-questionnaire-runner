@@ -29,5 +29,7 @@ class Resolver(ABC):
     assess_routing_path: bool | None = True
 
     @abstractmethod
-    def resolve(self, value_source: Mapping) -> ResolveEscapedTypes | ResolverTypes:
+    def resolve(
+        self, value_source: Mapping
+    ) -> ResolveEscapedTypes | ResolverTypes:  # pragma: no cover
         pass
