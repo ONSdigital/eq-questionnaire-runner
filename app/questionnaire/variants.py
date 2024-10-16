@@ -35,6 +35,7 @@ def choose_variant(  # type: ignore
             data_stores=data_stores,
             location=current_location,
             value_source_resolver=value_source_resolver,
+            use_default_answer=True,
         )
 
         if when_rule_evaluator.evaluate(when_rules):

@@ -50,6 +50,7 @@ class CalculatedSummaryBlock:
             data_stores=data_stores,
             location=location,
             routing_path_block_ids=routing_path_block_ids,
+            use_default_answer=True,
         )
         self._rule_evaluator = RuleEvaluator(
             schema=schema,

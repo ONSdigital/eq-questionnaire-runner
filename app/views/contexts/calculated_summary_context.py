@@ -231,6 +231,7 @@ class CalculatedSummaryContext(Context):
                 routing_path_block_ids=routing_path_block_ids,
                 location=self.current_location,
                 list_item_id=list_item_id,
+                use_default_answer=True,
             ),
             data_stores=self._data_stores,
             schema=self._schema,

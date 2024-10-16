@@ -10,7 +10,9 @@ from app.questionnaire.value_source_resolver import ValueSourceResolver
 
 @pytest.fixture
 def rule_evaluator(mock_schema, response_metadata):
-    resolver = value_source_resolver(mock_schema, response_metadata=response_metadata)
+    resolver = value_source_resolver(
+        mock_schema, response_metadata=response_metadata, use_default_answer=True
+    )
     evaluator = RuleEvaluator(
         data_stores=DataStores(response_metadata=response_metadata),
         schema=mock_schema,

@@ -30,6 +30,7 @@ def value_source_resolver():
         location=None,
         list_item_id=None,
         escape_answer_values=False,
+        use_default_answer=True,
     )
     return resolver
 

@@ -21,10 +21,7 @@ from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.utilities.schema import load_schema_from_name
 from tests.app.questionnaire.conftest import get_metadata
-from tests.app.questionnaire.test_value_source_resolver import (
-    get_list_items,
-    get_value_source_resolver,
-)
+from tests.app.questionnaire.test_value_source_resolver import get_list_items
 
 current_date = datetime.now(timezone.utc).date()
 current_date_as_yyyy_mm_dd = current_date.strftime("%Y-%m-%d")
@@ -70,7 +67,7 @@ def get_rule_evaluator(
         location=location,
         routing_path_block_ids=routing_path_block_ids,
         list_item_id=list_item_id,
-        use_default_answer=True
+        use_default_answer=True,
     )
     return RuleEvaluator(
         value_source_resolver=value_source_resolver,

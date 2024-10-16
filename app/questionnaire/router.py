@@ -548,6 +548,7 @@ class Router:
             data_stores=self._data_stores,
             location=location,
             routing_path_block_ids=routing_path_block_ids,
+            use_default_answer=True,
         )
 
         when_rule_evaluator = RuleEvaluator(

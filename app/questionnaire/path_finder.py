@@ -191,6 +191,7 @@ class PathFinder:
                 data_stores=self.data_stores,
                 location=this_location,
                 routing_path_block_ids=block_ids_for_dependencies,
+                use_default_answer=True,
             ),
         )
         for rule in routing_rules:
@@ -240,6 +241,7 @@ class PathFinder:
             data_stores=self.data_stores,
             location=current_location,
             routing_path_block_ids=block_ids_for_dependencies,
+            use_default_answer=True,
         )
         when_rule_evaluator = RuleEvaluator(
             schema=self.schema,
