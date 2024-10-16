@@ -86,7 +86,6 @@ jobs:
       - name: Install apt dependencies
         run: |
             sudo apt-get install libsnappy-dev libgconf-2-4 jq
-
             # Install wkthtmltopdf with patched Qt
             sudo apt-get install -y xfonts-base xfonts-75dpi
             wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.bionic_amd64.deb
@@ -130,7 +129,7 @@ jobs:
     env:
       EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
       # :TODO: Revisit & update when 2 instances can be used without adverse effects
-      EQ_FUNCTIONAL_TEST_MAX_INSTANCES: 1
+      EQ_FUNCTIONAL_TEST_MAX_INSTANCES: 2
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
