@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   python-dependencies:
-    runs-on: macos-13
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - run: |
@@ -33,7 +33,7 @@ jobs:
           sudo apt-get install libsnappy-dev
           poetry install
   node-dependencies:
-    runs-on: macos-13
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -43,7 +43,7 @@ jobs:
         run: npm install
   lint:
     needs: [python-dependencies, node-dependencies]
-    runs-on: macos-13
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - run: |
@@ -78,7 +78,7 @@ jobs:
         run: make lint-html
   test-unit:
     needs: python-dependencies
-    runs-on: macos-13
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - run: |
@@ -113,7 +113,7 @@ jobs:
       - name: Running unit tests
         run: make test-unit
   validate-schemas:
-    runs-on: macos-13
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Run validator
@@ -125,7 +125,7 @@ jobs:
     strategy:
       matrix:
         suite: [ timeout_modal_expired, timeout_modal_extended, timeout_modal_extended_new_window, features, general, components ]
-    runs-on: macos-13
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
       EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
@@ -159,7 +159,7 @@ jobs:
     permissions:
       contents: 'read'
       id-token: 'write'
-    runs-on: macos-13
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - id: auth
