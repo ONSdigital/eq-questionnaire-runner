@@ -8,21 +8,6 @@ from app.utilities.types import LocationType
 
 class Renderer(ABC):
     @abstractmethod
-    def __init__(
-        self,
-        language: str,
-        data_stores: DataStores,
-        schema: QuestionnaireSchema,
-        location: LocationType | None = None,
-        placeholder_preview_mode: bool | None = False,
-    ):
-        self._placeholder_preview_mode = placeholder_preview_mode
-        self._language = language
-        self._data_stores = data_stores
-        self._schema = schema
-        self._location = location
-
-    @abstractmethod
     def render(  # pragma: no cover
         self,
         *,
