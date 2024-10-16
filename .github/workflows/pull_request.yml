@@ -126,6 +126,7 @@ jobs:
       matrix:
         suite: [ timeout_modal_expired, timeout_modal_extended, timeout_modal_extended_new_window, features, general, components ]
     runs-on: ubuntu-22.04
+    timeout-minutes: 30
     env:
       EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
       # :TODO: Revisit & update when 2 instances can be used without adverse effects
