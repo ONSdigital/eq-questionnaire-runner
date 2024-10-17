@@ -16,7 +16,7 @@ describe("Feature: Confirmation Question Within A Repeating Section", () => {
       await click(AddPersonPage.submit());
       await $(DoesAnyoneLiveHerePage.no()).click();
       await click(DoesAnyoneLiveHerePage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(DateOfBirthPage.url()).split("/").slice(-1)[0]);
+      await expect(browser).toHaveUrl(expect.stringContaining(DateOfBirthPage.url().split("/").slice(-1)[0]));
     });
 
     describe("Given a confirmation question", () => {
