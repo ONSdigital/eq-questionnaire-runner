@@ -13,13 +13,13 @@ describe("Skip Conditions - Block", () => {
     it("When I choose to skip on the first page, Then I should see the summary page", async () => {
       await $(QuestionPage.yes()).click();
       await click(QuestionPage.submit());
-      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.pageName));
     });
 
     it("When I choose not to skip on the first page, Then I should see the should-skip page", async () => {
       await $(QuestionPage.no()).click();
       await click(QuestionPage.submit());
-      await expect(browser).toHaveUrlContaining(SkipPage.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(SkipPage.pageName));
     });
   });
 });

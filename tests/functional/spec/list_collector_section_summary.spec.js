@@ -21,7 +21,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await drivingQuestionYes();
       await addCompany("Company A", "123", true);
       await anyMoreCompaniesNo();
-      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(SectionSummaryPage.url()));
       await expect(await $(SectionSummaryPage.anyCompaniesOrBranchesQuestion()).isExisting()).toBe(true);
       await expect(await $(SectionSummaryPage.anyCompaniesOrBranchesAnswer()).getText()).toBe("Yes");
     });
@@ -66,7 +66,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await addCompany("Company A", "123", true);
       await anyMoreCompaniesNo();
       await removeFirstCompany();
-      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(SectionSummaryPage.url()));
       await expect(await $("body").getText()).not.toBe("Company A");
       await expect(await $(SectionSummaryPage.companiesListEditLink(1)).isExisting()).toBe(false);
       await expect(await $(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).toBe(false);
@@ -76,7 +76,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await addCompany("Company A", "123", true);
       await anyMoreCompaniesNo();
       await removeFirstCompany();
-      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(SectionSummaryPage.url()));
       await expect(await $("body").getText()).toContain("No UK company or branch added");
     });
     it("When I have multiple items in the list and I remove the first item, Then only the item that was not deleted should be visible on the section summary.", async () => {
@@ -86,7 +86,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await addCompany("Company B", "234", true);
       await anyMoreCompaniesNo();
       await removeFirstCompany();
-      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(SectionSummaryPage.url()));
       await expect(await $("body").getText()).not.toBe("Company A");
       await expect(await $("body").getText()).toContain("Company B");
     });
@@ -94,7 +94,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await drivingQuestionYes();
       await addCompany("Company A", "123", true);
       await anyMoreCompaniesNo();
-      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(SectionSummaryPage.url()));
       await expect(await $(SectionSummaryPage.companiesListAddLink()).isExisting()).toBe(true);
     });
     it("When I add an item and relevant data and answer Yes on the additional items page, Then I should be able to and add a new item and relevant data.", async () => {
@@ -114,7 +114,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await anyMoreCompaniesNo();
       await expect(await $(companiesListRowItem(1, 1)).getText()).toContain("Company A");
       await $(SectionSummaryPage.companiesListEditLink(1)).click();
-      await expect(browser).toHaveUrlContaining("edit-company/?return_to=section-summary");
+      await expect(browser).toHaveUrl(expect.stringContaining("edit-company/?return_to=section-summary"));
       await expect(await $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).getValue()).toBe("Company A");
     });
     it("When I edit an item after adding it, Then I should be redirected to the summary page", async () => {
@@ -125,12 +125,12 @@ describe("List Collector Section Summary and Summary Items", () => {
       await $(SectionSummaryPage.companiesListEditLink(1)).click();
       await $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).setValue("Changed Company");
       await click(AnyCompaniesOrBranchesAddPage.submit());
-      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(SectionSummaryPage.url()));
       await expect(await $(companiesListRowItem(1, 1)).getText()).toContain("Changed Company");
     });
     it("When no item is added but I change my answer to the driving question to Yes, Then I should be able to add a new item.", async () => {
       await drivingQuestionNo();
-      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(SectionSummaryPage.url()));
       await expect(await $(SectionSummaryPage.companiesListEditLink(1)).isExisting()).toBe(false);
       await expect(await $(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).toBe(false);
       await expect(await $(SectionSummaryPage.companiesListAddLink()).isExisting()).toBe(false);
@@ -138,7 +138,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await drivingQuestionYes();
       await addCompany("Company A", "123", true);
       await anyMoreCompaniesNo();
-      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(SectionSummaryPage.url()));
       await expect(await $(SectionSummaryPage.companiesListEditLink(1)).isExisting()).toBe(true);
       await expect(await $(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).toBe(true);
       await expect(await $(SectionSummaryPage.companiesListAddLink()).isExisting()).toBe(true);
@@ -150,14 +150,14 @@ describe("List Collector Section Summary and Summary Items", () => {
       await expect(await $(companiesListRowItem(1, 1)).getText()).toContain("Company A");
       await $(SectionSummaryPage.anyCompaniesOrBranchesAnswerEdit()).click();
       await drivingQuestionNo();
-      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(SectionSummaryPage.url()));
       await expect(await $(SectionSummaryPage.companiesListEditLink(1)).isExisting()).toBe(false);
       await expect(await $(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).toBe(false);
       await expect(await $("body").getText()).not.toBe("No UK company or branch added");
       await expect(await $(SectionSummaryPage.companiesListAddLink()).isExisting()).toBe(false);
       await $(SectionSummaryPage.anyCompaniesOrBranchesAnswerEdit()).click();
       await drivingQuestionYes();
-      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(SectionSummaryPage.url()));
       await expect(await $(companiesListRowItem(1, 1)).getText()).toContain("Company A");
       await expect(await $(SectionSummaryPage.companiesListEditLink(1)).isExisting()).toBe(true);
       await expect(await $(SectionSummaryPage.companiesListRemoveLink(1)).isExisting()).toBe(true);
@@ -168,14 +168,14 @@ describe("List Collector Section Summary and Summary Items", () => {
       await addCompany("Company A", "123", true);
       await anyMoreCompaniesNo();
       await $(SectionSummaryPage.companiesListAddLink()).click();
-      await expect(browser).toHaveUrlContaining("/questionnaire/companies/add-company");
-      await expect(browser).toHaveUrlContaining("?return_to=section-summary");
+      await expect(browser).toHaveUrl(expect.stringContaining("/questionnaire/companies/add-company"));
+      await expect(browser).toHaveUrl(expect.stringContaining("?return_to=section-summary"));
       await addCompany("Company B", "456", true);
-      await expect(browser).toHaveUrlContaining(AnyCompaniesOrBranchesPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(AnyCompaniesOrBranchesPage.url()));
       await expect(await $("body").getText()).toContain("Company A");
       await expect(await $("body").getText()).toContain("Company B");
       await anyMoreCompaniesNo();
-      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(SectionSummaryPage.url()));
     });
     it("When I add three companies, Then I am prompted with the confirmation question", async () => {
       await drivingQuestionYes();
@@ -185,7 +185,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await anyMoreCompaniesYes();
       await addCompany("Company C", "789", true);
       await anyMoreCompaniesNo();
-      await expect(browser).toHaveUrlContaining(UkBasedPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(UkBasedPage.url()));
     });
     it("When I add less than 3 companies, Then I am not prompted with the confirmation question", async () => {
       await drivingQuestionYes();
@@ -193,7 +193,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await anyMoreCompaniesYes();
       await addCompany("Company B", "456", true);
       await anyMoreCompaniesNo();
-      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(SectionSummaryPage.url()));
     });
     it("When I add more than 3 companies, Then I am not prompted with the confirmation question", async () => {
       await drivingQuestionYes();
@@ -205,7 +205,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await anyMoreCompaniesYes();
       await addCompany("Company D", "135", true);
       await anyMoreCompaniesNo();
-      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(SectionSummaryPage.url()));
     });
     it("When I add another company from the summary page, and the amount then totals to 3, and the confirmation question hasn't been previously answered, Then I am prompted with the confirmation question", async () => {
       await drivingQuestionYes();
@@ -213,15 +213,15 @@ describe("List Collector Section Summary and Summary Items", () => {
       await anyMoreCompaniesYes();
       await addCompany("Company B", "456", true);
       await anyMoreCompaniesNo();
-      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(SectionSummaryPage.url()));
       await $(SectionSummaryPage.companiesListAddLink()).click();
-      await expect(browser).toHaveUrlContaining("/questionnaire/companies/add-company");
-      await expect(browser).toHaveUrlContaining("?return_to=section-summary");
+      await expect(browser).toHaveUrl(expect.stringContaining("/questionnaire/companies/add-company"));
+      await expect(browser).toHaveUrl(expect.stringContaining("?return_to=section-summary"));
       await addCompany("Company C", "234", true);
       await anyMoreCompaniesNo();
-      await expect(browser).toHaveUrlContaining(UkBasedPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(UkBasedPage.url()));
       await answerUkBasedQuestion();
-      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(SectionSummaryPage.url()));
     });
     it("When I remove a company from the summary page, and the amount then totals to 3, and the confirmation question hasn't been previously answered, Then I am prompted with the confirmation question", async () => {
       await drivingQuestionYes();
@@ -233,11 +233,11 @@ describe("List Collector Section Summary and Summary Items", () => {
       await anyMoreCompaniesYes();
       await addCompany("Company D", "345", true);
       await anyMoreCompaniesNo();
-      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(SectionSummaryPage.url()));
       await removeFirstCompany();
-      await expect(browser).toHaveUrlContaining(UkBasedPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(UkBasedPage.url()));
       await answerUkBasedQuestion();
-      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(SectionSummaryPage.url()));
     });
 
     it("When I get to the summary page, Then the summary should be displayed as expected with change links", async () => {
@@ -248,9 +248,9 @@ describe("List Collector Section Summary and Summary Items", () => {
       await anyMoreCompaniesYes();
       await addCompany("Company C", "234", true);
       await anyMoreCompaniesNo();
-      await expect(browser).toHaveUrlContaining(UkBasedPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(UkBasedPage.url()));
       await answerUkBasedQuestion();
-      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(SectionSummaryPage.url()));
       await click(SectionSummaryPage.submit());
       await $(ListCollectorPage.no()).click();
       await click(ListCollectorPage.submit());
@@ -258,7 +258,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await click(HouseholderCheckboxPage.submit());
       await click(SectionSummaryTwoPage.submit());
 
-      await expect(browser).toHaveUrlContaining(SubmitPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.url()));
       await expect(await $(companiesListRowItem(1, 1)).getText()).toContain("Company A");
       await expect(await $(companiesListRowItem(1, 2)).getText()).toContain("123");
       await expect(await $(companiesListRowItem(1, 3)).getText()).toContain("Change");
@@ -281,9 +281,9 @@ describe("List Collector Section Summary and Summary Items", () => {
       await anyMoreCompaniesYes();
       await addCompany("Company C", "234", true);
       await anyMoreCompaniesNo();
-      await expect(browser).toHaveUrlContaining(UkBasedPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(UkBasedPage.url()));
       await answerUkBasedQuestion();
-      await expect(browser).toHaveUrlContaining(SectionSummaryPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(SectionSummaryPage.url()));
       await click(SectionSummaryPage.submit());
       await $(ListCollectorPage.no()).click();
       await click(ListCollectorPage.submit());
@@ -294,7 +294,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await expect(await $(ThankYouPage.title()).getHTML()).toContain("Thank you for completing the Test");
       await $(ThankYouPage.savePrintAnswersLink()).click();
 
-      await expect(browser).toHaveUrlContaining(ViewSubmittedResponsePage.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(ViewSubmittedResponsePage.pageName));
       await expect(await $(companiesListRowItem(1, 1)).getText()).toContain("Company A");
       await expect(await $(companiesListRowItem(1, 2)).getText()).toContain("123");
       await expect(await $(companiesListRowItem(2, 1)).getText()).toContain("Company B");

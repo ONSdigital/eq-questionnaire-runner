@@ -72,7 +72,7 @@ describe("List Collector Repeating Blocks", () => {
       await click(AnyOtherTradingDetailsPage.submit());
       await click(SectionCompaniesPage.submit());
       await click(SubmitPage.submit());
-      await expect(browser).toHaveUrlContaining(ThankYouPage.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(ThankYouPage.pageName));
     });
   });
 
@@ -121,7 +121,7 @@ describe("List Collector Repeating Blocks", () => {
       await click(AnyOtherTradingDetailsPage.submit());
       await click(SectionCompaniesPage.submit());
       await click(SubmitPage.submit());
-      await expect(browser).toHaveUrlContaining(ThankYouPage.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(ThankYouPage.pageName));
     });
   });
 
@@ -168,7 +168,7 @@ describe("List Collector Repeating Blocks", () => {
     it("When an item has incomplete repeating blocks, Then using submit on the list collector page will navigate the user to the first incomplete repeating block.", async () => {
       await $(AnyOtherCompaniesOrBranchesPage.no()).click();
       await click(AnyOtherCompaniesOrBranchesPage.submit());
-      await expect(browser).toHaveUrlContaining(CompaniesRepeatingBlock1Page.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(CompaniesRepeatingBlock1Page.pageName));
     });
 
     it("When there are multiple incomplete items and only the first incomplete item is completed, Then attempting using Submit on the list collector page will navigate the user to the next incomplete item.", async () => {
@@ -186,7 +186,7 @@ describe("List Collector Repeating Blocks", () => {
       await click(AnyOtherCompaniesOrBranchesPage.submit());
 
       // The user is taken to the next incomplete repeating block
-      await expect(browser).toHaveUrlContaining(CompaniesRepeatingBlock2Page.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(CompaniesRepeatingBlock2Page.pageName));
     });
 
     it("When the last remaining incomplete repeating block is completed, Then all items are marked as completed with the checkmark icon.", async () => {
@@ -205,18 +205,18 @@ describe("List Collector Repeating Blocks", () => {
 
       await $(SectionCompaniesPage.anyOtherTradingDetailsAnswerEdit()).click();
       await click(AnyOtherTradingDetailsPage.submit());
-      await expect(browser).toHaveUrlContaining("section-companies/#any-other-trading-details-answer");
+      await expect(browser).toHaveUrl(expect.stringContaining("section-companies/#any-other-trading-details-answer"));
 
       await $(SectionCompaniesPage.anyOtherTradingDetailsAnswerEdit()).click();
       await $(AnyOtherTradingDetailsPage.previous()).click();
-      await expect(browser).toHaveUrlContaining("section-companies/#any-other-trading-details-answer");
+      await expect(browser).toHaveUrl(expect.stringContaining("section-companies/#any-other-trading-details-answer"));
     });
 
     it("When an answer is edited from the section summary which does not affect progress, Then pressing continue returns the user to the section summary anchored to the answer they edited", async () => {
       await $(SectionCompaniesPage.anyOtherTradingDetailsAnswerEdit()).click();
       await $(AnyOtherTradingDetailsPage.answer()).setValue("No");
       await click(AnyOtherTradingDetailsPage.submit());
-      await expect(browser).toHaveUrlContaining("section-companies/#any-other-trading-details-answer");
+      await expect(browser).toHaveUrl(expect.stringContaining("section-companies/#any-other-trading-details-answer"));
     });
 
     it("When a user clicks a change link from the final summary and submits without changing an answer, Then the user is returned to the final summary anchored to the answer they clicked on", async () => {
@@ -224,23 +224,23 @@ describe("List Collector Repeating Blocks", () => {
 
       await $(SubmitPage.anyOtherTradingDetailsAnswerEdit()).click();
       await click(AnyOtherTradingDetailsPage.submit());
-      await expect(browser).toHaveUrlContaining("submit/#any-other-trading-details-answer");
+      await expect(browser).toHaveUrl(expect.stringContaining("submit/#any-other-trading-details-answer"));
 
       await $(SubmitPage.anyOtherTradingDetailsAnswerEdit()).click();
       await $(AnyOtherTradingDetailsPage.previous()).click();
-      await expect(browser).toHaveUrlContaining("submit/#any-other-trading-details-answer");
+      await expect(browser).toHaveUrl(expect.stringContaining("submit/#any-other-trading-details-answer"));
     });
 
     it("When an an answer is edited from the final summary which does not affect progress, Then pressing continue returns the user to the final summary anchored to the answer they edited", async () => {
       await $(SectionCompaniesPage.anyOtherTradingDetailsAnswerEdit()).click();
       await $(AnyOtherTradingDetailsPage.answer()).setValue("Yes");
       await click(AnyOtherTradingDetailsPage.submit());
-      await expect(browser).toHaveUrlContaining("submit/#any-other-trading-details-answer");
+      await expect(browser).toHaveUrl(expect.stringContaining("submit/#any-other-trading-details-answer"));
     });
 
     it("When all items are completed by the user, Then the questionnaire is able to be submitted.", async () => {
       await click(SubmitPage.submit());
-      await expect(browser).toHaveUrlContaining(ThankYouPage.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(ThankYouPage.pageName));
     });
   });
 
@@ -292,7 +292,7 @@ describe("List Collector Repeating Blocks", () => {
       await click(HubPage.submit());
       await $(AnyOtherCompaniesOrBranchesPage.no()).click();
       await click(AnyOtherCompaniesOrBranchesPage.submit());
-      await expect(browser).toHaveUrlContaining(CompaniesRepeatingBlock1Page.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(CompaniesRepeatingBlock1Page.pageName));
     });
 
     it("When the user completes the incomplete blocks and returns to the list collector Page, Then the completed items should display the checkmark icon", async () => {
@@ -303,7 +303,7 @@ describe("List Collector Repeating Blocks", () => {
       await click(CompaniesRepeatingBlock1Page.submit());
       await $(CompaniesRepeatingBlock2Page.authorisedTraderUkRadioNo()).click();
       await click(CompaniesRepeatingBlock2Page.submit());
-      await expect(browser).toHaveUrlContaining(AnyOtherCompaniesOrBranchesPage.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(AnyOtherCompaniesOrBranchesPage.pageName));
       await summaryItemComplete(`dt[data-qa="list-item-1-label"]`, true);
       await summaryItemComplete(`dt[data-qa="list-item-2-label"]`, true);
     });
@@ -320,7 +320,7 @@ describe("List Collector Repeating Blocks", () => {
 
       // Navigating to the section summary will redirect to the list collector page
       await browser.url("questionnaire/sections/section-companies/");
-      await expect(browser).toHaveUrlContaining(AnyOtherCompaniesOrBranchesPage.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(AnyOtherCompaniesOrBranchesPage.pageName));
     });
 
     it("When the incomplete repeating blocks are completed, Then the user is able to complete the section and is taken to the hub page.", async () => {
@@ -336,7 +336,7 @@ describe("List Collector Repeating Blocks", () => {
       await $(AnyOtherCompaniesOrBranchesPage.no()).click();
       await click(AnyOtherCompaniesOrBranchesPage.submit());
       await click(SectionCompaniesPage.submit());
-      await expect(browser).toHaveUrlContaining(HubPage.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(HubPage.pageName));
     });
 
     it("When the user is on the Hub page and has completed the section, Then they are able to add additional companies using the Add link", async () => {
@@ -354,12 +354,12 @@ describe("List Collector Repeating Blocks", () => {
       await $(AnyOtherCompaniesOrBranchesPage.no()).click();
       await click(AnyOtherCompaniesOrBranchesPage.submit());
       await click(SectionCompaniesPage.submit());
-      await expect(browser).toHaveUrlContaining(HubPage.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(HubPage.pageName));
     });
 
     it("When the user has completed the list collector section and uses Submit on the hub page, Then the user will be redirected to the next section.", async () => {
       await click(HubPage.submit());
-      await expect(browser).toHaveUrlContaining(ResponsiblePartyHubPage.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(ResponsiblePartyHubPage.pageName));
     });
   });
 });

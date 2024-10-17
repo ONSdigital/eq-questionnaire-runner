@@ -17,7 +17,7 @@ describe("Feature: Show section summary on completion", () => {
       await $(employmentStatusBlockPage.workingAsAnEmployee()).click();
       await click(employmentStatusBlockPage.submit());
 
-      await expect(browser).toHaveUrlContaining(hubPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(hubPage.url()));
     });
   });
 
@@ -25,7 +25,7 @@ describe("Feature: Show section summary on completion", () => {
     it("When I return to a completed section from the hub, Then I am returned to that section summary", async () => {
       await $(hubPage.summaryRowLink("employment-section")).click();
 
-      await expect(browser).toHaveUrlContaining(employmentSectionSummary.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(employmentSectionSummary.url()));
     });
   });
 
@@ -39,7 +39,7 @@ describe("Feature: Show section summary on completion", () => {
       await $(proxyQuestionPage.noIMAnsweringForMyself()).click();
       await click(proxyQuestionPage.submit());
 
-      await expect(browser).toHaveUrlContaining(accommodationSectionSummary.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(accommodationSectionSummary.url()));
     });
   });
 
@@ -51,7 +51,7 @@ describe("Feature: Show section summary on completion", () => {
     it("When I return to a completed section from the hub, Then I am returned to the correct section summary", async () => {
       await $(hubPage.summaryRowLink("accommodation-section")).click();
 
-      await expect(browser).toHaveUrlContaining(accommodationSectionSummary.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(accommodationSectionSummary.url()));
     });
   });
 });
