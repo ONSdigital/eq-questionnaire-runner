@@ -39,9 +39,11 @@ def test_invalid_field_type_raises_on_invalid():
         location=None,
         list_item_id=None,
         escape_answer_values=False,
+        use_default_answer=True,
     )
 
     rule_evaluator = RuleEvaluator(
+        value_source_resolver=value_source_resolver,
         data_stores=DataStores(),
         schema=schema,
         location=None,
