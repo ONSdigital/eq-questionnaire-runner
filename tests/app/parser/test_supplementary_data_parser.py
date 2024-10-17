@@ -61,12 +61,12 @@ def test_invalid_supplementary_dataset_version_raises_error():
             dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
             identifier="12345678901",
             survey_id="123",
-            sds_schema_version="v6"
+            sds_schema_version="v6",
         )
 
     assert (
         str(error.value)
-        == "{'_schema': ['The Supplementary Dataset version does not match the version set in the schema']}"
+        == "{'_schema': ['The Supplementary Dataset version does not match the version set in the questionnaire schema']}"
     )
 
 
@@ -76,7 +76,7 @@ def test_valid_supplementary_dataset_version():
         dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
         identifier="12345678901",
         survey_id="123",
-        sds_schema_version="v1"
+        sds_schema_version="v1",
     )
 
     assert validated_payload == SUPPLEMENTARY_DATA_PAYLOAD
@@ -197,30 +197,6 @@ def test_validate_supplementary_data_payload_with_unknown_field():
     )
 
     assert validated_payload == payload
-
-
-def test_validate_supplementary_data_invalid_schema_version():
-    payload = {
-        "dataset_id": "44f1b432-9421-49e5-bd26-e63e18a30b69",
-        "survey_id": "123",
-        "some_field": "value",
-        "data": {
-            "schema_version": "v3",
-            "identifier": "12345678901",
-        },
-    }
-
-    with pytest.raises(ValidationError) as error:
-        validate_supplementary_data_v1(
-            supplementary_data=payload,
-            dataset_id="001",
-            identifier="12345678901",
-            survey_id="123",
-        )
-
-    assert (
-        str(error.value) == "{'data': {'schema_version': ['Must be one of: v1, v2.']}}"
-    )
 
 
 def test_validate_supplementary_data_payload_missing_identifier_in_items():
