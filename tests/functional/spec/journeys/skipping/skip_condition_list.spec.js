@@ -1,9 +1,9 @@
-import ListCollectorPage from "../generated_pages/skip_condition_list/list-collector.page.js";
-import ListCollectorAddPage from "../generated_pages/skip_condition_list/list-collector-add.page.js";
-import LessThanTwoInterstitialPage from "../generated_pages/skip_condition_list/less-than-two-interstitial.page.js";
-import TwoInterstitialPage from "../generated_pages/skip_condition_list/two-interstitial.page.js";
-import MoreThanTwoInterstitialPage from "../generated_pages/skip_condition_list/more-than-two-interstitial.page.js";
-import { click } from "../helpers";
+import ListCollectorPage from "../../../generated_pages/skip_condition_list/list-collector.page.js";
+import ListCollectorAddPage from "../../../generated_pages/skip_condition_list/list-collector-add.page.js";
+import LessThanTwoInterstitialPage from "../../../generated_pages/skip_condition_list/less-than-two-interstitial.page.js";
+import TwoInterstitialPage from "../../../generated_pages/skip_condition_list/two-interstitial.page.js";
+import MoreThanTwoInterstitialPage from "../../../generated_pages/skip_condition_list/more-than-two-interstitial.page.js";
+import { click } from "../../../helpers";
 describe("Feature: Routing on lists", () => {
   describe("Given I start skip condition list survey", () => {
     beforeEach(async () => {

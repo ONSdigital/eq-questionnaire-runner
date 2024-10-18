@@ -1,11 +1,11 @@
-import VariantBlockPage from "../generated_pages/list_collector_variants_primary_person/variant-block.page";
-import PrimaryPersonListCollectorPage from "../generated_pages/list_collector_variants_primary_person/primary-person-list-collector.page";
-import ListCollectorAddPage from "../generated_pages/list_collector_variants_primary_person/list-collector-add.page";
-import ListCollectorPage from "../generated_pages/list_collector_variants_primary_person/list-collector.page";
-import EditPersonPage from "../generated_pages/list_collector_variants_primary_person/list-collector-edit.page";
-import SubmitPage from "../generated_pages/list_collector_variants_primary_person/submit.page";
-import ThankYouPage from "../base_pages/thank-you.page.js";
-import { click } from "../helpers";
+import VariantBlockPage from "../../generated_pages/list_collector_variants_primary_person/variant-block.page";
+import PrimaryPersonListCollectorPage from "../../generated_pages/list_collector_variants_primary_person/primary-person-list-collector.page";
+import ListCollectorAddPage from "../../generated_pages/list_collector_variants_primary_person/list-collector-add.page";
+import ListCollectorPage from "../../generated_pages/list_collector_variants_primary_person/list-collector.page";
+import EditPersonPage from "../../generated_pages/list_collector_variants_primary_person/list-collector-edit.page";
+import SubmitPage from "../../generated_pages/list_collector_variants_primary_person/submit.page";
+import ThankYouPage from "../../base_pages/thank-you.page.js";
+import { click } from "../../helpers";
 
 describe("List collector with variants primary person", () => {
   describe("Given that person lives in house", () => {

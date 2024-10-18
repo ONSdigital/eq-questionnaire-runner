@@ -1,7 +1,7 @@
-import QuestionPage from "../generated_pages/skip_condition_block/do-you-want-to-skip.page";
-import SkipPage from "../generated_pages/skip_condition_block/should-skip.page";
-import SubmitPage from "../generated_pages/skip_condition_block/submit.page";
-import { click } from "../helpers";
+import QuestionPage from "../../../generated_pages/skip_condition_block/do-you-want-to-skip.page";
+import SkipPage from "../../../generated_pages/skip_condition_block/should-skip.page";
+import SubmitPage from "../../../generated_pages/skip_condition_block/submit.page";
+import { click } from "../../../helpers";
 describe("Skip Conditions - Block", () => {
   const schema = "test_skip_condition_block.json";
 

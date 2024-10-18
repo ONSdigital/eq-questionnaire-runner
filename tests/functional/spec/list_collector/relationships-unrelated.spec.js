@@ -1,9 +1,9 @@
-import ListCollectorPage from "../generated_pages/relationships_unrelated/list-collector.page.js";
-import ListCollectorAddPage from "../generated_pages/relationships_unrelated/list-collector-add.page.js";
-import RelationshipsPage from "../generated_pages/relationships_unrelated/relationships.page.js";
-import RelatedToAnyoneElsePage from "../generated_pages/relationships_unrelated/related-to-anyone-else.page.js";
-import RelationshipsInterstitialPage from "../generated_pages/relationships_unrelated/relationship-interstitial.page.js";
-import { click } from "../helpers";
+import ListCollectorPage from "../../generated_pages/relationships_unrelated/list-collector.page.js";
+import ListCollectorAddPage from "../../generated_pages/relationships_unrelated/list-collector-add.page.js";
+import RelationshipsPage from "../../generated_pages/relationships_unrelated/relationships.page.js";
+import RelatedToAnyoneElsePage from "../../generated_pages/relationships_unrelated/related-to-anyone-else.page.js";
+import RelationshipsInterstitialPage from "../../generated_pages/relationships_unrelated/relationship-interstitial.page.js";
+import { click } from "../../helpers";
 
 describe("Unrelated Relationships", () => {
   const schema = "test_relationships_unrelated.json";

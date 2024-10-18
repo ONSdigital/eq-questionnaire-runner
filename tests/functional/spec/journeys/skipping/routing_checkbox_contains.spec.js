@@ -1,8 +1,8 @@
-import RoutingCheckboxContains from "../generated_pages/routing_checkbox_contains/country-checkbox.page";
-import ContainsAllPage from "../generated_pages/routing_checkbox_contains/country-interstitial-all.page";
-import ContainsAnyPage from "../generated_pages/routing_checkbox_contains/country-interstitial-any.page";
-import SubmitPage from "../generated_pages/routing_checkbox_contains/submit.page";
-import { click } from "../helpers";
+import RoutingCheckboxContains from "../../../generated_pages/routing_checkbox_contains/country-checkbox.page";
+import ContainsAllPage from "../../../generated_pages/routing_checkbox_contains/country-interstitial-all.page";
+import ContainsAnyPage from "../../../generated_pages/routing_checkbox_contains/country-interstitial-any.page";
+import SubmitPage from "../../../generated_pages/routing_checkbox_contains/submit.page";
+import { click } from "../../../helpers";
 describe("Routing Checkbox Contains Condition.", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_routing_checkbox_contains.json");

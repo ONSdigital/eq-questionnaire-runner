@@ -1,13 +1,13 @@
-import ListCollectorPage from "../generated_pages/list_collector_primary_person/list-collector.page.js";
-import ListCollectorAddPage from "../generated_pages/list_collector_primary_person/list-collector-add.page.js";
-import ListCollectorEditPage from "../generated_pages/list_collector_primary_person/list-collector-edit.page.js";
-import PrimaryPersonListCollectorPage from "../generated_pages/list_collector_primary_person/primary-person-list-collector.page.js";
-import PrimaryPersonListCollectorAddPage from "../generated_pages/list_collector_primary_person/primary-person-list-collector-add.page.js";
-import SectionSummaryPage from "../generated_pages/list_collector/section-summary.page.js";
-import { SubmitPage } from "../base_pages/submit.page.js";
-import ThankYouPage from "../base_pages/thank-you.page.js";
-import AnyoneUsuallyLiveAtPage from "../generated_pages/list_collector_primary_person/anyone-usually-live-at.page.js";
-import { click } from "../helpers";
+import ListCollectorPage from "../../generated_pages/list_collector_primary_person/list-collector.page.js";
+import ListCollectorAddPage from "../../generated_pages/list_collector_primary_person/list-collector-add.page.js";
+import ListCollectorEditPage from "../../generated_pages/list_collector_primary_person/list-collector-edit.page.js";
+import PrimaryPersonListCollectorPage from "../../generated_pages/list_collector_primary_person/primary-person-list-collector.page.js";
+import PrimaryPersonListCollectorAddPage from "../../generated_pages/list_collector_primary_person/primary-person-list-collector-add.page.js";
+import SectionSummaryPage from "../../generated_pages/list_collector/section-summary.page.js";
+import { SubmitPage } from "../../base_pages/submit.page.js";
+import ThankYouPage from "../../base_pages/thank-you.page.js";
+import AnyoneUsuallyLiveAtPage from "../../generated_pages/list_collector_primary_person/anyone-usually-live-at.page.js";
+import { click } from "../../helpers";
 
 describe("Primary Person List Collector Survey", () => {
   describe("Given the user starts on the 'do you live here' question", () => {

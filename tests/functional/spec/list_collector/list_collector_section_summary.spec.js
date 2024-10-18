@@ -1,16 +1,16 @@
-import AnyCompaniesOrBranchesDrivingQuestionPage from "../generated_pages/list_collector_section_summary/any-companies-or-branches.page.js";
-import AnyCompaniesOrBranchesPage from "../generated_pages/list_collector_section_summary/any-other-companies-or-branches.page.js";
-import AnyCompaniesOrBranchesAddPage from "../generated_pages/list_collector_section_summary/any-other-companies-or-branches-add.page.js";
-import AnyCompaniesOrBranchesRemovePage from "../generated_pages/list_collector_section_summary/any-other-companies-or-branches-remove.page.js";
-import SectionSummaryPage from "../generated_pages/list_collector_section_summary/section-companies-summary.page";
-import SectionSummaryTwoPage from "../generated_pages/list_collector_section_summary/section-household-summary.page";
-import UkBasedPage from "../generated_pages/list_collector_section_summary/confirmation-checkbox.page";
-import ListCollectorPage from "../generated_pages/list_collector_section_summary/list-collector.page";
-import HouseholderCheckboxPage from "../generated_pages/list_collector_section_summary/householder-checkbox.page";
-import SubmitPage from "../generated_pages/list_collector_section_summary/submit.page";
-import ThankYouPage from "../base_pages/thank-you.page";
-import ViewSubmittedResponsePage from "../generated_pages/list_collector_section_summary/view-submitted-response.page";
-import { click, listItemIds } from "../helpers";
+import AnyCompaniesOrBranchesDrivingQuestionPage from "../../generated_pages/list_collector_section_summary/any-companies-or-branches.page.js";
+import AnyCompaniesOrBranchesPage from "../../generated_pages/list_collector_section_summary/any-other-companies-or-branches.page.js";
+import AnyCompaniesOrBranchesAddPage from "../../generated_pages/list_collector_section_summary/any-other-companies-or-branches-add.page.js";
+import AnyCompaniesOrBranchesRemovePage from "../../generated_pages/list_collector_section_summary/any-other-companies-or-branches-remove.page.js";
+import SectionSummaryPage from "../../generated_pages/list_collector_section_summary/section-companies-summary.page";
+import SectionSummaryTwoPage from "../../generated_pages/list_collector_section_summary/section-household-summary.page";
+import UkBasedPage from "../../generated_pages/list_collector_section_summary/confirmation-checkbox.page";
+import ListCollectorPage from "../../generated_pages/list_collector_section_summary/list-collector.page";
+import HouseholderCheckboxPage from "../../generated_pages/list_collector_section_summary/householder-checkbox.page";
+import SubmitPage from "../../generated_pages/list_collector_section_summary/submit.page";
+import ThankYouPage from "../../base_pages/thank-you.page";
+import ViewSubmittedResponsePage from "../../generated_pages/list_collector_section_summary/view-submitted-response.page";
+import { click, listItemIds } from "../../helpers";
 
 describe("List Collector Section Summary and Summary Items", () => {
   describe("Given I launch the test list collector section summary items survey", () => {

@@ -1,8 +1,8 @@
-import ConditionalCombinedRoutingPage from "../generated_pages/conditional_combined_routing/conditional-routing-block.page";
-import ResponseAny from "../generated_pages/conditional_combined_routing/response-any.page";
-import ResponseNotAny from "../generated_pages/conditional_combined_routing/response-not-any.page";
-import SubmitPage from "../generated_pages/conditional_combined_routing/submit.page";
-import { click } from "../helpers";
+import ConditionalCombinedRoutingPage from "../../../generated_pages/conditional_combined_routing/conditional-routing-block.page";
+import ResponseAny from "../../../generated_pages/conditional_combined_routing/response-any.page";
+import ResponseNotAny from "../../../generated_pages/conditional_combined_routing/response-not-any.page";
+import SubmitPage from "../../../generated_pages/conditional_combined_routing/submit.page";
+import { click } from "../../../helpers";
 
 describe("Conditional combined routing.", () => {
   beforeEach(async () => {
