@@ -299,6 +299,9 @@ min-public-methods=2
 # Maximum cyclomatic complexity
 max-complexity=10
 
+# Maximum positional arguments
+max-positional-arguments=12
+
 [EXCEPTIONS]
 
 # Exceptions that will emit a warning when caught.
