@@ -2,7 +2,6 @@
     "mime_type": "application/json/ons/eq",
     "language": "en",
     "schema_version": "0.0.1",
-    "sds_schema_version": "v1",
     "data_version": "0.0.3",
     "survey_id": "123",
     "title": "Test Supplementary Data",
