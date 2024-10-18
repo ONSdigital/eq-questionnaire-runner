@@ -159,7 +159,7 @@ describe("Feature: Hub and Spoke", () => {
 
     it("When the user returns to the Hub and continues, Then they should progress to the next section", async () => {
       await click(EmploymentTypeBlockPage.submit());
-      await expect(browser).toHaveUrlContaining(HubPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(HubPage.url()));
       await click(HubPage.submit());
       const expectedUrl = await browser.getUrl();
       await expect(expectedUrl).toContain(ProxyPage.url());
@@ -178,7 +178,7 @@ describe("Feature: Hub and Spoke", () => {
 
     it("When the user clicks the 'View answers' link and incompletes the section, Then they the should be taken to the next incomplete question on 'Continue", async () => {
       await $(HubPage.summaryRowLink("employment-section")).click();
-      await expect(browser).toHaveUrlContaining(EmploymentStatusBlockPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(EmploymentStatusBlockPage.url()));
       await $(EmploymentStatusBlockPage.exclusiveNoneOfTheseApply()).click();
       await click(EmploymentStatusBlockPage.submit());
       const expectedUrl = await browser.getUrl();
@@ -187,7 +187,7 @@ describe("Feature: Hub and Spoke", () => {
 
     it("When the user clicks the 'View answers' link and incompletes the section and returns to the hub, Then the section should be marked as 'Partially completed'", async () => {
       await $(HubPage.summaryRowLink("employment-section")).click();
-      await expect(browser).toHaveUrlContaining(EmploymentStatusBlockPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(EmploymentStatusBlockPage.url()));
       await $(EmploymentStatusBlockPage.exclusiveNoneOfTheseApply()).click();
       await click(EmploymentStatusBlockPage.submit());
       await browser.url(HubPage.url());
@@ -243,7 +243,7 @@ describe("Feature: Hub and Spoke", () => {
     });
 
     it("The hub should not show first of all", async () => {
-      await expect(browser).toHaveUrlContaining(EmploymentStatusBlockPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(EmploymentStatusBlockPage.url()));
     });
 
     it("The hub should only display when required sections are complete", async () => {
@@ -251,7 +251,7 @@ describe("Feature: Hub and Spoke", () => {
       await click(EmploymentStatusBlockPage.submit());
       await $(EmploymentTypeBlockPage.studying()).click();
       await click(EmploymentTypeBlockPage.submit());
-      await expect(browser).toHaveUrlContaining(HubPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(HubPage.url()));
     });
   });
 
@@ -292,7 +292,7 @@ describe("Feature: Hub and Spoke", () => {
       await $(DateOfBirthPage.month()).setValue(1);
       await $(DateOfBirthPage.year()).setValue(2000);
       await $(RepeatingSummaryPage.submit()).click();
-      await expect(browser).toHaveUrlContaining(HubPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(HubPage.url()));
     });
 
     it("When the repeating sections are incomplete, Then the hub should not be displayed", async () => {
@@ -310,7 +310,7 @@ describe("Feature: Hub and Spoke", () => {
       await $(ProxyRepeatPage.submit()).click();
 
       await browser.url(HubPage.url());
-      await expect(browser).toHaveUrlContaining("date-of-birth");
+      await expect(browser).toHaveUrl(expect.stringContaining("date-of-birth"));
     });
   });
 
@@ -341,7 +341,7 @@ describe("Feature: Hub and Spoke", () => {
       await $(LengthOfEmploymentPage.year()).setValue(1930);
       await click(LengthOfEmploymentPage.submit());
       await click(Section3Page.submit());
-      await expect(browser).toHaveUrlContaining(HubPage.url());
+      await expect(browser).toHaveUrl(expect.stringContaining(HubPage.url()));
     });
 
     it("When the repeating sections are incomplete. Then the hub should not be displayed", async () => {
@@ -357,7 +357,7 @@ describe("Feature: Hub and Spoke", () => {
       await click(Section3Page.submit());
 
       await browser.url(HubPage.url());
-      await expect(browser).toHaveUrlContaining("length-of-employment");
+      await expect(browser).toHaveUrl(expect.stringContaining("length-of-employment"));
     });
   });
 

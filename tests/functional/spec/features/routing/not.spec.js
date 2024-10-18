@@ -12,13 +12,13 @@ describe("Feature: Routing - Not Operator", () => {
       it("When I do not select India, Then I should be routed to the not India interstitial page", async () => {
         await $(CountryCheckboxPage.azerbaijan()).click();
         await click(CountryCheckboxPage.submit());
-        await expect(browser).toHaveUrlContaining(CountryInterstitialPage.pageName);
+        await expect(browser).toHaveUrl(expect.stringContaining(CountryInterstitialPage.pageName));
       });
 
       it("When I select India, Then I should be routed to the India interstitial page", async () => {
         await $(CountryCheckboxPage.india()).click();
         await click(CountryCheckboxPage.submit());
-        await expect(browser).toHaveUrlContaining(IndiaInterstitialPage.pageName);
+        await expect(browser).toHaveUrl(expect.stringContaining(IndiaInterstitialPage.pageName));
       });
     });
   });

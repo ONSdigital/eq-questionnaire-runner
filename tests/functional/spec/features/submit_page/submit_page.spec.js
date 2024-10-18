@@ -12,13 +12,13 @@ describe("Given I launch a linear flow questionnaire without summary", () => {
   it("When I complete the questionnaire, then I should be taken to the submit page without a summary", async () => {
     await $(BreakfastPage.answer()).setValue("Bacon");
     await click(BreakfastPage.submit());
-    await expect(browser).toHaveUrlContaining(SubmitPage.url());
+    await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.url()));
     await expect(await $(SubmitPage.summary()).isExisting()).toBe(false);
   });
 
   it("When I complete the questionnaire and submit the questionnaire, then the submission is successful", async () => {
     await click(BreakfastPage.submit());
-    await expect(browser).toHaveUrlContaining(SubmitPage.url());
+    await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.url()));
     await click(SubmitPage.submit());
   });
 });
