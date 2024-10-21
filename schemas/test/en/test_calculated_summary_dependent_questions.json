@@ -162,7 +162,7 @@
                         "for_list": "additional_sites_name",
                         "title": "What was the business name for this site?",
                         "item_anchor_answer_id": "business-name",
-                        "item_label": "<p>Business name</p>",
+                        "item_label": "Business name",
                         "add_link_text": "Add item to this list",
                         "empty_list_text": "There are no items"
                     }
