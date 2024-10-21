@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   python-dependencies:
-    runs-on: ubuntu-22.04
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
       - run: |
@@ -30,20 +30,22 @@ jobs:
           cache: 'poetry'
       - name: Install virtual environment
         run: |
-          sudo apt-get install libsnappy-dev
+          brew install snappy
           poetry install
+
   node-dependencies:
-    runs-on: ubuntu-22.04
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version-file : ".nvmrc"
+          node-version-file: ".nvmrc"
       - name: Install npm deps
         run: npm install
+
   lint:
     needs: [python-dependencies, node-dependencies]
-    runs-on: ubuntu-22.04
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
       - run: |
@@ -76,21 +78,21 @@ jobs:
         run: make lint-js
       - name: HTML linting
         run: make lint-html
+
   test-unit:
     needs: python-dependencies
-    runs-on: ubuntu-22.04
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
       - run: |
           echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
       - name: Install apt dependencies
         run: |
-            sudo apt-get install libsnappy-dev libgconf-2-4 jq
-
-            # Install wkthtmltopdf with patched Qt
-            sudo apt-get install -y xfonts-base xfonts-75dpi
-            wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.bionic_amd64.deb
-            sudo dpkg -i wkhtmltox_0.12.6-1.bionic_amd64.deb
+          brew install snappy gconf jq
+          # Install wkthtmltopdf with patched Qt
+          brew install xfonts-base xfonts-75dpi
+          wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.bionic_amd64.deb
+          sudo dpkg -i wkhtmltox_0.12.6-1.bionic_amd64.deb
       - name: Write app version
         run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
       - name: Install Poetry
@@ -112,20 +114,27 @@ jobs:
         run: ln -sf .development.env .env
       - name: Running unit tests
         run: make test-unit
+
   validate-schemas:
-    runs-on: ubuntu-22.04
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
+      - name: Install Docker
+        run: |
+          brew install --cask docker
+          open /Applications/Docker.app
+          while ! docker system info > /dev/null 2>&1; do sleep 1; done
       - name: Run validator
         run: ./scripts/run_validator.sh
       - name: Running schema tests
         run: make validate-test-schemas
+
   test-functional:
     needs: [python-dependencies, node-dependencies]
     strategy:
       matrix:
         suite: [ timeout_modal_expired, timeout_modal_extended, timeout_modal_extended_new_window, features, general, components ]
-    runs-on: ubuntu-22.04
+    runs-on: macos-13
     env:
       EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
       # :TODO: Revisit & update when 2 instances can be used without adverse effects
@@ -154,11 +163,12 @@ jobs:
         run: make test-functional-suite SUITE=${{ matrix.suite }}
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
+
   docker-push:
     permissions:
       contents: 'read'
       id-token: 'write'
-    runs-on: ubuntu-22.04
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
       - id: auth
@@ -168,7 +178,6 @@ jobs:
           token_format: 'access_token'
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.SERVICE_ACCOUNT }}
-
       - name: Set Tag and SHA
         run: |
           CLEAN_TAG=$(echo "${{ github.event.pull_request.head.ref  }}"  | tr / -)
@@ -187,7 +196,6 @@ jobs:
           echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
           echo "Pushing to DockerHub with tag $TAG"
           docker push onsdigital/eq-questionnaire-runner:$TAG
-
       - name: Push to GAR
         run: |
           gcloud auth configure-docker ${{ secrets.GAR_LOCATION }}
