@@ -1,17 +1,17 @@
-import AnyOtherCompaniesOrBranchesPage from "../generated_pages/list_collector_content_page/any-other-companies-or-branches.page.js";
-import AnyCompaniesOrBranchesAddPage from "../generated_pages/list_collector_content_page/any-other-companies-or-branches-add.page.js";
-import AnyCompaniesOrBranchesRemovePage from "../generated_pages/list_collector_content_page/any-other-companies-or-branches-remove.page.js";
+import AnyOtherCompaniesOrBranchesPage from "../../generated_pages/list_collector_content_page/any-other-companies-or-branches.page.js";
+import AnyCompaniesOrBranchesAddPage from "../../generated_pages/list_collector_content_page/any-other-companies-or-branches-add.page.js";
+import AnyCompaniesOrBranchesRemovePage from "../../generated_pages/list_collector_content_page/any-other-companies-or-branches-remove.page.js";
 
-import AnyCompaniesOrBranchesPage from "../generated_pages/list_collector_content_page/any-companies-or-branches.page";
-import CompaniesSummaryPage from "../generated_pages/list_collector_content_page/section-companies-summary.page";
-import HubPage from "../base_pages/hub.page";
-import ResponsiblePartyQuestionPage from "../generated_pages/list_collector_content_page/responsible-party.page";
-import ListCollectorFirstRepeatingBlockPage from "../generated_pages/list_collector_content_page/companies-repeating-block-1-repeating-block.page";
-import ListCollectorSecondRepeatingBlockPage from "../generated_pages/list_collector_content_page/companies-repeating-block-2-repeating-block.page";
-import ListCollectorContentPage from "../generated_pages/list_collector_content_page/list-collector-content.page";
-import ListCollectorContentSectionSummaryPage from "../generated_pages/list_collector_content_page/section-list-collector-contents-summary.page";
-import ConfirmationCheckboxPage from "../generated_pages/list_collector_content_page/confirmation-checkbox.page";
-import { listItemComplete, click } from "../helpers";
+import AnyCompaniesOrBranchesPage from "../../generated_pages/list_collector_content_page/any-companies-or-branches.page";
+import CompaniesSummaryPage from "../../generated_pages/list_collector_content_page/section-companies-summary.page";
+import HubPage from "../../base_pages/hub.page";
+import ResponsiblePartyQuestionPage from "../../generated_pages/list_collector_content_page/responsible-party.page";
+import ListCollectorFirstRepeatingBlockPage from "../../generated_pages/list_collector_content_page/companies-repeating-block-1-repeating-block.page";
+import ListCollectorSecondRepeatingBlockPage from "../../generated_pages/list_collector_content_page/companies-repeating-block-2-repeating-block.page";
+import ListCollectorContentPage from "../../generated_pages/list_collector_content_page/list-collector-content.page";
+import ListCollectorContentSectionSummaryPage from "../../generated_pages/list_collector_content_page/section-list-collector-contents-summary.page";
+import ConfirmationCheckboxPage from "../../generated_pages/list_collector_content_page/confirmation-checkbox.page";
+import { listItemComplete, click } from "../../helpers";
 
 describe("List Collector Section Summary and Summary Items", () => {
   describe("Given I launch the test list collector section summary items survey", () => {
