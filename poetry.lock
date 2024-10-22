@@ -995,20 +995,6 @@ flake8 = ">=3.0"
 pycodestyle = "*"
 
 [[package]]
-name = "flake8-quotes"
-version = "3.4.0"
-description = "Flake8 lint for quotes."
-optional = false
-python-versions = "*"
-files = [
-    {file = "flake8-quotes-3.4.0.tar.gz", hash = "sha256:aad8492fb710a2d3eabe68c5f86a1428de650c8484127e14c43d0504ba30276c"},
-]
-
-[package.dependencies]
-flake8 = "*"
-setuptools = "*"
-
-[[package]]
 name = "flake8-tuple"
 version = "0.4.1"
 description = "Check code for 1 element tuple."
@@ -3765,4 +3751,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12.6"
-content-hash = "72b308d7ba0bdb8d6ee1870bcdce20e5f4088497d065525f074e266bdedd1184"
+content-hash = "72726bf541c6e00e7b7e5dc131663959287b330954075a76f0ac962c16a0ce04"
