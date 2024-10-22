@@ -23,6 +23,9 @@ exports.config = {
     timeout_modal_extended_new_window: ["./spec/timeout/timeout_modal_extended_new_window/*.js"],
     components: ["./spec/components/**/*.js"],
     features: ["./spec/features/**/*.js"],
+    summaries: ["./spec/summaries/**/*.js"],
+    journeys: ["./spec/journeys/**/*.js"],
+    list_collector: ["./spec/list_collector/**/*.js"],
     general: ["./spec/*.spec.js"],
   },
   // Patterns to exclude.
