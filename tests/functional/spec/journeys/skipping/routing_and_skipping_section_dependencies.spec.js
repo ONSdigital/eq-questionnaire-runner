@@ -1,25 +1,25 @@
-import AgePage from "../generated_pages/routing_and_skipping_section_dependencies/age.page";
-import HouseHoldPersonalDetailsSectionSummaryPage from "../generated_pages/routing_and_skipping_section_dependencies/household-personal-details-section-summary.page";
-import HouseholdSectionSummaryPage from "../generated_pages/routing_and_skipping_section_dependencies/household-section-summary.page";
-import ListCollectorAddPage from "../generated_pages/routing_and_skipping_section_dependencies/list-collector-add.page";
-import ListCollectorPage from "../generated_pages/routing_and_skipping_section_dependencies/list-collector.page";
-import NamePage from "../generated_pages/routing_and_skipping_section_dependencies/name-block.page";
-import PrimaryPersonSummaryPage from "../generated_pages/routing_and_skipping_section_dependencies/primary-person-summary.page";
-import ReasonNoConfirmationPage from "../generated_pages/routing_and_skipping_section_dependencies/reason-no-confirmation.page";
-import RepeatingAgePage from "../generated_pages/routing_and_skipping_section_dependencies/repeating-age.page";
-import RepeatingSexPage from "../generated_pages/routing_and_skipping_section_dependencies/repeating-sex.page";
-import SecurityPage from "../generated_pages/routing_and_skipping_section_dependencies/security.page";
-import SkipAgePage from "../generated_pages/routing_and_skipping_section_dependencies/skip-age.page";
-import SkipEnableSectionPage from "../generated_pages/routing_and_skipping_section_dependencies/skip-household-section.page";
-import EnableSectionPage from "../generated_pages/routing_and_skipping_section_dependencies/enable-section.page";
-import SkipConfirmationPage from "../generated_pages/routing_and_skipping_section_dependencies/skip-confirmation.page";
-import SkipConfirmationSectionSummaryPage from "../generated_pages/routing_and_skipping_section_dependencies/skip-confirmation-section-summary.page";
-import SkipSectionSummaryPage from "../generated_pages/routing_and_skipping_section_dependencies/skip-section-summary.page";
-import RepeatingIsDependentPage from "../generated_pages/routing_and_skipping_section_dependencies/repeating-is-dependent.page";
-import RepeatingIsSmokerPage from "../generated_pages/routing_and_skipping_section_dependencies/repeating-is-smoker.page";
+import AgePage from "../../../generated_pages/routing_and_skipping_section_dependencies/age.page";
+import HouseHoldPersonalDetailsSectionSummaryPage from "../../../generated_pages/routing_and_skipping_section_dependencies/household-personal-details-section-summary.page";
+import HouseholdSectionSummaryPage from "../../../generated_pages/routing_and_skipping_section_dependencies/household-section-summary.page";
+import ListCollectorAddPage from "../../../generated_pages/routing_and_skipping_section_dependencies/list-collector-add.page";
+import ListCollectorPage from "../../../generated_pages/routing_and_skipping_section_dependencies/list-collector.page";
+import NamePage from "../../../generated_pages/routing_and_skipping_section_dependencies/name-block.page";
+import PrimaryPersonSummaryPage from "../../../generated_pages/routing_and_skipping_section_dependencies/primary-person-summary.page";
+import ReasonNoConfirmationPage from "../../../generated_pages/routing_and_skipping_section_dependencies/reason-no-confirmation.page";
+import RepeatingAgePage from "../../../generated_pages/routing_and_skipping_section_dependencies/repeating-age.page";
+import RepeatingSexPage from "../../../generated_pages/routing_and_skipping_section_dependencies/repeating-sex.page";
+import SecurityPage from "../../../generated_pages/routing_and_skipping_section_dependencies/security.page";
+import SkipAgePage from "../../../generated_pages/routing_and_skipping_section_dependencies/skip-age.page";
+import SkipEnableSectionPage from "../../../generated_pages/routing_and_skipping_section_dependencies/skip-household-section.page";
+import EnableSectionPage from "../../../generated_pages/routing_and_skipping_section_dependencies/enable-section.page";
+import SkipConfirmationPage from "../../../generated_pages/routing_and_skipping_section_dependencies/skip-confirmation.page";
+import SkipConfirmationSectionSummaryPage from "../../../generated_pages/routing_and_skipping_section_dependencies/skip-confirmation-section-summary.page";
+import SkipSectionSummaryPage from "../../../generated_pages/routing_and_skipping_section_dependencies/skip-section-summary.page";
+import RepeatingIsDependentPage from "../../../generated_pages/routing_and_skipping_section_dependencies/repeating-is-dependent.page";
+import RepeatingIsSmokerPage from "../../../generated_pages/routing_and_skipping_section_dependencies/repeating-is-smoker.page";
 
-import HubPage from "../base_pages/hub.page";
-import { click } from "../helpers";
+import HubPage from "../../../base_pages/hub.page";
+import { click } from "../../../helpers";
 
 describe("Routing and skipping section dependencies", () => {
   describe("Given the routing and skipping section dependencies questionnaire", () => {
