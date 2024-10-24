@@ -30,7 +30,7 @@ describe("Question guidance", () => {
   it("Given a question guidance with multiple content items, When it is rendered, Then there should only be one guidance box", async () => {
     await browser.openQuestionnaire("test_question_guidance.json");
     await click(IntroductionPage.submit());
-    await expect(browser).toHaveUrlContaining(GuidancePage.pageName);
+    await expect(browser).toHaveUrl(expect.stringContaining(GuidancePage.pageName));
     await expect(await $$("#question-guidance-question-test-guidance-title").length).toBe(1);
   });
 });

@@ -42,7 +42,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateEqualsQuestionPage.month()).setValue(3);
         await $(DateEqualsQuestionPage.year()).setValue(2020);
         await click(DateEqualsQuestionPage.submit());
-        await expect(browser).toHaveUrlContaining(CorrectAnswerPage.pageName);
+        await expect(browser).toHaveUrl(expect.stringContaining(CorrectAnswerPage.pageName));
       });
 
       it("When I enter the yesterday date, Then I should be routed to the correct page", async () => {
@@ -50,7 +50,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateEqualsQuestionPage.month()).setValue(3);
         await $(DateEqualsQuestionPage.year()).setValue(2020);
         await click(DateEqualsQuestionPage.submit());
-        await expect(browser).toHaveUrlContaining(CorrectAnswerPage.pageName);
+        await expect(browser).toHaveUrl(expect.stringContaining(CorrectAnswerPage.pageName));
       });
 
       it("When I enter the tomorrow date, Then I should be routed to the correct page", async () => {
@@ -58,7 +58,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateEqualsQuestionPage.month()).setValue(4);
         await $(DateEqualsQuestionPage.year()).setValue(2020);
         await click(DateEqualsQuestionPage.submit());
-        await expect(browser).toHaveUrlContaining(CorrectAnswerPage.pageName);
+        await expect(browser).toHaveUrl(expect.stringContaining(CorrectAnswerPage.pageName));
       });
 
       it("When I enter the last month date, Then I should be routed to the correct page", async () => {
@@ -66,7 +66,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateEqualsQuestionPage.month()).setValue(2);
         await $(DateEqualsQuestionPage.year()).setValue(2020);
         await click(DateEqualsQuestionPage.submit());
-        await expect(browser).toHaveUrlContaining(CorrectAnswerPage.pageName);
+        await expect(browser).toHaveUrl(expect.stringContaining(CorrectAnswerPage.pageName));
       });
 
       it("When I enter the next month date, Then I should be routed to the correct page", async () => {
@@ -74,7 +74,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateEqualsQuestionPage.month()).setValue(4);
         await $(DateEqualsQuestionPage.year()).setValue(2020);
         await click(DateEqualsQuestionPage.submit());
-        await expect(browser).toHaveUrlContaining(CorrectAnswerPage.pageName);
+        await expect(browser).toHaveUrl(expect.stringContaining(CorrectAnswerPage.pageName));
       });
 
       it("When I enter the last year date, Then I should be routed to the correct page", async () => {
@@ -82,7 +82,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateEqualsQuestionPage.month()).setValue(3);
         await $(DateEqualsQuestionPage.year()).setValue(2019);
         await click(DateEqualsQuestionPage.submit());
-        await expect(browser).toHaveUrlContaining(CorrectAnswerPage.pageName);
+        await expect(browser).toHaveUrl(expect.stringContaining(CorrectAnswerPage.pageName));
       });
 
       it("When I enter the next year date, Then I should be routed to the correct page", async () => {
@@ -90,7 +90,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateEqualsQuestionPage.month()).setValue(3);
         await $(DateEqualsQuestionPage.year()).setValue(2021);
         await click(DateEqualsQuestionPage.submit());
-        await expect(browser).toHaveUrlContaining(CorrectAnswerPage.pageName);
+        await expect(browser).toHaveUrl(expect.stringContaining(CorrectAnswerPage.pageName));
       });
 
       it("When I enter an incorrect date, Then I should be routed to the incorrect page", async () => {
@@ -98,7 +98,7 @@ describe("Feature: Routing on a Date", () => {
         await $(DateEqualsQuestionPage.month()).setValue(3);
         await $(DateEqualsQuestionPage.year()).setValue(2020);
         await click(DateEqualsComparisonQuestionPage.submit());
-        await expect(browser).toHaveUrlContaining(CorrectAnswerPage.pageName);
+        await expect(browser).toHaveUrl(expect.stringContaining(CorrectAnswerPage.pageName));
       });
     });
   });

@@ -41,7 +41,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
 
-      await expect(browser).toHaveUrlContaining(TotalPlaybackPage.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(TotalPlaybackPage.pageName));
     });
   });
 
@@ -52,7 +52,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
 
-      await expect(browser).toHaveUrlContaining(AnotherTotalPlaybackPage.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(AnotherTotalPlaybackPage.pageName));
     });
   });
 
@@ -77,7 +77,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await answerBothBreakdownQuestions(["6", "3", "3", "3"], ["3", "3", "2", "1"]);
 
-      await expect(browser).toHaveUrlContaining(AnotherTotalPlaybackPage.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(AnotherTotalPlaybackPage.pageName));
     });
   });
 
@@ -102,7 +102,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await answerBothBreakdownQuestions(["5", "4", "4", "2"], ["3", "3", "2", "1"]);
 
-      await expect(browser).toHaveUrlContaining(AnotherTotalPlaybackPage.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(AnotherTotalPlaybackPage.pageName));
     });
   });
 
@@ -131,7 +131,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await expect(await $(SecondBreakdownAnswerPage.singleErrorLink()).isDisplayed()).toBe(false);
 
-      await expect(browser).toHaveUrlContaining(AnotherTotalPlaybackPage.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(AnotherTotalPlaybackPage.pageName));
     });
   });
 
@@ -180,7 +180,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await click(AnotherTotalPlaybackPage.submit());
 
-      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.pageName));
     });
   });
 });

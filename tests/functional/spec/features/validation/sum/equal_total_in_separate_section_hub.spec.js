@@ -61,7 +61,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Total in 
       await answerAndSubmitTurnoverBreakdownQuestion(500, 250, 250);
       await answerAndSubmitEmployeeBreakdownQuestion(5, 5);
 
-      await expect(browser).toHaveUrlContaining(BreakdownSectionSummary.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(BreakdownSectionSummary.pageName));
       await click(BreakdownSectionSummary.submit());
 
       await expect(await $(HubPage.summaryRowState(breakdownSectionId)).getText()).toBe("Completed");
@@ -112,7 +112,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Total in 
     it("When I update my answers to equal the new total turnover, Then I should be able to get to the section summary and the breakdown section should be marked as 'Completed'", async () => {
       await answerAndSubmitTurnoverBreakdownQuestion(500, 500, 500);
 
-      await expect(browser).toHaveUrlContaining(BreakdownSectionSummary.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(BreakdownSectionSummary.pageName));
       await click(BreakdownSectionSummary.submit());
       await expect(await $(HubPage.summaryRowState(breakdownSectionId)).getText()).toBe("Completed");
     });
@@ -120,7 +120,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Total in 
     it("When I submit the questionnaire, Then I should see the thank you page", async () => {
       await $(HubPage.submit()).scrollIntoView();
       await click(HubPage.submit());
-      await expect(browser).toHaveUrlContaining(ThankYouPage.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(ThankYouPage.pageName));
     });
   });
 });

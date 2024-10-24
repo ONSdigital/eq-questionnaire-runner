@@ -13,7 +13,7 @@ describe("Feature: Routing on lists", () => {
     it("When I don't add a person to the list, Then the less than two people skippable page should be shown", async () => {
       await $(ListCollectorPage.no()).click();
       await click(ListCollectorPage.submit());
-      await expect(browser).toHaveUrlContaining(LessThanTwoInterstitialPage.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(LessThanTwoInterstitialPage.pageName));
     });
 
     it("When I add one person to the list, Then the less than two people skippable page should be shown", async () => {
@@ -24,7 +24,7 @@ describe("Feature: Routing on lists", () => {
       await click(ListCollectorAddPage.submit());
       await $(ListCollectorPage.no()).click();
       await click(ListCollectorPage.submit());
-      await expect(browser).toHaveUrlContaining(LessThanTwoInterstitialPage.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(LessThanTwoInterstitialPage.pageName));
     });
 
     it("When I add two people to the list, Then the two people skippable page should be shown", async () => {
@@ -40,7 +40,7 @@ describe("Feature: Routing on lists", () => {
       await click(ListCollectorAddPage.submit());
       await $(ListCollectorPage.no()).click();
       await click(ListCollectorPage.submit());
-      await expect(browser).toHaveUrlContaining(TwoInterstitialPage.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(TwoInterstitialPage.pageName));
     });
 
     it("When I add three people to the list, Then the more than two people skippable page should be shown", async () => {
@@ -61,7 +61,7 @@ describe("Feature: Routing on lists", () => {
       await click(ListCollectorAddPage.submit());
       await $(ListCollectorPage.no()).click();
       await click(ListCollectorPage.submit());
-      await expect(browser).toHaveUrlContaining(MoreThanTwoInterstitialPage.pageName);
+      await expect(browser).toHaveUrl(expect.stringContaining(MoreThanTwoInterstitialPage.pageName));
     });
   });
 });

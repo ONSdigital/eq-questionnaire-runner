@@ -18,7 +18,7 @@ describe("Save sign out / Exit", () => {
     await browser.openQuestionnaire("test_introduction.json");
     await $(IntroductionPage.exitButton()).click();
 
-    await expect(browser).toHaveUrlContaining("/surveys/todo");
+    await expect(browser).toHaveUrl(expect.stringContaining("/surveys/todo"));
 
     await browser.back();
     await expect(await $("body").getHTML()).toContain("Sorry, you need to sign in again");
@@ -31,7 +31,7 @@ describe("Save sign out / Exit", () => {
     await click(SetMinMax.submit());
     await $(TestMinMax.saveSignOut()).click();
 
-    await expect(browser).toHaveUrlContaining("/signed-out");
+    await expect(browser).toHaveUrl(expect.stringContaining("/signed-out"));
 
     await browser.back();
     await expect(await $("body").getHTML()).toContain("Sorry, you need to sign in again");
@@ -56,13 +56,13 @@ describe("Save sign out / Exit", () => {
     await click(currencySectionSummary.submit());
 
     await click(SubmitPage.submit());
-    await expect(browser).toHaveUrlContaining("thank-you");
+    await expect(browser).toHaveUrl(expect.stringContaining("thank-you"));
   });
 
   it("Given a I have started a social questionnaire, when I select save and sign out, then I am redirected to the signed out page and the correct access code link is shown", async () => {
     await browser.openQuestionnaire("test_theme_social.json", { theme: "social" });
     await $(SubmitPage.saveSignOut()).click();
-    await expect(browser).toHaveUrlContaining("/signed-out");
+    await expect(browser).toHaveUrl(expect.stringContaining("/signed-out"));
     await expect(await $("body").getHTML()).toContain("Your progress has been saved");
     await expect(await $("body").getHTML()).toContain("To resume the survey,");
     await expect(await $("body").getHTML()).toContain("/en/start");
@@ -72,7 +72,7 @@ describe("Save sign out / Exit", () => {
     await browser.openQuestionnaire("test_introduction.json");
     await $(IntroductionPage.getStarted()).click();
     await $(IntroInterstitialPage.saveSignOut()).click();
-    await expect(browser).toHaveUrlContaining("/signed-out");
+    await expect(browser).toHaveUrl(expect.stringContaining("/signed-out"));
     await expect(await $("body").getHTML()).toContain("Your progress has been saved");
     await expect(await $("body").getHTML()).toContain("To find further information or resume the survey,");
     await expect(await $("body").getHTML()).toContain("/surveys/todo");
