@@ -10,7 +10,6 @@ from marshmallow import (
     validates_schema,
 )
 
-from app.authentication.auth_payload_versions import SupplementaryDataSchemaVersion
 from app.utilities.metadata_parser_v2 import VALIDATORS, StripWhitespaceMixin
 
 
@@ -35,14 +34,6 @@ class ItemsData(Schema, StripWhitespaceMixin):
 
 class SupplementaryData(Schema, StripWhitespaceMixin):
     identifier = VALIDATORS["string"](validate=validate.Length(min=1))
-    schema_version = VALIDATORS["string"](
-        validate=validate.OneOf(
-            [
-                SupplementaryDataSchemaVersion.V1.value,
-                SupplementaryDataSchemaVersion.V2.value,
-            ]
-        )
-    )
     items = fields.Nested(ItemsData, required=False, unknown=INCLUDE)
 
     @validates_schema()
@@ -80,12 +71,19 @@ class SupplementaryDataMetadataSchema(Schema, StripWhitespaceMixin):
                     "Supplementary data did not return the specified Survey ID"
                 )
 
+            if self.context["sds_schema_version"]:
+                if data["data"]["schema_version"] != self.context["sds_schema_version"]:
+                    raise ValidationError(
+                        "The Supplementary Dataset version does not match the version set in the questionnaire schema"
+                    )
+
 
 def validate_supplementary_data_v1(
     supplementary_data: Mapping,
     dataset_id: str,
     identifier: str,
     survey_id: str,
+    sds_schema_version: str | None = None,
 ) -> dict:
     """Validate claims required for supplementary data"""
     supplementary_data_metadata_schema = SupplementaryDataMetadataSchema(
@@ -95,6 +93,7 @@ def validate_supplementary_data_v1(
         "dataset_id": dataset_id,
         "identifier": identifier,
         "survey_id": survey_id,
+        "sds_schema_version": sds_schema_version,
     }
     validated_supplementary_data = supplementary_data_metadata_schema.load(
         supplementary_data
