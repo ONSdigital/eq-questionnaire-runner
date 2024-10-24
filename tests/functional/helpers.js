@@ -45,8 +45,12 @@ export const click = async (selector) => {
   // but clicks down on the very top of the button which moves down and just below the mouse. When the mouse click is released
   // it's no longer over the button and the click silently fails. This means that when the test comes to do assertions on the following page
   // they fail, as we never navigated to that page.
-  await $(selector).scrollIntoView({ block: "center", inline: "center" });
-  await $(selector).click();
+  const element = await $(selector);
+  await element.waitForDisplayed();
+  await browser.execute((el) => {
+    el.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
+  }, element);
+  await element.click();
 
   // Allow time in case the click loads a new page.
   await browser.pause(100);
