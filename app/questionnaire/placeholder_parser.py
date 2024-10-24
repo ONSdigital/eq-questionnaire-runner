@@ -1,15 +1,7 @@
 from __future__ import annotations
 
 from decimal import Decimal
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    Iterable,
-    Mapping,
-    MutableMapping,
-    Sequence,
-    TypeAlias,
-)
+from typing import Any, Iterable, Mapping, MutableMapping, Sequence, TypeAlias
 
 from app.data_models.data_stores import DataStores
 from app.questionnaire import QuestionnaireSchema
@@ -18,6 +10,7 @@ from app.questionnaire.dependencies import (
     get_routing_path_block_ids_by_section_for_calculation_summary_dependencies,
     get_routing_path_block_ids_by_section_for_dependent_sections,
 )
+from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.placeholder_transforms import PlaceholderTransforms
 from app.questionnaire.questionnaire_schema import (
     TRANSFORMS_REQUIRING_ROUTING_PATH,
@@ -32,10 +25,6 @@ from app.utilities.mappings import get_flattened_mapping_values, get_values_for_
 from app.utilities.types import LocationType, SectionKey
 
 TransformedValueTypes: TypeAlias = None | str | int | Decimal | bool
-if TYPE_CHECKING:
-    from app.questionnaire.placeholder_renderer import (  # pragma: no cover
-        PlaceholderRenderer,
-    )
 
 
 class PlaceholderParser:
@@ -49,7 +38,7 @@ class PlaceholderParser:
         language: str,
         data_stores: DataStores,
         schema: QuestionnaireSchema,
-        renderer: "PlaceholderRenderer",
+        renderer: PlaceholderRenderer,
         list_item_id: str | None = None,
         location: LocationType | None = None,
         placeholder_preview_mode: bool | None = False,
