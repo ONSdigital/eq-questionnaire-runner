@@ -5,6 +5,7 @@ from werkzeug.datastructures import ImmutableDict
 from app.data_models.data_stores import DataStores
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
+from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.utilities.types import LocationType
 
 
@@ -21,12 +22,19 @@ def choose_variant(  # type: ignore
         # Type ignore: the key passed in will be for a dictionary
         return block[single_key]  # type: ignore
     for variant in block.get(variants_key, []):
+        list_item_id = current_location.list_item_id if current_location else None
+        value_source_resolver = ValueSourceResolver(
+            list_item_id=list_item_id,
+            schema=schema,
+            data_stores=data_stores,
+            location=current_location,
+        )
         when_rules = variant["when"]
-
         when_rule_evaluator = RuleEvaluator(
             schema,
             data_stores=data_stores,
             location=current_location,
+            value_source_resolver=value_source_resolver,
         )
 
         if when_rule_evaluator.evaluate(when_rules):

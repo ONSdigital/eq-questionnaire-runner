@@ -31,13 +31,11 @@ from app.questionnaire.value_source_resolver import (
 from app.utilities.mappings import get_flattened_mapping_values, get_values_for_key
 from app.utilities.types import LocationType, SectionKey
 
+TransformedValueTypes: TypeAlias = None | str | int | Decimal | bool
 if TYPE_CHECKING:
     from app.questionnaire.placeholder_renderer import (  # pragma: no cover
         PlaceholderRenderer,
     )
-
-
-TransformedValueTypes: TypeAlias = None | str | int | Decimal | bool
 
 
 class PlaceholderParser:
@@ -51,7 +49,7 @@ class PlaceholderParser:
         language: str,
         data_stores: DataStores,
         schema: QuestionnaireSchema,
-        renderer: PlaceholderRenderer,
+        renderer: "PlaceholderRenderer",
         list_item_id: str | None = None,
         location: LocationType | None = None,
         placeholder_preview_mode: bool | None = False,

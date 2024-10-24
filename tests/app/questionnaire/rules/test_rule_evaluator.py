@@ -18,6 +18,7 @@ from app.questionnaire import Location, QuestionnaireSchema
 from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.rules.operator import Operator
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
+from app.questionnaire.value_source_resolver import ValueSourceResolver
 from app.utilities.schema import load_schema_from_name
 from tests.app.questionnaire.conftest import get_metadata
 from tests.app.questionnaire.test_value_source_resolver import get_list_items
@@ -59,7 +60,17 @@ def get_rule_evaluator(
         schema.is_answer_dynamic = Mock(return_value=False)
         schema.is_answer_in_list_collector_repeating_block = Mock(return_value=False)
 
+    list_item_id = location.list_item_id if location else None
+    value_source_resolver = ValueSourceResolver(
+        schema=schema,
+        data_stores=data_stores,
+        location=location,
+        routing_path_block_ids=routing_path_block_ids,
+        list_item_id=list_item_id,
+        use_default_answer=True,
+    )
     return RuleEvaluator(
+        value_source_resolver=value_source_resolver,
         language=language,
         schema=schema,
         data_stores=data_stores,
@@ -116,7 +127,6 @@ def test_answer_source(answer_value, expected_result):
             )
         ),
     )
-
     assert (
         rule_evaluator.evaluate(
             rule={
@@ -914,7 +924,6 @@ def test_answer_source_default_answer_used_when_no_answer(
             answer_store=AnswerStore([{"answer_id": "some-answer", "value": "No"}])
         ),
     )
-
     assert (
         rule_evaluator.evaluate(
             rule={
