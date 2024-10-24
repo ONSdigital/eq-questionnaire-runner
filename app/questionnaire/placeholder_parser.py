@@ -63,7 +63,6 @@ class PlaceholderParser:
         self._schema = schema
         self._location = location
         self._placeholder_preview_mode = placeholder_preview_mode
-        self._language = language
 
         self._path_finder = pf.PathFinder(
             schema=self._schema, data_stores=self._data_stores
