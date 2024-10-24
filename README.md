@@ -86,7 +86,7 @@ command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 
 eval "$(pyenv init -)"
 ```
-Python versions can be changed with the `pyenv local` or `pyenv global` commands suffixed with the desired version (e.g. 3.11.4). Different versions of Python can be installed first with the `pyenv install` command. Refer to the pyenv project Readme [here](https://github.com/pyenv/pyenv). To avoid confusion, check the current Python version at any given time using `python --version` or `python3 --version`.
+Python versions can be changed with the `pyenv local` or `pyenv global` commands suffixed with the desired version (e.g. 3.12.6). Different versions of Python can be installed first with the `pyenv install` command. Refer to the pyenv project Readme [here](https://github.com/pyenv/pyenv). To avoid confusion, check the current Python version at any given time using `python --version` or `python3 --version`.
 
 #### Python & dependencies
 
