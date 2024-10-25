@@ -483,7 +483,11 @@ def get_answer_fields(
     if block_ids_by_section:
         block_ids = get_flattened_mapping_values(block_ids_by_section)
 
-    def _get_value_source_resolver(list_item: str | None = None) -> ValueSourceResolver:
+    def _get_value_source_resolver(
+        list_item: str | None = None,
+        assess_routing_path=False,
+        use_default_answer=False,
+    ) -> ValueSourceResolver:
         return ValueSourceResolver(
             data_stores=data_stores,
             schema=schema,
@@ -491,12 +495,14 @@ def get_answer_fields(
             list_item_id=list_item,
             escape_answer_values=False,
             routing_path_block_ids=block_ids,
-            assess_routing_path=True,
-            use_default_answer=True,
+            assess_routing_path=assess_routing_path,
+            use_default_answer=use_default_answer,
         )
 
     rule_evaluator = RuleEvaluator(
-        value_source_resolver=_get_value_source_resolver(list_item=list_item_id),
+        value_source_resolver=_get_value_source_resolver(
+            list_item=list_item_id, assess_routing_path=True, use_default_answer=True
+        ),
         schema=schema,
         data_stores=data_stores,
         location=location,
