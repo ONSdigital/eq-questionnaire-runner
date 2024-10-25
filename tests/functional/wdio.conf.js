@@ -68,6 +68,7 @@ export const config = {
           "--no-sandbox",
           "--disable-gpu",
           "--disable-extensions",
+          "--disable-dev-shm-usage",
         ],
       },
     },
