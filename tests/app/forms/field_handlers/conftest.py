@@ -31,7 +31,6 @@ def value_source_resolver():
         list_item_id=None,
         escape_answer_values=False,
         use_default_answer=True,
-        assess_routing_path=True,
     )
     return resolver
 

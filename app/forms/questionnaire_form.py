@@ -485,8 +485,8 @@ def get_answer_fields(
 
     def _get_value_source_resolver(
         list_item: str | None = None,
-        assess_routing_path=False,
-        use_default_answer=False,
+        assess_routing_path: bool = False,
+        use_default_answer: bool = False,
     ) -> ValueSourceResolver:
         return ValueSourceResolver(
             data_stores=data_stores,

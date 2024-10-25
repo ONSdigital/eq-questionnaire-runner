@@ -29,7 +29,6 @@ def choose_variant(  # type: ignore
             data_stores=data_stores,
             location=current_location,
             use_default_answer=True,
-            assess_routing_path=True,
         )
         when_rules = variant["when"]
         when_rule_evaluator = RuleEvaluator(
