@@ -152,6 +152,12 @@ jobs:
         run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose up --build -d
       - name: Functional tests
         run: make test-functional-suite SUITE=${{ matrix.suite }}
+      - name: Upload wdio logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Func test logs
+          path: tests/functional/logs
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
   docker-push:
