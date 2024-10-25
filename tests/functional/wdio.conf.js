@@ -64,11 +64,10 @@ export const config = {
       "goog:chromeOptions": {
         args: [
           process.env.EQ_RUN_FUNCTIONAL_TESTS_HEADLESS ? "--headless" : "--start-maximized",
-          "--window-size=4096,2304",
+          "--window-size=3840,2160",
           "--no-sandbox",
           "--disable-gpu",
           "--disable-extensions",
-          "--disable-dev-shm-usage",
         ],
       },
     },
@@ -80,7 +79,7 @@ export const config = {
   // Define all options that are relevant for the WebdriverIO instance here
   //
   // Level of logging verbosity: trace | debug | info | warn | error | silent
-  logLevel: "error",
+  logLevel: "debug",
   outputDir: "tests/functional/logs/",
   //
   // Set specific log levels per logger
