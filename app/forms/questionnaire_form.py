@@ -317,6 +317,7 @@ class QuestionnaireForm(FlaskForm):
             list_item_id=list_item_id,
             escape_answer_values=False,
             use_default_answer=True,
+            assess_routing_path=True,
         )
 
         rule_evaluator = RuleEvaluator(
@@ -490,7 +491,7 @@ def get_answer_fields(
             list_item_id=list_item,
             escape_answer_values=False,
             routing_path_block_ids=block_ids,
-            assess_routing_path=False,
+            assess_routing_path=True,
             use_default_answer=True,
         )
 
