@@ -50,8 +50,7 @@ export const click = async (selector) => {
   await browser.execute((el) => {
     el.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
   }, element);
+  await element.waitForClickable();
   await element.click();
-
-  // Allow time in case the click loads a new page.
   await browser.pause(100);
 };
