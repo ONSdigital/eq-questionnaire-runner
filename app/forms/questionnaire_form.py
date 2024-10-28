@@ -316,12 +316,16 @@ class QuestionnaireForm(FlaskForm):
             location=self.location,
             list_item_id=list_item_id,
             escape_answer_values=False,
-            use_default_answer=True,
-            assess_routing_path=True,
         )
 
         rule_evaluator = RuleEvaluator(
-            value_source_resolver=value_source_resolver,
+            value_source_resolver=ValueSourceResolver(
+                data_stores=self.data_stores,
+                schema=self.schema,
+                location=self.location,
+                list_item_id=list_item_id,
+                use_default_answer=True,
+            ),
             data_stores=self.data_stores,
             schema=self.schema,
             location=self.location,
@@ -506,15 +510,20 @@ def get_answer_fields(
         schema=schema,
         data_stores=data_stores,
         location=location,
+        routing_path_block_ids=block_ids,
     )
 
     answer_fields = {}
     question_title = question.get("title")
 
-    value_source_resolved_for_location = _get_value_source_resolver(list_item_id)
+    value_source_resolved_for_location = _get_value_source_resolver(
+        list_item=list_item_id
+    )
     for answer in question.get("answers", []):
         if "list_item_id" in answer:
-            value_source_resolver = _get_value_source_resolver(answer["list_item_id"])
+            value_source_resolver = _get_value_source_resolver(
+                list_item=answer["list_item_id"]
+            )
         else:
             value_source_resolver = value_source_resolved_for_location
 

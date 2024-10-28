@@ -232,6 +232,7 @@ class CalculatedSummaryContext(Context):
                 location=self.current_location,
                 list_item_id=list_item_id,
                 use_default_answer=True,
+                assess_routing_path=True,
             ),
             data_stores=self._data_stores,
             schema=self._schema,
