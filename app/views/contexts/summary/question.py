@@ -52,7 +52,7 @@ class Question:
             location=self.location,
             list_item_id=self.list_item_id,
             use_default_answer=True,
-            assess_routing_path=True
+            assess_routing_path=True,
         )
         self._rule_evaluator = RuleEvaluator(
             value_source_resolver=self._value_source_resolver,

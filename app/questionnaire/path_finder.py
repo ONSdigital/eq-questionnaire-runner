@@ -193,6 +193,7 @@ class PathFinder:
                 location=this_location,
                 routing_path_block_ids=block_ids_for_dependencies,
                 use_default_answer=True,
+                assess_routing_path=True,
             ),
         )
         for rule in routing_rules:
@@ -243,6 +244,7 @@ class PathFinder:
             location=current_location,
             routing_path_block_ids=block_ids_for_dependencies,
             use_default_answer=True,
+            assess_routing_path=True,
         )
         when_rule_evaluator = RuleEvaluator(
             schema=self.schema,
