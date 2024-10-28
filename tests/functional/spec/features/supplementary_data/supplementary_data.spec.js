@@ -346,6 +346,7 @@ describe("Using supplementary data", () => {
       sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
       responseId,
     });
+    await browser.pause(5000);
     await expect(await $(HubPage.summaryItems("section-4-1")).getText()).toContain("Harry Potter");
     await expect(await $(HubPage.summaryItems("section-4-2")).getText()).toContain("Bruce Wayne");
     await expect(await $(HubPage.summaryItems("section-5-1")).getText()).toContain("Jane Doe");
@@ -396,6 +397,7 @@ describe("Using supplementary data", () => {
       sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
       responseId,
     });
+    await browser.pause(5000);
     await expect(await $(HubPage.summaryRowState("section-6")).getText()).toBe("Partially completed");
     await expect(await $(HubPage.summaryRowState("section-7")).getText()).toBe("Partially completed");
   });
@@ -406,6 +408,7 @@ describe("Using supplementary data", () => {
       sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
       responseId,
     });
+    await browser.pause(5000);
     await click(HubPage.submit());
     await $(LengthOfEmploymentPage.day()).setValue(10);
     await $(LengthOfEmploymentPage.month()).setValue(10);
