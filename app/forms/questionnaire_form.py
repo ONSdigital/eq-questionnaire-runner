@@ -316,11 +316,16 @@ class QuestionnaireForm(FlaskForm):
             location=self.location,
             list_item_id=list_item_id,
             escape_answer_values=False,
-            use_default_answer=True,
         )
 
         rule_evaluator = RuleEvaluator(
-            value_source_resolver=value_source_resolver,
+            value_source_resolver=ValueSourceResolver(
+                data_stores=self.data_stores,
+                schema=self.schema,
+                location=self.location,
+                list_item_id=list_item_id,
+                use_default_answer=True,
+            ),
             data_stores=self.data_stores,
             schema=self.schema,
             location=self.location,

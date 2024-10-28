@@ -44,21 +44,19 @@ class CalculatedSummaryBlock:
         else:
             self._list_item_id = None
             self._list_name = None
-        value_source_resolver = ValueSourceResolver(
-            list_item_id=self._list_item_id,
-            schema=schema,
-            data_stores=self._data_stores,
-            location=location,
-            routing_path_block_ids=routing_path_block_ids,
-            use_default_answer=True,
-            assess_routing_path=True,
-        )
         self._rule_evaluator = RuleEvaluator(
             schema=schema,
             data_stores=self._data_stores,
             location=location,
             routing_path_block_ids=routing_path_block_ids,
-            value_source_resolver=value_source_resolver,
+            value_source_resolver=ValueSourceResolver(
+                list_item_id=self._list_item_id,
+                schema=schema,
+                data_stores=self._data_stores,
+                location=location,
+                routing_path_block_ids=routing_path_block_ids,
+                use_default_answer=True,
+            ),
         )
 
         # Type ignore: for a calculated summary the resolved answer would only ever be one of these 3

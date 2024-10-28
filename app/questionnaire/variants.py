@@ -28,6 +28,7 @@ def choose_variant(  # type: ignore
             schema=schema,
             data_stores=data_stores,
             location=current_location,
+            use_default_answer=True,
         )
         when_rules = variant["when"]
         when_rule_evaluator = RuleEvaluator(

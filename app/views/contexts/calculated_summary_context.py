@@ -224,6 +224,7 @@ class CalculatedSummaryContext(Context):
         list_item_id = (
             self.current_location.list_item_id if self.current_location else None
         )
+
         evaluate_calculated_summary = RuleEvaluator(
             value_source_resolver=ValueSourceResolver(
                 schema=self._schema,
