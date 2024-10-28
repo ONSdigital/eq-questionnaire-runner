@@ -180,20 +180,19 @@ class PathFinder:
         block_ids_for_dependencies = (
             list(routing_path_block_ids) + when_rules_block_dependencies
         )
-        list_item_id = this_location.list_item_id if this_location else None
+
         when_rule_evaluator = RuleEvaluator(
             schema=self.schema,
             data_stores=self.data_stores,
             location=this_location,
             routing_path_block_ids=block_ids_for_dependencies,
             value_source_resolver=ValueSourceResolver(
-                list_item_id=list_item_id,
+                list_item_id=this_location.list_item_id if this_location else None,
                 schema=self.schema,
                 data_stores=self.data_stores,
                 location=this_location,
                 routing_path_block_ids=block_ids_for_dependencies,
                 use_default_answer=True,
-                assess_routing_path=True,
             ),
         )
         for rule in routing_rules:
@@ -244,7 +243,6 @@ class PathFinder:
             location=current_location,
             routing_path_block_ids=block_ids_for_dependencies,
             use_default_answer=True,
-            assess_routing_path=True,
         )
         when_rule_evaluator = RuleEvaluator(
             schema=self.schema,
