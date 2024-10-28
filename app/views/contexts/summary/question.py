@@ -47,16 +47,17 @@ class Question:
         )
         self.number = question_schema.get("number", None)
         self._value_source_resolver = ValueSourceResolver(
-            data_stores=data_stores,
+            data_stores=self.data_stores,
             schema=self.schema,
             location=self.location,
             list_item_id=self.list_item_id,
             use_default_answer=True,
+            assess_routing_path=True
         )
         self._rule_evaluator = RuleEvaluator(
             value_source_resolver=self._value_source_resolver,
             schema=self.schema,
-            data_stores=data_stores,
+            data_stores=self.data_stores,
             location=self.location,
         )
 

@@ -46,7 +46,7 @@ class CalculatedSummaryBlock:
             self._list_name = None
         value_source_resolver = ValueSourceResolver(
             list_item_id=self._list_item_id,
-            schema=self._schema,
+            schema=schema,
             data_stores=self._data_stores,
             location=location,
             routing_path_block_ids=routing_path_block_ids,
@@ -54,7 +54,7 @@ class CalculatedSummaryBlock:
             assess_routing_path=True,
         )
         self._rule_evaluator = RuleEvaluator(
-            schema=self._schema,
+            schema=schema,
             data_stores=self._data_stores,
             location=location,
             routing_path_block_ids=routing_path_block_ids,
