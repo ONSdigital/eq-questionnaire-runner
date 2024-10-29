@@ -18,10 +18,7 @@ function display_result {
   fi
 }
 
-#flake8 --max-complexity 10 --count
-pwd
-ruff --version
-ruff check . --config pyproject.toml
+ruff check .
 display_result $? 1 "Ruff code style check (including isort)"
 
 # pylint bit encodes the exit code to allow you to figure out which category has failed.
