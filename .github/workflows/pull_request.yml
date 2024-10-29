@@ -123,7 +123,7 @@ jobs:
     needs: [python-dependencies, node-dependencies]
     strategy:
       matrix:
-        suite: [features]
+        suite: [supplementary_data]
     runs-on: ubuntu-22.04
     timeout-minutes: 30
     env:
