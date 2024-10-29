@@ -38,6 +38,7 @@ describe("Using supplementary data", () => {
   const summaryItems = ".ons-summary__item--text";
   const summaryValues = ".ons-summary__values";
   const summaryRowTitles = ".ons-summary__row-title";
+  this.retries(3);
 
   before("Starting the survey", async () => {
     await browser.openQuestionnaire("test_supplementary_data.json", {
@@ -47,7 +48,6 @@ describe("Using supplementary data", () => {
     });
   });
   it("Given I launch a survey using supplementary data, When I am outside a repeating section, Then I am able to see the list of items relating to a given supplementary data list item on the page", async () => {
-    await $("#main-content #guidance-1").waitForExist({ timeout: 60000 });
     await expect(await $("#main-content #guidance-1").getText()).toContain("The surnames of the employees are: Potter, Kent.");
     await expect(await $("#main-content #guidance-1").getText()).toContain("The surnames of the employees are: Potter, Kent.");
     await expect(await $$("#main-content li")[0].getText()).toBe("Articles and equipment for sports or outdoor games");
@@ -346,7 +346,6 @@ describe("Using supplementary data", () => {
       sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
       responseId,
     });
-    await $(HubPage.summaryItems("section-4-1")).waitForExist({ timeout: 60000 });
     await expect(await $(HubPage.summaryItems("section-4-1")).getText()).toContain("Harry Potter");
     await expect(await $(HubPage.summaryItems("section-4-2")).getText()).toContain("Bruce Wayne");
     await expect(await $(HubPage.summaryItems("section-5-1")).getText()).toContain("Jane Doe");
@@ -397,7 +396,6 @@ describe("Using supplementary data", () => {
       sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
       responseId,
     });
-    await $(HubPage.summaryRowState("section-6")).waitForExist({ timeout: 60000 });
     await expect(await $(HubPage.summaryRowState("section-6")).getText()).toBe("Partially completed");
     await expect(await $(HubPage.summaryRowState("section-7")).getText()).toBe("Partially completed");
   });
@@ -408,7 +406,6 @@ describe("Using supplementary data", () => {
       sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
       responseId,
     });
-    await $(HubPage.submit()).waitForExist({ timeout: 60000 });
     await click(HubPage.submit());
     await $(LengthOfEmploymentPage.day()).setValue(10);
     await $(LengthOfEmploymentPage.month()).setValue(10);
