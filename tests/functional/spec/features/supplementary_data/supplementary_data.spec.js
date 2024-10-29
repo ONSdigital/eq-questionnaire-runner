@@ -38,7 +38,6 @@ describe("Using supplementary data", () => {
   const summaryItems = ".ons-summary__item--text";
   const summaryValues = ".ons-summary__values";
   const summaryRowTitles = ".ons-summary__row-title";
-  this.retries(3);
 
   before("Starting the survey", async () => {
     await browser.openQuestionnaire("test_supplementary_data.json", {
@@ -46,6 +45,7 @@ describe("Using supplementary data", () => {
       sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
       responseId,
     });
+    this.retries(3);
   });
   it("Given I launch a survey using supplementary data, When I am outside a repeating section, Then I am able to see the list of items relating to a given supplementary data list item on the page", async () => {
     await expect(await $("#main-content #guidance-1").getText()).toContain("The surnames of the employees are: Potter, Kent.");
