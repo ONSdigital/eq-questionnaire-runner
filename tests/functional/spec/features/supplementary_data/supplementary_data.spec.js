@@ -33,7 +33,8 @@ import ThankYouPage from "../../../base_pages/thank-you.page";
 import TradingPage from "../../../generated_pages/supplementary_data/trading.page.js";
 import ViewSubmittedResponsePage from "../../../generated_pages/supplementary_data/view-submitted-response.page.js";
 
-describe("Using supplementary data", () => {
+describe("Using supplementary data", function() {
+  this.retries(3);
   const responseId = getRandomString(16);
   const summaryItems = ".ons-summary__item--text";
   const summaryValues = ".ons-summary__values";
@@ -45,7 +46,6 @@ describe("Using supplementary data", () => {
       sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
       responseId,
     });
-    this.retries(3);
   });
   it("Given I launch a survey using supplementary data, When I am outside a repeating section, Then I am able to see the list of items relating to a given supplementary data list item on the page", async () => {
     await expect(await $("#main-content #guidance-1").getText()).toContain("The surnames of the employees are: Potter, Kent.");
