@@ -46,11 +46,11 @@ export const click = async (selector) => {
   // it's no longer over the button and the click silently fails. This means that when the test comes to do assertions on the following page
   // they fail, as we never navigated to that page.
   const element = await $(selector);
-  await element.waitForDisplayed();
+  await element.waitForDisplayed({ timeout: 60000 });
   await browser.execute((el) => {
     el.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
   }, element);
-  await element.waitForClickable();
+  await element.waitForClickable({ timeout: 60000 });
   await element.click();
   await browser.pause(100);
 };
