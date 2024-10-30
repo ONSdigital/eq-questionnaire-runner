@@ -17,7 +17,6 @@ import PrimaryPersonListCollectorAddPage from "../../../generated_pages/hub_sect
 import ListCollectorPage from "../../../generated_pages/hub_section_required_with_repeat/list-collector.page";
 import ListCollectorAddPage from "../../../generated_pages/hub_section_required_with_repeat/list-collector-add.page";
 import RepeatingSummaryPage from "../../../generated_pages/hub_section_required_with_repeat/personal-details-section-summary.page";
-import { getRandomString } from "../../../jwt_helper";
 import LoadedSuccessfullyBlockPage from "../../../generated_pages/hub_section_required_with_repeat_supplementary/loaded-successfully-block.page";
 import IntroductionBlockPage from "../../../generated_pages/hub_section_required_with_repeat_supplementary/introduction-block.page";
 import ListCollectorEmployeesPage from "../../../generated_pages/hub_section_required_with_repeat_supplementary/list-collector-employees.page.js";
@@ -316,12 +315,10 @@ describe("Feature: Hub and Spoke", () => {
 
   describe("Given a user opens a schema with hub required sections based on a repeating section using supplementary data", () => {
     beforeEach("Load survey", async () => {
-      const responseId = getRandomString(16);
 
-      await browser.openQuestionnaire("test_hub_section_required_with_repeat_supplementary.json.json", {
+      await browser.openQuestionnaire("test_hub_section_required_with_repeat_supplementary.json", {
         version: "v2",
         sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
-        responseId,
       });
     });
 
