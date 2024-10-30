@@ -1,6 +1,6 @@
 import IntroductionPageHub from "../generated_pages/introduction_hub/introduction.page";
 import IntroductionPageLinear from "../generated_pages/introduction/introduction.page";
-import {verifyUrlContains} from "../helpers";
+import { verifyUrlContains } from "../helpers";
 
 describe("Introduction preview questions", () => {
   const introductionSchemaHub = "test_introduction_hub.json";
