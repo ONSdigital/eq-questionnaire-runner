@@ -33,8 +33,7 @@ import ThankYouPage from "../../../base_pages/thank-you.page";
 import TradingPage from "../../../generated_pages/supplementary_data/trading.page.js";
 import ViewSubmittedResponsePage from "../../../generated_pages/supplementary_data/view-submitted-response.page.js";
 
-describe("Using supplementary data", function() {
-  this.retries(3);
+describe("Using supplementary data", () => {
   const responseId = getRandomString(16);
   const summaryItems = ".ons-summary__item--text";
   const summaryValues = ".ons-summary__values";
