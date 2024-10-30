@@ -541,23 +541,18 @@ class Router:
             section_id
         )
         list_item_id = location.list_item_id if location else None
-
-        value_source_resolver = ValueSourceResolver(
-            list_item_id=list_item_id,
-            schema=self._schema,
-            data_stores=self._data_stores,
-            location=location,
-            routing_path_block_ids=routing_path_block_ids,
-            use_default_answer=True,
-            assess_routing_path=True,
-        )
-
         when_rule_evaluator = RuleEvaluator(
             data_stores=self._data_stores,
             schema=self._schema,
             location=location,
             routing_path_block_ids=routing_path_block_ids,
-            value_source_resolver=value_source_resolver,
+            value_source_resolver=ValueSourceResolver(
+                data_stores=self._data_stores,
+                schema=self._schema,
+                location=location,
+                list_item_id=list_item_id,
+                routing_path_block_ids=routing_path_block_ids,
+            ),
         )
 
         return bool(when_rule_evaluator.evaluate(enabled["when"]))

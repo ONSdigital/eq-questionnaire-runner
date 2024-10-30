@@ -56,7 +56,6 @@ class CalculatedSummaryBlock:
                 location=location,
                 routing_path_block_ids=routing_path_block_ids,
                 use_default_answer=True,
-                assess_routing_path=True,
             ),
         )
 
