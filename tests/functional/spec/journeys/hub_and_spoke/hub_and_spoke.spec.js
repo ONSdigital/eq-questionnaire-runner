@@ -58,10 +58,7 @@ describe("Feature: Hub and Spoke", () => {
 
     it("When the user click the 'Save and sign out' button then they should be redirected to the correct log out url", async () => {
       await $(HubPage.saveSignOut()).click();
-
-      const expectedUrl = await browser.getUrl();
-
-      await expect(expectedUrl).toContain("/signed-out");
+      await verifyUrlContains("/signed-out");
     });
 
     it("When a user views the Hub, Then the page title should be Choose another section to complete", async () => {
@@ -83,8 +80,7 @@ describe("Feature: Hub and Spoke", () => {
 
     it("When the user starts a section, Then the first question in the section should be displayed", async () => {
       await click(HubPage.submit());
-      const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).toContain(EmploymentStatusBlockPage.url());
+      await verifyUrlContains(EmploymentStatusBlockPage.url());
     });
 
     it("When the user starts a section and clicks the Previous link on the first question, Then they should be taken back to the Hub", async () => {
@@ -117,8 +113,7 @@ describe("Feature: Hub and Spoke", () => {
     it("When the user returns to the Hub and restarts the same section, Then they should be redirected to the first incomplete block", async () => {
       await browser.url(HubPage.url());
       await $(HubPage.summaryRowLink("employment-section")).click();
-      const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).toContain(EmploymentTypeBlockPage.url());
+      await verifyUrlContains(EmploymentTypeBlockPage.url());
     });
   });
 
@@ -151,16 +146,14 @@ describe("Feature: Hub and Spoke", () => {
     it("When the user returns to the Hub and clicks the 'View answers' link on the Hub, if this no summary they are returned to the first block", async () => {
       await click(EmploymentTypeBlockPage.submit());
       await $(HubPage.summaryRowLink("employment-section")).click();
-      const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).toContain(EmploymentStatusBlockPage.url());
+      await verifyUrlContains(EmploymentStatusBlockPage.url());
     });
 
     it("When the user returns to the Hub and continues, Then they should progress to the next section", async () => {
       await click(EmploymentTypeBlockPage.submit());
       await verifyUrlContains(HubPage.url());
       await click(HubPage.submit());
-      const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).toContain(ProxyPage.url());
+      await verifyUrlContains(ProxyPage.url());
     });
   });
 
@@ -179,8 +172,7 @@ describe("Feature: Hub and Spoke", () => {
       await verifyUrlContains(EmploymentStatusBlockPage.url());
       await $(EmploymentStatusBlockPage.exclusiveNoneOfTheseApply()).click();
       await click(EmploymentStatusBlockPage.submit());
-      const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).toContain(EmploymentTypeBlockPage.url());
+      await verifyUrlContains(EmploymentTypeBlockPage.url());
     });
 
     it("When the user clicks the 'View answers' link and incompletes the section and returns to the hub, Then the section should be marked as 'Partially completed'", async () => {
@@ -228,8 +220,7 @@ describe("Feature: Hub and Spoke", () => {
 
     it("When the user submits, it should show the thankyou page", async () => {
       await click(HubPage.submit());
-      const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).toContain("thank-you");
+      await verifyUrlContains("thank-you");
     });
   });
 
@@ -380,8 +371,7 @@ describe("Feature: Hub and Spoke", () => {
       await $(DoesAnyoneLiveHere.yes()).click();
       await click(DoesAnyoneLiveHere.submit());
       await click(HouseholdSummary.submit());
-      const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).toContain(HowManyPeopleLiveHere.url());
+      await verifyUrlContains(HowManyPeopleLiveHere.url());
     });
   });
 });
