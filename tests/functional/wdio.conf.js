@@ -24,7 +24,7 @@ export const config = {
     components: ["./spec/components/**/*.js"],
     features: ["./spec/features/**/*.js"],
     supplementary_data: ["./spec/supplementary_data/supplementary_data/*.js"],
-    supplementary_data_hub_and_spoke: ["./spec/supplementary_data/hub_andd_spoke_supplementary_data/*.js"],
+    supplementary_data_hub_and_spoke: ["./spec/supplementary_data/hub_and_spoke_supplementary_data/*.js"],
     summaries: ["./spec/summaries/**/*.js"],
     journeys: ["./spec/journeys/**/*.js"],
     list_collector: ["./spec/list_collector/**/*.js"],
