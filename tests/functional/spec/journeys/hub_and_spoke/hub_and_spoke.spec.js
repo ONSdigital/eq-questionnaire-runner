@@ -17,11 +17,6 @@ import PrimaryPersonListCollectorAddPage from "../../../generated_pages/hub_sect
 import ListCollectorPage from "../../../generated_pages/hub_section_required_with_repeat/list-collector.page";
 import ListCollectorAddPage from "../../../generated_pages/hub_section_required_with_repeat/list-collector-add.page";
 import RepeatingSummaryPage from "../../../generated_pages/hub_section_required_with_repeat/personal-details-section-summary.page";
-import LoadedSuccessfullyBlockPage from "../../../generated_pages/hub_section_required_with_repeat_supplementary/loaded-successfully-block.page";
-import IntroductionBlockPage from "../../../generated_pages/hub_section_required_with_repeat_supplementary/introduction-block.page";
-import ListCollectorEmployeesPage from "../../../generated_pages/hub_section_required_with_repeat_supplementary/list-collector-employees.page.js";
-import LengthOfEmploymentPage from "../../../generated_pages/hub_section_required_with_repeat_supplementary/length-of-employment.page.js";
-import Section3Page from "../../../generated_pages/hub_section_required_with_repeat_supplementary/section-3-summary.page.js";
 
 describe("Feature: Hub and Spoke", () => {
   const hubAndSpokeSchema = "test_hub_and_spoke.json";

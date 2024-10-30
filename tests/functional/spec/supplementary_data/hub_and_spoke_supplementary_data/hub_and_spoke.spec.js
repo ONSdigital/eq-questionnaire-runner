@@ -8,7 +8,6 @@ import Section3Page from "../../../generated_pages/hub_section_required_with_rep
 import { getRandomString } from "../../../jwt_helper";
 
 describe("Feature: Hub and Spoke with Supplementary Data", () => {
-
   describe("Given a user opens a schema with hub required sections based on a repeating section using supplementary data", () => {
     beforeEach("Load survey", async () => {
       const responseId = getRandomString(16);
