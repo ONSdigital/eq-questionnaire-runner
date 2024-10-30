@@ -8,7 +8,7 @@ import ListedPage from "../../../generated_pages/section_summary/listed.page.js"
 import NumberOfPeoplePage from "../../../generated_pages/section_summary/number-of-people.page.js";
 import PropertyDetailsSummaryPage from "../../../generated_pages/section_summary/property-details-section-summary.page.js";
 import SubmitPage from "../../../generated_pages/section_summary/submit.page.js";
-import { click } from "../../../helpers";
+import { click, verifyUrlContains } from "../../../helpers";
 
 describe("Section Summary", () => {
   describe("Given I start a Test Section Summary survey and complete to Section Summary", () => {
@@ -35,33 +35,33 @@ describe("Section Summary", () => {
     it("When I select edit from the section summary and click previous on the question page, Then I should be taken back to the section summary", async () => {
       await $(PropertyDetailsSummaryPage.insuranceAddressAnswerEdit()).click();
       await $(InsuranceAddressPage.previous()).click();
-      await expect(browser).toHaveUrl(expect.stringContaining(PropertyDetailsSummaryPage.url()));
+      await verifyUrlContains(PropertyDetailsSummaryPage.url());
     });
 
     it("When I continue on the section summary page, Then I should be taken to the next section", async () => {
       await click(PropertyDetailsSummaryPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(HouseType.pageName));
+      await verifyUrlContains(HouseType.pageName);
     });
 
     it("When I select edit from Section Summary but change routing, Then I should step through the section and be returned to the Section Summary once all new questions have been answered", async () => {
       await $(PropertyDetailsSummaryPage.insuranceTypeAnswerEdit()).click();
       await $(InsuranceTypePage.contents()).click();
       await click(InsuranceTypePage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(AddressDurationPage.pageName));
+      await verifyUrlContains(AddressDurationPage.pageName);
       await click(AddressDurationPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(PropertyDetailsSummaryPage.pageName));
+      await verifyUrlContains(PropertyDetailsSummaryPage.pageName);
     });
 
     it("When I select edit from Section Summary but change routing, Then using previous should not prevent me returning to the section summary once all new questions have been answered", async () => {
       await $(PropertyDetailsSummaryPage.insuranceTypeAnswerEdit()).click();
       await $(InsuranceTypePage.contents()).click();
       await click(InsuranceTypePage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(AddressDurationPage.pageName));
+      await verifyUrlContains(AddressDurationPage.pageName);
       await $(AddressDurationPage.previous()).click();
-      await expect(browser).toHaveUrl(expect.stringContaining(InsuranceAddressPage.pageName));
+      await verifyUrlContains(InsuranceAddressPage.pageName);
       await click(InsuranceAddressPage.submit());
       await click(AddressDurationPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(PropertyDetailsSummaryPage.pageName));
+      await verifyUrlContains(PropertyDetailsSummaryPage.pageName);
     });
   });
 
@@ -78,14 +78,14 @@ describe("Section Summary", () => {
       await $(NumberOfPeoplePage.answer()).setValue(3);
       await click(NumberOfPeoplePage.submit());
       await click(HouseholdCountSectionSummaryPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.url()));
+      await verifyUrlContains(SubmitPage.url());
     });
 
     it("When I select edit from Final Summary and don't change an answer, Then I should be taken to the Final Summary", async () => {
       await $(SubmitPage.summaryShowAllButton()).click();
       await $(SubmitPage.insuranceAddressAnswerEdit()).click();
       await click(InsuranceAddressPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.url()));
+      await verifyUrlContains(SubmitPage.url());
     });
 
     it("When I select edit from Final Summary and change an answer that doesn't affect completeness, Then I should be taken to the Final Summary", async () => {
@@ -93,7 +93,7 @@ describe("Section Summary", () => {
       await $(SubmitPage.insuranceAddressAnswerEdit()).click();
       await $(InsuranceAddressPage.answer()).setValue("Test Address");
       await click(InsuranceAddressPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.url()));
+      await verifyUrlContains(SubmitPage.url());
     });
 
     it("When I select edit from Final Summary but change routing, Then I should step through the section and be returned to the Final Summary once all new questions have been answered", async () => {
@@ -101,9 +101,9 @@ describe("Section Summary", () => {
       await $(SubmitPage.insuranceTypeAnswerEdit()).click();
       await $(InsuranceTypePage.contents()).click();
       await click(InsuranceTypePage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(AddressDurationPage.pageName));
+      await verifyUrlContains(AddressDurationPage.pageName);
       await click(AddressDurationPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.pageName));
+      await verifyUrlContains(SubmitPage.pageName);
     });
 
     it("When I select edit from Final Summary but change routing, Then using previous should not prevent me returning to the section summary once all new questions have been answered", async () => {
@@ -111,12 +111,12 @@ describe("Section Summary", () => {
       await $(SubmitPage.insuranceTypeAnswerEdit()).click();
       await $(InsuranceTypePage.contents()).click();
       await click(InsuranceTypePage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(AddressDurationPage.pageName));
+      await verifyUrlContains(AddressDurationPage.pageName);
       await $(AddressDurationPage.previous()).click();
-      await expect(browser).toHaveUrl(expect.stringContaining(InsuranceAddressPage.pageName));
+      await verifyUrlContains(InsuranceAddressPage.pageName);
       await click(InsuranceAddressPage.submit());
       await click(AddressDurationPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.pageName));
+      await verifyUrlContains(SubmitPage.pageName);
     });
     it("When I select edit from Final Summary and change an answer and then go to the next question and click previous, Since I cannot return to the section summary yet I return to the previous block in the section", async () => {
       await $(SubmitPage.summaryShowAllButton()).click();
@@ -124,14 +124,14 @@ describe("Section Summary", () => {
       await $(InsuranceTypePage.contents()).click();
       await click(InsuranceTypePage.submit());
       await $(AddressDurationPage.previous()).click();
-      await expect(browser).toHaveUrl(expect.stringContaining(InsuranceAddressPage.pageName));
+      await verifyUrlContains(InsuranceAddressPage.pageName);
     });
 
     it("When I change an answer, Then the final summary should display the updated value", async () => {
       await $(SubmitPage.summaryShowAllButton()).click();
       await expect(await $(SubmitPage.insuranceAddressAnswer()).getText()).toBe("No answer provided");
       await $(SubmitPage.insuranceAddressAnswerEdit()).click();
-      await expect(browser).toHaveUrl(expect.stringContaining(InsuranceAddressPage.pageName));
+      await verifyUrlContains(InsuranceAddressPage.pageName);
       await $(InsuranceAddressPage.answer()).setValue("Test Address");
       await click(InsuranceAddressPage.submit());
       await $(SubmitPage.summaryShowAllButton()).click();

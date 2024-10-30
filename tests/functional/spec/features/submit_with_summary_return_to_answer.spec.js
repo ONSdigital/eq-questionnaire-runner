@@ -6,7 +6,7 @@ import HouseholdDetailsSummaryPage from "../../generated_pages/submit_with_summa
 import SubmitPage from "../../generated_pages/submit_with_summary_return_to_answer/submit.page.js";
 import AddressDurationPage from "../../generated_pages/submit_with_summary_return_to_answer/address-duration.page.js";
 import NamePage from "../../generated_pages/submit_with_summary_return_to_answer/name.page.js";
-import { click } from "../../helpers";
+import { click, verifyUrlContains } from "../../helpers";
 describe("Summary Anchor Scrolling", () => {
   describe("Given I start a Test Section Summary survey", () => {
     beforeEach(async () => {
@@ -50,7 +50,7 @@ describe("Summary Anchor Scrolling", () => {
       await click(AddressDurationPage.submit());
       await $(PropertyDetailsSummaryPage.insuranceAddressAnswer2Edit()).click();
       await $(InsuranceAddressPage.previous()).click();
-      await expect(browser).toHaveUrl(expect.stringContaining("property-details-section/#insurance-address-answer2"));
+      await verifyUrlContains("property-details-section/#insurance-address-answer2");
     });
 
     it("When I edit an answer from the section summary page and click the Submit button, Then I am taken to the summary page and the browser url should contain an anchor referencing the answer id of the answer I am changing", async () => {
@@ -58,7 +58,7 @@ describe("Summary Anchor Scrolling", () => {
       await click(AddressDurationPage.submit());
       await $(PropertyDetailsSummaryPage.insuranceAddressAnswer2Edit()).click();
       await click(InsuranceAddressPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining("property-details-section/#insurance-address-answer2"));
+      await verifyUrlContains("property-details-section/#insurance-address-answer2");
     });
 
     it("When I am on the final summary page, Then the Change link url should contain return_to, return_to_answer_id query params", async () => {

@@ -30,7 +30,7 @@ import GrandCalculatedSummary5Page from "../../../generated_pages/grand_calculat
 import AnyUtilityBillsPage from "../../../generated_pages/grand_calculated_summary_repeating_answers/any-utility-bills.page";
 import Section4SummaryPage from "../../../generated_pages/grand_calculated_summary_repeating_answers/section-4-summary.page";
 import Section5SummaryPage from "../../../generated_pages/grand_calculated_summary_repeating_answers/section-5-summary.page";
-import { assertSummaryItems, assertSummaryValues, repeatingAnswerChangeLink, click } from "../../../helpers";
+import { assertSummaryItems, assertSummaryValues, repeatingAnswerChangeLink, click, verifyUrlContains } from "../../../helpers";
 import { expect } from "@wdio/globals";
 import InternetBreakdownBlockPage from "../../../generated_pages/grand_calculated_summary_repeating_answers/internet-breakdown-block.page";
 import Section6SummaryPage from "../../../generated_pages/grand_calculated_summary_repeating_answers/section-6-summary.page";
@@ -75,22 +75,22 @@ describe("Feature: Grand Calculated Summary", () => {
         "Grand Calculated Summary for shopping and entertainment is calculated to be £415.00. Is this correct?",
       );
       await $(GrandCalculatedSummary2Page.calculatedSummary1Edit()).click();
-      await expect(browser).toHaveUrl(expect.stringContaining(CalculatedSummary1Page.pageName));
+      await verifyUrlContains(CalculatedSummary1Page.pageName);
 
       await click(CalculatedSummary1Page.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(GrandCalculatedSummary2Page.pageName));
+      await verifyUrlContains(GrandCalculatedSummary2Page.pageName);
     });
 
     it("Given I click on the change link for a calculated summary then one for an answer, When I press previous twice, I am return to the calculated summary then grand calculated summary", async () => {
       await $(GrandCalculatedSummary2Page.calculatedSummary1Edit()).click();
       await $(CalculatedSummary1Page.q1A1Edit()).click();
-      await expect(browser).toHaveUrl(expect.stringContaining(Block1Page.pageName));
+      await verifyUrlContains(Block1Page.pageName);
 
       await $(Block1Page.previous()).click();
-      await expect(browser).toHaveUrl(expect.stringContaining(CalculatedSummary1Page.pageName));
+      await verifyUrlContains(CalculatedSummary1Page.pageName);
 
       await $(CalculatedSummary1Page.previous()).click();
-      await expect(browser).toHaveUrl(expect.stringContaining(GrandCalculatedSummary2Page.pageName));
+      await verifyUrlContains(GrandCalculatedSummary2Page.pageName);
     });
 
     it("Given I go back to the calculated summary and then to a question and edit the answer. I am first taken back to the each calculated summary that uses the answer, the grand calculated summary in section 1, and then the updated grand calculated summary in section 3.", async () => {
@@ -99,20 +99,20 @@ describe("Feature: Grand Calculated Summary", () => {
         "Calculated Summary for games expenditure is calculated to be £15.00. Is this correct?",
       );
       await $(CalculatedSummary4Page.q4A1Edit()).click();
-      await expect(browser).toHaveUrl(expect.stringContaining(Block4Page.pageName));
+      await verifyUrlContains(Block4Page.pageName);
 
       await $(Block4Page.q4A1()).setValue(50);
       await click(Block4Page.submit());
 
       // first taken back to the calculated summary which has updated
-      await expect(browser).toHaveUrl(expect.stringContaining(CalculatedSummary4Page.pageName));
+      await verifyUrlContains(CalculatedSummary4Page.pageName);
       await expect(await $(CalculatedSummary4Page.calculatedSummaryTitle()).getText()).toBe(
         "Calculated Summary for games expenditure is calculated to be £60.00. Is this correct?",
       );
       await click(CalculatedSummary4Page.submit());
 
       // then taken back to the grand calculated summary which has also been updated correctly
-      await expect(browser).toHaveUrl(expect.stringContaining(GrandCalculatedSummary2Page.pageName));
+      await verifyUrlContains(GrandCalculatedSummary2Page.pageName);
       await expect(await $(GrandCalculatedSummary2Page.grandCalculatedSummaryTitle()).getText()).toBe(
         "Grand Calculated Summary for shopping and entertainment is calculated to be £460.00. Is this correct?",
       );
@@ -126,19 +126,19 @@ describe("Feature: Grand Calculated Summary", () => {
 
       // change first answer
       await $(CalculatedSummary1Page.q1A1Edit()).click();
-      await expect(browser).toHaveUrl(expect.stringContaining(Block1Page.pageName));
+      await verifyUrlContains(Block1Page.pageName);
       await $(Block1Page.q1A1()).setValue(100);
       await click(Block1Page.submit());
 
       // go to each calculated summary that uses the answer in turn, then each grand calculated summary up to the one we were editing
-      await expect(browser).toHaveUrl(expect.stringContaining(CalculatedSummary1Page.pageName));
+      await verifyUrlContains(CalculatedSummary1Page.pageName);
       await expect(await $(CalculatedSummary1Page.calculatedSummaryTitle()).getText()).toBe(
         "Calculated Summary for food expenditure is calculated to be £190.00. Is this correct?",
       );
 
       // change another answer
       await $(CalculatedSummary1Page.q2A2Edit()).click();
-      await expect(browser).toHaveUrl(expect.stringContaining(Block2Page.pageName));
+      await verifyUrlContains(Block2Page.pageName);
       await $(Block2Page.q2A2()).setValue(400);
       await click(Block2Page.submit());
 
@@ -149,11 +149,11 @@ describe("Feature: Grand Calculated Summary", () => {
 
       // Go to each calculated/grand calculated summary including this answer and reconfirm before being taken back to grand calculated summary
       await click(CalculatedSummary1Page.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(CalculatedSummary3Page.pageName));
+      await verifyUrlContains(CalculatedSummary3Page.pageName);
       await click(CalculatedSummary3Page.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(GrandCalculatedSummary1Page.pageName));
+      await verifyUrlContains(GrandCalculatedSummary1Page.pageName);
       await click(GrandCalculatedSummary1Page.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(GrandCalculatedSummary2Page.pageName));
+      await verifyUrlContains(GrandCalculatedSummary2Page.pageName);
       await expect(await $(GrandCalculatedSummary2Page.grandCalculatedSummaryTitle()).getText()).toBe(
         "Grand Calculated Summary for shopping and entertainment is calculated to be £910.00. Is this correct?",
       );
@@ -192,7 +192,7 @@ describe("Feature: Grand Calculated Summary", () => {
       await click(Block4Page.submit());
       await click(CalculatedSummary4Page.submit());
       // should be back at Hub, and grand calculated summary section not present
-      await expect(browser).toHaveUrl(expect.stringContaining(HubPage.pageName));
+      await verifyUrlContains(HubPage.pageName);
       await expect(await $(HubPage.summaryRowLink("section-3")).isExisting()).toBe(false);
     });
 
@@ -298,10 +298,10 @@ describe("Feature: Grand Calculated Summary", () => {
     it("Given I a grand calculated summary featuring repeating answers, When I click edit links to return to a dynamic answer then previous twice, Then I return to the grand calculated summary where I started", async () => {
       await $(GrandCalculatedSummary5Page.calculatedSummary5Edit()).click();
       await repeatingAnswerChangeLink(0).click();
-      await expect(browser).toHaveUrl(expect.stringContaining(DynamicAnswerPage.pageName));
+      await verifyUrlContains(DynamicAnswerPage.pageName);
       await $(DynamicAnswerPage.previous()).click();
       await $(CalculatedSummary5Page.previous()).click();
-      await expect(browser).toHaveUrl(expect.stringContaining(GrandCalculatedSummary5Page.pageName));
+      await verifyUrlContains(GrandCalculatedSummary5Page.pageName);
     });
 
     it("Given I have a grand calculated summary featuring repeating answers, When I edit a dynamic answer, Then I return to the calculated summary to confirm, and then each affected grand calculated summary in turn", async () => {
@@ -310,12 +310,12 @@ describe("Feature: Grand Calculated Summary", () => {
       await $$(DynamicAnswerPage.inputs())[0].setValue("175");
       await click(DynamicAnswerPage.submit());
       await click(CalculatedSummary5Page.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(GrandCalculatedSummary3Page.pageName));
+      await verifyUrlContains(GrandCalculatedSummary3Page.pageName);
       await expect(await $(GrandCalculatedSummary3Page.grandCalculatedSummaryTitle()).getText()).toBe(
         "Grand Calculated Summary for monthly spending on bills and services is calculated to be £305.00. Is this correct?",
       );
       await click(GrandCalculatedSummary3Page.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(GrandCalculatedSummary5Page.pageName));
+      await verifyUrlContains(GrandCalculatedSummary5Page.pageName);
       await expect(await $(GrandCalculatedSummary5Page.grandCalculatedSummaryTitle()).getText()).toBe(
         "Grand Calculated Summary for total monthly household expenditure is calculated to be £1,155.00. Is this correct?",
       );
@@ -326,7 +326,7 @@ describe("Feature: Grand Calculated Summary", () => {
       await repeatingAnswerChangeLink(2).click();
       await $(StreamingServiceRepeatingBlock1Page.previous()).click();
       await $(CalculatedSummary5Page.previous()).click();
-      await expect(browser).toHaveUrl(expect.stringContaining(GrandCalculatedSummary5Page.pageName));
+      await verifyUrlContains(GrandCalculatedSummary5Page.pageName);
     });
 
     it("Given I have a grand calculated summary featuring repeating answers, When I edit a list repeating block answer, Then I return to the calculated summary to confirm, and then the grand calculated summary to confirm", async () => {
@@ -335,12 +335,12 @@ describe("Feature: Grand Calculated Summary", () => {
       await $(StreamingServiceRepeatingBlock1Page.streamingServiceMonthlyCost()).setValue(12);
       await click(StreamingServiceRepeatingBlock1Page.submit());
       await click(CalculatedSummary5Page.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(GrandCalculatedSummary3Page.pageName));
+      await verifyUrlContains(GrandCalculatedSummary3Page.pageName);
       await expect(await $(GrandCalculatedSummary3Page.grandCalculatedSummaryTitle()).getText()).toBe(
         "Grand Calculated Summary for monthly spending on bills and services is calculated to be £309.00. Is this correct?",
       );
       await click(GrandCalculatedSummary3Page.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(GrandCalculatedSummary5Page.pageName));
+      await verifyUrlContains(GrandCalculatedSummary5Page.pageName);
       await expect(await $(GrandCalculatedSummary5Page.grandCalculatedSummaryTitle()).getText()).toBe(
         "Grand Calculated Summary for total monthly household expenditure is calculated to be £1,159.00. Is this correct?",
       );
@@ -361,7 +361,7 @@ describe("Feature: Grand Calculated Summary", () => {
     it("Given I use the grand calculated summary for validation, When I enter values with the correct sum, Then I progress to the summary page", async () => {
       await $(InternetBreakdownBlockPage.internetPhone()).setValue(40);
       await click(InternetBreakdownBlockPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(Section6SummaryPage.pageName));
+      await verifyUrlContains(Section6SummaryPage.pageName);
       await click(Section6SummaryPage.submit());
     });
 
@@ -391,22 +391,22 @@ describe("Feature: Grand Calculated Summary", () => {
 
     it("Given I return to the grand calculated summary section, When I go to each grand calculated summary, Then I see the correct new values", async () => {
       await $(HubPage.summaryRowLink("section-6")).click();
-      await expect(browser).toHaveUrl(expect.stringContaining(GrandCalculatedSummary3Page.pageName));
+      await verifyUrlContains(GrandCalculatedSummary3Page.pageName);
       await expect(await $(GrandCalculatedSummary3Page.grandCalculatedSummaryTitle()).getText()).toBe(
         "Grand Calculated Summary for monthly spending on bills and services is calculated to be £349.00. Is this correct?",
       );
       await click(GrandCalculatedSummary3Page.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(GrandCalculatedSummary4Page.pageName));
+      await verifyUrlContains(GrandCalculatedSummary4Page.pageName);
       await expect(await $(GrandCalculatedSummary4Page.grandCalculatedSummaryTitle()).getText()).toBe(
         "Grand Calculated Summary for internet usage is calculated to be 100 GB. Is this correct?",
       );
       await click(GrandCalculatedSummary4Page.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(GrandCalculatedSummary5Page.pageName));
+      await verifyUrlContains(GrandCalculatedSummary5Page.pageName);
       await expect(await $(GrandCalculatedSummary5Page.grandCalculatedSummaryTitle()).getText()).toBe(
         "Grand Calculated Summary for total monthly household expenditure is calculated to be £1,199.00. Is this correct?",
       );
       await click(GrandCalculatedSummary5Page.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(Section6SummaryPage.pageName));
+      await verifyUrlContains(Section6SummaryPage.pageName);
       await expect(await $$(summaryRowTitles)[0].getText()).toBe("How did you use the 100 GB across your devices?");
       await click(Section6SummaryPage.submit());
       await expect(await $(HubPage.summaryRowState("section-6")).getText()).toBe("Completed");
@@ -441,17 +441,17 @@ describe("Feature: Grand Calculated Summary", () => {
 
     it("Given I the grand calculated summary section is now incomplete, When I return to the section, Then I am taken to each updated grand calculated summary to confirm the new total", async () => {
       await $(HubPage.summaryRowLink("section-6")).click();
-      await expect(browser).toHaveUrl(expect.stringContaining(GrandCalculatedSummary3Page.pageName));
+      await verifyUrlContains(GrandCalculatedSummary3Page.pageName);
       await expect(await $(GrandCalculatedSummary3Page.grandCalculatedSummaryTitle()).getText()).toBe(
         "Grand Calculated Summary for monthly spending on bills and services is calculated to be £359.00. Is this correct?",
       );
       await click(GrandCalculatedSummary3Page.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(GrandCalculatedSummary4Page.pageName));
+      await verifyUrlContains(GrandCalculatedSummary4Page.pageName);
       await expect(await $(GrandCalculatedSummary4Page.grandCalculatedSummaryTitle()).getText()).toBe(
         "Grand Calculated Summary for internet usage is calculated to be 105 GB. Is this correct?",
       );
       await click(GrandCalculatedSummary4Page.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(GrandCalculatedSummary5Page.pageName));
+      await verifyUrlContains(GrandCalculatedSummary5Page.pageName);
       await expect(await $(GrandCalculatedSummary5Page.grandCalculatedSummaryTitle()).getText()).toBe(
         "Grand Calculated Summary for total monthly household expenditure is calculated to be £1,209.00. Is this correct?",
       );
@@ -481,17 +481,17 @@ describe("Feature: Grand Calculated Summary", () => {
 
     it("Given the section has reverted to partially complete, When I go back to the section, Then I am taken to each grand calculated summary to reconfirm with correct values", async () => {
       await $(HubPage.summaryRowLink("section-6")).click();
-      await expect(browser).toHaveUrl(expect.stringContaining(GrandCalculatedSummary3Page.pageName));
+      await verifyUrlContains(GrandCalculatedSummary3Page.pageName);
       await expect(await $(GrandCalculatedSummary3Page.grandCalculatedSummaryTitle()).getText()).toBe(
         "Grand Calculated Summary for monthly spending on bills and services is calculated to be £349.00. Is this correct?",
       );
       await click(GrandCalculatedSummary3Page.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(GrandCalculatedSummary4Page.pageName));
+      await verifyUrlContains(GrandCalculatedSummary4Page.pageName);
       await expect(await $(GrandCalculatedSummary4Page.grandCalculatedSummaryTitle()).getText()).toBe(
         "Grand Calculated Summary for internet usage is calculated to be 85 GB. Is this correct?",
       );
       await click(GrandCalculatedSummary4Page.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(GrandCalculatedSummary5Page.pageName));
+      await verifyUrlContains(GrandCalculatedSummary5Page.pageName);
       await expect(await $(GrandCalculatedSummary5Page.grandCalculatedSummaryTitle()).getText()).toBe(
         "Grand Calculated Summary for total monthly household expenditure is calculated to be £1,199.00. Is this correct?",
       );
@@ -518,7 +518,7 @@ describe("Feature: Grand Calculated Summary", () => {
     it("Given I display multiple grand calculated summaries on an Interstitial page, When I reach the page, Then I see the correct values piped in", async () => {
       await $(PersonalExpenditureBlockPage.personalExpenditure()).setValue(1100);
       await click(PersonalExpenditureBlockPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(GrandCalculatedSummaryPipingPage.pageName));
+      await verifyUrlContains(GrandCalculatedSummaryPipingPage.pageName);
       await expect(await $("body").getText()).toContain("Total household expenditure: £1,199.00");
       await expect(await $("body").getText()).toContain("Personal contribution: £1,100.00");
       await expect(await $("body").getText()).toContain("Total internet usage: 85 GB");

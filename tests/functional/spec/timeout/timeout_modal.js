@@ -1,12 +1,12 @@
 import { TimeoutModalPage } from "../../base_pages/timeout-modal.page.js";
-import { click } from "../../helpers";
+import { click, verifyUrlContains } from "../../helpers";
 
 class TestCase {
   testCaseExpired(page) {
     it("When the timeout modal is displayed, and I do not extend my session, Then I will be redirected to the session expired page", async () => {
       await this.checkTimeoutModal();
       await browser.pause(65000); // We are waiting for the session to expire
-      await expect(browser).toHaveUrl(expect.stringContaining("/session-expired"));
+      await verifyUrlContains("/session-expired");
       await expect(await $("body").getHTML()).toContain(
         "Sorry, you need to sign in again",
         "This is because you have either:",
@@ -25,7 +25,7 @@ class TestCase {
       await expect(await $(TimeoutModalPage.timer()).getText()).toBe("");
       await browser.pause(65000); // Waiting 65 seconds to sanity check that it hasn’t expired
       await browser.refresh();
-      await expect(browser).toHaveUrl(expect.stringContaining(await page.pageName));
+      await verifyUrlContains(await page.pageName);
       await expect(await $("body").getHTML()).not.toContain("Sorry, you need to sign in again");
     }).timeout(140000);
   }
@@ -37,7 +37,7 @@ class TestCase {
       await browser.switchWindow(await page.pageName);
       await browser.refresh();
       await browser.pause(65000); // Waiting 65 seconds to sanity check that it hasn’t expired
-      await expect(browser).toHaveUrl(expect.stringContaining(await page.pageName));
+      await verifyUrlContains(await page.pageName);
     }).timeout(140000);
   }
 

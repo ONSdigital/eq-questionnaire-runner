@@ -1,6 +1,6 @@
 import DateRangePage from "../../../../generated_pages/date_validation_range/date-range-block.page";
 import SubmitPage from "../../../../generated_pages/date_validation_range/submit.page";
-import { click } from "../../../../helpers";
+import { click, verifyUrlContains } from "../../../../helpers";
 describe("Feature: Question level validation for date ranges", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_date_validation_range.json");
@@ -45,7 +45,7 @@ describe("Feature: Question level validation for date ranges", () => {
         await $(DateRangePage.dateRangeTomonth()).setValue(2);
         await $(DateRangePage.dateRangeToyear()).setValue(2018);
         await click(DateRangePage.submit());
-        await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.pageName));
+        await verifyUrlContains(SubmitPage.pageName);
       });
     });
   });
@@ -89,7 +89,7 @@ describe("Feature: Question level validation for date ranges", () => {
         await $(DateRangePage.dateRangeTomonth()).setValue(2);
         await $(DateRangePage.dateRangeToyear()).setValue(2018);
         await click(DateRangePage.submit());
-        await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.pageName));
+        await verifyUrlContains(SubmitPage.pageName);
       });
     });
   });

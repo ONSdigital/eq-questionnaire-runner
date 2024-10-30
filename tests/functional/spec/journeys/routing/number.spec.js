@@ -1,7 +1,7 @@
 import NumberQuestionPage from "../../../generated_pages/routing_number_equals/number-question.page";
 import CorrectAnswerPage from "../../../generated_pages/routing_number_equals/correct-answer.page";
 import IncorrectAnswerPage from "../../../generated_pages/routing_number_equals/incorrect-answer.page";
-import { click } from "../../../helpers";
+import { click, verifyUrlContains } from "../../../helpers";
 describe("Feature: Routing on a Number", () => {
   describe("Equals", () => {
     describe("Given I start number routing equals survey", () => {
@@ -12,14 +12,14 @@ describe("Feature: Routing on a Number", () => {
       it("When I enter 123, Then I should be routed to the correct page", async () => {
         await $(NumberQuestionPage.answer()).setValue(123);
         await click(NumberQuestionPage.submit());
-        await expect(browser).toHaveUrl(expect.stringContaining(CorrectAnswerPage.pageName));
+        await verifyUrlContains(CorrectAnswerPage.pageName);
       });
 
       it("When I enter a number that isn't 123, Then I should be routed to the incorrect page", async () => {
         await $(CorrectAnswerPage.previous()).click();
         await $(NumberQuestionPage.answer()).setValue(555);
         await click(NumberQuestionPage.submit());
-        await expect(browser).toHaveUrl(expect.stringContaining(IncorrectAnswerPage.pageName));
+        await verifyUrlContains(IncorrectAnswerPage.pageName);
       });
     });
   });
@@ -33,14 +33,14 @@ describe("Feature: Routing on a Number", () => {
       it("When I enter a number that isn't 123, Then I should be routed to the correct page", async () => {
         await $(NumberQuestionPage.answer()).setValue(987);
         await click(NumberQuestionPage.submit());
-        await expect(browser).toHaveUrl(expect.stringContaining(CorrectAnswerPage.pageName));
+        await verifyUrlContains(CorrectAnswerPage.pageName);
       });
 
       it("When I enter 123, Then I should be routed to the incorrect page", async () => {
         await $(CorrectAnswerPage.previous()).click();
         await $(NumberQuestionPage.answer()).setValue(123);
         await click(NumberQuestionPage.submit());
-        await expect(browser).toHaveUrl(expect.stringContaining(IncorrectAnswerPage.pageName));
+        await verifyUrlContains(IncorrectAnswerPage.pageName);
       });
     });
   });
@@ -54,21 +54,21 @@ describe("Feature: Routing on a Number", () => {
       it("When I enter a number greater than 123, Then I should be routed to the correct page", async () => {
         await $(NumberQuestionPage.answer()).setValue(555);
         await click(NumberQuestionPage.submit());
-        await expect(browser).toHaveUrl(expect.stringContaining(CorrectAnswerPage.pageName));
+        await verifyUrlContains(CorrectAnswerPage.pageName);
       });
 
       it("When I enter 123, Then I should be routed to the incorrect page", async () => {
         await $(CorrectAnswerPage.previous()).click();
         await $(NumberQuestionPage.answer()).setValue(123);
         await click(NumberQuestionPage.submit());
-        await expect(browser).toHaveUrl(expect.stringContaining(IncorrectAnswerPage.pageName));
+        await verifyUrlContains(IncorrectAnswerPage.pageName);
       });
 
       it("When I enter a number less than 123, Then I should be routed to the incorrect page", async () => {
         await $(IncorrectAnswerPage.previous()).click();
         await $(NumberQuestionPage.answer()).setValue(2);
         await click(NumberQuestionPage.submit());
-        await expect(browser).toHaveUrl(expect.stringContaining(IncorrectAnswerPage.pageName));
+        await verifyUrlContains(IncorrectAnswerPage.pageName);
       });
     });
   });
@@ -82,21 +82,21 @@ describe("Feature: Routing on a Number", () => {
       it("When I enter a number less than 123, Then I should be routed to the correct page", async () => {
         await $(NumberQuestionPage.answer()).setValue(77);
         await click(NumberQuestionPage.submit());
-        await expect(browser).toHaveUrl(expect.stringContaining(CorrectAnswerPage.pageName));
+        await verifyUrlContains(CorrectAnswerPage.pageName);
       });
 
       it("When I enter 123, Then I should be routed to the incorrect page", async () => {
         await $(CorrectAnswerPage.previous()).click();
         await $(NumberQuestionPage.answer()).setValue(123);
         await click(NumberQuestionPage.submit());
-        await expect(browser).toHaveUrl(expect.stringContaining(IncorrectAnswerPage.pageName));
+        await verifyUrlContains(IncorrectAnswerPage.pageName);
       });
 
       it("When I enter a number greater than 123, Then I should be routed to the incorrect page", async () => {
         await $(IncorrectAnswerPage.previous()).click();
         await $(NumberQuestionPage.answer()).setValue(765);
         await click(NumberQuestionPage.submit());
-        await expect(browser).toHaveUrl(expect.stringContaining(IncorrectAnswerPage.pageName));
+        await verifyUrlContains(IncorrectAnswerPage.pageName);
       });
     });
   });
@@ -110,21 +110,21 @@ describe("Feature: Routing on a Number", () => {
       it("When I enter a number greater than 123, Then I should be routed to the correct page", async () => {
         await $(NumberQuestionPage.answer()).setValue(555);
         await click(NumberQuestionPage.submit());
-        await expect(browser).toHaveUrl(expect.stringContaining(CorrectAnswerPage.pageName));
+        await verifyUrlContains(CorrectAnswerPage.pageName);
       });
 
       it("When I enter 123, Then I should be routed to the correct page", async () => {
         await $(CorrectAnswerPage.previous()).click();
         await $(NumberQuestionPage.answer()).setValue(123);
         await click(NumberQuestionPage.submit());
-        await expect(browser).toHaveUrl(expect.stringContaining(CorrectAnswerPage.pageName));
+        await verifyUrlContains(CorrectAnswerPage.pageName);
       });
 
       it("When I enter a number less than 123, Then I should be routed to the incorrect page", async () => {
         await $(CorrectAnswerPage.previous()).click();
         await $(NumberQuestionPage.answer()).setValue(2);
         await click(NumberQuestionPage.submit());
-        await expect(browser).toHaveUrl(expect.stringContaining(IncorrectAnswerPage.pageName));
+        await verifyUrlContains(IncorrectAnswerPage.pageName);
       });
     });
   });
@@ -138,21 +138,21 @@ describe("Feature: Routing on a Number", () => {
       it("When I enter a number less than 123, Then I should be routed to the correct page", async () => {
         await $(NumberQuestionPage.answer()).setValue(23);
         await click(NumberQuestionPage.submit());
-        await expect(browser).toHaveUrl(expect.stringContaining(CorrectAnswerPage.pageName));
+        await verifyUrlContains(CorrectAnswerPage.pageName);
       });
 
       it("When I enter 123, Then I should be routed to the correct page", async () => {
         await $(CorrectAnswerPage.previous()).click();
         await $(NumberQuestionPage.answer()).setValue(123);
         await click(NumberQuestionPage.submit());
-        await expect(browser).toHaveUrl(expect.stringContaining(CorrectAnswerPage.pageName));
+        await verifyUrlContains(CorrectAnswerPage.pageName);
       });
 
       it("When I enter a number larger than 123, Then I should be routed to the incorrect page", async () => {
         await $(CorrectAnswerPage.previous()).click();
         await $(NumberQuestionPage.answer()).setValue(546);
         await click(NumberQuestionPage.submit());
-        await expect(browser).toHaveUrl(expect.stringContaining(IncorrectAnswerPage.pageName));
+        await verifyUrlContains(IncorrectAnswerPage.pageName);
       });
     });
   });

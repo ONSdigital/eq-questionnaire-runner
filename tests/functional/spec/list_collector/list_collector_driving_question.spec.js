@@ -1,4 +1,4 @@
-import { checkItemsInList, click } from "../../helpers";
+import { checkItemsInList, click, verifyUrlContains } from "../../helpers";
 import HubPage from "../../base_pages/hub.page.js";
 import AnyoneUsuallyLiveAtPage from "../../generated_pages/list_collector_driving_question/anyone-usually-live-at.page.js";
 import AnyoneElseLiveAtListCollectorPage from "../../generated_pages/list_collector_driving_question/anyone-else-live-at.page.js";
@@ -38,7 +38,7 @@ describe("List Collector Driving Question", () => {
       await $(AnyoneUsuallyLiveAtPage.no()).click();
       await click(AnyoneUsuallyLiveAtPage.submit());
       await $(SectionSummaryPage.peopleListAddLink()).click();
-      await expect(browser).toHaveUrl(expect.stringContaining(AnyoneUsuallyLiveAtPage.url()));
+      await verifyUrlContains(AnyoneUsuallyLiveAtPage.url());
     });
   });
 
@@ -55,7 +55,7 @@ describe("List Collector Driving Question", () => {
       await $(AnyoneElseLiveAtListCollectorRemovePage.yes()).click();
       await click(AnyoneElseLiveAtListCollectorRemovePage.submit());
       await $(SectionSummaryPage.peopleListAddLink()).click();
-      await expect(browser).toHaveUrl(expect.stringContaining(AnyoneElseLiveAtListCollectorAddPage.pageName));
+      await verifyUrlContains(AnyoneElseLiveAtListCollectorAddPage.pageName);
     });
   });
 });

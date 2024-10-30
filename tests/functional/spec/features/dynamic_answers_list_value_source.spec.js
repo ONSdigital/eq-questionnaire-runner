@@ -8,7 +8,7 @@ import SetMinimumPage from "../../generated_pages/dynamic_answers_list_source/mi
 import SectionSummaryPage from "../../generated_pages/dynamic_answers_list_source/list-collector-section-summary.page";
 import HubPage from "../../base_pages/hub.page";
 import OnlineShoppingPage from "../../generated_pages/dynamic_answers_list_source/dynamic-answer-separate-section.page";
-import { click } from "../../helpers";
+import { click, verifyUrlContains } from "../../helpers";
 import { expect } from "@wdio/globals";
 
 describe("Dynamic answers list value source", () => {
@@ -70,7 +70,7 @@ describe("Dynamic answers list value source", () => {
     await $(SectionSummaryPage.previous()).click();
     await $(DynamicAnswerOnlyPage.previous()).click();
     await $(SetMinimumPage.previous()).click();
-    await expect(browser).toHaveUrl(expect.stringContaining(DynamicAnswerPage.pageName));
+    await verifyUrlContains(DynamicAnswerPage.pageName);
     await expect(await $$(DynamicAnswerPage.inputs())[0].getValue()).toBe("12");
     await expect(await $$(DynamicAnswerPage.inputs())[1].getValue()).toBe("21");
     await expect(await $$(DynamicAnswerPage.labels())[0].getText()).toBe("Percentage of shopping at Tesco");
@@ -96,11 +96,11 @@ describe("Dynamic answers list value source", () => {
     await $$(DynamicAnswerPage.inputs())[1].setValue(21);
     await setMinimumAndGetSectionSummary();
     await $(SectionSummaryPage.listCollectorGroupContent(2)).$$(summaryActions)[0].$("a").click();
-    await expect(browser).toHaveUrl(expect.stringContaining(DynamicAnswerPage.pageName));
+    await verifyUrlContains(DynamicAnswerPage.pageName);
     await expect(await $$(DynamicAnswerPage.inputs())[0].isFocused()).toBe(true);
     await click(DynamicAnswerPage.submit());
     await $(SectionSummaryPage.listCollectorGroupContent(2)).$$(summaryActions)[1].$("a").click();
-    await expect(browser).toHaveUrl(expect.stringContaining(DynamicAnswerPage.pageName));
+    await verifyUrlContains(DynamicAnswerPage.pageName);
     await expect(await $$(DynamicAnswerPage.inputs())[1].isFocused()).toBe(true);
   });
   it("Given list items have been added and the dynamic answers are submitted, When the dynamic answers are resubmitted with answers updated, Then they should be displayed correctly on summary", async () => {
@@ -124,7 +124,7 @@ describe("Dynamic answers list value source", () => {
     await click(ListCollectorRemovePage.submit());
     await click(DynamicAnswerPage.submit());
     await click(DynamicAnswerOnlyPage.submit());
-    await expect(browser).toHaveUrl(expect.stringContaining(SectionSummaryPage.pageName));
+    await verifyUrlContains(SectionSummaryPage.pageName);
     await expect(await $(SectionSummaryPage.listCollectorGroupContent(2)).$$(summaryTitles)[0].getText()).toBe("Percentage of shopping at Aldi");
     await expect(await $(SectionSummaryPage.listCollectorGroupContent(2)).$$(summaryValues)[0].getText()).toBe("21%");
     await expect(await $(SectionSummaryPage.listCollectorGroupContent(2)).$$(summaryTitles).length).toBe(5);

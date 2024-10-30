@@ -1,7 +1,7 @@
 import DatePage from "../../../../generated_pages/date_validation_single/date-block.page";
 import DatePeriodPage from "../../../../generated_pages/date_validation_single/date-range-block.page";
 import SubmitPage from "../../../../generated_pages/date_validation_single/submit.page";
-import { click } from "../../../../helpers";
+import { click, verifyUrlContains } from "../../../../helpers";
 describe("Feature: Validation for single date periods", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_date_validation_single.json");
@@ -64,7 +64,7 @@ describe("Feature: Validation for single date periods", () => {
       await $(DatePeriodPage.dateRangeTomonth()).setValue(2);
       await $(DatePeriodPage.dateRangeToyear()).setValue(2018);
       await click(DatePeriodPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.pageName));
+      await verifyUrlContains(SubmitPage.pageName);
     });
   });
 

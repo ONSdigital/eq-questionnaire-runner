@@ -1,7 +1,7 @@
 import SuggestionsPage from "../generated_pages/textfield_suggestions/country-block.page.js";
 import MultipleSuggestionsPage from "../generated_pages/textfield_suggestions/multiple-country-block.page.js";
 import SubmitPage from "../generated_pages/textfield_suggestions/submit.page.js";
-import { click } from "../helpers";
+import { click, verifyUrlContains } from "../helpers";
 describe("Suggestions", () => {
   it("Given I open a textfield with a suggestions url, when I have entered text, then it will show suggestions", async () => {
     await browser.openQuestionnaire("test_textfield_suggestions.json");
@@ -30,6 +30,6 @@ describe("Suggestions", () => {
     await expect(await $$(".ons-js-autosuggest-listbox li").length).not.toBe(0);
     await suggestionsOption.click();
     await click(MultipleSuggestionsPage.submit());
-    await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.url()));
+    await verifyUrlContains(SubmitPage.url());
   });
 });

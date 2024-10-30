@@ -1,4 +1,4 @@
-import { assertSummaryItems, assertSummaryTitles, assertSummaryValues, listItemComplete, click } from "../../../helpers";
+import { assertSummaryItems, assertSummaryTitles, assertSummaryValues, listItemComplete, click, verifyUrlContains } from "../../../helpers";
 import { expect } from "@wdio/globals";
 import { getRandomString } from "../../../jwt_helper";
 import AddAdditionalEmployeePage from "../../../generated_pages/supplementary_data/list-collector-additional-add.page.js";
@@ -263,7 +263,7 @@ describe("Using supplementary data", () => {
 
   it("Given I have a calculated summary using the repeating blocks, When I reach the Calculated Summary, Then I see the correct total and supplementary data labels", async () => {
     await click(ListCollectorProductsPage.submit());
-    await expect(browser).toHaveUrl(expect.stringContaining(CalculatedSummaryVolumeSalesPage.pageName));
+    await verifyUrlContains(CalculatedSummaryVolumeSalesPage.pageName);
     await expect(await $(CalculatedSummaryVolumeSalesPage.calculatedSummaryTitle()).getText()).toBe(
       "We calculate the total volume of sales over the previous quarter to be 150 kg. Is this correct?",
     );
@@ -333,7 +333,7 @@ describe("Using supplementary data", () => {
 
   it("Given I am using a supplementary dataset where the size of one of the lists skips a question in a section, When I enter the section, Then I only see an interstitial block as the other block is skipped", async () => {
     await $(HubPage.summaryRowLink("section-8")).click();
-    await expect(browser).toHaveUrl(expect.stringContaining(ProductVolumeInterstitialPage.pageName));
+    await verifyUrlContains(ProductVolumeInterstitialPage.pageName);
     await click(ProductVolumeInterstitialPage.submit());
     await expect(await $(HubPage.summaryRowState("section-8")).getText()).toBe("Completed");
   });
@@ -362,19 +362,19 @@ describe("Using supplementary data", () => {
 
   it("Given I am using a supplementary dataset with a product list size that skips a question in the sales target section, When I enter the section, Then I only see an interstitial block", async () => {
     await $(HubPage.summaryRowLink("section-7")).click();
-    await expect(browser).toHaveUrl(expect.stringContaining(ProductSalesInterstitialPage.pageName));
+    await verifyUrlContains(ProductSalesInterstitialPage.pageName);
     await click(ProductSalesInterstitialPage.submit());
     await expect(await $(HubPage.summaryRowState("section-7")).getText()).toBe("Completed");
   });
 
   it("Given there is now an additional product, When I resume the Product Details Section, Then I start from the list collector content block and see the new product is incomplete", async () => {
     await $(HubPage.summaryRowLink("section-6")).click();
-    await expect(browser).toHaveUrl(expect.stringContaining(ListCollectorProductsPage.pageName));
+    await verifyUrlContains(ListCollectorProductsPage.pageName);
     await listItemComplete(`li[data-qa="list-item-1-label"]`, true);
     await listItemComplete(`li[data-qa="list-item-2-label"]`, true);
     await listItemComplete(`li[data-qa="list-item-3-label"]`, false);
     await click(ListCollectorProductsPage.submit());
-    await expect(browser).toHaveUrl(expect.stringContaining(ProductRepeatingBlock1Page.pageName));
+    await verifyUrlContains(ProductRepeatingBlock1Page.pageName);
   });
 
   it("Given I complete the section and relaunch with the old data that has fewer items in the products list, When I am on the Hub, Then I see the products section and sales targets sections are now in progress", async () => {

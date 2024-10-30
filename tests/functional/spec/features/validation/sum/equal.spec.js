@@ -1,7 +1,7 @@
 import TotalAnswerPage from "../../../../generated_pages/validation_sum_against_total_equal/total-block.page";
 import BreakdownAnswerPage from "../../../../generated_pages/validation_sum_against_total_equal/breakdown-block.page";
 import SubmitPage from "../../../../generated_pages/validation_sum_against_total_equal/submit.page";
-import { click } from "../../../../helpers";
+import { click, verifyUrlContains } from "../../../../helpers";
 const answerAndSubmitBreakdownQuestion = async (breakdown1, breakdown2, breakdown3, breakdown4) => {
   await $(BreakdownAnswerPage.breakdown1()).setValue(breakdown1);
   await $(BreakdownAnswerPage.breakdown2()).setValue(breakdown2);
@@ -22,7 +22,7 @@ describe("Feature: Sum of grouped answers equal to validation against total ", (
 
       await answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
 
-      await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.pageName));
+      await verifyUrlContains(SubmitPage.pageName);
     });
   });
 
@@ -37,14 +37,14 @@ describe("Feature: Sum of grouped answers equal to validation against total ", (
       await click(TotalAnswerPage.submit());
 
       await browser.url(SubmitPage.url());
-      await expect(browser).toHaveUrl(expect.stringContaining(BreakdownAnswerPage.pageName));
+      await verifyUrlContains(BreakdownAnswerPage.pageName);
 
       await click(BreakdownAnswerPage.submit());
       await expect(await $(BreakdownAnswerPage.errorNumber(1)).getText()).toBe("Enter answers that add up to 15");
 
       await answerAndSubmitBreakdownQuestion("6", "3", "3", "3");
 
-      await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.pageName));
+      await verifyUrlContains(SubmitPage.pageName);
     });
   });
 
@@ -54,7 +54,7 @@ describe("Feature: Sum of grouped answers equal to validation against total ", (
       await click(TotalAnswerPage.submit());
       await answerAndSubmitBreakdownQuestion("5", "", "", "");
 
-      await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.pageName));
+      await verifyUrlContains(SubmitPage.pageName);
     });
   });
 

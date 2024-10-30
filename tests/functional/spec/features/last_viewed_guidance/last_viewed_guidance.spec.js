@@ -2,7 +2,7 @@ import { getRandomString } from "../../../jwt_helper";
 import AddressConfirmationPage from "../../../generated_pages/last_viewed_question_guidance/address-confirmation.page";
 import HouseholdInterstitialPage from "../../../generated_pages/last_viewed_question_guidance/household-interstitial.page.js";
 import PrimaryPersonListCollectorPage from "../../../generated_pages/last_viewed_question_guidance/primary-person-list-collector.page.js";
-import { click } from "../../../helpers";
+import { click, verifyUrlContains } from "../../../helpers";
 describe("Last viewed question guidance", () => {
   const resumableLaunchParams = {
     responseId: getRandomString(16),
@@ -15,7 +15,7 @@ describe("Last viewed question guidance", () => {
     });
 
     it("When the respondent first launches the survey, then last question guidance is not shown", async () => {
-      await expect(browser).toHaveUrl(expect.stringContaining(HouseholdInterstitialPage.url()));
+      await verifyUrlContains(HouseholdInterstitialPage.url());
       await expect(await $(HouseholdInterstitialPage.lastViewedQuestionGuidance()).isExisting()).toBe(false);
     });
 
@@ -23,7 +23,7 @@ describe("Last viewed question guidance", () => {
       await $(HouseholdInterstitialPage.saveSignOut()).click();
       await browser.openQuestionnaire("test_last_viewed_question_guidance.json", resumableLaunchParams);
       await browser.pause(100);
-      await expect(browser).toHaveUrl(expect.stringContaining(HouseholdInterstitialPage.url()));
+      await verifyUrlContains(HouseholdInterstitialPage.url());
       await expect(await $(HouseholdInterstitialPage.lastViewedQuestionGuidance()).isExisting()).toBe(false);
     });
 
@@ -32,7 +32,7 @@ describe("Last viewed question guidance", () => {
       await $(AddressConfirmationPage.saveSignOut()).click();
       await browser.openQuestionnaire("test_last_viewed_question_guidance.json", resumableLaunchParams);
       await browser.pause(100);
-      await expect(browser).toHaveUrl(expect.stringContaining(AddressConfirmationPage.url()));
+      await verifyUrlContains(AddressConfirmationPage.url());
       await expect(await $(AddressConfirmationPage.lastViewedQuestionGuidanceLink()).getAttribute("href")).toContain(HouseholdInterstitialPage.url());
       await expect(await $(AddressConfirmationPage.lastViewedQuestionGuidance()).isExisting()).toBe(true);
     });
@@ -40,7 +40,7 @@ describe("Last viewed question guidance", () => {
     it("When the respondent answers the question and saves and continues, then last question guidance is not shown on the next question", async () => {
       await $(AddressConfirmationPage.yes()).click();
       await click(AddressConfirmationPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(PrimaryPersonListCollectorPage.url()));
+      await verifyUrlContains(PrimaryPersonListCollectorPage.url());
       await expect(await $(HouseholdInterstitialPage.lastViewedQuestionGuidance()).isExisting()).toBe(false);
     });
 

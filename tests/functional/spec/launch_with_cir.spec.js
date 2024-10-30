@@ -1,5 +1,4 @@
-import { expect } from "@wdio/globals";
-import { click } from "../helpers";
+import { click, verifyUrlContains } from "../helpers";
 import NameBlockPage from "../generated_pages/textfield/name-block.page.js";
 import HubPage from "../base_pages/hub.page";
 import ThankYouPage from "../base_pages/thank-you.page";
@@ -10,10 +9,10 @@ describe("Launch a survey from the collection instrument registry", () => {
       version: "v2",
       cirInstrumentId: "fd4a527f-c126-da2d-8ee6-51663a43e416",
     });
-    await expect(browser).toHaveUrl(expect.stringContaining(NameBlockPage.pageName));
+    await verifyUrlContains(NameBlockPage.pageName);
     await $(NameBlockPage.name()).setValue("Joe");
     await click(NameBlockPage.submit());
     await click(HubPage.submit());
-    await expect(browser).toHaveUrl(expect.stringContaining(ThankYouPage.pageName));
+    await verifyUrlContains(ThankYouPage.pageName);
   });
 });

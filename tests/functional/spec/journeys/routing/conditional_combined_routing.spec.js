@@ -2,7 +2,7 @@ import ConditionalCombinedRoutingPage from "../../../generated_pages/conditional
 import ResponseAny from "../../../generated_pages/conditional_combined_routing/response-any.page";
 import ResponseNotAny from "../../../generated_pages/conditional_combined_routing/response-not-any.page";
 import SubmitPage from "../../../generated_pages/conditional_combined_routing/submit.page";
-import { click } from "../../../helpers";
+import { click, verifyUrlContains } from "../../../helpers";
 
 describe("Conditional combined routing.", () => {
   beforeEach(async () => {
@@ -14,7 +14,7 @@ describe("Conditional combined routing.", () => {
     await $(ConditionalCombinedRoutingPage.yes()).click();
     await click(ConditionalCombinedRoutingPage.submit());
     // Then
-    await expect(browser).toHaveUrl(expect.stringContaining(ResponseAny.pageName));
+    await verifyUrlContains(ResponseAny.pageName);
 
     // Or
     await $(ResponseAny.previous()).click();
@@ -24,7 +24,7 @@ describe("Conditional combined routing.", () => {
     await click(ConditionalCombinedRoutingPage.submit());
 
     // Then
-    await expect(browser).toHaveUrl(expect.stringContaining(ResponseAny.pageName));
+    await verifyUrlContains(ResponseAny.pageName);
   });
 
   it('Given a list of radio options, when I choose the option "No, I prefer tea" then I should be routed to the relevant page', async () => {
@@ -32,7 +32,7 @@ describe("Conditional combined routing.", () => {
     await $(ConditionalCombinedRoutingPage.noIPreferTea()).click();
     await click(ConditionalCombinedRoutingPage.submit());
     // Then
-    await expect(browser).toHaveUrl(expect.stringContaining(ResponseNotAny.pageName));
+    await verifyUrlContains(ResponseNotAny.pageName);
   });
 
   it('Given a list of radio options, when I choose the option "No, I don\'t drink any hot drinks" then I should be routed to the submit page', async () => {
@@ -40,6 +40,6 @@ describe("Conditional combined routing.", () => {
     await $(ConditionalCombinedRoutingPage.noIDonTDrinkAnyHotDrinks()).click();
     await click(ConditionalCombinedRoutingPage.submit());
     // Then
-    await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.pageName));
+    await verifyUrlContains(SubmitPage.pageName);
   });
 });

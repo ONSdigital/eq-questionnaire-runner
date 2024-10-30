@@ -3,7 +3,7 @@ import ListCollectorAddPage from "../../generated_pages/relationships_unrelated/
 import RelationshipsPage from "../../generated_pages/relationships_unrelated/relationships.page.js";
 import RelatedToAnyoneElsePage from "../../generated_pages/relationships_unrelated/related-to-anyone-else.page.js";
 import RelationshipsInterstitialPage from "../../generated_pages/relationships_unrelated/relationship-interstitial.page.js";
-import { click } from "../../helpers";
+import { click, verifyUrlContains } from "../../helpers";
 
 describe("Unrelated Relationships", () => {
   const schema = "test_relationships_unrelated.json";
@@ -80,7 +80,7 @@ describe("Unrelated Relationships", () => {
         await click(RelationshipsPage.submit());
         await $(RelationshipsPage.unrelated()).click();
         await click(RelationshipsPage.submit());
-        await expect(browser).toHaveUrl(expect.stringContaining(RelationshipsInterstitialPage.pageName));
+        await verifyUrlContains(RelationshipsInterstitialPage.pageName);
       });
     });
 

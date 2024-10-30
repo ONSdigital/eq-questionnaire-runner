@@ -8,7 +8,7 @@ import Block3Page from "../../../generated_pages/grand_calculated_summary_overla
 import CalculatedSummary4Page from "../../../generated_pages/grand_calculated_summary_overlapping_answers/calculated-summary-4.page";
 import GrandCalculatedSummaryShoppingPage from "../../../generated_pages/grand_calculated_summary_overlapping_answers/grand-calculated-summary-shopping.page";
 import Section1SummaryPage from "../../../generated_pages/grand_calculated_summary_overlapping_answers/section-1-summary.page";
-import { click } from "../../../helpers";
+import { click, verifyUrlContains } from "../../../helpers";
 import { expect } from "@wdio/globals";
 
 describe("Feature: Grand Calculated Summary", () => {
@@ -48,14 +48,14 @@ describe("Feature: Grand Calculated Summary", () => {
       await click(Block1Page.submit());
 
       // taken back to calculated summary
-      await expect(browser).toHaveUrl(expect.stringContaining(CalculatedSummary2Page.pageName));
+      await verifyUrlContains(CalculatedSummary2Page.pageName);
       await expect(await browser.getUrl()).toContain(
         "/questionnaire/calculated-summary-2/?return_to=grand-calculated-summary&return_to_block_id=grand-calculated-summary-shopping&return_to_answer_id=calculated-summary-2#q1-a2",
       );
       await click(CalculatedSummary2Page.submit());
 
       // then grand calculated summary
-      await expect(browser).toHaveUrl(expect.stringContaining(GrandCalculatedSummaryShoppingPage.pageName));
+      await verifyUrlContains(GrandCalculatedSummaryShoppingPage.pageName);
       await expect(await $(GrandCalculatedSummaryShoppingPage.grandCalculatedSummaryTitle()).getText()).toBe(
         "Grand Calculated Summary of purchases this week comes to £460.00. Is this correct?.",
       );
@@ -69,21 +69,21 @@ describe("Feature: Grand Calculated Summary", () => {
       await click(Block2Page.submit());
 
       // taken back to the FIRST calculated summary which uses it
-      await expect(browser).toHaveUrl(expect.stringContaining(CalculatedSummary2Page.pageName));
+      await verifyUrlContains(CalculatedSummary2Page.pageName);
       await expect(await $(CalculatedSummary2Page.calculatedSummaryTitle()).getText()).toBe(
         "Total of eggs and cheese is calculated to be £700.00. Is this correct?",
       );
       await click(CalculatedSummary2Page.submit());
 
       // taken back to the SECOND calculated summary which uses it
-      await expect(browser).toHaveUrl(expect.stringContaining(CalculatedSummary4Page.pageName));
+      await verifyUrlContains(CalculatedSummary4Page.pageName);
       await expect(await $(CalculatedSummary4Page.calculatedSummaryTitle()).getText()).toContain(
         "Total extra items cost is calculated to be £410.00. Is this correct?",
       );
       await click(CalculatedSummary4Page.submit());
 
       // then grand calculated summary
-      await expect(browser).toHaveUrl(expect.stringContaining(GrandCalculatedSummaryShoppingPage.pageName));
+      await verifyUrlContains(GrandCalculatedSummaryShoppingPage.pageName);
       await expect(await $(GrandCalculatedSummaryShoppingPage.grandCalculatedSummaryTitle()).getText()).toContain(
         "Grand Calculated Summary of purchases this week comes to £1,220.00. Is this correct?",
       );
@@ -96,21 +96,21 @@ describe("Feature: Grand Calculated Summary", () => {
       await click(Block2Page.submit());
 
       // taken back to the FIRST calculated summary which uses it
-      await expect(browser).toHaveUrl(expect.stringContaining(CalculatedSummary2Page.pageName));
+      await verifyUrlContains(CalculatedSummary2Page.pageName);
       await expect(await $(CalculatedSummary2Page.calculatedSummaryTitle()).getText()).toBe(
         "Total of eggs and cheese is calculated to be £800.00. Is this correct?",
       );
       await click(CalculatedSummary2Page.submit());
 
       // taken back to the SECOND calculated summary which uses it
-      await expect(browser).toHaveUrl(expect.stringContaining(CalculatedSummary4Page.pageName));
+      await verifyUrlContains(CalculatedSummary4Page.pageName);
       await expect(await $(CalculatedSummary4Page.calculatedSummaryTitle()).getText()).toContain(
         "Total extra items cost is calculated to be £510.00. Is this correct?",
       );
       await click(CalculatedSummary4Page.submit());
 
       // then grand calculated summary
-      await expect(browser).toHaveUrl(expect.stringContaining(GrandCalculatedSummaryShoppingPage.pageName));
+      await verifyUrlContains(GrandCalculatedSummaryShoppingPage.pageName);
       await expect(await $(GrandCalculatedSummaryShoppingPage.grandCalculatedSummaryTitle()).getText()).toContain(
         "Grand Calculated Summary of purchases this week comes to £1,420.00. Is this correct?",
       );

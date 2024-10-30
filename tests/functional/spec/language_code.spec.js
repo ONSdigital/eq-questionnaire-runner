@@ -3,7 +3,7 @@ import DobPage from "../generated_pages/language/dob-block.page";
 import NumberOfPeoplePage from "../generated_pages/language/number-of-people-block.page";
 import ConfirmNumberOfPeoplePage from "../generated_pages/language/confirm-number-of-people.page";
 import HubPage from "../base_pages/hub.page.js";
-import { click } from "../helpers";
+import { click, verifyUrlContains } from "../helpers";
 
 const PLURAL_TEST_DATA_SETS = [
   {
@@ -124,7 +124,7 @@ describe("Language Code", () => {
     await expect(await $(HubPage.submit()).getText()).toBe("Botwm cyflwyno");
     await click(HubPage.submit());
 
-    await expect(browser).toHaveUrl(expect.stringContaining("thank-you"));
+    await verifyUrlContains("thank-you");
   });
 
   it("Given a launch language of English, I should see English text", async () => {
@@ -154,7 +154,7 @@ describe("Language Code", () => {
     await expect(await $(HubPage.submit()).getText()).toBe("Submission button");
     await click(HubPage.submit());
 
-    await expect(browser).toHaveUrl(expect.stringContaining("thank-you"));
+    await verifyUrlContains("thank-you");
   });
 
   it("Given a launch language of English, When I select Cymraeg, Then the language should be switched to Welsh", async () => {
@@ -195,7 +195,7 @@ describe("Language Code", () => {
     await expect(await $(HubPage.submit()).getText()).toBe("Botwm cyflwyno");
     await click(HubPage.submit());
 
-    await expect(browser).toHaveUrl(expect.stringContaining("thank-you"));
+    await verifyUrlContains("thank-you");
   });
 
   it("Given a launch language of Welsh, When I select English, Then the language should be switched to English", async () => {

@@ -4,7 +4,7 @@ import SubmitPage from "../generated_pages/feedback/submit.page";
 import FeedbackPage from "../base_pages/feedback.page";
 import FeedbackSentPage from "../base_pages/feedback-sent.page";
 import ThankYouPage from "../base_pages/thank-you.page";
-import { click } from "../helpers";
+import { click, verifyUrlContains } from "../helpers";
 
 describe("Feedback", () => {
   describe("Given I launch and complete the test feedback survey", () => {
@@ -15,7 +15,7 @@ describe("Feedback", () => {
     });
 
     it("When I view the thank you page, Then I can see the feedback call to action", async () => {
-      await expect(browser).toHaveUrl(expect.stringContaining(ThankYouPage.pageName));
+      await verifyUrlContains(ThankYouPage.pageName);
       await expect(await $(ThankYouPage.feedback()).getText()).toContain("What do you think about this service?");
       await expect(await $(ThankYouPage.feedbackLink()).getText()).toBe("Give feedback");
       await expect(await $(ThankYouPage.feedbackLink()).getAttribute("href")).toContain("/submitted/feedback/send");
@@ -23,10 +23,10 @@ describe("Feedback", () => {
 
     it("When I try to submit without providing feedback, then I stay on the feedback page and get an error message", async () => {
       await browser.url(FeedbackPage.url());
-      await expect(browser).toHaveUrl(expect.stringContaining(FeedbackPage.pageName));
+      await verifyUrlContains(FeedbackPage.pageName);
       await expect(await $(FeedbackPage.feedbackTitle()).getText()).toBe("Give feedback about this service");
       await click(FeedbackPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(FeedbackPage.pageName));
+      await verifyUrlContains(FeedbackPage.pageName);
       await expect(await $(FeedbackPage.errorPanel()).isExisting()).toBe(true);
       await expect(await $(FeedbackPage.errorPanel()).getText()).toBe(
         "There are 2 problems with your feedback\nSelect what your feedback is about\nEnter your feedback",
@@ -38,7 +38,7 @@ describe("Feedback", () => {
       await $(FeedbackPage.feedbackTypeGeneralFeedback()).click();
       await $(FeedbackPage.feedbackText()).setValue("Well done!");
       await click(FeedbackPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(FeedbackSentPage.pageName));
+      await verifyUrlContains(FeedbackSentPage.pageName);
       await expect(await $(FeedbackSentPage.feedbackThankYouText()).getText()).toBe("Thank you for your feedback");
     });
 
@@ -48,7 +48,7 @@ describe("Feedback", () => {
       await $(FeedbackPage.feedbackText()).setValue("Well done!");
       await click(FeedbackPage.submit());
       await $(FeedbackSentPage.doneButton()).click();
-      await expect(browser).toHaveUrl(expect.stringContaining("thank-you"));
+      await verifyUrlContains("thank-you");
       await expect(await $(ThankYouPage.title()).getText()).toBe("Thank you for completing the Feedback test schema");
     });
   });

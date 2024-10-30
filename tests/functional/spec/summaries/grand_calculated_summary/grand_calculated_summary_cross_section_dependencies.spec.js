@@ -11,7 +11,7 @@ import CurrencyAllPage from "../../../generated_pages/grand_calculated_summary_c
 import FirstNumberBlockPartAPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/first-number-block-part-a.page";
 import FourthNumberBlockPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/fourth-number-block.page";
 import tvChoiceBlockPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/tv-choice-block.page";
-import { click } from "../../../helpers";
+import { click, verifyUrlContains } from "../../../helpers";
 import { expect } from "@wdio/globals";
 
 describe("Feature: Grand Calculated Summary", () => {
@@ -84,19 +84,19 @@ describe("Feature: Grand Calculated Summary", () => {
       await $(CalculatedSummarySectionSummaryPage.skipAnswer2Edit()).click();
       await $(SkipCalculatedSummaryPage.no()).click();
       await click(SkipCalculatedSummaryPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(CurrencyQuestion3Page.pageName));
+      await verifyUrlContains(CurrencyQuestion3Page.pageName);
     });
     it("Given I confirm the calculated summary and the blocks following it are already complete, When I press submit, Then I am returned to the section summary anchored to the answer I edited initially", async () => {
       await click(CurrencyQuestion3Page.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining("calculated-summary-section/#skip-answer-2"));
+      await verifyUrlContains("calculated-summary-section/#skip-answer-2");
     });
     it("Given I change an answer, When I press previous from the now incomplete calculated summary, Then I am routed to the block before the calculated summary", async () => {
       await $(CalculatedSummarySectionSummaryPage.thirdNumberAnswerPartAEdit()).click();
       await $(ThirdNumberBlockPage.thirdNumberPartA()).setValue(120);
       await click(ThirdNumberBlockPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(CurrencyQuestion3Page.pageName));
+      await verifyUrlContains(CurrencyQuestion3Page.pageName);
       await $(CurrencyQuestion3Page.previous()).click();
-      await expect(browser).toHaveUrl(expect.stringContaining(SkipCalculatedSummaryPage.pageName));
+      await verifyUrlContains(SkipCalculatedSummaryPage.pageName);
     });
     it("Given I complete the section, When I go back to the grand calculated summary, Then I see the new calculated summary included", async () => {
       await click(SkipCalculatedSummaryPage.submit());
@@ -113,12 +113,12 @@ describe("Feature: Grand Calculated Summary", () => {
       await $(CurrencyQuestion3Page.thirdNumberAnswerPartBEdit()).click();
       await $(ThirdNumberBlockPage.thirdNumberPartB()).setValue(10);
       await click(ThirdNumberBlockPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(FourthNumberBlockPage.pageName));
+      await verifyUrlContains(FourthNumberBlockPage.pageName);
       await $(FourthNumberBlockPage.fourthNumber()).setValue(1);
       await click(FourthNumberBlockPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(CurrencyQuestion3Page.pageName));
+      await verifyUrlContains(CurrencyQuestion3Page.pageName);
       await click(CurrencyQuestion3Page.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(CurrencyAllPage.pageName));
+      await verifyUrlContains(CurrencyAllPage.pageName);
       await expect(await $(CurrencyAllPage.grandCalculatedSummaryTitle()).getText()).toBe(
         "The grand calculated summary is calculated to be £461.00. Is this correct?",
       );

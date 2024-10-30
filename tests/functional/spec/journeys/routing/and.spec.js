@@ -2,7 +2,7 @@ import FirstNumberQuestionPage from "../../../generated_pages/routing_and/number
 import SecondNumberQuestionPage from "../../../generated_pages/routing_and/number-question-2.page";
 import CorrectAnswerPage from "../../../generated_pages/routing_and/correct-answer.page";
 import IncorrectAnswerPage from "../../../generated_pages/routing_and/incorrect-answer.page";
-import { click } from "../../../helpers";
+import { click, verifyUrlContains } from "../../../helpers";
 
 describe("Feature: Routing - And Operator", () => {
   describe("Equals", () => {
@@ -16,7 +16,7 @@ describe("Feature: Routing - And Operator", () => {
         await click(FirstNumberQuestionPage.submit());
         await $(SecondNumberQuestionPage.answer2()).setValue(321);
         await click(SecondNumberQuestionPage.submit());
-        await expect(browser).toHaveUrl(expect.stringContaining(CorrectAnswerPage.pageName));
+        await verifyUrlContains(CorrectAnswerPage.pageName);
       });
 
       it("When I only enter the second answer correctly with 555 and 321, Then I should be routed to the incorrect page", async () => {
@@ -24,7 +24,7 @@ describe("Feature: Routing - And Operator", () => {
         await click(FirstNumberQuestionPage.submit());
         await $(SecondNumberQuestionPage.answer2()).setValue(321);
         await click(SecondNumberQuestionPage.submit());
-        await expect(browser).toHaveUrl(expect.stringContaining(IncorrectAnswerPage.pageName));
+        await verifyUrlContains(IncorrectAnswerPage.pageName);
       });
 
       it("When I only enter the first answer correctly with 123 and 555, Then I should be routed to the incorrect page", async () => {
@@ -32,7 +32,7 @@ describe("Feature: Routing - And Operator", () => {
         await click(FirstNumberQuestionPage.submit());
         await $(SecondNumberQuestionPage.answer2()).setValue(555);
         await click(SecondNumberQuestionPage.submit());
-        await expect(browser).toHaveUrl(expect.stringContaining(IncorrectAnswerPage.pageName));
+        await verifyUrlContains(IncorrectAnswerPage.pageName);
       });
 
       it("When I answer both questions incorrectly with 555 and 444, Then I should be routed to the incorrect page", async () => {
@@ -40,7 +40,7 @@ describe("Feature: Routing - And Operator", () => {
         await click(FirstNumberQuestionPage.submit());
         await $(SecondNumberQuestionPage.answer2()).setValue(444);
         await click(SecondNumberQuestionPage.submit());
-        await expect(browser).toHaveUrl(expect.stringContaining(IncorrectAnswerPage.pageName));
+        await verifyUrlContains(IncorrectAnswerPage.pageName);
       });
     });
   });

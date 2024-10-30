@@ -4,7 +4,7 @@ import CheckboxPage from "../generated_pages/title/single-title-block.page";
 import ThankYouPage from "../base_pages/thank-you.page";
 import DidYouKnowPage from "../generated_pages/thank_you/did-you-know.page";
 import ThankYouSubmitPage from "../generated_pages/thank_you/submit.page";
-import { click } from "../helpers";
+import { click, verifyUrlContains } from "../helpers";
 describe("Thank You Social", () => {
   describe("Given I launch a social themed questionnaire", () => {
     beforeEach(async () => {
@@ -14,7 +14,7 @@ describe("Thank You Social", () => {
     it("When I navigate to the thank you page, Then I should see social theme content", async () => {
       await click(SubmitPage.submit());
       await click(HubPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(ThankYouPage.pageName));
+      await verifyUrlContains(ThankYouPage.pageName);
       await expect(await $(ThankYouPage.title()).getHTML()).toContain("Thank you for completing the Test Social Survey");
       await expect(await $(ThankYouPage.guidance()).getHTML()).toContain("Your answers have been submitted");
       await expect(await $(ThankYouPage.metadata()).getHTML()).toContain("Submitted on:");
@@ -33,7 +33,7 @@ describe("Thank You Default", () => {
       await $(CheckboxPage.good()).click();
       await click(SubmitPage.submit());
       await click(HubPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(ThankYouPage.pageName));
+      await verifyUrlContains(ThankYouPage.pageName);
       await expect(await $(ThankYouPage.title()).getHTML()).toContain("Thank you for completing the Question Title Test");
       await expect(await $(ThankYouPage.guidance()).getHTML()).toContain("Your answers have been submitted for");
       await expect(await $(ThankYouPage.metadata()).getHTML()).toContain("Submitted on:");
@@ -49,7 +49,7 @@ describe("Thank You Default View Response Enabled", () => {
       await $(DidYouKnowPage.yes()).click();
       await click(DidYouKnowPage.submit());
       await click(ThankYouSubmitPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(ThankYouPage.pageName));
+      await verifyUrlContains(ThankYouPage.pageName);
     });
 
     it("When I navigate to the thank you page, and I have submitted less than 40 seconds ago, Then I should see the countdown timer and option to view my answers", async () => {

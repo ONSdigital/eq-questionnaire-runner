@@ -1,7 +1,7 @@
 import CountryCheckboxPage from "../../../generated_pages/routing_checkbox_contains_all/country-checkbox.page";
 import CountryInterstitialPage from "../../../generated_pages/routing_checkbox_contains_all/country-interstitial-india-and-malta.page";
 import CountryInterstitialOtherPage from "../../../generated_pages/routing_checkbox_contains_all/country-interstitial-not-india-and-malta.page";
-import { click } from "../../../helpers";
+import { click, verifyUrlContains } from "../../../helpers";
 
 describe("Feature: Routing - ALL-IN Operator", () => {
   describe("Equals", () => {
@@ -14,18 +14,18 @@ describe("Feature: Routing - ALL-IN Operator", () => {
         await $(CountryCheckboxPage.india()).click();
         await $(CountryCheckboxPage.malta()).click();
         await click(CountryCheckboxPage.submit());
-        await expect(browser).toHaveUrl(expect.stringContaining(CountryInterstitialPage.pageName));
+        await verifyUrlContains(CountryInterstitialPage.pageName);
       });
       it("When I do select India only, Then I should be routed to the correct answer interstitial page", async () => {
         await $(CountryCheckboxPage.india()).click();
         await click(CountryCheckboxPage.submit());
-        await expect(browser).toHaveUrl(expect.stringContaining(CountryInterstitialOtherPage.pageName));
+        await verifyUrlContains(CountryInterstitialOtherPage.pageName);
       });
 
       it("When I do not select India or Malta, Then I should be routed to the incorrect answer interstitial page", async () => {
         await $(CountryCheckboxPage.liechtenstein()).click();
         await click(CountryCheckboxPage.submit());
-        await expect(browser).toHaveUrl(expect.stringContaining(CountryInterstitialOtherPage.pageName));
+        await verifyUrlContains(CountryInterstitialOtherPage.pageName);
       });
     });
   });

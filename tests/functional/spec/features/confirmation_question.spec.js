@@ -1,7 +1,7 @@
 import NumberOfEmployeesTotalBlockPage from "../../generated_pages/confirmation_question/number-of-employees-total-block.page.js";
 import ConfirmZeroEmployeesBlockPage from "../../generated_pages/confirmation_question/confirm-zero-employees-block.page.js";
 import SubmitPage from "../../generated_pages/confirmation_question/submit.page.js";
-import { click } from "../../helpers";
+import { click, verifyUrlContains } from "../../helpers";
 
 describe("Feature: Confirmation Question", () => {
   describe("Given I have a completed the confirmation question", () => {
@@ -14,7 +14,7 @@ describe("Feature: Confirmation Question", () => {
       await click(NumberOfEmployeesTotalBlockPage.submit());
       await $(ConfirmZeroEmployeesBlockPage.yesThisIsCorrect()).click();
       await click(ConfirmZeroEmployeesBlockPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.pageName));
+      await verifyUrlContains(SubmitPage.pageName);
       await expect(await $(SubmitPage.numberOfEmployeesTotal()).getText()).toBe("0");
       await expect(await $$(SubmitPage.confirmZeroEmployeesAnswer())).toHaveLength(0);
     });
@@ -25,7 +25,7 @@ describe("Feature: Confirmation Question", () => {
       await click(NumberOfEmployeesTotalBlockPage.submit());
       await $(ConfirmZeroEmployeesBlockPage.noINeedToCorrectThis()).click();
       await click(ConfirmZeroEmployeesBlockPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(NumberOfEmployeesTotalBlockPage.pageName));
+      await verifyUrlContains(NumberOfEmployeesTotalBlockPage.pageName);
     });
   });
   describe("Given a number of employees Question", () => {

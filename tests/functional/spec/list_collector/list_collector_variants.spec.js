@@ -1,4 +1,4 @@
-import { checkItemsInList, click } from "../../helpers";
+import { checkItemsInList, click, verifyUrlContains } from "../../helpers";
 import YouLiveHerePage from "../../generated_pages/list_collector_variants/you-live-here-block.page.js";
 import ListCollectorPage from "../../generated_pages/list_collector_variants/list-collector.page.js";
 import ListCollectorAddPage from "../../generated_pages/list_collector_variants/list-collector-add.page.js";
@@ -45,12 +45,12 @@ describe("List Collector With Variants", () => {
     it("The questionnaire shows the confirmation page when no more people to add", async () => {
       await $(ListCollectorPage.anyoneElseNo()).click();
       await click(ListCollectorPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.url()));
+      await verifyUrlContains(SubmitPage.url());
     });
 
     it("The questionnaire allows submission", async () => {
       await click(SubmitPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining("thank-you"));
+      await verifyUrlContains("thank-you");
     });
   });
 
@@ -91,12 +91,12 @@ describe("List Collector With Variants", () => {
     it("The questionnaire shows the confirmation page when no more people to add", async () => {
       await $(ListCollectorPage.anyoneElseNo()).click();
       await click(ListCollectorPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.url()));
+      await verifyUrlContains(SubmitPage.url());
     });
 
     it("The questionnaire allows submission", async () => {
       await click(SubmitPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(ThankYouPage.url()));
+      await verifyUrlContains(ThankYouPage.url());
     });
   });
 });

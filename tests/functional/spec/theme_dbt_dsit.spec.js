@@ -1,4 +1,5 @@
 import RadioPage from "../generated_pages/theme_dbt_dsit/radio.page";
+import { verifyUrlContains } from "../helpers";
 
 describe("Theme DBT-DSIT", () => {
   describe("Given I launch a DBT-DSIT themed questionnaire", () => {
@@ -7,7 +8,7 @@ describe("Theme DBT-DSIT", () => {
     });
 
     it("When I navigate to the radio page, Then I should see DBT-DSIT theme content", async () => {
-      await expect(browser).toHaveUrl(expect.stringContaining(RadioPage.pageName));
+      await verifyUrlContains(RadioPage.pageName);
       await expect(await $("#dbt-logo-alt").getHTML()).toContain("Department for Business and Trade logo");
       await expect(await $("#dsit-logo-alt").getHTML()).toContain("Department for Science, Innovation and Technology logo");
     });

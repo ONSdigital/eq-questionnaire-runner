@@ -4,7 +4,7 @@ import CarerPage from "../../generated_pages/confirmation_question_within_repeat
 import DateOfBirthPage from "../../generated_pages/confirmation_question_within_repeating_section/dob-block.page";
 import ConfirmDateOfBirthPage from "../../generated_pages/confirmation_question_within_repeating_section/confirm-dob-block.page";
 import DefaultSectionSummary from "../../generated_pages/confirmation_question_within_repeating_section/default-section-summary.page";
-import { click } from "../../helpers";
+import { click, verifyUrlContains } from "../../helpers";
 describe("Feature: Confirmation Question Within A Repeating Section", () => {
   describe("Given I am in a repeating section", () => {
     beforeEach("Add a person", async () => {
@@ -16,7 +16,7 @@ describe("Feature: Confirmation Question Within A Repeating Section", () => {
       await click(AddPersonPage.submit());
       await $(DoesAnyoneLiveHerePage.no()).click();
       await click(DoesAnyoneLiveHerePage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(DateOfBirthPage.url().split("/").slice(-1)[0]));
+      await verifyUrlContains(DateOfBirthPage.url().split("/").slice(-1)[0]);
     });
 
     describe("Given a confirmation question", () => {
@@ -30,7 +30,7 @@ describe("Feature: Confirmation Question Within A Repeating Section", () => {
         // Answer 'No' to confirmation question
         await $(ConfirmDateOfBirthPage.noINeedToChangeTheirDateOfBirth()).click();
         await click(ConfirmDateOfBirthPage.submit());
-        await expect(browser).toHaveUrl(expect.stringContaining(DateOfBirthPage.pageName));
+        await verifyUrlContains(DateOfBirthPage.pageName);
       });
     });
 
@@ -44,7 +44,7 @@ describe("Feature: Confirmation Question Within A Repeating Section", () => {
         await $(ConfirmDateOfBirthPage.yesPersonNameIsAgeOld()).click();
         await click(ConfirmDateOfBirthPage.submit());
 
-        await expect(browser).toHaveUrl(expect.stringContaining("sections/default-section/"));
+        await verifyUrlContains("sections/default-section/");
         await expect(await $(DefaultSectionSummary.confirmDateOfBirth()).isExisting()).toBe(false);
       });
     });
@@ -56,7 +56,7 @@ describe("Feature: Confirmation Question Within A Repeating Section", () => {
         await $(DateOfBirthPage.year()).setValue("2000");
         await click(DateOfBirthPage.submit());
 
-        await expect(browser).toHaveUrl(expect.stringContaining(CarerPage.pageName));
+        await verifyUrlContains(CarerPage.pageName);
         await expect(await $(CarerPage.questionText()).getText()).toContain("Does John Doe look");
       });
     });

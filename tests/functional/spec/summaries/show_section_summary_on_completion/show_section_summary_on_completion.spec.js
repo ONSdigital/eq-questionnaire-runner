@@ -5,7 +5,7 @@ import proxyQuestionPage from "../../../generated_pages/show_section_summary_on_
 import accommodationSectionSummary from "../../../generated_pages/show_section_summary_on_completion/accommodation-section-summary.page";
 
 import hubPage from "../../../base_pages/hub.page.js";
-import { click } from "../../../helpers";
+import { click, verifyUrlContains } from "../../../helpers";
 
 describe("Feature: Show section summary on completion", () => {
   before("Launch survey", async () => {
@@ -17,7 +17,7 @@ describe("Feature: Show section summary on completion", () => {
       await $(employmentStatusBlockPage.workingAsAnEmployee()).click();
       await click(employmentStatusBlockPage.submit());
 
-      await expect(browser).toHaveUrl(expect.stringContaining(hubPage.url()));
+      await verifyUrlContains(hubPage.url());
     });
   });
 
@@ -25,7 +25,7 @@ describe("Feature: Show section summary on completion", () => {
     it("When I return to a completed section from the hub, Then I am returned to that section summary", async () => {
       await $(hubPage.summaryRowLink("employment-section")).click();
 
-      await expect(browser).toHaveUrl(expect.stringContaining(employmentSectionSummary.url()));
+      await verifyUrlContains(employmentSectionSummary.url());
     });
   });
 
@@ -39,7 +39,7 @@ describe("Feature: Show section summary on completion", () => {
       await $(proxyQuestionPage.noIMAnsweringForMyself()).click();
       await click(proxyQuestionPage.submit());
 
-      await expect(browser).toHaveUrl(expect.stringContaining(accommodationSectionSummary.url()));
+      await verifyUrlContains(accommodationSectionSummary.url());
     });
   });
 
@@ -51,7 +51,7 @@ describe("Feature: Show section summary on completion", () => {
     it("When I return to a completed section from the hub, Then I am returned to the correct section summary", async () => {
       await $(hubPage.summaryRowLink("accommodation-section")).click();
 
-      await expect(browser).toHaveUrl(expect.stringContaining(accommodationSectionSummary.url()));
+      await verifyUrlContains(accommodationSectionSummary.url());
     });
   });
 });

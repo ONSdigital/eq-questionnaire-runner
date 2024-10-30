@@ -1,6 +1,6 @@
 import DurationPage from "../generated_pages/durations/duration-block.page.js";
 import SubmitPage from "../generated_pages/durations/submit.page.js";
-import { click } from "../helpers";
+import { click, verifyUrlContains } from "../helpers";
 
 describe("Durations", () => {
   beforeEach("Load the survey", async () => {
@@ -23,7 +23,7 @@ describe("Durations", () => {
     await $(DurationPage.mandatoryMonthMonths()).setValue(1);
     await click(DurationPage.submit());
 
-    await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.pageName));
+    await verifyUrlContains(SubmitPage.pageName);
     await expect(await $(SubmitPage.yearMonthAnswer()).getText()).toBe("1 year 2 months");
     await click(SubmitPage.submit());
   });
@@ -37,7 +37,7 @@ describe("Durations", () => {
     await $(DurationPage.mandatoryMonthMonths()).setValue(1);
     await click(DurationPage.submit());
 
-    await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.pageName));
+    await verifyUrlContains(SubmitPage.pageName);
     await expect(await $(SubmitPage.yearMonthAnswer()).getText()).toBe("2 months");
     await click(SubmitPage.submit());
   });
@@ -49,7 +49,7 @@ describe("Durations", () => {
     await $(DurationPage.mandatoryMonthMonths()).setValue(1);
     await click(DurationPage.submit());
 
-    await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.pageName));
+    await verifyUrlContains(SubmitPage.pageName);
     await expect(await $(SubmitPage.yearMonthAnswer()).getText()).toBe("No answer provided");
     await click(SubmitPage.submit());
   });

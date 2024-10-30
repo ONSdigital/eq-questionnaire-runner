@@ -5,7 +5,7 @@ import ListCollectorPage from "../../generated_pages/list_collector_variants_pri
 import EditPersonPage from "../../generated_pages/list_collector_variants_primary_person/list-collector-edit.page";
 import SubmitPage from "../../generated_pages/list_collector_variants_primary_person/submit.page";
 import ThankYouPage from "../../base_pages/thank-you.page.js";
-import { click } from "../../helpers";
+import { click, verifyUrlContains } from "../../helpers";
 
 describe("List collector with variants primary person", () => {
   describe("Given that person lives in house", () => {
@@ -80,7 +80,7 @@ describe("List collector with variants primary person", () => {
     it("When the user answers 'no' to add any person, Then the questionnaire shows the confirmation page", async () => {
       await $(ListCollectorPage.no()).click();
       await click(ListCollectorPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.url()));
+      await verifyUrlContains(SubmitPage.url());
     });
 
     it("When the user attempts to submit, Then they are shown the confirmation page", async () => {
@@ -96,7 +96,7 @@ describe("List collector with variants primary person", () => {
 
     it("When the user submits, Then they are allowed to submit the survey", async () => {
       await click(SubmitPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(ThankYouPage.pageName));
+      await verifyUrlContains(ThankYouPage.pageName);
     });
   });
 });

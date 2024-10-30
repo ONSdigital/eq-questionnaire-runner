@@ -6,7 +6,7 @@ import PersonalSummaryPage from "../../../generated_pages/repeating_section_summ
 import ProxyPage from "../../../generated_pages/repeating_section_summaries/proxy.page";
 import DateOfBirthPage from "../../../generated_pages/repeating_section_summaries/date-of-birth.page";
 import HubPage from "../../../base_pages/hub.page.js";
-import { click } from "../../../helpers";
+import { click, verifyUrlContains } from "../../../helpers";
 
 describe("Feature: Repeating Section Summaries", () => {
   describe("Given the user has added some members to the household and is on the Hub", () => {
@@ -15,7 +15,7 @@ describe("Feature: Repeating Section Summaries", () => {
       // Ensure the questionnaire fully loads
       await browser.pause(100);
       // Ensure we are on the Hub
-      await expect(browser).toHaveUrl(expect.stringContaining(HubPage.url()));
+      await verifyUrlContains(HubPage.url());
       // Start first section to add household members
       await $(HubPage.summaryRowLink("section")).click();
 

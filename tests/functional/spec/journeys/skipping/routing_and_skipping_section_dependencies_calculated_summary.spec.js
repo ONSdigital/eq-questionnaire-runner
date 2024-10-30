@@ -9,7 +9,7 @@ import SkipQuestionPage from "../../../generated_pages/routing_and_skipping_sect
 import ButterPage from "../../../generated_pages/routing_and_skipping_section_dependencies_calculated_summary/butter-block.page";
 
 import HubPage from "../../../base_pages/hub.page";
-import { click } from "../../../helpers";
+import { click, verifyUrlContains } from "../../../helpers";
 
 describe("Routing and skipping section dependencies based on calculated summaries", () => {
   describe("Given the section dependencies based on a calculated summary questionnaire", () => {
@@ -53,7 +53,7 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await click(CalculatedSummarySectionSummaryPage.submit());
 
       await $(HubPage.summaryRowLink("dependent-question-section")).click();
-      await expect(browser).toHaveUrl(expect.stringContaining(FruitPage.pageName));
+      await verifyUrlContains(FruitPage.pageName);
     });
 
     it("When a question in another section has a skip condition dependency on a calculated summary total, and the skip condition is met (total greater than £10), then the dependent question should not be displayed", async () => {
@@ -69,7 +69,7 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await click(CalculatedSummarySectionSummaryPage.submit());
 
       await $(HubPage.summaryRowLink("dependent-question-section")).click();
-      await expect(browser).toHaveUrl(expect.stringContaining(VegetablesPage.pageName));
+      await verifyUrlContains(VegetablesPage.pageName);
     });
 
     it("When a question in another section has a routing rule dependency on a calculated summary total, and the calculated summary total is greater than £100, then we should be routed to the second question block", async () => {
@@ -87,7 +87,7 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await $(HubPage.summaryRowLink("dependent-question-section")).click();
       await $(VegetablesPage.yes()).click();
       await click(VegetablesPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(SecondQuestionBlockPage.pageName));
+      await verifyUrlContains(SecondQuestionBlockPage.pageName);
     });
 
     it("When a question in another section has a routing rule dependency on a calculated summary total, and the calculated summary total is less than £100, then we should be routed to the section summary", async () => {
@@ -105,7 +105,7 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await $(HubPage.summaryRowLink("dependent-question-section")).click();
       await $(VegetablesPage.yes()).click();
       await click(VegetablesPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(DependentQuestionSectionSummaryPage.pageName));
+      await verifyUrlContains(DependentQuestionSectionSummaryPage.pageName);
     });
 
     it("When a question in another section has a dependency on a calculated summary total, and both sections are complete, and I go back and edit the calculated summary total, then the dependent section status should be in progress", async () => {
@@ -130,7 +130,7 @@ describe("Routing and skipping section dependencies based on calculated summarie
       await $(CurrencyTotalPlaybackPage.milkAnswerEdit()).click();
       await $(FirstQuestionBlockPage.milk()).setValue(100);
       await click(FirstQuestionBlockPage.submit());
-      await expect(browser).toHaveUrl(expect.stringContaining(CurrencyTotalPlaybackPage.pageName));
+      await verifyUrlContains(CurrencyTotalPlaybackPage.pageName);
       await click(CurrencyTotalPlaybackPage.submit());
       await click(CalculatedSummarySectionSummaryPage.submit());
       await expect(await $(HubPage.summaryRowState("dependent-question-section")).getText()).toBe("Partially completed");

@@ -4,7 +4,7 @@ import DateSinglePage from "../generated_pages/dates/date-single-block.page";
 import DateNonMandatoryPage from "../generated_pages/dates/date-non-mandatory-block.page";
 import DateYearDatePage from "../generated_pages/dates/date-year-date-block.page";
 import SubmitPage from "../generated_pages/dates/submit.page";
-import { click } from "../helpers";
+import { click, verifyUrlContains } from "../helpers";
 
 describe("Date checks", () => {
   beforeEach("Load the survey", async () => {
@@ -58,7 +58,7 @@ describe("Date checks", () => {
 
     await click(DateYearDatePage.submit());
 
-    await expect(browser).toHaveUrl(expect.stringContaining(SubmitPage.pageName));
+    await verifyUrlContains(SubmitPage.pageName);
 
     // Then the summary screen shows the dates entered formatted
     await expect(await $(SubmitPage.dateRangeFromAnswer()).getText()).toBe("1 January 1901 to 3 May 2017");
@@ -161,7 +161,7 @@ describe("Date checks", () => {
     await $(DateMonthYearPage.Year()).setValue(2018);
     await click(DateMonthYearPage.submit());
 
-    await expect(browser).toHaveUrl(expect.stringContaining(DateSinglePage.url()));
+    await verifyUrlContains(DateSinglePage.url());
   });
 
   it("Given the test_dates survey is selected when an error message is shown then when it is corrected, it goes to the summary page and the information is correct", async () => {
