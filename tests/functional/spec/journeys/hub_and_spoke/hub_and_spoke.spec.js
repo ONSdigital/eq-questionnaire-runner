@@ -90,8 +90,7 @@ describe("Feature: Hub and Spoke", () => {
     it("When the user starts a section and clicks the Previous link on the first question, Then they should be taken back to the Hub", async () => {
       await click(HubPage.submit());
       await $(EmploymentStatusBlockPage.previous()).click();
-      const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).toContain(HubPage.url());
+      await verifyUrlPathIs(HubPage.url());
     });
   });
 
@@ -134,8 +133,7 @@ describe("Feature: Hub and Spoke", () => {
 
     it("When the user clicks the 'Continue' button, it should return them to the hub", async () => {
       await click(EmploymentTypeBlockPage.submit());
-      const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).toContain(HubPage.url());
+      await verifyUrlPathIs(HubPage.url());
     });
 
     it("When the user returns to the Hub, Then the Hub should be in a continue state", async () => {
@@ -191,8 +189,7 @@ describe("Feature: Hub and Spoke", () => {
       await $(EmploymentStatusBlockPage.exclusiveNoneOfTheseApply()).click();
       await click(EmploymentStatusBlockPage.submit());
       await browser.url(HubPage.url());
-      const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).toContain(HubPage.url());
+      await verifyUrlPathIs(HubPage.url());
       await expect(await $(HubPage.summaryRowState("employment-section")).getText()).toBe("Partially completed");
       await expect(await $(HubPage.summaryRowLink("employment-section")).getHTML()).toContain("Continue with section: Employment");
     });
@@ -221,8 +218,7 @@ describe("Feature: Hub and Spoke", () => {
     });
 
     it("It should return them to the hub", async () => {
-      const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).toContain(HubPage.url());
+      await verifyUrlPathIs(HubPage.url());
     });
 
     it("When the user returns to the Hub, Then the Hub should be in a completed state", async () => {
@@ -374,8 +370,7 @@ describe("Feature: Hub and Spoke", () => {
     it("When there are no changes, continue returns directly to the hub", async () => {
       await $(HubPage.summaryRowLink("household-section")).click();
       await click(HouseholdSummary.submit());
-      const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).toContain(HubPage.url());
+      await verifyUrlPathIs(HubPage.url());
       await expect(await $(HubPage.summaryRowLink("household-section")).getHTML()).toContain("View answers: Household residents");
     });
 
@@ -390,3 +385,9 @@ describe("Feature: Hub and Spoke", () => {
     });
   });
 });
+
+async function verifyUrlPathIs(expectedUrlPath) {
+  // Hub and Spoke URLs are "/questionnaire/", so we need strict checking of the URL path
+  const actualUrlPath = new URL(await browser.getUrl()).pathname;
+  await expect(actualUrlPath).toBe(expectedUrlPath);
+}
