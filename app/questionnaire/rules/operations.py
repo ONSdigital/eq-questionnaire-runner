@@ -1,3 +1,4 @@
+from collections.abc import Sized
 from copy import deepcopy
 from datetime import date
 from decimal import Decimal
@@ -6,7 +7,6 @@ from typing import (
     Iterable,
     Mapping,
     Sequence,
-    Sized,
     TypeAlias,
     TypedDict,
     TypeVar,
