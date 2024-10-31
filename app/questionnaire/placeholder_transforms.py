@@ -1,6 +1,7 @@
+from collections.abc import Sized
 from datetime import date, datetime, timezone
 from decimal import Decimal
-from typing import TYPE_CHECKING, Literal, Mapping, Sequence, Sized
+from typing import TYPE_CHECKING, Literal, Mapping, Sequence
 from urllib.parse import quote
 
 from babel.dates import format_datetime
