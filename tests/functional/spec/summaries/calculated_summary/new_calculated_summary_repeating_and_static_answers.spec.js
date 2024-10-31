@@ -12,7 +12,7 @@ import ListCollectorRemovePage from "../../../generated_pages/new_calculated_sum
 import SupermarketTransportPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/supermarket-transport.page";
 import SupermarketTransportCostPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/supermarket-transport-cost.page";
 import CalculatedSummaryPipingPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/calculated-summary-piping.page";
-import { assertSummaryValues, click } from "../../../helpers";
+import { assertSummaryValues, click, verifyUrlContains } from "../../../helpers";
 import { expect } from "@wdio/globals";
 
 describe("Calculated summary with repeating answers", () => {
@@ -59,16 +59,16 @@ describe("Calculated summary with repeating answers", () => {
 
   it("Given I click on a change link, when I use the previous button, I return to the calculated summary", async () => {
     await dynamicAnswerChangeLink(1).click();
-    await expect(browser).toHaveUrlContaining(DynamicAnswerPage.pageName);
+    await verifyUrlContains(DynamicAnswerPage.pageName);
     await $(DynamicAnswerPage.previous()).click();
-    await expect(browser).toHaveUrlContaining(CalculatedSummaryVisitsPage.pageName);
+    await verifyUrlContains(CalculatedSummaryVisitsPage.pageName);
   });
 
   it("Given I click on a change link, edit an answer and continue, I return to the calculated summary to reconfirm it", async () => {
     await dynamicAnswerChangeLink(0).click();
     await $$(DynamicAnswerPage.inputs())[5].setValue(3);
     await click(DynamicAnswerPage.submit());
-    await expect(browser).toHaveUrlContaining(CalculatedSummaryVisitsPage.pageName);
+    await verifyUrlContains(CalculatedSummaryVisitsPage.pageName);
     await expect(await $(CalculatedSummaryVisitsPage.calculatedSummaryTitle()).getText()).toBe(
       "We calculate the total visits to the shop to be 7. Is this correct?",
     );
@@ -82,19 +82,19 @@ describe("Calculated summary with repeating answers", () => {
     await click(ExtraSpendingBlockPage.submit());
 
     // new question
-    await expect(browser).toHaveUrlContaining(ExtraSpendingMethodBlockPage.pageName);
+    await verifyUrlContains(ExtraSpendingMethodBlockPage.pageName);
     await $(ExtraSpendingMethodBlockPage.yes()).click();
     await click(ExtraSpendingMethodBlockPage.submit());
 
     // then calculated summary
-    await expect(browser).toHaveUrlContaining(CalculatedSummarySpendingPage.pageName);
+    await verifyUrlContains(CalculatedSummarySpendingPage.pageName);
     await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).toBe(
       "We calculate the total cost of your weekly shopping to be £600.00. Is this correct?",
     );
 
     // then jump straight back to section summary (as other calculated summary is unchanged
     await click(CalculatedSummarySpendingPage.submit());
-    await expect(browser).toHaveUrlContaining(SummaryPage.pageName);
+    await verifyUrlContains(SummaryPage.pageName);
   });
 
   it("Given I add a new item to the list, I return to the list collector block, then the dynamic answers, then both calculated summaries to confirm newly added answers", async () => {
@@ -105,14 +105,14 @@ describe("Calculated summary with repeating answers", () => {
     await click(ListCollectorPage.submit());
 
     // return to dynamic answer
-    await expect(browser).toHaveUrlContaining(DynamicAnswerPage.pageName);
+    await verifyUrlContains(DynamicAnswerPage.pageName);
     await $$(DynamicAnswerPage.inputs())[2].setValue(100);
     await $$(DynamicAnswerPage.inputs())[5].setValue(10);
     await $$(DynamicAnswerPage.inputs())[8].setValue(7);
     await click(DynamicAnswerPage.submit());
 
     // first calc summary
-    await expect(browser).toHaveUrlContaining(CalculatedSummarySpendingPage.pageName);
+    await verifyUrlContains(CalculatedSummarySpendingPage.pageName);
     await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).toBe(
       "We calculate the total cost of your weekly shopping to be £710.00. Is this correct?",
     );
@@ -125,7 +125,7 @@ describe("Calculated summary with repeating answers", () => {
     );
     await assertSummaryValues(["4", "3", "2", "14"]);
     await click(CalculatedSummaryVisitsPage.submit());
-    await expect(browser).toHaveUrlContaining(SummaryPage.pageName);
+    await verifyUrlContains(SummaryPage.pageName);
   });
 
   it("Given I remove an item from the list which changes the calculated summaries, I return to each incomplete block only to confirm new dynamic answers and totals with answers removed", async () => {
@@ -135,12 +135,12 @@ describe("Calculated summary with repeating answers", () => {
     await expect(await $(SummaryPage.supermarketsListLabel(4)).isExisting()).toBe(false);
     await $(SummaryPage.supermarketsListRemoveLink(1)).click();
 
-    await expect(browser).toHaveUrlContaining(ListCollectorRemovePage.pageName);
+    await verifyUrlContains(ListCollectorRemovePage.pageName);
     await $(ListCollectorRemovePage.yes()).click();
     await click(ListCollectorRemovePage.submit());
 
     // section is now incomplete as dynamic answers and calculated summary depend on the removed item - step through each incomplete block only
-    await expect(browser).toHaveUrlContaining(DynamicAnswerPage.pageName);
+    await verifyUrlContains(DynamicAnswerPage.pageName);
     await click(DynamicAnswerPage.submit());
 
     // Tesco is now gone
@@ -171,13 +171,13 @@ describe("Calculated summary with repeating answers", () => {
   it("Given I change my answer to a value less than the calculated summary from the previous section, I am able to proceed", async () => {
     await $(SupermarketTransportPage.weeklyCarTrips()).setValue(9);
     await click(SupermarketTransportPage.submit());
-    await expect(browser).toHaveUrlContaining(SupermarketTransportCostPage.pageName);
+    await verifyUrlContains(SupermarketTransportCostPage.pageName);
   });
 
   it("Given I reach the final block, the calculated summary of dynamic answers is piped in correctly", async () => {
     await $(SupermarketTransportCostPage.weeklyTripsCost()).setValue(30);
     await click(SupermarketTransportCostPage.submit());
-    await expect(browser).toHaveUrlContaining(CalculatedSummaryPipingPage.pageName);
+    await verifyUrlContains(CalculatedSummaryPipingPage.pageName);
     await expect(await $("body").getText()).toContain("Total weekly supermarket spending: £380.00");
     await expect(await $("body").getText()).toContain("Total weekly supermarket visits: 10");
     await expect(await $("body").getText()).toContain("Total of supermarket visits by car: 9");
@@ -192,7 +192,7 @@ describe("Calculated summary with repeating answers", () => {
     await dynamicAnswerChangeLink(8).click();
     await $$(DynamicAnswerPage.inputs())[5].setValue(1);
     await click(DynamicAnswerPage.submit());
-    await expect(browser).toHaveUrlContaining(CalculatedSummaryVisitsPage.pageName);
+    await verifyUrlContains(CalculatedSummaryVisitsPage.pageName);
     await click(CalculatedSummaryVisitsPage.submit());
     await click(SummaryPage.submit());
     await expect(await $(HubPage.summaryRowState("section-1")).getText()).toBe("Completed");

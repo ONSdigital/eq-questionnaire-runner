@@ -38,6 +38,15 @@ updates:
           - "typescript*"
           - "uuid*"
           - "webdriverio*"
+    ignore:
+      # temporarily pinned to minor/patch only - eslint v9 not supported in eslint-config-standard v17.1.0: https://github.com/standard/eslint-config-standard/issues/410
+      # This had a knock-on effect with `eslint-plugin-n` and `eslint-plugin-promise`
+      - dependency-name: "eslint*"
+        update-types: [ "version-update:semver-major" ]
+
+      # temporarily pinned to minor/patch only - wdio v9 causes getHTML() to return strings with indentation & newlines, causing assertion errors - needs investigation
+      - dependency-name: "@wdio/local-runner"
+        update-types: [ "version-update:semver-major" ]
 
   - package-ecosystem: "pip"
     directory: "/"

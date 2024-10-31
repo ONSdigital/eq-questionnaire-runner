@@ -1,7 +1,7 @@
 import TotalAnswerPage from "../../../../generated_pages/validation_sum_against_total_less_than/total-block.page";
 import BreakdownAnswerPage from "../../../../generated_pages/validation_sum_against_total_less_than/breakdown-block.page";
 import SubmitPage from "../../../../generated_pages/validation_sum_against_total_less_than/submit.page";
-import { click } from "../../../../helpers";
+import { click, verifyUrlContains } from "../../../../helpers";
 describe("Feature: Sum of grouped answers validation (less than) against total", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_validation_sum_against_total_less_than.json");
@@ -16,7 +16,7 @@ describe("Feature: Sum of grouped answers validation (less than) against total",
       await $(BreakdownAnswerPage.breakdown3()).setValue("2");
       await $(BreakdownAnswerPage.breakdown4()).setValue("2");
       await click(BreakdownAnswerPage.submit());
-      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
+      await verifyUrlContains(SubmitPage.pageName);
     });
   });
 
@@ -29,7 +29,7 @@ describe("Feature: Sum of grouped answers validation (less than) against total",
       await $(BreakdownAnswerPage.breakdown3()).setValue("");
       await $(BreakdownAnswerPage.breakdown4()).setValue("");
       await click(BreakdownAnswerPage.submit());
-      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
+      await verifyUrlContains(SubmitPage.pageName);
     });
   });
 
