@@ -111,7 +111,6 @@ updates:
         dependency-type: "development"
         patterns:
           - "pytest*"
-          - "flake8*"
           - "pylint*"
           - "types*"
           - "pep8"
@@ -127,3 +126,4 @@ updates:
           - "playwright"
           - "black"
           - "djlint"
+          - "ruff"
