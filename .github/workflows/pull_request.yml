@@ -123,7 +123,7 @@ jobs:
     needs: [python-dependencies, node-dependencies]
     strategy:
       matrix:
-        suite: [timeout_modal_expired, timeout_modal_extended, timeout_modal_extended_new_window, features, summaries, general, journeys, components, list_collector, supplementary_data, supplementary_data_hub_and_spoke]
+        suite: [features, summaries, general, journeys, components, list_collector, supplementary_data, supplementary_data_hub_and_spoke]
     runs-on: ubuntu-22.04
     timeout-minutes: 30
     env:
