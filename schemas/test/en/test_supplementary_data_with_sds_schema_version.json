@@ -2,11 +2,12 @@
     "mime_type": "application/json/ons/eq",
     "language": "en",
     "schema_version": "0.0.1",
+    "sds_schema_version": "v1",
     "data_version": "0.0.3",
     "survey_id": "123",
-    "title": "Test Supplementary Data",
+    "title": "Test Supplementary Data with sds_schema_version Field",
     "theme": "default",
-    "description": "A questionnaire to demo using Supplementary data for placeholders, validation and routing in both repeating and non repeating sections.",
+    "description": "A questionnaire to demo the support of the sds_schema_version field in schemas",
     "metadata": [
         {
             "name": "survey_id",
@@ -82,7 +83,7 @@
                                             "contents": [
                                                 {
                                                     "description": {
-                                                        "text": "The purpose of this block, is to test that supplementary data loads and opens successfully with the sds_schema_version field, separate to using the supplementary data. The surnames of the employees are: {surnames}.",
+                                                        "text": "The purpose of this block is to test the survey opens successfully, given that sds_schema_version (defined in the questionnaire schema) matches the version set in the supplementary data payload. Separate to using the supplementary data, the surnames of the employees are: {surnames}.",
                                                         "placeholders": [
                                                             {
                                                                 "placeholder": "surnames",

@@ -58,24 +58,25 @@ class SupplementaryDataMetadataSchema(Schema, StripWhitespaceMixin):
 
     @validates_schema()
     def validate_dataset_and_survey_id(  # pylint: disable=unused-argument
-        self, data: Mapping, **kwargs: Any
+        self, payload: Mapping, **kwargs: Any
     ) -> None:
-        if data:
-            if data["dataset_id"] != self.context["dataset_id"]:
+        if payload:
+            if payload["dataset_id"] != self.context["dataset_id"]:
                 raise ValidationError(
                     "Supplementary data did not return the specified Dataset ID"
                 )
 
-            if data["survey_id"] != self.context["survey_id"]:
+            if payload["survey_id"] != self.context["survey_id"]:
                 raise ValidationError(
                     "Supplementary data did not return the specified Survey ID"
                 )
 
-            if self.context["sds_schema_version"]:
-                if data["data"]["schema_version"] != self.context["sds_schema_version"]:
-                    raise ValidationError(
-                        "The Supplementary Dataset version does not match the version set in the questionnaire schema"
-                    )
+            if (self.context["sds_schema_version"]) and (
+                payload["data"]["schema_version"] != self.context["sds_schema_version"]
+            ):
+                raise ValidationError(
+                    "The Supplementary Dataset Schema Version does not match the version set in the Questionnaire Schema"
+                )
 
 
 def validate_supplementary_data_v1(

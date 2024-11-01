@@ -177,7 +177,7 @@ def _set_questionnaire_supplementary_data(
         dataset_id=new_sds_dataset_id,
         identifier=identifier,  # type: ignore
         survey_id=metadata["survey_id"],  # type: ignore
-        sds_schema_version=schema.json.get("sds_schema_version", None),
+        sds_schema_version=schema.json.get("sds_schema_version"),
     )
     logger.info(
         "fetched supplementary data",
