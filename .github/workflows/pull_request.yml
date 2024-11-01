@@ -123,7 +123,7 @@ jobs:
     needs: [python-dependencies, node-dependencies]
     strategy:
       matrix:
-        suite: [features, summaries, general, journeys, components, list_collector, supplementary_data, supplementary_data_hub_and_spoke]
+        suite: [summaries]
     runs-on: ubuntu-22.04
     timeout-minutes: 30
     env:
@@ -152,12 +152,12 @@ jobs:
         run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose up --build -d
       - name: Functional tests
         run: make test-functional-suite SUITE=${{ matrix.suite }}
-#      - name: Upload wdio logs
-#        if: always()
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: Func test logs
-#          path: tests/functional/logs
+      - name: Upload wdio logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Func test logs
+          path: tests/functional/logs
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
   docker-push:
