@@ -27,7 +27,7 @@
         "@babel/plugin-transform-runtime": "^7.25.7",
         "@babel/preset-env": "^7.25.8",
         "@babel/register": "^7.25.7",
-        "@babel/runtime": "^7.25.7",
+        "@babel/runtime": "^7.26.0",
         "@wdio/cli": "^9.2.1",
         "@wdio/local-runner": "^9.2.6",
         "@wdio/mocha-framework": "^9.1.3",
