@@ -368,14 +368,15 @@ class TestLoginWithPostRequest(IntegrationTestCase):
     def test_login_with_sds_schema_version_valid(self):
         schema_name = "test_supplementary_data_with_sds_schema_version"
 
-        token = self.token_generator.create_supplementary_data_token(schema_name, sds_dataset_id="203b2f9d-c500-8175-98db-86ffcfdccfa3")
+        token = self.token_generator.create_supplementary_data_token(
+            schema_name, sds_dataset_id="203b2f9d-c500-8175-98db-86ffcfdccfa3"
+        )
 
         # When
         self.post(url=f"/session?token={token}")
 
         # Then
         self.assertStatusOK()
-
 
     @staticmethod
     @urlmatch(netloc=r"eq-survey-register", path=r"\/my-test-schema")
