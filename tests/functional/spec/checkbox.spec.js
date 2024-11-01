@@ -2,7 +2,7 @@ import MandatoryCheckboxPage from "../generated_pages/checkbox/mandatory-checkbo
 import NonMandatoryCheckboxPage from "../generated_pages/checkbox/non-mandatory-checkbox.page";
 import singleCheckboxPage from "../generated_pages/checkbox/single-checkbox.page";
 import SubmitPage from "../generated_pages/checkbox/submit.page";
-import { click } from "../helpers";
+import { click, verifyUrlContains } from "../helpers";
 
 describe('Checkbox with "other" option', () => {
   beforeEach("Load the survey", async () => {
@@ -57,7 +57,7 @@ describe('Checkbox with "other" option', () => {
     // When
     await $(MandatoryCheckboxPage.otherDetail()).setValue("Other Text");
     await click(MandatoryCheckboxPage.submit());
-    await expect(browser).toHaveUrlContaining(NonMandatoryCheckboxPage.pageName);
+    await verifyUrlContains(NonMandatoryCheckboxPage.pageName);
   });
 
   it('Given a non-mandatory checkbox answer, when the user does not select an option, then "No answer provided" should be displayed on the summary screen', async () => {

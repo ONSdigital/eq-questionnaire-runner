@@ -1,6 +1,6 @@
 import MandatoryCheckboxPage from "../../../generated_pages/checkbox_detail_answer_multiple/mandatory-checkbox.page";
 import SubmitPage from "../../../generated_pages/checkbox_detail_answer_multiple/submit.page";
-import { click } from "../../../helpers";
+import { click, verifyUrlContains } from "../../../helpers";
 describe('Checkbox with multiple "detail_answer" options', () => {
   const checkboxSchema = "test_checkbox_detail_answer_multiple.json";
 
@@ -37,7 +37,7 @@ describe('Checkbox with multiple "detail_answer" options', () => {
     // When
     await $(MandatoryCheckboxPage.yourChoiceDetail()).setValue("Bacon");
     await click(MandatoryCheckboxPage.submit());
-    await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
+    await verifyUrlContains(SubmitPage.pageName);
   });
 
   it("Given a non-mandatory detail answer, When the user does not provide any text, Then just the option value should be displayed on the summary screen", async () => {

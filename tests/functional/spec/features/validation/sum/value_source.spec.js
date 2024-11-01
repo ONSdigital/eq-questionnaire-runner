@@ -4,7 +4,7 @@ import TotalPlaybackPage from "../../../../generated_pages/validation_sum_agains
 import SecondBreakdownAnswerPage from "../../../../generated_pages/validation_sum_against_value_source/second-breakdown-block.page";
 import SubmitPage from "../../../../generated_pages/validation_sum_against_total_equal/submit.page";
 import AnotherTotalPlaybackPage from "../../../../generated_pages/validation_sum_against_value_source/another-number-total-playback.page";
-import { click } from "../../../../helpers";
+import { click, verifyUrlContains } from "../../../../helpers";
 const answerAndSubmitBreakdownQuestion = async (breakdown1, breakdown2, breakdown3, breakdown4) => {
   await $(BreakdownAnswerPage.breakdown1()).setValue(breakdown1);
   await $(BreakdownAnswerPage.breakdown2()).setValue(breakdown2);
@@ -41,7 +41,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await answerAndSubmitBreakdownQuestion("3", "3", "3", "3");
 
-      await expect(browser).toHaveUrlContaining(TotalPlaybackPage.pageName);
+      await verifyUrlContains(TotalPlaybackPage.pageName);
     });
   });
 
@@ -52,7 +52,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await answerBothBreakdownQuestions(["3", "3", "3", "3"], ["2", "2", "1", "1"]);
 
-      await expect(browser).toHaveUrlContaining(AnotherTotalPlaybackPage.pageName);
+      await verifyUrlContains(AnotherTotalPlaybackPage.pageName);
     });
   });
 
@@ -77,7 +77,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await answerBothBreakdownQuestions(["6", "3", "3", "3"], ["3", "3", "2", "1"]);
 
-      await expect(browser).toHaveUrlContaining(AnotherTotalPlaybackPage.pageName);
+      await verifyUrlContains(AnotherTotalPlaybackPage.pageName);
     });
   });
 
@@ -102,7 +102,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await answerBothBreakdownQuestions(["5", "4", "4", "2"], ["3", "3", "2", "1"]);
 
-      await expect(browser).toHaveUrlContaining(AnotherTotalPlaybackPage.pageName);
+      await verifyUrlContains(AnotherTotalPlaybackPage.pageName);
     });
   });
 
@@ -131,7 +131,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await expect(await $(SecondBreakdownAnswerPage.singleErrorLink()).isDisplayed()).toBe(false);
 
-      await expect(browser).toHaveUrlContaining(AnotherTotalPlaybackPage.pageName);
+      await verifyUrlContains(AnotherTotalPlaybackPage.pageName);
     });
   });
 
@@ -180,7 +180,7 @@ describe("Feature: Sum of grouped answers equal to validation against value sour
 
       await click(AnotherTotalPlaybackPage.submit());
 
-      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
+      await verifyUrlContains(SubmitPage.pageName);
     });
   });
 });

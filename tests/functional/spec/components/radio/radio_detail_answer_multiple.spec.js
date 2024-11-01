@@ -1,6 +1,6 @@
 import MandatoryRadioPage from "../../../generated_pages/radio_detail_answer_multiple/radio-mandatory.page";
 import SubmitPage from "../../../generated_pages/radio_detail_answer_multiple/submit.page";
-import { click } from "../../../helpers";
+import { click, verifyUrlContains } from "../../../helpers";
 describe('Radio with multiple "detail_answer" options', () => {
   const radioSchema = "test_radio_detail_answer_multiple.json";
 
@@ -33,7 +33,7 @@ describe('Radio with multiple "detail_answer" options', () => {
     // When
     await $(MandatoryRadioPage.favouriteNotListedDetail()).setValue("Bacon");
     await click(MandatoryRadioPage.submit());
-    await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
+    await verifyUrlContains(SubmitPage.pageName);
   });
 
   it("Given a non-mandatory detail answer, When the user does not provide any text, Then just the option value should be displayed on the summary screen", async () => {

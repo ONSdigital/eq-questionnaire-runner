@@ -11,7 +11,7 @@ import ListCollectorSecondRepeatingBlockPage from "../../generated_pages/list_co
 import ListCollectorContentPage from "../../generated_pages/list_collector_content_page/list-collector-content.page";
 import ListCollectorContentSectionSummaryPage from "../../generated_pages/list_collector_content_page/section-list-collector-contents-summary.page";
 import ConfirmationCheckboxPage from "../../generated_pages/list_collector_content_page/confirmation-checkbox.page";
-import { listItemComplete, click } from "../../helpers";
+import { listItemComplete, click, verifyUrlContains } from "../../helpers";
 
 describe("List Collector Section Summary and Summary Items", () => {
   describe("Given I launch the test list collector section summary items survey", () => {
@@ -20,12 +20,12 @@ describe("List Collector Section Summary and Summary Items", () => {
     });
     it("When I get to the Hub, Then from there the next block in list collector content section should be list collector content page.", async () => {
       await fillInListCollectorSection();
-      await expect(browser).toHaveUrlContaining(HubPage.url());
+      await verifyUrlContains(HubPage.url());
       await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).toBe("Not started");
       await click(HubPage.submit());
       await $(ResponsiblePartyQuestionPage.yes()).click();
       await click(ResponsiblePartyQuestionPage.submit());
-      await expect(browser).toHaveUrlContaining(ListCollectorContentPage.url());
+      await verifyUrlContains(ListCollectorContentPage.url());
     });
     it("When I get to the list collector content page, Then the relevant content and button is displayed.", async () => {
       await fillInListCollectorSection();
@@ -50,7 +50,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await click(ListCollectorContentPage.submit());
       await completeRepeatingBlocks(456, 1, 1, 1990, true, true);
       await click(ListCollectorContentPage.submit());
-      await expect(browser).toHaveUrlContaining(ListCollectorContentSectionSummaryPage.url());
+      await verifyUrlContains(ListCollectorContentSectionSummaryPage.url());
     });
     it("When I fill in first item repeating blocks, Then after going back to the hub the section should be in progress.", async () => {
       await fillInListCollectorSection();
@@ -82,7 +82,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await completeBothSections();
       await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).toBe("Completed");
       await $(HubPage.summaryRowLink("section-companies")).click();
-      await expect(browser).toHaveUrlContaining(CompaniesSummaryPage.pageName);
+      await verifyUrlContains(CompaniesSummaryPage.pageName);
       await $(CompaniesSummaryPage.companiesListAddLink()).click();
       await addCompany("Company C", "789", false);
       await anyMoreCompaniesNo();
@@ -91,12 +91,12 @@ describe("List Collector Section Summary and Summary Items", () => {
       await click(CompaniesSummaryPage.submit());
       await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).toBe("Partially completed");
       await click(HubPage.submit());
-      await expect(browser).toHaveUrlContaining(ListCollectorContentPage.pageName);
+      await verifyUrlContains(ListCollectorContentPage.pageName);
       await listItemComplete(`li[data-qa="list-item-1-label"]`, true);
       await listItemComplete(`li[data-qa="list-item-2-label"]`, true);
       await listItemComplete(`li[data-qa="list-item-3-label"]`, false);
       await click(ListCollectorContentPage.submit());
-      await expect(browser).toHaveUrlContaining(ListCollectorFirstRepeatingBlockPage.pageName);
+      await verifyUrlContains(ListCollectorFirstRepeatingBlockPage.pageName);
       await completeRepeatingBlocks(666, 2, 5, 1995, true, true);
       await listItemComplete(`li[data-qa="list-item-3-label"]`, true);
       await click(ListCollectorContentPage.submit());
@@ -116,7 +116,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await click(HubPage.submit());
       await listItemComplete(`li[data-qa="list-item-1-label"]`, true);
       await click(ListCollectorContentPage.submit());
-      await expect(browser).toHaveUrlContaining(ListCollectorContentSectionSummaryPage.pageName);
+      await verifyUrlContains(ListCollectorContentSectionSummaryPage.pageName);
       await click(ListCollectorContentSectionSummaryPage.submit());
       await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).toBe("Completed");
     });
