@@ -1,5 +1,5 @@
 import HubPage from "../../../base_pages/hub.page.js";
-import { click } from "../../../helpers";
+import { click, verifyUrlContains } from "../../../helpers";
 import LoadedSuccessfullyBlockPage from "../../../generated_pages/hub_section_required_with_repeat_supplementary/loaded-successfully-block.page";
 import IntroductionBlockPage from "../../../generated_pages/hub_section_required_with_repeat_supplementary/introduction-block.page";
 import ListCollectorEmployeesPage from "../../../generated_pages/hub_section_required_with_repeat_supplementary/list-collector-employees.page.js";
@@ -34,7 +34,7 @@ describe("Feature: Hub and Spoke with Supplementary Data", () => {
       await $(LengthOfEmploymentPage.year()).setValue(1930);
       await click(LengthOfEmploymentPage.submit());
       await click(Section3Page.submit());
-      await expect(browser).toHaveUrlContaining(HubPage.url());
+      await verifyUrlContains(HubPage.url());
     });
 
     it("When the repeating sections are incomplete. Then the hub should not be displayed", async () => {
@@ -50,7 +50,7 @@ describe("Feature: Hub and Spoke with Supplementary Data", () => {
       await click(Section3Page.submit());
 
       await browser.url(HubPage.url());
-      await expect(browser).toHaveUrlContaining("length-of-employment");
+      await verifyUrlContains("length-of-employment");
     });
   });
 });

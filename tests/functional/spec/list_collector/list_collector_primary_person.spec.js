@@ -7,7 +7,7 @@ import SectionSummaryPage from "../../generated_pages/list_collector/section-sum
 import { SubmitPage } from "../../base_pages/submit.page.js";
 import ThankYouPage from "../../base_pages/thank-you.page.js";
 import AnyoneUsuallyLiveAtPage from "../../generated_pages/list_collector_primary_person/anyone-usually-live-at.page.js";
-import { click } from "../../helpers";
+import { click, verifyUrlContains } from "../../helpers";
 
 describe("Primary Person List Collector Survey", () => {
   describe("Given the user starts on the 'do you live here' question", () => {
@@ -96,7 +96,7 @@ describe("Primary Person List Collector Survey", () => {
 
     it("When the user submits, then they are allowed to submit the survey", async () => {
       await click(SubmitPage.submit());
-      await expect(browser).toHaveUrlContaining(ThankYouPage.pageName);
+      await verifyUrlContains(ThankYouPage.pageName);
     });
   });
 

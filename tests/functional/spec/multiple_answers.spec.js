@@ -1,7 +1,7 @@
 import AboutYou from "../generated_pages/multiple_answers/about-you-block.page";
 import AgeBlock from "../generated_pages/multiple_answers/age-block.page";
 import SubmitPage from "../generated_pages/multiple_answers/submit.page.js";
-import { click } from "../helpers";
+import { click, verifyUrlContains } from "../helpers";
 
 async function answerAllQuestions() {
   await $(AboutYou.textfield()).setValue("John Doe");
@@ -58,8 +58,8 @@ describe("Multiple Answers", () => {
 
     it("When I click 'Change' an answer, Then I should be taken to the correct page and the answer input should be focused", async () => {
       await $(SubmitPage.currencyAnswerEdit()).click();
-      await expect(browser).toHaveUrlContaining(AboutYou.url());
-      await expect(browser).toHaveUrlContaining(AboutYou.currency());
+      await verifyUrlContains(AboutYou.url());
+      await verifyUrlContains(AboutYou.currency());
       await expect(await $(AboutYou.currency()).isFocused()).toBe(true);
     });
   });

@@ -54,3 +54,7 @@ export const click = async (selector) => {
   await element.click();
   await browser.pause(100);
 };
+
+export const verifyUrlContains = async (expectedUrlString) => {
+  await expect(browser).toHaveUrl(expect.stringContaining(expectedUrlString));
+};

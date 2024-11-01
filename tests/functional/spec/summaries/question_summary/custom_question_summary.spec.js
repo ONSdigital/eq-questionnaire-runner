@@ -2,7 +2,7 @@ import AddressBlockPage from "../../../generated_pages/custom_question_summary/a
 import AgeBlock from "../../../generated_pages/custom_question_summary/age.page.js";
 import NameBlockPage from "../../../generated_pages/custom_question_summary/name.page.js";
 import SubmitPage from "../../../generated_pages/custom_question_summary/submit.page.js";
-import { click } from "../../../helpers";
+import { click, verifyUrlContains } from "../../../helpers";
 describe("Summary Screen", () => {
   beforeEach("Load the survey", async () => {
     await browser.openQuestionnaire("test_custom_question_summary.json");
@@ -19,7 +19,7 @@ describe("Summary Screen", () => {
     await click(NameBlockPage.submit());
     await click(AddressBlockPage.submit());
     await click(AgeBlock.submit());
-    await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
+    await verifyUrlContains(SubmitPage.pageName);
     await expect(await $(SubmitPage.summaryRowState("name-question-concatenated-answer")).getText()).toBe("No answer provided");
   });
 

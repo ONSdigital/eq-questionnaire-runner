@@ -6,7 +6,7 @@ import currencyBlock from "../generated_pages/variants_question/currency-block.p
 import firstNumberBlock from "../generated_pages/variants_question/first-number-block.page.js";
 import secondNumberBlock from "../generated_pages/variants_question/second-number-block.page.js";
 import currencySectionSummary from "../generated_pages/variants_question/currency-section-summary.page.js";
-import { click } from "../helpers";
+import { click, verifyUrlContains } from "../helpers";
 
 describe("Number validation", () => {
   before(async () => {
@@ -90,7 +90,7 @@ describe("Number validation", () => {
       await click(secondNumberBlock.submit());
       await click(currencySectionSummary.submit());
 
-      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
+      await verifyUrlContains(SubmitPage.pageName);
     });
 
     it("When I edit and change the maximum value, Then I must re-validate and submit any dependent answers before I can return to the summary", async () => {
@@ -108,7 +108,7 @@ describe("Number validation", () => {
       await click(secondNumberBlock.submit());
       await click(currencySectionSummary.submit());
 
-      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
+      await verifyUrlContains(SubmitPage.pageName);
     });
 
     it("When I edit and change the minimum value, Then I must re-validate and submit any dependent answers again before I can return to the summary", async () => {
@@ -122,7 +122,7 @@ describe("Number validation", () => {
       await $(TestMinMax.testRangeExclusive()).setValue("12");
       await click(TestMinMax.submit());
 
-      await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
+      await verifyUrlContains(SubmitPage.pageName);
     });
 
     it("When a number with more than 3 decimal places has been entered, Then it should be displayed correctly on the summary", async () => {
