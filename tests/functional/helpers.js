@@ -51,3 +51,7 @@ export const click = async (selector) => {
   // Allow time in case the click loads a new page.
   await browser.pause(100);
 };
+
+export const verifyUrlContains = async (expectedUrlString) => {
+  await expect(browser).toHaveUrl(expect.stringContaining(expectedUrlString));
+};

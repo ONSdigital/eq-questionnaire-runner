@@ -11,7 +11,7 @@ import CalculatedSummaryCountPage from "../../../generated_pages/new_calculated_
 import HubPage from "../../../base_pages/hub.page";
 import FamilyJourneysPage from "../../../generated_pages/new_calculated_summary_repeating_blocks/family-journeys.page";
 import BlockSkipPage from "../../../generated_pages/new_calculated_summary_repeating_blocks/block-skip.page";
-import { assertSummaryValues, repeatingAnswerChangeLink, click } from "../../../helpers";
+import { assertSummaryValues, repeatingAnswerChangeLink, click, verifyUrlContains } from "../../../helpers";
 import { expect } from "@wdio/globals";
 
 describe("Feature: Calculated Summary using Repeating Blocks", () => {
@@ -80,7 +80,7 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
     await click(TransportRepeatingBlock2Page.submit());
     await $(ListCollectorPage.no()).click();
     await click(ListCollectorPage.submit());
-    await expect(browser).toHaveUrlContaining(CalculatedSummarySpendingPage.pageName);
+    await verifyUrlContains(CalculatedSummarySpendingPage.pageName);
     await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).toContain(
       "We calculate the total monthly expenditure on transport to be £550.00. Is this correct?",
     );
@@ -89,7 +89,7 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
 
   it("Given I am on the first calculated summary, When I confirm the total, Then I see the second calculated summary with an updated total", async () => {
     await click(CalculatedSummarySpendingPage.submit());
-    await expect(browser).toHaveUrlContaining(CalculatedSummaryCountPage.pageName);
+    await verifyUrlContains(CalculatedSummaryCountPage.pageName);
     await expect(await $(CalculatedSummaryCountPage.calculatedSummaryTitle()).getText()).toContain(
       "We calculate the total journeys made per month to be 18. Is this correct?",
     );
@@ -99,25 +99,25 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
 
   it("Given I am on the first calculated summary, When I use one of the change links, Then I see the correct repeating block", async () => {
     await repeatingAnswerChangeLink(1).click();
-    await expect(browser).toHaveUrlContaining(TransportRepeatingBlock1Page.pageName);
+    await verifyUrlContains(TransportRepeatingBlock1Page.pageName);
   });
 
   it("Given I have used a change link on a calculated summary to go back to the first repeating block, When I press continue, Then I see the calculated summary I came from", async () => {
     await click(TransportRepeatingBlock1Page.submit());
-    await expect(browser).toHaveUrlContaining(CalculatedSummarySpendingPage.pageName);
+    await verifyUrlContains(CalculatedSummarySpendingPage.pageName);
   });
 
   it("Given I am on a calculated summary with change links for repeating blocks, When I use a change link and click previous, Then I see the calculated summary I came from", async () => {
     await repeatingAnswerChangeLink(1).click();
     await $(TransportRepeatingBlock1Page.previous()).click();
-    await expect(browser).toHaveUrlContaining(CalculatedSummarySpendingPage.pageName);
+    await verifyUrlContains(CalculatedSummarySpendingPage.pageName);
   });
 
   it("Given I use a repeating block change link on the first calculated summary, When I edit my answer and press continue, Then I see the first calculated summary with a new correct total", async () => {
     await repeatingAnswerChangeLink(1).click();
     await $(TransportRepeatingBlock1Page.transportCost()).setValue(60);
     await click(TransportRepeatingBlock1Page.submit());
-    await expect(browser).toHaveUrlContaining(CalculatedSummarySpendingPage.pageName);
+    await verifyUrlContains(CalculatedSummarySpendingPage.pageName);
     await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).toContain(
       "We calculate the total monthly expenditure on transport to be £580.00. Is this correct?",
     );
@@ -129,7 +129,7 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
     await repeatingAnswerChangeLink(2).click();
     await $(TransportRepeatingBlock2Page.transportCount()).setValue(12);
     await click(TransportRepeatingBlock2Page.submit());
-    await expect(browser).toHaveUrlContaining(CalculatedSummaryCountPage.pageName);
+    await verifyUrlContains(CalculatedSummaryCountPage.pageName);
     await expect(await $(CalculatedSummaryCountPage.calculatedSummaryTitle()).getText()).toContain(
       "We calculate the total journeys made per month to be 24. Is this correct?",
     );
@@ -141,7 +141,7 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
     await $(SectionOnePage.transportListRemoveLink(1)).click();
     await $(RemoveTransportPage.yes()).click();
     await click(RemoveTransportPage.submit());
-    await expect(browser).toHaveUrlContaining(CalculatedSummarySpendingPage.pageName);
+    await verifyUrlContains(CalculatedSummarySpendingPage.pageName);
     await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).toContain(
       "We calculate the total monthly expenditure on transport to be £515.00. Is this correct?",
     );
@@ -150,7 +150,7 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
 
   it("Given I have confirmed the first updated total, When I press continue, Then I see the next calculated summary to confirm that total too", async () => {
     await click(CalculatedSummarySpendingPage.submit());
-    await expect(browser).toHaveUrlContaining(CalculatedSummaryCountPage.pageName);
+    await verifyUrlContains(CalculatedSummaryCountPage.pageName);
     await expect(await $(CalculatedSummaryCountPage.calculatedSummaryTitle()).getText()).toContain(
       "We calculate the total journeys made per month to be 14. Is this correct?",
     );
@@ -218,10 +218,10 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
     await $(BlockSkipPage.yes()).click();
     await click(BlockSkipPage.submit());
     // calculated summary progress is not altered by removing the list collector from the path so next location is summary page
-    await expect(browser).toHaveUrlContaining(SectionOnePage.pageName);
+    await verifyUrlContains(SectionOnePage.pageName);
     await $(SectionOnePage.previous()).click();
     // other calculated summary should not be on the path, so go straight back to the spending one which now has none of the list items
-    await expect(browser).toHaveUrlContaining(CalculatedSummarySpendingPage.pageName);
+    await verifyUrlContains(CalculatedSummarySpendingPage.pageName);
     await expect(await $(CalculatedSummarySpendingPage.calculatedSummaryTitle()).getText()).toBe(
       "We calculate the total monthly expenditure on transport to be £100.00. Is this correct?",
     );

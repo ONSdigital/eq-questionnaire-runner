@@ -1,7 +1,7 @@
 import ToppingCheckboxPage from "../../../generated_pages/routing_checkbox_count/topping-checkbox.page.js";
 import CorrectAnswerPage from "../../../generated_pages/routing_checkbox_count/correct-answer.page";
 import IncorrectAnswerPage from "../../../generated_pages/routing_checkbox_count/incorrect-answer.page";
-import { click } from "../../../helpers";
+import { click, verifyUrlContains } from "../../../helpers";
 describe("Test routing using count of checkboxes checked", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_routing_checkbox_count.json");
@@ -12,14 +12,14 @@ describe("Test routing using count of checkboxes checked", () => {
     await $(ToppingCheckboxPage.ham()).click();
     await click(ToppingCheckboxPage.submit());
 
-    await expect(browser).toHaveUrlContaining(CorrectAnswerPage.pageName);
+    await verifyUrlContains(CorrectAnswerPage.pageName);
     await expect(await $(CorrectAnswerPage.questionText()).getText()).toBe("You selected 2 or more toppings");
   });
 
   it("Given a user selects no checkboxes, When they submit, Then they should be routed to the incorrect page", async () => {
     await click(ToppingCheckboxPage.submit());
 
-    await expect(browser).toHaveUrlContaining(IncorrectAnswerPage.pageName);
+    await verifyUrlContains(IncorrectAnswerPage.pageName);
     await expect(await $(IncorrectAnswerPage.questionText()).getText()).toBe("You did not select 2 or more toppings");
   });
 
@@ -27,7 +27,7 @@ describe("Test routing using count of checkboxes checked", () => {
     await $(ToppingCheckboxPage.cheese()).click();
     await click(ToppingCheckboxPage.submit());
 
-    await expect(browser).toHaveUrlContaining(IncorrectAnswerPage.pageName);
+    await verifyUrlContains(IncorrectAnswerPage.pageName);
     await expect(await $(IncorrectAnswerPage.questionText()).getText()).toBe("You did not select 2 or more toppings");
   });
 
@@ -37,7 +37,7 @@ describe("Test routing using count of checkboxes checked", () => {
     await $(ToppingCheckboxPage.pineapple()).click();
     await click(ToppingCheckboxPage.submit());
 
-    await expect(browser).toHaveUrlContaining(CorrectAnswerPage.pageName);
+    await verifyUrlContains(CorrectAnswerPage.pageName);
     await expect(await $(CorrectAnswerPage.questionText()).getText()).toBe("You selected 2 or more toppings");
   });
 });

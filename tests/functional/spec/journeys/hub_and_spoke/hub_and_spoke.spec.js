@@ -10,7 +10,7 @@ import ProxyPage from "../../../generated_pages/hub_and_spoke/proxy.page.js";
 import RelationshipsSummary from "../../../generated_pages/hub_and_spoke/relationships-section-summary.page.js";
 import ListCollectorSectionSummaryPage from "../../../generated_pages/hub_section_required_with_repeat/list-collector-section-summary.page.js";
 import ProxyRepeatPage from "../../../generated_pages/hub_section_required_with_repeat/proxy.page.js";
-import { click } from "../../../helpers";
+import { click, verifyUrlContains } from "../../../helpers";
 import DateOfBirthPage from "../../../generated_pages/hub_section_required_with_repeat/date-of-birth.page";
 import PrimaryPersonListCollectorPage from "../../../generated_pages/hub_section_required_with_repeat/primary-person-list-collector.page";
 import PrimaryPersonListCollectorAddPage from "../../../generated_pages/hub_section_required_with_repeat/primary-person-list-collector-add.page";
@@ -58,10 +58,7 @@ describe("Feature: Hub and Spoke", () => {
 
     it("When the user click the 'Save and sign out' button then they should be redirected to the correct log out url", async () => {
       await $(HubPage.saveSignOut()).click();
-
-      const expectedUrl = await browser.getUrl();
-
-      await expect(expectedUrl).toContain("/signed-out");
+      await verifyUrlContains("/signed-out");
     });
 
     it("When a user views the Hub, Then the page title should be Choose another section to complete", async () => {
@@ -83,15 +80,13 @@ describe("Feature: Hub and Spoke", () => {
 
     it("When the user starts a section, Then the first question in the section should be displayed", async () => {
       await click(HubPage.submit());
-      const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).toContain(EmploymentStatusBlockPage.url());
+      await verifyUrlContains(EmploymentStatusBlockPage.url());
     });
 
     it("When the user starts a section and clicks the Previous link on the first question, Then they should be taken back to the Hub", async () => {
       await click(HubPage.submit());
       await $(EmploymentStatusBlockPage.previous()).click();
-      const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).toContain(HubPage.url());
+      await verifyUrlPathIs(HubPage.url());
     });
   });
 
@@ -118,8 +113,7 @@ describe("Feature: Hub and Spoke", () => {
     it("When the user returns to the Hub and restarts the same section, Then they should be redirected to the first incomplete block", async () => {
       await browser.url(HubPage.url());
       await $(HubPage.summaryRowLink("employment-section")).click();
-      const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).toContain(EmploymentTypeBlockPage.url());
+      await verifyUrlContains(EmploymentTypeBlockPage.url());
     });
   });
 
@@ -134,8 +128,7 @@ describe("Feature: Hub and Spoke", () => {
 
     it("When the user clicks the 'Continue' button, it should return them to the hub", async () => {
       await click(EmploymentTypeBlockPage.submit());
-      const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).toContain(HubPage.url());
+      await verifyUrlPathIs(HubPage.url());
     });
 
     it("When the user returns to the Hub, Then the Hub should be in a continue state", async () => {
@@ -153,16 +146,14 @@ describe("Feature: Hub and Spoke", () => {
     it("When the user returns to the Hub and clicks the 'View answers' link on the Hub, if this no summary they are returned to the first block", async () => {
       await click(EmploymentTypeBlockPage.submit());
       await $(HubPage.summaryRowLink("employment-section")).click();
-      const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).toContain(EmploymentStatusBlockPage.url());
+      await verifyUrlContains(EmploymentStatusBlockPage.url());
     });
 
     it("When the user returns to the Hub and continues, Then they should progress to the next section", async () => {
       await click(EmploymentTypeBlockPage.submit());
-      await expect(browser).toHaveUrlContaining(HubPage.url());
+      await verifyUrlContains(HubPage.url());
       await click(HubPage.submit());
-      const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).toContain(ProxyPage.url());
+      await verifyUrlContains(ProxyPage.url());
     });
   });
 
@@ -178,21 +169,19 @@ describe("Feature: Hub and Spoke", () => {
 
     it("When the user clicks the 'View answers' link and incompletes the section, Then they the should be taken to the next incomplete question on 'Continue", async () => {
       await $(HubPage.summaryRowLink("employment-section")).click();
-      await expect(browser).toHaveUrlContaining(EmploymentStatusBlockPage.url());
+      await verifyUrlContains(EmploymentStatusBlockPage.url());
       await $(EmploymentStatusBlockPage.exclusiveNoneOfTheseApply()).click();
       await click(EmploymentStatusBlockPage.submit());
-      const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).toContain(EmploymentTypeBlockPage.url());
+      await verifyUrlContains(EmploymentTypeBlockPage.url());
     });
 
     it("When the user clicks the 'View answers' link and incompletes the section and returns to the hub, Then the section should be marked as 'Partially completed'", async () => {
       await $(HubPage.summaryRowLink("employment-section")).click();
-      await expect(browser).toHaveUrlContaining(EmploymentStatusBlockPage.url());
+      await verifyUrlContains(EmploymentStatusBlockPage.url());
       await $(EmploymentStatusBlockPage.exclusiveNoneOfTheseApply()).click();
       await click(EmploymentStatusBlockPage.submit());
       await browser.url(HubPage.url());
-      const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).toContain(HubPage.url());
+      await verifyUrlPathIs(HubPage.url());
       await expect(await $(HubPage.summaryRowState("employment-section")).getText()).toBe("Partially completed");
       await expect(await $(HubPage.summaryRowLink("employment-section")).getHTML()).toContain("Continue with section: Employment");
     });
@@ -221,8 +210,7 @@ describe("Feature: Hub and Spoke", () => {
     });
 
     it("It should return them to the hub", async () => {
-      const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).toContain(HubPage.url());
+      await verifyUrlPathIs(HubPage.url());
     });
 
     it("When the user returns to the Hub, Then the Hub should be in a completed state", async () => {
@@ -232,8 +220,7 @@ describe("Feature: Hub and Spoke", () => {
 
     it("When the user submits, it should show the thankyou page", async () => {
       await click(HubPage.submit());
-      const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).toContain("thank-you");
+      await verifyUrlContains("thank-you");
     });
   });
 
@@ -243,7 +230,7 @@ describe("Feature: Hub and Spoke", () => {
     });
 
     it("The hub should not show first of all", async () => {
-      await expect(browser).toHaveUrlContaining(EmploymentStatusBlockPage.url());
+      await verifyUrlContains(EmploymentStatusBlockPage.url());
     });
 
     it("The hub should only display when required sections are complete", async () => {
@@ -251,7 +238,7 @@ describe("Feature: Hub and Spoke", () => {
       await click(EmploymentStatusBlockPage.submit());
       await $(EmploymentTypeBlockPage.studying()).click();
       await click(EmploymentTypeBlockPage.submit());
-      await expect(browser).toHaveUrlContaining(HubPage.url());
+      await verifyUrlContains(HubPage.url());
     });
   });
 
@@ -292,7 +279,7 @@ describe("Feature: Hub and Spoke", () => {
       await $(DateOfBirthPage.month()).setValue(1);
       await $(DateOfBirthPage.year()).setValue(2000);
       await $(RepeatingSummaryPage.submit()).click();
-      await expect(browser).toHaveUrlContaining(HubPage.url());
+      await verifyUrlContains(HubPage.url());
     });
 
     it("When the repeating sections are incomplete, Then the hub should not be displayed", async () => {
@@ -310,7 +297,7 @@ describe("Feature: Hub and Spoke", () => {
       await $(ProxyRepeatPage.submit()).click();
 
       await browser.url(HubPage.url());
-      await expect(browser).toHaveUrlContaining("date-of-birth");
+      await verifyUrlContains("date-of-birth");
     });
   });
 
@@ -341,7 +328,7 @@ describe("Feature: Hub and Spoke", () => {
       await $(LengthOfEmploymentPage.year()).setValue(1930);
       await click(LengthOfEmploymentPage.submit());
       await click(Section3Page.submit());
-      await expect(browser).toHaveUrlContaining(HubPage.url());
+      await verifyUrlContains(HubPage.url());
     });
 
     it("When the repeating sections are incomplete. Then the hub should not be displayed", async () => {
@@ -357,7 +344,7 @@ describe("Feature: Hub and Spoke", () => {
       await click(Section3Page.submit());
 
       await browser.url(HubPage.url());
-      await expect(browser).toHaveUrlContaining("length-of-employment");
+      await verifyUrlContains("length-of-employment");
     });
   });
 
@@ -374,8 +361,7 @@ describe("Feature: Hub and Spoke", () => {
     it("When there are no changes, continue returns directly to the hub", async () => {
       await $(HubPage.summaryRowLink("household-section")).click();
       await click(HouseholdSummary.submit());
-      const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).toContain(HubPage.url());
+      await verifyUrlPathIs(HubPage.url());
       await expect(await $(HubPage.summaryRowLink("household-section")).getHTML()).toContain("View answers: Household residents");
     });
 
@@ -385,8 +371,13 @@ describe("Feature: Hub and Spoke", () => {
       await $(DoesAnyoneLiveHere.yes()).click();
       await click(DoesAnyoneLiveHere.submit());
       await click(HouseholdSummary.submit());
-      const expectedUrl = await browser.getUrl();
-      await expect(expectedUrl).toContain(HowManyPeopleLiveHere.url());
+      await verifyUrlContains(HowManyPeopleLiveHere.url());
     });
   });
 });
+
+async function verifyUrlPathIs(expectedUrlPath) {
+  // Hub and Spoke URLs are "/questionnaire/", so we need strict checking of the URL path
+  const actualUrlPath = new URL(await browser.getUrl()).pathname;
+  await expect(actualUrlPath).toBe(expectedUrlPath);
+}

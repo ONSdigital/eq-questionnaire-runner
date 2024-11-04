@@ -4,7 +4,7 @@ import RadioPage from "../generated_pages/optional_guidance_and_description/mand
 import RadioPageTwo from "../generated_pages/optional_guidance_and_description/mandatory-radio-two.page";
 import IntroductionPage from "../generated_pages/question_guidance/introduction.page";
 import GuidancePage from "../generated_pages/question_guidance/block-test-guidance-title.page";
-import { click } from "../helpers";
+import { click, verifyUrlContains } from "../helpers";
 
 describe("Question description", () => {
   it("Given a question description has been set in the schema as an array, When it is rendered, Then it is displayed correctly as multiple paragraph attributes", async () => {
@@ -30,7 +30,7 @@ describe("Question guidance", () => {
   it("Given a question guidance with multiple content items, When it is rendered, Then there should only be one guidance box", async () => {
     await browser.openQuestionnaire("test_question_guidance.json");
     await click(IntroductionPage.submit());
-    await expect(browser).toHaveUrlContaining(GuidancePage.pageName);
+    await verifyUrlContains(GuidancePage.pageName);
     await expect(await $$("#question-guidance-question-test-guidance-title").length).toBe(1);
   });
 });

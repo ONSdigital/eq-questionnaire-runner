@@ -15,7 +15,7 @@ import RadioNonMandatoryDetailAnswerOverriddenPage from "../../../generated_page
 
 import RadioNonMandatoryDetailAnswerPage from "../../../generated_pages/radio_optional_with_detail_answer_mandatory/radio-non-mandatory.page";
 import RadioNonMandatoryDetailAnswerSummary from "../../../generated_pages/radio_optional_with_detail_answer_mandatory/submit.page";
-import { click } from "../../../helpers";
+import { click, verifyUrlContains } from "../../../helpers";
 describe("Component: Radio", () => {
   describe("Given I start a Mandatory Radio survey", () => {
     before(async () => {
@@ -25,7 +25,7 @@ describe("Component: Radio", () => {
     it("When I have selected a radio option that contains an escaped character, Then the selected option should be displayed in the summary", async () => {
       await $(RadioMandatoryPage.teaCoffee()).click();
       await click(RadioMandatoryPage.submit());
-      await expect(browser).toHaveUrlContaining(RadioMandatorySummary.pageName);
+      await verifyUrlContains(RadioMandatorySummary.pageName);
       await expect(await $(RadioMandatorySummary.radioMandatoryAnswer()).getText()).toBe("Tea & Coffee");
     });
   });
@@ -38,7 +38,7 @@ describe("Component: Radio", () => {
     it("When I have selected a radio option, Then the selected option should be displayed in the summary", async () => {
       await $(RadioMandatoryPage.coffee()).click();
       await click(RadioMandatoryPage.submit());
-      await expect(browser).toHaveUrlContaining(RadioMandatorySummary.pageName);
+      await verifyUrlContains(RadioMandatorySummary.pageName);
       await expect(await $(RadioMandatorySummary.radioMandatoryAnswer()).getText()).toBe("Coffee");
     });
   });
@@ -65,7 +65,7 @@ describe("Component: Radio", () => {
       await $(RadioMandatoryOptionalDetailAnswerPage.other()).click();
       await $(RadioMandatoryOptionalDetailAnswerPage.otherDetail()).setValue("Hello World");
       await click(RadioMandatoryOptionalDetailAnswerPage.submit());
-      await expect(browser).toHaveUrlContaining(RadioMandatoryOptionDetailAnswerSummary.pageName);
+      await verifyUrlContains(RadioMandatoryOptionDetailAnswerSummary.pageName);
       await expect(await $(RadioMandatoryOptionDetailAnswerSummary.radioMandatoryAnswer()).getText()).toContain("Hello World");
     });
   });
@@ -89,7 +89,7 @@ describe("Component: Radio", () => {
 
     it("When I submit without any data in the other text field is selected, Then the selected option should be displayed in the summary", async () => {
       await click(RadioMandatoryOptionalDetailAnswerPage.submit());
-      await expect(browser).toHaveUrlContaining(RadioMandatoryOptionDetailAnswerSummary.pageName);
+      await verifyUrlContains(RadioMandatoryOptionDetailAnswerSummary.pageName);
       await expect(await $(RadioMandatoryOptionDetailAnswerSummary.radioMandatoryAnswer()).getText()).toContain("No answer provided");
     });
   });
@@ -112,7 +112,7 @@ describe("Component: Radio", () => {
 
     it("When I have selected no option, Then the selected option should be displayed in the summary", async () => {
       await click(RadioNonMandatoryPage.submit());
-      await expect(browser).toHaveUrlContaining(RadioNonMandatorySummary.pageName);
+      await verifyUrlContains(RadioNonMandatorySummary.pageName);
       await expect(await $(RadioNonMandatorySummary.radioNonMandatoryAnswer()).getText()).toBe("No answer provided");
     });
   });
@@ -138,7 +138,7 @@ describe("Component: Radio", () => {
       await $(RadioNonMandatoryDetailAnswerPage.other()).click();
       await $(RadioNonMandatoryDetailAnswerPage.otherDetail()).setValue("Hello World");
       await click(RadioNonMandatoryDetailAnswerPage.submit());
-      await expect(browser).toHaveUrlContaining(RadioNonMandatoryDetailAnswerSummary.pageName);
+      await verifyUrlContains(RadioNonMandatoryDetailAnswerSummary.pageName);
       await expect(await $(RadioNonMandatoryDetailAnswerSummary.radioNonMandatoryAnswer()).getText()).toContain("Hello World");
     });
   });

@@ -20,7 +20,7 @@ import DependencyQuestionSectionTwo from "../../../generated_pages/view_submitte
 import SkippableBlockSectionTwo from "../../../generated_pages/view_submitted_response_repeating_sections/skippable-block.page";
 import SectionSummarySectionTwo from "../../../generated_pages/new_calculated_summary_cross_section_dependencies_repeating/calculated-summary-section-summary.page";
 import ListCollectorAddPage from "../../../generated_pages/view_submitted_response_repeating_sections//list-collector-add.page";
-import { click } from "../../../helpers";
+import { click, verifyUrlContains } from "../../../helpers";
 
 describe("View Submitted Response", () => {
   beforeEach("Load the questionnaire", async () => {
@@ -30,10 +30,10 @@ describe("View Submitted Response", () => {
     await $(AddressBlockPage.answer()).setValue("NP10 8XG");
     await click(AddressBlockPage.submit());
     await click(SubmitPage.submit());
-    await expect(browser).toHaveUrlContaining(ThankYouPage.pageName);
+    await verifyUrlContains(ThankYouPage.pageName);
     await expect(await $(ThankYouPage.title()).getHTML()).toContain("Thank you for completing the Test");
     await $(ThankYouPage.savePrintAnswersLink()).click();
-    await expect(browser).toHaveUrlContaining(ViewSubmittedResponsePage.pageName);
+    await verifyUrlContains(ViewSubmittedResponsePage.pageName);
   });
 
   it("Given I have completed a questionnaire with view submitted response enabled, When I am on the view submitted response page within 45 minutes of submission, Then the summary is displayed correctly", async () => {
@@ -123,10 +123,10 @@ describe("View Submitted Response Summary Page With Repeating Sections", () => {
     await click(SectionSummarySectionTwo.submit());
 
     await click(HubPage.submit());
-    await expect(browser).toHaveUrlContaining(ThankYouPage.pageName);
+    await verifyUrlContains(ThankYouPage.pageName);
     await expect(await $(ThankYouPage.title()).getHTML()).toContain("Thank you for completing the Test");
     await $(ThankYouPage.savePrintAnswersLink()).click();
-    await expect(browser).toHaveUrlContaining(ViewSubmittedResponsePage.pageName);
+    await verifyUrlContains(ViewSubmittedResponsePage.pageName);
   });
 
   it("Given I have completed a questionnaire with a repeating section and view submitted response enabled, When I am on the view submitted response page within 45 minutes of submission, Then the summary is displayed correctly", async () => {
