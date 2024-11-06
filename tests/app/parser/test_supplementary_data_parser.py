@@ -66,7 +66,7 @@ def test_invalid_supplementary_dataset_version_raises_error():
 
     assert (
         str(error.value)
-        == "{'_schema': ['The Supplementary Dataset version does not match the version set in the questionnaire schema']}"
+        == "{'_schema': ['The Supplementary Dataset Schema Version does not match the version set in the Questionnaire Schema']}"
     )
 
 
