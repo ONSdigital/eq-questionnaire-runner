@@ -13,7 +13,7 @@
     {% block post_title_panel %}
         {% if content.warning %}
             {# djlint:off #}
-            {% call onsPanel({ "variant": "warn"}) %}
+            {% call onsPanel({ "variant": "warn" }) %}
                 <p data-qa="warning">{{ content.warning }}</p>
             {% endcall %}
             {# djlint:on #}
