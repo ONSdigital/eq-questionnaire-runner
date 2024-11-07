@@ -55,6 +55,7 @@ class CalculatedSummaryBlock:
                 data_stores=self._data_stores,
                 location=location,
                 use_default_answer=True,
+                routing_path_block_ids=routing_path_block_ids,
             ),
         )
 
