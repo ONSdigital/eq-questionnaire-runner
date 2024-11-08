@@ -371,14 +371,18 @@ class TestLoginWithPostRequest(IntegrationTestCase):
     @patch(
         "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdaterBase.set_supplementary_data",
     )
-    def test_login_with_sds_schema_version_valid(self):
+    def test_login_with_sds_schema_version_valid(
+        self, mock_get, mock_validate, mock_set
+    ):
 
         self.launchSupplementaryDataSurvey(
             schema_name="test_supplementary_data_with_sds_schema_version",
             sds_dataset_id="203b2f9d-c500-8175-98db-86ffcfdccfa3",
         )
-
         # Then
+        mock_get.assert_called_once()
+        mock_validate.assert_called_once()
+        mock_set.assert_called_once()
         self.assertStatusOK()
 
     @staticmethod
