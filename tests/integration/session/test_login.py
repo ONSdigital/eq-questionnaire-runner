@@ -1,6 +1,7 @@
 import time
 
 from httmock import HTTMock, response, urlmatch
+from mock.mock import patch
 
 from app.utilities.schema import (
     CIR_RETRIEVE_COLLECTION_INSTRUMENT_URL,
@@ -365,15 +366,17 @@ class TestLoginWithPostRequest(IntegrationTestCase):
         # Then
         self.assertException()
 
+    @patch("app.routes.session.get_supplementary_data_v1")
+    @patch("app.routes.session._validate_supplementary_data_lists")
+    @patch(
+        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdaterBase.set_supplementary_data",
+    )
     def test_login_with_sds_schema_version_valid(self):
-        schema_name = "test_supplementary_data_with_sds_schema_version"
 
-        token = self.token_generator.create_supplementary_data_token(
-            schema_name, sds_dataset_id="203b2f9d-c500-8175-98db-86ffcfdccfa3"
+        self.launchSupplementaryDataSurvey(
+            schema_name="test_supplementary_data_with_sds_schema_version",
+            sds_dataset_id="203b2f9d-c500-8175-98db-86ffcfdccfa3",
         )
-
-        # When
-        self.post(url=f"/session?token={token}")
 
         # Then
         self.assertStatusOK()
