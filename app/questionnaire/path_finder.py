@@ -191,6 +191,7 @@ class PathFinder:
                 schema=self.schema,
                 data_stores=self.data_stores,
                 location=this_location,
+                routing_path_block_ids=block_ids_for_dependencies,
                 use_default_answer=True,
             ),
         )
