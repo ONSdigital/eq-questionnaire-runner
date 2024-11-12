@@ -268,12 +268,21 @@ class ValueSourceResolver(Resolver):
             ]
             return operator([value for value in values if value])  # type: ignore
 
+        new_value_source_resolver = ValueSourceResolver(
+            data_stores=self.data_stores,
+            schema=self.schema,
+            location=self.location,
+            list_item_id=self.list_item_id,
+            routing_path_block_ids=self.routing_path_block_ids,
+            use_default_answer=True,
+            assess_routing_path=True,
+        )
         evaluator = rule_evaluator.RuleEvaluator(
             self.schema,
             data_stores=self.data_stores,
             location=self.location,
             routing_path_block_ids=self.routing_path_block_ids,
-            value_source_resolver=self,
+            value_source_resolver=new_value_source_resolver,
         )
 
         return evaluator.evaluate(calculation["operation"])  # type: ignore
