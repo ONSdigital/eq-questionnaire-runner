@@ -71,7 +71,12 @@ class SupplementaryDataMetadataSchema(Schema, StripWhitespaceMixin):
                     "Supplementary data did not return the specified Survey ID"
                 )
 
-            if (self.context["sds_schema_version"]) and (
+    @validates_schema()
+    def validate_sds_schema_version(  # pylint: disable=unused-argument
+        self, payload: Mapping, **kwargs: Any
+    ) -> None:
+        if payload:
+            if self.context["sds_schema_version"] and (
                 payload["data"]["schema_version"] != self.context["sds_schema_version"]
             ):
                 raise ValidationError(

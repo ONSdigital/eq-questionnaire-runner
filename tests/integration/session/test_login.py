@@ -375,10 +375,15 @@ class TestLoginWithPostRequest(IntegrationTestCase):
         self, mock_get, mock_validate, mock_set
     ):
 
+        # Given
+        schema_to_launch = "test_supplementary_data_with_sds_schema_version"
+
+        # When
         self.launchSupplementaryDataSurvey(
-            schema_name="test_supplementary_data_with_sds_schema_version",
+            schema_name=schema_to_launch,
             sds_dataset_id="203b2f9d-c500-8175-98db-86ffcfdccfa3",
         )
+
         # Then
         mock_get.assert_called_once()
         mock_validate.assert_called_once()
