@@ -310,25 +310,22 @@ class QuestionnaireForm(FlaskForm):
         date_to: Mapping[str, dict],
     ) -> timedelta:
         list_item_id = self.location.list_item_id if self.location else None
-        rule_evaluator = RuleEvaluator(
-            value_source_resolver=ValueSourceResolver(
+        value_source_resolver = ValueSourceResolver(
                 data_stores=self.data_stores,
                 schema=self.schema,
                 location=self.location,
                 use_default_answer=True,
                 list_item_id=list_item_id,
-            ),
+                escape_answer_values=False,
+            )
+        
+        rule_evaluator = RuleEvaluator(
+            value_source_resolver=value_source_resolver,
             data_stores=self.data_stores,
             schema=self.schema,
             location=self.location,
         )
-        value_source_resolver = ValueSourceResolver(
-            data_stores=self.data_stores,
-            schema=self.schema,
-            location=self.location,
-            list_item_id=list_item_id,
-            escape_answer_values=False,
-        )
+
         handler = DateHandler(
             date_from, value_source_resolver, rule_evaluator, error_messages
         )
