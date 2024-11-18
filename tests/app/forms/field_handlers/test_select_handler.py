@@ -37,9 +37,7 @@ def test_coerce_str_unless_none():
         ),
     ],
 )
-def test_get_field(
-    answer_options, expected_choices, value_source_resolver, rule_evaluator
-):
+def test_get_field(answer_options, expected_choices, rule_evaluator):
     radio_json = {
         "guidance": "",
         "id": "choose-your-side-answer",
@@ -51,9 +49,7 @@ def test_get_field(
         **answer_options,
     }
 
-    handler = SelectHandler(
-        radio_json, value_source_resolver, rule_evaluator, error_messages
-    )
+    handler = SelectHandler(radio_json, rule_evaluator, error_messages)
 
     class TestForm(Form):
         test_field = handler.get_field()
@@ -66,12 +62,9 @@ def test_get_field(
     assert form.test_field.choices == to_choices_with_detail_answer_id(expected_choices)
 
 
-def test_build_choices_no_dynamic_or_static_options(
-    value_source_resolver, rule_evaluator
-):
+def test_build_choices_no_dynamic_or_static_options(rule_evaluator):
     handler = SelectHandler(
         dynamic_radio_options_no_static_options(),
-        value_source_resolver,
         rule_evaluator,
         error_messages,
     )

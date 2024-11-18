@@ -37,13 +37,9 @@ def get_dropdown_answer_schema(options):
         ),
     ],
 )
-def test_build_choices_without_placeholder(
-    answer_options, choices, value_source_resolver, rule_evaluator
-):
+def test_build_choices_without_placeholder(answer_options, choices, rule_evaluator):
     dropdown_answer_schema = get_dropdown_answer_schema(answer_options)
-    handler = DropdownHandler(
-        dropdown_answer_schema, value_source_resolver, rule_evaluator, error_messages
-    )
+    handler = DropdownHandler(dropdown_answer_schema, rule_evaluator, error_messages)
 
     expected_choices = [("", "Select an answer")] + choices
 
@@ -61,14 +57,10 @@ def test_build_choices_without_placeholder(
         ),
     ],
 )
-def test_build_choices_with_placeholder(
-    answer_options, choices, value_source_resolver, rule_evaluator
-):
+def test_build_choices_with_placeholder(answer_options, choices, rule_evaluator):
     dropdown_answer_schema = get_dropdown_answer_schema(answer_options)
     dropdown_answer_schema["placeholder"] = "Select an option"
-    handler = DropdownHandler(
-        dropdown_answer_schema, value_source_resolver, rule_evaluator, error_messages
-    )
+    handler = DropdownHandler(dropdown_answer_schema, rule_evaluator, error_messages)
 
     expected_choices = [("", "Select an option")] + choices
 
@@ -86,11 +78,9 @@ def test_build_choices_with_placeholder(
         ),
     ],
 )
-def test_get_field(answer_options, choices, value_source_resolver, rule_evaluator):
+def test_get_field(answer_options, choices, rule_evaluator):
     dropdown_answer_schema = get_dropdown_answer_schema(answer_options)
-    handler = DropdownHandler(
-        dropdown_answer_schema, value_source_resolver, rule_evaluator, error_messages
-    )
+    handler = DropdownHandler(dropdown_answer_schema, rule_evaluator, error_messages)
 
     expected_choices = [("", "Select an answer")] + choices
 
@@ -106,12 +96,9 @@ def test_get_field(answer_options, choices, value_source_resolver, rule_evaluato
     assert form.test_field.choices == expected_choices
 
 
-def test_build_choices_no_dynamic_or_static_choices(
-    value_source_resolver, rule_evaluator
-):
+def test_build_choices_no_dynamic_or_static_choices(rule_evaluator):
     handler = DropdownHandler(
         dynamic_radio_options_no_static_options(),
-        value_source_resolver,
         rule_evaluator,
         error_messages,
     )

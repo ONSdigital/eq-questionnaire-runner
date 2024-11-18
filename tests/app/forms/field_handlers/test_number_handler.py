@@ -85,7 +85,7 @@ def test_currency_field(rule_evaluator):
     assert form.test_field.description == answer_schema["guidance"]
 
 
-def test_percentage_field(value_source_resolver, rule_evaluator):
+def test_percentage_field(rule_evaluator):
     answer_schema = {
         "description": "",
         "id": "percentage-turnover-2016-market-new-answer",
@@ -103,7 +103,7 @@ def test_percentage_field(value_source_resolver, rule_evaluator):
         },
     }
 
-    form_class = get_test_form_class(answer_schema, rule_evaluator, error_messages)
+    form_class = get_test_form_class(answer_schema, error_messages)
     form = form_class()
 
     assert isinstance(form.test_field, IntegerFieldWithSeparator)
@@ -163,7 +163,7 @@ def test_manual_max(app, rule_evaluator):
     )
 
 
-def test_manual_decimal(app, value_source_resolver, rule_evaluator):
+def test_manual_decimal(app, rule_evaluator):
     answer_schema = {
         "decimal_places": 2,
         "label": "Range Test 10 to 20",
@@ -178,9 +178,7 @@ def test_manual_decimal(app, value_source_resolver, rule_evaluator):
         "type": "Currency",
     }
 
-    test_form_class = get_test_form_class(
-        answer_schema, value_source_resolver, rule_evaluator
-    )
+    test_form_class = get_test_form_class(answer_schema, rule_evaluator)
     form = test_form_class(MultiDict({"test_field": "1.234"}))
     form.validate()
 
@@ -190,7 +188,7 @@ def test_manual_decimal(app, value_source_resolver, rule_evaluator):
     )
 
 
-def test_zero_max(app, value_source_resolver, rule_evaluator):
+def test_zero_max(app, rule_evaluator):
     maximum = 0
 
     answer_schema = {
@@ -263,7 +261,7 @@ def test_value_min_and_max(app, rule_evaluator):
     )
 
 
-def test_manual_min_exclusive(app, value_source_resolver, rule_evaluator):
+def test_manual_min_exclusive(app, rule_evaluator):
     answer_schema = {
         "minimum": {"value": 10, "exclusive": True},
         "label": "Min Test",
@@ -278,9 +276,7 @@ def test_manual_min_exclusive(app, value_source_resolver, rule_evaluator):
         "type": "Currency",
     }
 
-    test_form_class = get_test_form_class(
-        answer_schema, value_source_resolver, rule_evaluator
-    )
+    test_form_class = get_test_form_class(answer_schema, rule_evaluator)
 
     form = test_form_class(MultiDict({"test_field": "10"}))
     form.validate()
@@ -291,7 +287,7 @@ def test_manual_min_exclusive(app, value_source_resolver, rule_evaluator):
     )
 
 
-def test_manual_max_exclusive(app, value_source_resolver, rule_evaluator):
+def test_manual_max_exclusive(app, rule_evaluator):
     answer_schema = {
         "maximum": {"value": 20, "exclusive": True},
         "label": "Max Test",
@@ -306,9 +302,7 @@ def test_manual_max_exclusive(app, value_source_resolver, rule_evaluator):
         "type": "Currency",
     }
 
-    test_form_class = get_test_form_class(
-        answer_schema, value_source_resolver, rule_evaluator
-    )
+    test_form_class = get_test_form_class(answer_schema, rule_evaluator)
 
     form = test_form_class(MultiDict({"test_field": "20"}))
     form.validate()
@@ -319,7 +313,7 @@ def test_manual_max_exclusive(app, value_source_resolver, rule_evaluator):
     )
 
 
-def test_default_range(value_source_resolver, rule_evaluator):
+def test_default_range(rule_evaluator):
     answer = {
         "decimal_places": 2,
         "label": "Range Test 10 to 20",
@@ -334,16 +328,14 @@ def test_default_range(value_source_resolver, rule_evaluator):
         "id": "test-range",
         "type": "Currency",
     }
-    handler = NumberHandler(
-        answer, value_source_resolver, rule_evaluator, error_messages
-    )
+    handler = NumberHandler(answer, rule_evaluator, error_messages)
     field_references = handler.references
 
     assert field_references["maximum"] == MAX_NUMBER
     assert field_references["minimum"] == 0
 
 
-def test_get_schema_value_answer_store(value_source_resolver, rule_evaluator):
+def test_get_schema_value_answer_store(rule_evaluator):
     answer_schema = {
         "id": "test-range",
         "label": "",
@@ -354,7 +346,7 @@ def test_get_schema_value_answer_store(value_source_resolver, rule_evaluator):
         "maximum": {"value": {"identifier": "set-maximum", "source": "answers"}},
         "minimum": {"value": {"identifier": "set-minimum", "source": "answers"}},
     }
-    value_source_resolver.metadata = {
+    rule_evaluator.value_source_resolver.metadata = {
         "schema_name": "test_numbers",
         "language_code": "en",
     }
@@ -362,10 +354,8 @@ def test_get_schema_value_answer_store(value_source_resolver, rule_evaluator):
 
     answer_store.add_or_update(Answer(answer_id="set-maximum", value=10))
     answer_store.add_or_update(Answer(answer_id="set-minimum", value=1))
-    value_source_resolver.data_stores.answer_store = answer_store
-    number_handler = NumberHandler(
-        answer_schema, value_source_resolver, rule_evaluator, error_messages
-    )
+    rule_evaluator.value_source_resolver.data_stores.answer_store = answer_store
+    number_handler = NumberHandler(answer_schema, rule_evaluator, error_messages)
 
     maximum = number_handler.get_schema_value(answer_schema["maximum"])
     minimum = number_handler.get_schema_value(answer_schema["minimum"])

@@ -5,7 +5,7 @@ from app.forms.field_handlers import TextAreaHandler
 from app.forms.fields import MaxTextAreaField
 
 
-def test_get_field(value_source_resolver, rule_evaluator):
+def test_get_field(rule_evaluator):
     textarea_json = {
         "guidance": "",
         "id": "answer",
@@ -20,9 +20,7 @@ def test_get_field(value_source_resolver, rule_evaluator):
         },
     }
 
-    text_area_handler = TextAreaHandler(
-        textarea_json, value_source_resolver, rule_evaluator, error_messages
-    )
+    text_area_handler = TextAreaHandler(textarea_json, rule_evaluator, error_messages)
 
     class TestForm(Form):
         test_field = text_area_handler.get_field()

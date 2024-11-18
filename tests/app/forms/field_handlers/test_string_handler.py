@@ -29,40 +29,30 @@ def test_string_field(rule_evaluator):
     assert form.test_field.description == textfield_json["guidance"]
 
 
-def test_get_length_validator(value_source_resolver, rule_evaluator):
-    string_handler = StringHandler(
-        {}, value_source_resolver, rule_evaluator, error_messages
-    )
+def test_get_length_validator(rule_evaluator):
+    string_handler = StringHandler({}, rule_evaluator, error_messages)
 
     validator = string_handler.get_length_validator
 
     assert isinstance(validator, validators.Length)
 
 
-def test_get_length_validator_with_message_override(
-    value_source_resolver, rule_evaluator
-):
+def test_get_length_validator_with_message_override(rule_evaluator):
     answer = {
         "validation": {"messages": {"MAX_LENGTH_EXCEEDED": "The message is too long!"}}
     }
 
-    string_handler = StringHandler(
-        answer, value_source_resolver, rule_evaluator, error_messages
-    )
+    string_handler = StringHandler(answer, rule_evaluator, error_messages)
 
     validator = string_handler.get_length_validator
 
     assert validator.message == "The message is too long!"
 
 
-def test_get_length_validator_with_max_length_override(
-    value_source_resolver, rule_evaluator
-):
+def test_get_length_validator_with_max_length_override(rule_evaluator):
     answer = {"max_length": 30}
 
-    string_handler = StringHandler(
-        answer, value_source_resolver, rule_evaluator, error_messages
-    )
+    string_handler = StringHandler(answer, rule_evaluator, error_messages)
     validator = string_handler.get_length_validator
 
     assert validator.max == 30
