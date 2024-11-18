@@ -103,7 +103,7 @@ def test_percentage_field(rule_evaluator):
         },
     }
 
-    form_class = get_test_form_class(answer_schema, error_messages)
+    form_class = get_test_form_class(answer_schema, rule_evaluator, error_messages)
     form = form_class()
 
     assert isinstance(form.test_field, IntegerFieldWithSeparator)

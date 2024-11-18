@@ -32,21 +32,17 @@ def test_get_field(rule_evaluator):
     assert form.test_field.description == textarea_json["guidance"]
 
 
-def test_get_length_validator(value_source_resolver, rule_evaluator):
+def test_get_length_validator(rule_evaluator):
     test_error_messages = {
         "MAX_LENGTH_EXCEEDED": "This is the default max length of %(max)d message"
     }
-    text_area_handler = TextAreaHandler(
-        {}, value_source_resolver, rule_evaluator, test_error_messages
-    )
+    text_area_handler = TextAreaHandler({}, rule_evaluator, test_error_messages)
     validator = text_area_handler.get_length_validator()
 
     assert validator.message == "This is the default max length of %(max)d message"
 
 
-def test_get_length_validator_with_message_override(
-    value_source_resolver, rule_evaluator
-):
+def test_get_length_validator_with_message_override(rule_evaluator):
     answer = {
         "validation": {
             "messages": {
@@ -57,9 +53,7 @@ def test_get_length_validator_with_message_override(
     test_error_messages = {
         "MAX_LENGTH_EXCEEDED": "This is the default max length message"
     }
-    text_area_handler = TextAreaHandler(
-        answer, value_source_resolver, rule_evaluator, test_error_messages
-    )
+    text_area_handler = TextAreaHandler(answer, rule_evaluator, test_error_messages)
 
     validator = text_area_handler.get_length_validator()
 
