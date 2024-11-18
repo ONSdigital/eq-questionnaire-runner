@@ -9,7 +9,6 @@ from app.forms.validators import ResponseRequired, format_message_with_title
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
 from app.questionnaire.value_source_resolver import (
     ValueSourceEscapedTypes,
-    ValueSourceResolver,
     ValueSourceTypes,
 )
 
@@ -20,15 +19,14 @@ class FieldHandler(ABC):
     def __init__(
         self,
         answer_schema: Mapping[str, Any],
-        value_source_resolver: ValueSourceResolver,
         rule_evaluator: RuleEvaluator,
         error_messages: Mapping[str, str],
         disable_validation: bool = False,
         question_title: Optional[str] = None,
     ):
         self.answer_schema = answer_schema
-        self.value_source_resolver = value_source_resolver
         self.rule_evaluator = rule_evaluator
+        self.value_source_resolver = rule_evaluator.value_source_resolver
         self.error_messages = error_messages
         self.disable_validation = disable_validation
         self.question_title = str(question_title)

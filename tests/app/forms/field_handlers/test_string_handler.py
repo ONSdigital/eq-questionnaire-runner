@@ -4,7 +4,7 @@ from app.forms import error_messages
 from app.forms.field_handlers.string_handler import StringHandler
 
 
-def test_string_field(value_source_resolver, rule_evaluator):
+def test_string_field(rule_evaluator):
     textfield_json = {
         "id": "job-title-answer",
         "label": "Job title",
@@ -14,7 +14,6 @@ def test_string_field(value_source_resolver, rule_evaluator):
     }
     string_handler = StringHandler(
         textfield_json,
-        value_source_resolver,
         rule_evaluator,
         error_messages,
         disable_validation=True,

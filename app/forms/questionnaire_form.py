@@ -326,9 +326,7 @@ class QuestionnaireForm(FlaskForm):
             location=self.location,
         )
 
-        handler = DateHandler(
-            date_from, value_source_resolver, rule_evaluator, error_messages
-        )
+        handler = DateHandler(date_from, rule_evaluator, error_messages)
 
         min_period_date = handler.get_date_value("minimum") or handler.get_date_value(
             "maximum"
@@ -518,11 +516,11 @@ def get_answer_fields(
     )
     for answer in question.get("answers", []):
         if "list_item_id" in answer:
-            value_source_resolver = _get_value_source_resolver(
+            rule_evaluator.value_source_resolver = _get_value_source_resolver(
                 list_item=answer["list_item_id"]
             )
         else:
-            value_source_resolver = value_source_resolved_for_location
+            rule_evaluator.value_source_resolver = value_source_resolved_for_location
 
         for option in answer.get("options", []):
             if "detail_answer" in option:
@@ -535,7 +533,6 @@ def get_answer_fields(
 
                 answer_fields[option["detail_answer"]["id"]] = get_field_handler(
                     answer_schema=detail_answer,
-                    value_source_resolver=value_source_resolver,
                     rule_evaluator=rule_evaluator,
                     error_messages=schema.error_messages,
                     disable_validation=disable_validation,
@@ -543,7 +540,6 @@ def get_answer_fields(
                 ).get_field()
         answer_fields[answer["id"]] = get_field_handler(
             answer_schema=answer,
-            value_source_resolver=value_source_resolver,
             rule_evaluator=rule_evaluator,
             error_messages=schema.error_messages,
             question_title=question_title,

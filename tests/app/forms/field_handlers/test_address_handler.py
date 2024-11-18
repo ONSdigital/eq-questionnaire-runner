@@ -8,14 +8,13 @@ from app.forms.field_handlers import AddressHandler
 
 def get_test_form_class(
     answer_schema,
-    value_source_resolver,
     rule_evaluator,
     messages=None,
 ):
     if not messages:
         messages = error_messages.copy()
     address_handler = AddressHandler(
-        answer_schema, value_source_resolver, rule_evaluator, error_messages=messages
+        answer_schema, rule_evaluator, error_messages=messages
     )
 
     class TestForm(Form):
@@ -41,11 +40,10 @@ def test_address_fields(value_source_resolver, rule_evaluator):
     assert all(field in form.test_field.data for field in address_fields)
 
 
-def test_address_mandatory_line1_validator(value_source_resolver, rule_evaluator):
+def test_address_mandatory_line1_validator(rule_evaluator):
     answer_json = {"id": "address", "mandatory": True, "type": "Address"}
     address_handler = AddressHandler(
         answer_json,
-        value_source_resolver,
         rule_evaluator,
         error_messages=error_messages,
     )

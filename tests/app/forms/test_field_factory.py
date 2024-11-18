@@ -55,7 +55,6 @@ def test_invalid_field_type_raises_on_invalid():
     with pytest.raises(KeyError):
         get_field_handler(
             answer_schema={"type": invalid_field_type},
-            value_source_resolver=value_source_resolver,
             rule_evaluator=rule_evaluator,
             error_messages=error_messages,
         )

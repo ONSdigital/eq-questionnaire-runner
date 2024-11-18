@@ -45,6 +45,7 @@ class RuleEvaluator:
         self.operations = Operations(
             language=self.language, schema=self.schema, renderer=renderer
         )
+        self.value_source_resolver = self.value_source_resolver
 
     def _evaluate(self, rule: dict[str, Sequence]) -> bool | date | None:
         operator_name = next(iter(rule))

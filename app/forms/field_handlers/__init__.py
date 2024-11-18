@@ -20,7 +20,6 @@ from app.forms.field_handlers.select_handlers import (
 from app.forms.field_handlers.string_handler import StringHandler
 from app.forms.field_handlers.text_area_handler import TextAreaHandler
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator
-from app.questionnaire.value_source_resolver import ValueSourceResolver
 
 FIELD_HANDLER_MAPPINGS = {
     "Checkbox": SelectMultipleHandler,
@@ -45,7 +44,6 @@ FIELD_HANDLER_MAPPINGS = {
 def get_field_handler(
     *,
     answer_schema: dict,
-    value_source_resolver: ValueSourceResolver,
     rule_evaluator: RuleEvaluator,
     error_messages: ImmutableDict,
     disable_validation: bool = False,
@@ -53,7 +51,6 @@ def get_field_handler(
 ) -> FieldHandler:
     return FIELD_HANDLER_MAPPINGS[answer_schema["type"]](
         answer_schema=answer_schema,
-        value_source_resolver=value_source_resolver,
         rule_evaluator=rule_evaluator,
         error_messages=error_messages,
         disable_validation=disable_validation,

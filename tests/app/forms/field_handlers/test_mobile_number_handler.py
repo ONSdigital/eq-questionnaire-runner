@@ -4,7 +4,7 @@ from app.forms import error_messages
 from app.forms.field_handlers.mobile_number_handler import MobileNumberHandler
 
 
-def test_phone_number_handler(value_source_resolver, rule_evaluator):
+def test_phone_number_handler(rule_evaluator):
     answer_schema = {
         "id": "phone-number-answer",
         "label": "Phone Number",
@@ -14,7 +14,6 @@ def test_phone_number_handler(value_source_resolver, rule_evaluator):
     }
     mobile_number_handler = MobileNumberHandler(
         answer_schema,
-        value_source_resolver,
         rule_evaluator,
         error_messages,
         disable_validation=False,
