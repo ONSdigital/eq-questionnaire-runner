@@ -1,21 +1,26 @@
 from dataclasses import dataclass
 from datetime import date
 from decimal import Decimal
-from typing import Generator, Iterable, Sequence, TypeAlias
+from typing import TYPE_CHECKING, Generator, Iterable, Sequence, TypeAlias
 
 from app.data_models.data_stores import DataStores
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.placeholder_renderer import PlaceholderRenderer
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
-from app.questionnaire.resolver import Resolver, ResolverTypes
 from app.questionnaire.rules.operations import Operations
 from app.questionnaire.rules.operator import Operator
 from app.utilities.types import LocationType
 
+if TYPE_CHECKING:
+    from app.questionnaire.value_source_resolver import (
+        ValueSourceResolver,
+        ValueSourceTypes,
+    ) # pragma: no cover
+
 RuleEvaluatorTypes: TypeAlias = (
     bool | date | list[str] | list[date] | int | float | Decimal | None
 )
-ResolvedOperand: TypeAlias = bool | date | ResolverTypes | None
+ResolvedOperand: TypeAlias = bool | date | "ValueSourceTypes" | None
 
 
 @dataclass
@@ -23,7 +28,7 @@ class RuleEvaluator:
     schema: QuestionnaireSchema
     data_stores: DataStores
     location: LocationType | None
-    value_source_resolver: Resolver
+    value_source_resolver: "ValueSourceResolver"
     routing_path_block_ids: Iterable[str] | None = None
     language: str = DEFAULT_LANGUAGE_CODE
 
@@ -59,7 +64,7 @@ class RuleEvaluator:
 
         return operator.evaluate(resolved_operands)
 
-    def _resolve_operand(self, operand: ResolverTypes) -> ResolvedOperand:
+    def _resolve_operand(self, operand: "ValueSourceTypes") -> ResolvedOperand:
         if isinstance(operand, dict) and "source" in operand:
             return self.value_source_resolver.resolve(operand)
 
@@ -69,7 +74,7 @@ class RuleEvaluator:
         return operand
 
     def get_resolved_operands(
-        self, operands: Sequence[ResolverTypes]
+        self, operands: Sequence["ValueSourceTypes"]
     ) -> Generator[ResolvedOperand, None, None]:
         for operand in operands:
             yield self._resolve_operand(operand)

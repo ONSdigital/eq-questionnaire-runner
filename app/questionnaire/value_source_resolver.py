@@ -15,7 +15,6 @@ from app.data_models.list_store import ListModel
 from app.data_models.metadata_proxy import NoMetadataException
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import InvalidLocationException, SectionKey
-from app.questionnaire.resolver import Resolver
 from app.questionnaire.rules import rule_evaluator  # pylint: disable=cyclic-import
 from app.utilities.types import LocationType
 
@@ -26,7 +25,7 @@ ResolvedAnswerList: TypeAlias = list[AnswerValueTypes | AnswerValueEscapedTypes 
 
 
 @dataclass
-class ValueSourceResolver(Resolver):
+class ValueSourceResolver:
     data_stores: DataStores
     schema: QuestionnaireSchema
     location: LocationType | None
