@@ -226,7 +226,7 @@ def test_greater_minimum_date_than_maximum_date(app, rule_evaluator):
         )
 
 
-def test_validate_mandatory_date(app, srule_evaluator):
+def test_validate_mandatory_date(app, rule_evaluator):
     answer = {
         "id": "date-range-from",
         "mandatory": True,
