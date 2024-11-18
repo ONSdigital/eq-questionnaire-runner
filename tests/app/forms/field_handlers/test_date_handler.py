@@ -47,7 +47,9 @@ def test_date_field_created_with_guidance(rule_evaluator):
 def test_generate_date_form_validates_single_date_period(app, rule_evaluator):
     schema = load_schema_from_name("test_date_validation_single")
     rule_evaluator.value_source_resolver.schema = schema
-    rule_evaluator.data_stores.metadata = {"ref_p_start_date": "2017-02-20"}
+    rule_evaluator.data_stores.metadata = (
+        rule_evaluator.value_source_resolver.data_stores.metadata
+    ) = {"ref_p_start_date": "2017-02-20"}
 
     handler = DateHandler(
         schema.get_answers_by_answer_id("date-range-from")[0],
