@@ -11,7 +11,21 @@
 
 ## Run with Docker
 
-Install Docker for your system: [https://www.docker.com/](https://www.docker.com/)
+Install [Docker](https://www.docker.com/) for your system. Make sure that you've installed both docker and docker-compose, preferably using Homebrew versions:
+
+``` shell
+brew install docker
+brew install docker-compose
+```
+On MacOS install container runtimes, eg. [Colima](https://github.com/abiosoft/colima):
+```shell
+brew install colima
+```
+
+Make sure Colima is started every time you want to use Docker images:
+```shell
+colima start
+```
 
 To get eq-questionnaire-runner running the following command will build and run the containers
 
@@ -141,7 +155,7 @@ Runner requires five supporting services - a questionnaire launcher, a storage b
 
 #### Run supporting services with Docker
 
-To run the app locally, but the supporting services in Docker, run:
+To run the app locally, but the supporting services in Docker, make sure you have Docker and Colima installed [from this step](#run-with-docker), then run:
 
 ``` shell
 make dev-compose-up
@@ -158,7 +172,7 @@ make dev-compose-up-linux
 ##### [Questionnaire launcher](https://github.com/ONSDigital/eq-questionnaire-launcher)
 
 ``` shell
-docker run -e SURVEY_RUNNER_SCHEMA_URL=http://docker.for.mac.host.internal:5000 -e SDS_API_BASE_URL=http://docker.for.mac.host.internal:5003 -e CIR_API_BASE_URL=http://docker.for.mac.host.internal:5004 -it -p 8000:8000 onsdigital/eq-questionnaire-launcher:latest
+docker run -e SURVEY_RUNNER_SCHEMA_URL=http://host.docker.internal:5000 -e SDS_API_BASE_URL=http://host.docker.internal:5003 -e CIR_API_BASE_URL=http://host.docker.internal:5004 -it -p 8000:8000 onsdigital/eq-questionnaire-launcher:latest
 ```
 
 ##### [Mock Supplementary data service](https://github.com/ONSDigital/eq-runner-mock-sds)
