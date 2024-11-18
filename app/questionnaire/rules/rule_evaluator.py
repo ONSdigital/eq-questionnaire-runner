@@ -1,7 +1,9 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 from datetime import date
 from decimal import Decimal
-from typing import TYPE_CHECKING, Generator, Iterable, Sequence, TypeAlias
+from typing import TYPE_CHECKING, Generator, Iterable, Sequence, TypeAlias, Union
 
 from app.data_models.data_stores import DataStores
 from app.questionnaire import QuestionnaireSchema
@@ -12,15 +14,15 @@ from app.questionnaire.rules.operator import Operator
 from app.utilities.types import LocationType
 
 if TYPE_CHECKING:
-    from app.questionnaire.value_source_resolver import (
+    from app.questionnaire.value_source_resolver import (  # pragma: no cover
         ValueSourceResolver,
         ValueSourceTypes,
-    ) # pragma: no cover
+    )
 
-RuleEvaluatorTypes: TypeAlias = (
-    bool | date | list[str] | list[date] | int | float | Decimal | None
-)
-ResolvedOperand: TypeAlias = bool | date | "ValueSourceTypes" | None
+RuleEvaluatorTypes: TypeAlias = Union[
+    bool, date, list[str], list[date], int, float, Decimal, None
+]
+ResolvedOperand: TypeAlias = Union[bool, date, "ValueSourceTypes", None]
 
 
 @dataclass
