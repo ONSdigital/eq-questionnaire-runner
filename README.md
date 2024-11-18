@@ -11,7 +11,7 @@
 
 ## Run with Docker
 
-Install [Docker](https://www.docker.com/) for your system. Make sure that you've installed both docker and docker-compose, preferably using Homebrew versions:
+Install [Docker](https://www.docker.com/) for your system. Make sure that you've installed both docker and docker-compose packages, preferably using Homebrew:
 
 ``` shell
 brew install docker
