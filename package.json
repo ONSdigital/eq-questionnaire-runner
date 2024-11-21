@@ -32,7 +32,7 @@
         "@wdio/local-runner": "^9.3.0",
         "@wdio/mocha-framework": "^9.2.8",
         "@wdio/spec-reporter": "^9.2.14",
-        "eslint": "^v9.15.0",
+        "eslint": "^v8.57.0",
         "eslint-cli": "^1.1.1",
         "eslint-config-standard": "^17.1.0",
         "eslint-plugin-import": "^2.31.0",
