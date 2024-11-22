@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, NamedTuple, TypeAlias, TypedDict
+from typing import TYPE_CHECKING, NamedTuple, TypeAlias, TypedDict, Union
 
 if TYPE_CHECKING:
     from app.forms.validators import (  # pragma: no cover
@@ -12,15 +12,15 @@ if TYPE_CHECKING:
         RelationshipLocation,  # pragma: no cover
     )
 
-LocationType: TypeAlias = "Location" | "RelationshipLocation"
+LocationType: TypeAlias = Union["Location", "RelationshipLocation"]  # noqa: UP007
 SupplementaryDataKeyType: TypeAlias = tuple[str, str | None]
 SupplementaryDataValueType: TypeAlias = dict | str | list | None
 
-DateValidatorType: TypeAlias = (
-    "OptionalForm" | "DateRequired" | "DateCheck" | "SingleDatePeriodCheck"
-)
+DateValidatorType: TypeAlias = Union[
+    "OptionalForm", "DateRequired", "DateCheck", "SingleDatePeriodCheck"
+]  # noqa: UP007
 
-ChoiceType: TypeAlias = "Choice" | "ChoiceWithDetailAnswer"
+ChoiceType: TypeAlias = Union["Choice", "ChoiceWithDetailAnswer"]  # noqa: UP007
 ChoiceWidgetRenderType: TypeAlias = tuple[str, str, bool, str | None]
 
 
