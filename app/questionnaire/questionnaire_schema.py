@@ -301,7 +301,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     @classmethod
     def get_mutable_deepcopy(cls, data: Any) -> Any:
         if isinstance(data, tuple):
-            return list((cls.get_mutable_deepcopy(item) for item in data))
+            return [cls.get_mutable_deepcopy(item) for item in data]
         if isinstance(data, ImmutableDict):
             key_value_tuples = {k: cls.get_mutable_deepcopy(v) for k, v in data.items()}
             return dict(key_value_tuples)
