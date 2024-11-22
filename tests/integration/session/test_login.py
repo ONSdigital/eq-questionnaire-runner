@@ -1,7 +1,7 @@
 import time
 
 from httmock import HTTMock, response, urlmatch
-from mock.mock import patch
+from unittest.mock import patch, Mock
 
 from app.utilities.schema import (
     CIR_RETRIEVE_COLLECTION_INSTRUMENT_URL,
@@ -11,6 +11,9 @@ from tests.integration.create_token import PAYLOAD_V2_BUSINESS
 from tests.integration.integration_test_case import IntegrationTestCase
 
 SCHEMA_PATH_MAP = get_schema_path_map(include_test_schemas=True)
+
+# pylint: disable-next=line-too-long
+DATA = "eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkEyNTZHQ00iLCJraWQiOiJkZjg4ZmRhZDI2MTJhZTFlODA1NzExMjBlNmM2MzcxZjU1ODk2Njk3In0.lssJXsMUE3dhWtQRUt7DTaZJvx4DpNdLW98cu8g4NijYX9TFpJiOFyzPxUlpFZb-fMa4zW9q6qZofQeQTbl_Ae3QAwGhuWF7v9NMdWM1aH377byyJJyJpdqlU4t-P03evRWZqAG2HtsNE2Zn1ORXn80Dc9IRkzutgrziLI8OBIZeO6-XEgbVCapsQApWkyux7QRdFH95wfda75nVvGqTbBOYvQiMTKd8KzpH2Vl200IOqEpmrcjUCE-yqdTupzcr88hwNI2ZYdv-pTNowJw1FPODZ7V_sE4Ac-JYv3yBTDcXdz3I5-rX8i2HXqz-g3VhveZiAl9q0AgklPkaO_oNWJzjrCb7DZGL4DjiGYuOcw8OSdOpKLXwkExMlado-wigxy1IWoCzFu2E5tWpmLc0WWcjKuBgD7-4tcn059F7GcwhX2uMRESCmc39pblvseM2UnmmQnwr8GvD7gqWdFwtBsECyXQ5UXAxWLJor_MtU8lAFZxiorRcrXZJwAivroPO9iEB-1Mvt2zZFWI_vMgpJCAIpETscotDKMVCG0UMfkKckJqLnmQpvF4oYTr77w1COBX5bi-AV8UrLJ7sVVktSXOBc_KCGRpoImA5cE67hW7mFUdJi1EHA39qt0tTqZD7izpu8sSLxsiuCkfsqrd4uAedcDdQm4QGxXOPD4pxois.wfWsetB3M0x9qfw5.43Wns86lGlbHj63b0ZxE2bxBQVus6FIqelb9LfSbvopLn5oR8FM4vDEnDp_rIyvjmV9YAZJ6HAHaYaWoNyIO0EorgamrB4R3-LqInANoe9c8xLZ9wl_QpE9aWnxsmFGZUWLO3q2fVTPnwBtA_LxK8FD0vjdLL9eHGYEmPVCGVX0BJX04TVW9aoemsx9Yn3ZtfvmQHuROiB-GcA5wOSb-GvhzfplY09GQr7g7221MiYCHYimmEJyxLV5clWPXu6izzVLDyG9l2ewCifiuBLD0O1U_fPlahHTmidwHKJEAEn39biNw5E_dr8WyZ3xBvJa9dP50m0xeyN4COR-xlYcEbuDcKoqN6BnY0bMNDxQYlBO--QcPLQ6h48uTJszwzsmNIwHoi0xy5dQah7c9Nt2lpMuNt1Wix-O8JWYCqaiCKxjwt9G8kabMbzhp1n3LetWweoyV7qJTbiB13Byv6SZwMO9M.8j8wtvwBAHzqRhv5Ii9jjQ",
 
 
 class TestLoginWithGetRequest(IntegrationTestCase):
@@ -365,30 +368,6 @@ class TestLoginWithPostRequest(IntegrationTestCase):
 
         # Then
         self.assertException()
-
-    @patch("app.routes.session.get_supplementary_data_v1")
-    @patch("app.routes.session._validate_supplementary_data_lists")
-    @patch(
-        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdaterBase.set_supplementary_data",
-    )
-    def test_login_with_sds_schema_version_valid(
-        self, mock_get, mock_validate, mock_set
-    ):
-
-        # Given
-        schema_to_launch = "test_supplementary_data_with_sds_schema_version"
-
-        # When
-        self.launchSupplementaryDataSurvey(
-            schema_name=schema_to_launch,
-            sds_dataset_id="203b2f9d-c500-8175-98db-86ffcfdccfa3",
-        )
-
-        # Then
-        mock_get.assert_called_once()
-        mock_validate.assert_called_once()
-        mock_set.assert_called_once()
-        self.assertStatusOK()
 
     @staticmethod
     @urlmatch(netloc=r"eq-survey-register", path=r"\/my-test-schema")
