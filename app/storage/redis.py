@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import Optional, Type
+from typing import Optional
 
 import redis
 from redis.exceptions import ConnectionError as RedisConnectionError
@@ -56,7 +56,7 @@ class Redis(StorageHandler):
 
         return True
 
-    def get(self, model_type: Type[ModelTypes], key_value: str) -> Optional[ModelTypes]:
+    def get(self, model_type: type[ModelTypes], key_value: str) -> Optional[ModelTypes]:
         storage_model = StorageModel(model_type=model_type)
         try:
             item = self.client.get(key_value)

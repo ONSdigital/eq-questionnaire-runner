@@ -127,7 +127,6 @@ extend-ignore = [
     "UP034", # Avoid extraneous parentheses
     "UP015", # Unnecessary open mode parameters
     "UP007", # Use `X | Y` for type annotations
-    "UP006", # Use `type` instead of `Type` for type annotation
     "UP009", # UTF-8 encoding declaration is unnecessary
     "UP017", # Use `datetime.UTC` alias
     "UP033", # Use @functools.cache instead of @functools.lru_cache(maxsize=None)

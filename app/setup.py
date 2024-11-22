@@ -1,5 +1,4 @@
 from copy import deepcopy
-from typing import Dict
 from uuid import uuid4
 
 import boto3
@@ -256,7 +255,7 @@ def setup_jinja_env(application):
     application.jinja_env.add_extension("jinja2.ext.do")
 
 
-def _add_cdn_url_to_csp_policy(cdn_url) -> Dict:
+def _add_cdn_url_to_csp_policy(cdn_url) -> dict:
     csp_policy = deepcopy(CSP_POLICY)
     for directive in csp_policy:
         if directive not in ["frame-src", "object-src", "base-uri"]:
