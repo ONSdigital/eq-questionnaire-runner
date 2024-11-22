@@ -1,4 +1,4 @@
-from typing import Any, Mapping, Optional
+from typing import Any, Mapping
 
 from flask import url_for
 from markupsafe import Markup, escape
@@ -77,7 +77,7 @@ class Question:
 
     def get_answer(
         self, answer_store: AnswerStore, answer_id: str, list_item_id: str | None = None
-    ) -> Optional[AnswerValueEscapedTypes]:
+    ) -> AnswerValueEscapedTypes | None:
         answer = answer_store.get_answer(
             answer_id, list_item_id or self.list_item_id
         ) or self.schema.get_default_answer(answer_id)
@@ -178,7 +178,7 @@ class Question:
         answer_store: AnswerStore,
         question_schema: QuestionSchemaType,
         answer_schema: Mapping[str, Any],
-        answer_value: Optional[AnswerValueEscapedTypes] = None,
+        answer_value: AnswerValueEscapedTypes | None = None,
     ) -> InferredAnswerValueTypes:
         if answer_value is None:
             return None
@@ -200,8 +200,8 @@ class Question:
         return answer_value
 
     def _build_date_range_answer(
-        self, answer_store: AnswerStore, answer: Optional[AnswerValueEscapedTypes]
-    ) -> dict[str, Optional[AnswerValueEscapedTypes]]:
+        self, answer_store: AnswerStore, answer: AnswerValueEscapedTypes | None
+    ) -> dict[str, AnswerValueEscapedTypes | None]:
         next_answer = next(self.answer_schemas)
         to_date = self.get_answer(answer_store, next_answer["id"])
         return {"from": answer, "to": to_date}
@@ -233,7 +233,7 @@ class Question:
         answer: Markup,
         answer_schema: Mapping[str, Any],
         answer_store: AnswerStore,
-    ) -> Optional[list[RadioCheckboxTypes]]:
+    ) -> list[RadioCheckboxTypes] | None:
         multiple_answers = []
         for option in self.get_answer_options(answer_schema):
             if escape(option["value"]) in answer:
@@ -255,7 +255,7 @@ class Question:
         answer: Markup,
         answer_schema: Mapping[str, Any],
         answer_store: AnswerStore,
-    ) -> Optional[RadioCheckboxTypes]:
+    ) -> RadioCheckboxTypes | None:
         for option in self.get_answer_options(answer_schema):
             if answer == escape(option["value"]):
                 detail_answer_value = self._get_detail_answer_value(
@@ -268,15 +268,15 @@ class Question:
 
     def _get_detail_answer_value(
         self, option: dict, answer_store: AnswerStore
-    ) -> Optional[AnswerValueEscapedTypes]:
+    ) -> AnswerValueEscapedTypes | None:
         if "detail_answer" in option:
             return self.get_answer(answer_store, option["detail_answer"]["id"])
 
     def _build_dropdown_answer(
         self,
-        answer: Optional[AnswerValueEscapedTypes],
+        answer: AnswerValueEscapedTypes | None,
         answer_schema: Mapping[str, Any],
-    ) -> Optional[str]:
+    ) -> str | None:
         for option in self.get_answer_options(answer_schema):
             if answer == option["value"]:
                 return option["label"]

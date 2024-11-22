@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import Optional, overload
+from typing import overload
 
 from dateutil import parser
 
@@ -16,7 +16,7 @@ def parse_datetime(date_string: None) -> None: ...  # pragma: no cover
 def parse_datetime(date_string: str) -> datetime: ...  # pragma: no cover
 
 
-def parse_datetime(date_string: Optional[str]) -> Optional[datetime]:
+def parse_datetime(date_string: str | None) -> datetime | None:
     """
     :param date_string: string representing a date
     :return: datetime of that date string

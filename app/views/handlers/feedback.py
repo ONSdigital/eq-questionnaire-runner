@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 from functools import cached_property
-from typing import Any, Mapping, MutableMapping, Optional, Union
+from typing import Any, Mapping, MutableMapping
 
 from flask import current_app
 from flask_babel import gettext, lazy_gettext
@@ -43,7 +43,7 @@ class Feedback:
         questionnaire_store: QuestionnaireStore,
         schema: QuestionnaireSchema,
         session_store: SessionStore,
-        form_data: Optional[MultiDict[str, Any]],
+        form_data: MultiDict[str, Any] | None,
     ):
         if not self.is_enabled(schema):
             raise FeedbackNotEnabled
@@ -65,7 +65,7 @@ class Feedback:
             form_data=self._form_data,
         )
 
-    def get_context(self) -> Mapping[str, Union[str, bool, dict]]:
+    def get_context(self) -> Mapping[str, str | bool | dict]:
         return build_feedback_context(self.question_schema, self.form)
 
     def get_page_title(self) -> str:
@@ -108,14 +108,14 @@ class Feedback:
             tx_id=tx_id, case_id=case_id, **additional_metadata
         )
 
-        submitter: Union[GCSFeedbackSubmitter, LogFeedbackSubmitter] = current_app.eq["feedback_submitter"]  # type: ignore
+        submitter: GCSFeedbackSubmitter | LogFeedbackSubmitter = current_app.eq["feedback_submitter"]  # type: ignore
         if not submitter.upload(feedback_metadata(), encrypted_message):
             raise FeedbackUploadFailed()
 
         self._session_store.save()
 
     @cached_property
-    def question_schema(self) -> Mapping[str, Union[str, list]]:
+    def question_schema(self) -> Mapping[str, str | list]:
         return {
             "type": "General",
             "id": "feedback",
@@ -220,10 +220,10 @@ class FeedbackPayloadV2:
     def __init__(
         self,
         metadata: MetadataProxy,
-        response_metadata: MutableMapping[str, Union[str, int, list]],
+        response_metadata: MutableMapping[str, str | int | list],
         schema: QuestionnaireSchema,
-        case_id: Optional[str],
-        submission_language_code: Optional[str],
+        case_id: str | None,
+        submission_language_code: str | None,
         feedback_count: int,
         feedback_text: str,
         feedback_type: str,

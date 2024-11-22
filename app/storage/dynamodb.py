@@ -1,4 +1,4 @@
-from typing import Optional, Type
+from typing import Type
 
 import boto3
 from botocore.exceptions import ClientError
@@ -33,7 +33,7 @@ class Dynamodb(StorageHandler):
 
             raise  # pragma: no cover
 
-    def get(self, model_type: Type[ModelTypes], key_value: str) -> Optional[ModelTypes]:
+    def get(self, model_type: Type[ModelTypes], key_value: str) -> ModelTypes | None:
         storage_model = StorageModel(model_type=model_type)
         table = self.client.Table(storage_model.table_name)
         key = {storage_model.key_field: key_value}

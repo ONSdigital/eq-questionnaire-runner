@@ -126,7 +126,6 @@ extend-ignore = [
     "UP018", # Unnecessary {literal_type} call (rewrite as a literal)
     "UP034", # Avoid extraneous parentheses
     "UP015", # Unnecessary open mode parameters
-    "UP007", # Use `X | Y` for type annotations
     "UP006", # Use `type` instead of `Type` for type annotation
     "UP009", # UTF-8 encoding declaration is unnecessary
     "UP017", # Use `datetime.UTC` alias
