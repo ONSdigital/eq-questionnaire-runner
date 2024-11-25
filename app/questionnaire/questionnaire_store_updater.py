@@ -62,11 +62,9 @@ class QuestionnaireStoreUpdaterBase:
 
     def is_dirty(self) -> bool:
         return bool(
-            (
-                self._answer_store.is_dirty
-                or self._list_store.is_dirty
-                or self._progress_store.is_dirty
-            )
+            self._answer_store.is_dirty
+            or self._list_store.is_dirty
+            or self._progress_store.is_dirty
         )
 
     def update_relationships_answer(
