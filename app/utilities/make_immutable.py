@@ -8,7 +8,7 @@ def make_immutable(data: Any) -> Any:
     if isinstance(data, abc.Hashable):
         return data
     if isinstance(data, list):
-        return tuple((make_immutable(item) for item in data))
+        return tuple(make_immutable(item) for item in data)
     if isinstance(data, dict):
         key_value_tuples = {k: make_immutable(v) for k, v in data.items()}
         return ImmutableDict(key_value_tuples)
