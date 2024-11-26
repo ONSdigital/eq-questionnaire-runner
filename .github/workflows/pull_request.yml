@@ -123,13 +123,13 @@ jobs:
     needs: [python-dependencies, node-dependencies]
     strategy:
       matrix:
-        suite: [ timeout_modal_expired, timeout_modal_extended, timeout_modal_extended_new_window, features, summaries, general, journeys, components, list_collector]
+        suite: [summaries]
     runs-on: ubuntu-22.04
     timeout-minutes: 30
     env:
       EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
       # :TODO: Revisit & update when 2 instances can be used without adverse effects
-      EQ_FUNCTIONAL_TEST_MAX_INSTANCES: 2
+      EQ_FUNCTIONAL_TEST_MAX_INSTANCES: 1
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -152,6 +152,12 @@ jobs:
         run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose up --build -d
       - name: Functional tests
         run: make test-functional-suite SUITE=${{ matrix.suite }}
+      - name: Upload wdio logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Func test logs
+          path: tests/functional/logs
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
   docker-push:

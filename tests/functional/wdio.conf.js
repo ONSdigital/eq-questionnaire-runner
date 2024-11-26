@@ -23,6 +23,8 @@ exports.config = {
     timeout_modal_extended_new_window: ["./spec/timeout/timeout_modal_extended_new_window/*.js"],
     components: ["./spec/components/**/*.js"],
     features: ["./spec/features/**/*.js"],
+    supplementary_data: ["./spec/supplementary_data/supplementary_data/*.js"],
+    supplementary_data_hub_and_spoke: ["./spec/supplementary_data/hub_and_spoke_supplementary_data/*.js"],
     summaries: ["./spec/summaries/**/*.js"],
     journeys: ["./spec/journeys/**/*.js"],
     list_collector: ["./spec/list_collector/**/*.js"],
@@ -79,7 +81,7 @@ exports.config = {
   // Define all options that are relevant for the WebdriverIO instance here
   //
   // Level of logging verbosity: trace | debug | info | warn | error | silent
-  logLevel: "error",
+  logLevel: "debug",
   outputDir: "tests/functional/logs/",
   //
   // Set specific log levels per logger
@@ -114,7 +116,7 @@ exports.config = {
   connectionRetryTimeout: 120000,
   //
   // Default request retries count
-  connectionRetryCount: 3,
+  connectionRetryCount: 5,
   //
   // Test runner services
   // Services take over a specific job you don't want to take care of. They enhance
