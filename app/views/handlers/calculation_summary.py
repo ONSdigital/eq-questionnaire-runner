@@ -1,12 +1,10 @@
-from typing import Type
-
 from app.views.contexts import GrandCalculatedSummaryContext
 from app.views.contexts.calculated_summary_context import CalculatedSummaryContext
 from app.views.handlers.content import Content
 
 
 class _SummaryWithCalculation(Content):
-    summary_class: Type[CalculatedSummaryContext] | Type[GrandCalculatedSummaryContext]
+    summary_class: type[CalculatedSummaryContext] | type[GrandCalculatedSummaryContext]
 
     def get_context(self) -> dict[str, dict]:
         summary_context = self.summary_class(
