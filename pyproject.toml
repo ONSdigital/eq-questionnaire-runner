@@ -88,7 +88,7 @@ ordered-set = "^4.1.0"
 cachetools = "^5.3.0.7"
 gevent = "^24.2.1"
 babel = "==2.14.0"  # Temporarily pinned - problem for translations found in v2.15.0, see: https://github.com/ONSdigital/eq-questionnaire-runner/pull/1384
-wtforms = "==3.1.2"  # Temporarily pinned - problem for breaking changes in v3.2.0, see: https://github.com/pallets-eco/wtforms/releases/tag/3.2.0
+wtforms = "==3.2.1"  # Temporarily pinned - problem for breaking changes in v3.2.0, see: https://github.com/pallets-eco/wtforms/releases/tag/3.2.0
 
 [build-system]
 requires = ["poetry-core"]
