@@ -484,11 +484,11 @@ class SummaryRowItem:
             or is_summary_with_calculation(summary_type)
             or use_answer_label
         ) and answer.get("label"):
-            self.rowTitle = answer["label"]
-            self.rowTitleAttributes = {"data-qa": answer["id"] + "-label"}
+            self.title = answer["label"]
+            self.titleAttributes = {"data-qa": answer["id"] + "-label"}
         else:
-            self.rowTitle = strip_tags(question["title"])
-            self.rowTitleAttributes = {"data-qa": question["id"]}
+            self.title = strip_tags(question["title"])
+            self.titleAttributes = {"data-qa": question["id"]}
 
         if edit_link_text:
             self.id = answer["id"]
@@ -548,7 +548,7 @@ class SummaryRowItem:
 
         if answers_are_editable:
             self.actions = [
-                SummaryAction(answer, self.rowTitle, edit_link_text, item_name)
+                SummaryAction(answer, self.title, edit_link_text, item_name)
             ]
 
 
@@ -563,16 +563,16 @@ class SummaryRow:
         use_answer_label: bool = False,
         item_name: str | None = None,
     ) -> None:
-        self.rowTitle = strip_tags(question["title"])
+        self.title = strip_tags(question["title"])
         self.id = question["id"]
-        self.rowItems = []
+        self.itemsList = []
         use_answer_label = use_answer_label or len(question["answers"]) > 1
 
         if is_summary_with_calculation(summary_type) and not answers_are_editable:
             self.total = True
 
         for answer in question["answers"]:
-            self.rowItems.append(
+            self.itemsList.append(
                 SummaryRowItem(
                     question,
                     answer,
@@ -744,7 +744,7 @@ def map_list_collector_config(
             "iconVisuallyHiddenText": "Completed" if icon else None,
             "actions": actions,
             "id": list_item.get("list_item_id"),
-            "rowTitleAttributes": {
+            "titleAttributes": {
                 "data-qa": f"list-item-{index}-label",
                 "data-list-item-id": list_item.get("list_item_id"),
             },
@@ -753,7 +753,7 @@ def map_list_collector_config(
         if item_label:
             row_item["valueList"] = [{"text": item_name}]
 
-        row_item["rowTitle"] = item_label or item_name
+        row_item["title"] = item_label or item_name
         row_items: list = [row_item]
 
         if related_answers:
@@ -767,9 +767,9 @@ def map_list_collector_config(
                     use_answer_label=True,
                     item_name=item_name,
                 )
-                row_items.extend(summary_row.rowItems)
+                row_items.extend(summary_row.itemsList)
 
-        rows.append({"rowItems": row_items})
+        rows.append({"itemsList": row_items})
 
     return rows
 

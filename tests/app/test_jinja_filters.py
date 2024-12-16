@@ -532,32 +532,32 @@ def test_map_list_collector_config_no_actions():
 
     expected = [
         {
-            "rowItems": [
+            "itemsList": [
                 {
                     "actions": [],
                     "iconVisuallyHiddenText": None,
                     "iconType": None,
                     "id": "one",
-                    "rowTitleAttributes": {
+                    "titleAttributes": {
                         "data-list-item-id": "one",
                         "data-qa": "list-item-1-label",
                     },
-                    "rowTitle": "Mark Bloggs",
+                    "title": "Mark Bloggs",
                 }
             ]
         },
         {
-            "rowItems": [
+            "itemsList": [
                 {
                     "actions": [],
                     "iconVisuallyHiddenText": None,
                     "iconType": None,
                     "id": "two",
-                    "rowTitleAttributes": {
+                    "titleAttributes": {
                         "data-list-item-id": "two",
                         "data-qa": "list-item-2-label",
                     },
-                    "rowTitle": "Joe Bloggs",
+                    "title": "Joe Bloggs",
                 }
             ]
         },
@@ -598,7 +598,7 @@ def test_map_list_collector_config():
 
     expected = [
         {
-            "rowItems": [
+            "itemsList": [
                 {
                     "actions": [
                         {
@@ -611,16 +611,16 @@ def test_map_list_collector_config():
                     "iconVisuallyHiddenText": None,
                     "iconType": None,
                     "id": "primary",
-                    "rowTitleAttributes": {
+                    "titleAttributes": {
                         "data-list-item-id": "primary",
                         "data-qa": "list-item-1-label",
                     },
-                    "rowTitle": "Mark Bloggs (You)",
+                    "title": "Mark Bloggs (You)",
                 }
             ]
         },
         {
-            "rowItems": [
+            "itemsList": [
                 {
                     "actions": [
                         {
@@ -639,11 +639,11 @@ def test_map_list_collector_config():
                     "iconType": None,
                     "iconVisuallyHiddenText": None,
                     "id": "nonprimary",
-                    "rowTitleAttributes": {
+                    "titleAttributes": {
                         "data-list-item-id": "nonprimary",
                         "data-qa": "list-item-2-label",
                     },
-                    "rowTitle": "Joe Bloggs",
+                    "title": "Joe Bloggs",
                 }
             ]
         },
@@ -716,7 +716,7 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
 
     expected = [
         {
-            "rowItems": [
+            "itemsList": [
                 {
                     "actions": [
                         {
@@ -735,8 +735,8 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                     "iconVisuallyHiddenText": None,
                     "iconType": None,
                     "id": "VHoiow",
-                    "rowTitle": "Name of UK company or branch",
-                    "rowTitleAttributes": {
+                    "title": "Name of UK company or branch",
+                    "titleAttributes": {
                         "data-list-item-id": "VHoiow",
                         "data-qa": "list-item-1-label",
                     },
@@ -760,8 +760,8 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                     ],
                     "attributes": {"data-qa": "registration-number"},
                     "id": "registration-number",
-                    "rowTitle": "Registration number",
-                    "rowTitleAttributes": {"data-qa": "registration-number-label"},
+                    "title": "Registration number",
+                    "titleAttributes": {"data-qa": "registration-number-label"},
                     "valueList": [{"text": "123"}],
                 },
                 {
@@ -784,9 +784,9 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                     ],
                     "attributes": {"data-qa": "authorised-insurer-radio"},
                     "id": "authorised-insurer-radio",
-                    "rowTitle": "Is this UK company or branch an authorised "
+                    "title": "Is this UK company or branch an authorised "
                     "insurer?",
-                    "rowTitleAttributes": {"data-qa": "authorised-insurer-radio-label"},
+                    "titleAttributes": {"data-qa": "authorised-insurer-radio-label"},
                     "valueList": [{"text": "Yes"}],
                 },
             ]
@@ -1009,7 +1009,7 @@ def test_calculated_summary_config():
 def test_summary_item_config_with_list_collector():
     expected = [
         {
-            "rowItems": [
+            "itemsList": [
                 {
                     "actions": [
                         {
@@ -1028,8 +1028,8 @@ def test_summary_item_config_with_list_collector():
                     "iconVisuallyHiddenText": None,
                     "iconType": None,
                     "id": "vmmPmD",
-                    "rowTitle": "Company A",
-                    "rowTitleAttributes": {
+                    "title": "Company A",
+                    "titleAttributes": {
                         "data-list-item-id": "vmmPmD",
                         "data-qa": "list-item-1-label",
                     },
@@ -1052,8 +1052,8 @@ def test_summary_item_config_with_list_collector():
                     ],
                     "attributes": {"data-qa": "registration-number"},
                     "id": "registration-number",
-                    "rowTitle": "Registration number",
-                    "rowTitleAttributes": {"data-qa": "registration-number-label"},
+                    "title": "Registration number",
+                    "titleAttributes": {"data-qa": "registration-number-label"},
                     "valueList": [{"text": "123"}],
                 },
                 {
@@ -1076,9 +1076,9 @@ def test_summary_item_config_with_list_collector():
                     ],
                     "attributes": {"data-qa": "authorised-insurer-radio"},
                     "id": "authorised-insurer-radio",
-                    "rowTitle": "Is this UK company or branch an authorised "
+                    "title": "Is this UK company or branch an authorised "
                     "insurer?",
-                    "rowTitleAttributes": {"data-qa": "authorised-insurer-radio-label"},
+                    "titleAttributes": {"data-qa": "authorised-insurer-radio-label"},
                     "valueList": [{"text": "Yes"}],
                 },
             ]
@@ -1168,7 +1168,7 @@ def test_summary_item_config_with_list_collector():
 def test_summary_item_config_with_list_collector_and_one_related_answer():
     expected = [
         {
-            "rowItems": [
+            "itemsList": [
                 {
                     "actions": [
                         {
@@ -1187,8 +1187,8 @@ def test_summary_item_config_with_list_collector_and_one_related_answer():
                     "iconVisuallyHiddenText": None,
                     "iconType": None,
                     "id": "vmmPmD",
-                    "rowTitle": "Company A",
-                    "rowTitleAttributes": {
+                    "title": "Company A",
+                    "titleAttributes": {
                         "data-list-item-id": "vmmPmD",
                         "data-qa": "list-item-1-label",
                     },
@@ -1212,8 +1212,8 @@ def test_summary_item_config_with_list_collector_and_one_related_answer():
                     ],
                     "attributes": {"data-qa": "registration-number"},
                     "id": "registration-number",
-                    "rowTitle": "Registration number",
-                    "rowTitleAttributes": {"data-qa": "registration-number-label"},
+                    "title": "Registration number",
+                    "titleAttributes": {"data-qa": "registration-number-label"},
                     "valueList": [{"text": "123"}],
                 },
             ]
@@ -1306,32 +1306,32 @@ def test_map_list_collector_config_render_icon_set():
 
     expected = [
         {
-            "rowItems": [
+            "itemsList": [
                 {
                     "actions": [],
                     "iconVisuallyHiddenText": "Completed",
                     "iconType": "check",
                     "id": "one",
-                    "rowTitleAttributes": {
+                    "titleAttributes": {
                         "data-list-item-id": "one",
                         "data-qa": "list-item-1-label",
                     },
-                    "rowTitle": "Mark Bloggs",
+                    "title": "Mark Bloggs",
                 }
             ]
         },
         {
-            "rowItems": [
+            "itemsList": [
                 {
                     "actions": [],
                     "iconVisuallyHiddenText": None,
                     "iconType": None,
                     "id": "two",
-                    "rowTitleAttributes": {
+                    "titleAttributes": {
                         "data-list-item-id": "two",
                         "data-qa": "list-item-2-label",
                     },
-                    "rowTitle": "Joe Bloggs",
+                    "title": "Joe Bloggs",
                 }
             ]
         },
