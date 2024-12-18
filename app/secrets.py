@@ -1,4 +1,4 @@
-from typing import Mapping, Optional
+from typing import Mapping
 
 SecretsType = Mapping[str, Mapping[str, str]]
 
@@ -13,7 +13,7 @@ REQUIRED_SECRETS = [
 
 
 def validate_required_secrets(
-    secrets: SecretsType, additional_required_secrets: Optional[list[str]] = None
+    secrets: SecretsType, additional_required_secrets: list[str] | None = None
 ) -> None:
     all_required_secrets = (
         REQUIRED_SECRETS + additional_required_secrets
@@ -29,5 +29,5 @@ class SecretStore:
     def __init__(self, secrets: SecretsType) -> None:
         self.secrets = secrets.get("secrets", {})
 
-    def get_secret_by_name(self, secret_name: str) -> Optional[str]:
+    def get_secret_by_name(self, secret_name: str) -> str | None:
         return self.secrets.get(secret_name)

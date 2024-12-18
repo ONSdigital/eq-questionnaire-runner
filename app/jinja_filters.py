@@ -3,7 +3,7 @@
 import re
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Callable, Literal, Mapping, Optional, TypeAlias, Union
+from typing import Any, Callable, Literal, Mapping, TypeAlias
 
 import flask
 import flask_babel
@@ -31,7 +31,7 @@ AnswerType = Mapping[str, Any]
 UnitLengthType: TypeAlias = Literal["short", "long", "narrow"]
 
 
-def mark_safe(context: nodes.EvalContext, value: str) -> Union[Markup, str]:
+def mark_safe(context: nodes.EvalContext, value: str) -> Markup | str:
     return Markup(value) if context.autoescape else value
 
 
@@ -61,7 +61,7 @@ def get_currency_symbol(currency: str = "GBP") -> str:
 
 
 @blueprint.app_template_filter()
-def format_percentage(value: Union[int, float, Decimal]) -> str:
+def format_percentage(value: int | float | Decimal) -> str:
     return f"{value}%"
 
 
@@ -151,9 +151,7 @@ def get_format_date(value: Markup) -> str:
 
 @pass_eval_context
 @blueprint.app_template_filter()
-def format_datetime(
-    context: nodes.EvalContext, date_time: datetime
-) -> Union[str, Markup]:
+def format_datetime(context: nodes.EvalContext, date_time: datetime) -> str | Markup:
     # flask babel on formatting will automatically convert based on the time zone specified in setup.py
     formatted_date = flask_babel.format_date(date_time, format="d MMMM yyyy")
     formatted_time = flask_babel.format_time(date_time, format="HH:mm")
@@ -266,7 +264,7 @@ def get_min_max_value_width(
 
 
 @blueprint.app_template_filter()
-def get_width_for_number(answer: AnswerType) -> Optional[int]:
+def get_width_for_number(answer: AnswerType) -> int | None:
     allowable_widths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30, 40, 50]
 
     min_value_width = get_min_max_value_width("minimum", answer, 0)
@@ -287,7 +285,7 @@ def get_width_for_number_processor() -> dict[str, Callable]:
 
 
 class LabelConfig:
-    def __init__(self, _for: str, text: str, description: Optional[str] = None) -> None:
+    def __init__(self, _for: str, text: str, description: str | None = None) -> None:
         self._for = _for
         self.text = text
         self.description = description
@@ -299,7 +297,7 @@ class SelectConfig:
         option: SelectFieldBase._Option,
         index: int,
         answer: AnswerType,
-        form: Optional[FormType] = None,
+        form: FormType | None = None,
     ) -> None:
         self.id = option.id
         self.name = option.name
@@ -395,7 +393,7 @@ def map_select_config_processor() -> dict[str, Callable]:
 
 @blueprint.app_template_filter()
 def map_relationships_config(
-    form: Mapping[str, str], answer: Mapping[str, Union[int, slice]]
+    form: Mapping[str, str], answer: Mapping[str, int | slice]
 ) -> list[RelationshipRadioConfig]:
     options = form["fields"][answer["id"]]
 
@@ -459,7 +457,7 @@ class SummaryAction:
 
 
 class SummaryRowItemValue:
-    def __init__(self, text: str, other: Optional[str] = None) -> None:
+    def __init__(self, text: str, other: str | None = None) -> None:
         self.text = text
 
         if other or other == 0:
@@ -588,17 +586,17 @@ class SummaryRow:
 
 @blueprint.app_template_filter()
 def map_summary_item_config(
-    group: dict[str, Union[list, dict]],
+    group: dict[str, list | dict],
     summary_type: str,
     answers_are_editable: bool,
     no_answer_provided: str,
     edit_link_text: str,
     edit_link_aria_label: str,
-    calculated_question: Optional[dict[str, list]],
+    calculated_question: dict[str, list] | None,
     remove_link_text: str | None = None,
     remove_link_aria_label: str | None = None,
-) -> list[Union[dict[str, list], SummaryRow]]:
-    rows: list[Union[dict[str, list], SummaryRow]] = []
+) -> list[dict[str, list] | SummaryRow]:
+    rows: list[dict[str, list] | SummaryRow] = []
 
     for block in group["blocks"]:
         if block.get("question"):

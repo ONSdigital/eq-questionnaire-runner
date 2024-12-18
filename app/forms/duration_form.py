@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Callable, Mapping, Optional, Type
+from typing import Callable, Mapping, Type
 
 from wtforms import Form
 
@@ -12,7 +12,7 @@ ErrorMessageType = dict[str, str]
 # pylint: disable=no-member
 class DurationForm(Form):
     def validate(
-        self, extra_validators: Optional[dict[str, list[Callable]]] = None
+        self, extra_validators: dict[str, list[Callable]] | None = None
     ) -> bool:
         super().validate(extra_validators)
 
@@ -43,8 +43,8 @@ class DurationForm(Form):
         list(self._fields.values())[0].errors = [self.answer_errors[key]]
 
     @property
-    def data(self) -> Optional[dict[str, Optional[str]]]:
-        data: dict[str, Optional[str]] = super().data
+    def data(self) -> dict[str, str | None] | None:
+        data: dict[str, str | None] = super().data
         if all(value is None for value in data.values()):
             return None
         return data

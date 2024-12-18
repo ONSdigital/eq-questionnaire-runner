@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Union
 
 from flask_babel import lazy_gettext
 
@@ -42,7 +41,7 @@ class ViewSubmittedResponse:
             )
         return False
 
-    def get_context(self) -> dict[str, Union[str, datetime, dict]]:
+    def get_context(self) -> dict[str, str | datetime | dict]:
         return build_view_submitted_response_context(
             self._language, self._schema, self._questionnaire_store, get_survey_type()
         )

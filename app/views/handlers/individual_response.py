@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 from functools import cached_property
-from typing import Any, Mapping, Optional
+from typing import Any, Mapping
 from uuid import uuid4
 
 from flask import current_app, redirect
@@ -972,7 +972,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
 
 
 class IndividualResponseFulfilmentRequest(FulfilmentRequest):
-    def __init__(self, metadata: MetadataProxy, mobile_number: Optional[str] = None):
+    def __init__(self, metadata: MetadataProxy, mobile_number: str | None = None):
         self._metadata = metadata
         self._mobile_number = mobile_number
         self._fulfilment_type = "sms" if self._mobile_number else "postal"
@@ -991,7 +991,7 @@ class IndividualResponseFulfilmentRequest(FulfilmentRequest):
             else {}
         )
 
-    def _get_fulfilment_code(self) -> Optional[str]:
+    def _get_fulfilment_code(self) -> str | None:
         fulfilment_codes = {
             "sms": {
                 GB_ENG_REGION_CODE: "UACITA1",

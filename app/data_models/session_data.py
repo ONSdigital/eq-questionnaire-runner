@@ -1,10 +1,10 @@
-from typing import Any, Optional
+from typing import Any
 
 
 class SessionData:
     def __init__(
         self,
-        language_code: Optional[str] = None,
+        language_code: str | None = None,
         confirmation_email_count: int = 0,
         feedback_count: int = 0,
         **_: Any,

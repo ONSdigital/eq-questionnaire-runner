@@ -5,7 +5,7 @@ import logging
 from collections.abc import Callable
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal
-from typing import Any, Mapping, Optional, Sequence, Union
+from typing import Any, Mapping, Sequence
 
 from dateutil.relativedelta import relativedelta
 from flask_wtf import FlaskForm
@@ -33,7 +33,7 @@ Calculation = Mapping[str, Any]
 QuestionnaireExtraValidators = Mapping[str, Sequence[Callable]]
 Period = Mapping[str, int]
 PeriodLimits = Mapping[str, Any]
-Error = Union[Mapping, Sequence]
+Error = Mapping | Sequence
 Errors = Mapping[str, Error]
 ErrorList = Sequence[tuple[str, str]]
 
@@ -45,8 +45,8 @@ class QuestionnaireForm(FlaskForm):
         schema: QuestionnaireSchema,
         question_schema: QuestionSchemaType,
         data_stores: DataStores,
-        location: Union[None, Location, RelationshipLocation],
-        **kwargs: Union[MultiDict, Mapping, None],
+        location: None | Location | RelationshipLocation,
+        **kwargs: MultiDict | Mapping | None,
     ):
         self.schema = schema
         self.question = question_schema
@@ -66,7 +66,7 @@ class QuestionnaireForm(FlaskForm):
         super().__init__(**kwargs)
 
     def validate(
-        self, extra_validators: Optional[QuestionnaireExtraValidators] = None
+        self, extra_validators: QuestionnaireExtraValidators | None = None
     ) -> bool:
         """
         Validate this form as usual and check for any form-level validation errors based on question type
@@ -213,7 +213,7 @@ class QuestionnaireForm(FlaskForm):
 
     def validate_date_range_with_period_limits_and_single_date_limits(
         self,
-        question_id: Union[str, Sequence[Mapping]],
+        question_id: str | Sequence[Mapping],
         period_limits: PeriodLimits,
         period_range: timedelta,
     ) -> None:
@@ -244,7 +244,7 @@ class QuestionnaireForm(FlaskForm):
         period_from_id: str,
         period_to_id: str,
         messages: Mapping[str, str],
-        period_limits: Optional[PeriodLimits],
+        period_limits: PeriodLimits | None,
     ) -> bool:
         period_from = getattr(self, period_from_id)
         period_to = getattr(self, period_to_id)
@@ -268,7 +268,7 @@ class QuestionnaireForm(FlaskForm):
         calculation: Calculation,
         question: QuestionSchemaType,
         target_total: Any,
-        currency: Optional[str],
+        currency: str | None,
         decimal_places: int | None,
     ) -> bool:
         messages = None
@@ -370,8 +370,8 @@ class QuestionnaireForm(FlaskForm):
 
     @staticmethod
     def _get_period_limits(
-        limits: Optional[PeriodLimits],
-    ) -> tuple[Optional[dict[str, Any]], Optional[dict[str, Any]]]:
+        limits: PeriodLimits | None,
+    ) -> tuple[dict[str, Any] | None, dict[str, Any] | None]:
         minimum, maximum = None, None
         if limits:
             if "minimum" in limits:
@@ -405,7 +405,7 @@ class QuestionnaireForm(FlaskForm):
 
     @staticmethod
     def _get_calculation_total(
-        calculation_type: Callable, values: Sequence[Union[float, int, Decimal, str]]
+        calculation_type: Callable, values: Sequence[float | int | Decimal | str]
     ) -> Decimal:
         result: Decimal = calculation_type(Decimal(value or 0) for value in values)
         return result
@@ -447,7 +447,7 @@ class QuestionnaireForm(FlaskForm):
 def _option_value_in_data(
     answer: Mapping[str, str],
     option: Mapping[str, Any],
-    data: Union[MultiDict[str, Any], Mapping[str, Any]],
+    data: MultiDict[str, Any] | Mapping[str, Any],
 ) -> bool:
     data_to_inspect = data.to_dict(flat=False) if isinstance(data, MultiDict) else data
 

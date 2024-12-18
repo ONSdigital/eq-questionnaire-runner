@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Union
 
 from flask import url_for
 from flask_babel import lazy_gettext
@@ -20,7 +19,7 @@ def build_view_submitted_response_context(
     schema: QuestionnaireSchema,
     questionnaire_store: QuestionnaireStore,
     survey_type: SurveyType,
-) -> dict[str, Union[str, datetime, dict]]:
+) -> dict[str, str | datetime | dict]:
     view_submitted_response_expired = has_view_submitted_response_expired(
         questionnaire_store.submitted_at  # type: ignore
     )

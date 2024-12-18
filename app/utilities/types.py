@@ -12,15 +12,15 @@ if TYPE_CHECKING:
         RelationshipLocation,  # pragma: no cover
     )
 
-LocationType: TypeAlias = Union["Location", "RelationshipLocation"]
+LocationType: TypeAlias = Union["Location", "RelationshipLocation"]  # noqa: UP007
 SupplementaryDataKeyType: TypeAlias = tuple[str, str | None]
 SupplementaryDataValueType: TypeAlias = dict | str | list | None
 
 DateValidatorType: TypeAlias = Union[
     "OptionalForm", "DateRequired", "DateCheck", "SingleDatePeriodCheck"
-]
+]  # noqa: UP007
 
-ChoiceType: TypeAlias = Union["Choice", "ChoiceWithDetailAnswer"]
+ChoiceType: TypeAlias = Union["Choice", "ChoiceWithDetailAnswer"]  # noqa: UP007
 ChoiceWidgetRenderType: TypeAlias = tuple[str, str, bool, str | None]
 
 

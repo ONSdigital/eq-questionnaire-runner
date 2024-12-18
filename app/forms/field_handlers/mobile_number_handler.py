@@ -1,5 +1,4 @@
 from functools import cached_property
-from typing import Union
 
 from wtforms import StringField
 from wtforms.fields.core import UnboundField
@@ -7,7 +6,7 @@ from wtforms.fields.core import UnboundField
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.validators import MobileNumberCheck, ResponseRequired
 
-MobileNumberValidatorTypes = list[Union[ResponseRequired, MobileNumberCheck]]
+MobileNumberValidatorTypes = list[ResponseRequired | MobileNumberCheck]
 
 
 class MobileNumberHandler(FieldHandler):
