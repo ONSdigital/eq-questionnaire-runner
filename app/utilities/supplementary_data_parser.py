@@ -90,7 +90,7 @@ def validate_supplementary_data_v1(
     identifier: str,
     survey_id: str,
     sds_schema_version: str | None = None,
-) -> dict:
+) -> dict[str, str | dict | int | list]:
     """Validate claims required for supplementary data"""
     supplementary_data_metadata_schema = SupplementaryDataMetadataSchema(
         unknown=INCLUDE

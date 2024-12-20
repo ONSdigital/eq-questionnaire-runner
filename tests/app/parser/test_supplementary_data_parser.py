@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from copy import deepcopy
 
 import pytest
@@ -5,6 +6,15 @@ from marshmallow import ValidationError
 
 from app.services.supplementary_data import validate_supplementary_data
 from app.utilities.supplementary_data_parser import validate_supplementary_data_v1
+
+
+@contextmanager
+def not_raises(exception):
+    try:
+        yield
+    except exception as validation_error:
+        raise pytest.fail(f"{validation_error} RAISED")
+
 
 SUPPLEMENTARY_DATA_PAYLOAD = {
     "dataset_id": "44f1b432-9421-49e5-bd26-e63e18a30b69",
@@ -70,14 +80,15 @@ def test_invalid_supplementary_dataset_version_raises_error():
     )
 
 
-def test_valid_supplementary_dataset_version():
-    validated_payload = validate_supplementary_data_v1(
-        supplementary_data=SUPPLEMENTARY_DATA_PAYLOAD,
-        dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
-        identifier="12345678901",
-        survey_id="123",
-        sds_schema_version="v1",
-    )
+def test_valid_supplementary_dataset_version_does_not_raise_error():
+    with not_raises(ValidationError):
+        validated_payload = validate_supplementary_data_v1(
+            supplementary_data=SUPPLEMENTARY_DATA_PAYLOAD,
+            dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
+            identifier="12345678901",
+            survey_id="123",
+            sds_schema_version="v1",
+        )
 
     assert validated_payload == SUPPLEMENTARY_DATA_PAYLOAD
 

@@ -131,7 +131,7 @@ def validate_supplementary_data(
     identifier: str,
     survey_id: str,
     sds_schema_version: str | None = None,
-) -> dict:
+) -> dict[str, str | dict | int | list]:
     try:
         return validate_supplementary_data_v1(
             supplementary_data=supplementary_data,
