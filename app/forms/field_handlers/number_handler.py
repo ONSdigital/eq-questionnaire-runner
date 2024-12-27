@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Any, Type, Union
+from typing import Any, Union
 
 from wtforms import DecimalField, IntegerField
 from wtforms.fields.core import UnboundField
@@ -58,7 +58,7 @@ class NumberHandler(FieldHandler):
     @property
     def _field_type(
         self,
-    ) -> Type[Union[DecimalFieldWithSeparator, IntegerFieldWithSeparator]]:
+    ) -> type[Union[DecimalFieldWithSeparator, IntegerFieldWithSeparator]]:
         return (
             DecimalFieldWithSeparator
             if self.max_decimals > 0

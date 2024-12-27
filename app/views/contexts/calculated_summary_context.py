@@ -1,4 +1,4 @@
-from typing import Callable, Iterable, Mapping, Tuple
+from typing import Callable, Iterable, Mapping
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -246,7 +246,7 @@ class CalculatedSummaryContext(Context):
 
         return self._format_total(answer_format=answer_format, total=calculated_total)
 
-    def _get_answer_format(self, groups: Iterable[Mapping]) -> Tuple[dict, list]:
+    def _get_answer_format(self, groups: Iterable[Mapping]) -> tuple[dict, list]:
         values_to_calculate: list = []
         answer_format: dict = {"type": None}
         decimal_limits: list[int] = []
