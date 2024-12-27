@@ -5,7 +5,7 @@ this is a temporary solution until placeholder transformer is refactored.
 """
 
 from datetime import date
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.rules.operations import DateOffset, Operations
@@ -30,10 +30,10 @@ class OperationHelper:
 
     def string_to_datetime(
         self,
-        date_string: Optional[str],
-        offset: Optional[DateOffset] = None,
+        date_string: str | None,
+        offset: DateOffset | None = None,
         offset_by_full_weeks: bool = False,
-    ) -> Optional[date]:
+    ) -> date | None:
         return self.ops.resolve_date_from_string(
             date_string, offset, offset_by_full_weeks
         )

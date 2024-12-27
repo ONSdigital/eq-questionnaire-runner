@@ -1,5 +1,4 @@
 from functools import cached_property
-from typing import Union
 
 from wtforms import StringField, validators
 from wtforms.fields.core import UnboundField
@@ -7,7 +6,7 @@ from wtforms.validators import Length
 
 from app.forms.field_handlers.field_handler import FieldHandler
 
-StringValidatorTypes = list[Union[validators.Optional, validators.Length]]
+StringValidatorTypes = list[validators.Optional | validators.Length]
 
 
 class StringHandler(FieldHandler):

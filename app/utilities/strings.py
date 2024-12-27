@@ -1,8 +1,7 @@
 import re
-from typing import Union
 
 
-def to_bytes(bytes_or_str: Union[bytes, str]) -> bytes:
+def to_bytes(bytes_or_str: bytes | str) -> bytes:
     """
     Converts supplied data into bytes if the data is of type str.
     :param bytes_or_str: Data to be converted.
@@ -13,7 +12,7 @@ def to_bytes(bytes_or_str: Union[bytes, str]) -> bytes:
     return bytes_or_str
 
 
-def to_str(bytes_or_str: Union[bytes, str]) -> str:
+def to_str(bytes_or_str: bytes | str) -> str:
     """
     Converts supplied data into a UTF-8 encoded string if the data is of type bytes.
     :param bytes_or_str: Data to be converted.

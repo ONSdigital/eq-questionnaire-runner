@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 from functools import cached_property
-from typing import Mapping, MutableMapping, Optional, Union
+from typing import Mapping, MutableMapping
 
 from structlog import get_logger
 from werkzeug.datastructures import ImmutableDict, ImmutableMultiDict
@@ -41,7 +41,7 @@ class BlockHandler:
             # Type ignore: Block has to exist at this point. Block existence is checked beforehand in block_factory.py
             self.block: ImmutableDict = self._schema.get_block(self._current_location.block_id)  # type: ignore
         self._routing_path = self._get_routing_path()
-        self.page_title: Optional[str] = None
+        self.page_title: str | None = None
 
         self._return_location = ReturnLocation(
             return_to=request_args.get("return_to"),
@@ -122,7 +122,7 @@ class BlockHandler:
         return self.router.routing_path(self._current_location.section_key)
 
     def _update_section_completeness(
-        self, location: Optional[Union[Location, RelationshipLocation]] = None
+        self, location: Location | RelationshipLocation | None = None
     ) -> None:
         location = location or self._current_location
 

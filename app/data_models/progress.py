@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import StrEnum
-from typing import Mapping, Optional, TypedDict
+from typing import Mapping, TypedDict
 
 
 class CompletionStatus(StrEnum):
@@ -24,7 +24,7 @@ class Progress:
     section_id: str
     block_ids: list[str]
     status: CompletionStatus
-    list_item_id: Optional[str] = None
+    list_item_id: str | None = None
 
     @classmethod
     def from_dict(cls, progress_dict: ProgressDict) -> Progress:

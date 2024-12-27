@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Any, Type, Union
+from typing import Any, Type
 
 from wtforms import DecimalField, IntegerField
 from wtforms.fields.core import UnboundField
@@ -15,7 +15,7 @@ from app.forms.validators import (
 from app.settings import MAX_NUMBER
 
 NumberValidatorTypes = list[
-    Union[ResponseRequired, NumberCheck, NumberRange, DecimalPlaces]
+    ResponseRequired | NumberCheck | NumberRange | DecimalPlaces
 ]
 
 
@@ -58,7 +58,7 @@ class NumberHandler(FieldHandler):
     @property
     def _field_type(
         self,
-    ) -> Type[Union[DecimalFieldWithSeparator, IntegerFieldWithSeparator]]:
+    ) -> Type[DecimalFieldWithSeparator | IntegerFieldWithSeparator]:
         return (
             DecimalFieldWithSeparator
             if self.max_decimals > 0
@@ -80,7 +80,7 @@ class NumberHandler(FieldHandler):
 
     def _get_number_field_validators(
         self,
-    ) -> list[Union[NumberCheck, NumberRange, DecimalPlaces]]:
+    ) -> list[NumberCheck | NumberRange | DecimalPlaces]:
         answer_errors = dict(self.error_messages)
 
         for error_key in self.validation_messages.keys():

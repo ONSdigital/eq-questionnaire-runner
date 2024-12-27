@@ -1,4 +1,4 @@
-from typing import Any, Union
+from typing import Any
 
 from flask_babel import lazy_gettext
 from werkzeug.datastructures import ImmutableDict
@@ -50,7 +50,7 @@ class PreviewQuestion:
             answers_list.append(answer_dict)
         return answers_list
 
-    def serialize(self) -> dict[str, Union[str, dict, Any]]:
+    def serialize(self) -> dict[str, str | dict | Any]:
         return {
             "id": self._block_id,
             "title": self._title,

@@ -1,5 +1,4 @@
 from datetime import datetime, timezone
-from typing import Optional, Union
 
 import pytest
 from freezegun import freeze_time
@@ -47,10 +46,10 @@ def get_rule_evaluator(
     language="en",
     schema: QuestionnaireSchema = None,
     data_stores: DataStores = None,
-    location: Union[Location, RelationshipLocation] = Location(
+    location: Location | RelationshipLocation = Location(
         section_id="test-section", block_id="test-block"
     ),
-    routing_path_block_ids: Optional[list] = None,
+    routing_path_block_ids: list | None = None,
 ):
     if not schema:
         schema = get_mock_schema()

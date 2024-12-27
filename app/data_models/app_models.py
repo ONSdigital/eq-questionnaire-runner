@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import Any, Optional, Union
+from typing import Any
 
 from marshmallow import Schema, fields, post_load, pre_dump
 
@@ -11,8 +11,8 @@ class QuestionnaireState:
         state_data: str,
         collection_exercise_sid: str,
         version: int,
-        submitted_at: Optional[datetime] = None,
-        expires_at: Optional[datetime] = None,
+        submitted_at: datetime | None = None,
+        expires_at: datetime | None = None,
     ):
         self.user_id = user_id
         self.state_data = state_data
@@ -28,9 +28,9 @@ class EQSession:
     def __init__(
         self,
         eq_session_id: str,
-        user_id: Optional[str],
+        user_id: str | None,
         expires_at: datetime,
-        session_data: Optional[str],
+        session_data: str | None,
     ):
         self.eq_session_id = eq_session_id
         self.user_id = user_id
@@ -52,9 +52,9 @@ class Timestamp(fields.Field):
     def _serialize(
         self,
         value: datetime,
-        *args: Optional[list],
+        *args: list | None,
         **kwargs: Any,
-    ) -> Optional[int]:
+    ) -> int | None:
         if value:
             # Timezone aware datetime to timestamp
             return int(value.replace(tzinfo=timezone.utc).timestamp())
@@ -63,9 +63,9 @@ class Timestamp(fields.Field):
     def _deserialize(
         self,
         value: float,
-        *args: Optional[list],
+        *args: list | None,
         **kwargs: Any,
-    ) -> Optional[datetime]:
+    ) -> datetime | None:
         if value:
             # Timestamp to timezone aware datetime
             return datetime.fromtimestamp(value, tz=timezone.utc)
@@ -79,9 +79,9 @@ class DateTimeSchemaMixin:
     @staticmethod
     @pre_dump
     def set_date(
-        data: Union[EQSession, QuestionnaireState],
+        data: EQSession | QuestionnaireState,
         **kwargs: Any,
-    ) -> Union[EQSession, QuestionnaireState]:
+    ) -> EQSession | QuestionnaireState:
         data.updated_at = datetime.now(tz=timezone.utc)
         return data
 
