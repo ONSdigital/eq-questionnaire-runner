@@ -437,7 +437,6 @@ def test_is_section_complete():
         ProgressDict(
             section_id="s5",
             list_item_id="456def",
-            status=CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED,
             block_ids=["not-three"],
         ),
     ]

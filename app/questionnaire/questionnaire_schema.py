@@ -720,22 +720,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
                 remove_block_id: str = block["remove_block"]["id"]
                 return remove_block_id
 
-    def get_individual_response_list(self) -> str | None:
-        list_name: str | None = self.json.get("individual_response", {}).get("for_list")
-        return list_name
-
-    def get_individual_response_show_on_hub(self) -> bool:
-        show_on_hub: bool = self.json.get("individual_response", {}).get(
-            "show_on_hub", True
-        )
-        return show_on_hub
-
-    def get_individual_response_individual_section_id(self) -> str | None:
-        section_id: str | None = self._questionnaire_json.get(
-            "individual_response", {}
-        ).get("individual_section_id")
-        return section_id
-
     def get_title_for_section(self, section_id: str) -> str | None:
         if section := self.get_section(section_id):
             return section.get("title")

@@ -33,7 +33,6 @@ from app.publisher import LogPublisher, PubSubPublisher
 from app.routes.dump import dump_blueprint
 from app.routes.errors import errors_blueprint
 from app.routes.flush import flush_blueprint
-from app.routes.individual_response import individual_response_blueprint
 from app.routes.questionnaire import post_submission_blueprint, questionnaire_blueprint
 from app.routes.schema import schema_blueprint
 from app.routes.session import session_blueprint
@@ -456,9 +455,6 @@ def add_blueprints(application):
 
     application.register_blueprint(schema_blueprint)
     schema_blueprint.config = application.config.copy()
-
-    application.register_blueprint(individual_response_blueprint)
-    individual_response_blueprint.config = application.config.copy()
 
 
 def setup_secure_cookies(application):

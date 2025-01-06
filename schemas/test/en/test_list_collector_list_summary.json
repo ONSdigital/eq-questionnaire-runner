@@ -30,10 +30,6 @@
         "type": "Linear",
         "options": {}
     },
-    "individual_response": {
-        "for_list": "people",
-        "individual_section_id": "section"
-    },
     "sections": [
         {
             "id": "section",

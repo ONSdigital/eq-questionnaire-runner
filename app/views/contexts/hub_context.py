@@ -35,13 +35,6 @@ class HubContext(Context):
                 "aria_label": lazy_gettext("Start section: {section_name}"),
             },
         },
-        CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED: {
-            "text": lazy_gettext("Separate census requested"),
-            "link": {
-                "text": lazy_gettext("Change or resend"),
-                "aria_label": lazy_gettext("Change or resend"),
-            },
-        },
     }
 
     def __call__(
@@ -59,20 +52,14 @@ class HubContext(Context):
             warning = submission_schema.get("warning") or lazy_gettext(
                 "You must submit this survey to complete it"
             )
-            individual_response_enabled = False
-            individual_response_url = None
 
         else:
             title = lazy_gettext("Choose another section to complete")
             submit_button = lazy_gettext("Continue")
             guidance = None
             warning = None
-            individual_response_enabled = self._individual_response_enabled
-            individual_response_url = self._individual_response_url
 
         return {
-            "individual_response_enabled": individual_response_enabled,
-            "individual_response_url": individual_response_url,
             "guidance": guidance,
             "rows": rows,
             "submit_button": submit_button,
@@ -109,10 +96,7 @@ class HubContext(Context):
             ]
         }
 
-        if section_status in (
-            CompletionStatus.COMPLETED,
-            CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED,
-        ):
+        if section_status in (CompletionStatus.COMPLETED,):
             context["rowItems"][0]["iconType"] = "check"
 
         return context
@@ -121,12 +105,6 @@ class HubContext(Context):
     def get_section_url(
         section_id: str, list_item_id: Optional[str], section_status: CompletionStatus
     ) -> str:
-        if section_status == CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED:
-            return url_for(
-                "individual_response.individual_response_change",
-                list_item_id=list_item_id,
-            )
-
         if list_item_id:
             return url_for(
                 "questionnaire.get_section",
@@ -196,25 +174,3 @@ class HubContext(Context):
                     rows.append(self._get_row_for_section(section_title, section_id))
 
         return rows
-
-    @cached_property
-    def _individual_response_enabled(self) -> bool:
-        if not self._schema.json.get("individual_response"):
-            return False
-
-        for_list = self._schema.json["individual_response"]["for_list"]
-
-        if not self._data_stores.list_store[for_list].non_primary_people:
-            return False
-        return True
-
-    @cached_property
-    def _individual_response_url(self) -> Union[str, None]:
-        if (
-            self._individual_response_enabled
-            and self._schema.get_individual_response_show_on_hub()
-        ):
-            return url_for(
-                "individual_response.request_individual_response", journey="hub"
-            )
-        return None

@@ -35,10 +35,6 @@ from app.views.handlers.confirm_email import (
     ConfirmationEmailFulfilmentRequestPublicationFailed,
 )
 from app.views.handlers.feedback import FeedbackLimitReached, FeedbackUploadFailed
-from app.views.handlers.individual_response import (
-    IndividualResponseFulfilmentRequestPublicationFailed,
-    IndividualResponseLimitReached,
-)
 
 logger = get_logger()
 
@@ -151,27 +147,6 @@ def internal_server_error(exception: Exception) -> tuple[str, int]:
         return render_template(template="errors/500"), 500
 
 
-@errors_blueprint.app_errorhandler(IndividualResponseLimitReached)
-def too_many_individual_response_requests(
-    exception: IndividualResponseLimitReached,
-) -> tuple[str, int]:
-    log_exception(exception, 429)
-    title = lazy_gettext(
-        "You have reached the maximum number of individual access codes"
-    )
-    contact_us_message = lazy_gettext(
-        "If you need more individual access codes, please <a href='{contact_us_url}'>contact us</a>."
-    )
-
-    return _render_error_page(
-        429,
-        template="error",
-        page_title=title,
-        heading=title,
-        contact_us_message=contact_us_message,
-    )
-
-
 @errors_blueprint.app_errorhandler(FeedbackLimitReached)
 def too_many_feedback_requests(
     exception: FeedbackLimitReached,
@@ -213,46 +188,6 @@ def submission_failed(
 ) -> tuple[str, int]:
     log_exception(exception, 500)
     return _render_error_page(500, template="submission-failed")
-
-
-@errors_blueprint.app_errorhandler(IndividualResponseFulfilmentRequestPublicationFailed)
-def individual_response_fulfilment_request_publication_failed(
-    exception: IndividualResponseFulfilmentRequestPublicationFailed,
-) -> tuple[str, int]:
-    log_exception(exception, 500)
-
-    if "mobile_number" in request.args:
-        blueprint_method = (
-            "individual_response.individual_response_text_message_confirm"
-        )
-    else:
-        blueprint_method = (
-            "individual_response.individual_response_post_address_confirm"
-        )
-
-    title = lazy_gettext("Sorry, there was a problem sending the access code")
-    retry_url = url_for(
-        blueprint_method,
-        # Type ignore: Request will be not None as this function will only run when a request handle raises and exception
-        list_item_id=request.view_args["list_item_id"],  # type: ignore
-        **request.args,  # type: ignore
-    )
-    retry_message = lazy_gettext(
-        "You can try to <a href='{retry_url}'>request a new access code again</a>."
-    )
-    contact_us_message = lazy_gettext(
-        "If this problem keeps happening, please <a href='{contact_us_url}'>contact us</a> for help."
-    )
-
-    return _render_error_page(
-        500,
-        template="error",
-        page_title=title,
-        heading=title,
-        retry_url=retry_url,
-        retry_message=retry_message,
-        contact_us_message=contact_us_message,
-    )
 
 
 @errors_blueprint.app_errorhandler(ConfirmationEmailFulfilmentRequestPublicationFailed)

@@ -77,12 +77,11 @@ class ProgressStore:
     def is_section_complete(self, section_key: SectionKey) -> bool:
         """
         Return True if the CompletionStatus of the Section or List Item specified by the given section_id and
-         list_item_id is COMPLETED or INDIVIDUAL_RESPONSE_REQUESTED, else False.
+         list_item_id is COMPLETED, else False.
         """
         return section_key in self.section_keys(
             statuses={
                 CompletionStatus.COMPLETED,
-                CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED,
             }
         )
 
