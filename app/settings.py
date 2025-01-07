@@ -1,5 +1,4 @@
 import os
-from datetime import datetime
 
 from structlog import get_logger
 

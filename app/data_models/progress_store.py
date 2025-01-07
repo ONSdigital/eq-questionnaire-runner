@@ -124,12 +124,6 @@ class ProgressStore:
                 self._progress[section_key].status = status
                 self._is_dirty = True
 
-        elif status == CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED:
-            self._progress[section_key] = Progress(
-                block_ids=[], status=status, **section_key.to_dict()
-            )
-            self._is_dirty = True
-
         return updated
 
     def get_section_status(self, section_key: SectionKey) -> CompletionStatus:

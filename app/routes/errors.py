@@ -1,7 +1,6 @@
 from typing import Any
 
 from flask import Blueprint, request
-from flask.helpers import url_for
 from flask_babel import lazy_gettext
 from flask_login import current_user
 from flask_wtf.csrf import CSRFError

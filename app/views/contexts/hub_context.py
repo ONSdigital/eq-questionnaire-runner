@@ -1,4 +1,3 @@
-from functools import cached_property
 from typing import Any, Iterable, Mapping, Optional, Union
 
 from flask import url_for
@@ -102,9 +101,7 @@ class HubContext(Context):
         return context
 
     @staticmethod
-    def get_section_url(
-        section_id: str, list_item_id: Optional[str], section_status: CompletionStatus
-    ) -> str:
+    def get_section_url(section_id: str, list_item_id: Optional[str]) -> str:
         if list_item_id:
             return url_for(
                 "questionnaire.get_section",
@@ -145,7 +142,7 @@ class HubContext(Context):
         return self.get_row_context_for_section(
             section_title,
             section_status,
-            self.get_section_url(section_id, list_item_id, section_status),
+            self.get_section_url(section_id, list_item_id),
             row_id,
         )
 
