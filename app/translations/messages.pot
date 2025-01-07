@@ -1,14 +1,14 @@
 # Translations template for PROJECT.
-# Copyright (C) 2024 ORGANIZATION
+# Copyright (C) 2025 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-12 12:26+0100\n"
+"POT-Creation-Date: 2025-01-07 09:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,7 +49,7 @@ msgstr ""
 msgid "Change your answer for: {question_title_or_answer_label}"
 msgstr ""
 
-#: app/jinja_filters.py:741
+#: app/jinja_filters.py:765
 #: templates/partials/summary/collapsible-summary.html:27
 #: templates/partials/summary/summary.html:24
 msgid "No answer provided"
@@ -229,92 +229,66 @@ msgstr ""
 msgid "Menu"
 msgstr ""
 
-#: app/helpers/template_helpers.py:142
+#: app/helpers/template_helpers.py:138
 msgid "The following links open in a new tab"
 msgstr ""
 
-#: app/helpers/template_helpers.py:167
+#: app/helpers/template_helpers.py:163
 msgid ""
 "Make sure you <a href='{sign_out_url}'>leave this page</a> or close your "
 "browser if using a shared device"
 msgstr ""
 
-#: app/questionnaire/placeholder_transforms.py:202
+#: app/questionnaire/placeholder_transforms.py:203
 msgid "{number_of_years} year"
 msgid_plural "{number_of_years} years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/questionnaire/placeholder_transforms.py:208
+#: app/questionnaire/placeholder_transforms.py:209
 msgid "{number_of_months} month"
 msgid_plural "{number_of_months} months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/questionnaire/placeholder_transforms.py:213
+#: app/questionnaire/placeholder_transforms.py:214
 msgid "{number_of_days} day"
 msgid_plural "{number_of_days} days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/routes/errors.py:159
-msgid "You have reached the maximum number of individual access codes"
-msgstr ""
-
-#: app/routes/errors.py:162
-msgid ""
-"If you need more individual access codes, please <a "
-"href='{contact_us_url}'>contact us</a>."
-msgstr ""
-
-#: app/routes/errors.py:180
+#: app/routes/errors.py:154
 msgid "You have reached the maximum number of times for submitting feedback"
 msgstr ""
 
-#: app/routes/errors.py:183
+#: app/routes/errors.py:157
 msgid ""
 "If you need to give more feedback, please <a "
 "href='{contact_us_url}'>contact us</a>."
 msgstr ""
 
-#: app/routes/errors.py:233
-msgid "Sorry, there was a problem sending the access code"
+#: app/routes/errors.py:198
+msgid "Sorry, there was a problem sending the confirmation email"
 msgstr ""
 
-#: app/routes/errors.py:240
-msgid "You can try to <a href='{retry_url}'>request a new access code again</a>."
+#: app/routes/errors.py:199
+msgid "You can try to <a href='{retry_url}'>send the email again</a>."
 msgstr ""
 
-#: app/routes/errors.py:243 app/routes/errors.py:268 app/routes/errors.py:290
+#: app/routes/errors.py:202 app/routes/errors.py:224
 msgid ""
 "If this problem keeps happening, please <a "
 "href='{contact_us_url}'>contact us</a> for help."
 msgstr ""
 
-#: app/routes/errors.py:264
-msgid "Sorry, there was a problem sending the confirmation email"
-msgstr ""
-
-#: app/routes/errors.py:265
-msgid "You can try to <a href='{retry_url}'>send the email again</a>."
-msgstr ""
-
-#: app/routes/errors.py:286 templates/errors/403.html:3
+#: app/routes/errors.py:220 templates/errors/403.html:3
 #: templates/errors/403.html:9 templates/errors/submission-failed.html:4
 #: templates/errors/submission-failed.html:11
 msgid "Sorry, there is a problem"
 msgstr ""
 
-#: app/routes/errors.py:287
+#: app/routes/errors.py:221
 msgid "You can try to <a href='{retry_url}'>submit your feedback again</a>."
-msgstr ""
-
-#: app/routes/individual_response.py:202
-msgid "An individual access code has been sent by post"
-msgstr ""
-
-#: app/routes/individual_response.py:308
-msgid "An individual access code has been sent by text"
 msgstr ""
 
 #: app/survey_config/business_config.py:60
@@ -366,67 +340,59 @@ msgstr ""
 msgid "Save and exit survey"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:18
+#: app/views/contexts/hub_context.py:17
 msgid "Completed"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:20
+#: app/views/contexts/hub_context.py:19
 msgid "View answers"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:21
+#: app/views/contexts/hub_context.py:20
 msgid "View answers: {section_name}"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:25
+#: app/views/contexts/hub_context.py:24
 msgid "Partially completed"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:27
+#: app/views/contexts/hub_context.py:26
 msgid "Continue with section"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:28
+#: app/views/contexts/hub_context.py:27
 msgid "Continue with section: {section_name}"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:32
+#: app/views/contexts/hub_context.py:31
 msgid "Not started"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:34
+#: app/views/contexts/hub_context.py:33
 msgid "Start section"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:35
+#: app/views/contexts/hub_context.py:34
 msgid "Start section: {section_name}"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:39
-msgid "Separate census requested"
-msgstr ""
-
-#: app/views/contexts/hub_context.py:41 app/views/contexts/hub_context.py:42
-msgid "Change or resend"
-msgstr ""
-
-#: app/views/contexts/hub_context.py:54 app/views/contexts/hub_context.py:55
+#: app/views/contexts/hub_context.py:46 app/views/contexts/hub_context.py:47
 msgid "Submit survey"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:59
+#: app/views/contexts/hub_context.py:51
 msgid "You must submit this survey to complete it"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:66
+#: app/views/contexts/hub_context.py:56
 msgid "Choose another section to complete"
 msgstr ""
 
-#: app/views/contexts/hub_context.py:67 templates/confirm-email.html:28
+#: app/views/contexts/hub_context.py:57 templates/confirm-email.html:28
 #: templates/individual_response/confirmation-post.html:26
 #: templates/individual_response/confirmation-text-message.html:39
 #: templates/individual_response/question.html:5 templates/interstitial.html:7
-#: templates/listcollectorcontent.html:6 templates/sectionsummary.html:11
+#: templates/listcollectorcontent.html:8 templates/sectionsummary.html:11
 #: templates/sectionsummary.html:51
 msgid "Continue"
 msgstr ""
@@ -511,7 +477,6 @@ msgstr ""
 
 #: app/views/handlers/confirm_email.py:103
 #: app/views/handlers/confirm_email.py:104
-#: app/views/handlers/individual_response.py:910
 msgid "No, I need to change it"
 msgstr ""
 
@@ -559,147 +524,6 @@ msgstr ""
 
 #: app/views/handlers/feedback.py:161
 msgid "Do not include confidential information, such as your contact details"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:151
-msgid "Person {list_item_position}"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:258
-msgid "Cannot answer questions for others in your household"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:329
-msgid ""
-"How would you like <strong>{person_name}</strong> to receive a separate "
-"census?"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:352
-msgid "Text message"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:354
-msgid "We will need their mobile number for this"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:362
-msgid "Post"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:364
-msgid ""
-"We can only send this to an unnamed resident at the registered household "
-"address"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:373
-msgid "It is no longer possible to receive an access code by post."
-msgstr ""
-
-#: app/views/handlers/individual_response.py:375
-msgid "Select how to send access code."
-msgstr ""
-
-#: app/views/handlers/individual_response.py:378
-msgid ""
-"For someone to complete a separate census, we need to send them an "
-"individual access code."
-msgstr ""
-
-#: app/views/handlers/individual_response.py:424
-msgid "Send individual access code"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:455
-msgid ""
-"How would you like to answer <strong>{person_name_possessive}</strong> "
-"questions?"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:470
-msgid "I would like to request a separate census for them to complete"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:476
-msgid "I will ask them to answer their own questions"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:480
-msgid "They will need the household access code from the letter we sent you"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:486
-msgid "I will answer for {person_name}"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:537
-msgid "How to answer questions"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:602
-msgid "Do you want to send an individual access code for {person_name} by post?"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:610
-msgid ""
-"A letter with an individual access code will be sent to your registered "
-"household address"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:617
-msgid ""
-"The letter will be addressed to <strong>Individual Resident</strong> "
-"instead of the name provided"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:630
-msgid "Yes, send the access code by post"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:636
-msgid "No, send it another way"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:673
-msgid "Confirm address"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:738
-#: app/views/handlers/individual_response.py:776
-msgid "Separate Census"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:742
-msgid "Who do you need to request a separate census for?"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:800
-msgid "What is <strong>{person_name_possessive}</strong> mobile number?"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:812
-msgid "UK mobile number"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:813
-msgid "This will not be stored and only used once to send the access code"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:848
-msgid "Mobile number"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:897
-msgid "Is this mobile number correct?"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:906
-msgid "Yes, send the text"
-msgstr ""
-
-#: app/views/handlers/individual_response.py:948
-msgid "Confirm mobile number"
 msgstr ""
 
 #: app/views/handlers/thank_you.py:22
@@ -786,15 +610,7 @@ msgstr[1] ""
 msgid "Send feedback"
 msgstr ""
 
-#: templates/hub.html:7
-msgid "If you can’t answer someone else’s questions"
-msgstr ""
-
-#: templates/interstitial.html:22 templates/partials/question.html:47
-msgid "If you can’t answer questions for this person"
-msgstr ""
-
-#: templates/interstitial.html:31 templates/layouts/_questionnaire.html:29
+#: templates/interstitial.html:27 templates/layouts/_questionnaire.html:29
 msgid "Save and continue"
 msgstr ""
 
@@ -922,19 +738,19 @@ msgid ""
 "submitted-response-link\">save or print your answers</a>."
 msgstr ""
 
-#: templates/layouts/_base.html:148 templates/thank-you.html:84
+#: templates/layouts/_base.html:147 templates/thank-you.html:84
 msgid "minute"
 msgstr ""
 
-#: templates/layouts/_base.html:149 templates/thank-you.html:85
+#: templates/layouts/_base.html:148 templates/thank-you.html:85
 msgid "minutes"
 msgstr ""
 
-#: templates/layouts/_base.html:150 templates/thank-you.html:86
+#: templates/layouts/_base.html:149 templates/thank-you.html:86
 msgid "second"
 msgstr ""
 
-#: templates/layouts/_base.html:151 templates/thank-you.html:87
+#: templates/layouts/_base.html:150 templates/thank-you.html:87
 msgid "seconds"
 msgstr ""
 
@@ -1239,29 +1055,29 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
-#: templates/layouts/_base.html:115
+#: templates/layouts/_base.html:114
 msgid "Skip to main content"
 msgstr ""
 
-#: templates/layouts/_base.html:143
+#: templates/layouts/_base.html:142
 msgid "You will be signed out soon"
 msgstr ""
 
-#: templates/layouts/_base.html:144
+#: templates/layouts/_base.html:143
 msgid "It appears you have been inactive for a while."
 msgstr ""
 
-#: templates/layouts/_base.html:145
+#: templates/layouts/_base.html:144
 msgid ""
 "To protect your information, your progress will be saved and you will be "
 "signed out in"
 msgstr ""
 
-#: templates/layouts/_base.html:146
+#: templates/layouts/_base.html:145
 msgid "You are being signed out"
 msgstr ""
 
-#: templates/layouts/_base.html:147
+#: templates/layouts/_base.html:146
 msgid "Continue survey"
 msgstr ""
 
@@ -1305,18 +1121,6 @@ msgstr ""
 msgid "Give feedback"
 msgstr ""
 
-#: templates/partials/individual-response-guidance.html:19
-msgid ""
-"You can <strong>share your household access code</strong> with the people"
-" you live with so they can complete their own sections."
-msgstr ""
-
-#: templates/partials/individual-response-guidance.html:22
-msgid ""
-"If this is not possible, there are <a href={url}>other ways each person "
-"can complete their own census.</a>"
-msgstr ""
-
 #: templates/partials/last_viewed_question_guidance.html:10
 msgid "This is the last viewed question in this section"
 msgstr ""
@@ -1328,7 +1132,7 @@ msgid ""
 msgstr ""
 
 #: templates/partials/preview-question.html:31
-#: templates/partials/question.html:86
+#: templates/partials/question.html:80
 msgid "Or"
 msgstr ""
 
@@ -1336,19 +1140,19 @@ msgstr ""
 msgid "{max_characters} characters can be added."
 msgstr ""
 
-#: templates/partials/question.html:78
+#: templates/partials/question.html:72
 msgid "Selecting this will clear your answer"
 msgstr ""
 
-#: templates/partials/question.html:79
+#: templates/partials/question.html:73
 msgid "cleared"
 msgstr ""
 
-#: templates/partials/question.html:81
+#: templates/partials/question.html:75
 msgid "Selecting this will deselect any selected options"
 msgstr ""
 
-#: templates/partials/question.html:82 templates/partials/question.html:90
+#: templates/partials/question.html:76 templates/partials/question.html:84
 msgid "deselected"
 msgstr ""
 
