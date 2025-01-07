@@ -434,11 +434,6 @@ def test_is_section_complete():
             status=CompletionStatus.COMPLETED,
             block_ids=["not-three"],
         ),
-        ProgressDict(
-            section_id="s5",
-            list_item_id="456def",
-            block_ids=["not-three"],
-        ),
     ]
 
     store = ProgressStore(completed)
