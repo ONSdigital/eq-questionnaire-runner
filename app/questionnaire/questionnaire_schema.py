@@ -711,15 +711,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             ):
                 return block
 
-    def get_remove_block_id_for_list(self, list_name: str) -> str | None:
-        for block in self.get_blocks():
-            if (
-                is_list_collector_block_editable(block)
-                and block["for_list"] == list_name
-            ):
-                remove_block_id: str = block["remove_block"]["id"]
-                return remove_block_id
-
     def get_title_for_section(self, section_id: str) -> str | None:
         if section := self.get_section(section_id):
             return section.get("title")
@@ -795,11 +786,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         if group := self.get_group(group_id):
             block_id: str = group["blocks"][0]["id"]
             return block_id
-
-    def get_first_block_id_for_section(self, section_id: str) -> str | None:
-        if section := self.get_section(section_id):
-            group_id: str = section["groups"][0]["id"]
-            return self.get_first_block_id_for_group(group_id)
 
     def get_blocks(self) -> Iterable[ImmutableDict]:
         return self._blocks_by_id.values()

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import random
-from functools import cached_property
 from string import ascii_letters
 from typing import Iterable, Iterator, Optional, TypedDict, overload
 

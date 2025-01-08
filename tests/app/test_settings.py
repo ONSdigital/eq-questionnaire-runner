@@ -36,12 +36,3 @@ def test_invalid_key_raises_exception():
         assert "Setting 'MISSING_ENVIRONMENT_VARIABLE' Missing" == str(
             exception.exception
         )
-
-
-def test_utcoffset_or_fail_raises_exception():
-    datetime_without_offset = datetime.fromisoformat("2021-04-28T14:00:00")
-
-    with pytest.raises(Exception) as exception:
-        settings.utcoffset_or_fail(datetime_without_offset, "DATETIME_VAR")
-
-        assert "'DATETIME_VAR' datetime offset missing" == str(exception.exception)
