@@ -48,15 +48,3 @@ class PubSubPublisher(Publisher):
                 topic_id=topic_id,
             )
             raise PublicationFailed(exc) from exc
-
-
-class LogPublisher(Publisher):
-    def publish(
-        self, topic_id: str, message: bytes, fulfilment_request_transaction_id: str
-    ) -> None:
-        logger.info(
-            "publishing message",
-            topic_id=topic_id,
-            message=message,
-            fulfilment_request_transaction_id=fulfilment_request_transaction_id,
-        )
