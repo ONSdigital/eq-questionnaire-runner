@@ -1,4 +1,4 @@
-from typing import Optional, Type
+from typing import Optional
 
 from google.api_core.retry import Retry
 from google.cloud import datastore
@@ -36,7 +36,7 @@ class Datastore(StorageHandler):
         return True
 
     @Retry()
-    def get(self, model_type: Type[ModelTypes], key_value: str) -> Optional[ModelTypes]:
+    def get(self, model_type: type[ModelTypes], key_value: str) -> Optional[ModelTypes]:
         storage_model = StorageModel(model_type=model_type)
         key = self.client.key(storage_model.table_name, key_value)
 
