@@ -58,11 +58,10 @@ def test_log_publisher_publish():
     topic_id = "test-topic-id"
     message = b"test-message"
     fulfilment_request_transaction_id = str(uuid4())
-    
+
     with patch("logging.Logger.info"):
         publisher.publish(
             topic_id=topic_id,
             message=message,
             fulfilment_request_transaction_id=fulfilment_request_transaction_id,
         )
-        
