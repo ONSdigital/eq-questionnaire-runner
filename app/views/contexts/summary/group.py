@@ -1,4 +1,4 @@
-from typing import Iterable, Mapping, Type
+from typing import Iterable, Mapping
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -86,7 +86,7 @@ class Group:
                 if parent_list_collector_block_id not in routing_path_block_ids:
                     continue
 
-                list_collector_block_class: Type[
+                list_collector_block_class: type[
                     ListCollectorBlock | ListCollectorContentBlock
                 ] = (
                     ListCollectorBlock
