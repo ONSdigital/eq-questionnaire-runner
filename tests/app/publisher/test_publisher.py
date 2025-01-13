@@ -8,6 +8,7 @@ from google.cloud.pubsub_v1.open_telemetry.publish_message_wrapper import (
 from google.pubsub_v1.types.pubsub import PubsubMessage
 
 from app.publisher.exceptions import PublicationFailed
+from app.publisher.publisher import LogPublisher
 
 
 def test_publish(publisher, mocker):
@@ -50,3 +51,18 @@ def test_resolving_message_raises_exception_on_error(publisher):
                 b"test-message",
                 fulfilment_request_transaction_id=str(uuid4()),
             )
+
+
+def test_log_publisher_publish():
+    publisher = LogPublisher()
+    topic_id = "test-topic-id"
+    message = b"test-message"
+    fulfilment_request_transaction_id = str(uuid4())
+    
+    with patch("logging.Logger.info"):
+        publisher.publish(
+            topic_id=topic_id,
+            message=message,
+            fulfilment_request_transaction_id=fulfilment_request_transaction_id,
+        )
+        
