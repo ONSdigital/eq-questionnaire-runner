@@ -30,15 +30,17 @@ describe("List Collector Section Summary and Summary Items", () => {
       await addCompany("Company A", "123", true);
       await anyMoreCompaniesNo();
       await expect(await $(SectionSummaryPage.companiesListLabel(1)).getText()).toContain("Name of UK company or branch");
-      await expect(await $(companiesListRowItem(1, 1)).getText()).toContain("Company A");
-      await expect(await $(companiesListRowItem(1, 2)).getText()).toContain("123");
-      await expect(await $(companiesListRowItem(1, 3)).getText()).toContain("Yes");
+      await expect(await $(companiesListRowItem(1)).$$(".ons-summary__values")[0].getText()).toContain("Company A");
+      await expect(await $(companiesListRowItem(1)).$$(".ons-summary__values")[1].getText()).toContain("123");
+      await expect(await $(companiesListRowItem(1)).$$(".ons-summary__values")[2].getText()).toContain("Yes");
       const listItemId = (await listItemIds())[0];
-      await expect(await $(companiesListRowItemAnchor(1)).getHTML()).toContain(
+      await expect(await $(companiesListRowItem(1)).$$(".ons-summary__actions")[0].getHTML()).toContain(
         `return_to=section-summary&amp;return_to_answer_id=${listItemId}#company-or-branch-name`,
       );
-      await expect(await $(companiesListRowItemAnchor(2)).getHTML()).toContain(`return_to_answer_id=registration-number-${listItemId}#registration-number`);
-      await expect(await $(companiesListRowItemAnchor(3)).getHTML()).toContain(
+      await expect(await $(companiesListRowItem(1)).$$(".ons-summary__actions")[1].getHTML()).toContain(
+        `return_to_answer_id=registration-number-${listItemId}#registration-number`,
+      );
+      await expect(await $(companiesListRowItem(1)).$$(".ons-summary__actions")[2].getHTML()).toContain(
         `return_to_answer_id=authorised-insurer-radio-${listItemId}#authorised-insurer-radio`,
       );
     });
@@ -51,15 +53,15 @@ describe("List Collector Section Summary and Summary Items", () => {
       await addCompany("Company C", "789", true);
       await anyMoreCompaniesNo();
       await answerUkBasedQuestion();
-      await expect(await $(companiesListRowItem(1, 1)).getText()).toContain("Company A");
-      await expect(await $(companiesListRowItem(1, 2)).getText()).toContain("123");
-      await expect(await $(companiesListRowItem(1, 3)).getText()).toContain("Yes");
-      await expect(await $(companiesListRowItem(2, 1)).getText()).toContain("Company B");
-      await expect(await $(companiesListRowItem(2, 2)).getText()).toContain("456");
-      await expect(await $(companiesListRowItem(2, 3)).getText()).toContain("No");
-      await expect(await $(companiesListRowItem(3, 1)).getText()).toContain("Company C");
-      await expect(await $(companiesListRowItem(3, 2)).getText()).toContain("789");
-      await expect(await $(companiesListRowItem(3, 3)).getText()).toContain("Yes");
+      await expect(await $(companiesListRowItem(1)).$$(".ons-summary__values")[0].getText()).toContain("Company A");
+      await expect(await $(companiesListRowItem(1)).$$(".ons-summary__values")[1].getText()).toContain("123");
+      await expect(await $(companiesListRowItem(1)).$$(".ons-summary__values")[2].getText()).toContain("Yes");
+      await expect(await $(companiesListRowItem(2)).$$(".ons-summary__values")[0].getText()).toContain("Company B");
+      await expect(await $(companiesListRowItem(2)).$$(".ons-summary__values")[1].getText()).toContain("456");
+      await expect(await $(companiesListRowItem(2)).$$(".ons-summary__values")[2].getText()).toContain("No");
+      await expect(await $(companiesListRowItem(3)).$$(".ons-summary__values")[0].getText()).toContain("Company C");
+      await expect(await $(companiesListRowItem(3)).$$(".ons-summary__values")[1].getText()).toContain("789");
+      await expect(await $(companiesListRowItem(3)).$$(".ons-summary__values")[2].getText()).toContain("Yes");
     });
     it("When I remove an item, Then the list of answers should no longer be visible on the section summary.", async () => {
       await drivingQuestionYes();
@@ -112,7 +114,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await drivingQuestionYes();
       await addCompany("Company A", "123", true);
       await anyMoreCompaniesNo();
-      await expect(await $(companiesListRowItem(1, 1)).getText()).toContain("Company A");
+      await expect(await $(companiesListRowItem(1)).$$(".ons-summary__values")[0].getText()).toContain("Company A");
       await $(SectionSummaryPage.companiesListEditLink(1)).click();
       await verifyUrlContains("edit-company/?return_to=section-summary");
       await expect(await $(AnyCompaniesOrBranchesAddPage.companyOrBranchName()).getValue()).toBe("Company A");
@@ -259,15 +261,15 @@ describe("List Collector Section Summary and Summary Items", () => {
       await click(SectionSummaryTwoPage.submit());
 
       await verifyUrlContains(SubmitPage.url());
-      await expect(await $(companiesListRowItem(1, 1)).getText()).toContain("Company A");
-      await expect(await $(companiesListRowItem(1, 2)).getText()).toContain("123");
-      await expect(await $(companiesListRowItem(1, 3)).getText()).toContain("Change");
-      await expect(await $(companiesListRowItem(2, 1)).getText()).toContain("Company B");
-      await expect(await $(companiesListRowItem(2, 2)).getText()).toContain("456");
-      await expect(await $(companiesListRowItem(2, 3)).getText()).toContain("Change");
-      await expect(await $(companiesListRowItem(3, 1)).getText()).toContain("Company C");
-      await expect(await $(companiesListRowItem(3, 2)).getText()).toContain("234");
-      await expect(await $(companiesListRowItem(3, 3)).getText()).toContain("Change");
+      await expect(await $(companiesListRowItem(1)).$$(".ons-summary__values")[0].getText()).toContain("Company A");
+      await expect(await $(companiesListRowItem(1)).$$(".ons-summary__values")[1].getText()).toContain("123");
+      await expect(await $(companiesListRowItem(1)).$$(".ons-summary__actions")[0].getText()).toContain("Change");
+      await expect(await $(companiesListRowItem(2)).$$(".ons-summary__values")[0].getText()).toContain("Company B");
+      await expect(await $(companiesListRowItem(2)).$$(".ons-summary__values")[1].getText()).toContain("456");
+      await expect(await $(companiesListRowItem(2)).$$(".ons-summary__actions")[0].getText()).toContain("Change");
+      await expect(await $(companiesListRowItem(3)).$$(".ons-summary__values")[0].getText()).toContain("Company C");
+      await expect(await $(companiesListRowItem(3)).$$(".ons-summary__values")[1].getText()).toContain("234");
+      await expect(await $(companiesListRowItem(3)).$$(".ons-summary__actions")[0].getText()).toContain("Change");
       await expect(await $(SubmitPage.householderCheckboxAnswer()).getText()).toContain("No");
       await expect(await $("body").getHTML()).toContain("Add another UK company or branch");
       await expect(await $("body").getHTML()).toContain("Remove");
@@ -295,12 +297,15 @@ describe("List Collector Section Summary and Summary Items", () => {
       await $(ThankYouPage.savePrintAnswersLink()).click();
 
       await verifyUrlContains(ViewSubmittedResponsePage.pageName);
-      await expect(await $(companiesListRowItem(1, 1)).getText()).toContain("Company A");
-      await expect(await $(companiesListRowItem(1, 2)).getText()).toContain("123");
-      await expect(await $(companiesListRowItem(2, 1)).getText()).toContain("Company B");
-      await expect(await $(companiesListRowItem(2, 2)).getText()).toContain("456");
-      await expect(await $(companiesListRowItem(3, 1)).getText()).toContain("Company C");
-      await expect(await $(companiesListRowItem(3, 2)).getText()).toContain("234");
+      await expect(await $(companiesListRowItem(1)).$$(".ons-summary__values")[0].getText()).toContain("Company A");
+      await expect(await $(companiesListRowItem(1)).$$(".ons-summary__values")[1].getText()).toContain("123");
+      await expect(await $(companiesListRowItem(1)).$$(".ons-summary__values")[2].getText()).toContain("Yes");
+      await expect(await $(companiesListRowItem(2)).$$(".ons-summary__values")[0].getText()).toContain("Company B");
+      await expect(await $(companiesListRowItem(2)).$$(".ons-summary__values")[1].getText()).toContain("456");
+      await expect(await $(companiesListRowItem(2)).$$(".ons-summary__values")[2].getText()).toContain("Yes");
+      await expect(await $(companiesListRowItem(3)).$$(".ons-summary__values")[0].getText()).toContain("Company C");
+      await expect(await $(companiesListRowItem(3)).$$(".ons-summary__values")[1].getText()).toContain("234");
+      await expect(await $(companiesListRowItem(3)).$$(".ons-summary__values")[2].getText()).toContain("Yes");
       await expect(await $("body").getHTML()).not.toContain("Change");
       await expect(await $("body").getHTML()).not.toContain("Remove");
       await expect(await $("body").getHTML()).not.toContain("Add another UK company or branch");
@@ -351,9 +356,5 @@ const answerUkBasedQuestion = async () => {
 };
 
 const companiesListRowItem = (row, index) => {
-  return `#group-companies-1 .ons-summary__items .ons-summary__item:nth-of-type(${row}) .ons-summary__row:nth-of-type(${index})`;
-};
-
-const companiesListRowItemAnchor = (index) => {
-  return `#group-companies-1 .ons-summary__items .ons-summary__item .ons-summary__row:nth-of-type(${index}) a`;
+  return `#group-companies-1 .ons-summary__items .ons-summary__item:nth-of-type(${row})`;
 };
