@@ -67,7 +67,7 @@ generate-spec:
 	poetry run python -m tests.functional.generate_pages schemas/test/en/$(SCHEMA).json ./tests/functional/generated_pages/$(patsubst test_%,%,$(SCHEMA)) -r '../../base_pages' -s tests/functional/spec/$(SCHEMA).spec.js
 
 validate-test-schemas:
-	./scripts/validate_test_schemas.sh
+	poetry run python -m scripts.validate_test_schemas
 
 validate-test-schema:
 	./scripts/validate_test_schemas.sh $(SCHEMA_PATH)$(SCHEMA).json
