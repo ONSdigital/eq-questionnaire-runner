@@ -66,11 +66,11 @@ validate() {
 N_TIMES_IN_PARALLEL=20
 
 for schema in ${file_path_name}; do
-   ((i=i%N_TIMES_IN_PARALLEL)); ((i++==0)) && wait
+   ((i=i%N_TIMES_IN_PARALLEL)); ((i++==0))
 #  Spawn multiple (N_TIMES_IN_PARALLEL) processes in subshells and send to background, but keep printing outputs.
    validate "$schema" &
 done
 
-
+wait
 
 exit "$exit"
