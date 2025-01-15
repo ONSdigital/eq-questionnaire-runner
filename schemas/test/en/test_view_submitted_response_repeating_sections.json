@@ -45,7 +45,7 @@
                                         "label": "Full name",
                                         "max_length": 20,
                                         "mandatory": false,
-                                        "type": "TextField"
+                                        "type": "TextFieldMock"
                                     }
                                 ],
                                 "id": "name-question",
