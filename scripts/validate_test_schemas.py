@@ -1,10 +1,13 @@
+import json
 import subprocess
 import os
+import re
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 error = False
-
+passed = 0
+failed = 0
 
 def validate_schema(schema_path):
     try:
@@ -31,15 +34,31 @@ def main():
             schema = future_to_schema[future]
             try:
                 schema_path, result = future.result()
-                if result == "{}HTTPSTATUS:200":
-                    print(f"Result for {schema_path}: PASSED")
+                # Extract HTTP body
+                http_body = re.sub(r'HTTPSTATUS:.*', '', result)
+
+                # Convert HTTP body to JSON
+                http_body_json = json.loads(http_body)
+
+                # Extract HTTP status code
+                result_response = re.search(r'HTTPSTATUS:(\d+)', result)[1]
+
+                if result_response == "200" and http_body_json == {}:
+                    print(f"\033[32m{schema_path}: PASSED\033[0m")
+                    global passed
+                    passed += 1
                 else:
+                    print(f"\033[31m{schema_path}: FAILED")
+                    print(f"HTTP Status @ /validate: {result_response}")
+                    print(f"HTTP Status: {http_body_json}\033[0m")
                     global error
                     error = True
+                    global failed
+                    failed += 1
             except Exception as e:
                 print(f"Error processing {schema}: {e}")
     if error:
-        print("Some schemas failed validation")
+        print(f"\033[32m{passed} passed\033[0m - \033[31m{failed} failed\033[0m")
         sys.exit(1)
 
 
