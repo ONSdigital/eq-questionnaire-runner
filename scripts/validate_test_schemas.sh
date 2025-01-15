@@ -73,4 +73,6 @@ done
 
 wait
 
+echo -e "\\n${green}$passed Passed${default} - ${red}$failed Failed${default}"
+
 exit "$exit"
