@@ -48,15 +48,15 @@ def main():
                     global passed
                     passed += 1
                 else:
-                    print(f"\033[31m{schema_path}: FAILED")
-                    print(f"HTTP Status @ /validate: {result_response}")
-                    print(f"HTTP Status: {http_body_json}\033[0m")
+                    print(f"\033[31m{schema_path}: FAILED\033[0m")
+                    print(f"\033[31mHTTP Status @ /validate: {result_response}\033[0m")
+                    print(f"\033[31mHTTP Status: {http_body_json}\033[0m")
                     global error
                     error = True
                     global failed
                     failed += 1
             except Exception as e:
-                print(f"Error processing {schema}: {e}")
+                print(f"\033[31mError processing {schema}: {e}\033[0m")
     if error:
         print(f"\033[32m{passed} passed\033[0m - \033[31m{failed} failed\033[0m")
         sys.exit(1)

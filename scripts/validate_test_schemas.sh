@@ -58,7 +58,7 @@ validate() {
         echo "HTTP Status @ /validate: [$result_response]"
         echo -e "Error: [$result_body]${default}\\n"
         (( failed++ ))
-        exit=1
+        return exit 1
     fi
 }
 
