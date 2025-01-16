@@ -70,7 +70,7 @@ validate-test-schemas:
 	poetry run python -m scripts.validate_test_schemas
 
 validate-test-schema:
-	./scripts/validate_test_schemas.sh $(SCHEMA_PATH)$(SCHEMA).json
+	poetry run python -m scripts.validate_test_schemas $(SCHEMA_PATH)
 
 translation-templates:
 	poetry run python -m scripts.extract_translation_templates

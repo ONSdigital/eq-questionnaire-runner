@@ -5,6 +5,7 @@ import subprocess
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
+
 from structlog import get_logger
 
 logger = get_logger()
@@ -60,8 +61,8 @@ def main():
         ).stdout.strip()
 
         if response != "200":
-            logger.info("\033[31m---Error: Schema Validator Not Reachable---\033[0m")
-            logger.info(f"\033[31mHTTP Status: {response}\033[0m")
+            logger.error("\033[31m---Error: Schema Validator Not Reachable---\033[0m")
+            logger.error(f"\033[31mHTTP Status: {response}\033[0m")
             if checks != 1:
                 logger.info("Retrying...\n")
                 time.sleep(5)
@@ -74,14 +75,16 @@ def main():
 
     if len(sys.argv) == 1 or sys.argv[1] == "--local":
         file_path = "./schemas/test/en"
+        schemas = [
+            os.path.join(file_path, f)
+            for f in os.listdir(file_path)
+            if f.endswith(".json")
+        ]
+        logger.info(f"--- Testing Schemas in {file_path} ---")
     else:
         file_path = sys.argv[1]
-
-    logger.info(f"--- Testing Schemas in {file_path} ---")
-
-    schemas = [
-        os.path.join(file_path, f) for f in os.listdir(file_path) if f.endswith(".json")
-    ]
+        schemas = [sys.argv[1]]
+        logger.info(f"--- Testing {file_path} Schema ---")
 
     with ThreadPoolExecutor(max_workers=20) as executor:
         future_to_schema = {
@@ -108,14 +111,16 @@ def main():
                     global passed
                     passed += 1
                 else:
-                    logger.info(f"\033[31m{schema_path}: FAILED\033[0m")
-                    logger.info(f"\033[31mHTTP Status @ /validate: {result_response}\033[0m")
-                    logger.info(f"\033[31mHTTP Status: {formatted_json}\033[0m")
+                    logger.error(f"\033[31m{schema_path}: FAILED\033[0m")
+                    logger.error(
+                        f"\033[31mHTTP Status @ /validate: {result_response}\033[0m"
+                    )
+                    logger.error(f"\033[31mHTTP Status: {formatted_json}\033[0m")
                     global error, failed
                     error = True
                     failed += 1
             except Exception as e:
-                logger.info(f"\033[31mError processing {schema}: {e}\033[0m")
+                logger.error(f"\033[31mError processing {schema}: {e}\033[0m")
     if error:
         logger.info(f"\033[32m{passed} passed\033[0m - \033[31m{failed} failed\033[0m")
         sys.exit(1)
