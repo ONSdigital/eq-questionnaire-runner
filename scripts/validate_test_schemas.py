@@ -121,8 +121,9 @@ def main():
                     failed += 1
             except Exception as e:
                 logger.error(f"\033[31mError processing {schema}: {e}\033[0m")
+
+    logger.info(f"\033[32m{passed} passed\033[0m - \033[31m{failed} failed\033[0m")
     if error:
-        logger.info(f"\033[32m{passed} passed\033[0m - \033[31m{failed} failed\033[0m")
         sys.exit(1)
 
 
