@@ -14,8 +14,19 @@ failed = 0
 def validate_schema(schema_path):
     try:
         result = subprocess.run(
-            ['curl', '-s', '-w', 'HTTPSTATUS:%{http_code}', '-X', 'POST', '-H', 'Content-Type: application/json', '-d', f'@{schema_path}',
-             'http://localhost:5001/validate'],
+            [
+                "curl",
+                "-s",
+                "-w",
+                "HTTPSTATUS:%{http_code}",
+                "-X",
+                "POST",
+                "-H",
+                "Content-Type: application/json",
+                "-d",
+                f"@{schema_path}",
+                "http://localhost:5001/validate",
+            ],
             capture_output=True,
             text=True,
             check=True,
@@ -27,23 +38,32 @@ def validate_schema(schema_path):
 
 
 def main():
+    # pylint: disable=global-statement, broad-exception-caught
     checks = 4
 
     while checks > 0:
         response = subprocess.run(
-            ['curl', '-so', '/dev/null', '-w', '%{http_code}', 'http://localhost:5002/status'],
+            [
+                "curl",
+                "-so",
+                "/dev/null",
+                "-w",
+                "%{http_code}",
+                "http://localhost:5002/status",
+            ],
             capture_output=True,
-            text=True
+            text=True,
+            check=False,
         ).stdout.strip()
 
         if response != "200":
-            print(f"\033[31m---Error: Schema Validator Not Reachable---\033[0m")
+            print("\033[31m---Error: Schema Validator Not Reachable---\033[0m")
             print(f"\033[31mHTTP Status: {response}\033[0m")
             if checks != 1:
-                print(f"Retrying...\n")
+                print("Retrying...\n")
                 time.sleep(5)
             else:
-                print(f"Exiting...\n")
+                print("Exiting...\n")
                 sys.exit(1)
             checks -= 1
         else:
