@@ -1,0 +1,246 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Test Language Survey",
+    "theme": "social",
+    "description": "A questionnaire to demonstrate language switching",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Hub",
+        "options": {}
+    },
+    "submission": {
+        "button": "Submission button",
+        "guidance": "Submission guidance",
+        "title": "Submission title",
+        "warning": "Submission warning"
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "title": "Household details",
+            "groups": [
+                {
+                    "id": "language-group",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "name-block",
+                            "question": {
+                                "instruction": ["Enter the name of a person"],
+                                "description": ["The full name of the person"],
+                                "id": "name-question",
+                                "title": "Please enter a name",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "first-name",
+                                        "label": "First Name",
+                                        "mandatory": true,
+                                        "type": "TextField"
+                                    },
+                                    {
+                                        "id": "last-name",
+                                        "label": "Last Name",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "dob-block",
+                            "question": {
+                                "description": [
+                                    {
+                                        "text": "{person_name_possessive} date of birth",
+                                        "placeholders": [
+                                            {
+                                                "placeholder": "person_name_possessive",
+                                                "transforms": [
+                                                    {
+                                                        "arguments": {
+                                                            "delimiter": " ",
+                                                            "list_to_concatenate": [
+                                                                {
+                                                                    "source": "answers",
+                                                                    "identifier": "first-name"
+                                                                },
+                                                                {
+                                                                    "source": "answers",
+                                                                    "identifier": "last-name"
+                                                                }
+                                                            ]
+                                                        },
+                                                        "transform": "concatenate_list"
+                                                    },
+                                                    {
+                                                        "arguments": {
+                                                            "string_to_format": {
+                                                                "source": "previous_transform"
+                                                            }
+                                                        },
+                                                        "transform": "format_possessive"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "id": "dob-question",
+                                "title": {
+                                    "text": "What is {person_name_possessive} date of birth?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "person_name_possessive",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "last-name"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                },
+                                                {
+                                                    "arguments": {
+                                                        "string_to_format": {
+                                                            "source": "previous_transform"
+                                                        }
+                                                    },
+                                                    "transform": "format_possessive"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "date-of-birth-answer",
+                                        "description": "Enter your date of birth",
+                                        "label": "Date of Birth",
+                                        "mandatory": true,
+                                        "type": "Date"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "number-of-people-block",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "number-of-people-answer",
+                                        "label": "Number of household residents",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "minimum": {
+                                            "value": 0
+                                        },
+                                        "maximum": {
+                                            "value": 100
+                                        }
+                                    }
+                                ],
+                                "description": ["The total number of people in the household"],
+                                "warning": "This is a very important question",
+                                "id": "number-of-people-question",
+                                "title": "How many people live at your household?",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "confirm-number-of-people",
+                            "question": {
+                                "type": "General",
+                                "id": "total-people-question",
+                                "title": {
+                                    "text_plural": {
+                                        "forms": {
+                                            "one": "{number_of_people} person lives here, is this correct?",
+                                            "other": "{number_of_people} people live here, is this correct?"
+                                        },
+                                        "count": {
+                                            "source": "answers",
+                                            "identifier": "number-of-people-answer"
+                                        }
+                                    },
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "number_of_people",
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "number-of-people-answer"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "confirm-count",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": {
+                                                    "text_plural": {
+                                                        "forms": {
+                                                            "one": "Yes, {number_of_people} person lives here",
+                                                            "other": "Yes, {number_of_people} people live here"
+                                                        },
+                                                        "count": {
+                                                            "source": "answers",
+                                                            "identifier": "number-of-people-answer"
+                                                        }
+                                                    },
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "number_of_people",
+                                                            "value": {
+                                                                "source": "answers",
+                                                                "identifier": "number-of-people-answer"
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

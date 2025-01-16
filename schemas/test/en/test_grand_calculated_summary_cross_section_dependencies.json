@@ -1,0 +1,368 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Grand Calculated Summary Cross Section Dependencies",
+    "theme": "default",
+    "description": "A questionnaire to demo resolution of grand calculated summary values across sections",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Hub",
+        "options": {}
+    },
+    "sections": [
+        {
+            "id": "questions-section",
+            "title": "Household bills",
+            "summary": {
+                "show_on_completion": true
+            },
+            "groups": [
+                {
+                    "id": "radio",
+                    "title": "Questions",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "skip-first-block",
+                            "question": {
+                                "type": "General",
+                                "id": "skip-question-1",
+                                "title": "Are you a student?",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "If you answer yes, then the question about council tax will be skipped and not included in total monthly expenditure."
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "skip-answer-1",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
+                                        {
+                                            "identifier": "skip-answer-1",
+                                            "source": "answers"
+                                        },
+                                        "Yes"
+                                    ]
+                                }
+                            },
+                            "type": "Question",
+                            "id": "first-number-block-part-a",
+                            "question": {
+                                "id": "question-1-a",
+                                "title": "How much do you pay monthly for council tax?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "first-number-answer-a",
+                                        "label": "Council tax (optional)",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "second-number-block",
+                            "question": {
+                                "id": "question-2",
+                                "title": "How much are your monthly gas, water and electricity bills?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "second-number-answer-a",
+                                        "label": "Electricity Bill",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "second-number-answer-b",
+                                        "label": "Gas Bill",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "second-number-answer-c",
+                                        "label": "Water Bill",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "currency-section-1",
+                            "title": "We calculate your total monthly expenditure on household bills to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "second-number-answer-a"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "second-number-answer-b"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "second-number-answer-c"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "first-number-answer-a"
+                                        }
+                                    ]
+                                },
+                                "title": "Monthly expenditure on household bills"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "calculated-summary-section",
+            "title": "Other outgoing costs",
+            "summary": {
+                "show_on_completion": true
+            },
+            "groups": [
+                {
+                    "id": "calculated-summary",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "third-number-block",
+                            "question": {
+                                "id": "third-number-question",
+                                "title": "How much do you spend on internet and television?",
+                                "type": "General",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "If you enter a value for the TV licence, it will unlock an additional question about premium channels."
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "third-number-answer-part-a",
+                                        "label": "Internet bill",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "third-number-answer-part-b",
+                                        "label": "TV licence (optional)",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
+                                        {
+                                            "identifier": "third-number-answer-part-b",
+                                            "source": "answers"
+                                        },
+                                        null
+                                    ]
+                                }
+                            },
+                            "type": "Question",
+                            "id": "fourth-number-block",
+                            "question": {
+                                "id": "fourth-number-question",
+                                "title": "How much do you spend per month on premium television channels?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "fourth-number-answer",
+                                        "label": "TV channel subscription fees",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "skip-calculated-summary",
+                            "question": {
+                                "type": "General",
+                                "id": "skip-question-2",
+                                "title": "Skip the calculated summary of other outgoing costs so it isn’t included in the grand calculated summary?",
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "skip-answer-2",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
+                                        {
+                                            "identifier": "skip-answer-2",
+                                            "source": "answers"
+                                        },
+                                        "Yes"
+                                    ]
+                                }
+                            },
+                            "type": "CalculatedSummary",
+                            "id": "currency-question-3",
+                            "title": "We calculate the total monthly spending on internet and TV to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "third-number-answer-part-a"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "third-number-answer-part-b"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "fourth-number-answer"
+                                        }
+                                    ]
+                                },
+                                "title": "Total monthly spending on internet and TV"
+                            }
+                        },
+                        {
+                            "id": "tv-choice-block",
+                            "type": "Question",
+                            "question": {
+                                "id": "tv-choice-question",
+                                "title": "Do you prefer to watch films on a television or computer?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "tv-choice-answer",
+                                        "label": "Preferred platform",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Television",
+                                                "value": "Television"
+                                            },
+                                            {
+                                                "label": "Computer",
+                                                "value": "Computer"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "grand-calculated-summary-section",
+            "title": "Grand Calculated Summary",
+            "groups": [
+                {
+                    "id": "grand-calculated-summary",
+                    "blocks": [
+                        {
+                            "type": "GrandCalculatedSummary",
+                            "id": "currency-all",
+                            "title": "The grand calculated summary is calculated to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "currency-section-1"
+                                        },
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "currency-question-3"
+                                        }
+                                    ]
+                                },
+                                "title": "Grand total monthly expenditure"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

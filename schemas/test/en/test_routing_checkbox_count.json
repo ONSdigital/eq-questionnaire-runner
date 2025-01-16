@@ -1,0 +1,169 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "001",
+    "title": "Test Routing Checkbox Count",
+    "theme": "default",
+    "description": "A test survey for routing based on checkbox count",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "topping-checkbox",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "topping-checkbox-answer",
+                                        "mandatory": false,
+                                        "instruction": "Please select 2 or more",
+                                        "options": [
+                                            {
+                                                "label": "Cheese",
+                                                "value": "Cheese"
+                                            },
+                                            {
+                                                "label": "Ham",
+                                                "value": "Ham"
+                                            },
+                                            {
+                                                "label": "Pineapple",
+                                                "value": "Pineapple"
+                                            },
+                                            {
+                                                "label": "Tuna",
+                                                "value": "Tuna"
+                                            },
+                                            {
+                                                "label": "Pepperoni",
+                                                "value": "Pepperoni"
+                                            }
+                                        ],
+                                        "type": "Checkbox"
+                                    }
+                                ],
+                                "id": "topping-checkbox-question",
+                                "title": "What extra toppings would you like?",
+                                "type": "General"
+                            },
+                            "routing_rules": [
+                                {
+                                    "block": "correct-answer",
+                                    "when": {
+                                        ">=": [
+                                            {
+                                                "count": [
+                                                    {
+                                                        "source": "answers",
+                                                        "identifier": "topping-checkbox-answer"
+                                                    }
+                                                ]
+                                            },
+                                            2
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "incorrect-answer"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Interstitial",
+                            "id": "incorrect-answer",
+                            "content": {
+                                "title": "You did not select 2 or more toppings",
+                                "contents": [
+                                    {
+                                        "description": {
+                                            "text": "You were asked to select <strong>2 or more</strong> toppings but you actually selected <strong>{answer_count}</strong>.",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "answer_count",
+                                                    "transforms": [
+                                                        {
+                                                            "transform": "list_item_count",
+                                                            "arguments": {
+                                                                "list_to_count": {
+                                                                    "source": "answers",
+                                                                    "identifier": "topping-checkbox-answer"
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "section": "End"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Interstitial",
+                            "id": "correct-answer",
+                            "content": {
+                                "title": "You selected 2 or more toppings",
+                                "contents": [
+                                    {
+                                        "description": {
+                                            "text": "You were asked to select <strong>2 or more</strong> toppings and you selected <strong>{answer_count}</strong>.",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "answer_count",
+                                                    "transforms": [
+                                                        {
+                                                            "transform": "list_item_count",
+                                                            "arguments": {
+                                                                "list_to_count": {
+                                                                    "source": "answers",
+                                                                    "identifier": "topping-checkbox-answer"
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "id": "checkboxes"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,129 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "001",
+    "title": "Test Routing Number less Than or Equal",
+    "theme": "default",
+    "description": "A test survey for routing based on a number less than or equal",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "number-question",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "answer",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "label": "Number"
+                                    }
+                                ],
+                                "id": "question",
+                                "title": "Enter the number less than or equal to 123",
+                                "type": "General"
+                            },
+                            "routing_rules": [
+                                {
+                                    "block": "correct-answer",
+                                    "when": {
+                                        "<=": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "answer"
+                                            },
+                                            123
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "incorrect-answer"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Interstitial",
+                            "id": "incorrect-answer",
+                            "content": {
+                                "title": "Incorrect answer",
+                                "contents": [
+                                    {
+                                        "description": {
+                                            "text": "You were asked to enter a number less than or equal to <strong>123</strong> but you entered <strong>{answer}</strong>.",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "answer",
+                                                    "value": {
+                                                        "source": "answers",
+                                                        "identifier": "answer"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "section": "End"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Interstitial",
+                            "id": "correct-answer",
+                            "content": {
+                                "title": "Correct answer",
+                                "contents": [
+                                    {
+                                        "description": {
+                                            "text": "You were asked to enter a number less than or equal to <strong>123</strong> and you entered <strong>{answer}</strong>.",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "answer",
+                                                    "value": {
+                                                        "source": "answers",
+                                                        "identifier": "answer"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "id": "group"
+                }
+            ]
+        }
+    ]
+}

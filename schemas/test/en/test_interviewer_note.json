@@ -1,0 +1,115 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Interviewer Note Pages",
+    "theme": "default",
+    "description": "A questionnaire to demo interviewer note highlighting.",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {}
+    },
+    "sections": [
+        {
+            "id": "section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "id": "initial-interstitial-block",
+                            "interviewer_only": true,
+                            "content": {
+                                "title": "Favourite team interstitial",
+                                "contents": [
+                                    {
+                                        "description": "In this section we will ask you about your favourite team."
+                                    }
+                                ]
+                            },
+                            "type": "Interstitial"
+                        },
+                        {
+                            "type": "Question",
+                            "id": "favourite-team-block",
+                            "interviewer_only": true,
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "favourite-team-answer",
+                                        "label": "Favourite team",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    }
+                                ],
+                                "id": "favourite-team-question",
+                                "title": "Who is your favourite team?",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "confirm-block",
+                            "interviewer_only": false,
+                            "question": {
+                                "answers": [
+                                    {
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            }
+                                        ],
+                                        "id": "confirm-answer",
+                                        "mandatory": false,
+                                        "type": "Checkbox"
+                                    }
+                                ],
+                                "id": "confirm-question",
+                                "title": {
+                                    "text": "Can you confirm that {team} is your favourite team?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "team",
+                                            "value": { "source": "answers", "identifier": "favourite-team-answer" }
+                                        }
+                                    ]
+                                },
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "id": "final-interstitial-block",
+                            "content": {
+                                "title": "Final interstitial",
+                                "contents": [
+                                    {
+                                        "description": "You have successfully completed favourite team section."
+                                    }
+                                ]
+                            },
+                            "type": "Interstitial"
+                        }
+                    ],
+                    "id": "favourite-team",
+                    "title": "Favourite team"
+                }
+            ]
+        }
+    ]
+}

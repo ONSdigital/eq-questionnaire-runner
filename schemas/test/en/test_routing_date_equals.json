@@ -1,0 +1,311 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "001",
+    "title": "Test Routing Date Equals",
+    "theme": "default",
+    "description": "A test survey for routing based on equal dates",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "comparison-date-block",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "comparison-date-answer",
+                                        "mandatory": true,
+                                        "type": "Date"
+                                    }
+                                ],
+                                "id": "comparison-date-question",
+                                "title": "Title",
+                                "type": "General",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "title": "If you enter 31/03/2018 the following dates will be valid",
+                                            "list": [
+                                                "Yesterday 30/03/2018",
+                                                "Today 31/03/2018",
+                                                "Tomorrow 01/04/2018",
+                                                "Last Month 28/02/2018 (28th as no 31st February)",
+                                                "Next Month 30/04/2018 (30th as no 31st April)",
+                                                "Last Year 31/03/2017",
+                                                "Next Year 31/03/2019"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "date-question",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "single-date-answer",
+                                        "label": "Today",
+                                        "mandatory": true,
+                                        "type": "Date"
+                                    }
+                                ],
+                                "id": "date-questions",
+                                "title": {
+                                    "text": "Enter {date} or offset by one day, month or year in either direction",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "answers",
+                                                            "identifier": "comparison-date-answer"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General"
+                            },
+                            "routing_rules": [
+                                {
+                                    "block": "correct-answer",
+                                    "when": {
+                                        "or": [
+                                            {
+                                                "==": [
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "single-date-answer"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "comparison-date-answer"
+                                                            },
+                                                            {
+                                                                "days": -1
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "==": [
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "single-date-answer"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "comparison-date-answer"
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "==": [
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "single-date-answer"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "comparison-date-answer"
+                                                            },
+                                                            {
+                                                                "days": 1
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "==": [
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "single-date-answer"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "comparison-date-answer"
+                                                            },
+                                                            {
+                                                                "months": -1
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "==": [
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "single-date-answer"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "comparison-date-answer"
+                                                            },
+                                                            {
+                                                                "months": 1
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "==": [
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "single-date-answer"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "comparison-date-answer"
+                                                            },
+                                                            {
+                                                                "years": -1
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "==": [
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "single-date-answer"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "date": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "comparison-date-answer"
+                                                            },
+                                                            {
+                                                                "years": 1
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "incorrect-answer"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Interstitial",
+                            "id": "incorrect-answer",
+                            "content": {
+                                "title": "Incorrect Date",
+                                "contents": [
+                                    {
+                                        "description": "You entered an incorrect date"
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "section": "End"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Interstitial",
+                            "id": "correct-answer",
+                            "content": {
+                                "title": "Correct Date",
+                                "contents": [
+                                    {
+                                        "description": "You entered a correct date."
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "id": "group"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,338 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "001",
+    "title": "Routing and Skipping Section Dependencies based on Calculated Summary",
+    "theme": "default",
+    "description": "A questionnaire to test routing and skipping rules, when the rule references a different section to its current section",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Hub",
+        "options": {}
+    },
+    "sections": [
+        {
+            "title": "Calculated Summary Section",
+            "summary": { "show_on_completion": true },
+            "id": "calculated-summary-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "first-question-block",
+                            "question": {
+                                "id": "first-question",
+                                "title": "How much do you spend on the following items?",
+                                "description": [
+                                    "If the total is equal to £100 a new section will appear on the hub and if it is greater than or equal to £100 a dependent question will appear in the dependent question section"
+                                ],
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "milk-answer",
+                                        "label": "Milk",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "eggs-answer",
+                                        "label": "Eggs",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "bread-answer",
+                                        "label": "Bread",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "cheese-answer",
+                                        "label": "Cheese",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "skip-butter-block",
+                            "question": {
+                                "type": "General",
+                                "id": "skip-butter-block-question",
+                                "title": "Skip optional question about butter so that it doesn’t appear in the Total?",
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "skip-butter-block-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
+                                        {
+                                            "identifier": "skip-butter-block-answer",
+                                            "source": "answers"
+                                        },
+                                        "Yes"
+                                    ]
+                                }
+                            },
+                            "type": "Question",
+                            "id": "butter-block",
+                            "question": {
+                                "id": "butter-question",
+                                "title": "How much do you spend on butter?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "butter-answer",
+                                        "label": "Butter",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "currency-total-playback",
+                            "title": "We calculate the total of currency values entered to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "calculation_type": "sum",
+                                "answers_to_calculate": ["milk-answer", "eggs-answer", "bread-answer", "cheese-answer", "butter-answer"],
+                                "title": "Grand total of previous values"
+                            }
+                        }
+                    ],
+                    "id": "calculated-summary-group"
+                }
+            ]
+        },
+        {
+            "title": "Dependent question Section",
+            "summary": { "show_on_completion": true },
+            "id": "dependent-question-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "skip_conditions": {
+                                "when": {
+                                    ">=": [
+                                        {
+                                            "source": "calculated_summary",
+                                            "identifier": "currency-total-playback"
+                                        },
+                                        10
+                                    ]
+                                }
+                            },
+                            "type": "Question",
+                            "id": "fruit",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "fruit-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "fruit-question",
+                                "title": "Do you like eating fruit",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "routing_rules": [
+                                {
+                                    "block": "second-question-block",
+                                    "when": {
+                                        ">=": [
+                                            {
+                                                "source": "calculated_summary",
+                                                "identifier": "currency-total-playback"
+                                            },
+                                            100
+                                        ]
+                                    }
+                                },
+                                {
+                                    "section": "End"
+                                }
+                            ],
+                            "type": "Question",
+                            "id": "vegetables",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "vegetables-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "vegetables-question",
+                                "title": "Do you like eating vegetables",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "second-question-block",
+                            "question": {
+                                "id": "second-question",
+                                "title": "How much do you spend on the following items?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "apples-answer",
+                                        "label": "Apples",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "bananas-answer",
+                                        "label": "Bananas",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "oranges-answer",
+                                        "label": "Oranges",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "lemons-answer",
+                                        "label": "Lemons",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "id": "dependent-question-group"
+                }
+            ]
+        },
+        {
+            "enabled": {
+                "when": {
+                    "==": [
+                        100,
+                        {
+                            "source": "calculated_summary",
+                            "identifier": "currency-total-playback"
+                        }
+                    ]
+                }
+            },
+            "title": "Dependent Enabled Section",
+            "summary": { "show_on_completion": true },
+            "id": "dependent-enabled-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "desserts",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "desserts-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "desserts-question",
+                                "title": "Do you like eating desserts",
+                                "type": "General"
+                            }
+                        }
+                    ],
+                    "id": "dependent-enabled-section-group"
+                }
+            ]
+        }
+    ]
+}

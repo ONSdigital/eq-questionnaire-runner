@@ -1,0 +1,63 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "session_timeout_in_seconds": 5,
+    "title": "Timeout test",
+    "theme": "default",
+    "description": "A questionnaire to test the timeout functionality in non JS integration test",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "id": "timeout-group",
+                    "title": "Timeout",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "timeout-block",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "timeout-answer",
+                                        "label": "Does the timeout appear?",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    }
+                                ],
+                                "id": "timeout-question",
+                                "title": "Timeout title",
+                                "type": "General"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

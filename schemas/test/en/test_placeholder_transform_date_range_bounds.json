@@ -1,0 +1,174 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "001",
+    "title": "Other input fields",
+    "theme": "default",
+    "description": "A questionnaire to test date_range_bounds and format_date_range",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "days-worked-section",
+            "title": "Days Input",
+            "groups": [
+                {
+                    "id": "days-input-group",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "date-question",
+                            "question": {
+                                "id": "primary-date-question",
+                                "title": "Please enter a reference date to generate a date range",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "reference-date",
+                                        "label": "Reference Date",
+                                        "description": "This scenario uses 1 prior full week offset, 15 day range, first day of the week monday",
+                                        "mandatory": true,
+                                        "type": "Date"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "days-question-block",
+                            "question": {
+                                "id": "days-question",
+                                "title": {
+                                    "text": "How many days did you work between {formatted_date_range}?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "formatted_date_range",
+                                            "transforms": [
+                                                {
+                                                    "transform": "date_range_bounds",
+                                                    "arguments": {
+                                                        "reference_date": {
+                                                            "source": "answers",
+                                                            "identifier": "reference-date"
+                                                        },
+                                                        "offset_full_weeks": -1,
+                                                        "days_in_range": 15,
+                                                        "first_day_of_week": "MONDAY"
+                                                    }
+                                                },
+                                                {
+                                                    "arguments": {
+                                                        "date_range": {
+                                                            "source": "previous_transform"
+                                                        }
+                                                    },
+                                                    "transform": "format_date_range"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "days-worked-answer",
+                                        "label": "Days worked",
+                                        "description": "This scenario uses 1 prior full week offset, 15 day range, first day of the week monday",
+                                        "mandatory": false,
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "block0",
+                            "type": "Question",
+                            "question": {
+                                "id": "question0",
+                                "title": "Title",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "ref-answer0",
+                                        "mandatory": true,
+                                        "type": "Date",
+                                        "label": "Start of a date range"
+                                    },
+                                    {
+                                        "id": "ref-answer1",
+                                        "mandatory": true,
+                                        "type": "Date",
+                                        "label": "End of a date range"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "range-question-block",
+                            "question": {
+                                "id": "range-question",
+                                "title": {
+                                    "text": "This is a formatted date range: {formatted_date_range}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "formatted_date_range",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date_range",
+                                                    "arguments": {
+                                                        "date_range": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "ref-answer0"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "ref-answer1"
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "date-range-answer",
+                                        "label": "How many days did you work during this period?",
+                                        "mandatory": false,
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

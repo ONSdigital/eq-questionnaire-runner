@@ -1,0 +1,242 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.2",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Routing answered/unanswered",
+    "theme": "default",
+    "description": "A questionnaire to demo routing when question answered/unanswered",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "block-1",
+                            "question": {
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "Select at least one option to route to the “answered” page otherwise you will be routed to the “unanswered” page"
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "answer-1",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Cheese",
+                                                "value": "Cheese"
+                                            },
+                                            {
+                                                "label": "Ham",
+                                                "value": "Ham"
+                                            }
+                                        ],
+                                        "type": "Checkbox"
+                                    }
+                                ],
+                                "id": "question-1",
+                                "title": "What is your favourite pizza topping?",
+                                "type": "General"
+                            },
+                            "routing_rules": [
+                                {
+                                    "block": "unanswered-question-1",
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "answer-1"
+                                            },
+                                            null
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "answered-question-1"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "answered-question-1",
+                            "type": "Interstitial",
+                            "content": {
+                                "title": "You answered the first question!"
+                            },
+                            "routing_rules": [
+                                {
+                                    "block": "block-2"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "unanswered-question-1",
+                            "type": "Interstitial",
+                            "content": {
+                                "title": "You did not answer the first question!"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "block-2",
+                            "question": {
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "Select at least one option to route to the “answered” page otherwise you will be routed to the “unanswered” page"
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "answer-2",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Pizza Hut",
+                                                "value": "Pizza Hut"
+                                            },
+                                            {
+                                                "label": "Domino’s",
+                                                "value": "Domino’s"
+                                            }
+                                        ],
+                                        "type": "Checkbox"
+                                    }
+                                ],
+                                "id": "question-2",
+                                "title": "What is your favourite pizza place?",
+                                "type": "General"
+                            },
+                            "routing_rules": [
+                                {
+                                    "block": "answered-question-2",
+                                    "when": {
+                                        "!=": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "answer-2"
+                                            },
+                                            null
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "unanswered-question-2"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "answered-question-2",
+                            "type": "Interstitial",
+                            "content": {
+                                "title": "You answered the second question!"
+                            },
+                            "routing_rules": [
+                                {
+                                    "block": "block-3"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "unanswered-question-2",
+                            "type": "Interstitial",
+                            "content": {
+                                "title": "You did not answer the second question!"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "block-3",
+                            "question": {
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "Enter a number greater than “0” to route to the “answered” page otherwise you will be routed to the “unanswered or answered 0” page"
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "answer-3",
+                                        "mandatory": false,
+                                        "type": "Number",
+                                        "label": "Number of slices"
+                                    }
+                                ],
+                                "id": "question-3",
+                                "title": "How many pizza slices would you like?",
+                                "type": "General"
+                            },
+                            "routing_rules": [
+                                {
+                                    "block": "unanswered-or-zero-question-3",
+                                    "when": {
+                                        "in": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "answer-3"
+                                            },
+                                            [null, 0]
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "answered-question-3"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "answered-question-3",
+                            "type": "Interstitial",
+                            "content": {
+                                "title": "You chose at least 1 slice"
+                            },
+                            "routing_rules": [
+                                {
+                                    "section": "End"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "unanswered-or-zero-question-3",
+                            "type": "Interstitial",
+                            "content": {
+                                "title": "You did not answer the question or chose 0 slices"
+                            }
+                        }
+                    ],
+                    "id": "default-group"
+                }
+            ]
+        }
+    ]
+}

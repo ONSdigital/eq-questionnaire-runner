@@ -1,0 +1,137 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Routing Group",
+    "theme": "default",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "id": "which-group",
+                    "title": "What group do you want to go to?",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "which-group-block",
+                            "question": {
+                                "id": "which-group-question",
+                                "title": "Select Group",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "which-group-answer",
+                                        "label": "Choose next group",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Group 1",
+                                                "value": "Group 1"
+                                            },
+                                            {
+                                                "label": "Group 2",
+                                                "value": "Group 2"
+                                            }
+                                        ],
+                                        "type": "Radio",
+                                        "validation": {
+                                            "messages": {}
+                                        }
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "group": "group1",
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "identifier": "which-group-answer",
+                                                "source": "answers"
+                                            },
+                                            "Group 1"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "group": "group2"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "group1",
+                    "title": "This is Group 1",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "group1-block",
+                            "question": {
+                                "id": "group1-question",
+                                "title": "Did you want Group 1?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "group1-answer",
+                                        "label": "Why did you choose Group 1?",
+                                        "mandatory": true,
+                                        "type": "TextArea"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "group2",
+                    "title": "This is Group 2",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "group2-block",
+                            "question": {
+                                "id": "group2-question",
+                                "title": "Did you want Group 2?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "group2-answer",
+                                        "label": "Why did you choose Group 2?",
+                                        "mandatory": true,
+                                        "type": "TextArea"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

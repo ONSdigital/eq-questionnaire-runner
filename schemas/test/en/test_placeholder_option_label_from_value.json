@@ -1,0 +1,151 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Test option label from value",
+    "theme": "default",
+    "description": "A questionnaire to demo the piping of Checkbox/Radio answer options",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        },
+        {
+            "name": "trad_as",
+            "type": "string",
+            "optional": true
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "checkbox-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "mandatory-radio",
+                            "question": {
+                                "type": "General",
+                                "id": "mandatory-radio-question",
+                                "title": "What is the trade name of your business ?",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "First option is piped from metadata"
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "mandatory-radio-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": {
+                                                    "text": "{business_name} (piped)",
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "business_name",
+                                                            "transforms": [
+                                                                {
+                                                                    "transform": "first_non_empty_item",
+                                                                    "arguments": {
+                                                                        "items": [
+                                                                            {
+                                                                                "source": "metadata",
+                                                                                "identifier": "trad_as"
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                "value": "{business_name} (piped)"
+                                            },
+                                            {
+                                                "label": "Google LTD",
+                                                "value": "Google LTD"
+                                            },
+                                            {
+                                                "label": "Meta LTD",
+                                                "value": "Meta LTD"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "confirmation-question-radio-block",
+                            "question": {
+                                "id": "confirmation-question-radio",
+                                "title": {
+                                    "text": "You chose <strong>{business_name}</strong> as your business name, is that correct ?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "business_name",
+                                            "transforms": [
+                                                {
+                                                    "transform": "option_label_from_value",
+                                                    "arguments": {
+                                                        "value": {
+                                                            "source": "answers",
+                                                            "identifier": "mandatory-radio-answer"
+                                                        },
+                                                        "answer_id": "mandatory-radio-answer"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "confirm-business-radio-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "id": "checkboxes"
+                }
+            ]
+        }
+    ]
+}

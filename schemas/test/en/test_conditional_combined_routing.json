@@ -1,0 +1,147 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "023",
+    "title": "Test Conditional Routing",
+    "theme": "default",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "single-answer-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "conditional-routing-block",
+                            "question": {
+                                "id": "conditional-routing-question",
+                                "title": "Do you drink coffee?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "Sometimes",
+                                                "value": "Sometimes"
+                                            },
+                                            {
+                                                "label": "No, I prefer tea",
+                                                "value": "No, I prefer tea"
+                                            },
+                                            {
+                                                "label": "I don’t like coffee",
+                                                "value": "I don’t like coffee"
+                                            },
+                                            {
+                                                "label": "No, I don’t drink any hot drinks",
+                                                "value": "No, I don’t drink any hot drinks"
+                                            }
+                                        ],
+                                        "id": "conditional-routing-answer",
+                                        "label": "Which conditional question should we jump to?",
+                                        "mandatory": true,
+                                        "type": "Radio"
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "block": "response-any",
+                                    "when": {
+                                        "in": [
+                                            {
+                                                "identifier": "conditional-routing-answer",
+                                                "source": "answers"
+                                            },
+                                            ["Yes", "Sometimes"]
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "response-not-any",
+                                    "when": {
+                                        "not": [
+                                            {
+                                                "in": [
+                                                    { "identifier": "conditional-routing-answer", "source": "answers" },
+                                                    ["Yes", "Sometimes", "I don’t like coffee", "No, I don’t drink any hot drinks"]
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "section": "End"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Question",
+                            "id": "response-any",
+                            "question": {
+                                "id": "response-any-question",
+                                "title": "How many cups of coffee do you drink a day?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "response-any-number-of-cups",
+                                        "label": "Number of cups",
+                                        "mandatory": true,
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "response-not-any",
+                            "question": {
+                                "id": "response-not-any-question",
+                                "title": "How many cups of tea do you drink a day?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "response-not-any-number-of-cups",
+                                        "label": "Number of cups",
+                                        "mandatory": true,
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "id": "conditional-routing-within-group",
+                    "title": "Conditional routing within group"
+                }
+            ]
+        }
+    ]
+}

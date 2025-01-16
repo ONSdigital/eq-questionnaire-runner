@@ -1,0 +1,98 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Radio Voluntary",
+    "theme": "default",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "section-1",
+            "groups": [
+                {
+                    "id": "radio",
+                    "title": "Radio Voluntary",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "radio-voluntary-true",
+                            "question": {
+                                "type": "General",
+                                "id": "radio-voluntary-true-question",
+                                "title": "What is your favourite drink?",
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "radio-voluntary-true-answer",
+                                        "mandatory": false,
+                                        "voluntary": true,
+                                        "options": [
+                                            {
+                                                "label": "Coffee",
+                                                "value": "Coffee"
+                                            },
+                                            {
+                                                "label": "Tea",
+                                                "value": "Tea"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "radio-voluntary-false",
+                            "question": {
+                                "type": "General",
+                                "id": "radio-voluntary-false-question",
+                                "title": "What is your favourite food?",
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "radio-voluntary-false-answer",
+                                        "mandatory": false,
+                                        "voluntary": false,
+                                        "options": [
+                                            {
+                                                "label": "Ice cream",
+                                                "value": "Ice cream"
+                                            },
+                                            {
+                                                "label": "Hamburger",
+                                                "value": "Hamburger"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

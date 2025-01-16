@@ -1,0 +1,170 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Interstitial definition",
+    "theme": "default",
+    "description": "A questionnaire to demo a definition in an interstitial page.",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "interstitial-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "id": "interstitial-definition",
+                            "content": {
+                                "title": "Interstitial Definition",
+                                "contents": [
+                                    {
+                                        "description": "You have successfully launched the test_interstitial_definition questionnaire"
+                                    },
+                                    {
+                                        "definition": {
+                                            "title": "Successfully",
+                                            "contents": [
+                                                {
+                                                    "description": "In a way that accomplishes a desired aim or result"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "description": "You can now continue."
+                                    }
+                                ]
+                            },
+                            "type": "Interstitial"
+                        },
+                        {
+                            "type": "Question",
+                            "id": "content-variant-definition",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "content-variant-definition-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Answer",
+                                                "value": "Answer"
+                                            },
+                                            {
+                                                "label": "Question",
+                                                "value": "Question"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "content-variant-definition-question",
+                                "type": "General",
+                                "title": "What would you like to see a definition about?"
+                            }
+                        },
+                        {
+                            "type": "Interstitial",
+                            "id": "interstitial-content-variant-definition",
+                            "content_variants": [
+                                {
+                                    "content": {
+                                        "title": "Content variant definition",
+                                        "contents": [
+                                            {
+                                                "description": "According to your response you wanted to see a definition about an answer"
+                                            },
+                                            {
+                                                "definition": {
+                                                    "title": "According",
+                                                    "contents": [
+                                                        {
+                                                            "description": "As stated by or in."
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "definition": {
+                                                    "title": "Answer",
+                                                    "contents": [
+                                                        {
+                                                            "description": "A spoken or written reply or response to a question"
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "content-variant-definition-answer"
+                                            },
+                                            "Answer"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "content": {
+                                        "title": "Content variant definition",
+                                        "contents": [
+                                            {
+                                                "description": "According to your response you wanted to see a definition about a question"
+                                            },
+                                            {
+                                                "definition": {
+                                                    "title": "Question",
+                                                    "contents": [
+                                                        {
+                                                            "description": "A sentence worded or expressed so as to elicit information"
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "content-variant-definition-answer"
+                                            },
+                                            "Question"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "id": "interstitial",
+                    "title": "Interstitial Definition"
+                }
+            ]
+        }
+    ]
+}

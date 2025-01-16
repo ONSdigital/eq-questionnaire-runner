@@ -1,0 +1,699 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Test driving checkbox question",
+    "theme": "default",
+    "description": "A questionnaire to test driving checkbox question",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Hub",
+        "options": {}
+    },
+    "sections": [
+        {
+            "id": "section",
+            "title": "Who lives here?",
+            "summary": {
+                "show_on_completion": true,
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "people",
+                        "title": "Household members",
+                        "add_link_text": "Add someone to this household",
+                        "empty_list_text": "There are no householders"
+                    }
+                ]
+            },
+            "groups": [
+                {
+                    "id": "group",
+                    "title": "Primary Person",
+                    "blocks": [
+                        {
+                            "id": "primary-person-list-collector",
+                            "type": "PrimaryPersonListCollector",
+                            "for_list": "people",
+                            "add_or_edit_block": {
+                                "id": "add-or-edit-primary-person",
+                                "type": "PrimaryPersonListAddOrEditQuestion",
+                                "question": {
+                                    "id": "primary-person-add-or-edit-question",
+                                    "type": "General",
+                                    "title": "What is your name?",
+                                    "answers": [
+                                        {
+                                            "id": "first-name",
+                                            "label": "First name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "last-name",
+                                            "label": "Last name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "question": {
+                                "id": "primary-confirmation-question",
+                                "type": "General",
+                                "title": "Do you live at 12 Lovely Villas?",
+                                "answers": [
+                                    {
+                                        "id": "you-live-here",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes, I usually live here",
+                                                "value": "Yes, I usually live here",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
+                                            },
+                                            {
+                                                "label": "No, I don’t usually live here",
+                                                "value": "No, I don’t usually live here"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "ListCollectorDrivingQuestion",
+                            "id": "anyone-usually-live-at",
+                            "for_list": "people",
+                            "question_variants": [
+                                {
+                                    "question": {
+                                        "id": "anyone-usually-live-at-question",
+                                        "title": "Do any of the following also usually live at 12 Lovely Villas on 21 March?",
+                                        "type": "MutuallyExclusive",
+                                        "mandatory": false,
+                                        "answers": [
+                                            {
+                                                "type": "Checkbox",
+                                                "id": "anyone-usually-live-at-answer",
+                                                "mandatory": false,
+                                                "options": [
+                                                    {
+                                                        "label": "Family Members and partners",
+                                                        "value": "Family Members and partners",
+                                                        "description": "Include babies born on or before 21 March, children, students and/or schoolchildren who live away during term time",
+                                                        "action": {
+                                                            "params": {
+                                                                "block_id": "add-person",
+                                                                "list_name": "people"
+                                                            },
+                                                            "type": "RedirectToListAddBlock"
+                                                        }
+                                                    },
+                                                    {
+                                                        "label": "Housemates, tenants or lodgers",
+                                                        "value": "Housemates, tenants or lodgers",
+                                                        "action": {
+                                                            "params": {
+                                                                "block_id": "add-person",
+                                                                "list_name": "people"
+                                                            },
+                                                            "type": "RedirectToListAddBlock"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id": "anyone-usually-live-at-answer-exclusive",
+                                                "mandatory": false,
+                                                "options": [
+                                                    {
+                                                        "label": "None of the these apply, I am the only person who usually lives here",
+                                                        "value": "None of the these apply, I am the only person who usually lives here"
+                                                    }
+                                                ],
+                                                "type": "Checkbox"
+                                            }
+                                        ]
+                                    },
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "identifier": "you-live-here",
+                                                "source": "answers"
+                                            },
+                                            "Yes, I usually live here"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "question": {
+                                        "id": "anyone-usually-live-at-question",
+                                        "title": "Do any of the following usually live at 12 Lovely Villas on 21 March?",
+                                        "type": "MutuallyExclusive",
+                                        "mandatory": false,
+                                        "answers": [
+                                            {
+                                                "type": "Checkbox",
+                                                "id": "anyone-usually-live-at-answer",
+                                                "mandatory": false,
+                                                "options": [
+                                                    {
+                                                        "label": "Family Members and partners",
+                                                        "value": "Family Members and partners",
+                                                        "description": "Include babies born on or before 21 March, children, students and/or schoolchildren who live away during term time",
+                                                        "action": {
+                                                            "params": {
+                                                                "block_id": "add-person",
+                                                                "list_name": "people"
+                                                            },
+                                                            "type": "RedirectToListAddBlock"
+                                                        }
+                                                    },
+                                                    {
+                                                        "label": "Housemates, tenants or lodgers",
+                                                        "value": "Housemates, tenants or lodgers",
+                                                        "action": {
+                                                            "params": {
+                                                                "block_id": "add-person",
+                                                                "list_name": "people"
+                                                            },
+                                                            "type": "RedirectToListAddBlock"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id": "anyone-usually-live-at-answer-exclusive",
+                                                "mandatory": false,
+                                                "options": [
+                                                    {
+                                                        "label": "None of these apply, no-one usually lives here",
+                                                        "value": "None of these apply, no-one usually lives here"
+                                                    }
+                                                ],
+                                                "type": "Checkbox"
+                                            }
+                                        ]
+                                    },
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "identifier": "you-live-here",
+                                                "source": "answers"
+                                            },
+                                            "No, I don’t usually live here"
+                                        ]
+                                    }
+                                }
+                            ],
+                            "routing_rules": [
+                                {
+                                    "block": "list-collector-temporary-away-stay",
+                                    "when": {
+                                        "in": [
+                                            "None of these apply, no-one usually lives here",
+                                            {
+                                                "identifier": "anyone-usually-live-at-answer-exclusive",
+                                                "source": "answers"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "list-collector-temporary-away-stay",
+                                    "when": {
+                                        "in": [
+                                            "None of the these apply, I am the only person who usually lives here",
+                                            {
+                                                "identifier": "anyone-usually-live-at-answer-exclusive",
+                                                "source": "answers"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "list-collector"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "list-collector",
+                            "type": "ListCollector",
+                            "for_list": "people",
+                            "question": {
+                                "id": "confirmation-question",
+                                "type": "General",
+                                "title": "Does anyone else live here?",
+                                "answers": [
+                                    {
+                                        "id": "anyone-else",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes, I need to add a person",
+                                                "value": "Yes, I need to add a person",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
+                                            },
+                                            {
+                                                "label": "No, I do not need to add a person",
+                                                "value": "No, I do not need to add a person"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "add_block": {
+                                "id": "add-person",
+                                "type": "ListAddQuestion",
+                                "question_variants": [
+                                    {
+                                        "question": {
+                                            "id": "add-question",
+                                            "type": "General",
+                                            "title": "Who lives at 12 Lovely Villas?",
+                                            "answers": [
+                                                {
+                                                    "id": "first-name",
+                                                    "label": "First name",
+                                                    "mandatory": true,
+                                                    "type": "TextField"
+                                                },
+                                                {
+                                                    "id": "last-name",
+                                                    "label": "Last name",
+                                                    "mandatory": true,
+                                                    "type": "TextField"
+                                                }
+                                            ]
+                                        },
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "people",
+                                                    "selector": "count"
+                                                },
+                                                0
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "question": {
+                                            "id": "add-question",
+                                            "type": "General",
+                                            "title": "Who else lives at 12 Lovely Villas?",
+                                            "answers": [
+                                                {
+                                                    "id": "first-name",
+                                                    "label": "First name",
+                                                    "mandatory": true,
+                                                    "type": "TextField"
+                                                },
+                                                {
+                                                    "id": "last-name",
+                                                    "label": "Last name",
+                                                    "mandatory": true,
+                                                    "type": "TextField"
+                                                }
+                                            ]
+                                        },
+                                        "when": {
+                                            ">": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "people",
+                                                    "selector": "count"
+                                                },
+                                                0
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "edit_block": {
+                                "id": "edit-person",
+                                "type": "ListEditQuestion",
+                                "question": {
+                                    "id": "edit-question",
+                                    "type": "General",
+                                    "title": {
+                                        "text": "Change details for {first_name} {last_name}",
+                                        "placeholders": [
+                                            {
+                                                "placeholder": "first_name",
+                                                "value": {
+                                                    "source": "answers",
+                                                    "identifier": "first-name"
+                                                }
+                                            },
+                                            {
+                                                "placeholder": "last_name",
+                                                "value": {
+                                                    "source": "answers",
+                                                    "identifier": "last-name"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "answers": [
+                                        {
+                                            "id": "first-name",
+                                            "label": "First name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "last-name",
+                                            "label": "Last name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "remove_block": {
+                                "id": "remove-person",
+                                "type": "ListRemoveQuestion",
+                                "question": {
+                                    "id": "remove-question",
+                                    "type": "General",
+                                    "title": "Are you sure you want to remove this person?",
+                                    "answers": [
+                                        {
+                                            "id": "remove-confirmation",
+                                            "mandatory": true,
+                                            "type": "Radio",
+                                            "options": [
+                                                {
+                                                    "label": "Yes",
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
+                                                },
+                                                {
+                                                    "label": "No",
+                                                    "value": "No"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "summary": {
+                                "title": "Household members",
+                                "item_title": {
+                                    "text": "{person_name}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "person_name",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "last-name"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "id": "list-collector-temporary-away-stay",
+                            "type": "ListCollector",
+                            "for_list": "people",
+                            "question": {
+                                "id": "confirmation-question-temporary-away-stay",
+                                "type": "General",
+                                "title": {
+                                    "text_plural": {
+                                        "forms": {
+                                            "one": "You said {number_of_people} person lives at 12 Lovely Villas. Do you need to add anyone?",
+                                            "other": "You said {number_of_people} people lives at 12 Lovely Villas. Do you need to add anyone?"
+                                        },
+                                        "count": {
+                                            "source": "list",
+                                            "identifier": "people"
+                                        }
+                                    },
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "number_of_people",
+                                            "value": {
+                                                "source": "list",
+                                                "identifier": "people",
+                                                "selector": "count"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "anyone-else-temporary-away-stay",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes, I need to add someone",
+                                                "value": "Yes, I need to add someone",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
+                                            },
+                                            {
+                                                "label": {
+                                                    "text_plural": {
+                                                        "forms": {
+                                                            "one": "No there is {number_of_people} person living here",
+                                                            "other": "No there are {number_of_people} people living here"
+                                                        },
+                                                        "count": {
+                                                            "source": "list",
+                                                            "identifier": "people"
+                                                        }
+                                                    },
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "number_of_people",
+                                                            "value": {
+                                                                "source": "list",
+                                                                "identifier": "people",
+                                                                "selector": "count"
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "value": "No there are {number_of_people} people living here"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "add_block": {
+                                "id": "add-person-temporary-away-stay",
+                                "type": "ListAddQuestion",
+                                "question_variants": [
+                                    {
+                                        "question": {
+                                            "id": "add-question-temporary-away-stay",
+                                            "type": "General",
+                                            "title": "Who lives at 12 Lovely Villas?",
+                                            "answers": [
+                                                {
+                                                    "id": "first-name",
+                                                    "label": "First name",
+                                                    "mandatory": true,
+                                                    "type": "TextField"
+                                                },
+                                                {
+                                                    "id": "last-name",
+                                                    "label": "Last name",
+                                                    "mandatory": true,
+                                                    "type": "TextField"
+                                                }
+                                            ]
+                                        },
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "people",
+                                                    "selector": "count"
+                                                },
+                                                0
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "question": {
+                                            "id": "add-question-temporary-away-stay",
+                                            "type": "General",
+                                            "title": "Who else lives at 12 Lovely Villas?",
+                                            "answers": [
+                                                {
+                                                    "id": "first-name",
+                                                    "label": "First name",
+                                                    "mandatory": true,
+                                                    "type": "TextField"
+                                                },
+                                                {
+                                                    "id": "last-name",
+                                                    "label": "Last name",
+                                                    "mandatory": true,
+                                                    "type": "TextField"
+                                                }
+                                            ]
+                                        },
+                                        "when": {
+                                            ">": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "people",
+                                                    "selector": "count"
+                                                },
+                                                0
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "edit_block": {
+                                "id": "edit-person-temporary-away-stay",
+                                "type": "ListEditQuestion",
+                                "question": {
+                                    "id": "edit-question-temporary-away-stay",
+                                    "type": "General",
+                                    "title": {
+                                        "text": "Change details for {first_name} {last_name}",
+                                        "placeholders": [
+                                            {
+                                                "placeholder": "first_name",
+                                                "value": {
+                                                    "source": "answers",
+                                                    "identifier": "first-name"
+                                                }
+                                            },
+                                            {
+                                                "placeholder": "last_name",
+                                                "value": {
+                                                    "source": "answers",
+                                                    "identifier": "last-name"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "answers": [
+                                        {
+                                            "id": "first-name",
+                                            "label": "First name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "last-name",
+                                            "label": "Last name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "remove_block": {
+                                "id": "remove-person-temporary-away-stay",
+                                "type": "ListRemoveQuestion",
+                                "question": {
+                                    "id": "remove-question-temporary-away-stay",
+                                    "type": "General",
+                                    "title": "Are you sure you want to remove this person?",
+                                    "answers": [
+                                        {
+                                            "id": "remove-confirmation-temporary-away-stay",
+                                            "mandatory": true,
+                                            "type": "Radio",
+                                            "options": [
+                                                {
+                                                    "label": "Yes",
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
+                                                },
+                                                {
+                                                    "label": "No",
+                                                    "value": "No"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "summary": {
+                                "title": "Household members",
+                                "item_title": {
+                                    "text": "{person_name}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "person_name",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "last-name"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

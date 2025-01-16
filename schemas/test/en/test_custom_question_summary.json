@@ -1,0 +1,153 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Custom question summary",
+    "theme": "default",
+    "description": "A questionnaire to demo custom question summaries",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "title": "test",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "name",
+                            "question": {
+                                "id": "name-question",
+                                "title": "Name",
+                                "type": "General",
+                                "summary": {
+                                    "concatenation_type": "Space"
+                                },
+                                "answers": [
+                                    {
+                                        "id": "first-name",
+                                        "label": "First name",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    },
+                                    {
+                                        "id": "middle-name",
+                                        "label": "Middle name",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    },
+                                    {
+                                        "id": "last-name",
+                                        "label": "Last name",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "address",
+                            "question": {
+                                "id": "address-question",
+                                "title": "Address details",
+                                "type": "General",
+                                "summary": {
+                                    "concatenation_type": "Newline"
+                                },
+                                "answers": [
+                                    {
+                                        "id": "address-line1",
+                                        "label": "Address Line 1",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    },
+                                    {
+                                        "id": "address-line2",
+                                        "label": "Address Line 2",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    },
+                                    {
+                                        "id": "town-city",
+                                        "label": "Town/City",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    },
+                                    {
+                                        "id": "county",
+                                        "label": "County",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    },
+                                    {
+                                        "id": "postcode",
+                                        "label": "Postcode",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "age",
+                            "question": {
+                                "id": "age-question",
+                                "title": "Age",
+                                "type": "General",
+                                "summary": {
+                                    "concatenation_type": "Newline"
+                                },
+                                "answers": [
+                                    {
+                                        "id": "age-number",
+                                        "label": "Enter your age",
+                                        "mandatory": false,
+                                        "type": "Number"
+                                    },
+                                    {
+                                        "id": "single-checkbox-answer",
+                                        "mandatory": false,
+                                        "instruction": "Confirmation",
+                                        "options": [
+                                            {
+                                                "label": "This age is an estimate",
+                                                "value": "This age is an estimate"
+                                            }
+                                        ],
+                                        "type": "Checkbox"
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "id": "default-group"
+                }
+            ]
+        }
+    ]
+}

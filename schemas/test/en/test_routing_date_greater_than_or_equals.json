@@ -1,0 +1,149 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "001",
+    "title": "Test Routing Date Greater Than Or Equals",
+    "theme": "default",
+    "description": "A test survey for routing based on a date greater than or equals",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        },
+        {
+            "name": "return_by",
+            "type": "date"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "date-question",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "single-date-answer",
+                                        "mandatory": true,
+                                        "type": "YearDate"
+                                    }
+                                ],
+                                "id": "date-questions",
+                                "title": "Enter a year greater than or equals to 2018",
+                                "type": "General"
+                            },
+                            "routing_rules": [
+                                {
+                                    "block": "correct-answer",
+                                    "when": {
+                                        ">=": [
+                                            {
+                                                "date": [{ "source": "answers", "identifier": "single-date-answer" }]
+                                            },
+                                            {
+                                                "date": ["2018"]
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "incorrect-answer"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Interstitial",
+                            "id": "incorrect-answer",
+                            "content": {
+                                "title": "Incorrect answer",
+                                "contents": [
+                                    {
+                                        "description": {
+                                            "text": "You entered a return date earlier than {date}",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "date",
+                                                    "transforms": [
+                                                        {
+                                                            "transform": "format_date",
+                                                            "arguments": {
+                                                                "date_to_format": {
+                                                                    "source": "metadata",
+                                                                    "identifier": "return_by"
+                                                                },
+                                                                "date_format": "d MMMM yyyy"
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "section": "End"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Interstitial",
+                            "id": "correct-answer",
+                            "content": {
+                                "title": "Correct answer",
+                                "contents": [
+                                    {
+                                        "description": {
+                                            "text": "You entered a return date later than {date}",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "date",
+                                                    "transforms": [
+                                                        {
+                                                            "transform": "format_date",
+                                                            "arguments": {
+                                                                "date_to_format": {
+                                                                    "source": "metadata",
+                                                                    "identifier": "return_by"
+                                                                },
+                                                                "date_format": "d MMMM yyyy"
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "id": "group"
+                }
+            ]
+        }
+    ]
+}

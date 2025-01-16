@@ -1,0 +1,69 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Other input fields",
+    "theme": "default",
+    "description": "Test a Summary page with submission content set",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "submission": {
+        "button": "Submission button",
+        "guidance": "Submission guidance",
+        "title": "Submission title",
+        "warning": "Submission warning"
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "title": "test",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "dessert-block",
+                            "question": {
+                                "id": "test-dessert-question",
+                                "title": "What is your favourite dessert?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "dessert",
+                                        "label": "What is your favourite dessert?",
+                                        "mandatory": true,
+                                        "type": "TextField"
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "id": "dessert-group",
+                    "title": "Dessert"
+                }
+            ]
+        }
+    ]
+}

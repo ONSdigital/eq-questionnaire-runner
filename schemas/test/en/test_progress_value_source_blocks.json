@@ -1,0 +1,210 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "001",
+    "title": "Test progress value source",
+    "theme": "default",
+    "description": "A test survey for testing progres value source referencing blocks",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "section-1",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "s1-b1",
+                            "question": {
+                                "id": "s1-b1-q1",
+                                "title": "Section 1 Question 1",
+                                "description": [
+                                    "If you answer 0, then the second question will be skipped because of a routing rule, as well as the fourth question because of a skip condition referencing the progress of question 2, as well as the 6th question because of a routing rule referencing the progress of question 4.",
+                                    "So only questions 3, 5, 7 will be displayed.",
+                                    "Otherwise, questions 2, 4 and 6 can also display."
+                                ],
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s1-b1-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "s1-b1-q1-a1"
+                                            },
+                                            0
+                                        ]
+                                    },
+                                    "block": "s1-b3"
+                                },
+                                {
+                                    "block": "s1-b2"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Question",
+                            "id": "s1-b2",
+                            "question": {
+                                "id": "s1-b2-q1",
+                                "title": "Section 1 Question 2",
+                                "description": ["Showing this question because question 1 value is not 0"],
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s1-b2-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "s1-b3",
+                            "question": {
+                                "id": "s1-b3-q1",
+                                "title": "Section 1 Question 3",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s1-b3-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "s1-b4",
+                            "question": {
+                                "id": "s1-b4-q1",
+                                "title": "Section 1 Question 4",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s1-b4-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [{ "source": "progress", "selector": "block", "identifier": "s1-b2" }, "COMPLETED"]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "s1-b5",
+                            "question": {
+                                "id": "s1-b5-q1",
+                                "title": "Section 1 Question 5",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s1-b5-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "progress",
+                                                "selector": "block",
+                                                "identifier": "s1-b4"
+                                            },
+                                            "COMPLETED"
+                                        ]
+                                    },
+                                    "block": "s1-b6"
+                                },
+                                {
+                                    "block": "s1-b7"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Question",
+                            "id": "s1-b6",
+                            "question": {
+                                "id": "s1-b6-q1",
+                                "title": "Section 1 Question 6",
+                                "description": ["Showing this question because question 4 was completed"],
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s1-b6-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "s1-b7",
+                            "question": {
+                                "id": "s1-b7-q1",
+                                "title": "Section 1 Question 7",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s1-b7-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "id": "group-1"
+                }
+            ]
+        }
+    ]
+}

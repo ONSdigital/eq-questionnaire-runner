@@ -1,0 +1,1129 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "survey_id": "139",
+    "theme": "default",
+    "title": "Progress Value Source Caluclated Summary (Extended)",
+    "data_version": "0.0.3",
+    "description": "An extended version of the Progress Value Source Calculated Summary schema intended to test chained dependency evaluation for progress value sources where multiple sections have progress value source dependencies on one another",
+    "navigation": {
+        "visible": true
+    },
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        },
+        {
+            "name": "trad_as",
+            "type": "string",
+            "optional": true
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Hub",
+        "options": {
+            "required_completed_sections": ["introduction-section"]
+        }
+    },
+    "sections": [
+        {
+            "id": "introduction-section",
+            "title": "Guidance",
+            "show_on_hub": false,
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "id": "interstitial",
+                            "content": {
+                                "title": "Guidance for completing this test schema",
+                                "contents": [
+                                    {
+                                        "description": "This schema was created in order to ensure that dependencies based on a progress value sources captured in order."
+                                    },
+                                    {
+                                        "description": "It is also being used to test progress value sources with chained dependents. For example, In this schema, <strong>Sections 7, 8, 9 and 10 are all dependent on Section 2</strong>, and <strong>Sections 11 and 12 are dependent on Section 9 and 10</strong>."
+                                    },
+                                    {
+                                        "description": "So we can use this schema to test journeys and ensure that all dependent sections are updated. <strong>For example if we had not started Section 2 yet, but Sections 8, 9 and 10 are all Complete, and sections 11 and 12 are Partially Completed</strong>. Given the dependencies in this schema, <strong>completing Section 2 would mean that the status of Sections 8, 9 and 10 would change to Partially Complete and Sections 11 and 12 to Complete</strong>."
+                                    }
+                                ]
+                            },
+                            "type": "Interstitial"
+                        }
+                    ],
+                    "id": "introduction-group",
+                    "title": "Test Schema Guidance"
+                }
+            ]
+        },
+        {
+            "id": "section-1",
+            "title": "Calculated Summary",
+            "groups": [
+                {
+                    "id": "group-1",
+                    "title": "Calculated Summary group",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "first-number-block",
+                            "question": {
+                                "id": "first-number-question",
+                                "title": "First Number Question Title",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "first-number-answer",
+                                        "label": "First answer label",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "second-number-block",
+                            "question": {
+                                "id": "second-number-question",
+                                "title": "Second Number Question Title",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "second-number-answer",
+                                        "label": "Second answer label",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "calculated-summary-block",
+                            "title": "We calculate the total of currency values entered to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "first-number-answer"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "second-number-answer"
+                                        }
+                                    ]
+                                },
+                                "title": "Grand total of previous values"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-2",
+            "title": "Skippable random question + List collector",
+            "groups": [
+                {
+                    "id": "group",
+                    "title": "List",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "s2-b1",
+                            "question": {
+                                "id": "s2-b1-q1",
+                                "title": "Skippable random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s2-b1-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "source": "progress",
+                                            "selector": "block",
+                                            "identifier": "calculated-summary-block"
+                                        },
+                                        "COMPLETED"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "id": "list-collector",
+                            "type": "ListCollector",
+                            "for_list": "people",
+                            "question": {
+                                "id": "confirmation-question",
+                                "type": "General",
+                                "title": "Does anyone else live here?",
+                                "answers": [
+                                    {
+                                        "id": "anyone-else",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "add_block": {
+                                "id": "add-person",
+                                "type": "ListAddQuestion",
+                                "question": {
+                                    "id": "add-question",
+                                    "type": "General",
+                                    "title": "What is the name of the person?",
+                                    "answers": [
+                                        {
+                                            "id": "first-name",
+                                            "label": "First name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "last-name",
+                                            "label": "Last name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "edit_block": {
+                                "id": "edit-person",
+                                "type": "ListEditQuestion",
+                                "question": {
+                                    "id": "edit-question",
+                                    "type": "General",
+                                    "title": "What is the name of the person?",
+                                    "answers": [
+                                        {
+                                            "id": "first-name",
+                                            "label": "First name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "last-name",
+                                            "label": "Last name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "remove_block": {
+                                "id": "remove-person",
+                                "type": "ListRemoveQuestion",
+                                "question": {
+                                    "id": "remove-question",
+                                    "type": "General",
+                                    "title": "Are you sure you want to remove this person?",
+                                    "answers": [
+                                        {
+                                            "id": "remove-confirmation",
+                                            "mandatory": true,
+                                            "type": "Radio",
+                                            "options": [
+                                                {
+                                                    "label": "Yes",
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
+                                                },
+                                                {
+                                                    "label": "No",
+                                                    "value": "No"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "summary": {
+                                "title": "Household members",
+                                "item_title": {
+                                    "text": "{person_name}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "person_name",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "last-name"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-3",
+            "title": "Repeating section",
+            "summary": { "show_on_completion": true },
+            "repeat": {
+                "for_list": "people",
+                "title": {
+                    "text": "{person_name}",
+                    "placeholders": [
+                        {
+                            "placeholder": "person_name",
+                            "transforms": [
+                                {
+                                    "transform": "concatenate_list",
+                                    "arguments": {
+                                        "list_to_concatenate": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "first-name"
+                                            },
+                                            {
+                                                "source": "answers",
+                                                "identifier": "last-name"
+                                            }
+                                        ],
+                                        "delimiter": " "
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "groups": [
+                {
+                    "id": "dob-group",
+                    "title": "Date of birth",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "dob-block",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "date-of-birth-answer",
+                                        "mandatory": false,
+                                        "maximum": {
+                                            "value": "now"
+                                        },
+                                        "minimum": {
+                                            "offset_by": {
+                                                "years": -115
+                                            },
+                                            "value": "2019-10-13"
+                                        },
+                                        "type": "Date"
+                                    }
+                                ],
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "For example 31 12 1970"
+                                        }
+                                    ]
+                                },
+                                "id": "date-of-birth-question",
+                                "title": {
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "person_name_possessive",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "last-name"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                },
+                                                {
+                                                    "arguments": {
+                                                        "string_to_format": {
+                                                            "source": "previous_transform"
+                                                        }
+                                                    },
+                                                    "transform": "format_possessive"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "text": "What is <strong>{person_name_possessive}</strong> date of birth?"
+                                },
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "other-question-block",
+                            "question": {
+                                "id": "other-question",
+                                "answers": [
+                                    {
+                                        "id": "other-answer",
+                                        "mandatory": true,
+                                        "label": "Anything",
+                                        "type": "Number"
+                                    }
+                                ],
+                                "title": {
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "person_name_possessive",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "last-name"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                },
+                                                {
+                                                    "arguments": {
+                                                        "string_to_format": {
+                                                            "source": "previous_transform"
+                                                        }
+                                                    },
+                                                    "transform": "format_possessive"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "text": "Random question about <strong>{person_name_possessive}</strong>"
+                                },
+                                "description": ["Shows because the calculated summary was completed in section 1"],
+                                "type": "General"
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "source": "progress",
+                                            "selector": "block",
+                                            "identifier": "calculated-summary-block"
+                                        },
+                                        "COMPLETED"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "other-question-block-2",
+                            "question": {
+                                "id": "other-question-2",
+                                "answers": [
+                                    {
+                                        "id": "other-answer-2",
+                                        "mandatory": true,
+                                        "label": "Anything",
+                                        "type": "Number"
+                                    }
+                                ],
+                                "title": {
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "person_name_possessive",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "last-name"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                },
+                                                {
+                                                    "arguments": {
+                                                        "string_to_format": {
+                                                            "source": "previous_transform"
+                                                        }
+                                                    },
+                                                    "transform": "format_possessive"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "text": "Another random question about <strong>{person_name_possessive}</strong>"
+                                },
+                                "description": ["Shows because block 2 of this repeating section was completed."],
+                                "type": "General"
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "source": "progress",
+                                            "selector": "block",
+                                            "identifier": "other-question-block"
+                                        },
+                                        "COMPLETED"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-4",
+            "title": "Section 4 (Dependent on Section 1)",
+            "groups": [
+                {
+                    "id": "group-4",
+                    "title": "List",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "s4-b1",
+                            "question": {
+                                "id": "s4-b1-q1",
+                                "title": "Skippable random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s4-b1-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "source": "progress",
+                                            "selector": "section",
+                                            "identifier": "section-1"
+                                        },
+                                        "COMPLETED"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "s4-b2",
+                            "question": {
+                                "id": "s4-b2-q1",
+                                "title": "Random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s4-b2-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-5",
+            "title": "Section 5 (Dependent on Calc Summary Block Section 1)",
+            "groups": [
+                {
+                    "id": "group-5",
+                    "title": "List",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "s5-b1",
+                            "question": {
+                                "id": "s5-b1-q1",
+                                "title": "Skippable random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s5-b1-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "source": "progress",
+                                            "selector": "block",
+                                            "identifier": "calculated-summary-block"
+                                        },
+                                        "COMPLETED"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "s5-b2",
+                            "question": {
+                                "id": "s5-b2-q1",
+                                "title": "Random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s5-b2-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-6",
+            "title": "Section 6 (Dependent on Section 4)",
+            "groups": [
+                {
+                    "id": "group-6",
+                    "title": "List",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "s6-b1",
+                            "question": {
+                                "id": "s6-b1-q1",
+                                "title": "Skippable random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s6-b1-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "source": "progress",
+                                            "selector": "section",
+                                            "identifier": "section-4"
+                                        },
+                                        "COMPLETED"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "s6-b2",
+                            "question": {
+                                "id": "s6-b2-q1",
+                                "title": "Random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s6-b2-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-7",
+            "title": "Section 7 (Dependent on Section 5)",
+            "groups": [
+                {
+                    "id": "group-7",
+                    "title": "List",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "s7-b1",
+                            "question": {
+                                "id": "s7-b1-q1",
+                                "title": "Skippable random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s7-b1-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "source": "progress",
+                                            "selector": "section",
+                                            "identifier": "section-5"
+                                        },
+                                        "COMPLETED"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "s7-b2",
+                            "question": {
+                                "id": "s7-b2-q1",
+                                "title": "Skippable random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s7-b2-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "source": "progress",
+                                            "selector": "section",
+                                            "identifier": "section-2"
+                                        },
+                                        "COMPLETED"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "s7-b3",
+                            "question": {
+                                "id": "s7-b3-q1",
+                                "title": "Random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s7-b3-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-8",
+            "title": "Section 8 (Dependent on Section 7 and Section 2)",
+            "groups": [
+                {
+                    "id": "group-8",
+                    "title": "List",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "s8-b1",
+                            "question": {
+                                "id": "s8-b1-q1",
+                                "title": "Skippable random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s8-b1-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "source": "progress",
+                                            "selector": "section",
+                                            "identifier": "section-7"
+                                        },
+                                        "COMPLETED"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "s8-b2",
+                            "question": {
+                                "id": "s8-b2-q1",
+                                "title": "Skippable random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s8-b2-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "source": "progress",
+                                            "selector": "section",
+                                            "identifier": "section-2"
+                                        },
+                                        "COMPLETED"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "s8-b3",
+                            "question": {
+                                "id": "s8-b3-q1",
+                                "title": "Random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s8-b3-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-9",
+            "title": "Section 9 (Dependent on Section 2)",
+            "groups": [
+                {
+                    "id": "group-9",
+                    "title": "List",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "s9-b1",
+                            "question": {
+                                "id": "s9-b1-q1",
+                                "title": "Skippable random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s9-b1-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "source": "progress",
+                                            "selector": "section",
+                                            "identifier": "section-2"
+                                        },
+                                        "COMPLETED"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "s9-b2",
+                            "question": {
+                                "id": "s9-b2-q1",
+                                "title": "Random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s9-b2-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-10",
+            "title": "Section 10 (Dependent on Section 2)",
+            "groups": [
+                {
+                    "id": "group-10",
+                    "title": "List",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "s10-b1",
+                            "question": {
+                                "id": "s10-b1-q1",
+                                "title": "Skippable random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s10-b1-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "source": "progress",
+                                            "selector": "section",
+                                            "identifier": "section-2"
+                                        },
+                                        "COMPLETED"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "s10-b2",
+                            "question": {
+                                "id": "s10-b2-q1",
+                                "title": "Random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s10-b2-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-11",
+            "title": "Section 11 (Dependent on Section 10)",
+            "groups": [
+                {
+                    "id": "group-11",
+                    "title": "List",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "s11-b1",
+                            "question": {
+                                "id": "s11-b1-q1",
+                                "title": "Skippable random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s11-b1-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "source": "progress",
+                                            "selector": "section",
+                                            "identifier": "section-10"
+                                        },
+                                        "COMPLETED"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "s11-b2",
+                            "question": {
+                                "id": "s11-b2-q1",
+                                "title": "Random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s11-b2-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-12",
+            "title": "Section 12 (Dependent on Section 9)",
+            "groups": [
+                {
+                    "id": "group-12",
+                    "title": "List",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "s12-b1",
+                            "question": {
+                                "id": "s12-b1-q1",
+                                "title": "Skippable random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s12-b1-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "source": "progress",
+                                            "selector": "section",
+                                            "identifier": "section-9"
+                                        },
+                                        "COMPLETED"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "s12-b2",
+                            "question": {
+                                "id": "s12-b2-q1",
+                                "title": "Random question",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "s12-b2-q1-a1",
+                                        "mandatory": true,
+                                        "label": "Enter any number",
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

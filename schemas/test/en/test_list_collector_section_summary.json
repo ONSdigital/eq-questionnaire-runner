@@ -1,0 +1,549 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Test List Collector Section Summary Items",
+    "theme": "default",
+    "description": "A questionnaire to test list collector section summary items",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "post_submission": {
+        "view_response": true
+    },
+    "answer_codes": [
+        {
+            "answer_id": "any-companies-or-branches-answer",
+            "code": "1"
+        },
+        {
+            "answer_id": "company-or-branch-name",
+            "code": "1a"
+        },
+        {
+            "answer_id": "registration-number",
+            "code": "1b"
+        },
+        {
+            "answer_id": "authorised-insurer-radio",
+            "code": "1c"
+        },
+        {
+            "answer_id": "any-other-companies-or-branches-answer",
+            "code": "2"
+        },
+        {
+            "answer_id": "confirmation-checkbox-answer",
+            "code": "3"
+        },
+        {
+            "answer_id": "anyone-else",
+            "code": "4"
+        },
+        {
+            "answer_id": "householder-checkbox-answer",
+            "code": "5"
+        },
+        {
+            "answer_id": "first-name",
+            "code": "6"
+        },
+        {
+            "answer_id": "last-name",
+            "code": "7"
+        }
+    ],
+    "sections": [
+        {
+            "id": "section-companies",
+            "title": "General insurance business",
+            "summary": {
+                "show_on_completion": true,
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "companies",
+                        "title": "Companies or UK branches",
+                        "item_anchor_answer_id": "company-or-branch-name",
+                        "item_label": "Name of UK company or branch",
+                        "add_link_text": "Add another UK company or branch",
+                        "empty_list_text": "No UK company or branch added",
+                        "related_answers": [
+                            {
+                                "source": "answers",
+                                "identifier": "registration-number"
+                            },
+                            {
+                                "source": "answers",
+                                "identifier": "authorised-insurer-radio"
+                            }
+                        ]
+                    }
+                ],
+                "show_non_item_answers": true
+            },
+            "groups": [
+                {
+                    "id": "group-companies",
+                    "blocks": [
+                        {
+                            "type": "ListCollectorDrivingQuestion",
+                            "id": "any-companies-or-branches",
+                            "for_list": "companies",
+                            "question": {
+                                "type": "General",
+                                "id": "any-companies-or-branches-question",
+                                "title": "Do any companies or branches within your United Kingdom group undertake general insurance business?",
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "any-companies-or-branches-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock",
+                                                    "params": {
+                                                        "block_id": "add-company",
+                                                        "list_name": "companies"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "when": {
+                                        "==": [{ "source": "answers", "identifier": "any-companies-or-branches-answer" }, "No"]
+                                    },
+                                    "block": "confirmation-checkbox"
+                                },
+                                {
+                                    "block": "any-other-companies-or-branches"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "any-other-companies-or-branches",
+                            "type": "ListCollector",
+                            "for_list": "companies",
+                            "question": {
+                                "id": "any-other-companies-or-branches-question",
+                                "type": "General",
+                                "title": "Do you need to add any other UK companies or branches that undertake general insurance business?",
+                                "answers": [
+                                    {
+                                        "id": "any-other-companies-or-branches-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "add_block": {
+                                "id": "add-company",
+                                "type": "ListAddQuestion",
+                                "question": {
+                                    "id": "add-question-companies",
+                                    "type": "General",
+                                    "title": "Give details about the company or branch that undertakes general insurance business",
+                                    "answers": [
+                                        {
+                                            "id": "company-or-branch-name",
+                                            "label": "Name of UK company or branch",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "registration-number",
+                                            "label": "Registration number",
+                                            "mandatory": true,
+                                            "type": "Number",
+                                            "maximum": {
+                                                "value": 999,
+                                                "exclusive": false
+                                            },
+                                            "decimal_places": 0
+                                        },
+                                        {
+                                            "type": "Radio",
+                                            "label": "Is this UK company or branch an authorised insurer?",
+                                            "id": "authorised-insurer-radio",
+                                            "mandatory": false,
+                                            "options": [
+                                                {
+                                                    "label": "Yes",
+                                                    "value": "Yes"
+                                                },
+                                                {
+                                                    "label": "No",
+                                                    "value": "No"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "edit_block": {
+                                "id": "edit-company",
+                                "type": "ListEditQuestion",
+                                "question": {
+                                    "id": "edit-question-companies",
+                                    "type": "General",
+                                    "title": "What is the name of the company?",
+                                    "answers": [
+                                        {
+                                            "id": "company-or-branch-name",
+                                            "label": "Name of UK company or branch",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "registration-number",
+                                            "label": "Registration number",
+                                            "mandatory": true,
+                                            "type": "Number"
+                                        },
+                                        {
+                                            "type": "Radio",
+                                            "label": "Is this UK company or branch an authorised insurer?",
+                                            "id": "authorised-insurer-radio",
+                                            "mandatory": false,
+                                            "options": [
+                                                {
+                                                    "label": "Yes",
+                                                    "value": "Yes"
+                                                },
+                                                {
+                                                    "label": "No",
+                                                    "value": "No"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "remove_block": {
+                                "id": "remove-company",
+                                "type": "ListRemoveQuestion",
+                                "question": {
+                                    "id": "remove-question-companies",
+                                    "type": "General",
+                                    "title": "Are you sure you want to remove this company or UK branch?",
+                                    "answers": [
+                                        {
+                                            "id": "remove-confirmation-company",
+                                            "mandatory": true,
+                                            "type": "Radio",
+                                            "options": [
+                                                {
+                                                    "label": "Yes",
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
+                                                },
+                                                {
+                                                    "label": "No",
+                                                    "value": "No"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "summary": {
+                                "title": "Companies or UK branches",
+                                "item_title": {
+                                    "text": "{company_name}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "company_name",
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "company-or-branch-name"
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "confirmation-checkbox",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "confirmation-checkbox-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "confirmation-checkbox-question",
+                                "title": "Are all companies or branches based in UK?",
+                                "type": "General"
+                            },
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "companies"
+                                                }
+                                            ]
+                                        },
+                                        3
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-household",
+            "title": "Household Section",
+            "summary": {
+                "show_on_completion": true,
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "people",
+                        "title": "Who lives here",
+                        "item_anchor_answer_id": "first-name",
+                        "item_label": "Name of householder",
+                        "add_link_text": "Add someone to this household",
+                        "empty_list_text": "There are no householders"
+                    }
+                ],
+                "show_non_item_answers": true
+            },
+            "groups": [
+                {
+                    "id": "group-household",
+                    "title": "Household Questions",
+                    "blocks": [
+                        {
+                            "id": "list-collector",
+                            "type": "ListCollector",
+                            "for_list": "people",
+                            "question": {
+                                "id": "confirmation-question",
+                                "type": "General",
+                                "title": "Does anyone else live here?",
+                                "answers": [
+                                    {
+                                        "id": "anyone-else",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "add_block": {
+                                "id": "add-person",
+                                "type": "ListAddQuestion",
+                                "cancel_text": "Don’t need to add anyone else?",
+                                "question": {
+                                    "id": "add-question-people",
+                                    "type": "General",
+                                    "title": "What is the name of the person?",
+                                    "answers": [
+                                        {
+                                            "id": "first-name",
+                                            "label": "First name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "last-name",
+                                            "label": "Last name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "edit_block": {
+                                "id": "edit-person",
+                                "type": "ListEditQuestion",
+                                "cancel_text": "Don’t need to change anything?",
+                                "question": {
+                                    "id": "edit-question-people",
+                                    "type": "General",
+                                    "title": "What is the name of the person?",
+                                    "answers": [
+                                        {
+                                            "id": "first-name",
+                                            "label": "First name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "last-name",
+                                            "label": "Last name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "remove_block": {
+                                "id": "remove-person",
+                                "type": "ListRemoveQuestion",
+                                "cancel_text": "Don’t need to remove this person?",
+                                "question": {
+                                    "id": "remove-question-people",
+                                    "type": "General",
+                                    "title": "Are you sure you want to remove this person?",
+                                    "warning": "All of the information about this person will be deleted",
+                                    "answers": [
+                                        {
+                                            "id": "remove-confirmation",
+                                            "mandatory": true,
+                                            "type": "Radio",
+                                            "options": [
+                                                {
+                                                    "label": "Yes",
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
+                                                },
+                                                {
+                                                    "label": "No",
+                                                    "value": "No"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "summary": {
+                                "title": "Household members",
+                                "item_title": {
+                                    "text": "{person_name}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "person_name",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "last-name"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "householder-checkbox",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "householder-checkbox-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "householder-checkbox-question",
+                                "title": "Are all these people based in the UK?",
+                                "type": "General"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

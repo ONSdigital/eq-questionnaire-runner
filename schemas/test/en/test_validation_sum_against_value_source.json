@@ -1,0 +1,190 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Calculated question with value sources test survey",
+    "theme": "default",
+    "description": "A survey that tests validation against value sources",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "id": "group",
+                    "title": "Validate sum against answer, calculated summary source",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "total-block",
+                            "question": {
+                                "id": "total-question",
+                                "title": "Total",
+                                "description": ["Enter a number to breakdown in subsequent questions and calculated summary."],
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "total-answer",
+                                        "label": "Total",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "decimal_places": 2,
+                                        "minimum": {
+                                            "value": 0,
+                                            "exclusive": true
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "breakdown-block",
+                            "question": {
+                                "id": "breakdown-question",
+                                "title": "Breakdown validated against an answer value source",
+                                "description": ["This is a breakdown of the total number from the previous question."],
+                                "type": "Calculated",
+                                "calculations": [
+                                    {
+                                        "calculation_type": "sum",
+                                        "value": {
+                                            "source": "answers",
+                                            "identifier": "total-answer"
+                                        },
+                                        "answers_to_calculate": ["breakdown-1", "breakdown-2", "breakdown-3", "breakdown-4"],
+                                        "conditions": ["equals"]
+                                    }
+                                ],
+                                "answers": [
+                                    {
+                                        "id": "breakdown-1",
+                                        "label": "Breakdown 1",
+                                        "mandatory": false,
+                                        "decimal_places": 2,
+                                        "type": "Number"
+                                    },
+                                    {
+                                        "id": "breakdown-2",
+                                        "label": "Breakdown 2",
+                                        "mandatory": false,
+                                        "decimal_places": 2,
+                                        "type": "Number"
+                                    },
+                                    {
+                                        "id": "breakdown-3",
+                                        "label": "Breakdown 3",
+                                        "mandatory": false,
+                                        "decimal_places": 2,
+                                        "type": "Number"
+                                    },
+                                    {
+                                        "id": "breakdown-4",
+                                        "label": "Breakdown 4",
+                                        "mandatory": false,
+                                        "decimal_places": 2,
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "number-total-playback",
+                            "title": "We calculate the total of number values entered to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "calculation_type": "sum",
+                                "answers_to_calculate": ["breakdown-1", "breakdown-2"],
+                                "title": "Grand total of previous values"
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "second-breakdown-block",
+                            "question": {
+                                "id": "second-breakdown-question",
+                                "title": "Breakdown validated against calculated summary value source",
+                                "description": ["This is a breakdown of the grand total from the previous calculated summary."],
+                                "type": "Calculated",
+                                "calculations": [
+                                    {
+                                        "calculation_type": "sum",
+                                        "value": {
+                                            "source": "calculated_summary",
+                                            "identifier": "number-total-playback"
+                                        },
+                                        "answers_to_calculate": ["second-breakdown-1", "second-breakdown-2", "second-breakdown-3", "second-breakdown-4"],
+                                        "conditions": ["equals"]
+                                    }
+                                ],
+                                "answers": [
+                                    {
+                                        "id": "second-breakdown-1",
+                                        "label": "Breakdown 1",
+                                        "mandatory": false,
+                                        "decimal_places": 2,
+                                        "type": "Number"
+                                    },
+                                    {
+                                        "id": "second-breakdown-2",
+                                        "label": "Breakdown 2",
+                                        "mandatory": false,
+                                        "decimal_places": 2,
+                                        "type": "Number"
+                                    },
+                                    {
+                                        "id": "second-breakdown-3",
+                                        "label": "Breakdown 3",
+                                        "mandatory": false,
+                                        "decimal_places": 2,
+                                        "type": "Number"
+                                    },
+                                    {
+                                        "id": "second-breakdown-4",
+                                        "label": "Breakdown 4",
+                                        "mandatory": false,
+                                        "decimal_places": 2,
+                                        "type": "Number"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "another-number-total-playback",
+                            "title": "We calculate the total of number values entered to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "calculation_type": "sum",
+                                "answers_to_calculate": ["breakdown-1", "breakdown-2", "breakdown-3", "breakdown-4"],
+                                "title": "Another grand total of previous values"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

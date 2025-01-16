@@ -1,0 +1,81 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Interstitial Pages",
+    "theme": "default",
+    "description": "A questionnaire to demo interstitial pages.",
+    "messages": {
+        "NUMBER_TOO_LARGE": "Number is too large",
+        "NUMBER_TOO_SMALL": "Number cannot be less than zero",
+        "INVALID_NUMBER": "Please enter an integer"
+    },
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {}
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Introduction",
+                            "id": "introduction"
+                        },
+                        {
+                            "id": "interstitial",
+                            "content": {
+                                "title": "Breakfast interstitial",
+                                "instruction": ["Just pause for a second"],
+                                "contents": [
+                                    {
+                                        "description": "Next we want to know about your lunch."
+                                    }
+                                ]
+                            },
+                            "type": "Interstitial"
+                        },
+                        {
+                            "type": "Question",
+                            "id": "lunch-block",
+                            "question": {
+                                "instruction": ["Tell us about what you eat"],
+                                "answers": [
+                                    {
+                                        "id": "favourite-lunch",
+                                        "label": "What is your favourite lunchtime food",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    }
+                                ],
+                                "id": "favourite-lunch-question",
+                                "title": "Title",
+                                "type": "General"
+                            }
+                        }
+                    ],
+                    "id": "favourite-foods",
+                    "title": "Favourite food"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,74 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Feedback test schema",
+    "theme": "default",
+    "description": "A questionnaire to test feedback",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "post_submission": {
+        "feedback": true,
+        "confirmation_email": true
+    },
+    "sections": [
+        {
+            "id": "schema-feedback-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "feedback",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "schema-feedback-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "id": "schema-feedback-question",
+                                "title": "Are you aware you can send feedback with this schema?",
+                                "type": "General"
+                            }
+                        }
+                    ],
+                    "id": "schema-feedback-group"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,64 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Interstitial Page Titles",
+    "theme": "default",
+    "description": "A questionnaire to demo interstitial pages titles.",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {}
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "id": "interstitial-page",
+                            "content": {
+                                "title": {
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "ru_name",
+                                            "value": {
+                                                "identifier": "ru_name",
+                                                "source": "metadata"
+                                            }
+                                        }
+                                    ],
+                                    "text": "Your RU name: <strong>{ru_name}</strong>"
+                                },
+                                "contents": [
+                                    {
+                                        "description": "You have successfully completed the section."
+                                    }
+                                ]
+                            },
+                            "type": "Interstitial"
+                        }
+                    ],
+                    "id": "interstitial-page-titles",
+                    "title": "Interstitial page titles"
+                }
+            ]
+        }
+    ]
+}

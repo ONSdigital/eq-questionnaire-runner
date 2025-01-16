@@ -1,0 +1,83 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "001",
+    "title": "Test Thank You",
+    "theme": "default",
+    "description": "A questionnaire to test post submission params",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "post_submission": {
+        "guidance": {
+            "contents": [
+                {
+                    "description": "This survey was important."
+                },
+                {
+                    "description": "<a href=''>Important link</a>"
+                }
+            ]
+        },
+        "view_response": true
+    },
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "id": "did-you-know",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "question",
+                                "title": "Did you know this schema is testing post submission params?",
+                                "type": "General"
+                            },
+                            "type": "Question"
+                        }
+                    ],
+                    "id": "group"
+                }
+            ]
+        }
+    ]
+}

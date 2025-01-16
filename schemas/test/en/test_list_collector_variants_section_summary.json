@@ -1,0 +1,551 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Test List Collector Variants Section Summary Items",
+    "theme": "default",
+    "description": "A questionnaire to test list collector section summary items for variants",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "section-companies",
+            "title": "General insurance business",
+            "summary": {
+                "show_on_completion": true,
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "companies",
+                        "title": "Companies or UK branches",
+                        "item_anchor_answer_id": "company-or-branch-name",
+                        "item_label": "Name of UK or non-UK company or branch",
+                        "add_link_text": "Add another UK company or branch",
+                        "empty_list_text": "No UK company or branch added",
+                        "related_answers": [
+                            {
+                                "source": "answers",
+                                "identifier": "registration-number"
+                            },
+                            {
+                                "source": "answers",
+                                "identifier": "authorised-insurer-radio"
+                            }
+                        ]
+                    }
+                ],
+                "show_non_item_answers": true
+            },
+            "groups": [
+                {
+                    "id": "group-companies",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "uk-based-block",
+                            "question": {
+                                "type": "General",
+                                "id": "uk-based-question",
+                                "title": "Are the companies UK based?",
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "uk-based-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "ListCollectorDrivingQuestion",
+                            "id": "any-companies-or-branches",
+                            "for_list": "companies",
+                            "question": {
+                                "type": "General",
+                                "id": "any-companies-or-branches-question",
+                                "title": "Do any companies or branches undertake general insurance business?",
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "any-companies-or-branches-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock",
+                                                    "params": {
+                                                        "block_id": "add-company",
+                                                        "list_name": "companies"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "block": "confirmation-checkbox",
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "any-companies-or-branches-answer"
+                                            },
+                                            "No"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "any-other-companies-or-branches"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "any-other-companies-or-branches",
+                            "type": "ListCollector",
+                            "for_list": "companies",
+                            "question_variants": [
+                                {
+                                    "question": {
+                                        "id": "any-other-companies-or-branches-question",
+                                        "type": "General",
+                                        "title": "Do you need to add any other UK companies or branches that undertake general insurance business?",
+                                        "answers": [
+                                            {
+                                                "id": "any-other-companies-or-branches-answer",
+                                                "mandatory": true,
+                                                "type": "Radio",
+                                                "options": [
+                                                    {
+                                                        "label": "Yes",
+                                                        "value": "Yes",
+                                                        "action": {
+                                                            "type": "RedirectToListAddBlock"
+                                                        }
+                                                    },
+                                                    {
+                                                        "label": "No",
+                                                        "value": "No"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "uk-based-answer"
+                                            },
+                                            "Yes"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "question": {
+                                        "id": "any-other-companies-or-branches-question",
+                                        "type": "General",
+                                        "title": "Do you need to add any other non-UK companies or branches that undertake general insurance business?",
+                                        "answers": [
+                                            {
+                                                "id": "any-other-companies-or-branches-answer",
+                                                "mandatory": true,
+                                                "type": "Radio",
+                                                "options": [
+                                                    {
+                                                        "label": "Yes",
+                                                        "value": "Yes",
+                                                        "action": {
+                                                            "type": "RedirectToListAddBlock"
+                                                        }
+                                                    },
+                                                    {
+                                                        "label": "No",
+                                                        "value": "No"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "uk-based-answer"
+                                            },
+                                            "No"
+                                        ]
+                                    }
+                                }
+                            ],
+                            "add_block": {
+                                "id": "add-company",
+                                "type": "ListAddQuestion",
+                                "question_variants": [
+                                    {
+                                        "question": {
+                                            "id": "add-question-companies",
+                                            "type": "General",
+                                            "title": "Give details about the company or branch that undertakes general insurance business",
+                                            "answers": [
+                                                {
+                                                    "id": "company-or-branch-name",
+                                                    "label": "Name of UK company or branch",
+                                                    "mandatory": true,
+                                                    "type": "TextField"
+                                                },
+                                                {
+                                                    "id": "registration-number",
+                                                    "label": "UK Registration number",
+                                                    "mandatory": true,
+                                                    "type": "Number",
+                                                    "maximum": {
+                                                        "value": 999,
+                                                        "exclusive": false
+                                                    },
+                                                    "decimal_places": 0
+                                                },
+                                                {
+                                                    "type": "Radio",
+                                                    "label": "Is this UK company or branch an authorised insurer?",
+                                                    "id": "authorised-insurer-radio",
+                                                    "mandatory": false,
+                                                    "options": [
+                                                        {
+                                                            "label": "Yes",
+                                                            "value": "Yes"
+                                                        },
+                                                        {
+                                                            "label": "No",
+                                                            "value": "No"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "uk-based-answer"
+                                                },
+                                                "Yes"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "question": {
+                                            "id": "add-question-companies",
+                                            "type": "General",
+                                            "title": "Give details about the company or branch that undertakes general insurance business",
+                                            "answers": [
+                                                {
+                                                    "id": "company-or-branch-name",
+                                                    "label": "Name of non-UK company or branch",
+                                                    "mandatory": true,
+                                                    "type": "TextField"
+                                                },
+                                                {
+                                                    "id": "registration-number",
+                                                    "label": "Non-UK Registration number",
+                                                    "mandatory": true,
+                                                    "type": "Number",
+                                                    "maximum": {
+                                                        "value": 999,
+                                                        "exclusive": false
+                                                    },
+                                                    "decimal_places": 0
+                                                },
+                                                {
+                                                    "type": "Radio",
+                                                    "label": "Is this non-UK company or branch an authorised insurer?",
+                                                    "id": "authorised-insurer-radio",
+                                                    "mandatory": false,
+                                                    "options": [
+                                                        {
+                                                            "label": "Yes",
+                                                            "value": "Yes"
+                                                        },
+                                                        {
+                                                            "label": "No",
+                                                            "value": "No"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "uk-based-answer"
+                                                },
+                                                "No"
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "edit_block": {
+                                "id": "edit-company",
+                                "type": "ListEditQuestion",
+                                "question_variants": [
+                                    {
+                                        "question": {
+                                            "id": "edit-question-companies",
+                                            "type": "General",
+                                            "title": "What is the name of the company?",
+                                            "answers": [
+                                                {
+                                                    "id": "company-or-branch-name",
+                                                    "label": "Name of UK company or branch",
+                                                    "mandatory": true,
+                                                    "type": "TextField"
+                                                },
+                                                {
+                                                    "id": "registration-number",
+                                                    "label": "UK Registration number",
+                                                    "mandatory": true,
+                                                    "type": "Number"
+                                                },
+                                                {
+                                                    "type": "Radio",
+                                                    "label": "Is this UK company or branch an authorised insurer?",
+                                                    "id": "authorised-insurer-radio",
+                                                    "mandatory": false,
+                                                    "options": [
+                                                        {
+                                                            "label": "Yes",
+                                                            "value": "Yes"
+                                                        },
+                                                        {
+                                                            "label": "No",
+                                                            "value": "No"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "uk-based-answer"
+                                                },
+                                                "Yes"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "question": {
+                                            "id": "edit-question-companies",
+                                            "type": "General",
+                                            "title": "What is the name of the company?",
+                                            "answers": [
+                                                {
+                                                    "id": "company-or-branch-name",
+                                                    "label": "Name of non-UK company or branch",
+                                                    "mandatory": true,
+                                                    "type": "TextField"
+                                                },
+                                                {
+                                                    "id": "registration-number",
+                                                    "label": "Non-UK Registration number",
+                                                    "mandatory": true,
+                                                    "type": "Number"
+                                                },
+                                                {
+                                                    "type": "Radio",
+                                                    "label": "Is this non-UK company or branch an authorised insurer?",
+                                                    "id": "authorised-insurer-radio",
+                                                    "mandatory": false,
+                                                    "options": [
+                                                        {
+                                                            "label": "Yes",
+                                                            "value": "Yes"
+                                                        },
+                                                        {
+                                                            "label": "No",
+                                                            "value": "No"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "uk-based-answer"
+                                                },
+                                                "No"
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "remove_block": {
+                                "id": "remove-company",
+                                "type": "ListRemoveQuestion",
+                                "question_variants": [
+                                    {
+                                        "question": {
+                                            "id": "remove-question-companies",
+                                            "type": "General",
+                                            "title": "Are you sure you want to remove this company or non-UK branch?",
+                                            "answers": [
+                                                {
+                                                    "id": "remove-confirmation",
+                                                    "mandatory": true,
+                                                    "type": "Radio",
+                                                    "options": [
+                                                        {
+                                                            "label": "Yes",
+                                                            "value": "Yes",
+                                                            "action": {
+                                                                "type": "RemoveListItemAndAnswers"
+                                                            }
+                                                        },
+                                                        {
+                                                            "label": "No",
+                                                            "value": "No"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "uk-based-answer"
+                                                },
+                                                "No"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "question": {
+                                            "id": "remove-question-companies",
+                                            "type": "General",
+                                            "title": "Are you sure you want to remove this company or non-UK branch?",
+                                            "answers": [
+                                                {
+                                                    "id": "remove-confirmation",
+                                                    "mandatory": true,
+                                                    "type": "Radio",
+                                                    "options": [
+                                                        {
+                                                            "label": "Yes",
+                                                            "value": "Yes",
+                                                            "action": {
+                                                                "type": "RemoveListItemAndAnswers"
+                                                            }
+                                                        },
+                                                        {
+                                                            "label": "No",
+                                                            "value": "No"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "when": {
+                                            "==": [
+                                                {
+                                                    "source": "answers",
+                                                    "identifier": "uk-based-answer"
+                                                },
+                                                "Yes"
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "summary": {
+                                "title": "Companies or UK branches",
+                                "item_title": {
+                                    "text": "{company_name}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "company_name",
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "company-or-branch-name"
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "confirmation-checkbox",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "confirmation-checkbox-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "confirmation-checkbox-question",
+                                "title": "Are all companies or branches based in UK?",
+                                "type": "General"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

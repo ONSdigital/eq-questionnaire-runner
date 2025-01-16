@@ -1,0 +1,129 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "001",
+    "title": "Test Routing Number Equals",
+    "theme": "default",
+    "description": "A test survey for routing based on a number equals",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "number-question",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "answer",
+                                        "mandatory": true,
+                                        "type": "Number",
+                                        "label": "Enter 123"
+                                    }
+                                ],
+                                "id": "question",
+                                "title": "Enter the number 123",
+                                "type": "General"
+                            },
+                            "routing_rules": [
+                                {
+                                    "block": "correct-answer",
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "answer"
+                                            },
+                                            123
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "incorrect-answer"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Interstitial",
+                            "id": "incorrect-answer",
+                            "content": {
+                                "title": "You did not enter 123",
+                                "contents": [
+                                    {
+                                        "description": {
+                                            "text": "You were asked to enter <strong>123</strong> but you actually entered <strong>{answer}</strong>.",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "answer",
+                                                    "value": {
+                                                        "source": "answers",
+                                                        "identifier": "answer"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "section": "End"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Interstitial",
+                            "id": "correct-answer",
+                            "content": {
+                                "title": "Correct",
+                                "contents": [
+                                    {
+                                        "description": {
+                                            "text": "You were asked to enter <strong>123</strong> and you entered <strong>{answer}</strong>.",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "answer",
+                                                    "value": {
+                                                        "source": "answers",
+                                                        "identifier": "answer"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "id": "group"
+                }
+            ]
+        }
+    ]
+}

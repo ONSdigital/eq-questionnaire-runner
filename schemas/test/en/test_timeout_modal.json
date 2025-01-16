@@ -1,0 +1,58 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "session_timeout_in_seconds": 125,
+    "title": "Timeout modal test",
+    "theme": "default",
+    "description": "A questionnaire to test the timeout modal functionality",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "id": "timeout-group",
+                    "title": "Timeout modal",
+                    "blocks": [
+                        {
+                            "id": "timeout-modal-interstitial",
+                            "content": {
+                                "title": "Timeout modal interstitial",
+                                "contents": [
+                                    {
+                                        "description": "Timeout modal will appear on this page after 65 seconds as the session timeout is set to 125 seconds, pressing “Continue survey” button on the modal will extend the session by that amount, “showModalTimeInSeconds” field is set to 60"
+                                    }
+                                ]
+                            },
+                            "type": "Interstitial"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

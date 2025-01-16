@@ -1,0 +1,191 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Other input fields",
+    "theme": "default",
+    "description": "A questionnaire to demo radio field Other input.",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "title": "test",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "radio",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "radio-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "None",
+                                                "value": "None"
+                                            },
+                                            {
+                                                "label": "Bacon",
+                                                "value": "Bacon"
+                                            },
+                                            {
+                                                "label": "Eggs",
+                                                "value": "Eggs"
+                                            },
+                                            {
+                                                "label": "Sausage",
+                                                "value": "Sausage"
+                                            },
+                                            {
+                                                "label": "Other",
+                                                "value": "Other",
+                                                "description": "An answer is required",
+                                                "detail_answer": {
+                                                    "mandatory": false,
+                                                    "id": "radio-answer-other",
+                                                    "label": "Please specify other",
+                                                    "type": "TextField"
+                                                }
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "radio-question",
+                                "title": "What is your favourite breakfast food?",
+                                "type": "General"
+                            }
+                        }
+                    ],
+                    "id": "radio-group"
+                },
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "dessert",
+                            "question": {
+                                "id": "dessert-question",
+                                "title": "What is your favourite dessert?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "dessert-answer",
+                                        "label": "Dessert",
+                                        "mandatory": true,
+                                        "type": "TextField"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "dessert-confirmation",
+                            "question": {
+                                "id": "test-dessert-confirmation-question",
+                                "title": {
+                                    "text": "Are you sure <strong>{dessert}</strong> is your favourite?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "dessert",
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "dessert-answer"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "dessert-confirmation-answer",
+                                        "label": "Radio",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "id": "dessert-group",
+                    "title": "Dessert"
+                },
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "numbers",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "numbers-currency-answer",
+                                        "label": "Currency",
+                                        "mandatory": false,
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "numbers-unit-answer",
+                                        "label": "Kilometres Square",
+                                        "mandatory": false,
+                                        "type": "Unit",
+                                        "unit_length": "short",
+                                        "unit": "area-square-kilometer"
+                                    },
+                                    {
+                                        "id": "numbers-decimal-answer",
+                                        "label": "Decimal (to 2 decimal places)",
+                                        "mandatory": false,
+                                        "type": "Number",
+                                        "decimal_places": 2
+                                    }
+                                ],
+                                "id": "numbers-question",
+                                "title": "What are the test values?",
+                                "type": "General"
+                            }
+                        }
+                    ],
+                    "id": "numbers-group",
+                    "title": "Numbers"
+                }
+            ]
+        }
+    ]
+}

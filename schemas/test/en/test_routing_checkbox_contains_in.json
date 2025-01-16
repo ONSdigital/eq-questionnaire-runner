@@ -1,0 +1,137 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "001",
+    "title": "Test Routing IN",
+    "theme": "default",
+    "description": "A test survey for routing based on the IN operator",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "country-checkbox",
+                            "question": {
+                                "id": "country-checkbox-question",
+                                "title": "Have you visited any of the following countries?",
+                                "type": "General",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "Choose India here to route to the “correct” page otherwise you will be routed to the “incorrect” page"
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "country-checkbox-answer",
+                                        "mandatory": false,
+                                        "type": "Checkbox",
+                                        "instruction": "Select India",
+                                        "options": [
+                                            {
+                                                "label": "India",
+                                                "value": "India"
+                                            },
+                                            {
+                                                "label": "Azerbaijan",
+                                                "value": "Azerbaijan"
+                                            },
+                                            {
+                                                "label": "Liechtenstein",
+                                                "value": "Liechtenstein"
+                                            },
+                                            {
+                                                "label": "Malta",
+                                                "value": "Malta"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "block": "country-interstitial-india",
+                                    "when": {
+                                        "in": [
+                                            "India",
+                                            {
+                                                "source": "answers",
+                                                "identifier": "country-checkbox-answer"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "country-interstitial-not-india"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "country-interstitial-not-india",
+                            "type": "Interstitial",
+                            "content": {
+                                "title": "Condition: Does Not Contain India",
+                                "contents": [
+                                    {
+                                        "description": "You did not chose India."
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "section": "End"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "country-interstitial-india",
+                            "type": "Interstitial",
+                            "content": {
+                                "title": "Condition: Contained India",
+                                "contents": [
+                                    {
+                                        "description": "You chose India."
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "section": "End"
+                                }
+                            ]
+                        }
+                    ],
+                    "id": "checkboxes"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,204 @@
+{
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "137",
+    "theme": "default",
+    "title": "Test Routing To Section End",
+    "mime_type": "application/json/ons/eq",
+    "navigation": {
+        "visible": true
+    },
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "test-section",
+            "title": "Section 1",
+            "summary": {
+                "show_on_completion": true
+            },
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "id": "test-forced",
+                            "question": {
+                                "title": "Were you forced to complete section 1?",
+                                "answers": [
+                                    {
+                                        "id": "test-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "test-question",
+                                "type": "General"
+                            },
+                            "type": "Question",
+                            "routing_rules": [
+                                {
+                                    "block": "test-optional",
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "identifier": "test-answer",
+                                                "source": "answers"
+                                            },
+                                            "Yes"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "section": "End"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "test-optional",
+                            "type": "Question",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "test-optional-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "£5 Cash",
+                                                "value": "£5 Cash"
+                                            },
+                                            {
+                                                "label": "£10 Amazon Voucher",
+                                                "value": "£10 Amazon Voucher"
+                                            }
+                                        ],
+                                        "type": "Checkbox"
+                                    }
+                                ],
+                                "id": "test-optional-question",
+                                "title": "What would incentivise you to complete this section?",
+                                "type": "General"
+                            }
+                        }
+                    ],
+                    "id": "test-group",
+                    "title": "Section 1"
+                }
+            ]
+        },
+        {
+            "id": "test-section-2",
+            "title": "Section 2",
+            "summary": {
+                "show_on_completion": true
+            },
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "id": "test-forced-2",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "test-answer-2",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "test-question-2",
+                                "title": "Were you forced to complete section 2?",
+                                "type": "General"
+                            },
+                            "type": "Question",
+                            "routing_rules": [
+                                {
+                                    "block": "test-optional-2",
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "identifier": "test-answer-2",
+                                                "source": "answers"
+                                            },
+                                            "Yes"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "section": "End"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "test-optional-2",
+                            "type": "Question",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "test-optional-answer-2",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "£5 Cash",
+                                                "value": "£5 Cash"
+                                            },
+                                            {
+                                                "label": "£10 Amazon Voucher",
+                                                "value": "£10 Amazon Voucher"
+                                            }
+                                        ],
+                                        "type": "Checkbox"
+                                    }
+                                ],
+                                "id": "test-optional-question-2",
+                                "title": "What would incentivise you to complete this section?",
+                                "type": "General"
+                            }
+                        }
+                    ],
+                    "id": "test-group-2",
+                    "title": "Section 2"
+                }
+            ]
+        }
+    ]
+}

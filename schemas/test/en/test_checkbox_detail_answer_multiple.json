@@ -1,0 +1,116 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Detail answer fields",
+    "theme": "default",
+    "description": "A questionnaire to demo checkbox field detail answer input.",
+    "messages": {
+        "NUMBER_TOO_LARGE": "Number is too large",
+        "NUMBER_TOO_SMALL": "Number cannot be less than zero",
+        "INVALID_NUMBER": "Please enter an integer"
+    },
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "mandatory-checkbox",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "mandatory-checkbox-answer",
+                                        "mandatory": false,
+                                        "options": [
+                                            {
+                                                "label": "None",
+                                                "value": "None"
+                                            },
+                                            {
+                                                "label": "Cheese",
+                                                "value": "Cheese",
+                                                "detail_answer": {
+                                                    "mandatory": false,
+                                                    "id": "cheese-type-answer",
+                                                    "label": "Type specific cheese if cheddar isn’t wanted",
+                                                    "type": "TextField"
+                                                }
+                                            },
+                                            {
+                                                "label": "Ham",
+                                                "value": "Ham"
+                                            },
+                                            {
+                                                "label": "Pineapple",
+                                                "value": "Pineapple"
+                                            },
+                                            {
+                                                "label": "Tuna",
+                                                "value": "Tuna"
+                                            },
+                                            {
+                                                "label": "Pepperoni",
+                                                "value": "Pepperoni"
+                                            },
+                                            {
+                                                "label": "Your choice",
+                                                "description": "Choose any other topping",
+                                                "value": "Your choice",
+                                                "detail_answer": {
+                                                    "mandatory": true,
+                                                    "id": "your-choice-answer-mandatory",
+                                                    "label": "Please specify your topping",
+                                                    "type": "TextField",
+                                                    "validation": {
+                                                        "messages": {
+                                                            "MANDATORY_TEXTFIELD": "Enter your topping choice to continue"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ],
+                                        "type": "Checkbox",
+                                        "validation": {
+                                            "messages": {}
+                                        }
+                                    }
+                                ],
+                                "id": "mandatory-checkbox-question",
+                                "title": "Which pizza toppings would you like?",
+                                "type": "General"
+                            }
+                        }
+                    ],
+                    "id": "checkboxes"
+                }
+            ]
+        }
+    ]
+}

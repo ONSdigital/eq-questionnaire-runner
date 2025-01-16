@@ -1,0 +1,176 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "A test schema to demo Calculated Summary",
+    "description": "A schema to showcase Calculated Summary with dependent questions.",
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {}
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "title": "Section 1",
+            "summary": {
+                "show_on_completion": false,
+                "collapsible": false
+            },
+            "show_on_hub": true,
+            "groups": [
+                {
+                    "id": "group-1",
+                    "blocks": [
+                        {
+                            "id": "block-1",
+                            "type": "Question",
+                            "question": {
+                                "id": "question-1",
+                                "title": "How much did you spend on food?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer-1",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "label": "Money spent on food",
+                                        "description": "Enter the full value",
+                                        "minimum": {
+                                            "value": 0,
+                                            "exclusive": true
+                                        },
+                                        "decimal_places": 2,
+                                        "currency": "GBP"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "block-2",
+                            "type": "Question",
+                            "question": {
+                                "id": "question-2",
+                                "title": "Of the money spent on food, how much did you spend on vegetables?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer-2",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "label": "Money spent on vegetables",
+                                        "description": "Enter the full value",
+                                        "minimum": {
+                                            "value": 0,
+                                            "exclusive": true
+                                        },
+                                        "maximum": {
+                                            "value": {
+                                                "identifier": "answer-1",
+                                                "source": "answers"
+                                            },
+                                            "exclusive": false
+                                        },
+                                        "decimal_places": 2,
+                                        "currency": "GBP"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "block-3",
+                            "type": "Question",
+                            "question": {
+                                "id": "question-3",
+                                "title": "How much did you spend on clothes?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer-3",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "label": "Money spent on clothes",
+                                        "description": "Enter the full value",
+                                        "minimum": {
+                                            "value": 0,
+                                            "exclusive": true
+                                        },
+                                        "decimal_places": 2,
+                                        "currency": "GBP"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "block-4",
+                            "type": "Question",
+                            "question": {
+                                "id": "question-4",
+                                "title": "Of the money spent on clothes, how much did you spend on shoes?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "answer-4",
+                                        "mandatory": true,
+                                        "type": "Currency",
+                                        "label": "Money spent on shoes",
+                                        "description": "Enter the full value",
+                                        "minimum": {
+                                            "value": 0,
+                                            "exclusive": true
+                                        },
+                                        "maximum": {
+                                            "value": {
+                                                "identifier": "answer-3",
+                                                "source": "answers"
+                                            },
+                                            "exclusive": false
+                                        },
+                                        "decimal_places": 2,
+                                        "currency": "GBP"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "calculated-summary-block",
+                            "type": "CalculatedSummary",
+                            "title": "We have calculated your total spend to be <strong>%(total)s</strong>. Is this correct?",
+                            "calculation": {
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "answer-1"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "answer-3"
+                                        }
+                                    ]
+                                },
+                                "title": "Grand total of previous values"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "theme": "default",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ]
+}

@@ -1,0 +1,244 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Multiple piping test survey",
+    "theme": "default",
+    "description": "A questionnaire to test multiple piping into a question and answer",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "id": "what-is-your-address-group",
+                    "title": "What is your address?",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "what-is-your-address",
+                            "question": {
+                                "id": "what-is-your-address-question",
+                                "title": "What is your address?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "building",
+                                        "label": "Building",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    },
+                                    {
+                                        "id": "address-line-1",
+                                        "label": "Address Line 1",
+                                        "mandatory": true,
+                                        "type": "TextField",
+                                        "validation": {
+                                            "messages": {
+                                                "MANDATORY_TEXTFIELD": "Enter an address to continue"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "address-line-2",
+                                        "label": "Address Line 2",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    },
+                                    {
+                                        "id": "address-line-3",
+                                        "label": "Address Line 3",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    },
+                                    {
+                                        "id": "town-city",
+                                        "label": "Town/City",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    },
+                                    {
+                                        "id": "county",
+                                        "label": "County",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    },
+                                    {
+                                        "id": "postcode",
+                                        "label": "Postcode",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    },
+                                    {
+                                        "id": "country",
+                                        "label": "Country",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "textfield",
+                            "question": {
+                                "id": "textfield-question",
+                                "title": "Enter text below",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "first-text",
+                                        "label": "Enter Name 1",
+                                        "mandatory": true,
+                                        "type": "TextField",
+                                        "validation": {
+                                            "messages": {
+                                                "MANDATORY_TEXTFIELD": "Please enter text?"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "second-text",
+                                        "label": "Enter Name 2",
+                                        "mandatory": false,
+                                        "type": "TextField"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "piping-question",
+                            "question": {
+                                "id": "multiple-piping-question",
+                                "title": {
+                                    "text": "Does <strong>{person}</strong> live at <strong>{address}</strong>",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "person",
+                                            "transforms": [
+                                                {
+                                                    "transform": "concatenate_list",
+                                                    "arguments": {
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "first-text"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "second-text"
+                                                            }
+                                                        ],
+                                                        "delimiter": " "
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "placeholder": "address",
+                                            "value": {
+                                                "source": "answers",
+                                                "identifier": "address-line-1"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "multiple-piping-answer",
+                                        "type": "Radio",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": {
+                                                    "text": "{address}",
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "address",
+                                                            "transforms": [
+                                                                {
+                                                                    "transform": "concatenate_list",
+                                                                    "arguments": {
+                                                                        "list_to_concatenate": [
+                                                                            {
+                                                                                "source": "answers",
+                                                                                "identifier": "building"
+                                                                            },
+                                                                            {
+                                                                                "source": "answers",
+                                                                                "identifier": "address-line-1"
+                                                                            },
+                                                                            {
+                                                                                "source": "answers",
+                                                                                "identifier": "address-line-2"
+                                                                            },
+                                                                            {
+                                                                                "source": "answers",
+                                                                                "identifier": "address-line-3"
+                                                                            },
+                                                                            {
+                                                                                "source": "answers",
+                                                                                "identifier": "town-city"
+                                                                            },
+                                                                            {
+                                                                                "source": "answers",
+                                                                                "identifier": "county"
+                                                                            },
+                                                                            {
+                                                                                "source": "answers",
+                                                                                "identifier": "postcode"
+                                                                            },
+                                                                            {
+                                                                                "source": "answers",
+                                                                                "identifier": "country"
+                                                                            }
+                                                                        ],
+                                                                        "delimiter": ", "
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                "value": "{address}"
+                                            },
+                                            {
+                                                "label": "at another address",
+                                                "value": "at another address"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

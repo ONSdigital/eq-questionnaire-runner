@@ -1,0 +1,370 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Test dynamic answer option driven by the map operator",
+    "theme": "default",
+    "description": "A questionnaire to demo dynamic answer options driven by the map operator with additional static options",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "reference-date",
+                            "question": {
+                                "id": "reference-date-question",
+                                "title": "Enter a reference date to drive the next set of questions",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "reference-date-answer",
+                                        "mandatory": true,
+                                        "type": "Date"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "dynamic-checkbox",
+                            "question": {
+                                "id": "dynamic-checkbox-question",
+                                "title": {
+                                    "text": "In the week of {date}, which days did you <strong>work</strong>?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "answers",
+                                                            "identifier": "reference-date-answer"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "dynamic-checkbox-answer",
+                                        "mandatory": false,
+                                        "type": "Checkbox",
+                                        "dynamic_options": {
+                                            "values": {
+                                                "map": [
+                                                    {
+                                                        "format-date": ["self", "yyyy-MM-dd"]
+                                                    },
+                                                    {
+                                                        "date-range": [
+                                                            {
+                                                                "date": [
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "reference-date-answer"
+                                                                    },
+                                                                    {
+                                                                        "day_of_week": "MONDAY"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            7
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            "transform": {
+                                                "format-date": [
+                                                    {
+                                                        "date": ["self"]
+                                                    },
+                                                    "EEEE d MMMM yyyy"
+                                                ]
+                                            }
+                                        },
+                                        "options": [
+                                            {
+                                                "label": "I did not work",
+                                                "value": "I did not work"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "dynamic-radio",
+                            "question": {
+                                "id": "dynamic-radio-question",
+                                "title": {
+                                    "text": "In the week of {date}, which day did you <strong>work the most</strong>?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "answers",
+                                                            "identifier": "reference-date-answer"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "dynamic-radio-answer",
+                                        "mandatory": false,
+                                        "type": "Radio",
+                                        "dynamic_options": {
+                                            "values": {
+                                                "map": [
+                                                    {
+                                                        "format-date": ["self", "yyyy-MM-dd"]
+                                                    },
+                                                    {
+                                                        "date-range": [
+                                                            {
+                                                                "date": [
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "reference-date-answer"
+                                                                    },
+                                                                    {
+                                                                        "day_of_week": "MONDAY"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            7
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            "transform": {
+                                                "format-date": [
+                                                    {
+                                                        "date": ["self"]
+                                                    },
+                                                    "EEEE d MMMM yyyy"
+                                                ]
+                                            }
+                                        },
+                                        "options": [
+                                            {
+                                                "label": "I did not work",
+                                                "value": "I did not work"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "dynamic-dropdown",
+                            "question": {
+                                "id": "dynamic-dropdown-question",
+                                "title": {
+                                    "text": "In the week of {date}, which day did you <strong>work the least</strong>?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "answers",
+                                                            "identifier": "reference-date-answer"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "dynamic-dropdown-answer",
+                                        "mandatory": false,
+                                        "type": "Dropdown",
+                                        "label": "Select an option",
+                                        "dynamic_options": {
+                                            "values": {
+                                                "map": [
+                                                    {
+                                                        "format-date": ["self", "yyyy-MM-dd"]
+                                                    },
+                                                    {
+                                                        "date-range": [
+                                                            {
+                                                                "date": [
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "reference-date-answer"
+                                                                    },
+                                                                    {
+                                                                        "day_of_week": "MONDAY"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            7
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            "transform": {
+                                                "format-date": [
+                                                    {
+                                                        "date": ["self"]
+                                                    },
+                                                    "EEEE d MMMM yyyy"
+                                                ]
+                                            }
+                                        },
+                                        "options": [
+                                            {
+                                                "label": "I did not work",
+                                                "value": "I did not work"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "dynamic-mutually-exclusive",
+                            "question": {
+                                "id": "dynamic-mutually-exclusive-question",
+                                "title": {
+                                    "text": "In the week of {date}, which days did you book <strong>annual leave</strong>?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "date",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_date",
+                                                    "arguments": {
+                                                        "date_to_format": {
+                                                            "source": "answers",
+                                                            "identifier": "reference-date-answer"
+                                                        },
+                                                        "date_format": "d MMMM yyyy"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "type": "MutuallyExclusive",
+                                "mandatory": false,
+                                "answers": [
+                                    {
+                                        "id": "dynamic-mutually-exclusive-dynamic-answer",
+                                        "mandatory": false,
+                                        "type": "Checkbox",
+                                        "label": "Select an option",
+                                        "dynamic_options": {
+                                            "values": {
+                                                "map": [
+                                                    {
+                                                        "format-date": ["self", "yyyy-MM-dd"]
+                                                    },
+                                                    {
+                                                        "date-range": [
+                                                            {
+                                                                "date": [
+                                                                    {
+                                                                        "source": "answers",
+                                                                        "identifier": "reference-date-answer"
+                                                                    },
+                                                                    {
+                                                                        "day_of_week": "MONDAY"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            7
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            "transform": {
+                                                "format-date": [
+                                                    {
+                                                        "date": ["self"]
+                                                    },
+                                                    "EEEE d MMMM yyyy"
+                                                ]
+                                            }
+                                        },
+                                        "options": [
+                                            {
+                                                "label": "None of the above",
+                                                "value": "None of the above"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "id": "dynamic-mutually-exclusive-static-answer",
+                                        "mandatory": false,
+                                        "type": "Checkbox",
+                                        "options": [
+                                            {
+                                                "label": "I did not work",
+                                                "value": "I did not work"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "id": "group-1"
+                }
+            ]
+        }
+    ]
+}

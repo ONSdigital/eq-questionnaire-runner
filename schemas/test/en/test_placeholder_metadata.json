@@ -1,0 +1,85 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "0",
+    "title": "Test placeholder metadata",
+    "theme": "default",
+    "description": "A questionnaire to demo placeholder metadata",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "mandatory-radio",
+                            "question": {
+                                "type": "General",
+                                "id": "mandatory-radio-question",
+                                "title": "Who is the respondent of your business ?",
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "mandatory-radio-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": {
+                                                    "text": "{ru_name}",
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "ru_name",
+                                                            "value": {
+                                                                "source": "metadata",
+                                                                "identifier": "ru_name"
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "value": "{ru_name}"
+                                            },
+                                            {
+                                                "label": "Google LTD",
+                                                "value": "Google LTD"
+                                            },
+                                            {
+                                                "label": "Meta LTD",
+                                                "value": "Meta LTD"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "id": "checkboxes"
+                }
+            ]
+        }
+    ]
+}

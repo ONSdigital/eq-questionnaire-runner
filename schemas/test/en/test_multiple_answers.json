@@ -1,0 +1,217 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "023",
+    "title": "Multiple answers per question",
+    "description": "A questionnaire containing questions which have more than one answer",
+    "theme": "default",
+    "legal_basis": "Notice is given under section 1 of the Statistics of Trade Act 1947.",
+    "metadata": [
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        }
+    ],
+    "questionnaire_flow": {
+        "type": "Linear",
+        "options": {
+            "summary": {
+                "collapsible": false
+            }
+        }
+    },
+    "sections": [
+        {
+            "id": "default-section",
+            "groups": [
+                {
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "about-you-block",
+                            "question": {
+                                "id": "about-you-question",
+                                "title": "About You",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "textfield-answer",
+                                        "type": "TextField",
+                                        "mandatory": true,
+                                        "label": "Your name"
+                                    },
+                                    {
+                                        "id": "date-answer",
+                                        "type": "Date",
+                                        "mandatory": true,
+                                        "label": "What is your date of birth?"
+                                    },
+                                    {
+                                        "id": "checkbox-answer",
+                                        "type": "Checkbox",
+                                        "mandatory": true,
+                                        "label": "What are your favourite car brands?",
+                                        "instruction": "Select your favourite car brands",
+                                        "options": [
+                                            {
+                                                "label": "BMW",
+                                                "value": "BMW"
+                                            },
+                                            {
+                                                "label": "Mercedes",
+                                                "value": "Mercedes"
+                                            },
+                                            {
+                                                "label": "Audi",
+                                                "value": "Audi"
+                                            },
+                                            {
+                                                "label": "None of the above",
+                                                "value": "None of the above"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "id": "radio-answer",
+                                        "type": "Radio",
+                                        "mandatory": true,
+                                        "label": "Would you like the sports package?",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "id": "currency-answer",
+                                        "type": "Currency",
+                                        "currency": "GBP",
+                                        "mandatory": true,
+                                        "label": "What is your budget?",
+                                        "decimal_places": 2
+                                    },
+                                    {
+                                        "id": "month-year-date-answer",
+                                        "type": "MonthYearDate",
+                                        "mandatory": true,
+                                        "label": "When would you like the car by?"
+                                    },
+                                    {
+                                        "id": "dropdown-answer",
+                                        "type": "Dropdown",
+                                        "mandatory": true,
+                                        "label": "Select a colour",
+                                        "options": [
+                                            {
+                                                "label": "Blue",
+                                                "value": "Blue"
+                                            },
+                                            {
+                                                "label": "Silver",
+                                                "value": "Silver"
+                                            },
+                                            {
+                                                "label": "Black",
+                                                "value": "Black"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "id": "unit-answer",
+                                        "type": "Unit",
+                                        "unit": "length-mile",
+                                        "unit_length": "short",
+                                        "mandatory": true,
+                                        "label": "Max mileage"
+                                    },
+                                    {
+                                        "id": "duration-answer",
+                                        "type": "Duration",
+                                        "units": ["years", "months"],
+                                        "mandatory": true,
+                                        "label": "How long have you had your licence?"
+                                    },
+                                    {
+                                        "id": "year-date-answer",
+                                        "type": "YearDate",
+                                        "mandatory": true,
+                                        "label": "Which year did you get your licence?"
+                                    },
+                                    {
+                                        "id": "number-answer",
+                                        "type": "Number",
+                                        "mandatory": true,
+                                        "label": "How many seats?"
+                                    },
+                                    {
+                                        "id": "percentage-answer",
+                                        "type": "Percentage",
+                                        "mandatory": true,
+                                        "label": "Max CO2 emissions"
+                                    },
+                                    {
+                                        "id": "mobile-number-answer",
+                                        "type": "MobileNumber",
+                                        "mandatory": true,
+                                        "label": "What is your mobile number?"
+                                    },
+                                    {
+                                        "id": "textarea-answer",
+                                        "type": "TextArea",
+                                        "mandatory": true,
+                                        "label": "Other comments"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "age-block",
+                            "question": {
+                                "id": "age-question",
+                                "title": "How old are you?",
+                                "type": "General",
+                                "answers": [
+                                    {
+                                        "id": "age-answer",
+                                        "type": "Number",
+                                        "mandatory": true,
+                                        "label": "Your age"
+                                    },
+                                    {
+                                        "id": "age-estimate-answer",
+                                        "type": "Checkbox",
+                                        "mandatory": true,
+                                        "instruction": "Estimate",
+                                        "options": [
+                                            {
+                                                "label": "This age is an estimate",
+                                                "value": "This age is an estimate"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "id": "default-group"
+                }
+            ]
+        }
+    ]
+}
