@@ -1,5 +1,4 @@
 import os
-from datetime import datetime
 
 from structlog import get_logger
 
@@ -42,12 +41,6 @@ def get_env_or_fail(key):
     return value
 
 
-def utcoffset_or_fail(date_value, key):
-    if date_value.utcoffset() is None:
-        raise ValueError(f"'{key}' datetime offset missing")
-    return date_value
-
-
 DATASTORE_USE_GRPC = parse_mode(os.getenv("DATASTORE_USE_GRPC", "True"))
 CDN_URL = os.getenv("CDN_URL", "https://cdn.eq.gcp.onsdigital.uk")
 CDN_ASSETS_PATH = os.getenv("CDN_ASSETS_PATH", "/design-system")
@@ -70,11 +63,6 @@ EQ_SUBMISSION_CONFIRMATION_CLOUD_FUNCTION_NAME = os.getenv(
     "eq-submission-confirmation-consumer",
 )
 EQ_SUBMISSION_CONFIRMATION_BACKEND = os.getenv("EQ_SUBMISSION_CONFIRMATION_BACKEND")
-EQ_INDIVIDUAL_RESPONSE_LIMIT = int(os.getenv("EQ_INDIVIDUAL_RESPONSE_LIMIT", "1"))
-EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE = utcoffset_or_fail(
-    datetime.fromisoformat(get_env_or_fail("EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE")),
-    "EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE",
-)
 
 EQ_FEEDBACK_LIMIT = int(os.getenv("EQ_FEEDBACK_LIMIT", "10"))
 EQ_FEEDBACK_BACKEND = os.getenv("EQ_FEEDBACK_BACKEND")

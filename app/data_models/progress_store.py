@@ -77,12 +77,11 @@ class ProgressStore:
     def is_section_complete(self, section_key: SectionKey) -> bool:
         """
         Return True if the CompletionStatus of the Section or List Item specified by the given section_id and
-         list_item_id is COMPLETED or INDIVIDUAL_RESPONSE_REQUESTED, else False.
+         list_item_id is COMPLETED, else False.
         """
         return section_key in self.section_keys(
             statuses={
                 CompletionStatus.COMPLETED,
-                CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED,
             }
         )
 
@@ -124,12 +123,6 @@ class ProgressStore:
                 updated = True
                 self._progress[section_key].status = status
                 self._is_dirty = True
-
-        elif status == CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED:
-            self._progress[section_key] = Progress(
-                block_ids=[], status=status, **section_key.to_dict()
-            )
-            self._is_dirty = True
 
         return updated
 

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import random
-from functools import cached_property
 from string import ascii_letters
 from typing import Iterable, Iterator, Optional, TypedDict, overload
 
@@ -55,10 +54,6 @@ class ListModel:
 
     def __len__(self) -> int:
         return len(self.items)
-
-    @cached_property
-    def non_primary_people(self) -> list[str]:
-        return [item for item in self.items if item != self.primary_person]
 
     def index(self, list_item: str) -> int:
         return self.items.index(list_item)

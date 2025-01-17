@@ -114,8 +114,6 @@ def test_get_context(router, data_stores):
     hub = HubContext(language="en", schema=schema, data_stores=data_stores)
 
     expected_context = {
-        "individual_response_enabled": False,
-        "individual_response_url": None,
         "guidance": None,
         "rows": [],
         "submit_button": "Continue",
@@ -133,8 +131,6 @@ def test_get_context_custom_content_incomplete(router, data_stores):
     hub_context = HubContext(language="en", schema=schema, data_stores=data_stores)
 
     expected_context = {
-        "individual_response_enabled": False,
-        "individual_response_url": None,
         "rows": [],
         "guidance": None,
         "submit_button": "Continue",
@@ -152,8 +148,6 @@ def test_get_context_custom_content_complete(data_stores, router):
     hub_context = HubContext(language="en", schema=schema, data_stores=data_stores)
 
     expected_context = {
-        "individual_response_enabled": False,
-        "individual_response_url": None,
         "guidance": "Submission guidance",
         "rows": [],
         "submit_button": "Submission button",
@@ -163,18 +157,4 @@ def test_get_context_custom_content_complete(data_stores, router):
 
     assert expected_context == hub_context(
         survey_complete=True, enabled_section_ids=router.enabled_section_ids
-    )
-
-
-def test_get_context_no_list_items_survey_incomplete_individual_response_disabled(
-    data_stores,
-    router,
-):
-    schema = load_schema_from_name("test_individual_response")
-    hub_context = HubContext(language="en", schema=schema, data_stores=data_stores)
-
-    assert not (
-        hub_context(
-            survey_complete=False, enabled_section_ids=router.enabled_section_ids
-        )["individual_response_enabled"]
     )
