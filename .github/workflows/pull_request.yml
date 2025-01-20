@@ -115,6 +115,9 @@ jobs:
     needs: python-dependencies
     runs-on: ubuntu-22.04
     steps:
+      -   uses: actions/checkout@v4
+      -   run: |
+            echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
       - name: Run validator
         run: ./scripts/run_validator.sh
       - name: Running schema tests
