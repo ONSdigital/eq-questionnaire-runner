@@ -57,7 +57,7 @@ class SupplementaryDataMetadataSchema(Schema, StripWhitespaceMixin):
     )
 
     @validates_schema()
-    def validate_dataset_and_survey_id(  # pylint: disable=unused-argument
+    def validate_payload(  # pylint: disable=unused-argument
         self, payload: Mapping, **kwargs: Any
     ) -> None:
         if payload:
@@ -71,17 +71,14 @@ class SupplementaryDataMetadataSchema(Schema, StripWhitespaceMixin):
                     "Supplementary data did not return the specified Survey ID"
                 )
 
-    @validates_schema()
-    def validate_sds_schema_version(  # pylint: disable=unused-argument
-        self, payload: Mapping, **kwargs: Any
-    ) -> None:
-        if payload:
-            if self.context["sds_schema_version"] and (
-                payload["data"]["schema_version"] != self.context["sds_schema_version"]
-            ):
-                raise ValidationError(
-                    "The Supplementary Dataset Schema Version does not match the version set in the Questionnaire Schema"
-                )
+            if payload:
+                if self.context["sds_schema_version"] and (
+                    payload["data"]["schema_version"]
+                    != self.context["sds_schema_version"]
+                ):
+                    raise ValidationError(
+                        "The Supplementary Dataset Schema Version does not match the version set in the Questionnaire Schema"
+                    )
 
 
 def validate_supplementary_data_v1(
