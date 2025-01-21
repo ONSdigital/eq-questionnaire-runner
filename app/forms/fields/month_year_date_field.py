@@ -1,6 +1,6 @@
 import logging
 from functools import cached_property
-from typing import Any, Callable, Sequence, Type
+from typing import Any, Callable, Sequence
 
 from werkzeug.datastructures import MultiDict
 from wtforms import Form, FormField, StringField
@@ -11,7 +11,7 @@ from app.utilities.types import DateValidatorType
 logger = logging.getLogger(__name__)
 
 
-def get_form_class(validators: Sequence[DateValidatorType]) -> Type[Form]:
+def get_form_class(validators: Sequence[DateValidatorType]) -> type[Form]:
     class YearMonthDateForm(Form):
         year = StringField(validators=validators)
         month = StringField()

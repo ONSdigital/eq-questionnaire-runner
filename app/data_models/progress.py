@@ -6,10 +6,10 @@ from typing import Mapping, TypedDict
 
 
 class CompletionStatus(StrEnum):
-    COMPLETED: str = "COMPLETED"
-    IN_PROGRESS: str = "IN_PROGRESS"
-    NOT_STARTED: str = "NOT_STARTED"
-    INDIVIDUAL_RESPONSE_REQUESTED: str = "INDIVIDUAL_RESPONSE_REQUESTED"
+    COMPLETED = "COMPLETED"
+    IN_PROGRESS = "IN_PROGRESS"
+    NOT_STARTED = "NOT_STARTED"
+    INDIVIDUAL_RESPONSE_REQUESTED = "INDIVIDUAL_RESPONSE_REQUESTED"
 
 
 class ProgressDict(TypedDict, total=False):

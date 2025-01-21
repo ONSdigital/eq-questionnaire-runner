@@ -1,5 +1,6 @@
 from functools import cached_property
-from typing import Any, Type
+
+from typing import Any
 
 from wtforms import DecimalField, IntegerField
 from wtforms.fields.core import UnboundField
@@ -58,7 +59,7 @@ class NumberHandler(FieldHandler):
     @property
     def _field_type(
         self,
-    ) -> Type[DecimalFieldWithSeparator | IntegerFieldWithSeparator]:
+    ) -> type[DecimalFieldWithSeparator | IntegerFieldWithSeparator]:
         return (
             DecimalFieldWithSeparator
             if self.max_decimals > 0

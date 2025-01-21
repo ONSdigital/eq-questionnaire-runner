@@ -4,7 +4,8 @@ import math
 import re
 from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
-from typing import TYPE_CHECKING, Iterable, List, Mapping, Sequence
+from typing import TYPE_CHECKING, Iterable, Mapping, Sequence
+
 
 import flask_babel
 from babel import numbers
@@ -415,7 +416,7 @@ class SumCheck:
     def __call__(
         self,
         form: QuestionnaireForm,
-        conditions: List[str],
+        conditions: list[str],
         total: Decimal | int,
         target_total: Decimal | float | int,
         decimal_limit: int | None = None,

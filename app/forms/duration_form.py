@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Callable, Mapping, Type
+from typing import Callable, Mapping
 
 from wtforms import Form
 
@@ -52,7 +52,7 @@ class DurationForm(Form):
 
 def get_duration_form(
     answer: Mapping, error_messages: ErrorMessageType
-) -> Type[DurationForm]:
+) -> type[DurationForm]:
     class CustomDurationForm(DurationForm):
         mandatory = answer["mandatory"]
         units = answer["units"]
