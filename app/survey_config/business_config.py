@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Iterable, Mapping, MutableMapping, Optional
+from typing import Iterable, Mapping, MutableMapping
 from urllib.parse import urlencode
 from warnings import warn
 
@@ -31,7 +31,7 @@ class BusinessSurveyConfig(SurveyConfig):
             self.account_service_todo_url: str = f"{self.base_url}/surveys/todo"
 
     def _get_account_service_help_url(
-        self, *, is_authenticated: bool, ru_ref: Optional[str]
+        self, *, is_authenticated: bool, ru_ref: str | None
     ) -> str:
         if self.schema and is_authenticated and ru_ref:
             request_data = {
@@ -52,8 +52,8 @@ class BusinessSurveyConfig(SurveyConfig):
         *,
         is_authenticated: bool,
         cookie_has_theme: bool,
-        ru_ref: Optional[str],
-    ) -> Optional[list[dict]]:
+        ru_ref: str | None,
+    ) -> list[dict] | None:
         links = (
             [
                 HeaderLink(
@@ -102,7 +102,7 @@ class BusinessSurveyConfig(SurveyConfig):
 
         return links
 
-    def get_footer_legal_links(self, cookie_has_theme: bool) -> Optional[list[dict]]:
+    def get_footer_legal_links(self, cookie_has_theme: bool) -> list[dict] | None:
         if cookie_has_theme:
             return [
                 Link(lazy_gettext("Cookies"), self.cookie_settings_url).as_dict(),

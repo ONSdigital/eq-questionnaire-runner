@@ -1,5 +1,5 @@
 from datetime import date
-from typing import TYPE_CHECKING, Generator, Iterable, Optional, Sequence, Union
+from typing import TYPE_CHECKING, Generator, Iterable, Sequence
 
 from app.questionnaire.rules.helpers import ValueTypes
 
@@ -40,15 +40,13 @@ class Operator:
             Operator.ANY_IN,
         }
 
-    def evaluate(
-        self, operands: Union[Generator, Iterable]
-    ) -> Union[bool, Optional[date]]:
+    def evaluate(self, operands: Generator | Iterable) -> bool | date | None:
         if self._ensure_operands_not_none:
             operands = list(operands)
             if self._any_operands_none(*operands):
                 return False
 
-        value: Union[bool, Optional[date]] = (
+        value: bool | date | None = (
             self._operation(operands)
             if self.name in {Operator.AND, Operator.OR}
             else self._operation(*operands)
@@ -56,7 +54,7 @@ class Operator:
         return value
 
     @staticmethod
-    def _any_operands_none(*operands: Union[Sequence, ValueTypes]) -> bool:
+    def _any_operands_none(*operands: Sequence | ValueTypes) -> bool:
         return any(operand is None for operand in operands)
 
 

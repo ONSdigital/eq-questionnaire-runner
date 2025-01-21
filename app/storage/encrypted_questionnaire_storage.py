@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Optional, Union
 
 import snappy
 from flask import current_app
@@ -21,8 +20,8 @@ class EncryptedQuestionnaireStorage:
         self,
         data: str,
         collection_exercise_sid: str,
-        submitted_at: Optional[datetime] = None,
-        expires_at: Optional[datetime] = None,
+        submitted_at: datetime | None = None,
+        expires_at: datetime | None = None,
     ) -> None:
         compressed_data = snappy.compress(data)
         encrypted_data = self.encrypter.encrypt_data(compressed_data)
@@ -39,7 +38,7 @@ class EncryptedQuestionnaireStorage:
 
     def get_user_data(
         self,
-    ) -> Union[tuple[None, None, None, None], tuple[str, str, int, Optional[datetime]]]:
+    ) -> tuple[None, None, None, None] | tuple[str, str, int, datetime | None]:
         questionnaire_state = self._find_questionnaire_state()
         if questionnaire_state and questionnaire_state.state_data:
             version = questionnaire_state.version
@@ -58,7 +57,7 @@ class EncryptedQuestionnaireStorage:
         if questionnaire_state:
             current_app.eq["storage"].delete(questionnaire_state)  # type: ignore
 
-    def _find_questionnaire_state(self) -> Optional[QuestionnaireState]:
+    def _find_questionnaire_state(self) -> QuestionnaireState | None:
         logger.debug("getting questionnaire data", user_id=self._user_id)
         state: QuestionnaireState = current_app.eq["storage"].get(QuestionnaireState, self._user_id)  # type: ignore
         return state

@@ -2,14 +2,14 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import StrEnum
-from typing import Mapping, Optional, TypedDict
+from typing import Mapping, TypedDict
 
 
 class CompletionStatus(StrEnum):
-    COMPLETED: str = "COMPLETED"
-    IN_PROGRESS: str = "IN_PROGRESS"
-    NOT_STARTED: str = "NOT_STARTED"
-    INDIVIDUAL_RESPONSE_REQUESTED: str = "INDIVIDUAL_RESPONSE_REQUESTED"
+    COMPLETED = "COMPLETED"
+    IN_PROGRESS = "IN_PROGRESS"
+    NOT_STARTED = "NOT_STARTED"
+    INDIVIDUAL_RESPONSE_REQUESTED = "INDIVIDUAL_RESPONSE_REQUESTED"
 
 
 class ProgressDict(TypedDict, total=False):
@@ -24,7 +24,7 @@ class Progress:
     section_id: str
     block_ids: list[str]
     status: CompletionStatus
-    list_item_id: Optional[str] = None
+    list_item_id: str | None = None
 
     @classmethod
     def from_dict(cls, progress_dict: ProgressDict) -> Progress:

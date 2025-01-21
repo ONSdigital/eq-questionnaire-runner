@@ -3,7 +3,7 @@ from __future__ import annotations
 import random
 from functools import cached_property
 from string import ascii_letters
-from typing import Iterable, Iterator, Optional, TypedDict, overload
+from typing import Iterable, Iterator, TypedDict, overload
 
 from structlog import get_logger
 
@@ -27,9 +27,9 @@ class ListModel:
     def __init__(
         self,
         name: str,
-        items: Optional[list[str]] = None,
-        primary_person: Optional[str] = None,
-        same_name_items: Optional[list[str]] = None,
+        items: list[str] | None = None,
+        primary_person: str | None = None,
+        same_name_items: list[str] | None = None,
     ):
         self.name = name
         self.items = items or []
@@ -127,7 +127,7 @@ class ListStore:
     ```
     """
 
-    def __init__(self, items: Optional[Iterable[ListModelDictType]] = None):
+    def __init__(self, items: Iterable[ListModelDictType] | None = None):
         items = items or []
 
         self._lists = self._build_map(items)

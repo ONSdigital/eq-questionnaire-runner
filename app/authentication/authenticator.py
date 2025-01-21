@@ -1,6 +1,6 @@
 from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
-from typing import Any, Generator, Mapping, MutableMapping, Optional
+from typing import Any, Generator, Mapping, MutableMapping
 from uuid import uuid4
 
 from blinker import ANY
@@ -30,7 +30,7 @@ login_manager = LoginManager()
 
 
 @login_manager.user_loader
-def user_loader(user_id: str) -> Optional[str]:
+def user_loader(user_id: str) -> str | None:
     logger.debug("loading user", user_id=user_id)
     return load_user()
 
@@ -38,7 +38,7 @@ def user_loader(user_id: str) -> Optional[str]:
 @login_manager.request_loader
 def request_load_user(
     request: Request,
-) -> Optional[User]:
+) -> User | None:
     logger.debug("load user")
 
     extend_session = not (
@@ -94,7 +94,7 @@ def _is_session_valid(session_store: SessionStore) -> bool:
     )
 
 
-def load_user(extend_session: bool = True) -> Optional[User]:
+def load_user(extend_session: bool = True) -> User | None:
     """
     Checks for the present of the JWT in the users sessions
     :return: A user object if a JWT token is available in the session
