@@ -28,7 +28,6 @@ run:
             firestoreReadProjectId="${PROJECT_ID}",\
             firestoreDeleteProjectId="${PROJECT_ID}" \
             --subnetwork regions/europe-west2/subnetworks/eq \
-            --disable-public-ips \
             --format="value(id.scope())")
 
             DATAFLOW_JOB_STATE=$(gcloud dataflow jobs describe "${DATAFLOW_JOB}" --region europe-west2 --format="value(currentState)")
