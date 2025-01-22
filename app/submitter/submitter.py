@@ -1,4 +1,4 @@
-from typing import Mapping, Optional, Union
+from typing import Mapping
 from uuid import uuid4
 
 from google.api_core.exceptions import Forbidden
@@ -19,7 +19,7 @@ class LogSubmitter:
         message: str,
         tx_id: str,
         case_id: str,
-        **kwargs: Mapping[str, Union[str, int]],
+        **kwargs: Mapping[str, str | int],
     ) -> bool:
         logger.info("sending message")
         logger.info(
@@ -77,8 +77,8 @@ class RabbitMQSubmitter:
         secondary_host: str,
         port: int,
         queue: str,
-        username: Optional[str] = None,
-        password: Optional[str] = None,
+        username: str | None = None,
+        password: str | None = None,
     ) -> None:
         self.queue = queue
         if username and password:
@@ -120,7 +120,7 @@ class RabbitMQSubmitter:
                 raise err
 
     @staticmethod
-    def _disconnect(connection: Optional[BlockingConnection]) -> None:
+    def _disconnect(connection: BlockingConnection | None) -> None:
         try:
             if connection:
                 logger.info("attempt to close connection", category="rabbitmq")

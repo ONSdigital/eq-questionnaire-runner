@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Mapping, Union
+from typing import Mapping
 
 from app.questionnaire.rules.operator import Operator
 from app.questionnaire.rules.rule_evaluator import RuleEvaluator, RuleEvaluatorTypes
@@ -18,9 +18,7 @@ class DynamicAnswerOptions:
 
     def evaluate(self) -> tuple[dict[str, str], ...]:
         values = self.dynamic_options_schema["values"]
-        resolved_values: Union[
-            ValueSourceEscapedTypes, ValueSourceTypes, RuleEvaluatorTypes
-        ]
+        resolved_values: ValueSourceEscapedTypes | ValueSourceTypes | RuleEvaluatorTypes
 
         if "source" in values:
             if values["source"] != "answers":

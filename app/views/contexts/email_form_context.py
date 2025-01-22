@@ -1,4 +1,4 @@
-from typing import Any, Union
+from typing import Any
 
 from flask import url_for
 
@@ -7,7 +7,7 @@ from app.forms.email_form import EmailForm
 
 def build_confirmation_email_form_context(
     email_confirmation_form: EmailForm,
-) -> dict[str, Union[bool, str, Any]]:
+) -> dict[str, bool | str | Any]:
     return {
         "hide_sign_out_button": False,
         "sign_out_url": url_for("session.get_sign_out"),

@@ -1,5 +1,4 @@
 from functools import cached_property
-from typing import Union
 
 from wtforms import validators
 from wtforms.fields.core import UnboundField
@@ -8,7 +7,7 @@ from wtforms.validators import Length
 from app.forms.field_handlers.field_handler import FieldHandler
 from app.forms.fields import MaxTextAreaField
 
-TextAreaValidatorTypes = list[Union[validators.Optional, validators.Length]]
+TextAreaValidatorTypes = list[validators.Optional | validators.Length]
 
 
 class TextAreaHandler(FieldHandler):
