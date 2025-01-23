@@ -115,8 +115,19 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
+      - run: |
+          echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
       - name: Run validator
         run: ./scripts/run_validator.sh
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.8.4
+          virtualenvs-create: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: "poetry"
       - name: Running schema tests
         run: make validate-test-schemas
   test-functional:
