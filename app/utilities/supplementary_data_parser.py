@@ -71,14 +71,12 @@ class SupplementaryDataMetadataSchema(Schema, StripWhitespaceMixin):
                     "Supplementary data did not return the specified Survey ID"
                 )
 
-            if payload:
-                if self.context["sds_schema_version"] and (
-                    payload["data"]["schema_version"]
-                    != self.context["sds_schema_version"]
-                ):
-                    raise ValidationError(
-                        "The Supplementary Dataset Schema Version does not match the version set in the Questionnaire Schema"
-                    )
+            if self.context["sds_schema_version"] and (
+                payload["data"]["schema_version"] != self.context["sds_schema_version"]
+            ):
+                raise ValidationError(
+                    "The Supplementary Dataset Schema Version does not match the version set in the Questionnaire Schema"
+                )
 
 
 def validate_supplementary_data_v1(
