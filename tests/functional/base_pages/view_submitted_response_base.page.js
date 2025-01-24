@@ -6,11 +6,11 @@ class ViewSubmittedResponseBasePage extends BasePage {
   }
 
   metadataTerm(number = 1) {
-    return `.ons-description-list > dt:nth-of-type(${number})`;
+    return `.ons-description-list > .ons-description-list__item:nth-of-type(${number}) > dt`;
   }
 
   metadataValue(number = 1) {
-    return `.ons-description-list > dd:nth-of-type(${number})`;
+    return `.ons-description-list > .ons-description-list__item:nth-of-type(${number}) > dd`;
   }
 
   informationPanel() {
