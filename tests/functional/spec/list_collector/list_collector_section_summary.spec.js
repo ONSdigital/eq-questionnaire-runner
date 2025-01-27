@@ -355,6 +355,6 @@ const answerUkBasedQuestion = async () => {
   await click(UkBasedPage.submit());
 };
 
-const companiesListRowItem = (row, index) => {
+const companiesListRowItem = (row) => {
   return `#group-companies-1 .ons-summary__items .ons-summary__item:nth-of-type(${row})`;
 };
