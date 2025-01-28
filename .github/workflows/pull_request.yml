@@ -128,7 +128,7 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "poetry"
-      - name: Running schema tests
+      - name: Running schema validation
         run: make validate-test-schemas
   test-functional:
     needs: [python-dependencies, node-dependencies]
