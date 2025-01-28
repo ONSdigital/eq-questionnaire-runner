@@ -62,7 +62,7 @@ def main():
 
         if response != "200":
             logging.error("\033[31m---Error: Schema Validator Not Reachable---\033[0m")
-            logging.error(f"\033[31mHTTP Status: {response}\033[0m")
+            logging.error("\033[31mHTTP Status: %s\033[0m", response)
             if checks != 1:
                 logging.info("Retrying...\n")
                 time.sleep(5)
@@ -118,7 +118,7 @@ def main():
                     error = True
                     failed += 1
             except Exception as e:
-                logging.error("\033[31mError processing %s: {e}\033[0m", schema)
+                logging.error("\033[31mError processing %s: %s\033[0m", schema, e)
 
     logging.info("\033[32m%s passed\033[0m - \033[31m%s failed\033[0m", passed, failed)
     if error:
