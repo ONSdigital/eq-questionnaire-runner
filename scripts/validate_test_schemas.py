@@ -39,7 +39,7 @@ def validate_schema(schema_path):
 
 
 def main():
-    # pylint: disable=broad-exception-caught, too-many-locals, logging-fstring-interpolation
+    # pylint: disable=broad-exception-caught, too-many-locals
     checks = 4
     error = False
     passed = 0
@@ -80,11 +80,11 @@ def main():
             for f in os.listdir(file_path)
             if f.endswith(".json")
         ]
-        logging.info(f"--- Testing Schemas in {file_path} ---")
+        logging.info("--- Testing Schemas in %s ---", file_path)
     else:
         file_path = sys.argv[1]
         schemas = [sys.argv[1]]
-        logging.info(f"--- Testing {file_path} Schema ---")
+        logging.info("--- Testing %s Schema ---", file_path)
 
     with ThreadPoolExecutor(max_workers=20) as executor:
         future_to_schema = {
@@ -107,20 +107,20 @@ def main():
                 result_response = re.search(r"HTTPSTATUS:(\d+)", result)[1]
 
                 if result_response == "200" and http_body_json == {}:
-                    logging.info(f"\033[32m{schema_path}: PASSED\033[0m")
+                    logging.info("\033[32m%s: PASSED\033[0m", schema_path)
                     passed += 1
                 else:
-                    logging.error(f"\033[31m{schema_path}: FAILED\033[0m")
+                    logging.error("\033[31m%s: FAILED\033[0m", schema_path)
                     logging.error(
-                        f"\033[31mHTTP Status @ /validate: {result_response}\033[0m"
+                        "\033[31mHTTP Status @ /validate: %s\033[0m", result_response
                     )
-                    logging.error(f"\033[31mHTTP Status: {formatted_json}\033[0m")
+                    logging.error("\033[31mHTTP Status: %s\033[0m", formatted_json)
                     error = True
                     failed += 1
             except Exception as e:
-                logging.error(f"\033[31mError processing {schema}: {e}\033[0m")
+                logging.error("\033[31mError processing %s: {e}\033[0m", schema)
 
-    logging.info(f"\033[32m{passed} passed\033[0m - \033[31m{failed} failed\033[0m")
+    logging.info("\033[32m%s passed\033[0m - \033[31m%s failed\033[0m", passed, failed)
     if error:
         sys.exit(1)
 
