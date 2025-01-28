@@ -39,7 +39,7 @@ def validate_schema(schema_path):
 
 
 def main():
-    # pylint: broad-exception-caught
+    # pylint: disable=broad-exception-caught, too-many-locals, logging-fstring-interpolation
     checks = 4
     error = False
     passed = 0
