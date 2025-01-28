@@ -34,7 +34,7 @@ def validate_schema(schema_path):
         )
         return schema_path, result.stdout
     except subprocess.CalledProcessError as e:
-        logging.info(f"Error validating schema {schema_path}: {e}")
+        logging.info("Error validating schema %s: %s", schema_path, e)
         return schema_path, None
 
 
