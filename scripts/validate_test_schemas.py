@@ -12,39 +12,8 @@ logging.basicConfig(
 )
 
 
-def validate_schema(schema_path):
-    try:
-        result = subprocess.run(
-            [
-                "curl",
-                "-s",
-                "-w",
-                "HTTPSTATUS:%{http_code}",
-                "-X",
-                "POST",
-                "-H",
-                "Content-Type: application/json",
-                "-d",
-                f"@{schema_path}",
-                "http://localhost:5001/validate",
-            ],
-            capture_output=True,
-            text=True,
-            check=True,
-        )
-        return schema_path, result.stdout
-    except subprocess.CalledProcessError as e:
-        logging.info("Error validating schema %s: %s", schema_path, e)
-        return schema_path, None
-
-
-def main():
-    # pylint: disable=broad-exception-caught, too-many-locals
+def check_connection():
     checks = 4
-    error = False
-    passed = 0
-    failed = 0
-
     while checks > 0:
         response = subprocess.run(
             [
@@ -73,6 +42,8 @@ def main():
         else:
             checks = 0
 
+
+def get_schemas() -> list[str]:
     if len(sys.argv) == 1 or sys.argv[1] == "--local":
         file_path = "./schemas/test/en"
         schemas = [
@@ -85,6 +56,43 @@ def main():
         file_path = sys.argv[1]
         schemas = [sys.argv[1]]
         logging.info("--- Testing %s Schema ---", file_path)
+    return schemas
+
+
+def validate_schema(schema_path):
+    try:
+        result = subprocess.run(
+            [
+                "curl",
+                "-s",
+                "-w",
+                "HTTPSTATUS:%{http_code}",
+                "-X",
+                "POST",
+                "-H",
+                "Content-Type: application/json",
+                "-d",
+                f"@{schema_path}",
+                "http://localhost:5001/validate",
+            ],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        return schema_path, result.stdout
+    except subprocess.CalledProcessError as e:
+        logging.info("Error validating schema %s: %s", schema_path, e)
+        return schema_path, None
+
+
+def main():
+    # pylint: disable=broad-exception-caught
+    error = False
+    passed = 0
+    failed = 0
+
+    check_connection()
+    schemas = get_schemas()
 
     with ThreadPoolExecutor(max_workers=20) as executor:
         future_to_schema = {
