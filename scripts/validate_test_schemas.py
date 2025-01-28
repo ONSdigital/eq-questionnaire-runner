@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import re
 import subprocess
@@ -6,9 +7,9 @@ import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from structlog import get_logger
-
-logger = get_logger()
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 
 def validate_schema(schema_path):
@@ -33,7 +34,7 @@ def validate_schema(schema_path):
         )
         return schema_path, result.stdout
     except subprocess.CalledProcessError as e:
-        logger.info(f"Error validating schema {schema_path}: {e}")
+        logging.info(f"Error validating schema {schema_path}: {e}")
         return schema_path, None
 
 
@@ -60,13 +61,13 @@ def main():
         ).stdout.strip()
 
         if response != "200":
-            logger.error("\033[31m---Error: Schema Validator Not Reachable---\033[0m")
-            logger.error(f"\033[31mHTTP Status: {response}\033[0m")
+            logging.error("\033[31m---Error: Schema Validator Not Reachable---\033[0m")
+            logging.error(f"\033[31mHTTP Status: {response}\033[0m")
             if checks != 1:
-                logger.info("Retrying...\n")
+                logging.info("Retrying...\n")
                 time.sleep(5)
             else:
-                logger.info("Exiting...\n")
+                logging.info("Exiting...\n")
                 sys.exit(1)
             checks -= 1
         else:
@@ -79,11 +80,11 @@ def main():
             for f in os.listdir(file_path)
             if f.endswith(".json")
         ]
-        logger.info(f"--- Testing Schemas in {file_path} ---")
+        logging.info(f"--- Testing Schemas in {file_path} ---")
     else:
         file_path = sys.argv[1]
         schemas = [sys.argv[1]]
-        logger.info(f"--- Testing {file_path} Schema ---")
+        logging.info(f"--- Testing {file_path} Schema ---")
 
     with ThreadPoolExecutor(max_workers=20) as executor:
         future_to_schema = {
@@ -106,20 +107,20 @@ def main():
                 result_response = re.search(r"HTTPSTATUS:(\d+)", result)[1]
 
                 if result_response == "200" and http_body_json == {}:
-                    logger.info(f"\033[32m{schema_path}: PASSED\033[0m")
+                    logging.info(f"\033[32m{schema_path}: PASSED\033[0m")
                     passed += 1
                 else:
-                    logger.error(f"\033[31m{schema_path}: FAILED\033[0m")
-                    logger.error(
+                    logging.error(f"\033[31m{schema_path}: FAILED\033[0m")
+                    logging.error(
                         f"\033[31mHTTP Status @ /validate: {result_response}\033[0m"
                     )
-                    logger.error(f"\033[31mHTTP Status: {formatted_json}\033[0m")
+                    logging.error(f"\033[31mHTTP Status: {formatted_json}\033[0m")
                     error = True
                     failed += 1
             except Exception as e:
-                logger.error(f"\033[31mError processing {schema}: {e}\033[0m")
+                logging.error(f"\033[31mError processing {schema}: {e}\033[0m")
 
-    logger.info(f"\033[32m{passed} passed\033[0m - \033[31m{failed} failed\033[0m")
+    logging.info(f"\033[32m{passed} passed\033[0m - \033[31m{failed} failed\033[0m")
     if error:
         sys.exit(1)
 
