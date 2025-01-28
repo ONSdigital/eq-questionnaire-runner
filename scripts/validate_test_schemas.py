@@ -10,10 +10,6 @@ from structlog import get_logger
 
 logger = get_logger()
 
-error = False
-passed = 0
-failed = 0
-
 
 def validate_schema(schema_path):
     try:
@@ -42,8 +38,11 @@ def validate_schema(schema_path):
 
 
 def main():
-    # pylint: disable=global-statement, broad-exception-caught
+    # pylint: broad-exception-caught
     checks = 4
+    error = False
+    passed = 0
+    failed = 0
 
     while checks > 0:
         response = subprocess.run(
@@ -108,7 +107,6 @@ def main():
 
                 if result_response == "200" and http_body_json == {}:
                     logger.info(f"\033[32m{schema_path}: PASSED\033[0m")
-                    global passed
                     passed += 1
                 else:
                     logger.error(f"\033[31m{schema_path}: FAILED\033[0m")
@@ -116,7 +114,6 @@ def main():
                         f"\033[31mHTTP Status @ /validate: {result_response}\033[0m"
                     )
                     logger.error(f"\033[31mHTTP Status: {formatted_json}\033[0m")
-                    global error, failed
                     error = True
                     failed += 1
             except Exception as e:
