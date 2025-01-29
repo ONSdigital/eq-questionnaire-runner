@@ -1,4 +1,4 @@
-from typing import Any, Iterable, Mapping, Optional, Union
+from typing import Any, Iterable, Mapping
 
 from flask import url_for
 from flask_babel import lazy_gettext
@@ -101,7 +101,7 @@ class HubContext(Context):
         return context
 
     @staticmethod
-    def get_section_url(section_id: str, list_item_id: Optional[str]) -> str:
+    def get_section_url(section_id: str, list_item_id: str | None) -> str:
         if list_item_id:
             return url_for(
                 "questionnaire.get_section",

@@ -125,6 +125,8 @@ class ProgressStore:
             self._is_dirty = True
             return True
 
+        return False
+
     def get_section_status(self, section_key: SectionKey) -> CompletionStatus:
         """
         Return the CompletionStatus of the Section or Repeating Blocks for a list item,
