@@ -117,14 +117,13 @@ class ProgressStore:
         """
         Updates the status of the Section or Repeating Blocks for a list item specified by the key based on the given section id and list item id.
         """
-        updated = False
-        if section_key in self._progress:
-            if self._progress[section_key].status != status:
-                updated = True
-                self._progress[section_key].status = status
-                self._is_dirty = True
+        if section_key not in self._progress:
+            return False
 
-        return updated
+        if self._progress[section_key].status != status:
+            self._progress[section_key].status = status
+            self._is_dirty = True
+            return True
 
     def get_section_status(self, section_key: SectionKey) -> CompletionStatus:
         """
