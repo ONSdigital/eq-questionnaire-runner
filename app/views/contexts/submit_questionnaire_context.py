@@ -1,4 +1,4 @@
-from typing import Mapping, Union
+from typing import Mapping
 
 from flask_babel import lazy_gettext
 
@@ -7,7 +7,7 @@ from app.views.contexts.summary_context import SummaryContext
 
 
 class SubmitQuestionnaireContext(Context):
-    def __call__(self) -> dict[str, Union[str, dict]]:
+    def __call__(self) -> dict[str, str | dict]:
         submission_schema: Mapping = self._schema.get_submission()
 
         title = submission_schema.get("title") or lazy_gettext(

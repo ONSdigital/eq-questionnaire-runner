@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any
 
 from flask import url_for
 from flask_babel import lazy_gettext
@@ -23,8 +23,8 @@ def build_thank_you_context(
     metadata: MetadataProxy,
     submitted_at: datetime,
     survey_type: SurveyType,
-    guidance_content: Optional[dict] = None,
-    confirmation_email_form: Optional[EmailForm] = None,
+    guidance_content: dict | None = None,
+    confirmation_email_form: EmailForm | None = None,
 ) -> dict[str, Any]:
     if (ru_name := metadata["ru_name"]) and (trad_as := metadata["trad_as"]):
         submission_text = lazy_gettext(

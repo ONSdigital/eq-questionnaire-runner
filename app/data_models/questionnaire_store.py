@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import TYPE_CHECKING, MutableMapping, Optional
+from typing import TYPE_CHECKING, MutableMapping
 
 from app.data_models.answer_store import AnswerStore
 from app.data_models.data_stores import DataStores
@@ -22,7 +22,7 @@ class QuestionnaireStore:
     LATEST_VERSION = 1
 
     def __init__(
-        self, storage: EncryptedQuestionnaireStorage, version: Optional[int] = None
+        self, storage: EncryptedQuestionnaireStorage, version: int | None = None
     ):
         self._storage = storage
         if version is None:
@@ -31,8 +31,8 @@ class QuestionnaireStore:
         self._metadata: MutableMapping = {}
         self._stores = DataStores()
         self.data_stores = self._stores
-        self.submitted_at: Optional[datetime]
-        self.collection_exercise_sid: Optional[str]
+        self.submitted_at: datetime | None
+        self.collection_exercise_sid: str | None
 
         (
             raw_data,

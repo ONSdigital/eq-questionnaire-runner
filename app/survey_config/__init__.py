@@ -18,18 +18,18 @@ from app.survey_config.social_survey_config import (
 from app.survey_config.survey_config import SurveyConfig
 
 __all__ = [
-    "ONSNHSSocialSurveyConfig",
-    "SocialSurveyConfig",
-    "UKHSAONSSocialSurveyConfig",
-    "SurveyConfig",
     "BusinessSurveyConfig",
-    "NIBusinessSurveyConfig",
     "DBTBusinessSurveyConfig",
-    "DBTNIBusinessSurveyConfig",
     "DBTDSITBusinessSurveyConfig",
     "DBTDSITNIBusinessSurveyConfig",
-    "ORRBusinessSurveyConfig",
+    "DBTNIBusinessSurveyConfig",
     "DESNZBusinessSurveyConfig",
     "DESNZNIBusinessSurveyConfig",
     "Link",
+    "NIBusinessSurveyConfig",
+    "ONSNHSSocialSurveyConfig",
+    "ORRBusinessSurveyConfig",
+    "SocialSurveyConfig",
+    "SurveyConfig",
+    "UKHSAONSSocialSurveyConfig",
 ]

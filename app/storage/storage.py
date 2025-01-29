@@ -2,34 +2,34 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from functools import cached_property
-from typing import Any, Optional, Type, TypedDict, Union
+from typing import Any, TypedDict
 
 from flask import current_app
 from google.cloud import datastore
 
 from app.data_models import app_models
 
-ModelSchemaTypes = Union[
-    app_models.QuestionnaireStateSchema,
-    app_models.EQSessionSchema,
-    app_models.UsedJtiClaimSchema,
-]
+ModelSchemaTypes = (
+    app_models.QuestionnaireStateSchema
+    | app_models.EQSessionSchema
+    | app_models.UsedJtiClaimSchema
+)
 
-ModelTypes = Union[
-    app_models.QuestionnaireState, app_models.EQSession, app_models.UsedJtiClaim
-]
+ModelTypes = (
+    app_models.QuestionnaireState | app_models.EQSession | app_models.UsedJtiClaim
+)
 
 
 class TableConfig(TypedDict, total=False):
     key_field: str
     table_name_key: str
-    schema: Type[ModelSchemaTypes]
+    schema: type[ModelSchemaTypes]
     expiry_field: str
     index_fields: list[str]
 
 
 class StorageModel:
-    TABLE_CONFIG_BY_TYPE: dict[Type[ModelTypes], TableConfig] = {
+    TABLE_CONFIG_BY_TYPE: dict[type[ModelTypes], TableConfig] = {
         app_models.QuestionnaireState: {
             "key_field": "user_id",
             "table_name_key": "EQ_QUESTIONNAIRE_STATE_TABLE_NAME",
@@ -51,7 +51,7 @@ class StorageModel:
         },
     }
 
-    def __init__(self, model_type: Type[ModelTypes]) -> None:
+    def __init__(self, model_type: type[ModelTypes]) -> None:
         self._model_type = model_type
 
         if self._model_type not in self.TABLE_CONFIG_BY_TYPE:
@@ -65,7 +65,7 @@ class StorageModel:
         return self._config["key_field"]
 
     @cached_property
-    def expiry_field(self) -> Optional[str]:
+    def expiry_field(self) -> str | None:
         return self._config.get("expiry_field")
 
     @cached_property
@@ -81,7 +81,7 @@ class StorageModel:
         serialized_data: dict = self._schema.dump(model_to_serialize)
         return serialized_data
 
-    def deserialize(self, serialized_item: Union[datastore.Entity]) -> ModelTypes:
+    def deserialize(self, serialized_item: datastore.Entity) -> ModelTypes:
         deserialized_data: ModelTypes = self._schema.load(serialized_item)
         return deserialized_data
 
@@ -95,7 +95,7 @@ class StorageHandler(ABC):
         pass  # pragma: no cover
 
     @abstractmethod
-    def get(self, model_type: Type[ModelTypes], key_value: str) -> Optional[ModelTypes]:
+    def get(self, model_type: type[ModelTypes], key_value: str) -> ModelTypes | None:
         pass  # pragma: no cover
 
     @abstractmethod

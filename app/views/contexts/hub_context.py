@@ -68,11 +68,11 @@ class HubContext(Context):
 
     def get_row_context_for_section(
         self,
-        section_name: Optional[str],
+        section_name: str | None,
         section_status: CompletionStatus,
         section_url: str,
         row_id: str,
-    ) -> dict[str, Union[str, list]]:
+    ) -> dict[str, str | list]:
         section_content = self.SECTION_CONTENT_STATES[section_status]
         context: dict = {
             "rowItems": [
@@ -112,8 +112,8 @@ class HubContext(Context):
         return url_for("questionnaire.get_section", section_id=section_id)
 
     def _get_row_for_repeating_section(
-        self, section_id: str, list_item_id: str, list_item_index: Optional[int]
-    ) -> dict[str, Union[str, list]]:
+        self, section_id: str, list_item_id: str, list_item_index: int | None
+    ) -> dict[str, str | list]:
         # Type ignore: section id will be valid and repeat will be present at this stage
         repeating_title: ImmutableDict = self._schema.get_repeating_title_for_section(section_id)  # type: ignore
 
@@ -128,11 +128,11 @@ class HubContext(Context):
 
     def _get_row_for_section(
         self,
-        section_title: Optional[str],
+        section_title: str | None,
         section_id: str,
-        list_item_id: Optional[str] = None,
-        list_item_index: Optional[int] = None,
-    ) -> dict[str, Union[str, list]]:
+        list_item_id: str | None = None,
+        list_item_index: int | None = None,
+    ) -> dict[str, str | list]:
         row_id = f"{section_id}-{list_item_index}" if list_item_index else section_id
 
         section_status = self._data_stores.progress_store.get_section_status(
@@ -148,7 +148,7 @@ class HubContext(Context):
 
     def _get_rows(
         self, enabled_section_ids: Iterable[str]
-    ) -> list[dict[str, Union[str, list]]]:
+    ) -> list[dict[str, str | list]]:
         rows: list[dict] = []
 
         for section_id in enabled_section_ids:
