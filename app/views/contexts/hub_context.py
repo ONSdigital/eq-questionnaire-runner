@@ -95,7 +95,7 @@ class HubContext(Context):
             ]
         }
 
-        if section_status in (CompletionStatus.COMPLETED,):
+        if section_status == CompletionStatus.COMPLETED:
             context["rowItems"][0]["iconType"] = "check"
 
         return context
