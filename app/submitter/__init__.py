@@ -7,9 +7,9 @@ from app.submitter.submitter import (
 )
 
 __all__ = [
+    "GCSFeedbackSubmitter",
     "GCSSubmitter",
+    "LogFeedbackSubmitter",
     "LogSubmitter",
     "RabbitMQSubmitter",
-    "GCSFeedbackSubmitter",
-    "LogFeedbackSubmitter",
 ]

@@ -1,5 +1,4 @@
 # pylint: disable=too-many-lines
-from typing import Optional, Union
 
 import pytest
 from mock import MagicMock, Mock
@@ -60,11 +59,11 @@ def get_calculation_block(
 def get_value_source_resolver(
     schema: QuestionnaireSchema = None,
     data_stores: DataStores = None,
-    location: Union[Location, RelationshipLocation] = Location(
+    location: Location | RelationshipLocation = Location(
         section_id="test-section", block_id="test-block"
     ),
-    list_item_id: Optional[str] = None,
-    routing_path_block_ids: Optional[list] = None,
+    list_item_id: str | None = None,
+    routing_path_block_ids: list | None = None,
     use_default_answer=False,
     escape_answer_values=False,
 ):

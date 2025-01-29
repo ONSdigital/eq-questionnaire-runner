@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from copy import deepcopy
 
 import pytest
@@ -5,6 +6,15 @@ from marshmallow import ValidationError
 
 from app.services.supplementary_data import validate_supplementary_data
 from app.utilities.supplementary_data_parser import validate_supplementary_data_v1
+
+
+@contextmanager
+def not_raises(exception):
+    try:
+        yield
+    except exception as validation_error:
+        raise pytest.fail(f"{validation_error} RAISED")
+
 
 SUPPLEMENTARY_DATA_PAYLOAD = {
     "dataset_id": "44f1b432-9421-49e5-bd26-e63e18a30b69",
@@ -52,6 +62,35 @@ def test_invalid_supplementary_data_payload_raises_error():
         )
 
     assert str(error.value) == "Invalid supplementary data"
+
+
+def test_invalid_supplementary_dataset_version_raises_error():
+    with pytest.raises(ValidationError) as error:
+        validate_supplementary_data_v1(
+            supplementary_data=SUPPLEMENTARY_DATA_PAYLOAD,
+            dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
+            identifier="12345678901",
+            survey_id="123",
+            sds_schema_version="v6",
+        )
+
+    assert (
+        str(error.value)
+        == "{'_schema': ['The Supplementary Dataset Schema Version does not match the version set in the Questionnaire Schema']}"
+    )
+
+
+def test_valid_supplementary_dataset_version_does_not_raise_error():
+    with not_raises(ValidationError):
+        validated_payload = validate_supplementary_data_v1(
+            supplementary_data=SUPPLEMENTARY_DATA_PAYLOAD,
+            dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
+            identifier="12345678901",
+            survey_id="123",
+            sds_schema_version="v1",
+        )
+
+    assert validated_payload == SUPPLEMENTARY_DATA_PAYLOAD
 
 
 def test_validate_supplementary_data_payload():
@@ -169,30 +208,6 @@ def test_validate_supplementary_data_payload_with_unknown_field():
     )
 
     assert validated_payload == payload
-
-
-def test_validate_supplementary_data_invalid_schema_version():
-    payload = {
-        "dataset_id": "44f1b432-9421-49e5-bd26-e63e18a30b69",
-        "survey_id": "123",
-        "some_field": "value",
-        "data": {
-            "schema_version": "v3",
-            "identifier": "12345678901",
-        },
-    }
-
-    with pytest.raises(ValidationError) as error:
-        validate_supplementary_data_v1(
-            supplementary_data=payload,
-            dataset_id="001",
-            identifier="12345678901",
-            survey_id="123",
-        )
-
-    assert (
-        str(error.value) == "{'data': {'schema_version': ['Must be one of: v1, v2.']}}"
-    )
 
 
 def test_validate_supplementary_data_payload_missing_identifier_in_items():

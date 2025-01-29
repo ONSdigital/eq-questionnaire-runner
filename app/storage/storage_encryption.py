@@ -1,5 +1,4 @@
 import hashlib
-from typing import Optional, Union
 
 from jwcrypto import jwe, jwk
 from jwcrypto.common import base64url_encode
@@ -13,7 +12,7 @@ logger = get_logger()
 
 class StorageEncryption:
     def __init__(
-        self, user_id: Optional[str], user_ik: Optional[str], pepper: Optional[str]
+        self, user_id: str | None, user_ik: str | None, pepper: str | None
     ) -> None:
         if not user_id:
             raise ValueError("user_id not provided")
@@ -38,7 +37,7 @@ class StorageEncryption:
 
         return jwk.JWK(**password)
 
-    def encrypt_data(self, data: Union[str, dict]) -> str:
+    def encrypt_data(self, data: str | dict) -> str:
         if isinstance(data, dict):
             data = json_dumps(data)
 

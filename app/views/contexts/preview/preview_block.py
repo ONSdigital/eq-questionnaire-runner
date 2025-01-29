@@ -1,4 +1,4 @@
-from typing import Any, Union
+from typing import Any
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -19,12 +19,12 @@ class PreviewBlock:
     @staticmethod
     def _get_question(
         block: ImmutableDict,
-    ) -> dict[str, Union[str, dict]]:
+    ) -> dict[str, str | dict]:
         return PreviewQuestion(
             block=block,
         ).serialize()
 
-    def serialize(self) -> dict[str, Union[str, dict, Any]]:
+    def serialize(self) -> dict[str, str | dict | Any]:
         return {
             "question": self._question,
         }

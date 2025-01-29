@@ -1,6 +1,6 @@
 from abc import ABC
 from functools import cached_property
-from typing import Any, Mapping, Optional, Union
+from typing import Any, Mapping
 
 from wtforms import Field, validators
 from wtforms.validators import Optional as OptionalValidator
@@ -24,7 +24,7 @@ class FieldHandler(ABC):
         rule_evaluator: RuleEvaluator,
         error_messages: Mapping[str, str],
         disable_validation: bool = False,
-        question_title: Optional[str] = None,
+        question_title: str | None = None,
     ):
         self.answer_schema = answer_schema
         self.value_source_resolver = value_source_resolver
@@ -44,7 +44,7 @@ class FieldHandler(ABC):
         return []
 
     @cached_property
-    def label(self) -> Optional[str]:
+    def label(self) -> str | None:
         return self.answer_schema.get("label")
 
     @cached_property
@@ -57,7 +57,7 @@ class FieldHandler(ABC):
             or self.error_messages[message_key]
         )
 
-    def get_mandatory_validator(self) -> Union[ResponseRequired, OptionalValidator]:
+    def get_mandatory_validator(self) -> ResponseRequired | OptionalValidator:
         if self.answer_schema["mandatory"] is True:
             mandatory_message = self.get_validation_message(self.MANDATORY_MESSAGE_KEY)
 
@@ -70,10 +70,10 @@ class FieldHandler(ABC):
 
     def get_schema_value(
         self, schema_element: dict
-    ) -> Union[ValueSourceEscapedTypes, ValueSourceTypes]:
+    ) -> ValueSourceEscapedTypes | ValueSourceTypes:
         if isinstance(schema_element["value"], dict):
             return self.value_source_resolver.resolve(schema_element["value"])
-        schema_element_value: Union[ValueSourceEscapedTypes, ValueSourceTypes] = (
+        schema_element_value: ValueSourceEscapedTypes | ValueSourceTypes = (
             schema_element["value"]
         )
         return schema_element_value
