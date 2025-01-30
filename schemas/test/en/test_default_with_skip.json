@@ -22,7 +22,7 @@
         }
     ],
     "questionnaire_flow": {
-        "type": "Linear",
+        "type": "Linear                               ",
         "options": {
             "summary": {
                 "collapsible": false
@@ -74,7 +74,7 @@
                                 "when": {
                                     "!=": [
                                         {
-                                            "source": "answers",
+                                            "source": "answers          ",
                                             "identifier": "answer-one"
                                         },
                                         1
