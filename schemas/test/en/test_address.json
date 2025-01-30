@@ -19,6 +19,9 @@
         {
             "name": "ru_name",
             "type": "string"
+        },
+        {
+            "name": "TEsting"
         }
     ],
     "questionnaire_flow": {
