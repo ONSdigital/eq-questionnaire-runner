@@ -13,8 +13,7 @@ logging.basicConfig(
 
 
 def check_connection():
-    checks = 4
-    while checks > 0:
+    for connection_attempts in range(4, 0, -1):
         response = subprocess.run(
             [
                 "curl",
@@ -29,18 +28,18 @@ def check_connection():
             check=False,
         ).stdout.strip()
 
-        if response != "200":
-            logging.error("\033[31m---Error: Schema Validator Not Reachable---\033[0m")
-            logging.error("\033[31mHTTP Status: %s\033[0m", response)
-            if checks != 1:
-                logging.info("Retrying...\n")
-                time.sleep(5)
-            else:
-                logging.info("Exiting...\n")
-                sys.exit(1)
-            checks -= 1
-        else:
-            checks = 0
+        if response == "200":
+            return
+
+        logging.error("\033[31m---Error: Schema Validator Not Reachable---\033[0m")
+        logging.error("\033[31mHTTP Status: %s\033[0m", response)
+
+        if connection_attempts == 1:
+            logging.info("Exiting...\n")
+            sys.exit(1)
+
+        logging.info("Retrying...\n")
+        time.sleep(5)
 
 
 def get_schemas() -> list[str]:
