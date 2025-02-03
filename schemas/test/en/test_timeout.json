@@ -14,7 +14,7 @@
             "type": "string"
         },
         {
-            "name": "period_id                 ",
+            "name": "period_id",
             "type": "string"
         },
         {
