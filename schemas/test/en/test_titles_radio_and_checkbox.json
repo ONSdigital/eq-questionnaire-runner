@@ -18,6 +18,9 @@
         {
             "name": "ru_name",
             "type": "string"
+        },
+        {
+            "name": "testing"
         }
     ],
     "questionnaire_flow": {
@@ -163,7 +166,7 @@
                                     "question": {
                                         "id": "checkbox-question",
                                         "type": "General",
-                                        "title": "Did this business make major changes in the following areas?",
+                                        "title": "Did this business make major changes in the following areas?            ",
                                         "answers": [
                                             {
                                                 "id": "checkbox-answer",
