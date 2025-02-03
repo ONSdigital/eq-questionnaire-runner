@@ -52,9 +52,9 @@ def get_schemas() -> list[str]:
         ]
         logging.info("--- Testing Schemas in %s ---", file_path)
     else:
-        file_path = sys.argv[1]
-        schemas = [sys.argv[1]]
-        logging.info("--- Testing %s Schema ---", file_path)
+        schema = sys.argv[1]
+        schemas = [schema]
+        logging.info("--- Testing %s Schema ---", schema)
     return schemas
 
 
