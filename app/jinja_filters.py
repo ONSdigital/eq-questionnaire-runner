@@ -595,8 +595,8 @@ def map_summary_item_config(
     calculated_question: dict[str, list] | None,
     remove_link_text: str | None = None,
     remove_link_aria_label: str | None = None,
-) -> list[dict[str, list] | SummaryRow]:
-    rows: list[dict[str, list] | SummaryRow] = []
+) -> list[dict[str, list | str] | SummaryRow]:
+    rows: list[dict[str, list | str] | SummaryRow] = []
 
     for block in group["blocks"]:
         if block.get("question"):
@@ -632,7 +632,6 @@ def map_summary_item_config(
                 item_anchor=block.get("item_anchor"),
                 answers_are_editable=answers_are_editable,
             )
-
             rows.extend(list_collector_rows)
 
     if is_summary_with_calculation(summary_type):
@@ -684,8 +683,8 @@ def map_list_collector_config(
     item_label: str | None = None,
     item_anchor: str | None = None,
     answers_are_editable: bool = True,
-) -> list[dict[str, list] | SummaryRow]:
-    rows: list[dict[str, list] | SummaryRow] = []
+) -> list[dict[str, list | str] | SummaryRow]:
+    rows: list[dict[str, list | str] | SummaryRow] = []
 
     for index, list_item in enumerate(list_items, 1):
         item_name = str(list_item.get("item_title"))
@@ -751,10 +750,12 @@ def map_list_collector_config(
         if item_label:
             row_item["valueList"] = [{"text": item_name}]
 
-        row_item["title"] = item_label or item_name
-        row_items: list = [row_item]
+        title = item_label or item_name
 
         if related_answers:
+            # Supplementary Data (List Collector Content) list summaries don't use the row_item created above, as they are not editable
+            row_items_related: list = [row_item] if editable else []
+
             for block in related_answers[list_item["list_item_id"]]:
                 summary_row = SummaryRow(
                     block["question"],
@@ -765,9 +766,18 @@ def map_list_collector_config(
                     use_answer_label=True,
                     item_name=item_name,
                 )
-                row_items.extend(summary_row.itemsList)
-
-        rows.append({"itemsList": row_items})
+                row_items_related.extend(summary_row.itemsList)
+            # Again, List Collector Content list summaries don't use the row_item with "title" and are structured differently
+            if editable:
+                row_item["title"] = title
+                rows.append({"itemsList": row_items_related})
+            else:
+                rows.append({"title": title, "itemsList": row_items_related})
+        # Logic for list summaries without dynamic answers (related to List Collector) to display
+        else:
+            row_item["title"] = title
+            row_items: list = [row_item]
+            rows.append({"itemsList": row_items})
 
     return rows
 
