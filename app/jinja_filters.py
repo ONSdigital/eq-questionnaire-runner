@@ -753,7 +753,7 @@ def map_list_collector_config(
         title = item_label or item_name
 
         if related_answers:
-            # Supplementary Data (List Collector Content) list summaries don't use the row_item created above, as they are not editable
+            # List summaries driven by List Collector Content pages don't use the row_item created above, as they are not editable
             row_items_related: list = [row_item] if editable else []
 
             for block in related_answers[list_item["list_item_id"]]:
