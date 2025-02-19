@@ -9,7 +9,8 @@ import { click, verifyUrlContains } from "../helpers";
 describe("Question description", () => {
   it("Given a question description has been set in the schema as an array, When it is rendered, Then it is displayed correctly as multiple paragraph attributes", async () => {
     await browser.openQuestionnaire("test_question_description.json");
-    await expect(await $(NameBlockPage.questionTitle()).getHTML()).toContain("<p>Answer the question</p><p>Go on</p>");
+    await verifyUrlContains(NameBlockPage.pageName);
+    await expect(await $(NameBlockPage.questionTitle()).getText()).toContain("Answer the question\nGo on");
   });
 });
 

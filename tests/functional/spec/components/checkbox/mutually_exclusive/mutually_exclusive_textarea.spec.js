@@ -5,8 +5,8 @@ import { click } from "../../../../helpers";
 describe("Component: Mutually Exclusive TextArea With Single Checkbox Override", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_mutually_exclusive.json");
-    await browser.pause(100);
-    await browser.url("/questionnaire/mutually-exclusive-textarea");
+    await browser.pause(1000);
+    await browser.url(TextFieldPage.url());
   });
 
   describe("Given the user has not clicked the mutually exclusive checkbox answer", () => {
