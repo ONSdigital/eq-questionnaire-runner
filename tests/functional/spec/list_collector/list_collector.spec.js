@@ -227,11 +227,6 @@ describe("List Collector", () => {
       await expect(await $(PeopleListSectionSummaryPage.peopleListLabel(1)).getText()).toBe("Mark Twain (You)");
     });
 
-    it("When the user removes an item from the list, They should see the individual response guidance", async () => {
-      await $(PeopleListSectionSummaryPage.peopleListRemoveLink(2)).click();
-      await expect(await $(SectionSummaryListCollectorRemovePage.individualResponseGuidance()).isExisting()).toBe(true);
-    });
-
     it("When the user reaches the submit page and navigates back, They should see the Section Summary", async () => {
       await click(PeopleListSectionSummaryPage.submit());
       await click(SubmitPage.previous());

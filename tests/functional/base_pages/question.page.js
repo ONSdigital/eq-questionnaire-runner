@@ -38,10 +38,6 @@ class QuestionBasePage extends BasePage {
     return 'a[id="cancel-and-return"]';
   }
 
-  individualResponseGuidance() {
-    return '[data-qa="individual-response-url"]';
-  }
-
   lastViewedQuestionGuidance() {
     return "#last-viewed-question-guidance";
   }

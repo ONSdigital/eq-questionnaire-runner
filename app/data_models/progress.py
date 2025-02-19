@@ -9,7 +9,6 @@ class CompletionStatus(StrEnum):
     COMPLETED = "COMPLETED"
     IN_PROGRESS = "IN_PROGRESS"
     NOT_STARTED = "NOT_STARTED"
-    INDIVIDUAL_RESPONSE_REQUESTED = "INDIVIDUAL_RESPONSE_REQUESTED"
 
 
 class ProgressDict(TypedDict, total=False):

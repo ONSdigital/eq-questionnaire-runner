@@ -434,19 +434,12 @@ def test_is_section_complete():
             status=CompletionStatus.COMPLETED,
             block_ids=["not-three"],
         ),
-        ProgressDict(
-            section_id="s5",
-            list_item_id="456def",
-            status=CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED,
-            block_ids=["not-three"],
-        ),
     ]
 
     store = ProgressStore(completed)
 
     assert store.is_section_complete(section_key=SectionKey("s1"))
     assert store.is_section_complete(SectionKey("s4", "123abc"))
-    assert store.is_section_complete(SectionKey("s5", "456def"))
 
 
 def test_remove_progress_for_list_item_id():

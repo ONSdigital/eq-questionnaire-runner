@@ -18,10 +18,6 @@
     {% endif %}
     {% set contents = block.content.contents %}
     {% include "partials/contents.html" %}
-    {% if content.individual_response_url %}
-        {% set title = _("If you can’t answer questions for this person") %}
-        {% include "partials/individual-response-guidance.html" %}
-    {% endif %}
 {% endblock form_content %}
 
 {% block submit_button %}
