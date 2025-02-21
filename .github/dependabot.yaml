@@ -44,10 +44,6 @@ updates:
       - dependency-name: "eslint*"
         update-types: [ "version-update:semver-major" ]
 
-      # temporarily pinned to minor/patch only - wdio v9 causes getHTML() to return strings with indentation & newlines, causing assertion errors - needs investigation
-      - dependency-name: "@wdio/local-runner"
-        update-types: [ "version-update:semver-major" ]
-
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
