@@ -22,26 +22,26 @@ describe("Feature: Hub and Spoke With Supplementary Data", () => {
         sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
         responseId,
       });
+      await browser.pause(10000);
     });
 
-    // Don't use async/await here to resolve issues with the flakiness of this test
-    it("When all the repeating sections are complete, Then the hub should be displayed", () => {
-      return browser.pause(1000)
-        .then(() => browser.url(LoadedSuccessfullyBlockPage.url()))
-        .then(() => click(LoadedSuccessfullyBlockPage.submit()))
-        .then(() => click(IntroductionBlockPage.submit()))
-        .then(() => click(ListCollectorEmployeesPage.submit()))
-        .then(() => $(LengthOfEmploymentPage.day()).setValue(1))
-        .then(() => $(LengthOfEmploymentPage.month()).setValue(1))
-        .then(() => $(LengthOfEmploymentPage.year()).setValue(1930))
-        .then(() => click(LengthOfEmploymentPage.submit()))
-        .then(() => click(Section3Page.submit()))
-        .then(() => $(LengthOfEmploymentPage.day()).setValue(1))
-        .then(() => $(LengthOfEmploymentPage.month()).setValue(1))
-        .then(() => $(LengthOfEmploymentPage.year()).setValue(1930))
-        .then(() => click(LengthOfEmploymentPage.submit()))
-        .then(() => click(Section3Page.submit()))
-        .then(() => verifyUrlContains(HubPage.url()));
+    it("When all the repeating sections are complete, Then the hub should be displayed", async () => {
+      await click(LoadedSuccessfullyBlockPage.submit());
+      await click(IntroductionBlockPage.submit());
+
+      // Complete the repeating sections using supplementary data
+      await click(ListCollectorEmployeesPage.submit());
+      await $(LengthOfEmploymentPage.day()).setValue(1);
+      await $(LengthOfEmploymentPage.month()).setValue(1);
+      await $(LengthOfEmploymentPage.year()).setValue(1930);
+      await click(LengthOfEmploymentPage.submit());
+      await click(Section3Page.submit());
+      await $(LengthOfEmploymentPage.day()).setValue(1);
+      await $(LengthOfEmploymentPage.month()).setValue(1);
+      await $(LengthOfEmploymentPage.year()).setValue(1930);
+      await click(LengthOfEmploymentPage.submit());
+      await click(Section3Page.submit());
+      await verifyUrlContains(HubPage.url());
     });
 
     it("When the repeating sections are incomplete. Then the hub should not be displayed", async () => {
