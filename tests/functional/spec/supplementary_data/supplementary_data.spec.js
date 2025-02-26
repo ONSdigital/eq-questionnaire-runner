@@ -1,4 +1,4 @@
-import { assertSummaryItems, assertSummaryTitles, assertSummaryValues, listItemComplete, click, verifyUrlContains } from "../../../helpers";
+import { assertSummaryItems, assertSummaryTitles, assertSummaryValues, listItemComplete, click, verifyUrlContains } from "../../helpers";
 import { expect } from "@wdio/globals";
 import { getRandomString } from "../../jwt_helper";
 import AddAdditionalEmployeePage from "../../generated_pages/supplementary_data/list-collector-additional-add.page.js";
