@@ -134,7 +134,7 @@ jobs:
     needs: [python-dependencies, node-dependencies]
     strategy:
       matrix:
-        suite: [ timeout_modal_expired, timeout_modal_extended, timeout_modal_extended_new_window, features, summaries, general, journeys, components, list_collector]
+        suite: [ timeout_modal_expired, timeout_modal_extended, timeout_modal_extended_new_window, features, summaries, general, journeys, components, list_collector, flaky]
     runs-on: ubuntu-22.04
     timeout-minutes: 30
     env:

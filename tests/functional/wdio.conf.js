@@ -27,6 +27,7 @@ exports.config = {
     journeys: ["./spec/journeys/**/*.js"],
     list_collector: ["./spec/list_collector/**/*.js"],
     general: ["./spec/*.spec.js"],
+    flaky: ["./spec/flaky/**/*.js"],
   },
   // Patterns to exclude.
   exclude: [
