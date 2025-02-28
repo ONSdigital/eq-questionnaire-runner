@@ -310,6 +310,7 @@ describe("Feature: Hub and Spoke", () => {
         sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
         responseId,
       });
+      await browser.pause(10000);
     });
 
     it("When all the repeating sections are complete, Then the hub should be displayed", async () => {
