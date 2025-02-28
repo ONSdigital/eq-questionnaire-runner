@@ -1,22 +1,28 @@
-import AccomodationDetailsSummaryBlockPage from "../../../generated_pages/hub_and_spoke/accommodation-section-summary.page.js";
-import AnyoneRelated from "../../../generated_pages/hub_and_spoke/anyone-related.page.js";
-import DoesAnyoneLiveHere from "../../../generated_pages/hub_and_spoke/does-anyone-live-here.page.js";
-import EmploymentStatusBlockPage from "../../../generated_pages/hub_and_spoke/employment-status.page.js";
-import EmploymentTypeBlockPage from "../../../generated_pages/hub_and_spoke/employment-type.page.js";
-import HouseholdSummary from "../../../generated_pages/hub_and_spoke/household-section-summary.page.js";
-import HowManyPeopleLiveHere from "../../../generated_pages/hub_and_spoke/how-many-people-live-here.page.js";
-import HubPage from "../../../base_pages/hub.page.js";
-import ProxyPage from "../../../generated_pages/hub_and_spoke/proxy.page.js";
-import RelationshipsSummary from "../../../generated_pages/hub_and_spoke/relationships-section-summary.page.js";
-import ListCollectorSectionSummaryPage from "../../../generated_pages/hub_section_required_with_repeat/list-collector-section-summary.page.js";
-import ProxyRepeatPage from "../../../generated_pages/hub_section_required_with_repeat/proxy.page.js";
-import { click, verifyUrlContains } from "../../../helpers";
-import DateOfBirthPage from "../../../generated_pages/hub_section_required_with_repeat/date-of-birth.page";
-import PrimaryPersonListCollectorPage from "../../../generated_pages/hub_section_required_with_repeat/primary-person-list-collector.page";
-import PrimaryPersonListCollectorAddPage from "../../../generated_pages/hub_section_required_with_repeat/primary-person-list-collector-add.page";
-import ListCollectorPage from "../../../generated_pages/hub_section_required_with_repeat/list-collector.page";
-import ListCollectorAddPage from "../../../generated_pages/hub_section_required_with_repeat/list-collector-add.page";
-import RepeatingSummaryPage from "../../../generated_pages/hub_section_required_with_repeat/personal-details-section-summary.page";
+import AccomodationDetailsSummaryBlockPage from "../../generated_pages/hub_and_spoke/accommodation-section-summary.page.js";
+import AnyoneRelated from "../../generated_pages/hub_and_spoke/anyone-related.page.js";
+import DoesAnyoneLiveHere from "../../generated_pages/hub_and_spoke/does-anyone-live-here.page.js";
+import EmploymentStatusBlockPage from "../../generated_pages/hub_and_spoke/employment-status.page.js";
+import EmploymentTypeBlockPage from "../../generated_pages/hub_and_spoke/employment-type.page.js";
+import HouseholdSummary from "../../generated_pages/hub_and_spoke/household-section-summary.page.js";
+import HowManyPeopleLiveHere from "../../generated_pages/hub_and_spoke/how-many-people-live-here.page.js";
+import HubPage from "../../base_pages/hub.page.js";
+import ProxyPage from "../../generated_pages/hub_and_spoke/proxy.page.js";
+import RelationshipsSummary from "../../generated_pages/hub_and_spoke/relationships-section-summary.page.js";
+import ListCollectorSectionSummaryPage from "../../generated_pages/hub_section_required_with_repeat/list-collector-section-summary.page.js";
+import ProxyRepeatPage from "../../generated_pages/hub_section_required_with_repeat/proxy.page.js";
+import { click, verifyUrlContains } from "../../helpers";
+import DateOfBirthPage from "../../generated_pages/hub_section_required_with_repeat/date-of-birth.page";
+import PrimaryPersonListCollectorPage from "../../generated_pages/hub_section_required_with_repeat/primary-person-list-collector.page";
+import PrimaryPersonListCollectorAddPage from "../../generated_pages/hub_section_required_with_repeat/primary-person-list-collector-add.page";
+import ListCollectorPage from "../../generated_pages/hub_section_required_with_repeat/list-collector.page";
+import ListCollectorAddPage from "../../generated_pages/hub_section_required_with_repeat/list-collector-add.page";
+import RepeatingSummaryPage from "../../generated_pages/hub_section_required_with_repeat/personal-details-section-summary.page";
+import { getRandomString } from "../../jwt_helper";
+import LoadedSuccessfullyBlockPage from "../../generated_pages/hub_section_required_with_repeat_supplementary/loaded-successfully-block.page";
+import IntroductionBlockPage from "../../generated_pages/hub_section_required_with_repeat_supplementary/introduction-block.page";
+import ListCollectorEmployeesPage from "../../generated_pages/hub_section_required_with_repeat_supplementary/list-collector-employees.page.js";
+import LengthOfEmploymentPage from "../../generated_pages/hub_section_required_with_repeat_supplementary/length-of-employment.page.js";
+import Section3Page from "../../generated_pages/hub_section_required_with_repeat_supplementary/section-3-summary.page.js";
 
 describe("Feature: Hub and Spoke", () => {
   const hubAndSpokeSchema = "test_hub_and_spoke.json";
@@ -53,7 +59,6 @@ describe("Feature: Hub and Spoke", () => {
     it("When the user click the 'Save and sign out' button then they should be redirected to the correct log out url", async () => {
       await $(HubPage.saveSignOut()).click();
       await verifyUrlContains("/signed-out");
-      await browser.pause(10000); // Pause for 10 seconds
     });
 
     it("When a user views the Hub, Then the page title should be Choose another section to complete", async () => {
@@ -293,6 +298,53 @@ describe("Feature: Hub and Spoke", () => {
 
       await browser.url(HubPage.url());
       await verifyUrlContains("date-of-birth");
+    });
+  });
+
+  describe("Given a user opens a schema with hub required sections based on a repeating section using supplementary data", () => {
+    beforeEach("Load survey", async () => {
+      const responseId = getRandomString(16);
+
+      await browser.openQuestionnaire("test_hub_section_required_with_repeat_supplementary.json.json", {
+        version: "v2",
+        sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
+        responseId,
+      });
+    });
+
+    it("When all the repeating sections are complete, Then the hub should be displayed", async () => {
+      await click(LoadedSuccessfullyBlockPage.submit());
+      await click(IntroductionBlockPage.submit());
+
+      // Complete the repeating sections using supplementary data
+      await click(ListCollectorEmployeesPage.submit());
+      await $(LengthOfEmploymentPage.day()).setValue(1);
+      await $(LengthOfEmploymentPage.month()).setValue(1);
+      await $(LengthOfEmploymentPage.year()).setValue(1930);
+      await click(LengthOfEmploymentPage.submit());
+      await click(Section3Page.submit());
+      await $(LengthOfEmploymentPage.day()).setValue(1);
+      await $(LengthOfEmploymentPage.month()).setValue(1);
+      await $(LengthOfEmploymentPage.year()).setValue(1930);
+      await click(LengthOfEmploymentPage.submit());
+      await click(Section3Page.submit());
+      await verifyUrlContains(HubPage.url());
+    });
+
+    it("When the repeating sections are incomplete. Then the hub should not be displayed", async () => {
+      await click(LoadedSuccessfullyBlockPage.submit());
+      await click(IntroductionBlockPage.submit());
+
+      // Don't complete the repeating sections that use supplementary data
+      await click(ListCollectorEmployeesPage.submit());
+      await $(LengthOfEmploymentPage.day()).setValue(1);
+      await $(LengthOfEmploymentPage.month()).setValue(1);
+      await $(LengthOfEmploymentPage.year()).setValue(1930);
+      await click(LengthOfEmploymentPage.submit());
+      await click(Section3Page.submit());
+
+      await browser.url(HubPage.url());
+      await verifyUrlContains("length-of-employment");
     });
   });
 
