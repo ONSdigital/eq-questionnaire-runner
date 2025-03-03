@@ -27,6 +27,8 @@ exports.config = {
     journeys: ["./spec/journeys/**/*.js"],
     list_collector: ["./spec/list_collector/**/*.js"],
     general: ["./spec/*.spec.js"],
+    hub_and_spoke: ["./spec/hub_and_spoke/**/*.js"],
+    supplementary_data: ["./spec/supplementary_data/**/*.js"],
   },
   // Patterns to exclude.
   exclude: [
