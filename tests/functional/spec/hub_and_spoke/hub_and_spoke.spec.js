@@ -30,6 +30,7 @@ describe("Feature: Hub and Spoke", () => {
   describe("Given I am completing the test_hub_context schema,", () => {
     beforeEach("load the survey", async () => {
       await browser.openQuestionnaire(hubAndSpokeSchema);
+      await browser.pause(1000);
     });
 
     it("When a user first views the Hub, The Hub should be in a continue state", async () => {
