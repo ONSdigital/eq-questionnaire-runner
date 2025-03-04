@@ -75,10 +75,10 @@ class HubContext(Context):
     ) -> dict[str, str | list]:
         section_content = self.SECTION_CONTENT_STATES[section_status]
         context: dict = {
-            "rowItems": [
+            "itemsList": [
                 {
-                    "rowTitle": section_name,
-                    "rowTitleAttributes": {"data-qa": f"hub-row-{row_id}-title"},
+                    "title": section_name,
+                    "titleAttributes": {"data-qa": f"hub-row-{row_id}-title"},
                     "attributes": {"data-qa": f"hub-row-{row_id}-state"},
                     "valueList": [{"text": section_content["text"]}],
                     "actions": [

@@ -1,37 +1,37 @@
-import { assertSummaryItems, assertSummaryTitles, assertSummaryValues, listItemComplete, click, verifyUrlContains } from "../../../helpers";
+import { assertSummaryItems, assertSummaryTitles, assertSummaryValues, listItemComplete, click, verifyUrlContains } from "../../helpers";
 import { expect } from "@wdio/globals";
-import { getRandomString } from "../../../jwt_helper";
-import AddAdditionalEmployeePage from "../../../generated_pages/supplementary_data/list-collector-additional-add.page.js";
-import AdditionalLengthOfEmploymentPage from "../../../generated_pages/supplementary_data/additional-length-of-employment.page.js";
-import AnyAdditionalEmployeesPage from "../../../generated_pages/supplementary_data/any-additional-employees.page.js";
-import CalculatedSummarySalesPage from "../../../generated_pages/supplementary_data/calculated-summary-sales.page.js";
-import CalculatedSummaryValueSalesPage from "../../../generated_pages/supplementary_data/calculated-summary-value-sales.page.js";
-import CalculatedSummaryVolumeSalesPage from "../../../generated_pages/supplementary_data/calculated-summary-volume-sales.page.js";
-import CalculatedSummaryVolumeTotalPage from "../../../generated_pages/supplementary_data/calculated-summary-volume-total.page.js";
-import DynamicProductsPage from "../../../generated_pages/supplementary_data/dynamic-products.page.js";
-import EmailBlockPage from "../../../generated_pages/supplementary_data/email-block.page.js";
-import HubPage from "../../../base_pages/hub.page";
-import IntroductionBlockPage from "../../../generated_pages/supplementary_data/introduction-block.page.js";
-import LengthOfEmploymentPage from "../../../generated_pages/supplementary_data/length-of-employment.page.js";
-import ListCollectorAdditionalPage from "../../../generated_pages/supplementary_data/list-collector-additional.page.js";
-import ListCollectorEmployeesPage from "../../../generated_pages/supplementary_data/list-collector-employees.page.js";
-import ListCollectorProductsPage from "../../../generated_pages/supplementary_data/list-collector-products.page.js";
-import LoadedSuccessfullyBlockPage from "../../../generated_pages/supplementary_data/loaded-successfully-block.page.js";
-import NewEmailPage from "../../../generated_pages/supplementary_data/new-email.page.js";
-import ProductQuestion3EnabledPage from "../../../generated_pages/supplementary_data/product-question-3-enabled.page";
-import ProductRepeatingBlock1Page from "../../../generated_pages/supplementary_data/product-repeating-block-1-repeating-block.page.js";
-import ProductSalesInterstitialPage from "../../../generated_pages/supplementary_data/product-sales-interstitial.page";
-import ProductVolumeInterstitialPage from "../../../generated_pages/supplementary_data/product-volume-interstitial.page";
-import SalesBreakdownBlockPage from "../../../generated_pages/supplementary_data/sales-breakdown-block.page.js";
-import Section1InterstitialPage from "../../../generated_pages/supplementary_data/section-1-interstitial.page.js";
-import Section1Page from "../../../generated_pages/supplementary_data/section-1-summary.page.js";
-import Section3Page from "../../../generated_pages/supplementary_data/section-3-summary.page.js";
-import Section4Page from "../../../generated_pages/supplementary_data/section-4-summary.page.js";
-import Section5Page from "../../../generated_pages/supplementary_data/section-5-summary.page.js";
-import Section6Page from "../../../generated_pages/supplementary_data/section-6-summary.page.js";
-import ThankYouPage from "../../../base_pages/thank-you.page";
-import TradingPage from "../../../generated_pages/supplementary_data/trading.page.js";
-import ViewSubmittedResponsePage from "../../../generated_pages/supplementary_data/view-submitted-response.page.js";
+import { getRandomString } from "../../jwt_helper";
+import AddAdditionalEmployeePage from "../../generated_pages/supplementary_data/list-collector-additional-add.page.js";
+import AdditionalLengthOfEmploymentPage from "../../generated_pages/supplementary_data/additional-length-of-employment.page.js";
+import AnyAdditionalEmployeesPage from "../../generated_pages/supplementary_data/any-additional-employees.page.js";
+import CalculatedSummarySalesPage from "../../generated_pages/supplementary_data/calculated-summary-sales.page.js";
+import CalculatedSummaryValueSalesPage from "../../generated_pages/supplementary_data/calculated-summary-value-sales.page.js";
+import CalculatedSummaryVolumeSalesPage from "../../generated_pages/supplementary_data/calculated-summary-volume-sales.page.js";
+import CalculatedSummaryVolumeTotalPage from "../../generated_pages/supplementary_data/calculated-summary-volume-total.page.js";
+import DynamicProductsPage from "../../generated_pages/supplementary_data/dynamic-products.page.js";
+import EmailBlockPage from "../../generated_pages/supplementary_data/email-block.page.js";
+import HubPage from "../../base_pages/hub.page";
+import IntroductionBlockPage from "../../generated_pages/supplementary_data/introduction-block.page.js";
+import LengthOfEmploymentPage from "../../generated_pages/supplementary_data/length-of-employment.page.js";
+import ListCollectorAdditionalPage from "../../generated_pages/supplementary_data/list-collector-additional.page.js";
+import ListCollectorEmployeesPage from "../../generated_pages/supplementary_data/list-collector-employees.page.js";
+import ListCollectorProductsPage from "../../generated_pages/supplementary_data/list-collector-products.page.js";
+import LoadedSuccessfullyBlockPage from "../../generated_pages/supplementary_data/loaded-successfully-block.page.js";
+import NewEmailPage from "../../generated_pages/supplementary_data/new-email.page.js";
+import ProductQuestion3EnabledPage from "../../generated_pages/supplementary_data/product-question-3-enabled.page";
+import ProductRepeatingBlock1Page from "../../generated_pages/supplementary_data/product-repeating-block-1-repeating-block.page.js";
+import ProductSalesInterstitialPage from "../../generated_pages/supplementary_data/product-sales-interstitial.page";
+import ProductVolumeInterstitialPage from "../../generated_pages/supplementary_data/product-volume-interstitial.page";
+import SalesBreakdownBlockPage from "../../generated_pages/supplementary_data/sales-breakdown-block.page.js";
+import Section1InterstitialPage from "../../generated_pages/supplementary_data/section-1-interstitial.page.js";
+import Section1Page from "../../generated_pages/supplementary_data/section-1-summary.page.js";
+import Section3Page from "../../generated_pages/supplementary_data/section-3-summary.page.js";
+import Section4Page from "../../generated_pages/supplementary_data/section-4-summary.page.js";
+import Section5Page from "../../generated_pages/supplementary_data/section-5-summary.page.js";
+import Section6Page from "../../generated_pages/supplementary_data/section-6-summary.page.js";
+import ThankYouPage from "../../base_pages/thank-you.page";
+import TradingPage from "../../generated_pages/supplementary_data/trading.page.js";
+import ViewSubmittedResponsePage from "../../generated_pages/supplementary_data/view-submitted-response.page.js";
 
 describe("Using supplementary data", () => {
   const responseId = getRandomString(16);
@@ -314,12 +314,10 @@ describe("Using supplementary data", () => {
   });
 
   it("Given I have a section with repeating answers for a supplementary list, When I reach the section summary page, Then I see the supplementary data and my answers rendered correctly", async () => {
-    await expect(await $$(summaryRowTitles)[0].getText()).toBe("Sales during the previous quarter");
+    await expect(await $("#dynamic-answer-question .ons-summary__row-title").getText()).toBe("Sales during the previous quarter");
     await assertSummaryItems([
-      "Articles and equipment for sports or outdoor games",
       "Volume of sales for Articles and equipment for sports or outdoor games",
       "Total volume produced for Articles and equipment for sports or outdoor games",
-      "Kitchen Equipment",
       "Volume of sales for Kitchen Equipment",
       "Total volume produced for Kitchen Equipment",
       "Value of sales for Articles and equipment for sports or outdoor games",
@@ -487,29 +485,23 @@ describe("Using supplementary data", () => {
 
     // Product details
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[0].getText()).toBe(
-      "Articles and equipment for sports or outdoor games",
-    );
-    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[1].getText()).toBe(
       "Volume of sales for Articles and equipment for sports or outdoor games",
     );
-    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[2].getText()).toBe(
+    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[1].getText()).toBe(
       "Total volume produced for Articles and equipment for sports or outdoor games",
     );
+    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[2].getText()).toBe("Volume of sales for Kitchen Equipment");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryValues)[0].getText()).toBe("100 kg");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryValues)[1].getText()).toBe("200 kg");
-    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[3].getText()).toBe("Kitchen Equipment");
-    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[4].getText()).toBe("Volume of sales for Kitchen Equipment");
-    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[5].getText()).toBe(
+    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[3].getText()).toBe(
       "Total volume produced for Kitchen Equipment",
     );
+    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[4].getText()).toBe("Volume of sales for Groceries");
+    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[5].getText()).toBe("Total volume produced for Groceries");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryValues)[2].getText()).toBe("50 kg");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryValues)[3].getText()).toBe("300 kg");
-    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[6].getText()).toBe("Groceries");
-    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[7].getText()).toBe("Volume of sales for Groceries");
-    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[8].getText()).toBe("Total volume produced for Groceries");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryValues)[4].getText()).toBe("40 kg");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryValues)[5].getText()).toBe("50 kg");
-    await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryRowTitles)[0].getText()).toBe("Sales during the previous quarter");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryItems)[0].getText()).toBe(
       "Value of sales for Articles and equipment for sports or outdoor games",
     );
