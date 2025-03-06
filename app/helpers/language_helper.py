@@ -59,7 +59,7 @@ def _get_language_context(
     language_code: str, current_language: str
 ) -> dict[str, str | bool]:
     return {
-        "isoCode": language_code,
+        "ISOCode": language_code,
         "url": _get_query_string_with_language(language_code),
         "text": LANGUAGE_TEXT[language_code],
         "current": language_code == current_language,

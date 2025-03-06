@@ -31,7 +31,7 @@ class QuestionBasePage extends BasePage {
   }
 
   errorNumber(number = 1) {
-    return `[data-qa="error-link-${number}"] > a`;
+    return `[data-qa="error-link-${number}"]`;
   }
 
   cancelAndReturn() {
