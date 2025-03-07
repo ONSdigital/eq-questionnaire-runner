@@ -15,22 +15,6 @@ describe("Primary Person List Collector Survey", () => {
       await browser.openQuestionnaire("test_list_collector_primary_person.json");
     });
 
-    it.skip("When the user says they do not live there, and changes their answer to yes, then the user can't navigate to the list collector", async () => {
-      await $(PrimaryPersonListCollectorPage.noLabel()).click();
-      await click(PrimaryPersonListCollectorPage.submit());
-      await $(PrimaryPersonListCollectorAddPage.previous()).click();
-      await $(PrimaryPersonListCollectorPage.yesLabel()).click();
-      await click(PrimaryPersonListCollectorPage.submit());
-      await browser.url("questionnaire/list-collector");
-      await expect(await $(PrimaryPersonListCollectorPage.questionText()).getText()).toBe("Do you live here");
-    });
-  });
-
-  describe("Given the user starts on the 'do you live here' question", () => {
-    before("Load the survey", async () => {
-      await browser.openQuestionnaire("test_list_collector_primary_person.json");
-    });
-
     it("When the user says that they do live there, then they are shown as the primary person", async () => {
       await $(PrimaryPersonListCollectorPage.yesLabel()).click();
       await click(PrimaryPersonListCollectorPage.submit());
