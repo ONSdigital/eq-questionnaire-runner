@@ -99,7 +99,7 @@ tests/functional/generated_pages
 
 # Ignore Design-System templates
 templates/components
-!templates/components/summary/_macro.njk
+!templates/components/summary
 templates/layout
 templates/assets/styles/print.css
 
