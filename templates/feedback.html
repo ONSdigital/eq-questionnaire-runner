@@ -31,7 +31,7 @@
         {% set error_title = ngettext('There is a problem with your feedback', 'There are %(num)s problems with your feedback', form.mapped_errors | length) %}
         {% include "partials/error-panel.html" %}
     {% endif %}
-    <h1 class="question__title ons-u-fs-2xl" data-qa="feedback-title">{{ content.question.title }}</h1>
+    <h1 class="question__title ons-u-fs-xxl" data-qa="feedback-title">{{ content.question.title }}</h1>
     {%- for answer in question.answers -%}
         {% include "partials/answer.html" %}
     {%- endfor -%}

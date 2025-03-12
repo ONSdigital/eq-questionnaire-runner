@@ -158,7 +158,7 @@ ANSWER_NUMBERED_ERROR_LIST_GETTER = r"""  errorList() { return `ol[data-qa="erro
 
 """
 
-ANSWER_SINGLE_ERROR_LINK_GETTER = r"""  singleErrorLink() { return `p[data-qa="error-link-1"]`; }
+ANSWER_SINGLE_ERROR_LINK_GETTER = r"""  singleErrorLink() { return `p[data-qa="error-list"]`; }
 
 """
 

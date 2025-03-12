@@ -89,10 +89,10 @@ class HubContext(Context):
     ) -> dict[str, str | list]:
         section_content = self.SECTION_CONTENT_STATES[section_status]
         context: dict = {
-            "itemsList": [
+            "rowItems": [
                 {
-                    "title": section_name,
-                    "titleAttributes": {"data-qa": f"hub-row-{row_id}-title"},
+                    "rowTitle": section_name,
+                    "rowTitleAttributes": {"data-qa": f"hub-row-{row_id}-title"},
                     "attributes": {"data-qa": f"hub-row-{row_id}-state"},
                     "valueList": [{"text": section_content["text"]}],
                     "actions": [
@@ -113,7 +113,7 @@ class HubContext(Context):
             CompletionStatus.COMPLETED,
             CompletionStatus.INDIVIDUAL_RESPONSE_REQUESTED,
         ):
-            context["itemsList"][0]["iconType"] = "check"
+            context["rowItems"][0]["iconType"] = "check"
 
         return context
 
