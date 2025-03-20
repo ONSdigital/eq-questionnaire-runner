@@ -114,7 +114,7 @@ pip install --upgrade pip setuptools
 Install poetry, poetry dotenv plugin and install dependencies:
 
 ``` shell
-curl -sSL https://install.python-poetry.org | python3 - --version 1.8.4
+curl -sSL https://install.python-poetry.org | python3 - --version 2.1.1
 poetry self add poetry-plugin-dotenv
 poetry install
 ```
