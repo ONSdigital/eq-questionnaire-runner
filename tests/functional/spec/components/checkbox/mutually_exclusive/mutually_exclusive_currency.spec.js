@@ -5,8 +5,8 @@ import { click } from "../../../../helpers";
 describe("Component: Mutually Exclusive Currency With Single Checkbox Override", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_mutually_exclusive.json");
-    await browser.pause(100);
-    await browser.url("/questionnaire/mutually-exclusive-currency");
+    await browser.pause(1000);
+    await browser.url(CurrencyPage.url());
   });
 
   describe("Given the user has entered a value for the non-exclusive currency answer", () => {
