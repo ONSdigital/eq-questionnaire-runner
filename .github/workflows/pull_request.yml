@@ -102,7 +102,7 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "poetry"
       - name: Install dotenv plugin
-        run: poetry self add poetry-plugin-dotenv@2.6.1
+        run: poetry self add poetry-plugin-dotenv
       - name: Load templates
         run: make load-design-system-templates
       - name: Compile translations
