@@ -4,7 +4,6 @@ from datetime import datetime, timedelta, timezone
 from http.client import HTTPMessage
 
 import fakeredis
-import google.pubsub_v1.services.publisher.client
 import pytest
 from mock import MagicMock
 from mock.mock import Mock
