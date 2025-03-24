@@ -72,7 +72,7 @@ class ResponseRequired:
     an option for DataRequired or InputRequired validators in wtforms.
     """
 
-    field_flags = ("required",)
+    field_flags = {"required": True}
 
     def __init__(self, message: str, strip_whitespace: bool = True):
         self.message = message
@@ -212,7 +212,7 @@ class OptionalForm:
     Will not stop the validation chain if any one of the fields is populated.
     """
 
-    field_flags = ("optional",)
+    field_flags = {"optional": True}
 
     def __call__(self, form: Sequence["QuestionnaireForm"], field: Field) -> None:
         empty_form = True
@@ -238,7 +238,7 @@ class OptionalForm:
 
 
 class DateRequired:
-    field_flags = ("required",)
+    field_flags = {"required": True}
 
     def __init__(self, message: str | None = None):
         self.message = message or error_messages["MANDATORY_DATE"]
