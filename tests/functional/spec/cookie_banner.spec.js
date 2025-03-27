@@ -16,6 +16,7 @@ describe("Given I start a survey,", () => {
     await expect(await $(InitialPage.acceptCookies()).isDisplayed()).toBe(true);
   });
   it("When I delete all cookies from the browser and refresh the page, Then the cookie banner shouldn‘t be displayed", async () => {
+    await expect(await $(InitialPage.acceptCookies()).isDisplayed()).toBe(true);
     await browser.deleteAllCookies();
     await browser.refresh();
     await expect(await $(InitialPage.acceptCookies()).isDisplayed()).toBe(false);
