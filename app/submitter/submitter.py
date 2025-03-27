@@ -52,8 +52,6 @@ class GCSSubmitter:
 
         blob.metadata = metadata
 
-        # DEFAULT_RETRY is not idempotent.
-        # However, this behaviour was deemed acceptable for our use case.
         try:
             blob.upload_from_string(str(message).encode("utf8"))
         except Forbidden as e:
@@ -178,8 +176,6 @@ class GCSFeedbackSubmitter:
         blob = self.bucket.blob(str(uuid4()))
         blob.metadata = metadata
 
-        # DEFAULT_RETRY is not idempotent.
-        # However, this behaviour was deemed acceptable for our use case.
         blob.upload_from_string(payload.encode("utf8"))
 
         return True
