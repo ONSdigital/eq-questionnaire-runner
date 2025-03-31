@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
 from typing import TYPE_CHECKING, Iterable, Mapping, Sequence
 
+
 import flask_babel
 from babel import numbers
 from dateutil.relativedelta import relativedelta

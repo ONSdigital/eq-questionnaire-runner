@@ -1,4 +1,5 @@
 from functools import cached_property
+
 from typing import Any
 
 from wtforms import DecimalField, IntegerField
