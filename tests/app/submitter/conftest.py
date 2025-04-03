@@ -2,7 +2,6 @@ import uuid
 
 import pytest
 from google.cloud.storage import Blob
-from google.resumable_media import InvalidResponse
 from mock import MagicMock
 from requests import Response
 
@@ -133,9 +132,7 @@ def gcs_blob_with_retry(mocker):
     )
     response_200.status_code = 200
 
-    mock_transport_request = mocker.Mock(
-        side_effect=[InvalidResponse(response_503), response_200]
-    )
+    mock_transport_request = mocker.Mock(side_effect=[response_503, response_200])
     mock_transport = mocker.Mock()
     mock_transport.request = mock_transport_request
     blob._get_transport = mocker.Mock(  # pylint: disable=protected-access
