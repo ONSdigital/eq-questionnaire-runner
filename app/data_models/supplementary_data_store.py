@@ -144,8 +144,9 @@ class SupplementaryDataStore:
                 return None
             if not isinstance(value, Mapping):
                 # if value is not None, and also not index able, raise an error
+                invalid_selector_error = f"Cannot use the selector `{selector}` on non-nested data"
                 raise InvalidSupplementaryDataSelector(
-                    f"Cannot use the selector `{selector}` on non-nested data"
+                    invalid_selector_error
                 )
             value = value.get(selector)
 

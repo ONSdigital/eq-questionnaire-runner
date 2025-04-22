@@ -57,21 +57,24 @@ def get_block_handler(
     block = schema.get_block(block_id)
 
     if not block:
+        invalid_block_id_msg = f"block id {block_id} is not valid for this schema"
         raise InvalidLocationException(
-            f"block id {block_id} is not valid for this schema"
+        invalid_block_id_msg
         )
 
     if schema.is_block_in_repeating_section(block_id=block["id"]) and not all(
         (list_name, list_item_id)
     ):
+        invalid_list_msg = f"block id {block_id} is in a repeating section without valid list_name/list_item_id"
         raise InvalidLocationException(
-            f"block id {block_id} is in a repeating section without valid list_name/list_item_id"
+            invalid_list_msg
         )
 
     block_type = block["type"]
     block_class = BLOCK_MAPPINGS.get(block_type)
     if not block_class:
-        raise ValueError(f"block type {block_type} is not valid")
+        invalid_block_type_msg = f"block type {block_type} is not valid"
+        raise ValueError(invalid_block_type_msg)
 
     section_id = schema.get_section_id_for_block_id(block_id)
 

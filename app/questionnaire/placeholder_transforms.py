@@ -326,7 +326,8 @@ class PlaceholderTransforms:
                 19: "eg",
             }.get(number_to_format, "fed")
 
-        raise NotImplementedError(f"Language code '{self.language}' not implemented.")
+        invalid_lang_code_error = f"Language code '{self.language}' not implemented."
+        raise NotImplementedError(invalid_lang_code_error)
 
     def first_non_empty_item(self, items: Sequence[str]) -> str:
         """

@@ -230,8 +230,9 @@ class IndividualResponseHandler:
             )
             >= current_app.config["EQ_INDIVIDUAL_RESPONSE_LIMIT"]
         ):
+            response_limit_msg = "Individual response limit has been reached"
             raise IndividualResponseLimitReached(
-                "Individual response limit has been reached"
+                response_limit_msg
             )
 
     def _update_individual_response_count(self) -> None:

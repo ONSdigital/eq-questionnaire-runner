@@ -121,8 +121,8 @@ def decrypt_supplementary_data(
             return supplementary_data
         except InvalidTokenException as e:
             raise InvalidSupplementaryData from e
-
-    raise ValidationError("Supplementary data has no data to decrypt")
+    missing_data = "Supplementary data has no data to decrypt"
+    raise ValidationError(missing_data)
 
 
 def validate_supplementary_data(
@@ -141,4 +141,5 @@ def validate_supplementary_data(
             sds_schema_version=sds_schema_version,
         )
     except ValidationError as e:
-        raise ValidationError("Invalid supplementary data") from e
+        invalid_data = "Invalid supplementary data"
+        raise ValidationError(invalid_data) from e

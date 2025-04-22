@@ -53,8 +53,9 @@ class BlockHandler:
         self.resume = "resume" in request_args
 
         if not self.is_location_valid():
+            invalid_location_msg = f"location {self._current_location} is not valid"
             raise InvalidLocationException(
-                f"location {self._current_location} is not valid"
+                invalid_location_msg
             )
 
     @property

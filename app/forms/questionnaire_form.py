@@ -337,7 +337,9 @@ class QuestionnaireForm(FlaskForm):
         )
 
         if not min_period_date or not max_period_date:
-            raise ValueError("Period range must have a start and end date")
+
+            invalid_period_range = "Period range must have a start and end date"
+            raise ValueError(invalid_period_range)
 
         # Work out the largest possible range, for date range question
         period_range = max_period_date - min_period_date

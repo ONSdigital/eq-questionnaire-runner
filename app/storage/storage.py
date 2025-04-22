@@ -55,7 +55,8 @@ class StorageModel:
         self._model_type = model_type
 
         if self._model_type not in self.TABLE_CONFIG_BY_TYPE:
-            raise KeyError("Invalid model_type provided")
+            invalid_model_type_msg = "Invalid model_type provided"
+            raise KeyError(invalid_model_type_msg)
 
         self._config = self.TABLE_CONFIG_BY_TYPE[self._model_type]
         self._schema = self._config["schema"]()

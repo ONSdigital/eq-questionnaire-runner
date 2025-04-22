@@ -33,4 +33,5 @@ def parse_datetime(date_string: str | None) -> datetime | None:
     try:
         return parse_iso_8601_datetime(date_string)
     except ValueError as ex:
-        raise ValueError(f"'{date_string}' is not in a valid date format") from ex
+        invalid_date_format = f"'{date_string}' is not in a valid date format"
+        raise ValueError(invalid_date_format) from ex

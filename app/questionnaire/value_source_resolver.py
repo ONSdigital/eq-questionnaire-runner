@@ -98,8 +98,9 @@ class ValueSourceResolver:
         if list_item_selector := value_source.get("list_item_selector"):
             if list_item_selector["source"] == "location":
                 if not self.location:
+                    missing_location = "list_item_selector source location used without location"
                     raise InvalidLocationException(
-                        "list_item_selector source location used without location"
+                        missing_location
                     )
                 # Type ignore: the identifier is a string, same below
                 return getattr(self.location, list_item_selector["identifier"])  # type: ignore
@@ -211,7 +212,8 @@ class ValueSourceResolver:
 
         if selector == "block":
             if not self.location:
-                raise ValueError("location is required to resolve block progress")
+                missing_required_location = "location is required to resolve block progress"
+                raise ValueError(missing_required_location)
 
             if not self._is_block_on_path(identifier):
                 return None
@@ -316,8 +318,8 @@ class ValueSourceResolver:
     ) -> Callable[[Iterable[IntOrDecimal]], IntOrDecimal]:
         if calculation_type == "sum":
             return sum
-
-        raise NotImplementedError(f"Invalid calculation_type: {calculation_type}")
+        invalid_calculation_type = f"Invalid calculation_type: {calculation_type}"
+        raise NotImplementedError(invalid_calculation_type)
 
     def resolve(
         self, value_source: Mapping

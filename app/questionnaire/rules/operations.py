@@ -146,8 +146,9 @@ class Operations:
 
             if day_of_week_offset := offset.get("day_of_week"):
                 if 0 > days_offset > -7:
+                    value_error_msg = "Negative days offset must be less than or equal to -7 when used with `day_of_week` offset"
                     raise ValueError(
-                        "Negative days offset must be less than or equal to -7 when used with `day_of_week` offset"
+                        value_error_msg
                     )
 
                 days_difference = (

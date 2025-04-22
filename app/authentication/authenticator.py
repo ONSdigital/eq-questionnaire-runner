@@ -179,7 +179,8 @@ def create_session_questionnaire_store(
 
 def decrypt_token(encrypted_token: str | None) -> dict[str, Any]:
     if not encrypted_token:
-        raise NoTokenException("Please provide a token")
+        missing_token = "Please provide a token"
+        raise NoTokenException(missing_token)
 
     logger.debug("decrypting token")
     decrypted_token: dict[str, Any] = decrypt(

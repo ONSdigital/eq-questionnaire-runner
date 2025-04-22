@@ -97,7 +97,8 @@ class PlaceholderRenderer:
             placeholder_data["text"] = plural_forms[plural_form_key]
 
         if "text" not in placeholder_data and "placeholders" not in placeholder_data:
-            raise ValueError("No placeholder found to render")
+            placeholder_not_found = "No placeholder found to render"
+            raise ValueError(placeholder_not_found)
 
         transformed_values = placeholder_parser(placeholder_data["placeholders"])
         formatted_placeholder_data: str = placeholder_data["text"].format(

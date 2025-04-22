@@ -57,8 +57,9 @@ class RuleEvaluator:
         operands = rule[operator_name]
 
         if not isinstance(operands, Sequence):
+            invalid_rule_msg = f"The rule is invalid, operands should be of type Sequence and not {type(operands)}"
             raise TypeError(
-                f"The rule is invalid, operands should be of type Sequence and not {type(operands)}"
+                invalid_rule_msg
             )
 
         resolved_operands: Iterable[ResolvedOperand]

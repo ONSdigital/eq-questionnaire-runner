@@ -82,8 +82,9 @@ class ListModel:
         try:
             return self.items[0]
         except IndexError as e:
+            error_msg_empty_list = f"unable to access first item in list, list '{self.name}' is empty"
             raise IndexError(
-                f"unable to access first item in list, list '{self.name}' is empty"
+                error_msg_empty_list
             ) from e
 
     @property

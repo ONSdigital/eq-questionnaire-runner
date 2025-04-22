@@ -15,7 +15,8 @@ class Datastore(StorageHandler):
     @Retry()
     def put(self, model: ModelTypes, overwrite: bool = True) -> bool:
         if not overwrite:
-            raise NotImplementedError("Unique key checking not supported")
+            unsupported_unique_key = "Unique key checking not supported"
+            raise NotImplementedError(unsupported_unique_key)
 
         storage_model = StorageModel(model_type=type(model))
         serialized_item = storage_model.serialize(model)

@@ -223,8 +223,9 @@ def _validate_supplementary_data_lists(
     """
     supplementary_lists = supplementary_data.get("items", {}).keys()
     if missing := schema.supplementary_lists - supplementary_lists:
+        error_missing_lists = f"Supplementary data does not include the following lists required for the schema: {', '.join(missing)}"
         raise ValidationError(
-            f"Supplementary data does not include the following lists required for the schema: {', '.join(missing)}"
+            error_missing_lists
         )
 
 
@@ -305,7 +306,8 @@ def get_runner_claims(decrypted_token: Mapping[str, Any]) -> dict:
         return validate_runner_claims_v2(decrypted_token)
 
     except ValidationError as e:
-        raise InvalidTokenException("Invalid runner claims") from e
+        error_runner_claims = "Invalid runner claims"
+        raise InvalidTokenException(error_runner_claims) from e
 
 
 def get_questionnaire_claims(
@@ -316,4 +318,5 @@ def get_questionnaire_claims(
         return validate_questionnaire_claims(claims, schema_metadata, unknown=INCLUDE)
 
     except ValidationError as e:
-        raise InvalidTokenException("Invalid questionnaire claims") from e
+        error_q_claims = "Invalid questionnaire claims"
+        raise InvalidTokenException(error_q_claims) from e

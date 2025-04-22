@@ -37,14 +37,16 @@ def read_file(file_name):
 def get_env_or_fail(key):
     value = os.getenv(key)
     if value is None:
-        raise ValueError(f"Setting '{key}' Missing")
+        missing_key_error = f"Setting '{key}' Missing"
+        raise ValueError(missing_key_error)
 
     return value
 
 
 def utcoffset_or_fail(date_value, key):
     if date_value.utcoffset() is None:
-        raise ValueError(f"'{key}' datetime offset missing")
+        missing_datetime_offset_error = f"'{key}' datetime offset missing"
+        raise ValueError(missing_datetime_offset_error)
     return date_value
 
 
