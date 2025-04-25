@@ -61,7 +61,6 @@ def get_block_handler(
         "invalid_list": f"block id {block_id} is in a repeating section without valid list_name/list_item_id",
         "invalid_block_type": f"block id {block_id} is not valid for this schema",
     }
-    
     if not block:
         raise InvalidLocationException(
         block_error_message["invalid_block_id"]

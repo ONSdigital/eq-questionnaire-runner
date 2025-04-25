@@ -19,6 +19,7 @@ class PlaceholderRenderer:
     Renders placeholders specified by a list of pointers in a schema block to their final
     strings
     """
+    placeholder_not_found = "No placeholder found to render"
 
     def __init__(
         self,
@@ -97,8 +98,7 @@ class PlaceholderRenderer:
             placeholder_data["text"] = plural_forms[plural_form_key]
 
         if "text" not in placeholder_data and "placeholders" not in placeholder_data:
-            placeholder_not_found = "No placeholder found to render"
-            raise ValueError(placeholder_not_found)
+            raise ValueError(self.placeholder_not_found)
 
         transformed_values = placeholder_parser(placeholder_data["placeholders"])
         formatted_placeholder_data: str = placeholder_data["text"].format(
