@@ -23,9 +23,9 @@ class ItemsSchema(Schema):
         if not (isinstance(identifier, str) and identifier.strip()) and not (
             isinstance(identifier, int) and identifier >= 0
         ):
-            item_identifier_error_msg = "Item identifier must be a non-empty string or non-negative integer"
+            item_identifier_error_message = "Item identifier must be a non-empty string or non-negative integer"
             raise ValidationError(
-                item_identifier_error_msg
+                item_identifier_error_message
             )
 
 
@@ -42,9 +42,9 @@ class SupplementaryData(Schema, StripWhitespaceMixin):
         self, data: Mapping, **kwargs: Any
     ) -> None:
         if data and data["identifier"] != self.context["identifier"]:
-            identifier_error_msg = "Supplementary data did not return the specified Identifier"
+            identifier_error_message = "Supplementary data did not return the specified Identifier"
             raise ValidationError(
-            identifier_error_msg
+            identifier_error_message
             )
 
 
@@ -64,23 +64,23 @@ class SupplementaryDataMetadataSchema(Schema, StripWhitespaceMixin):
     ) -> None:
         if payload:
             if payload["dataset_id"] != self.context["dataset_id"]:
-                dataset_id_error_msg = "Supplementary data did not return the specified Dataset ID"
+                dataset_id_error_message = "Supplementary data did not return the specified Dataset ID"
                 raise ValidationError(
-                dataset_id_error_msg
+                dataset_id_error_message
                 )
 
             if payload["survey_id"] != self.context["survey_id"]:
-                survey_id_error_msg = "Supplementary data did not return the specified Survey ID"
+                survey_id_error_message = "Supplementary data did not return the specified Survey ID"
                 raise ValidationError(
-                    survey_id_error_msg
+                    survey_id_error_message
                 )
 
             if self.context["sds_schema_version"] and (
                 payload["data"]["schema_version"] != self.context["sds_schema_version"]
             ):
-                mismatch_version_error_msg = "The Supplementary Dataset Schema Version does not match the version set in the Questionnaire Schema"
+                mismatch_version_error_message = "The Supplementary Dataset Schema Version does not match the version set in the Questionnaire Schema"
                 raise ValidationError(
-                    mismatch_version_error_msg
+                    mismatch_version_error_message
                 )
 
 

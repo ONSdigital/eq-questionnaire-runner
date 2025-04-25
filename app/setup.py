@@ -332,9 +332,9 @@ def setup_redis(application):
 def setup_submitter(application):
     if application.config["EQ_SUBMISSION_BACKEND"] == "gcs":
         if not (bucket_name := application.config.get("EQ_GCS_SUBMISSION_BUCKET_ID")):
-            missing_bucket_id_msg = "Setting EQ_GCS_SUBMISSION_BUCKET_ID Missing"
+            missing_bucket_id_message = "Setting EQ_GCS_SUBMISSION_BUCKET_ID Missing"
             raise MissingEnvironmentVariable(
-                missing_bucket_id_msg
+                missing_bucket_id_message
             )
 
         application.eq["submitter"] = GCSSubmitter(bucket_name=bucket_name)
@@ -344,12 +344,12 @@ def setup_submitter(application):
         secondary_host = application.config.get("EQ_RABBITMQ_HOST_SECONDARY")
 
         if not host:
-            missing_host_msg = "Setting EQ_RABBITMQ_HOST Missing"
-            raise MissingEnvironmentVariable(missing_host_msg)
+            missing_host_message = "Setting EQ_RABBITMQ_HOST Missing"
+            raise MissingEnvironmentVariable(missing_host_message)
         if not secondary_host:
-            missing_secondary_host_msg = "Setting EQ_RABBITMQ_HOST_SECONDARY Missing"
+            missing_secondary_host_message = "Setting EQ_RABBITMQ_HOST_SECONDARY Missing"
             raise MissingEnvironmentVariable(
-                missing_secondary_host_msg
+                missing_secondary_host_message
             )
 
         application.eq["submitter"] = RabbitMQSubmitter(
@@ -369,8 +369,8 @@ def setup_submitter(application):
         application.eq["submitter"] = LogSubmitter()
 
     else:
-        unknown_submission_msg = "Unknown EQ_SUBMISSION_BACKEND"
-        raise NotImplementedError(unknown_submission_msg)
+        unknown_submission_message = "Unknown EQ_SUBMISSION_BACKEND"
+        raise NotImplementedError(unknown_submission_message)
 
 
 def setup_task_client(application):
@@ -417,16 +417,16 @@ def setup_publisher(application):
         application.eq["publisher"] = LogPublisher()
 
     else:
-        unknown_publisher_backend_msg = "Unknown EQ_PUBLISHER_BACKEND"
-        raise NotImplementedError(unknown_publisher_backend_msg)
+        unknown_publisher_backend_message = "Unknown EQ_PUBLISHER_BACKEND"
+        raise NotImplementedError(unknown_publisher_backend_message)
 
 
 def setup_feedback(application):
     if application.config["EQ_FEEDBACK_BACKEND"] == "gcs":
         if not (bucket_name := application.config.get("EQ_GCS_FEEDBACK_BUCKET_ID")):
-            missing_feedback_bucket_id_msg = "Setting EQ_GCS_FEEDBACK_BUCKET_ID Missing"
+            missing_feedback_bucket_id_message = "Setting EQ_GCS_FEEDBACK_BUCKET_ID Missing"
             raise MissingEnvironmentVariable(
-                missing_feedback_bucket_id_msg
+                missing_feedback_bucket_id_message
             )
 
         application.eq["feedback_submitter"] = GCSFeedbackSubmitter(
@@ -436,8 +436,8 @@ def setup_feedback(application):
     elif application.config["EQ_FEEDBACK_BACKEND"] == "log":
         application.eq["feedback_submitter"] = LogFeedbackSubmitter()
     else:
-        unknown_feedback_backend_msg = "Unknown EQ_FEEDBACK_BACKEND"
-        raise NotImplementedError(unknown_feedback_backend_msg)
+        unknown_feedback_backend_message = "Unknown EQ_FEEDBACK_BACKEND"
+        raise NotImplementedError(unknown_feedback_backend_message)
 
 
 def add_blueprints(application):
@@ -475,8 +475,8 @@ def add_blueprints(application):
 def setup_secure_cookies(application):
     secret_key = application.eq["secret_store"].get_secret_by_name("EQ_SECRET_KEY")
     if not secret_key:
-        no_secret_key_msg = "Application secret key does not exist"
-        raise ValueError(no_secret_key_msg)
+        no_secret_key_message = "Application secret key does not exist"
+        raise ValueError(no_secret_key_message)
     application.secret_key = secret_key
     application.session_interface = SHA256SecureCookieSessionInterface()
 

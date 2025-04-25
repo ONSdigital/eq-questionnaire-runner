@@ -15,14 +15,14 @@ class StorageEncryption:
         self, user_id: str | None, user_ik: str | None, pepper: str | None
     ) -> None:
         if not user_id:
-            missing_user_id_msg = "user_id not provided"
-            raise ValueError(missing_user_id_msg)
+            missing_user_id_message = "user_id not provided"
+            raise ValueError(missing_user_id_message)
         if not user_ik:
-            missing_user_ik_msg = "user_ik not provided"
-            raise ValueError(missing_user_ik_msg)
+            missing_user_ik_message = "user_ik not provided"
+            raise ValueError(missing_user_ik_message)
         if not pepper:
-            missing_pepper_msg = "pepper not provided"
-            raise ValueError(missing_pepper_msg)
+            missing_pepper_message = "pepper not provided"
+            raise ValueError(missing_pepper_message)
 
         self.key = self._generate_key(user_id, user_ik, pepper)
 
