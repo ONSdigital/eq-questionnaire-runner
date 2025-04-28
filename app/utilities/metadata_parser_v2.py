@@ -112,8 +112,10 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
                     missing_metadata_option
                 )
             if len(options) > 1:
-                invalid_metadata_combination = f"Only one of schema_name, schema_url or cir_instrument_id should be specified in metadata,\
-                but {', '.join(options)} were provided"
+                invalid_metadata_combination = (
+                    "Only one of schema_name, schema_url or cir_instrument_id should be specified "
+                    f"in metadata, but {', '.join(options)} were provided"
+                )
                 raise ValidationError(
                     invalid_metadata_combination
                 )
