@@ -333,9 +333,7 @@ def setup_submitter(application):
     if application.config["EQ_SUBMISSION_BACKEND"] == "gcs":
         if not (bucket_name := application.config.get("EQ_GCS_SUBMISSION_BUCKET_ID")):
             missing_bucket_id_message = "Setting EQ_GCS_SUBMISSION_BUCKET_ID Missing"
-            raise MissingEnvironmentVariable(
-                missing_bucket_id_message
-            )
+            raise MissingEnvironmentVariable(missing_bucket_id_message)
 
         application.eq["submitter"] = GCSSubmitter(bucket_name=bucket_name)
 
@@ -347,10 +345,10 @@ def setup_submitter(application):
             missing_host_message = "Setting EQ_RABBITMQ_HOST Missing"
             raise MissingEnvironmentVariable(missing_host_message)
         if not secondary_host:
-            missing_secondary_host_message = "Setting EQ_RABBITMQ_HOST_SECONDARY Missing"
-            raise MissingEnvironmentVariable(
-                missing_secondary_host_message
+            missing_secondary_host_message = (
+                "Setting EQ_RABBITMQ_HOST_SECONDARY Missing"
             )
+            raise MissingEnvironmentVariable(missing_secondary_host_message)
 
         application.eq["submitter"] = RabbitMQSubmitter(
             host=host,
@@ -424,10 +422,10 @@ def setup_publisher(application):
 def setup_feedback(application):
     if application.config["EQ_FEEDBACK_BACKEND"] == "gcs":
         if not (bucket_name := application.config.get("EQ_GCS_FEEDBACK_BUCKET_ID")):
-            missing_feedback_bucket_id_message = "Setting EQ_GCS_FEEDBACK_BUCKET_ID Missing"
-            raise MissingEnvironmentVariable(
-                missing_feedback_bucket_id_message
+            missing_feedback_bucket_id_message = (
+                "Setting EQ_GCS_FEEDBACK_BUCKET_ID Missing"
             )
+            raise MissingEnvironmentVariable(missing_feedback_bucket_id_message)
 
         application.eq["feedback_submitter"] = GCSFeedbackSubmitter(
             bucket_name=bucket_name

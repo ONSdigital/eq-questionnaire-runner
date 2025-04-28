@@ -231,9 +231,7 @@ class IndividualResponseHandler:
             >= current_app.config["EQ_INDIVIDUAL_RESPONSE_LIMIT"]
         ):
             response_limit_message = "Individual response limit has been reached"
-            raise IndividualResponseLimitReached(
-                response_limit_message
-            )
+            raise IndividualResponseLimitReached(response_limit_message)
 
     def _update_individual_response_count(self) -> None:
         response_metadata = self._questionnaire_store.data_stores.response_metadata

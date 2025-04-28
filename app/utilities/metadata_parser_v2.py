@@ -64,9 +64,7 @@ class SurveyMetadata(Schema, StripWhitespaceMixin):
 
             if missing_receipting_keys:
                 missing_keys_message = f"Receipting keys: {missing_receipting_keys} not set in Survey Metadata"
-                raise ValidationError(
-                    missing_keys_message
-                )
+                raise ValidationError(missing_keys_message)
 
 
 class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
@@ -108,17 +106,13 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
             ]
             if len(options) == 0:
                 missing_metadata_option = "Neither schema_name, schema_url or cir_instrument_id has been set in metadata"
-                raise ValidationError(
-                    missing_metadata_option
-                )
+                raise ValidationError(missing_metadata_option)
             if len(options) > 1:
                 invalid_metadata_combination = (
                     "Only one of schema_name, schema_url or cir_instrument_id should be specified "
                     f"in metadata, but {', '.join(options)} were provided"
                 )
-                raise ValidationError(
-                    invalid_metadata_combination
-                )
+                raise ValidationError(invalid_metadata_combination)
 
 
 def validate_questionnaire_claims(

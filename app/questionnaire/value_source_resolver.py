@@ -98,10 +98,10 @@ class ValueSourceResolver:
         if list_item_selector := value_source.get("list_item_selector"):
             if list_item_selector["source"] == "location":
                 if not self.location:
-                    invalid_selector_location = "list_item_selector source location used without location"
-                    raise InvalidLocationException(
-                        invalid_selector_location
+                    invalid_selector_location = (
+                        "list_item_selector source location used without location"
                     )
+                    raise InvalidLocationException(invalid_selector_location)
                 # Type ignore: the identifier is a string, same below
                 return getattr(self.location, list_item_selector["identifier"])  # type: ignore
 
@@ -212,7 +212,9 @@ class ValueSourceResolver:
 
         if selector == "block":
             if not self.location:
-                location_required_error= "location is required to resolve block progress"
+                location_required_error = (
+                    "location is required to resolve block progress"
+                )
                 raise ValueError(location_required_error)
 
             if not self._is_block_on_path(identifier):

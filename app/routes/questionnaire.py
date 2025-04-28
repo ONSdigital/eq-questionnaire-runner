@@ -77,9 +77,7 @@ def before_questionnaire_request() -> Response | None:
 
     if cookie_session.get("submitted"):
         repeated_submission_error = "The Questionnaire has been previously submitted"
-        raise PreviouslySubmittedException(
-            repeated_submission_error
-        )
+        raise PreviouslySubmittedException(repeated_submission_error)
 
     metadata = get_metadata(current_user)
     if not metadata:

@@ -62,6 +62,7 @@ class InvalidSchemaConfigurationException(Exception):
     def __init__(self, value: str = "No dynamic or static choices") -> None:
         super().__init__()
         self.value = value
+
     def __str__(self) -> str:
         return str(self.value)
 

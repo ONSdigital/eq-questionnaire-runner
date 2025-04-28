@@ -6,7 +6,6 @@ from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
 from typing import TYPE_CHECKING, Iterable, Mapping, Sequence
 
-
 import flask_babel
 from babel import numbers
 from dateutil.relativedelta import relativedelta
@@ -426,9 +425,7 @@ class SumCheck:
                 conditions.remove("equals")
             except ValueError as exc:
                 invalid_mutiple_conditions = "There are multiple conditions, but equals is not one of them. We only support <= and >="
-                raise ValueError(
-                    invalid_mutiple_conditions
-                ) from exc
+                raise ValueError(invalid_mutiple_conditions) from exc
 
             condition = f"{conditions[0]} or equals"
         else:
