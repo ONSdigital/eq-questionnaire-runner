@@ -58,7 +58,7 @@ def get_schemas() -> list[str]:
     return schemas
 
 
-def validate_schema(schema_path, failed):
+def validate_schema(schema_path):
     try:
         result = subprocess.run(
             [
@@ -81,7 +81,6 @@ def validate_schema(schema_path, failed):
         return schema_path, result.stdout
     except subprocess.CalledProcessError as e:
         logging.info("Error validating schema %s: %s", schema_path, e)
-        failed += 1
         return schema_path, None
 
 
@@ -95,7 +94,7 @@ def main():
 
     with ThreadPoolExecutor(max_workers=20) as executor:
         future_to_schema = {
-            executor.submit(validate_schema, schema, failed): schema for schema in schemas
+            executor.submit(validate_schema, schema): schema for schema in schemas
         }
         for future in as_completed(future_to_schema):
             schema = future_to_schema[future]
