@@ -84,9 +84,20 @@ compress = Compress()
 
 logger = get_logger()
 
+UNKNOWN_IMPLEMENTED_ERROR = {
+    "unknown_storage_backend": "Unknown EQ_STORAGE_BACKEND",
+    "unknown_submission": "Unknown EQ_SUBMISSION_BACKEND",
+    "unknown_submit_confirmation": "Unknown EQ_SUBMISSION_CONFIRMATION_BACKEND",
+    "unknown_token_backend": "Unknown OIDC_TOKEN_BACKEND",
+    "unknown_publisher_backend": "Unknown EQ_PUBLISHER_BACKEND",
+    "unknown_feedback_backend": "Unknown EQ_FEEDBACK_BACKEND",
+}
+
 
 class MissingEnvironmentVariable(Exception):
-    pass
+    MISSING_BUCKET_ID_MESSAGE = "Setting EQ_GCS_SUBMISSION_BUCKET_ID Missing"
+    MISSING_HOST_MESSAGE = "Setting EQ_RABBITMQ_HOST Missing"
+    MISSING_SECONDARY_HOST_MESSAGE = "Setting EQ_RABBITMQ_HOST_SECONDARY Missing"
 
 
 class AWSReverseProxied:
@@ -293,8 +304,7 @@ def setup_storage(application):
     elif application.config["EQ_STORAGE_BACKEND"] == "dynamodb":
         setup_dynamodb(application)
     else:
-        unknown_storage_backend = "Unknown EQ_STORAGE_BACKEND"
-        raise NotImplementedError(unknown_storage_backend)
+        raise NotImplementedError(UNKNOWN_IMPLEMENTED_ERROR["unknown_storage_backend"])
 
     setup_redis(application)
 
@@ -332,9 +342,9 @@ def setup_redis(application):
 def setup_submitter(application):
     if application.config["EQ_SUBMISSION_BACKEND"] == "gcs":
         if not (bucket_name := application.config.get("EQ_GCS_SUBMISSION_BUCKET_ID")):
-            missing_bucket_id_message = "Setting EQ_GCS_SUBMISSION_BUCKET_ID Missing"
-            raise MissingEnvironmentVariable(missing_bucket_id_message)
-
+            raise MissingEnvironmentVariable(
+                MissingEnvironmentVariable.MISSING_BUCKET_ID_MESSAGE
+            )
         application.eq["submitter"] = GCSSubmitter(bucket_name=bucket_name)
 
     elif application.config["EQ_SUBMISSION_BACKEND"] == "rabbitmq":
@@ -342,13 +352,13 @@ def setup_submitter(application):
         secondary_host = application.config.get("EQ_RABBITMQ_HOST_SECONDARY")
 
         if not host:
-            missing_host_message = "Setting EQ_RABBITMQ_HOST Missing"
-            raise MissingEnvironmentVariable(missing_host_message)
-        if not secondary_host:
-            missing_secondary_host_message = (
-                "Setting EQ_RABBITMQ_HOST_SECONDARY Missing"
+            raise MissingEnvironmentVariable(
+                MissingEnvironmentVariable.MISSING_HOST_MESSAGE
             )
-            raise MissingEnvironmentVariable(missing_secondary_host_message)
+        if not secondary_host:
+            raise MissingEnvironmentVariable(
+                MissingEnvironmentVariable.MISSING_SECONDARY_HOST_MESSAGE
+            )
 
         application.eq["submitter"] = RabbitMQSubmitter(
             host=host,
@@ -367,8 +377,7 @@ def setup_submitter(application):
         application.eq["submitter"] = LogSubmitter()
 
     else:
-        unknown_submission_message = "Unknown EQ_SUBMISSION_BACKEND"
-        raise NotImplementedError(unknown_submission_message)
+        raise NotImplementedError(UNKNOWN_IMPLEMENTED_ERROR["unknown_submission"])
 
 
 def setup_task_client(application):
@@ -377,8 +386,9 @@ def setup_task_client(application):
     elif application.config["EQ_SUBMISSION_CONFIRMATION_BACKEND"] == "log":
         application.eq["cloud_tasks"] = LogCloudTaskPublisher()
     else:
-        unknown_submit_confirmation = "Unknown EQ_SUBMISSION_CONFIRMATION_BACKEND"
-        raise NotImplementedError(unknown_submit_confirmation)
+        raise NotImplementedError(
+            UNKNOWN_IMPLEMENTED_ERROR["unknown_submit_confirmation"]
+        )
 
 
 def setup_oidc(application):
@@ -403,8 +413,7 @@ def setup_oidc(application):
         application.eq["oidc_credentials_service"] = OIDCCredentialsServiceLocal()
 
     else:
-        unknown_token_backend = "Unknown OIDC_TOKEN_BACKEND"
-        raise NotImplementedError(unknown_token_backend)
+        raise NotImplementedError(UNKNOWN_IMPLEMENTED_ERROR["unknown_token_backend"])
 
 
 def setup_publisher(application):
@@ -415,8 +424,9 @@ def setup_publisher(application):
         application.eq["publisher"] = LogPublisher()
 
     else:
-        unknown_publisher_backend_message = "Unknown EQ_PUBLISHER_BACKEND"
-        raise NotImplementedError(unknown_publisher_backend_message)
+        raise NotImplementedError(
+            UNKNOWN_IMPLEMENTED_ERROR["unknown_publisher_backend"]
+        )
 
 
 def setup_feedback(application):
@@ -434,8 +444,7 @@ def setup_feedback(application):
     elif application.config["EQ_FEEDBACK_BACKEND"] == "log":
         application.eq["feedback_submitter"] = LogFeedbackSubmitter()
     else:
-        unknown_feedback_backend_message = "Unknown EQ_FEEDBACK_BACKEND"
-        raise NotImplementedError(unknown_feedback_backend_message)
+        raise NotImplementedError(UNKNOWN_IMPLEMENTED_ERROR["unknown_feedback_backend"])
 
 
 def add_blueprints(application):
