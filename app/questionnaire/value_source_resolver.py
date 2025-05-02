@@ -95,12 +95,12 @@ class ValueSourceResolver:
     def _resolve_list_item_id_for_value_source(
         self, value_source: Mapping
     ) -> str | None:
+        invalid_selector_location = (
+            "list_item_selector source location used without location"
+        )
         if list_item_selector := value_source.get("list_item_selector"):
             if list_item_selector["source"] == "location":
                 if not self.location:
-                    invalid_selector_location = (
-                        "list_item_selector source location used without location"
-                    )
                     raise InvalidLocationException(invalid_selector_location)
                 # Type ignore: the identifier is a string, same below
                 return getattr(self.location, list_item_selector["identifier"])  # type: ignore
@@ -203,6 +203,7 @@ class ValueSourceResolver:
     ) -> ValueSourceEscapedTypes | ValueSourceTypes | None:
         identifier = value_source["identifier"]
         selector = value_source["selector"]
+        location_required_error = "location is required to resolve block progress"
         if selector == "section":
             # List item id is set to None here as we do not support checking progress value sources for
             # repeating sections
@@ -212,9 +213,6 @@ class ValueSourceResolver:
 
         if selector == "block":
             if not self.location:
-                location_required_error = (
-                    "location is required to resolve block progress"
-                )
                 raise ValueError(location_required_error)
 
             if not self._is_block_on_path(identifier):
@@ -318,9 +316,9 @@ class ValueSourceResolver:
     def get_calculation_operator(
         calculation_type: str,
     ) -> Callable[[Iterable[IntOrDecimal]], IntOrDecimal]:
+        invalid_calculation_type = f"Invalid calculation_type: {calculation_type}"
         if calculation_type == "sum":
             return sum
-        invalid_calculation_type = f"Invalid calculation_type: {calculation_type}"
         raise NotImplementedError(invalid_calculation_type)
 
     def resolve(

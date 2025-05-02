@@ -82,10 +82,10 @@ class ListModel:
         try:
             return self.items[0]
         except IndexError as e:
-            empty_list_error_message = (
+            empty_list_error = (
                 f"unable to access first item in list, list '{self.name}' is empty"
             )
-            raise IndexError(empty_list_error_message) from e
+            raise IndexError(empty_list_error) from e
 
     @property
     def count(self) -> int:

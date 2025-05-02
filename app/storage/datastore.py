@@ -9,14 +9,15 @@ logger = get_logger()
 
 
 class Datastore(StorageHandler):
+    UNSUPPORTED_UNIQUE_KEY = "Unique key checking not supported"
+
     def __init__(self, client: datastore.Client) -> None:
         super().__init__(client)
 
     @Retry()
     def put(self, model: ModelTypes, overwrite: bool = True) -> bool:
         if not overwrite:
-            unsupported_unique_key = "Unique key checking not supported"
-            raise NotImplementedError(unsupported_unique_key)
+            raise NotImplementedError(self.UNSUPPORTED_UNIQUE_KEY)
 
         storage_model = StorageModel(model_type=type(model))
         serialized_item = storage_model.serialize(model)

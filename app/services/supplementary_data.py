@@ -132,6 +132,7 @@ def validate_supplementary_data(
     survey_id: str,
     sds_schema_version: str | None = None,
 ) -> dict[str, str | dict | int | list]:
+    invalid_supplementary_data = "Invalid supplementary data"
     try:
         return validate_supplementary_data_v1(
             supplementary_data=supplementary_data,
@@ -141,5 +142,4 @@ def validate_supplementary_data(
             sds_schema_version=sds_schema_version,
         )
     except ValidationError as e:
-        invalid_supplementary_data = "Invalid supplementary data"
         raise ValidationError(invalid_supplementary_data) from e

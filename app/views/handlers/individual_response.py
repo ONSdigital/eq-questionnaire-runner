@@ -224,13 +224,13 @@ class IndividualResponseHandler:
             raise IndividualResponseFulfilmentRequestPublicationFailed from exc
 
     def _check_individual_response_count(self) -> None:
+        response_limit_message = "Individual response limit has been reached"
         if (
             self._questionnaire_store.data_stores.response_metadata.get(
                 "individual_response_count", 0
             )
             >= current_app.config["EQ_INDIVIDUAL_RESPONSE_LIMIT"]
         ):
-            response_limit_message = "Individual response limit has been reached"
             raise IndividualResponseLimitReached(response_limit_message)
 
     def _update_individual_response_count(self) -> None:

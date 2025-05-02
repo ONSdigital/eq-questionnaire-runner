@@ -223,8 +223,8 @@ def _validate_supplementary_data_lists(
     """
     supplementary_lists = supplementary_data.get("items", {}).keys()
     if missing := schema.supplementary_lists - supplementary_lists:
-        missing_schema_lists_error = f"Supplementary data does not include the following lists required for the schema: {', '.join(missing)}"
-        raise ValidationError(missing_schema_lists_error)
+        missing_schema_lists = f"Supplementary data does not include the following lists required for the schema: {', '.join(missing)}"
+        raise ValidationError(missing_schema_lists)
 
 
 def validate_jti(decrypted_token: dict[str, str | list | int]) -> None:
@@ -300,21 +300,22 @@ def get_signed_out() -> Response | str:
 
 
 def get_runner_claims(decrypted_token: Mapping[str, Any]) -> dict:
+    runner_claims_error = "Invalid runner claims"
     try:
         return validate_runner_claims_v2(decrypted_token)
 
     except ValidationError as e:
-        runner_claims_error = "Invalid runner claims"
         raise InvalidTokenException(runner_claims_error) from e
 
 
 def get_questionnaire_claims(
     decrypted_token: Mapping, schema_metadata: Iterable[Mapping[str, str]]
 ) -> dict:
+    questionnaire_claims_error = "Invalid questionnaire claims"
+
     try:
         claims = decrypted_token.get("survey_metadata", {}).get("data", {})
         return validate_questionnaire_claims(claims, schema_metadata, unknown=INCLUDE)
 
     except ValidationError as e:
-        questionnaire_claims_error = "Invalid questionnaire claims"
         raise InvalidTokenException(questionnaire_claims_error) from e

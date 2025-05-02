@@ -424,8 +424,8 @@ class SumCheck:
             try:
                 conditions.remove("equals")
             except ValueError as exc:
-                invalid_mutiple_conditions = "There are multiple conditions, but equals is not one of them. We only support <= and >="
-                raise ValueError(invalid_mutiple_conditions) from exc
+                invalid_multiple_condition = "There are multiple conditions, but equals is not one of them. We only support <= and >="
+                raise ValueError(invalid_multiple_condition) from exc
 
             condition = f"{conditions[0]} or equals"
         else:

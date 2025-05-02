@@ -392,18 +392,19 @@ def setup_task_client(application):
 
 
 def setup_oidc(application):
+    missing_sds_client_id = "Setting SDS_OAUTH2_CLIENT_ID Missing"
+    missing_cir_client_id = "Setting CIR_OAUTH2_CLIENT_ID Missing"
+    missing_token_backen = "Setting OIDC_TOKEN_BACKEND Missing"
+
     def client_ids_exist():
         if not application.config.get("SDS_OAUTH2_CLIENT_ID"):
-            missing_sds_client_id = "Setting SDS_OAUTH2_CLIENT_ID Missing"
             raise MissingEnvironmentVariable(missing_sds_client_id)
 
         if not application.config.get("CIR_OAUTH2_CLIENT_ID"):
-            missing_cir_client_id = "Setting CIR_OAUTH2_CLIENT_ID Missing"
             raise MissingEnvironmentVariable(missing_cir_client_id)
 
     if not (oidc_token_backend := application.config.get("OIDC_TOKEN_BACKEND")):
-        missing_token_backend = "Setting OIDC_TOKEN_BACKEND Missing"
-        raise MissingEnvironmentVariable(missing_token_backend)
+        raise MissingEnvironmentVariable(missing_token_backen)
 
     if oidc_token_backend == "gcp":
         client_ids_exist()
@@ -430,12 +431,10 @@ def setup_publisher(application):
 
 
 def setup_feedback(application):
+    missing_feedback__bucket_id = "Setting EQ_GCS_FEEDBACK_BUCKET_ID Missing"
     if application.config["EQ_FEEDBACK_BACKEND"] == "gcs":
         if not (bucket_name := application.config.get("EQ_GCS_FEEDBACK_BUCKET_ID")):
-            missing_feedback_bucket_id_message = (
-                "Setting EQ_GCS_FEEDBACK_BUCKET_ID Missing"
-            )
-            raise MissingEnvironmentVariable(missing_feedback_bucket_id_message)
+            raise MissingEnvironmentVariable(missing_feedback__bucket_id)
 
         application.eq["feedback_submitter"] = GCSFeedbackSubmitter(
             bucket_name=bucket_name
@@ -480,10 +479,10 @@ def add_blueprints(application):
 
 
 def setup_secure_cookies(application):
+    invalid_secret_key = "Application secret key does not exist"
     secret_key = application.eq["secret_store"].get_secret_by_name("EQ_SECRET_KEY")
     if not secret_key:
-        no_secret_key_message = "Application secret key does not exist"
-        raise ValueError(no_secret_key_message)
+        raise ValueError(invalid_secret_key)
     application.secret_key = secret_key
     application.session_interface = SHA256SecureCookieSessionInterface()
 

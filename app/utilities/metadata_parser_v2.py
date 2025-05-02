@@ -63,8 +63,8 @@ class SurveyMetadata(Schema, StripWhitespaceMixin):
             ]
 
             if missing_receipting_keys:
-                missing_keys_message = f"Receipting keys: {missing_receipting_keys} not set in Survey Metadata"
-                raise ValidationError(missing_keys_message)
+                invalid_receipting_keys = f"Receipting keys: {missing_receipting_keys} not set in Survey Metadata"
+                raise ValidationError(invalid_receipting_keys)
 
 
 class RunnerMetadataSchema(Schema, StripWhitespaceMixin):

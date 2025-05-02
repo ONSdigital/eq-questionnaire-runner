@@ -29,6 +29,7 @@ class TableConfig(TypedDict, total=False):
 
 
 class StorageModel:
+    INVALID_MODEL_TYPE = "Invalid model_type provided"
     TABLE_CONFIG_BY_TYPE: dict[type[ModelTypes], TableConfig] = {
         app_models.QuestionnaireState: {
             "key_field": "user_id",
@@ -55,8 +56,7 @@ class StorageModel:
         self._model_type = model_type
 
         if self._model_type not in self.TABLE_CONFIG_BY_TYPE:
-            invalid_model_type_message = "Invalid model_type provided"
-            raise KeyError(invalid_model_type_message)
+            raise KeyError(self.INVALID_MODEL_TYPE)
 
         self._config = self.TABLE_CONFIG_BY_TYPE[self._model_type]
         self._schema = self._config["schema"]()
