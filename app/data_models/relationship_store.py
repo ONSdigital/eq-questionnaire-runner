@@ -81,16 +81,15 @@ class RelationshipStore:
         This method iterates through the entire list of relationships.
         """
 
-        keys_to_delete = []
-
-        for relationship in self:
-            if list_item_id in (
+        keys_to_delete = [
+            (relationship.list_item_id, relationship.to_list_item_id)
+            for relationship in self
+            if list_item_id
+            in (
                 relationship.to_list_item_id,
                 relationship.list_item_id,
-            ):
-                keys_to_delete.append(
-                    (relationship.list_item_id, relationship.to_list_item_id)
-                )
+            )
+        ]
 
         for key in keys_to_delete:
             del self._relationships[key]

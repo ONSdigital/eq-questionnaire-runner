@@ -462,12 +462,10 @@ class Router:
             repeating_list = self._schema.get_repeating_list_for_section(section_id)
 
             if repeating_list:
-                for list_item_id in self._data_stores.list_store[repeating_list]:
-                    full_routing_path.append(
-                        self._path_finder.routing_path(
-                            SectionKey(section_id, list_item_id)
-                        )
-                    )
+                full_routing_path.extend(
+                    self._path_finder.routing_path(SectionKey(section_id, list_item_id))
+                    for list_item_id in self._data_stores.list_store[repeating_list]
+                )
             else:
                 full_routing_path.append(
                     self._path_finder.routing_path(SectionKey(section_id))
