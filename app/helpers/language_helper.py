@@ -42,7 +42,7 @@ def handle_language(metadata: MetadataProxy | None = None) -> None:
 
 
 def get_languages_context(current_language: str) -> dict[str, list[dict]] | None:
-    context = []
+    context: list[dict[str, str | bool]] = []
     allowed_languages = g.get("allowed_languages")
     if allowed_languages and len(allowed_languages) > 1:
         context.extend(

@@ -457,7 +457,7 @@ class Router:
         )
 
     def full_routing_path(self) -> list[RoutingPath]:
-        full_routing_path = []
+        full_routing_path: list[RoutingPath] = []
         for section_id in self.enabled_section_ids:
             repeating_list = self._schema.get_repeating_list_for_section(section_id)
 
