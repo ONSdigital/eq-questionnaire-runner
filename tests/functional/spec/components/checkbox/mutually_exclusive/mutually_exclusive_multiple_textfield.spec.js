@@ -5,8 +5,8 @@ import { click } from "../../../../helpers";
 describe("Component: Mutually Exclusive Textfield With Multiple Radio Override", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_mutually_exclusive_multiple.json");
-    await browser.pause(100);
-    await browser.url("/questionnaire/mutually-exclusive-textfield");
+    await browser.pause(1000);
+    await browser.url(TextFieldPage.url());
   });
 
   describe("Given the user has entered a value for the non-exclusive textfield answer", () => {

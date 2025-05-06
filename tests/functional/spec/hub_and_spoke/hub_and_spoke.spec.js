@@ -30,6 +30,7 @@ describe("Feature: Hub and Spoke", () => {
   describe("Given I am completing the test_hub_context schema,", () => {
     beforeEach("load the survey", async () => {
       await browser.openQuestionnaire(hubAndSpokeSchema);
+      await browser.pause(1000);
     });
 
     it("When a user first views the Hub, The Hub should be in a continue state", async () => {
@@ -310,6 +311,7 @@ describe("Feature: Hub and Spoke", () => {
         sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
         responseId,
       });
+      await browser.pause(10000);
     });
 
     it("When all the repeating sections are complete, Then the hub should be displayed", async () => {

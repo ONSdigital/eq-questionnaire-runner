@@ -10,8 +10,8 @@ describe("Theme NHSE", () => {
 
     it("When I navigate to the radio page, Then I should see NHSE theme content", async () => {
       await verifyUrlContains(RadioPage.pageName);
-      await expect(await $("#ons-logo-stacked-en-alt").getHTML()).toContain("Office for National Statistics");
-      await expect(await $("#nhs-logo-alt").getHTML()).toContain("National Heath Service");
+      await expect(await $("#ons-logo-stacked-en-alt").getText()).toContain("Office for National Statistics");
+      await expect(await $("#nhs-logo-alt").getText()).toContain("National Heath Service");
     });
   });
 });
