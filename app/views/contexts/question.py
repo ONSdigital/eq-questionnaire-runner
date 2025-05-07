@@ -24,9 +24,11 @@ def build_question_context(
         answer_ids.append(answer["id"])
 
         if answer["type"] in ("Checkbox", "Radio"):
-            for option in answer.get("options", []):
-                if "detail_answer" in option:
-                    answer_ids.append(option["detail_answer"]["id"])
+            answer_ids.extend(
+                option["detail_answer"]["id"]
+                for option in answer.get("options", [])
+                if "detail_answer" in option
+            )
 
     for answer_id in answer_ids:
         context["form"]["answer_errors"][answer_id] = form.answer_errors(answer_id)
