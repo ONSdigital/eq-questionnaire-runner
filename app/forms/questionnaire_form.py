@@ -309,6 +309,7 @@ class QuestionnaireForm(FlaskForm):
         date_from: Mapping[str, dict],
         date_to: Mapping[str, dict],
     ) -> timedelta:
+        invalid_period_range = "Period range must have a start and end date"
         list_item_id = self.location.list_item_id if self.location else None
         value_source_resolver = ValueSourceResolver(
             data_stores=self.data_stores,
@@ -337,7 +338,7 @@ class QuestionnaireForm(FlaskForm):
         )
 
         if not min_period_date or not max_period_date:
-            raise ValueError("Period range must have a start and end date")
+            raise ValueError(invalid_period_range)
 
         # Work out the largest possible range, for date range question
         period_range = max_period_date - min_period_date

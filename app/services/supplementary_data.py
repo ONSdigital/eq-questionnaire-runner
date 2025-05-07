@@ -121,8 +121,8 @@ def decrypt_supplementary_data(
             return supplementary_data
         except InvalidTokenException as e:
             raise InvalidSupplementaryData from e
-
-    raise ValidationError("Supplementary data has no data to decrypt")
+    supplementary_data_empty_error = "Supplementary data has no data to decrypt"
+    raise ValidationError(supplementary_data_empty_error)
 
 
 def validate_supplementary_data(
@@ -132,6 +132,7 @@ def validate_supplementary_data(
     survey_id: str,
     sds_schema_version: str | None = None,
 ) -> dict[str, str | dict | int | list]:
+    invalid_supplementary_data = "Invalid supplementary data"
     try:
         return validate_supplementary_data_v1(
             supplementary_data=supplementary_data,
@@ -141,4 +142,4 @@ def validate_supplementary_data(
             sds_schema_version=sds_schema_version,
         )
     except ValidationError as e:
-        raise ValidationError("Invalid supplementary data") from e
+        raise ValidationError(invalid_supplementary_data) from e
