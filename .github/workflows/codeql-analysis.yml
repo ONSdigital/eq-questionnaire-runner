@@ -24,11 +24,11 @@ jobs:
       matrix:
         include:
         - language: actions
-          build-mode: autobuild
+          build-mode: none
         - language: javascript
-          build-mode: autobuild
+          build-mode: none
         - language: python
-          build-mode: autobuild
+          build-mode: none
 
     steps:
     - name: Checkout repository
