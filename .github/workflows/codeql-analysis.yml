@@ -10,9 +10,9 @@ on:
 
 jobs:
   analyze:
-    name: Analyze (${{ matrix.language }})
+    name: Analyze
 
-    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    runs-on: [ubuntu-latest]
     permissions:
       security-events: write
       packages: read
@@ -22,13 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-        - language: actions
-          build-mode: none
-        - language: javascript
-          build-mode: none
-        - language: python
-          build-mode: none
+        lannguage: [ "javascript", "python", "actions" ]
 
     steps:
     - name: Checkout repository
