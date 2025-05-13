@@ -22,11 +22,21 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        lannguage: [ "javascript", "python", "actions" ]
+        include:
+        - language: actions
+          build-mode: none
+        - language: javascript
+          build-mode: none
+        - language: python
+          build-mode: none
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      with:
+        # We must fetch at least the immediate parents so that if this is
+        # a pull request then we can checkout the head.
+        fetch-depth: 2
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
@@ -37,5 +47,3 @@ jobs:
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
-      with:
-        category: "/language:${{matrix.language}}"
