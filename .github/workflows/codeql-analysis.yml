@@ -1,4 +1,4 @@
-name: "CodeQL Advanced"
+name: "CodeQL"
 
 on:
   push:
@@ -22,13 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-        - language: actions
-          build-mode: none
-        - language: javascript
-          build-mode: none
-        - language: python
-          build-mode: none
+        language: [ "javascript", "python", "actions"]
 
     steps:
     - name: Checkout repository
