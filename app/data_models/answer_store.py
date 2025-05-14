@@ -142,10 +142,11 @@ class AnswerStore:
 
         *Not efficient.*
         """
-        keys_to_delete = []
-        for answer in self:
-            if answer.list_item_id and answer.list_item_id in list_item_ids:
-                keys_to_delete.append((answer.answer_id, answer.list_item_id))
+        keys_to_delete = [
+            (answer.answer_id, answer.list_item_id)
+            for answer in self
+            if answer.list_item_id and answer.list_item_id in list_item_ids
+        ]
 
         for key in keys_to_delete:
             del self.answer_map[key]
