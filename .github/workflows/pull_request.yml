@@ -22,7 +22,7 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@76e04a911780d5b312d89783f7b1cd627778900a # v1.4.1
         with:
-          version: 1.8.4
+          version: 2.1.2
           virtualenvs-create: true
       - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
         with:
@@ -56,7 +56,7 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@76e04a911780d5b312d89783f7b1cd627778900a # v1.4.1
         with:
-          version: 1.8.4
+          version: 2.1.2
           virtualenvs-create: true
       - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
         with:
@@ -95,14 +95,14 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@76e04a911780d5b312d89783f7b1cd627778900a # v1.4.1
         with:
-          version: 1.8.4
+          version: 2.1.2
           virtualenvs-create: true
       - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "poetry"
       - name: Install dotenv plugin
-        run: poetry self add poetry-plugin-dotenv@2.6.1
+        run: poetry self add poetry-plugin-dotenv@2.9.0
       - name: Load templates
         run: make load-design-system-templates
       - name: Compile translations
@@ -124,7 +124,7 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@76e04a911780d5b312d89783f7b1cd627778900a # v1.4.1
         with:
-          version: 1.8.4
+          version: 2.1.2
           virtualenvs-create: true
       - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
         with:
@@ -153,7 +153,7 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@76e04a911780d5b312d89783f7b1cd627778900a # v1.4.1
         with:
-          version: 1.8.4
+          version: 2.1.2
           virtualenvs-create: true
       - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
         with:
