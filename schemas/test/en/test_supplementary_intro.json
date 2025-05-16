@@ -1,0 +1,191 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "123",
+    "title": "Test Supplementary Data",
+    "theme": "default",
+    "description": "A questionnaire to demo using Supplementary data for placeholders, validation and routing in both repeating and non-repeating sections.",
+    "metadata": [
+        {
+            "name": "survey_id",
+            "type": "string"
+        },
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        },
+        {
+            "name": "sds_dataset_id",
+            "type": "string"
+        }
+    ],
+    "supplementary_data": {
+        "lists": ["employees", "products"]
+    },
+    "questionnaire_flow": {
+        "type": "Hub",
+        "options": {
+            "required_completed_sections": ["introduction-section"]
+        }
+    },
+    "post_submission": {
+        "view_response": true
+    },
+    "sections": [
+        {
+            "id": "introduction-section",
+            "title": "Introduction",
+            "groups": [
+                {
+                    "id": "introduction-group",
+                    "title": "Introduction Group",
+                    "blocks": [
+                        {
+                            "id": "loaded-successfully-block",
+                            "type": "Interstitial",
+                            "content": {
+                                "title": "Supplementary Data",
+                                "contents": [
+                                    {
+                                        "title": "You have successfully loaded Supplementary data",
+                                        "description": {
+                                            "text": "List of products: {products}",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "products",
+                                                    "transforms": [
+                                                        {
+                                                            "transform": "format_list",
+                                                            "arguments": {
+                                                                "list_to_format": {
+                                                                    "source": "supplementary_data",
+                                                                    "identifier": "products",
+                                                                    "selectors": ["name"]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "guidance": {
+                                            "contents": [
+                                                {
+                                                    "description": {
+                                                        "text": "The purpose of this block, is to test that supplementary data loads successfully, separate to using the supplementary data. The surnames of the employees are: {surnames}.",
+                                                        "placeholders": [
+                                                            {
+                                                                "placeholder": "surnames",
+                                                                "transforms": [
+                                                                    {
+                                                                        "transform": "concatenate_list",
+                                                                        "arguments": {
+                                                                            "list_to_concatenate": [
+                                                                                {
+                                                                                    "source": "supplementary_data",
+                                                                                    "identifier": "employees",
+                                                                                    "selectors": ["personal_details", "surname"]
+                                                                                }
+                                                                            ],
+                                                                            "delimiter": ", "
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "introduction-block",
+                            "type": "Introduction",
+                            "primary_content": [
+                                {
+                                    "id": "business-details",
+                                    "title": {
+                                        "text": "You are completing this survey for {company_name}",
+                                        "placeholders": [
+                                            {
+                                                "placeholder": "company_name",
+                                                "value": {
+                                                    "source": "supplementary_data",
+                                                    "identifier": "company_name"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "contents": [
+                                        {
+                                            "description": {
+                                                "text": "If the company details or structure have changed contact us on {telephone_number_link}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "telephone_number_link",
+                                                        "value": {
+                                                            "source": "supplementary_data",
+                                                            "identifier": "company_details",
+                                                            "selectors": ["telephone_number"]
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "guidance": {
+                                                "contents": [
+                                                    {
+                                                        "title": "Guidance for completing this survey",
+                                                        "list": [
+                                                            "The company name, telephone number all come from supplementary data",
+                                                            "if you picked the supplementary dataset with guidance, there will be a 3rd bullet point below this one, with the supplementary guidance.",
+                                                            {
+                                                                "text": "{survey_guidance}",
+                                                                "placeholders": [
+                                                                    {
+                                                                        "placeholder": "survey_guidance",
+                                                                        "transforms": [
+                                                                            {
+                                                                                "transform": "first_non_empty_item",
+                                                                                "arguments": {
+                                                                                    "items": [
+                                                                                        {
+                                                                                            "source": "supplementary_data",
+                                                                                            "identifier": "guidance"
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
