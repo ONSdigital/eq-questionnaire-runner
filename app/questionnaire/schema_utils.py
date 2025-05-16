@@ -35,8 +35,5 @@ def get_answers_from_question(question: Mapping) -> list:
 
 def get_answer_ids_in_block(block: Mapping) -> list[str]:
     question = block["question"]
-    answer_ids = []
-    for answer in get_answers_from_question(question):
-        answer_ids.append(answer["id"])
-
+    answer_ids = [answer["id"] for answer in get_answers_from_question(question)]
     return answer_ids
