@@ -11,7 +11,7 @@ services:
     networks:
       - eq-schema
     environment:
-      AJV_HOST: ajv-validator
+      AJV_VALIDATOR_HOST: ajv-validator
     ports:
       - 5001:5000
     depends_on:
