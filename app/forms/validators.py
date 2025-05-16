@@ -424,10 +424,8 @@ class SumCheck:
             try:
                 conditions.remove("equals")
             except ValueError as exc:
-                raise ValueError(
-                    "There are multiple conditions, but equals is not one of them. "
-                    "We only support <= and >="
-                ) from exc
+                invalid_multiple_condition = "There are multiple conditions, but equals is not one of them. We only support <= and >="
+                raise ValueError(invalid_multiple_condition) from exc
 
             condition = f"{conditions[0]} or equals"
         else:
@@ -469,7 +467,8 @@ class SumCheck:
         if condition == "less than or equals":
             return total <= target_total, "TOTAL_SUM_NOT_LESS_THAN_OR_EQUALS"
 
-        raise NotImplementedError(f"Condition '{condition}' is not implemented")
+        invalid_condition = f"Condition '{condition}' is not implemented"
+        raise NotImplementedError(invalid_condition)
 
 
 class MutuallyExclusiveCheck:

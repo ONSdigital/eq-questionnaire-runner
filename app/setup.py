@@ -84,9 +84,20 @@ compress = Compress()
 
 logger = get_logger()
 
+UNKNOWN_IMPLEMENTED_ERROR = {
+    "unknown_storage_backend": "Unknown EQ_STORAGE_BACKEND",
+    "unknown_submission": "Unknown EQ_SUBMISSION_BACKEND",
+    "unknown_submit_confirmation": "Unknown EQ_SUBMISSION_CONFIRMATION_BACKEND",
+    "unknown_token_backend": "Unknown OIDC_TOKEN_BACKEND",
+    "unknown_publisher_backend": "Unknown EQ_PUBLISHER_BACKEND",
+    "unknown_feedback_backend": "Unknown EQ_FEEDBACK_BACKEND",
+}
+
 
 class MissingEnvironmentVariable(Exception):
-    pass
+    MISSING_BUCKET_ID_MESSAGE = "Setting EQ_GCS_SUBMISSION_BUCKET_ID Missing"
+    MISSING_HOST_MESSAGE = "Setting EQ_RABBITMQ_HOST Missing"
+    MISSING_SECONDARY_HOST_MESSAGE = "Setting EQ_RABBITMQ_HOST_SECONDARY Missing"
 
 
 class AWSReverseProxied:
@@ -293,7 +304,7 @@ def setup_storage(application):
     elif application.config["EQ_STORAGE_BACKEND"] == "dynamodb":
         setup_dynamodb(application)
     else:
-        raise NotImplementedError("Unknown EQ_STORAGE_BACKEND")
+        raise NotImplementedError(UNKNOWN_IMPLEMENTED_ERROR["unknown_storage_backend"])
 
     setup_redis(application)
 
@@ -332,9 +343,8 @@ def setup_submitter(application):
     if application.config["EQ_SUBMISSION_BACKEND"] == "gcs":
         if not (bucket_name := application.config.get("EQ_GCS_SUBMISSION_BUCKET_ID")):
             raise MissingEnvironmentVariable(
-                "Setting EQ_GCS_SUBMISSION_BUCKET_ID Missing"
+                MissingEnvironmentVariable.MISSING_BUCKET_ID_MESSAGE
             )
-
         application.eq["submitter"] = GCSSubmitter(bucket_name=bucket_name)
 
     elif application.config["EQ_SUBMISSION_BACKEND"] == "rabbitmq":
@@ -342,10 +352,12 @@ def setup_submitter(application):
         secondary_host = application.config.get("EQ_RABBITMQ_HOST_SECONDARY")
 
         if not host:
-            raise MissingEnvironmentVariable("Setting EQ_RABBITMQ_HOST Missing")
+            raise MissingEnvironmentVariable(
+                MissingEnvironmentVariable.MISSING_HOST_MESSAGE
+            )
         if not secondary_host:
             raise MissingEnvironmentVariable(
-                "Setting EQ_RABBITMQ_HOST_SECONDARY Missing"
+                MissingEnvironmentVariable.MISSING_SECONDARY_HOST_MESSAGE
             )
 
         application.eq["submitter"] = RabbitMQSubmitter(
@@ -365,7 +377,7 @@ def setup_submitter(application):
         application.eq["submitter"] = LogSubmitter()
 
     else:
-        raise NotImplementedError("Unknown EQ_SUBMISSION_BACKEND")
+        raise NotImplementedError(UNKNOWN_IMPLEMENTED_ERROR["unknown_submission"])
 
 
 def setup_task_client(application):
@@ -374,19 +386,25 @@ def setup_task_client(application):
     elif application.config["EQ_SUBMISSION_CONFIRMATION_BACKEND"] == "log":
         application.eq["cloud_tasks"] = LogCloudTaskPublisher()
     else:
-        raise NotImplementedError("Unknown EQ_SUBMISSION_CONFIRMATION_BACKEND")
+        raise NotImplementedError(
+            UNKNOWN_IMPLEMENTED_ERROR["unknown_submit_confirmation"]
+        )
 
 
 def setup_oidc(application):
+    missing_sds_client_id = "Setting SDS_OAUTH2_CLIENT_ID Missing"
+    missing_cir_client_id = "Setting CIR_OAUTH2_CLIENT_ID Missing"
+    missing_token_backen = "Setting OIDC_TOKEN_BACKEND Missing"
+
     def client_ids_exist():
         if not application.config.get("SDS_OAUTH2_CLIENT_ID"):
-            raise MissingEnvironmentVariable("Setting SDS_OAUTH2_CLIENT_ID Missing")
+            raise MissingEnvironmentVariable(missing_sds_client_id)
 
         if not application.config.get("CIR_OAUTH2_CLIENT_ID"):
-            raise MissingEnvironmentVariable("Setting CIR_OAUTH2_CLIENT_ID Missing")
+            raise MissingEnvironmentVariable(missing_cir_client_id)
 
     if not (oidc_token_backend := application.config.get("OIDC_TOKEN_BACKEND")):
-        raise MissingEnvironmentVariable("Setting OIDC_TOKEN_BACKEND Missing")
+        raise MissingEnvironmentVariable(missing_token_backen)
 
     if oidc_token_backend == "gcp":
         client_ids_exist()
@@ -396,7 +414,7 @@ def setup_oidc(application):
         application.eq["oidc_credentials_service"] = OIDCCredentialsServiceLocal()
 
     else:
-        raise NotImplementedError("Unknown OIDC_TOKEN_BACKEND")
+        raise NotImplementedError(UNKNOWN_IMPLEMENTED_ERROR["unknown_token_backend"])
 
 
 def setup_publisher(application):
@@ -407,15 +425,16 @@ def setup_publisher(application):
         application.eq["publisher"] = LogPublisher()
 
     else:
-        raise NotImplementedError("Unknown EQ_PUBLISHER_BACKEND")
+        raise NotImplementedError(
+            UNKNOWN_IMPLEMENTED_ERROR["unknown_publisher_backend"]
+        )
 
 
 def setup_feedback(application):
+    missing_feedback__bucket_id = "Setting EQ_GCS_FEEDBACK_BUCKET_ID Missing"
     if application.config["EQ_FEEDBACK_BACKEND"] == "gcs":
         if not (bucket_name := application.config.get("EQ_GCS_FEEDBACK_BUCKET_ID")):
-            raise MissingEnvironmentVariable(
-                "Setting EQ_GCS_FEEDBACK_BUCKET_ID Missing"
-            )
+            raise MissingEnvironmentVariable(missing_feedback__bucket_id)
 
         application.eq["feedback_submitter"] = GCSFeedbackSubmitter(
             bucket_name=bucket_name
@@ -424,7 +443,7 @@ def setup_feedback(application):
     elif application.config["EQ_FEEDBACK_BACKEND"] == "log":
         application.eq["feedback_submitter"] = LogFeedbackSubmitter()
     else:
-        raise NotImplementedError("Unknown EQ_FEEDBACK_BACKEND")
+        raise NotImplementedError(UNKNOWN_IMPLEMENTED_ERROR["unknown_feedback_backend"])
 
 
 def add_blueprints(application):
@@ -460,9 +479,10 @@ def add_blueprints(application):
 
 
 def setup_secure_cookies(application):
+    invalid_secret_key = "Application secret key does not exist"
     secret_key = application.eq["secret_store"].get_secret_by_name("EQ_SECRET_KEY")
     if not secret_key:
-        raise ValueError("Application secret key does not exist")
+        raise ValueError(invalid_secret_key)
     application.secret_key = secret_key
     application.session_interface = SHA256SecureCookieSessionInterface()
 
