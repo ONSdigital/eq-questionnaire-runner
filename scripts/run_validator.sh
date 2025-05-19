@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-tag=make-ajv-configurable
+tag=latest
 TAG=${tag} docker compose -f docker-compose-schema-validator.yml up -d
