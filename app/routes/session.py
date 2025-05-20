@@ -41,6 +41,9 @@ logger = get_logger()
 
 session_blueprint = Blueprint("session", __name__)
 
+INVALID_RUNNER_CLAIMS_ERROR = "Invalid runner claims"
+INVALID_QUESTIONNAIRE_CLAIMS_ERROR = "Invalid questionnaire claims"
+
 
 @session_blueprint.after_request
 def add_cache_control(response: Response) -> Response:
@@ -300,22 +303,20 @@ def get_signed_out() -> Response | str:
 
 
 def get_runner_claims(decrypted_token: Mapping[str, Any]) -> dict:
-    runner_claims_error = "Invalid runner claims"
     try:
         return validate_runner_claims_v2(decrypted_token)
 
     except ValidationError as e:
-        raise InvalidTokenException(runner_claims_error) from e
+        raise InvalidTokenException(INVALID_RUNNER_CLAIMS_ERROR) from e
 
 
 def get_questionnaire_claims(
     decrypted_token: Mapping, schema_metadata: Iterable[Mapping[str, str]]
 ) -> dict:
-    questionnaire_claims_error = "Invalid questionnaire claims"
 
     try:
         claims = decrypted_token.get("survey_metadata", {}).get("data", {})
         return validate_questionnaire_claims(claims, schema_metadata, unknown=INCLUDE)
 
     except ValidationError as e:
-        raise InvalidTokenException(questionnaire_claims_error) from e
+        raise InvalidTokenException(INVALID_QUESTIONNAIRE_CLAIMS_ERROR) from e

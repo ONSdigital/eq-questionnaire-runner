@@ -408,6 +408,8 @@ class DateRangeCheck:
 
 
 class SumCheck:
+    INVALID_MULTIPLE_CONDITION = "There are multiple conditions, but equals is not one of them. We only support <= and >="
+
     def __init__(self, messages: OptionalMessage = None, currency: str | None = None):
         self.messages = {**error_messages, **(messages or {})}
         self.currency = currency
@@ -424,8 +426,7 @@ class SumCheck:
             try:
                 conditions.remove("equals")
             except ValueError as exc:
-                invalid_multiple_condition = "There are multiple conditions, but equals is not one of them. We only support <= and >="
-                raise ValueError(invalid_multiple_condition) from exc
+                raise ValueError(SumCheck.INVALID_MULTIPLE_CONDITION) from exc
 
             condition = f"{conditions[0]} or equals"
         else:

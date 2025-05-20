@@ -70,6 +70,8 @@ class SurveyMetadata(Schema, StripWhitespaceMixin):
 class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     """Metadata which is required for the operation of runner itself"""
 
+    MISSING_METADATA_OPTION = "Neither schema_name, schema_url or cir_instrument_id has been set in metadata"
+
     jti = VALIDATORS["uuid"]()
     tx_id = VALIDATORS["uuid"]()
     case_id = VALIDATORS["uuid"]()
@@ -105,8 +107,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
                 if data.get(option)
             ]
             if len(options) == 0:
-                missing_metadata_option = "Neither schema_name, schema_url or cir_instrument_id has been set in metadata"
-                raise ValidationError(missing_metadata_option)
+                raise ValidationError(self.MISSING_METADATA_OPTION)
             if len(options) > 1:
                 invalid_metadata_combination = (
                     "Only one of schema_name, schema_url or cir_instrument_id should be specified "

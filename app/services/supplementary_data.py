@@ -30,7 +30,11 @@ SUPPLEMENTARY_DATA_REQUEST_RETRY_STATUS_CODES = [
 logger = get_logger()
 
 
+
+
 class SupplementaryDataRequestFailed(Exception):
+    SUPPLEMENTARY_DATA_EMPTY_ERROR = "Supplementary data has no data to decrypt"
+    INVALID_SUPPLEMENTARY_DATA = "Invalid supplementary data"
     def __str__(self) -> str:
         return "Supplementary Data request failed"
 
@@ -121,8 +125,7 @@ def decrypt_supplementary_data(
             return supplementary_data
         except InvalidTokenException as e:
             raise InvalidSupplementaryData from e
-    supplementary_data_empty_error = "Supplementary data has no data to decrypt"
-    raise ValidationError(supplementary_data_empty_error)
+    raise ValidationError(SupplementaryDataRequestFailed.SUPPLEMENTARY_DATA_EMPTY_ERROR)
 
 
 def validate_supplementary_data(
@@ -132,7 +135,6 @@ def validate_supplementary_data(
     survey_id: str,
     sds_schema_version: str | None = None,
 ) -> dict[str, str | dict | int | list]:
-    invalid_supplementary_data = "Invalid supplementary data"
     try:
         return validate_supplementary_data_v1(
             supplementary_data=supplementary_data,
@@ -142,4 +144,4 @@ def validate_supplementary_data(
             sds_schema_version=sds_schema_version,
         )
     except ValidationError as e:
-        raise ValidationError(invalid_supplementary_data) from e
+        raise ValidationError(SupplementaryDataRequestFailed.INVALID_SUPPLEMENTARY_DATA) from e

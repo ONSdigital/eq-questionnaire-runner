@@ -84,6 +84,16 @@ compress = Compress()
 
 logger = get_logger()
 
+MISSING_BUCKET_ID_MESSAGE = "Setting EQ_GCS_SUBMISSION_BUCKET_ID Missing"
+MISSING_HOST_MESSAGE = "Setting EQ_RABBITMQ_HOST Missing"
+MISSING_SECONDARY_HOST_MESSAGE = "Setting EQ_RABBITMQ_HOST_SECONDARY Missing"
+MISSING_SDS_CLIENT_ID = "Setting SDS_OAUTH2_CLIENT_ID Missing"
+MISSING_CIR_CLIENT_ID = "Setting CIR_OAUTH2_CLIENT_ID Missing"
+MISSING_TOKEN_BACKEND = "Setting OIDC_TOKEN_BACKEND Missing"
+MISSING_FEEDBACK_BUCKET_ID = "Setting EQ_GCS_FEEDBACK_BUCKET_ID Missing"
+INVALID_SECRET_KEY = "Application secret key does not exist"
+
+
 UNKNOWN_IMPLEMENTED_ERROR = {
     "unknown_storage_backend": "Unknown EQ_STORAGE_BACKEND",
     "unknown_submission": "Unknown EQ_SUBMISSION_BACKEND",
@@ -95,9 +105,7 @@ UNKNOWN_IMPLEMENTED_ERROR = {
 
 
 class MissingEnvironmentVariable(Exception):
-    MISSING_BUCKET_ID_MESSAGE = "Setting EQ_GCS_SUBMISSION_BUCKET_ID Missing"
-    MISSING_HOST_MESSAGE = "Setting EQ_RABBITMQ_HOST Missing"
-    MISSING_SECONDARY_HOST_MESSAGE = "Setting EQ_RABBITMQ_HOST_SECONDARY Missing"
+    pass
 
 
 class AWSReverseProxied:
@@ -343,7 +351,7 @@ def setup_submitter(application):
     if application.config["EQ_SUBMISSION_BACKEND"] == "gcs":
         if not (bucket_name := application.config.get("EQ_GCS_SUBMISSION_BUCKET_ID")):
             raise MissingEnvironmentVariable(
-                MissingEnvironmentVariable.MISSING_BUCKET_ID_MESSAGE
+                MISSING_BUCKET_ID_MESSAGE
             )
         application.eq["submitter"] = GCSSubmitter(bucket_name=bucket_name)
 
@@ -353,11 +361,11 @@ def setup_submitter(application):
 
         if not host:
             raise MissingEnvironmentVariable(
-                MissingEnvironmentVariable.MISSING_HOST_MESSAGE
+                MISSING_HOST_MESSAGE
             )
         if not secondary_host:
             raise MissingEnvironmentVariable(
-                MissingEnvironmentVariable.MISSING_SECONDARY_HOST_MESSAGE
+                MISSING_SECONDARY_HOST_MESSAGE
             )
 
         application.eq["submitter"] = RabbitMQSubmitter(
@@ -392,19 +400,15 @@ def setup_task_client(application):
 
 
 def setup_oidc(application):
-    missing_sds_client_id = "Setting SDS_OAUTH2_CLIENT_ID Missing"
-    missing_cir_client_id = "Setting CIR_OAUTH2_CLIENT_ID Missing"
-    missing_token_backen = "Setting OIDC_TOKEN_BACKEND Missing"
-
     def client_ids_exist():
         if not application.config.get("SDS_OAUTH2_CLIENT_ID"):
-            raise MissingEnvironmentVariable(missing_sds_client_id)
+            raise MissingEnvironmentVariable(MISSING_SDS_CLIENT_ID)
 
         if not application.config.get("CIR_OAUTH2_CLIENT_ID"):
-            raise MissingEnvironmentVariable(missing_cir_client_id)
+            raise MissingEnvironmentVariable(MISSING_CIR_CLIENT_ID)
 
     if not (oidc_token_backend := application.config.get("OIDC_TOKEN_BACKEND")):
-        raise MissingEnvironmentVariable(missing_token_backen)
+        raise MissingEnvironmentVariable(MISSING_TOKEN_BACKEND)
 
     if oidc_token_backend == "gcp":
         client_ids_exist()
@@ -431,10 +435,9 @@ def setup_publisher(application):
 
 
 def setup_feedback(application):
-    missing_feedback__bucket_id = "Setting EQ_GCS_FEEDBACK_BUCKET_ID Missing"
     if application.config["EQ_FEEDBACK_BACKEND"] == "gcs":
         if not (bucket_name := application.config.get("EQ_GCS_FEEDBACK_BUCKET_ID")):
-            raise MissingEnvironmentVariable(missing_feedback__bucket_id)
+            raise MissingEnvironmentVariable(MISSING_FEEDBACK_BUCKET_ID)
 
         application.eq["feedback_submitter"] = GCSFeedbackSubmitter(
             bucket_name=bucket_name
@@ -479,10 +482,9 @@ def add_blueprints(application):
 
 
 def setup_secure_cookies(application):
-    invalid_secret_key = "Application secret key does not exist"
     secret_key = application.eq["secret_store"].get_secret_by_name("EQ_SECRET_KEY")
     if not secret_key:
-        raise ValueError(invalid_secret_key)
+        raise ValueError(INVALID_SECRET_KEY)
     application.secret_key = secret_key
     application.session_interface = SHA256SecureCookieSessionInterface()
 

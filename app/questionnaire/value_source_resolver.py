@@ -26,6 +26,9 @@ ResolvedAnswerList: TypeAlias = list[AnswerValueTypes | AnswerValueEscapedTypes 
 
 @dataclass
 class ValueSourceResolver:
+    INVALID_SELECTOR_LOCATION = "list_item_selector source location used without location"
+    LOCATION_REQUIRED_ERROR = "location is required to resolve block progress"
+
     data_stores: DataStores
     schema: QuestionnaireSchema
     location: LocationType | None
@@ -95,13 +98,10 @@ class ValueSourceResolver:
     def _resolve_list_item_id_for_value_source(
         self, value_source: Mapping
     ) -> str | None:
-        invalid_selector_location = (
-            "list_item_selector source location used without location"
-        )
         if list_item_selector := value_source.get("list_item_selector"):
             if list_item_selector["source"] == "location":
                 if not self.location:
-                    raise InvalidLocationException(invalid_selector_location)
+                    raise InvalidLocationException(self.INVALID_SELECTOR_LOCATION)
                 # Type ignore: the identifier is a string, same below
                 return getattr(self.location, list_item_selector["identifier"])  # type: ignore
 
@@ -203,7 +203,6 @@ class ValueSourceResolver:
     ) -> ValueSourceEscapedTypes | ValueSourceTypes | None:
         identifier = value_source["identifier"]
         selector = value_source["selector"]
-        location_required_error = "location is required to resolve block progress"
         if selector == "section":
             # List item id is set to None here as we do not support checking progress value sources for
             # repeating sections
@@ -213,7 +212,7 @@ class ValueSourceResolver:
 
         if selector == "block":
             if not self.location:
-                raise ValueError(location_required_error)
+                raise ValueError(self.LOCATION_REQUIRED_ERROR)
 
             if not self._is_block_on_path(identifier):
                 return None

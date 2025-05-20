@@ -34,6 +34,9 @@ class ItemsData(Schema, StripWhitespaceMixin):
 
 
 class SupplementaryData(Schema, StripWhitespaceMixin):
+    SDS_IDENTIFIER_ERROR = "Supplementary data did not return the specified Identifier"
+
+
     identifier = VALIDATORS["string"](validate=validate.Length(min=1))
     items = fields.Nested(ItemsData, required=False, unknown=INCLUDE)
 
@@ -41,14 +44,14 @@ class SupplementaryData(Schema, StripWhitespaceMixin):
     def validate_identifier(  # pylint: disable=unused-argument
         self, data: Mapping, **kwargs: Any
     ) -> None:
-        sds_identifier_error = (
-            "Supplementary data did not return the specified Identifier"
-        )
         if data and data["identifier"] != self.context["identifier"]:
-            raise ValidationError(sds_identifier_error)
+            raise ValidationError(self.SDS_IDENTIFIER_ERROR)
 
 
 class SupplementaryDataMetadataSchema(Schema, StripWhitespaceMixin):
+    DATASET_ID_ERROR = "Supplementary data did not return the specified Dataset ID"
+    SURVEY_ID_ERROR = "Supplementary data did not return the specified Survey ID"
+    MISMATCH_SDS_VERSION = "The Supplementary Dataset Schema Version does not match the version set in the Questionnaire Schema"
     dataset_id = VALIDATORS["uuid"]()
     survey_id = VALIDATORS["string"](validate=validate.Length(min=1))
     data = fields.Nested(
@@ -62,20 +65,17 @@ class SupplementaryDataMetadataSchema(Schema, StripWhitespaceMixin):
     def validate_payload(  # pylint: disable=unused-argument
         self, payload: Mapping, **kwargs: Any
     ) -> None:
-        dataset_id_error = "Supplementary data did not return the specified Dataset ID"
-        survey_id_error = "Supplementary data did not return the specified Survey ID"
-        mismatch_sds_version = "The Supplementary Dataset Schema Version does not match the version set in the Questionnaire Schema"
         if payload:
             if payload["dataset_id"] != self.context["dataset_id"]:
-                raise ValidationError(dataset_id_error)
+                raise ValidationError(self.DATASET_ID_ERROR)
 
             if payload["survey_id"] != self.context["survey_id"]:
-                raise ValidationError(survey_id_error)
+                raise ValidationError(self.SURVEY_ID_ERROR)
 
             if self.context["sds_schema_version"] and (
                 payload["data"]["schema_version"] != self.context["sds_schema_version"]
             ):
-                raise ValidationError(mismatch_sds_version)
+                raise ValidationError(self.MISMATCH_SDS_VERSION)
 
 
 def validate_supplementary_data_v1(

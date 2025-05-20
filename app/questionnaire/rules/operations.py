@@ -54,7 +54,7 @@ class Operations:
     """
     A class to group the operations
     """
-
+    INVALID_NEGATIVE_DAYS_OFFSET = "Negative days offset must be less than or equal to -7 when used with `day_of_week` offset"
     def __init__(
         self,
         language: str,
@@ -135,7 +135,6 @@ class Operations:
         offset: DateOffset | None = None,
         offset_by_full_weeks: bool = False,
     ) -> date | None:
-        invalid_negative_days_offset = "Negative days offset must be less than or equal to -7 when used with `day_of_week` offset"
         datetime_value = parse_datetime(date_string)
         if not datetime_value:
             return None
@@ -147,7 +146,7 @@ class Operations:
 
             if day_of_week_offset := offset.get("day_of_week"):
                 if 0 > days_offset > -7:
-                    raise ValueError(invalid_negative_days_offset)
+                    raise ValueError(Operations.INVALID_NEGATIVE_DAYS_OFFSET)
 
                 days_difference = (
                     value_as_date.weekday() - DAYS_OF_WEEK[day_of_week_offset]
