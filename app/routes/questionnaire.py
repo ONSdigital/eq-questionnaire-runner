@@ -70,6 +70,7 @@ post_submission_blueprint = Blueprint(
 
 REPEATED_SUBMISSION_ERROR = "The Questionnaire has been previously submitted"
 
+
 @questionnaire_blueprint.before_request
 @login_required
 def before_questionnaire_request() -> Response | None:

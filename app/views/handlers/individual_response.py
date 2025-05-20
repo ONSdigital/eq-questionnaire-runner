@@ -44,6 +44,7 @@ class IndividualResponsePostalDeadlinePast(Exception):
 
 class IndividualResponseHandler:
     RESPONSE_LIMIT_MESSAGE = "Individual response limit has been reached"
+
     @staticmethod
     def _person_name_transforms(list_name: str) -> list[Mapping]:
         return [

@@ -350,9 +350,7 @@ def setup_redis(application):
 def setup_submitter(application):
     if application.config["EQ_SUBMISSION_BACKEND"] == "gcs":
         if not (bucket_name := application.config.get("EQ_GCS_SUBMISSION_BUCKET_ID")):
-            raise MissingEnvironmentVariable(
-                MISSING_BUCKET_ID_MESSAGE
-            )
+            raise MissingEnvironmentVariable(MISSING_BUCKET_ID_MESSAGE)
         application.eq["submitter"] = GCSSubmitter(bucket_name=bucket_name)
 
     elif application.config["EQ_SUBMISSION_BACKEND"] == "rabbitmq":
@@ -360,13 +358,9 @@ def setup_submitter(application):
         secondary_host = application.config.get("EQ_RABBITMQ_HOST_SECONDARY")
 
         if not host:
-            raise MissingEnvironmentVariable(
-                MISSING_HOST_MESSAGE
-            )
+            raise MissingEnvironmentVariable(MISSING_HOST_MESSAGE)
         if not secondary_host:
-            raise MissingEnvironmentVariable(
-                MISSING_SECONDARY_HOST_MESSAGE
-            )
+            raise MissingEnvironmentVariable(MISSING_SECONDARY_HOST_MESSAGE)
 
         application.eq["submitter"] = RabbitMQSubmitter(
             host=host,

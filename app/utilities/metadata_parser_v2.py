@@ -70,7 +70,9 @@ class SurveyMetadata(Schema, StripWhitespaceMixin):
 class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     """Metadata which is required for the operation of runner itself"""
 
-    MISSING_METADATA_OPTION = "Neither schema_name, schema_url or cir_instrument_id has been set in metadata"
+    MISSING_METADATA_OPTION = (
+        "Neither schema_name, schema_url or cir_instrument_id has been set in metadata"
+    )
 
     jti = VALIDATORS["uuid"]()
     tx_id = VALIDATORS["uuid"]()

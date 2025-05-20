@@ -54,7 +54,9 @@ class Operations:
     """
     A class to group the operations
     """
+
     INVALID_NEGATIVE_DAYS_OFFSET = "Negative days offset must be less than or equal to -7 when used with `day_of_week` offset"
+
     def __init__(
         self,
         language: str,

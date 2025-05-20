@@ -26,7 +26,9 @@ ResolvedAnswerList: TypeAlias = list[AnswerValueTypes | AnswerValueEscapedTypes 
 
 @dataclass
 class ValueSourceResolver:
-    INVALID_SELECTOR_LOCATION = "list_item_selector source location used without location"
+    INVALID_SELECTOR_LOCATION = (
+        "list_item_selector source location used without location"
+    )
     LOCATION_REQUIRED_ERROR = "location is required to resolve block progress"
 
     data_stores: DataStores

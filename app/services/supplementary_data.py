@@ -30,11 +30,10 @@ SUPPLEMENTARY_DATA_REQUEST_RETRY_STATUS_CODES = [
 logger = get_logger()
 
 
-
-
 class SupplementaryDataRequestFailed(Exception):
     SUPPLEMENTARY_DATA_EMPTY_ERROR = "Supplementary data has no data to decrypt"
     INVALID_SUPPLEMENTARY_DATA = "Invalid supplementary data"
+
     def __str__(self) -> str:
         return "Supplementary Data request failed"
 
@@ -144,4 +143,6 @@ def validate_supplementary_data(
             sds_schema_version=sds_schema_version,
         )
     except ValidationError as e:
-        raise ValidationError(SupplementaryDataRequestFailed.INVALID_SUPPLEMENTARY_DATA) from e
+        raise ValidationError(
+            SupplementaryDataRequestFailed.INVALID_SUPPLEMENTARY_DATA
+        ) from e

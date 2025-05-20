@@ -36,7 +36,6 @@ class ItemsData(Schema, StripWhitespaceMixin):
 class SupplementaryData(Schema, StripWhitespaceMixin):
     SDS_IDENTIFIER_ERROR = "Supplementary data did not return the specified Identifier"
 
-
     identifier = VALIDATORS["string"](validate=validate.Length(min=1))
     items = fields.Nested(ItemsData, required=False, unknown=INCLUDE)
 
