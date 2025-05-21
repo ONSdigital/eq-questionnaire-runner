@@ -1,0 +1,592 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "123",
+    "title": "Test Supplementary Data",
+    "theme": "default",
+    "description": "A questionnaire to demo using Supplementary data for placeholders, validation and routing in both repeating and non-repeating sections.",
+    "metadata": [
+        {
+            "name": "survey_id",
+            "type": "string"
+        },
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        },
+        {
+            "name": "sds_dataset_id",
+            "type": "string"
+        }
+    ],
+    "supplementary_data": {
+        "lists": ["employees", "products"]
+    },
+    "questionnaire_flow": {
+        "type": "Hub",
+        "options": {
+            "required_completed_sections": ["introduction-section"]
+        }
+    },
+    "post_submission": {
+        "view_response": true
+    },
+    "sections": [
+        {
+            "id": "section-6",
+            "title": "Product details",
+            "summary": {
+                "show_on_completion": true,
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "products",
+                        "title": "Products",
+                        "empty_list_text": "There are no products"
+                    }
+                ],
+                "show_non_item_answers": true
+            },
+            "groups": [
+                {
+                    "id": "product-reporting",
+                    "blocks": [
+                        {
+                            "id": "list-collector-products",
+                            "type": "ListCollectorContent",
+                            "for_list": "products",
+                            "page_title": "Products",
+                            "content": {
+                                "title": "Products",
+                                "contents": [
+                                    {
+                                        "description": "You have previously provided information for the above products. Please press continue to proceed to questions on value and volume of sales."
+                                    }
+                                ]
+                            },
+                            "repeating_blocks": [
+                                {
+                                    "id": "product-repeating-block-1",
+                                    "type": "ListRepeatingQuestion",
+                                    "question": {
+                                        "id": "product-repeating-block-1-question",
+                                        "type": "General",
+                                        "guidance": {
+                                            "contents": [
+                                                {
+                                                    "title": {
+                                                        "text": "{guidance_include}",
+                                                        "placeholders": [
+                                                            {
+                                                                "placeholder": "guidance_include",
+                                                                "transforms": [
+                                                                    {
+                                                                        "transform": "first_non_empty_item",
+                                                                        "arguments": {
+                                                                            "items": [
+                                                                                {
+                                                                                    "source": "supplementary_data",
+                                                                                    "identifier": "products",
+                                                                                    "selectors": ["guidance_include", "title"]
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    "description": {
+                                                        "text": "{guidance_include_list}",
+                                                        "placeholders": [
+                                                            {
+                                                                "placeholder": "guidance_include_list",
+                                                                "transforms": [
+                                                                    {
+                                                                        "transform": "format_list",
+                                                                        "arguments": {
+                                                                            "list_to_format": {
+                                                                                "source": "supplementary_data",
+                                                                                "identifier": "products",
+                                                                                "selectors": ["guidance_include", "list"]
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "title": {
+                                                        "text": "{guidance_exclude}",
+                                                        "placeholders": [
+                                                            {
+                                                                "placeholder": "guidance_exclude",
+                                                                "transforms": [
+                                                                    {
+                                                                        "transform": "first_non_empty_item",
+                                                                        "arguments": {
+                                                                            "items": [
+                                                                                {
+                                                                                    "source": "supplementary_data",
+                                                                                    "identifier": "products",
+                                                                                    "selectors": ["guidance_exclude", "title"]
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    "description": {
+                                                        "text": "{guidance_exclude_list}",
+                                                        "placeholders": [
+                                                            {
+                                                                "placeholder": "guidance_exclude_list",
+                                                                "transforms": [
+                                                                    {
+                                                                        "transform": "format_list",
+                                                                        "arguments": {
+                                                                            "list_to_format": {
+                                                                                "source": "supplementary_data",
+                                                                                "identifier": "products",
+                                                                                "selectors": ["guidance_exclude", "list"]
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "title": {
+                                            "text": "Volume of production and sales for {product_name}",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "product_name",
+                                                    "value": {
+                                                        "source": "supplementary_data",
+                                                        "identifier": "products",
+                                                        "selectors": ["name"]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "answers": [
+                                            {
+                                                "id": "product-volume-sales",
+                                                "label": {
+                                                    "text": "{volume_sales} for {product_name}",
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "volume_sales",
+                                                            "value": {
+                                                                "source": "supplementary_data",
+                                                                "identifier": "products",
+                                                                "selectors": ["volume_sales", "label"]
+                                                            }
+                                                        },
+                                                        {
+                                                            "placeholder": "product_name",
+                                                            "value": {
+                                                                "source": "supplementary_data",
+                                                                "identifier": "products",
+                                                                "selectors": ["name"]
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "mandatory": false,
+                                                "type": "Unit",
+                                                "unit": "mass-kilogram",
+                                                "unit_length": "short"
+                                            },
+                                            {
+                                                "id": "product-volume-total",
+                                                "label": {
+                                                    "text": "{total_volume} for {product_name}",
+                                                    "placeholders": [
+                                                        {
+                                                            "placeholder": "total_volume",
+                                                            "value": {
+                                                                "source": "supplementary_data",
+                                                                "identifier": "products",
+                                                                "selectors": ["total_volume", "label"]
+                                                            }
+                                                        },
+                                                        {
+                                                            "placeholder": "product_name",
+                                                            "value": {
+                                                                "source": "supplementary_data",
+                                                                "identifier": "products",
+                                                                "selectors": ["name"]
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "mandatory": false,
+                                                "type": "Unit",
+                                                "unit": "mass-kilogram",
+                                                "unit_length": "short"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ],
+                            "summary": {
+                                "title": "products",
+                                "item_title": {
+                                    "text": "{product_name}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "product_name",
+                                            "value": {
+                                                "source": "supplementary_data",
+                                                "identifier": "products",
+                                                "selectors": ["name"]
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "calculated-summary-volume-sales",
+                            "title": "We calculate the total volume of sales over the previous quarter to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "title": "Total sales volume",
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "product-volume-sales"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "calculated-summary-volume-total",
+                            "title": "We calculate the total volume produced over the previous quarter to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "title": "Total volume produced",
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "product-volume-total"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "Question",
+                            "id": "dynamic-products",
+                            "skip_conditions": {
+                                "when": {
+                                    "==": [
+                                        {
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "products"
+                                                }
+                                            ]
+                                        },
+                                        0
+                                    ]
+                                }
+                            },
+                            "question": {
+                                "dynamic_answers": {
+                                    "values": {
+                                        "source": "list",
+                                        "identifier": "products"
+                                    },
+                                    "answers": [
+                                        {
+                                            "label": {
+                                                "text": "{value_sales} for {product_name}",
+                                                "placeholders": [
+                                                    {
+                                                        "placeholder": "value_sales",
+                                                        "value": {
+                                                            "source": "supplementary_data",
+                                                            "identifier": "products",
+                                                            "selectors": ["value_sales", "label"]
+                                                        }
+                                                    },
+                                                    {
+                                                        "placeholder": "product_name",
+                                                        "value": {
+                                                            "source": "supplementary_data",
+                                                            "identifier": "products",
+                                                            "selectors": ["name"]
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "id": "product-sales-answer",
+                                            "type": "Currency",
+                                            "mandatory": true,
+                                            "currency": "GBP",
+                                            "decimal_places": 2
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "extra-static-answer",
+                                        "label": "Value of sales from other categories",
+                                        "type": "Currency",
+                                        "mandatory": false,
+                                        "currency": "GBP",
+                                        "decimal_places": 2
+                                    }
+                                ],
+                                "id": "dynamic-answer-question",
+                                "title": "Sales during the previous quarter",
+                                "type": "General"
+                            }
+                        },
+                        {
+                            "type": "CalculatedSummary",
+                            "id": "calculated-summary-value-sales",
+                            "title": "We calculate the total value of sales over the previous quarter to be %(total)s. Is this correct?",
+                            "calculation": {
+                                "title": "Total sales value",
+                                "operation": {
+                                    "+": [
+                                        {
+                                            "source": "answers",
+                                            "identifier": "product-sales-answer"
+                                        },
+                                        {
+                                            "source": "answers",
+                                            "identifier": "extra-static-answer"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-7",
+            "title": "Sales targets",
+            "groups": [
+                {
+                    "id": "value-sales-group",
+                    "blocks": [
+                        {
+                            "id": "product-sales-interstitial",
+                            "type": "Interstitial",
+                            "content": {
+                                "title": "Product value sales",
+                                "contents": [
+                                    {
+                                        "guidance": {
+                                            "contents": [
+                                                {
+                                                    "description": "The next block only shows when there are 2 products in the supplementary dataset."
+                                                },
+                                                {
+                                                    "description": "This is to test that section progress updates when swapping between supplementary datasets which remove or add list items"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "product-question-2-enabled",
+                            "type": "Question",
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "products"
+                                                }
+                                            ]
+                                        },
+                                        2
+                                    ]
+                                }
+                            },
+                            "question": {
+                                "id": "product-2-question",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "This block is enabled because there are 2 products in the supplementary dataset"
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "title": {
+                                    "text": "Did the total value sales of {value_sales} over the last quarter meet the target?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "value_sales",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_currency",
+                                                    "arguments": {
+                                                        "number": {
+                                                            "source": "calculated_summary",
+                                                            "identifier": "calculated-summary-value-sales"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "value-yes-no-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-8",
+            "title": "Production targets",
+            "groups": [
+                {
+                    "id": "volume-produced-group",
+                    "blocks": [
+                        {
+                            "id": "product-volume-interstitial",
+                            "type": "Interstitial",
+                            "content": {
+                                "title": "Product volume produced",
+                                "contents": [
+                                    {
+                                        "guidance": {
+                                            "contents": [
+                                                {
+                                                    "description": "The next block only shows when there are 3 products in the supplementary dataset."
+                                                },
+                                                {
+                                                    "description": "This is to test that section progress updates when swapping between supplementary datasets which remove or add list items"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "product-question-3-enabled",
+                            "type": "Question",
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "products"
+                                                }
+                                            ]
+                                        },
+                                        3
+                                    ]
+                                }
+                            },
+                            "question": {
+                                "id": "product-3-question",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "This block is enabled because there are 3 products in the supplementary dataset"
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "title": {
+                                    "text": "Did the total volume produced of {volume_produced} over the last quarter meet the target?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "volume_produced",
+                                            "transforms": [
+                                                {
+                                                    "transform": "format_unit",
+                                                    "arguments": {
+                                                        "value": {
+                                                            "source": "calculated_summary",
+                                                            "identifier": "calculated-summary-volume-total"
+                                                        },
+                                                        "unit": "mass-kilogram",
+                                                        "unit_length": "short"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "volume-yes-no-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
