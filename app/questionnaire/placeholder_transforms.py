@@ -300,7 +300,6 @@ class PlaceholderTransforms:
         return f"{number_to_format}{indicator}"
 
     def get_ordinal_indicator(self, number_to_format: int) -> str:
-        invalid_language_code = f"Language code '{self.language}' not implemented."
         if self.language in ["en", "eo"]:
             if 11 <= number_to_format % 100 <= 13:
                 return "th"
@@ -327,7 +326,8 @@ class PlaceholderTransforms:
                 19: "eg",
             }.get(number_to_format, "fed")
 
-        raise NotImplementedError(invalid_language_code)
+        language_code_error_message = f"Language code '{self.language}' not implemented."
+        raise NotImplementedError(language_code_error_message)
 
     def first_non_empty_item(self, items: Sequence[str]) -> str:
         """

@@ -41,8 +41,8 @@ logger = get_logger()
 
 session_blueprint = Blueprint("session", __name__)
 
-INVALID_RUNNER_CLAIMS_ERROR = "Invalid runner claims"
-INVALID_QUESTIONNAIRE_CLAIMS_ERROR = "Invalid questionnaire claims"
+RUNNER_CLAIMS_ERROR_MESSAGE = "Invalid runner claims"
+QUESTIONNAIRE_CLAIMS_ERROR_MESSAGE = "Invalid questionnaire claims"
 
 
 @session_blueprint.after_request
@@ -226,8 +226,10 @@ def _validate_supplementary_data_lists(
     """
     supplementary_lists = supplementary_data.get("items", {}).keys()
     if missing := schema.supplementary_lists - supplementary_lists:
-        missing_schema_lists = f"Supplementary data does not include the following lists required for the schema: {', '.join(missing)}"
-        raise ValidationError(missing_schema_lists)
+        missing_schema_lists_error_message = (
+            f"Supplementary data does not include the following lists required for the schema: {', '.join(missing)}"
+        )
+        raise ValidationError(missing_schema_lists_error_message)
 
 
 def validate_jti(decrypted_token: dict[str, str | list | int]) -> None:
@@ -307,7 +309,7 @@ def get_runner_claims(decrypted_token: Mapping[str, Any]) -> dict:
         return validate_runner_claims_v2(decrypted_token)
 
     except ValidationError as e:
-        raise InvalidTokenException(INVALID_RUNNER_CLAIMS_ERROR) from e
+        raise InvalidTokenException(RUNNER_CLAIMS_ERROR_MESSAGE) from e
 
 
 def get_questionnaire_claims(
@@ -319,4 +321,4 @@ def get_questionnaire_claims(
         return validate_questionnaire_claims(claims, schema_metadata, unknown=INCLUDE)
 
     except ValidationError as e:
-        raise InvalidTokenException(INVALID_QUESTIONNAIRE_CLAIMS_ERROR) from e
+        raise InvalidTokenException(QUESTIONNAIRE_CLAIMS_ERROR_MESSAGE) from e

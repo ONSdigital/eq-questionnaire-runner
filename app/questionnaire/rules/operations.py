@@ -55,7 +55,7 @@ class Operations:
     A class to group the operations
     """
 
-    INVALID_NEGATIVE_DAYS_OFFSET = "Negative days offset must be less than or equal to -7 when used with `day_of_week` offset"
+    NEGATIVE_DAYS_OFFSET_ERROR_MESSAGE  = "Negative days offset must be less than or equal to -7 when used with `day_of_week` offset"
 
     def __init__(
         self,
@@ -148,7 +148,7 @@ class Operations:
 
             if day_of_week_offset := offset.get("day_of_week"):
                 if 0 > days_offset > -7:
-                    raise ValueError(Operations.INVALID_NEGATIVE_DAYS_OFFSET)
+                    raise ValueError(Operations.NEGATIVE_DAYS_OFFSET_ERROR_MESSAGE )
 
                 days_difference = (
                     value_as_date.weekday() - DAYS_OF_WEEK[day_of_week_offset]

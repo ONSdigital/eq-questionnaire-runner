@@ -11,14 +11,14 @@ logger = get_logger()
 
 
 class UserIDGenerator:
-    USER_ID_SALT_ERROR = "user_id_salt is required"
-    USER_IK_SALT_ERROR = "user_ik_salt is required"
+    USER_ID_SALT_ERROR_MESSAGE = "user_id_salt is required"
+    USER_IK_SALT_ERROR_MESSAGE = "user_ik_salt is required"
 
     def __init__(self, iterations: int, user_id_salt: str, user_ik_salt: str) -> None:
         if user_id_salt is None:
-            raise ValueError(self.USER_ID_SALT_ERROR)
+            raise ValueError(self.USER_ID_SALT_ERROR_MESSAGE)
         if user_ik_salt is None:
-            raise ValueError(self.USER_IK_SALT_ERROR)
+            raise ValueError(self.USER_IK_SALT_ERROR_MESSAGE)
 
         self._iterations = iterations
         self._user_id_salt = user_id_salt

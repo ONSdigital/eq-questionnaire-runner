@@ -408,7 +408,9 @@ class DateRangeCheck:
 
 
 class SumCheck:
-    INVALID_MULTIPLE_CONDITION = "There are multiple conditions, but equals is not one of them. We only support <= and >="
+    MULTIPLE_CONDITION_ERROR_MESSAGE = (
+        "There are multiple conditions, but equals is not one of them. We only support <= and >="
+    )
 
     def __init__(self, messages: OptionalMessage = None, currency: str | None = None):
         self.messages = {**error_messages, **(messages or {})}
@@ -426,7 +428,7 @@ class SumCheck:
             try:
                 conditions.remove("equals")
             except ValueError as exc:
-                raise ValueError(SumCheck.INVALID_MULTIPLE_CONDITION) from exc
+                raise ValueError(SumCheck.MULTIPLE_CONDITION_ERROR_MESSAGE) from exc
 
             condition = f"{conditions[0]} or equals"
         else:
@@ -468,8 +470,8 @@ class SumCheck:
         if condition == "less than or equals":
             return total <= target_total, "TOTAL_SUM_NOT_LESS_THAN_OR_EQUALS"
 
-        invalid_condition = f"Condition '{condition}' is not implemented"
-        raise NotImplementedError(invalid_condition)
+        unimplemented_condition_error_message = f"Condition '{condition}' is not implemented"
+        raise NotImplementedError(unimplemented_condition_error_message)
 
 
 class MutuallyExclusiveCheck:

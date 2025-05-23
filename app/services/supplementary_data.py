@@ -31,8 +31,8 @@ logger = get_logger()
 
 
 class SupplementaryDataRequestFailed(Exception):
-    SUPPLEMENTARY_DATA_EMPTY_ERROR = "Supplementary data has no data to decrypt"
-    INVALID_SUPPLEMENTARY_DATA = "Invalid supplementary data"
+    SUPPLEMENTARY_DATA_EMPTY_ERROR_MESSAGE = "Supplementary data has no data to decrypt"
+    SUPPLEMENTARY_DATA_ERROR_MESSAGE = "Invalid supplementary data"
 
     def __str__(self) -> str:
         return "Supplementary Data request failed"
@@ -124,7 +124,7 @@ def decrypt_supplementary_data(
             return supplementary_data
         except InvalidTokenException as e:
             raise InvalidSupplementaryData from e
-    raise ValidationError(SupplementaryDataRequestFailed.SUPPLEMENTARY_DATA_EMPTY_ERROR)
+    raise ValidationError(SupplementaryDataRequestFailed.SUPPLEMENTARY_DATA_EMPTY_ERROR_MESSAGE)
 
 
 def validate_supplementary_data(
@@ -144,5 +144,5 @@ def validate_supplementary_data(
         )
     except ValidationError as e:
         raise ValidationError(
-            SupplementaryDataRequestFailed.INVALID_SUPPLEMENTARY_DATA
+            SupplementaryDataRequestFailed.SUPPLEMENTARY_DATA_ERROR_MESSAGE
         ) from e

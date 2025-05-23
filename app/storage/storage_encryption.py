@@ -11,19 +11,19 @@ logger = get_logger()
 
 
 class StorageEncryption:
-    MISSING_USER_ID = "user_id not provided"
-    MISSING_USER_IK = "user_ik not provided"
-    MISSING_PEPPER = "pepper not provided"
+    USER_ID_ERROR_MESSAGE = "user_id not provided"
+    USER_IK_ERROR_MESSAGE = "user_ik not provided"
+    PEPPER_ERROR_MESSAGE = "pepper not provided"
 
     def __init__(
         self, user_id: str | None, user_ik: str | None, pepper: str | None
     ) -> None:
         if not user_id:
-            raise ValueError(self.MISSING_USER_ID)
+            raise ValueError(self.USER_ID_ERROR_MESSAGE)
         if not user_ik:
-            raise ValueError(self.MISSING_USER_IK)
+            raise ValueError(self.USER_IK_ERROR_MESSAGE)
         if not pepper:
-            raise ValueError(self.MISSING_PEPPER)
+            raise ValueError(self.PEPPER_ERROR_MESSAGE)
 
         self.key = self._generate_key(user_id, user_ik, pepper)
 
