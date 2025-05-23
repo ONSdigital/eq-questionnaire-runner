@@ -20,6 +20,8 @@ class PlaceholderRenderer:
     strings
     """
 
+    PLACEHOLDER_ERROR_MESSAGE = "No placeholder found to render"
+
     def __init__(
         self,
         language: str,
@@ -97,7 +99,7 @@ class PlaceholderRenderer:
             placeholder_data["text"] = plural_forms[plural_form_key]
 
         if "text" not in placeholder_data and "placeholders" not in placeholder_data:
-            raise ValueError("No placeholder found to render")
+            raise ValueError(self.PLACEHOLDER_ERROR_MESSAGE)
 
         transformed_values = placeholder_parser(placeholder_data["placeholders"])
         formatted_placeholder_data: str = placeholder_data["text"].format(

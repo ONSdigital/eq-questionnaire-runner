@@ -11,6 +11,8 @@ from app.views.handlers.submission import SubmissionHandler
 
 
 class SubmitQuestionnaireHandler:
+    SUBMIT_PAGE_DISABLED_ERROR_MESSAGE = "Submit page not enabled"
+
     def __init__(
         self,
         schema: QuestionnaireSchema,
@@ -18,7 +20,7 @@ class SubmitQuestionnaireHandler:
         language: str,
     ):
         if not schema.is_flow_linear:
-            raise InvalidLocationException("Submit page not enabled")
+            raise InvalidLocationException(self.SUBMIT_PAGE_DISABLED_ERROR_MESSAGE)
 
         self._schema = schema
         self._questionnaire_store = questionnaire_store

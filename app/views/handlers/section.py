@@ -26,7 +26,8 @@ class SectionHandler:
             data_stores=self._questionnaire_store.data_stores,
         )
         if not self._is_valid_location():
-            raise InvalidLocationException(f"location {self._section_id} is not valid")
+            location_error_message = f"location {self._section_id} is not valid"
+            raise InvalidLocationException(location_error_message)
 
         self.current_location = Location(
             section_id=self._section_id,

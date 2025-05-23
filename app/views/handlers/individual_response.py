@@ -43,6 +43,8 @@ class IndividualResponsePostalDeadlinePast(Exception):
 
 
 class IndividualResponseHandler:
+    RESPONSE_LIMIT_ERROR_MESSAGE = "Individual response limit has been reached"
+
     @staticmethod
     def _person_name_transforms(list_name: str) -> list[Mapping]:
         return [
@@ -230,9 +232,7 @@ class IndividualResponseHandler:
             )
             >= current_app.config["EQ_INDIVIDUAL_RESPONSE_LIMIT"]
         ):
-            raise IndividualResponseLimitReached(
-                "Individual response limit has been reached"
-            )
+            raise IndividualResponseLimitReached(self.RESPONSE_LIMIT_ERROR_MESSAGE)
 
     def _update_individual_response_count(self) -> None:
         response_metadata = self._questionnaire_store.data_stores.response_metadata
