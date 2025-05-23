@@ -226,9 +226,7 @@ def _validate_supplementary_data_lists(
     """
     supplementary_lists = supplementary_data.get("items", {}).keys()
     if missing := schema.supplementary_lists - supplementary_lists:
-        missing_schema_lists_error_message = (
-            f"Supplementary data does not include the following lists required for the schema: {', '.join(missing)}"
-        )
+        missing_schema_lists_error_message = f"Supplementary data does not include the following lists required for the schema: {', '.join(missing)}"
         raise ValidationError(missing_schema_lists_error_message)
 
 

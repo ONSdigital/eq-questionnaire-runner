@@ -63,9 +63,7 @@ class SurveyMetadata(Schema, StripWhitespaceMixin):
             ]
 
             if missing_receipting_keys:
-                receipting_keys_error_message = (
-                    f"Receipting keys: {missing_receipting_keys} not set in Survey Metadata"
-                )
+                receipting_keys_error_message = f"Receipting keys: {missing_receipting_keys} not set in Survey Metadata"
                 raise ValidationError(receipting_keys_error_message)
 
 

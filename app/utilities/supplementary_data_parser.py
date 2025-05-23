@@ -34,7 +34,9 @@ class ItemsData(Schema, StripWhitespaceMixin):
 
 
 class SupplementaryData(Schema, StripWhitespaceMixin):
-    SDS_IDENTIFIER_ERROR_MESSAGE = "Supplementary data did not return the specified Identifier"
+    SDS_IDENTIFIER_ERROR_MESSAGE = (
+        "Supplementary data did not return the specified Identifier"
+    )
 
     identifier = VALIDATORS["string"](validate=validate.Length(min=1))
     items = fields.Nested(ItemsData, required=False, unknown=INCLUDE)
@@ -49,8 +51,12 @@ class SupplementaryData(Schema, StripWhitespaceMixin):
 
 class SupplementaryDataMetadataSchema(Schema, StripWhitespaceMixin):
 
-    DATASET_ID_ERROR_MESSAGE = "Supplementary data did not return the specified Dataset ID"
-    SURVEY_ID_ERROR_MESSAGE = "Supplementary data did not return the specified Survey ID"
+    DATASET_ID_ERROR_MESSAGE = (
+        "Supplementary data did not return the specified Dataset ID"
+    )
+    SURVEY_ID_ERROR_MESSAGE = (
+        "Supplementary data did not return the specified Survey ID"
+    )
     SDS_VERSION_ERROR_MESSAGE = "The Supplementary Dataset Schema Version does not match the version set in the Questionnaire Schema"
 
     dataset_id = VALIDATORS["uuid"]()

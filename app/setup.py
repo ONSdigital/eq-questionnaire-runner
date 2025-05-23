@@ -385,9 +385,7 @@ def setup_task_client(application):
     elif application.config["EQ_SUBMISSION_CONFIRMATION_BACKEND"] == "log":
         application.eq["cloud_tasks"] = LogCloudTaskPublisher()
     else:
-        raise NotImplementedError(
-            SUBMIT_CONFIRMATION_ERROR_MESSAGE
-        )
+        raise NotImplementedError(SUBMIT_CONFIRMATION_ERROR_MESSAGE)
 
 
 def setup_oidc(application):
@@ -420,9 +418,7 @@ def setup_publisher(application):
         application.eq["publisher"] = LogPublisher()
 
     else:
-        raise NotImplementedError(
-            PUBLISHER_BACKEND_ERROR_MESSAGE
-        )
+        raise NotImplementedError(PUBLISHER_BACKEND_ERROR_MESSAGE)
 
 
 def setup_feedback(application):
