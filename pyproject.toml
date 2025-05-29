@@ -121,8 +121,6 @@ extend-ignore = [
     "ARG002", # Unused method argument
     "ARG004", # Unused static method argument: `kwargs
     "N818", # Exception name should be named with an Error suffix
-    "EM101", # Exception must not use a string literal, assign to variable first
-    "EM102", # EM102 Exception must not use an f-string literal, assign to variable first
     "UP032", # Use f-string instead of `format` call
     "UP018", # Unnecessary {literal_type} call (rewrite as a literal)
     "UP015", # Unnecessary open mode parameters

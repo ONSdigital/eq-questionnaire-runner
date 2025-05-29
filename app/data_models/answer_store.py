@@ -53,10 +53,11 @@ class AnswerStore:
 
     @staticmethod
     def _validate(answer: Answer) -> None:
+        answer_type_error_message = (
+            f"Method only supports Answer argument type, found type: {type(answer)}"
+        )
         if not isinstance(answer, Answer):
-            raise TypeError(
-                f"Method only supports Answer argument type, found type: {type(answer)}"
-            )
+            raise TypeError(answer_type_error_message)
 
     @property
     def is_dirty(self) -> bool:

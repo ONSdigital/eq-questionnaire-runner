@@ -40,6 +40,8 @@ ErrorList = Sequence[tuple[str, str]]
 
 # pylint: disable=too-many-locals
 class QuestionnaireForm(FlaskForm):
+    PERIOD_RANGE_ERROR_MESSAGE = "Period range must have a start and end date"
+
     def __init__(
         self,
         schema: QuestionnaireSchema,
@@ -337,7 +339,7 @@ class QuestionnaireForm(FlaskForm):
         )
 
         if not min_period_date or not max_period_date:
-            raise ValueError("Period range must have a start and end date")
+            raise ValueError(QuestionnaireForm.PERIOD_RANGE_ERROR_MESSAGE)
 
         # Work out the largest possible range, for date range question
         period_range = max_period_date - min_period_date
