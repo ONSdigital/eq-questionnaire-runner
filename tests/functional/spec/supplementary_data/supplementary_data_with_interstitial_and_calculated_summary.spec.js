@@ -1,25 +1,25 @@
 import { click, assertSummaryTitles } from "../../helpers";
 import { expect } from "@wdio/globals";
 import { getRandomString } from "../../jwt_helper";
-import CalculatedSummarySalesPage from "../../generated_pages/supplementary_data/calculated-summary-sales.page.js";
-import EmailBlockPage from "../../generated_pages/supplementary_data/email-block.page.js";
+import CalculatedSummarySalesPage from "../../generated_pages/supplementary_data_with_interstitial_and_calculated_summary/calculated-summary-sales.page.js";
+import EmailBlockPage from "../../generated_pages/supplementary_data_with_interstitial_and_calculated_summary/email-block.page.js";
 import HubPage from "../../base_pages/hub.page";
-import IntroductionBlockPage from "../../generated_pages/supplementary_data/introduction-block.page.js";
-import LoadedSuccessfullyBlockPage from "../../generated_pages/supplementary_data/loaded-successfully-block.page.js";
-import NewEmailPage from "../../generated_pages/supplementary_data/new-email.page.js";
-import SalesBreakdownBlockPage from "../../generated_pages/supplementary_data/sales-breakdown-block.page.js";
-import Section1InterstitialPage from "../../generated_pages/supplementary_data/section-1-interstitial.page.js";
-import Section1Page from "../../generated_pages/supplementary_data/section-1-summary.page.js";
-import TradingPage from "../../generated_pages/supplementary_data/trading.page.js";
+import IntroductionBlockPage from "../../generated_pages/supplementary_data_with_interstitial_and_calculated_summary/introduction-block.page.js";
+import LoadedSuccessfullyBlockPage from "../../generated_pages/supplementary_data_with_interstitial_and_calculated_summary/loaded-successfully-block.page.js";
+import NewEmailPage from "../../generated_pages/supplementary_data_with_interstitial_and_calculated_summary/new-email.page.js";
+import SalesBreakdownBlockPage from "../../generated_pages/supplementary_data_with_interstitial_and_calculated_summary/sales-breakdown-block.page.js";
+import Section1InterstitialPage from "../../generated_pages/supplementary_data_with_interstitial_and_calculated_summary/section-1-interstitial.page.js";
+import Section1Page from "../../generated_pages/supplementary_data_with_interstitial_and_calculated_summary/section-1-summary.page.js";
+import TradingPage from "../../generated_pages/supplementary_data_with_interstitial_and_calculated_summary/trading.page.js";
 import ThankYouPage from "../../base_pages/thank-you.page";
-import ViewSubmittedResponsePage from "../../generated_pages/supplementary_data/view-submitted-response.page.js";
+import ViewSubmittedResponsePage from "../../generated_pages/supplementary_data_with_interstitial_and_calculated_summary/view-submitted-response.page.js";
 
 describe("Using supplementary data", () => {
   const responseId = getRandomString(16);
   const summaryRowTitles = ".ons-summary__row-title";
 
   before("Starting the survey", async () => {
-    await browser.openQuestionnaire("test_supplementary_data_intro.json", {
+    await browser.openQuestionnaire("test_supplementary_data_with_interstitial_and_calculated_summary.json", {
       version: "v2",
       sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
       responseId,
@@ -113,7 +113,7 @@ describe("Using supplementary data", () => {
     await click(Section1Page.submit());
   });
   it("Given I can view my response after submission, When I submit the survey, Then I see the values I've entered and correct rendering with supplementary data", async () => {
-    await browser.openQuestionnaire("test_supplementary_data_intro.json", {
+    await browser.openQuestionnaire("test_supplementary_data_with_interstitial_and_calculated_summary.json", {
       version: "v2",
       sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
       responseId,
