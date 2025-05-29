@@ -1,4 +1,4 @@
-import { click } from "../../helpers";
+import { click, assertSummaryTitles } from "../../helpers";
 import { expect } from "@wdio/globals";
 import { getRandomString } from "../../jwt_helper";
 import CalculatedSummarySalesPage from "../../generated_pages/supplementary_data/calculated-summary-sales.page.js";
@@ -11,6 +11,8 @@ import SalesBreakdownBlockPage from "../../generated_pages/supplementary_data/sa
 import Section1InterstitialPage from "../../generated_pages/supplementary_data/section-1-interstitial.page.js";
 import Section1Page from "../../generated_pages/supplementary_data/section-1-summary.page.js";
 import TradingPage from "../../generated_pages/supplementary_data/trading.page.js";
+import ThankYouPage from "../../base_pages/thank-you.page";
+import ViewSubmittedResponsePage from "../../generated_pages/supplementary_data/view-submitted-response.page.js";
 
 describe("Using supplementary data", () => {
   const responseId = getRandomString(16);
@@ -109,5 +111,26 @@ describe("Using supplementary data", () => {
     await expect(await $("body").getText()).toContain("Email: new.contact@gmail.com");
     await click(Section1InterstitialPage.submit());
     await click(Section1Page.submit());
+  });
+  it("Given I can view my response after submission, When I submit the survey, Then I see the values I've entered and correct rendering with supplementary data", async () => {
+    await browser.openQuestionnaire("test_supplementary_data_intro.json", {
+      version: "v2",
+      sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
+      responseId,
+    });
+    await click(HubPage.submit());
+    await $(ThankYouPage.savePrintAnswersLink()).click();
+    await assertSummaryTitles(["Company Details"]);
+
+    // Company details
+    await expect(await $(ViewSubmittedResponsePage.emailQuestion()).getText()).toBe("Is contact@lidl.org still the correct contact email for Lidl?");
+    await expect(await $(ViewSubmittedResponsePage.sameEmailAnswer()).getText()).toBe("No");
+    await expect(await $(ViewSubmittedResponsePage.newEmailQuestion()).getText()).toBe("What is the new contact email for Lidl?");
+    await expect(await $(ViewSubmittedResponsePage.newEmailAnswer()).getText()).toBe("new.contact@gmail.com");
+    await expect(await $(ViewSubmittedResponsePage.tradingQuestion()).getText()).toBe("When did Lidl begin trading?");
+    await expect(await $(ViewSubmittedResponsePage.tradingAnswer()).getText()).toBe("Sunday 30 November 1947");
+    await expect(await $$(summaryRowTitles)[0].getText()).toBe("How much of the £555,000.00 total UK sales was from Bristol and London?");
+    await expect(await $(ViewSubmittedResponsePage.salesBristolAnswer()).getText()).toBe("£333,000.00");
+    await expect(await $(ViewSubmittedResponsePage.salesLondonAnswer()).getText()).toBe("£111,000.00");
   });
 });
