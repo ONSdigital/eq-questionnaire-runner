@@ -43,7 +43,7 @@
     },
     "sections": [
         {
-            "id": "section-6",
+            "id": "section-1",
             "title": "Product details",
             "summary": {
                 "show_on_completion": true,
@@ -391,7 +391,7 @@
             ]
         },
         {
-            "id": "section-7",
+            "id": "section-2",
             "title": "Sales targets",
             "groups": [
                 {
@@ -489,7 +489,7 @@
             ]
         },
         {
-            "id": "section-8",
+            "id": "section-3",
             "title": "Production targets",
             "groups": [
                 {

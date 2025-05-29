@@ -1,19 +1,19 @@
 import { assertSummaryItems, assertSummaryTitles, assertSummaryValues, listItemComplete, click, verifyUrlContains } from "../../helpers";
 import { expect } from "@wdio/globals";
 import { getRandomString } from "../../jwt_helper";
-import CalculatedSummaryValueSalesPage from "../../generated_pages/supplementary_data/calculated-summary-value-sales.page.js";
-import CalculatedSummaryVolumeSalesPage from "../../generated_pages/supplementary_data/calculated-summary-volume-sales.page.js";
-import CalculatedSummaryVolumeTotalPage from "../../generated_pages/supplementary_data/calculated-summary-volume-total.page.js";
-import DynamicProductsPage from "../../generated_pages/supplementary_data/dynamic-products.page.js";
+import CalculatedSummaryValueSalesPage from "../../generated_pages/supplementary_data_repeating_block_and_calculated_summary/calculated-summary-value-sales.page.js";
+import CalculatedSummaryVolumeSalesPage from "../../generated_pages/supplementary_data_repeating_block_and_calculated_summary/calculated-summary-volume-sales.page.js";
+import CalculatedSummaryVolumeTotalPage from "../../generated_pages/supplementary_data_repeating_block_and_calculated_summary/calculated-summary-volume-total.page.js";
+import DynamicProductsPage from "../../generated_pages/supplementary_data_repeating_block_and_calculated_summary/dynamic-products.page.js";
 import HubPage from "../../base_pages/hub.page";
-import ListCollectorProductsPage from "../../generated_pages/supplementary_data/list-collector-products.page.js";
-import ProductQuestion3EnabledPage from "../../generated_pages/supplementary_data/product-question-3-enabled.page";
-import ProductRepeatingBlock1Page from "../../generated_pages/supplementary_data/product-repeating-block-1-repeating-block.page.js";
-import ProductSalesInterstitialPage from "../../generated_pages/supplementary_data/product-sales-interstitial.page";
-import ProductVolumeInterstitialPage from "../../generated_pages/supplementary_data/product-volume-interstitial.page";
-import Section6Page from "../../generated_pages/supplementary_data/section-6-summary.page.js";
+import ListCollectorProductsPage from "../../generated_pages/supplementary_data_repeating_block_and_calculated_summary/list-collector-products.page.js";
+import ProductQuestion3EnabledPage from "../../generated_pages/supplementary_data_repeating_block_and_calculated_summary/product-question-3-enabled.page.js";
+import ProductRepeatingBlock1Page from "../../generated_pages/supplementary_data_repeating_block_and_calculated_summary/product-repeating-block-1-repeating-block.page.js";
+import ProductSalesInterstitialPage from "../../generated_pages/supplementary_data_repeating_block_and_calculated_summary/product-sales-interstitial.page.js";
+import ProductVolumeInterstitialPage from "../../generated_pages/supplementary_data_repeating_block_and_calculated_summary/product-volume-interstitial.page.js";
+import Section1Page from "../../generated_pages/supplementary_data_repeating_block_and_calculated_summary/section-1-summary.page.js";
 import ThankYouPage from "../../base_pages/thank-you.page";
-import ViewSubmittedResponsePage from "../../generated_pages/supplementary_data/view-submitted-response.page.js";
+import ViewSubmittedResponsePage from "../../generated_pages/supplementary_data_repeating_block_and_calculated_summary/view-submitted-response.page.js";
 
 describe("Using supplementary data", () => {
   const responseId = getRandomString(16);
@@ -22,7 +22,7 @@ describe("Using supplementary data", () => {
   const summaryRowTitles = ".ons-summary__row-title";
 
   before("Starting the survey", async () => {
-    await browser.openQuestionnaire("test_supplementary_data_with_skip_conditions_and_calculated_summary.json", {
+    await browser.openQuestionnaire("test_supplementary_data_repeating_block_and_calculated_summary.json", {
       version: "v2",
       sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
       responseId,
@@ -135,36 +135,36 @@ describe("Using supplementary data", () => {
       "Value of sales from other categories",
     ]);
     await assertSummaryValues(["100 kg", "200 kg", "50 kg", "300 kg", "£110.00", "£220.00", "£330.00"]);
-    await click(Section6Page.submit());
-    await expect(await $(HubPage.summaryRowState("section-6")).getText()).toBe("Completed");
+    await click(Section1Page.submit());
+    await expect(await $(HubPage.summaryRowState("section-1")).getText()).toBe("Completed");
   });
 
   it("Given I am using a supplementary dataset where the size of one of the lists skips a question in a section, When I enter the section, Then I only see an interstitial block as the other block is skipped", async () => {
-    await $(HubPage.summaryRowLink("section-8")).click();
+    await $(HubPage.summaryRowLink("section-3")).click();
     await verifyUrlContains(ProductVolumeInterstitialPage.pageName);
     await click(ProductVolumeInterstitialPage.submit());
-    await expect(await $(HubPage.summaryRowState("section-8")).getText()).toBe("Completed");
+    await expect(await $(HubPage.summaryRowState("section-3")).getText()).toBe("Completed");
   });
 
   it("Given the survey has been relaunched with new data and more items in the products list, When I am on the Hub, Then I see the products section and section with a new block due to the product list size are both in progress", async () => {
-    await browser.openQuestionnaire("test_supplementary_data_with_skip_conditions_and_calculated_summary.json", {
+    await browser.openQuestionnaire("test_supplementary_data_repeating_block_and_calculated_summary.json", {
       version: "v2",
       sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
       responseId,
     });
-    await expect(await $(HubPage.summaryRowState("section-6")).getText()).toBe("Partially completed");
-    await expect(await $(HubPage.summaryRowState("section-8")).getText()).toBe("Partially completed");
+    await expect(await $(HubPage.summaryRowState("section-1")).getText()).toBe("Partially completed");
+    await expect(await $(HubPage.summaryRowState("section-3")).getText()).toBe("Partially completed");
   });
 
   it("Given I am using a supplementary dataset with a product list size that skips a question in the sales target section, When I enter the section, Then I only see an interstitial block", async () => {
-    await $(HubPage.summaryRowLink("section-7")).click();
+    await $(HubPage.summaryRowLink("section-2")).click();
     await verifyUrlContains(ProductSalesInterstitialPage.pageName);
     await click(ProductSalesInterstitialPage.submit());
-    await expect(await $(HubPage.summaryRowState("section-7")).getText()).toBe("Completed");
+    await expect(await $(HubPage.summaryRowState("section-2")).getText()).toBe("Completed");
   });
 
   it("Given there is now an additional product, When I resume the Product Details Section, Then I start from the list collector content block and see the new product is incomplete", async () => {
-    await $(HubPage.summaryRowLink("section-6")).click();
+    await $(HubPage.summaryRowLink("section-1")).click();
     await verifyUrlContains(ListCollectorProductsPage.pageName);
     await listItemComplete(`li[data-qa="list-item-1-label"]`, true);
     await listItemComplete(`li[data-qa="list-item-2-label"]`, true);
@@ -183,19 +183,19 @@ describe("Using supplementary data", () => {
     await $$(DynamicProductsPage.inputs())[2].setValue(115);
     await click(DynamicProductsPage.submit());
     await click(CalculatedSummaryValueSalesPage.submit());
-    await click(Section6Page.submit());
-    await expect(await $(HubPage.summaryRowState("section-6")).getText()).toBe("Completed");
-    await browser.openQuestionnaire("test_supplementary_data_with_skip_conditions_and_calculated_summary.json", {
+    await click(Section1Page.submit());
+    await expect(await $(HubPage.summaryRowState("section-1")).getText()).toBe("Completed");
+    await browser.openQuestionnaire("test_supplementary_data_repeating_block_and_calculated_summary.json", {
       version: "v2",
       sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
       responseId,
     });
-    await expect(await $(HubPage.summaryRowState("section-6")).getText()).toBe("Partially completed");
-    await expect(await $(HubPage.summaryRowState("section-7")).getText()).toBe("Partially completed");
+    await expect(await $(HubPage.summaryRowState("section-1")).getText()).toBe("Partially completed");
+    await expect(await $(HubPage.summaryRowState("section-2")).getText()).toBe("Partially completed");
   });
 
   it("Given I can view my response after submission, When I submit the survey, Then I see the values I've entered and correct rendering with supplementary data", async () => {
-    await browser.openQuestionnaire("test_supplementary_data_with_skip_conditions_and_calculated_summary.json", {
+    await browser.openQuestionnaire("test_supplementary_data_repeating_block_and_calculated_summary.json", {
       version: "v2",
       sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
       responseId,
@@ -211,7 +211,7 @@ describe("Using supplementary data", () => {
     await $$(DynamicProductsPage.inputs())[2].setValue(115);
     await click(DynamicProductsPage.submit());
     await click(CalculatedSummaryValueSalesPage.submit());
-    await click(Section6Page.submit());
+    await click(Section1Page.submit());
     await click(HubPage.submit());
     await $(ProductQuestion3EnabledPage.yes()).click();
     await click(ProductQuestion3EnabledPage.submit());
