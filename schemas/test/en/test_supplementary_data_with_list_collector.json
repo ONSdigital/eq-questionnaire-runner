@@ -43,7 +43,7 @@
     },
     "sections": [
         {
-            "id": "section-2",
+            "id": "section-1",
             "title": "Employees",
             "groups": [
                 {
@@ -109,7 +109,7 @@
             ]
         },
         {
-            "id": "section-3",
+            "id": "section-2",
             "title": "Additional Employees",
             "summary": {
                 "show_on_completion": true,
@@ -337,7 +337,7 @@
                                 {
                                     "source": "progress",
                                     "selector": "section",
-                                    "identifier": "section-2"
+                                    "identifier": "section-1"
                                 },
                                 "COMPLETED"
                             ]
@@ -347,7 +347,7 @@
                                 {
                                     "source": "progress",
                                     "selector": "section",
-                                    "identifier": "section-3"
+                                    "identifier": "section-2"
                                 },
                                 "COMPLETED"
                             ]
@@ -355,7 +355,7 @@
                     ]
                 }
             },
-            "id": "section-4",
+            "id": "section-3",
             "title": "Employee Details",
             "summary": {
                 "show_on_completion": true
@@ -561,7 +561,7 @@
                                 {
                                     "source": "progress",
                                     "selector": "section",
-                                    "identifier": "section-2"
+                                    "identifier": "section-1"
                                 },
                                 "COMPLETED"
                             ]
@@ -571,7 +571,7 @@
                                 {
                                     "source": "progress",
                                     "selector": "section",
-                                    "identifier": "section-3"
+                                    "identifier": "section-2"
                                 },
                                 "COMPLETED"
                             ]
@@ -579,7 +579,7 @@
                     ]
                 }
             },
-            "id": "section-5",
+            "id": "section-4",
             "title": "Additional Employee Details",
             "summary": {
                 "show_on_completion": true

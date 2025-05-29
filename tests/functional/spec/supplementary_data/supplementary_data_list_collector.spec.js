@@ -1,21 +1,21 @@
 import { click, assertSummaryTitles } from "../../helpers";
 import { expect } from "@wdio/globals";
 import { getRandomString } from "../../jwt_helper";
-import AddAdditionalEmployeePage from "../../generated_pages/supplementary_data/list-collector-additional-add.page.js";
-import AdditionalLengthOfEmploymentPage from "../../generated_pages/supplementary_data/additional-length-of-employment.page.js";
-import AnyAdditionalEmployeesPage from "../../generated_pages/supplementary_data/any-additional-employees.page.js";
+import AddAdditionalEmployeePage from "../../generated_pages/supplementary_data_with_list_collector/list-collector-additional-add.page.js";
+import AdditionalLengthOfEmploymentPage from "../../generated_pages/supplementary_data_with_list_collector/additional-length-of-employment.page.js";
+import AnyAdditionalEmployeesPage from "../../generated_pages/supplementary_data_with_list_collector/any-additional-employees.page.js";
 import ThankYouPage from "../../base_pages/thank-you.page";
-import ViewSubmittedResponsePage from "../../generated_pages/supplementary_data/view-submitted-response.page.js";
+import ViewSubmittedResponsePage from "../../generated_pages/supplementary_data_with_list_collector/view-submitted-response.page.js";
 
 import HubPage from "../../base_pages/hub.page";
 
-import LengthOfEmploymentPage from "../../generated_pages/supplementary_data/length-of-employment.page.js";
-import ListCollectorAdditionalPage from "../../generated_pages/supplementary_data/list-collector-additional.page.js";
-import ListCollectorEmployeesPage from "../../generated_pages/supplementary_data/list-collector-employees.page.js";
+import LengthOfEmploymentPage from "../../generated_pages/supplementary_data_with_list_collector/length-of-employment.page.js";
+import ListCollectorAdditionalPage from "../../generated_pages/supplementary_data_with_list_collector/list-collector-additional.page.js";
+import ListCollectorEmployeesPage from "../../generated_pages/supplementary_data_with_list_collector/list-collector-employees.page.js";
 
-import Section3Page from "../../generated_pages/supplementary_data/section-3-summary.page.js";
-import Section4Page from "../../generated_pages/supplementary_data/section-4-summary.page.js";
-import Section5Page from "../../generated_pages/supplementary_data/section-5-summary.page.js";
+import Section2Page from "../../generated_pages/supplementary_data_with_list_collector/section-2-summary.page.js";
+import Section3Page from "../../generated_pages/supplementary_data_with_list_collector/section-3-summary.page.js";
+import Section4Page from "../../generated_pages/supplementary_data_with_list_collector/section-4-summary.page.js";
 
 describe("Using supplementary data", () => {
   const responseId = getRandomString(16);
@@ -23,7 +23,7 @@ describe("Using supplementary data", () => {
   const summaryValues = ".ons-summary__values";
 
   before("Starting the survey", async () => {
-    await browser.openQuestionnaire("test_supplementary_data_with_repeating_section.json", {
+    await browser.openQuestionnaire("test_supplementary_data_with_list_collector.json", {
       version: "v2",
       sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
       responseId,
@@ -50,11 +50,11 @@ describe("Using supplementary data", () => {
     await click(AddAdditionalEmployeePage.submit());
     await $(ListCollectorAdditionalPage.no()).click();
     await click(ListCollectorAdditionalPage.submit());
-    await click(Section3Page.submit());
-    await expect(await $(HubPage.summaryItems("section-4-1")).getText()).toContain("Harry Potter");
-    await expect(await $(HubPage.summaryItems("section-4-2")).getText()).toContain("Clark Kent");
-    await expect(await $(HubPage.summaryItems("section-5-1")).getText()).toContain("Jane Doe");
-    await expect(await $(HubPage.summaryItems("section-5-2")).getText()).toContain("John Smith");
+    await click(Section2Page.submit());
+    await expect(await $(HubPage.summaryItems("section-3-1")).getText()).toContain("Harry Potter");
+    await expect(await $(HubPage.summaryItems("section-3-2")).getText()).toContain("Clark Kent");
+    await expect(await $(HubPage.summaryItems("section-4-1")).getText()).toContain("Jane Doe");
+    await expect(await $(HubPage.summaryItems("section-4-2")).getText()).toContain("John Smith");
     await click(HubPage.submit());
   });
 
@@ -74,24 +74,24 @@ describe("Using supplementary data", () => {
   it("Given I have validation on the start date in the repeating section, When I enter a date after the incorporation date, Then I see that date on the summary page for the section", async () => {
     await $(LengthOfEmploymentPage.year()).setValue(1990);
     await click(LengthOfEmploymentPage.submit());
-    await expect(await $(Section4Page.lengthEmploymentQuestion()).getText()).toBe("When did Harry Potter start working for Tesco?");
-    await expect(await $(Section4Page.employmentStart()).getText()).toBe("1 January 1990");
+    await expect(await $(Section3Page.lengthEmploymentQuestion()).getText()).toBe("When did Harry Potter start working for Tesco?");
+    await expect(await $(Section3Page.employmentStart()).getText()).toBe("1 January 1990");
   });
 
   it("Given I complete the repeating section for another supplementary item, When I reach the summary page, Then I see the correct supplementary data with my answers", async () => {
-    await click(Section4Page.submit());
+    await click(Section3Page.submit());
     await click(HubPage.submit());
     await expect(await $(LengthOfEmploymentPage.questionTitle()).getText()).toContain("When did Clark Kent start working for Tesco?");
     await $(LengthOfEmploymentPage.day()).setValue(5);
     await $(LengthOfEmploymentPage.month()).setValue(6);
     await $(LengthOfEmploymentPage.year()).setValue(2011);
     await click(LengthOfEmploymentPage.submit());
-    await expect(await $(Section4Page.lengthEmploymentQuestion()).getText()).toBe("When did Clark Kent start working for Tesco?");
-    await expect(await $(Section4Page.employmentStart()).getText()).toBe("5 June 2011");
+    await expect(await $(Section3Page.lengthEmploymentQuestion()).getText()).toBe("When did Clark Kent start working for Tesco?");
+    await expect(await $(Section3Page.employmentStart()).getText()).toBe("5 June 2011");
   });
 
   it("Given I move onto the dynamic list items, When I start a repeating section for a dynamic list item, Then I see static supplementary data correctly piped in and the same validation and summary", async () => {
-    await click(Section4Page.submit());
+    await click(Section3Page.submit());
     await click(HubPage.submit());
     await expect(await $(AdditionalLengthOfEmploymentPage.questionTitle()).getText()).toContain("When did Jane Doe start working for Tesco?");
     await expect(await $(AdditionalLengthOfEmploymentPage.additionalEmploymentStartLegend()).getText()).toBe("Start date at Tesco");
@@ -102,32 +102,32 @@ describe("Using supplementary data", () => {
     await expect(await $(AdditionalLengthOfEmploymentPage.singleErrorLink()).getText()).toBe("Enter a date after 26 November 1947");
     await $(AdditionalLengthOfEmploymentPage.year()).setValue(2000);
     await click(AdditionalLengthOfEmploymentPage.submit());
-    await expect(await $(Section5Page.additionalLengthEmploymentQuestion()).getText()).toBe("When did Jane Doe start working for Tesco?");
-    await expect(await $(Section5Page.additionalEmploymentStart()).getText()).toBe("1 January 2000");
-    await click(Section5Page.submit());
+    await expect(await $(Section4Page.additionalLengthEmploymentQuestion()).getText()).toBe("When did Jane Doe start working for Tesco?");
+    await expect(await $(Section4Page.additionalEmploymentStart()).getText()).toBe("1 January 2000");
+    await click(Section4Page.submit());
     await click(HubPage.submit());
     await $(AdditionalLengthOfEmploymentPage.day()).setValue(3);
     await $(AdditionalLengthOfEmploymentPage.month()).setValue(3);
     await $(AdditionalLengthOfEmploymentPage.year()).setValue(2010);
     await click(AdditionalLengthOfEmploymentPage.submit());
-    await expect(await $(Section5Page.additionalLengthEmploymentQuestion()).getText()).toBe("When did John Smith start working for Tesco?");
-    await expect(await $(Section5Page.additionalEmploymentStart()).getText()).toBe("3 March 2010");
-    await click(Section5Page.submit());
+    await expect(await $(Section4Page.additionalLengthEmploymentQuestion()).getText()).toBe("When did John Smith start working for Tesco?");
+    await expect(await $(Section4Page.additionalEmploymentStart()).getText()).toBe("3 March 2010");
+    await click(Section4Page.submit());
   });
   it("Given I relaunch the survey with new supplementary data and new list items for the repeating section, When I open the Hub page, Then I see the new supplementary list items as new incomplete sections and not any old ones", async () => {
-    await browser.openQuestionnaire("test_supplementary_data_with_repeating_section.json", {
+    await browser.openQuestionnaire("test_supplementary_data_with_list_collector.json", {
       version: "v2",
       sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
       responseId,
     });
-    await expect(await $(HubPage.summaryItems("section-4-1")).getText()).toContain("Harry Potter");
-    await expect(await $(HubPage.summaryItems("section-4-2")).getText()).toContain("Bruce Wayne");
-    await expect(await $(HubPage.summaryItems("section-5-1")).getText()).toContain("Jane Doe");
-    await expect(await $(HubPage.summaryItems("section-5-2")).getText()).toContain("John Smith");
+    await expect(await $(HubPage.summaryItems("section-3-1")).getText()).toContain("Harry Potter");
+    await expect(await $(HubPage.summaryItems("section-3-2")).getText()).toContain("Bruce Wayne");
+    await expect(await $(HubPage.summaryItems("section-4-1")).getText()).toContain("Jane Doe");
+    await expect(await $(HubPage.summaryItems("section-4-2")).getText()).toContain("John Smith");
+    await expect(await $(HubPage.summaryRowState("section-3-1")).getText()).toBe("Completed");
+    await expect(await $(HubPage.summaryRowState("section-3-2")).getText()).toBe("Not started");
     await expect(await $(HubPage.summaryRowState("section-4-1")).getText()).toBe("Completed");
-    await expect(await $(HubPage.summaryRowState("section-4-2")).getText()).toBe("Not started");
-    await expect(await $(HubPage.summaryRowState("section-5-1")).getText()).toBe("Completed");
-    await expect(await $(HubPage.summaryRowState("section-5-2")).getText()).toBe("Completed");
+    await expect(await $(HubPage.summaryRowState("section-4-2")).getText()).toBe("Completed");
     await expect(await $("body").getText()).not.toContain("Clark Kent");
   });
   it("Given I return to the new data resulting in a new incomplete section, When I start the section, Then I see the new supplementary data piped in accordingly", async () => {
@@ -136,9 +136,9 @@ describe("Using supplementary data", () => {
     await $(LengthOfEmploymentPage.month()).setValue(10);
     await $(LengthOfEmploymentPage.year()).setValue(1999);
     await click(LengthOfEmploymentPage.submit());
-    await expect(await $(Section4Page.lengthEmploymentQuestion()).getText()).toBe("When did Bruce Wayne start working for Lidl?");
-    await expect(await $(Section4Page.employmentStart()).getText()).toBe("10 October 1999");
-    await click(Section4Page.submit());
+    await expect(await $(Section3Page.lengthEmploymentQuestion()).getText()).toBe("When did Bruce Wayne start working for Lidl?");
+    await expect(await $(Section3Page.employmentStart()).getText()).toBe("10 October 1999");
+    await click(Section3Page.submit());
   });
   it("Given I can view my response after submission, When I submit the survey, Then I see the values I've entered and correct rendering with supplementary data", async () => {
     await click(HubPage.submit());
