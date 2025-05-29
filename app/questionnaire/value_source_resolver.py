@@ -26,6 +26,11 @@ ResolvedAnswerList: TypeAlias = list[AnswerValueTypes | AnswerValueEscapedTypes 
 
 @dataclass
 class ValueSourceResolver:
+    SELECTOR_LOCATION_ERROR_MESSAGE = (
+        "list_item_selector source location used without location"
+    )
+    LOCATION_REQUIRED_ERROR_MESSAGE = "location is required to resolve block progress"
+
     data_stores: DataStores
     schema: QuestionnaireSchema
     location: LocationType | None
@@ -98,9 +103,7 @@ class ValueSourceResolver:
         if list_item_selector := value_source.get("list_item_selector"):
             if list_item_selector["source"] == "location":
                 if not self.location:
-                    raise InvalidLocationException(
-                        "list_item_selector source location used without location"
-                    )
+                    raise InvalidLocationException(self.SELECTOR_LOCATION_ERROR_MESSAGE)
                 # Type ignore: the identifier is a string, same below
                 return getattr(self.location, list_item_selector["identifier"])  # type: ignore
 
@@ -211,7 +214,7 @@ class ValueSourceResolver:
 
         if selector == "block":
             if not self.location:
-                raise ValueError("location is required to resolve block progress")
+                raise ValueError(self.LOCATION_REQUIRED_ERROR_MESSAGE)
 
             if not self._is_block_on_path(identifier):
                 return None
@@ -314,10 +317,10 @@ class ValueSourceResolver:
     def get_calculation_operator(
         calculation_type: str,
     ) -> Callable[[Iterable[IntOrDecimal]], IntOrDecimal]:
+        calculation_type_error_message = f"Invalid calculation_type: {calculation_type}"
         if calculation_type == "sum":
             return sum
-
-        raise NotImplementedError(f"Invalid calculation_type: {calculation_type}")
+        raise NotImplementedError(calculation_type_error_message)
 
     def resolve(
         self, value_source: Mapping
