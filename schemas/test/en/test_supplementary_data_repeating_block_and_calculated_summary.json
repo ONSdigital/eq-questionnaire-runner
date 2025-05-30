@@ -34,9 +34,7 @@
     },
     "questionnaire_flow": {
         "type": "Hub",
-        "options": {
-            "required_completed_sections": ["introduction-section"]
-        }
+        "options": {}
     },
     "post_submission": {
         "view_response": true
