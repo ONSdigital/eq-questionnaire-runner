@@ -44,8 +44,15 @@ def get_metadata(extra_metadata: dict | None = None):
 
 
 @pytest.fixture
-def supplementary_data_schema():
-    return load_schema_from_name("test_supplementary_data")
+def supplementary_data_interstitial_schema():
+    return load_schema_from_name("test_supplementary_data_with_interstitial_and_calculated_summary")
+
+def supplementary_data_list_collector_schema():
+    return load_schema_from_name("test_supplementary_data_with_list_collector")
+
+def supplementary_data_repeating_block_schema():
+    return load_schema_from_name("test_supplementary_data_repeating_block_and_calculated_summary")
+
 
 
 @pytest.fixture

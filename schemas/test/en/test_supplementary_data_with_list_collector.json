@@ -30,7 +30,7 @@
         }
     ],
     "supplementary_data": {
-        "lists": ["employees", "products"]
+        "lists": ["employees"]
     },
     "questionnaire_flow": {
         "type": "Hub",
