@@ -122,7 +122,7 @@ class IntegrationTestCase(unittest.TestCase):  # pylint: disable=too-many-public
         self._redis.stop()
 
     def launchSupplementaryDataSurvey(
-        self, schema_name="test_supplementary_data", **payload_kwargs
+        self, schema_name, **payload_kwargs
     ):
         """
         Launch a survey as an authenticated user and follow re-directs

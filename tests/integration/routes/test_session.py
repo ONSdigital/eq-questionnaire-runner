@@ -59,9 +59,16 @@ class TestSession(IntegrationTestCase):
         )
 
     def assert_supplementary_data_500_page(self):
-        self.launchSupplementaryDataSurvey()
-        self.assertStatusCode(500)
-        self.assertInBody("Sorry, there is a problem with this service")
+        schema_names = [
+            "test_supplementary_data_with_list_collector",
+            "test_supplementary_data_with_interstitial_and_calculated_summary",
+            "test_supplementary_data_repeating_block_and_calculated_summary",
+        ]
+        for schema in schema_names:
+            with self.subTest(schema=schema):
+                self.launchSupplementaryDataSurvey(schema_name=schema)
+                self.assertStatusCode(500)
+                self.assertInBody("Sorry, there is a problem with this service")
 
     def test_session_expired(self):
         self.get("/session-expired")
@@ -132,11 +139,22 @@ class TestSession(IntegrationTestCase):
         mock_validate,
         mock_get,
     ):
-        self.launchSupplementaryDataSurvey()
-        self.assertStatusOK()
-        mock_get.assert_called_once()
-        mock_set.assert_called_once()
-        mock_validate.assert_called_once()
+        schema_names = [
+            "test_supplementary_data_with_list_collector",
+            "test_supplementary_data_with_interstitial_and_calculated_summary",
+            "test_supplementary_data_repeating_block_and_calculated_summary",
+        ]
+        for schema in schema_names:
+            with self.subTest(schema=schema):
+                mock_set.reset_mock()
+                mock_validate.reset_mock()
+                mock_get.reset_mock()
+
+                self.launchSupplementaryDataSurvey(schema_name=schema)
+                self.assertStatusOK()
+                mock_get.assert_called_once()
+                mock_set.assert_called_once()
+                mock_validate.assert_called_once()
 
         used_identifier = mock_get.call_args.kwargs["identifier"]
         ru_ref = PAYLOAD_V2_SUPPLEMENTARY_DATA["survey_metadata"]["data"]["ru_ref"]
@@ -154,16 +172,32 @@ class TestSession(IntegrationTestCase):
         mock_validate,
         mock_get,
     ):
-        self.launchSupplementaryDataSurvey(response_id="1", sds_dataset_id="first")
-        self.assertStatusOK()
-        mock_set.assert_called_once()
-        mock_get.assert_called_once()
-        mock_validate.assert_called_once()
-        self.launchSupplementaryDataSurvey(response_id="1", sds_dataset_id="second")
-        self.assertStatusOK()
-        self.assertEqual(mock_get.call_count, 2)
-        self.assertEqual(mock_set.call_count, 2)
-        self.assertEqual(mock_validate.call_count, 2)
+        schema_names = [
+            "test_supplementary_data_with_list_collector",
+            "test_supplementary_data_with_interstitial_and_calculated_summary",
+            "test_supplementary_data_repeating_block_and_calculated_summary",
+        ]
+        for schema in schema_names:
+            with self.subTest(schema=schema):
+                mock_set.reset_mock()
+                mock_validate.reset_mock()
+                mock_get.reset_mock()
+
+                self.launchSupplementaryDataSurvey(
+                    schema_name=schema, response_id="1", sds_dataset_id="first"
+                )
+                self.assertStatusOK()
+                mock_set.assert_called_once()
+                mock_get.assert_called_once()
+                mock_validate.assert_called_once()
+
+                self.launchSupplementaryDataSurvey(
+                    schema_name=schema, response_id="1", sds_dataset_id="second"
+                )
+                self.assertStatusOK()
+                self.assertEqual(mock_get.call_count, 2)
+                self.assertEqual(mock_set.call_count, 2)
+                self.assertEqual(mock_validate.call_count, 2)
 
     @patch("app.routes.session.get_supplementary_data_v1")
     @patch("app.routes.session._validate_supplementary_data_lists")
@@ -176,17 +210,33 @@ class TestSession(IntegrationTestCase):
         mock_validate,
         mock_get,
     ):
-        self.launchSupplementaryDataSurvey(response_id="1", sds_dataset_id="same")
-        self.assertStatusOK()
-        mock_set.assert_called_once()
-        mock_get.assert_called_once()
-        mock_validate.assert_called_once()
-        self.launchSupplementaryDataSurvey(response_id="1", sds_dataset_id="same")
-        self.assertStatusOK()
-        mock_get.assert_called_once()
-        mock_set.assert_called_once()
-        # validation should happen twice regardless
-        self.assertEqual(mock_validate.call_count, 2)
+        schema_names = [
+            "test_supplementary_data_with_list_collector",
+            "test_supplementary_data_with_interstitial_and_calculated_summary",
+            "test_supplementary_data_repeating_block_and_calculated_summary",
+        ]
+        for schema in schema_names:
+            with self.subTest(schema=schema):
+                mock_set.reset_mock()
+                mock_validate.reset_mock()
+                mock_get.reset_mock()
+
+                self.launchSupplementaryDataSurvey(
+                    schema_name=schema, response_id="1", sds_dataset_id="same"
+                )
+                self.assertStatusOK()
+                mock_set.assert_called_once()
+                mock_get.assert_called_once()
+                mock_validate.assert_called_once()
+
+                self.launchSupplementaryDataSurvey(
+                    schema_name=schema, response_id="1", sds_dataset_id="same"
+                )
+                self.assertStatusOK()
+                mock_get.assert_called_once()
+                mock_set.assert_called_once()
+                # validation should happen twice regardless
+                self.assertEqual(mock_validate.call_count, 2)
 
     def test_supplementary_data_raises_500_error_when_sds_api_request_fails(self):
         with patch(
