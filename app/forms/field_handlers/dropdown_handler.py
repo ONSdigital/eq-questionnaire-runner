@@ -19,7 +19,7 @@ class DropdownHandler(SelectHandlerBase):
             self._build_dynamic_choices() + self._build_static_choices()
         )
         if not _choices:
-            raise InvalidSchemaConfigurationException("No dynamic or static choices")
+            raise InvalidSchemaConfigurationException()
 
         return [
             Choice("", self._get_placeholder_text()),
