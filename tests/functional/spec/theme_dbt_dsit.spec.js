@@ -9,8 +9,8 @@ describe("Theme DBT-DSIT", () => {
 
     it("When I navigate to the radio page, Then I should see DBT-DSIT theme content", async () => {
       await verifyUrlContains(RadioPage.pageName);
-      await expect(await $("#dbt-logo-alt").getHTML()).toContain("Department for Business and Trade logo");
-      await expect(await $("#dsit-logo-alt").getHTML()).toContain("Department for Science, Innovation and Technology logo");
+      await expect(await $("#dbt-logo-alt").getText()).toContain("Department for Business and Trade logo");
+      await expect(await $("#dsit-logo-alt").getText()).toContain("Department for Science, Innovation and Technology logo");
     });
   });
 });
