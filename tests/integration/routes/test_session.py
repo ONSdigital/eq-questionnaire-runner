@@ -1,5 +1,6 @@
 import time
 from datetime import datetime, timedelta, timezone
+import pytest
 
 import responses
 from freezegun import freeze_time
@@ -57,18 +58,15 @@ class TestSession(IntegrationTestCase):
                 "EQ_SESSION_TIMEOUT_SECONDS": EQ_SESSION_TIMEOUT_SECONDS,
             }
         )
-
-    def assert_supplementary_data_500_page(self):
-        schema_names = [
+    @pytest.mark.parametrize("schema_name", [
             "test_supplementary_data_with_list_collector",
             "test_supplementary_data_with_interstitial_and_calculated_summary",
             "test_supplementary_data_repeating_block_and_calculated_summary",
-        ]
-        for schema in schema_names:
-            with self.subTest(schema=schema):
-                self.launchSupplementaryDataSurvey(schema_name=schema)
-                self.assertStatusCode(500)
-                self.assertInBody("Sorry, there is a problem with this service")
+        ])
+    def assert_supplementary_data_500_page(self, schema_name):
+        self.launchSupplementaryDataSurvey(schema_name=schema_name)
+        self.assertStatusCode(500)
+        self.assertInBody("Sorry, there is a problem with this service")
 
     def test_session_expired(self):
         self.get("/session-expired")
@@ -128,6 +126,12 @@ class TestSession(IntegrationTestCase):
             self.assertIn("expires_at", parsed_json)
             self.assertEqual(parsed_json["expires_at"], expected_expires_at)
 
+
+    @pytest.mark.parametrize("schema_name", [
+            "test_supplementary_data_with_list_collector",
+            "test_supplementary_data_with_interstitial_and_calculated_summary",
+            "test_supplementary_data_repeating_block_and_calculated_summary",
+        ])
     @patch("app.routes.session.get_supplementary_data_v1")
     @patch("app.routes.session._validate_supplementary_data_lists")
     @patch(
@@ -138,29 +142,24 @@ class TestSession(IntegrationTestCase):
         mock_set,
         mock_validate,
         mock_get,
+        schema_name,
     ):
-        schema_names = [
-            "test_supplementary_data_with_list_collector",
-            "test_supplementary_data_with_interstitial_and_calculated_summary",
-            "test_supplementary_data_repeating_block_and_calculated_summary",
-        ]
-        for schema in schema_names:
-            with self.subTest(schema=schema):
-                mock_set.reset_mock()
-                mock_validate.reset_mock()
-                mock_get.reset_mock()
-
-                self.launchSupplementaryDataSurvey(schema_name=schema)
-                self.assertStatusOK()
-                mock_get.assert_called_once()
-                mock_set.assert_called_once()
-                mock_validate.assert_called_once()
+        self.launchSupplementaryDataSurvey(schema_name=schema_name)
+        self.assertStatusOK()
+        mock_get.assert_called_once()
+        mock_set.assert_called_once()
+        mock_validate.assert_called_once()
 
         used_identifier = mock_get.call_args.kwargs["identifier"]
         ru_ref = PAYLOAD_V2_SUPPLEMENTARY_DATA["survey_metadata"]["data"]["ru_ref"]
         assert used_identifier == get_ru_ref_without_check_letter(ru_ref)
         assert used_identifier != ru_ref
 
+    @pytest.mark.parametrize("schema_name", [
+            "test_supplementary_data_with_list_collector",
+            "test_supplementary_data_with_interstitial_and_calculated_summary",
+            "test_supplementary_data_repeating_block_and_calculated_summary",
+        ])
     @patch("app.routes.session.get_supplementary_data_v1")
     @patch("app.routes.session._validate_supplementary_data_lists")
     @patch(
@@ -171,34 +170,24 @@ class TestSession(IntegrationTestCase):
         mock_set,
         mock_validate,
         mock_get,
+        schema_name,
     ):
-        schema_names = [
+        self.launchSupplementaryDataSurvey(schema_name=schema_name, response_id="1", sds_dataset_id="first")
+        self.assertStatusOK()
+        mock_set.assert_called_once()
+        mock_get.assert_called_once()
+        mock_validate.assert_called_once()
+        self.launchSupplementaryDataSurvey(schema_name=schema_name, response_id="1", sds_dataset_id="second")
+        self.assertStatusOK()
+        self.assertEqual(mock_get.call_count, 2)
+        self.assertEqual(mock_set.call_count, 2)
+        self.assertEqual(mock_validate.call_count, 2)
+    
+    @pytest.mark.parametrize("schema_name", [
             "test_supplementary_data_with_list_collector",
             "test_supplementary_data_with_interstitial_and_calculated_summary",
             "test_supplementary_data_repeating_block_and_calculated_summary",
-        ]
-        for schema in schema_names:
-            with self.subTest(schema=schema):
-                mock_set.reset_mock()
-                mock_validate.reset_mock()
-                mock_get.reset_mock()
-
-                self.launchSupplementaryDataSurvey(
-                    schema_name=schema, response_id="1", sds_dataset_id="first"
-                )
-                self.assertStatusOK()
-                mock_set.assert_called_once()
-                mock_get.assert_called_once()
-                mock_validate.assert_called_once()
-
-                self.launchSupplementaryDataSurvey(
-                    schema_name=schema, response_id="1", sds_dataset_id="second"
-                )
-                self.assertStatusOK()
-                self.assertEqual(mock_get.call_count, 2)
-                self.assertEqual(mock_set.call_count, 2)
-                self.assertEqual(mock_validate.call_count, 2)
-
+        ])
     @patch("app.routes.session.get_supplementary_data_v1")
     @patch("app.routes.session._validate_supplementary_data_lists")
     @patch(
@@ -209,34 +198,19 @@ class TestSession(IntegrationTestCase):
         mock_set,
         mock_validate,
         mock_get,
+        schema_name,
     ):
-        schema_names = [
-            "test_supplementary_data_with_list_collector",
-            "test_supplementary_data_with_interstitial_and_calculated_summary",
-            "test_supplementary_data_repeating_block_and_calculated_summary",
-        ]
-        for schema in schema_names:
-            with self.subTest(schema=schema):
-                mock_set.reset_mock()
-                mock_validate.reset_mock()
-                mock_get.reset_mock()
-
-                self.launchSupplementaryDataSurvey(
-                    schema_name=schema, response_id="1", sds_dataset_id="same"
-                )
-                self.assertStatusOK()
-                mock_set.assert_called_once()
-                mock_get.assert_called_once()
-                mock_validate.assert_called_once()
-
-                self.launchSupplementaryDataSurvey(
-                    schema_name=schema, response_id="1", sds_dataset_id="same"
-                )
-                self.assertStatusOK()
-                mock_get.assert_called_once()
-                mock_set.assert_called_once()
-                # validation should happen twice regardless
-                self.assertEqual(mock_validate.call_count, 2)
+        self.launchSupplementaryDataSurvey(schema_name=schema_name, response_id="1", sds_dataset_id="same")
+        self.assertStatusOK()
+        mock_set.assert_called_once()
+        mock_get.assert_called_once()
+        mock_validate.assert_called_once()
+        self.launchSupplementaryDataSurvey(schema_name=schema_name, response_id="1", sds_dataset_id="same")
+        self.assertStatusOK()
+        mock_get.assert_called_once()
+        mock_set.assert_called_once()
+        # validation should happen twice regardless
+        self.assertEqual(mock_validate.call_count, 2)
 
     def test_supplementary_data_raises_500_error_when_sds_api_request_fails(self):
         with patch(
@@ -286,32 +260,43 @@ class TestSession(IntegrationTestCase):
 
         self.assert_supplementary_data_500_page()
 
+    @pytest.mark.parametrize("schema_name, mock_return_value" , [("test_supplementary_data_with_list_collector", {"data": {"items": {}}}),
+                                                                   ("test_supplementary_data_repeating_block_and_calculated_summary", {"data": {"items": {}}}),
+                                                               ("test_supplementary_data_with_interstitial_and_calculated_summary", {"data": {"items": {"products": []}}})])
     @patch("app.routes.session.get_supplementary_data_v1")
     @patch(
         "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdaterBase.set_supplementary_data",
     )
     def test_supplementary_data_raises_500_error_when_missing_required_lists(
-        self, mock_set, mock_get
+        self, mock_set, mock_get, schema_name, mock_return_value
     ):
         """Tests that if the supplementary data being loaded does not cover all the dependent lists for the schema
         that a validation error is raised"""
-        mock_get.return_value = {"data": {"items": {"products": []}}}
-        self.launchSupplementaryDataSurvey(schema_name="test_supplementary_data")
+        mock_get.return_value = mock_return_value
+        self.launchSupplementaryDataSurvey(schema_name=schema_name)
         self.assertStatusCode(500)
         mock_set.assert_not_called()
 
+    @pytest.mark.parametrize("schema_name, mock_return_value" , [("test_supplementary_data_with_list_collector", {"data": {"items": {"employees": []}}}),
+                                                                   ("test_supplementary_data_repeating_block_and_calculated_summary", {"data": {"items": {"products": []}}}),
+                                                                   ("test_supplementary_data_with_interstitial_and_calculated_summary", {"data": {"items": {"employees": [], "products": []}}})])
     @patch("app.routes.session.get_supplementary_data_v1")
     @patch(
         "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdaterBase.set_supplementary_data",
     )
     def test_supplementary_data_is_loaded_when_all_required_lists_present(
-        self, mock_set, mock_get
+        self, mock_set, mock_get, schema_name, mock_return_value
     ):
-        mock_get.return_value = {"data": {"items": {"employees": [], "products": []}}}
-        self.launchSupplementaryDataSurvey(schema_name="test_supplementary_data")
+        mock_get.return_value = mock_return_value
+        self.launchSupplementaryDataSurvey(schema_name=schema_name)
         self.assertStatusOK()
         mock_set.assert_called_once()
-
+    
+    @pytest.mark.parametrize("schema_name", [
+            "test_supplementary_data_with_list_collector",
+            "test_supplementary_data_with_interstitial_and_calculated_summary",
+            "test_supplementary_data_repeating_block_and_calculated_summary",
+        ])
     @patch("app.routes.session.get_supplementary_data_v1")
     @patch(
         "app.routes.session._validate_supplementary_data_lists",
@@ -330,16 +315,17 @@ class TestSession(IntegrationTestCase):
         mock_set,
         mock_validate,
         mock_get,
+        schema_name
     ):
         """
         This checks the edge case in which a survey changes to have different lists, but the supplementary dataset id
         remains the same, so the supplementary data is not fetched again, but is no longer valid for the survey
         """
-        self.launchSupplementaryDataSurvey(response_id="1", sds_dataset_id="same")
+        self.launchSupplementaryDataSurvey(schema_name=schema_name, response_id="1", sds_dataset_id="same")
         self.assertStatusOK()
         mock_set.assert_called_once()
         mock_get.assert_called_once()
         mock_validate.assert_called_once()
-        self.launchSupplementaryDataSurvey(response_id="1", sds_dataset_id="same")
+        self.launchSupplementaryDataSurvey(schema_name=schema_name, response_id="1", sds_dataset_id="same")
         self.assertStatusCode(500)
         self.assertEqual(mock_validate.call_count, 2)
