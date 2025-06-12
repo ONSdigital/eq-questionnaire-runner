@@ -1421,7 +1421,7 @@ def test_payload_supplementary_data():
         ]
     )
 
-    schema = load_schema_from_name("test_supplementary_data_with_list_collector")
+    schema = load_schema_from_name("test_supplementary_data")
 
     data_payload = get_payload_data(
         questionnaire_store.data_stores,
