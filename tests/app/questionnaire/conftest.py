@@ -48,7 +48,6 @@ def supplementary_data_schema():
     return load_schema_from_name("test_supplementary_data")
 
 
-
 @pytest.fixture
 def placeholder_list():
     return [
