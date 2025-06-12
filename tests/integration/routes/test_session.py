@@ -59,16 +59,9 @@ class TestSession(IntegrationTestCase):
         )
 
     def assert_supplementary_data_500_page(self):
-        schema_names = [
-            "test_supplementary_data_with_list_collector",
-            "test_supplementary_data_with_interstitial_and_calculated_summary",
-            "test_supplementary_data_repeating_block_and_calculated_summary",
-        ]
-        for schema in schema_names:
-            with self.subTest(schema=schema):
-                self.launchSupplementaryDataSurvey(schema_name=schema)
-                self.assertStatusCode(500)
-                self.assertInBody("Sorry, there is a problem with this service")
+        self.launchSupplementaryDataSurvey()
+        self.assertStatusCode(500)
+        self.assertInBody("Sorry, there is a problem with this service")
 
     def test_session_expired(self):
         self.get("/session-expired")
@@ -139,9 +132,7 @@ class TestSession(IntegrationTestCase):
         mock_validate,
         mock_get,
     ):
-        self.launchSupplementaryDataSurvey(
-            schema_name="test_supplementary_data_with_list_collector"
-        )
+        self.launchSupplementaryDataSurvey()
         self.assertStatusOK()
         mock_get.assert_called_once()
         mock_set.assert_called_once()
@@ -163,32 +154,16 @@ class TestSession(IntegrationTestCase):
         mock_validate,
         mock_get,
     ):
-        schema_names = [
-            "test_supplementary_data_with_list_collector",
-            "test_supplementary_data_with_interstitial_and_calculated_summary",
-            "test_supplementary_data_repeating_block_and_calculated_summary",
-        ]
-        for schema in schema_names:
-            with self.subTest(schema=schema):
-                mock_set.reset_mock()
-                mock_validate.reset_mock()
-                mock_get.reset_mock()
-
-                self.launchSupplementaryDataSurvey(
-                    schema_name=schema, response_id="1", sds_dataset_id="first"
-                )
-                self.assertStatusOK()
-                mock_set.assert_called_once()
-                mock_get.assert_called_once()
-                mock_validate.assert_called_once()
-
-                self.launchSupplementaryDataSurvey(
-                    schema_name=schema, response_id="1", sds_dataset_id="second"
-                )
-                self.assertStatusOK()
-                self.assertEqual(mock_get.call_count, 2)
-                self.assertEqual(mock_set.call_count, 2)
-                self.assertEqual(mock_validate.call_count, 2)
+        self.launchSupplementaryDataSurvey(response_id="1", sds_dataset_id="first")
+        self.assertStatusOK()
+        mock_set.assert_called_once()
+        mock_get.assert_called_once()
+        mock_validate.assert_called_once()
+        self.launchSupplementaryDataSurvey(response_id="1", sds_dataset_id="second")
+        self.assertStatusOK()
+        self.assertEqual(mock_get.call_count, 2)
+        self.assertEqual(mock_set.call_count, 2)
+        self.assertEqual(mock_validate.call_count, 2)
 
     @patch("app.routes.session.get_supplementary_data_v1")
     @patch("app.routes.session._validate_supplementary_data_lists")
@@ -201,20 +176,12 @@ class TestSession(IntegrationTestCase):
         mock_validate,
         mock_get,
     ):
-        self.launchSupplementaryDataSurvey(
-            schema_name="test_supplementary_data_with_list_collector",
-            response_id="1",
-            sds_dataset_id="same",
-        )
+        self.launchSupplementaryDataSurvey(response_id="1", sds_dataset_id="same")
         self.assertStatusOK()
         mock_set.assert_called_once()
         mock_get.assert_called_once()
         mock_validate.assert_called_once()
-        self.launchSupplementaryDataSurvey(
-            schema_name="test_supplementary_data_with_list_collector",
-            response_id="1",
-            sds_dataset_id="same",
-        )
+        self.launchSupplementaryDataSurvey(response_id="1", sds_dataset_id="same")
         self.assertStatusOK()
         mock_get.assert_called_once()
         mock_set.assert_called_once()
@@ -273,15 +240,13 @@ class TestSession(IntegrationTestCase):
     @patch(
         "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdaterBase.set_supplementary_data",
     )
-    def test_supplementary_data_raises_500_error_when_missing_required_lists_in_interstitial_summary(
+    def test_supplementary_data_raises_500_error_when_missing_required_lists(
         self, mock_set, mock_get
     ):
         """Tests that if the supplementary data being loaded does not cover all the dependent lists for the schema
         that a validation error is raised"""
         mock_get.return_value = {"data": {"items": {"products": []}}}
-        self.launchSupplementaryDataSurvey(
-            schema_name="test_supplementary_data_with_interstitial_and_calculated_summary"
-        )
+        self.launchSupplementaryDataSurvey(schema_name="test_supplementary_data")
         self.assertStatusCode(500)
         mock_set.assert_not_called()
 
@@ -289,73 +254,11 @@ class TestSession(IntegrationTestCase):
     @patch(
         "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdaterBase.set_supplementary_data",
     )
-    def test_supplementary_data_raises_500_error_when_missing_required_lists_in_list_collector(
-        self, mock_set, mock_get
-    ):
-        """Tests that if the supplementary data being loaded does not cover all the dependent lists for the schema
-        that a validation error is raised"""
-        mock_get.return_value = {"data": {"items": {}}}
-        self.launchSupplementaryDataSurvey(
-            schema_name="test_supplementary_data_with_list_collector"
-        )
-        self.assertStatusCode(500)
-        mock_set.assert_not_called()
-
-    @patch("app.routes.session.get_supplementary_data_v1")
-    @patch(
-        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdaterBase.set_supplementary_data",
-    )
-    def test_supplementary_data_raises_500_error_when_missing_required_lists_in_repeating_block(
-        self, mock_set, mock_get
-    ):
-        """Tests that if the supplementary data being loaded does not cover all the dependent lists for the schema
-        that a validation error is raised"""
-        mock_get.return_value = {"data": {"items": {}}}
-        self.launchSupplementaryDataSurvey(
-            schema_name="test_supplementary_data_repeating_block_and_calculated_summary"
-        )
-        self.assertStatusCode(500)
-        mock_set.assert_not_called()
-
-    @patch("app.routes.session.get_supplementary_data_v1")
-    @patch(
-        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdaterBase.set_supplementary_data",
-    )
-    def test_supplementary_data_is_loaded_when_all_required_lists_present_in_interstitial_summary(
+    def test_supplementary_data_is_loaded_when_all_required_lists_present(
         self, mock_set, mock_get
     ):
         mock_get.return_value = {"data": {"items": {"employees": [], "products": []}}}
-        self.launchSupplementaryDataSurvey(
-            schema_name="test_supplementary_data_with_interstitial_and_calculated_summary"
-        )
-        self.assertStatusOK()
-        mock_set.assert_called_once()
-
-    @patch("app.routes.session.get_supplementary_data_v1")
-    @patch(
-        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdaterBase.set_supplementary_data",
-    )
-    def test_supplementary_data_is_loaded_when_all_required_lists_present_in_list_collector(
-        self, mock_set, mock_get
-    ):
-        mock_get.return_value = {"data": {"items": {"employees": []}}}
-        self.launchSupplementaryDataSurvey(
-            schema_name="test_supplementary_data_with_list_collector"
-        )
-        self.assertStatusOK()
-        mock_set.assert_called_once()
-
-    @patch("app.routes.session.get_supplementary_data_v1")
-    @patch(
-        "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdaterBase.set_supplementary_data",
-    )
-    def test_supplementary_data_is_loaded_when_all_required_lists_present_in_repeating_block(
-        self, mock_set, mock_get
-    ):
-        mock_get.return_value = {"data": {"items": {"products": []}}}
-        self.launchSupplementaryDataSurvey(
-            schema_name="test_supplementary_data_repeating_block_and_calculated_summary"
-        )
+        self.launchSupplementaryDataSurvey(schema_name="test_supplementary_data")
         self.assertStatusOK()
         mock_set.assert_called_once()
 
@@ -382,19 +285,11 @@ class TestSession(IntegrationTestCase):
         This checks the edge case in which a survey changes to have different lists, but the supplementary dataset id
         remains the same, so the supplementary data is not fetched again, but is no longer valid for the survey
         """
-        self.launchSupplementaryDataSurvey(
-            schema_name="test_supplementary_data_with_list_collector",
-            response_id="1",
-            sds_dataset_id="same",
-        )
+        self.launchSupplementaryDataSurvey(response_id="1", sds_dataset_id="same")
         self.assertStatusOK()
         mock_set.assert_called_once()
         mock_get.assert_called_once()
         mock_validate.assert_called_once()
-        self.launchSupplementaryDataSurvey(
-            schema_name="test_supplementary_data_with_list_collector",
-            response_id="1",
-            sds_dataset_id="same",
-        )
+        self.launchSupplementaryDataSurvey(response_id="1", sds_dataset_id="same")
         self.assertStatusCode(500)
         self.assertEqual(mock_validate.call_count, 2)
