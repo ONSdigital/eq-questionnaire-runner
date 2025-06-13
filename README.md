@@ -323,6 +323,9 @@ An individual test suite can be run using the suite names as the argument to thi
 * features
 * general
 * components
+* supplementary_data_interstitial
+* supplementary_data_list_collector
+* supplementary_data_repeating_block
 
 ``` shell
 make test-functional-suite SUITE=<suite>
