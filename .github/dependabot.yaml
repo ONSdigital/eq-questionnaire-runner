@@ -98,6 +98,9 @@ updates:
           - "gevent"
           - "babel"
     ignore:
+      # IMPORTANT: ONLY MINOR AND PATCH PROD DEPENDENCIES ARE BUMPED. MAJOR VERSION BUMPS REQUIRE ROBUST INVESTIGATION
+      - dependency-name: "*"
+        update-types: [ "version-update:semver-major" ]
       # "babel" temporarily pinned to v2.14.0 - problem for translations found in v2.15.0, see: https://github.com/ONSdigital/eq-questionnaire-runner/pull/1384
       - dependency-name: "babel"
         update-types: [ "version-update:semver-major", "version-update:semver-minor" ]
