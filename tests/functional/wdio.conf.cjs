@@ -28,7 +28,9 @@ exports.config = {
     list_collector: ["./spec/list_collector/**/*.js"],
     general: ["./spec/*.spec.js"],
     hub_and_spoke: ["./spec/hub_and_spoke/**/*.js"],
-    supplementary_data: ["./spec/supplementary_data/**/*.js"],
+    supplementary_data_interstitial: ["./spec/supplementary_data_interstitial/*.js"],
+    supplementary_data_list_collector: ["./spec/supplementary_data_list_collector/*.js"],
+    supplementary_data_repeating_block: ["./spec/supplementary_data_repeating_block/*.js"],
   },
   // Patterns to exclude.
   exclude: [
