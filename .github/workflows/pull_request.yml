@@ -24,8 +24,8 @@ jobs:
         uses: tj-actions/changed-files@v46
         with:
           files_ignore: |
-            **
-            !.schemas-version
+            .github/workflows/pull_request.yml
+            .schemas-version
       - name: Install Poetry
         if: steps.changed-files.outputs.only_changed != 'true'
         uses: snok/install-poetry@v1
