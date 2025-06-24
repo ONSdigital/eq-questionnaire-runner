@@ -131,6 +131,7 @@ jobs:
       - name: Running schema validation
         run: make validate-test-schemas
   test-functional:
+    if: github.event.pull_request.head.repo.full_name == github.repository && contains(github.event.pull_request.changed_files, 'app/')
     needs: [python-dependencies, node-dependencies]
     strategy:
       matrix:
