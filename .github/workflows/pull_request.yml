@@ -26,6 +26,13 @@ jobs:
           files_ignore: |
             .github/workflows/pull_request.yml
             .schemas-version
+      - name: List all changed files
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        run: |
+          for file in ${ALL_CHANGED_FILES}; do
+            echo "$file was changed"
+          done
       - name: Install Poetry
         if: steps.changed-files.outputs.only_changed != 'true'
         uses: snok/install-poetry@v1
