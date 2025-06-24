@@ -60,10 +60,7 @@ def get_supplementary_data_v1(
 
     supplementary_data_url = f"{current_app.config['SDS_API_BASE_URL']}/v1/unit_data"
 
-
-    parameters = {"dataset_id": dataset_id, "identifier": "\ufeff12345"}
-
-
+    parameters = {"dataset_id": dataset_id, "identifier": identifier}
 
     encoded_parameters = urlencode(parameters)
     constructed_supplementary_data_url = (

@@ -170,6 +170,7 @@ jobs:
           version: 2.1.2
           virtualenvs-create: true
       - uses: actions/setup-python@v5
+        if: steps.changed-files.outputs.all_changed_files != ''
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "poetry"
