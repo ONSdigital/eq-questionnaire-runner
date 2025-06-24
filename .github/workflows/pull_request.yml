@@ -191,8 +191,7 @@ jobs:
           printf $SHA > .application-version
       - name: Build
         run: >
-          docker build -t onsdigital/eq-questionnaire-runner:$TAG
-          -t ${{ secrets.GAR_LOCATION }}/${{ secrets.GAR_PROJECT_ID }}/docker-images/eq-questionnaire-runner:$TAG .
+          docker build -t ${{ secrets.GAR_LOCATION }}/${{ secrets.GAR_PROJECT_ID }}/docker-images/eq-questionnaire-runner:$TAG .
 
       - name: Push to GAR
         run: |
