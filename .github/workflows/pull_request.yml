@@ -175,12 +175,16 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "poetry"
       - name: Install npm deps
+        if: steps.changed-files.outputs.all_changed_files != ''
         run: npm install
       - name: Docker compose
+        if: steps.changed-files.outputs.all_changed_files != ''
         run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose up --build -d
       - name: Functional tests
+        if: steps.changed-files.outputs.all_changed_files != ''
         run: make test-functional-suite SUITE=${{ matrix.suite }}
       - name: Docker compose shutdown
+        if: steps.changed-files.outputs.all_changed_files != ''
         run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
   docker-push:
     permissions:
