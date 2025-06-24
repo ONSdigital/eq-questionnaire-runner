@@ -193,11 +193,6 @@ jobs:
         run: >
           docker build -t onsdigital/eq-questionnaire-runner:$TAG
           -t ${{ secrets.GAR_LOCATION }}/${{ secrets.GAR_PROJECT_ID }}/docker-images/eq-questionnaire-runner:$TAG .
-      - name: Push to Docker Hub
-        run: |
-          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-          echo "Pushing to DockerHub with tag $TAG"
-          docker push onsdigital/eq-questionnaire-runner:$TAG
 
       - name: Push to GAR
         run: |
