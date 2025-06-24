@@ -77,7 +77,7 @@ jobs:
       - name: HTML linting
         run: make lint-html
   test-unit:
-    if: contains(fromJSON('["app/", "tests/", "poetry.lock", "package-lock.json", ".github/"]'), github.event.pull_request.changed_files)
+    if: contains(fromJSON('["app/", "tests/", "poetry.lock", "package-lock.json", ".github/**"]'), github.event.pull_request.changed_files)
     needs: python-dependencies
     runs-on: ubuntu-22.04
     steps:
