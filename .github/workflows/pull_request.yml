@@ -77,6 +77,7 @@ jobs:
       - name: HTML linting
         run: make lint-html
   test-unit:
+    if: contains(github.event.pull_request.changed_files, 'app/') || contains(github.event.pull_request.changed_files, 'tests/') || contains(github.event.pull_request.changed_files, 'poetry.lock') || contains(github.event.pull_request.changed_files, 'package-lock.json')
     needs: python-dependencies
     runs-on: ubuntu-22.04
     steps:
@@ -131,7 +132,7 @@ jobs:
       - name: Running schema validation
         run: make validate-test-schemas
   test-functional:
-    if: github.event.pull_request.head.repo.full_name == github.repository && contains(github.event.pull_request.changed_files, 'app/')
+    if: contains(github.event.pull_request.changed_files, 'app/') || contains(github.event.pull_request.changed_files, 'tests/') || contains(github.event.pull_request.changed_files, 'poetry.lock') || contains(github.event.pull_request.changed_files, 'package-lock.json')
     needs: [python-dependencies, node-dependencies]
     strategy:
       matrix:
