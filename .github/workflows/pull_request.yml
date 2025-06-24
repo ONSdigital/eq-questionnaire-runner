@@ -190,8 +190,7 @@ jobs:
           echo "Writing SHA $SHA to .application_version"
           printf $SHA > .application-version
       - name: Build
-        run: >
-          docker build -t ${{ secrets.GAR_LOCATION }}/${{ secrets.GAR_PROJECT_ID }}/docker-images/eq-questionnaire-runner:$TAG .
+        run: docker build -t ${{ secrets.GAR_LOCATION }}/${{ secrets.GAR_PROJECT_ID }}/docker-images/eq-questionnaire-runner:$TAG .
 
       - name: Push to GAR
         run: |
