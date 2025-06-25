@@ -77,7 +77,7 @@ jobs:
       - name: HTML linting
         run: make lint-html
   test-unit:
-    if: contains(fromJSON('["app/", "tests/", "poetry.lock", "package-lock.json", ".github/workflows/pull_request.yaml"]'), github.event.pull_request.changed_files)
+    if: contains(github.event.pull_request.labels.*.name, 'no unit tests')
     needs: python-dependencies
     runs-on: ubuntu-22.04
     steps:
@@ -132,7 +132,7 @@ jobs:
       - name: Running schema validation
         run: make validate-test-schemas
   test-functional:
-    if: contains(github.event.pull_request.changed_files, 'app/') || contains(github.event.pull_request.changed_files, 'tests/') || contains(github.event.pull_request.changed_files, 'poetry.lock') || contains(github.event.pull_request.changed_files, 'package-lock.json')
+    if: contains(github.event.pull_request.labels.*.name, 'no functional tests')
     needs: [python-dependencies, node-dependencies]
     strategy:
       matrix:
