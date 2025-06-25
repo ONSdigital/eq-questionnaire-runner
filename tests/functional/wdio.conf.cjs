@@ -32,8 +32,7 @@ exports.config = {
   },
   // Patterns to exclude.
   exclude: [
-    "./spec/hub_and_spoke/**/*.js",
-    "./spec/supplementary_data/**/*.js",
+    // 'path/to/excluded/files'
   ],
   //
   // ============
