@@ -59,7 +59,12 @@ NUMERIC_ANSWER_TYPES = {
 
 
 class InvalidSchemaConfigurationException(Exception):
-    pass
+    def __init__(self, value: str = "No dynamic or static choices") -> None:
+        super().__init__()
+        self.value = value
+
+    def __str__(self) -> str:
+        return str(self.value)
 
 
 @dataclass(frozen=True)
@@ -1105,9 +1110,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             if block.get("question"):
                 all_questions.append(block["question"])
             elif block.get("question_variants"):
-                for variant in block["question_variants"]:
-                    all_questions.append(variant["question"])
-
+                all_questions.extend(
+                    variant["question"] for variant in block["question_variants"]
+                )
             return all_questions
         return []
 

@@ -6,7 +6,6 @@ from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
 from typing import TYPE_CHECKING, Iterable, Mapping, Sequence
 
-
 import flask_babel
 from babel import numbers
 from dateutil.relativedelta import relativedelta
@@ -409,6 +408,8 @@ class DateRangeCheck:
 
 
 class SumCheck:
+    MULTIPLE_CONDITION_ERROR_MESSAGE = "There are multiple conditions, but equals is not one of them. We only support <= and >="
+
     def __init__(self, messages: OptionalMessage = None, currency: str | None = None):
         self.messages = {**error_messages, **(messages or {})}
         self.currency = currency
@@ -425,10 +426,7 @@ class SumCheck:
             try:
                 conditions.remove("equals")
             except ValueError as exc:
-                raise ValueError(
-                    "There are multiple conditions, but equals is not one of them. "
-                    "We only support <= and >="
-                ) from exc
+                raise ValueError(SumCheck.MULTIPLE_CONDITION_ERROR_MESSAGE) from exc
 
             condition = f"{conditions[0]} or equals"
         else:
@@ -470,7 +468,10 @@ class SumCheck:
         if condition == "less than or equals":
             return total <= target_total, "TOTAL_SUM_NOT_LESS_THAN_OR_EQUALS"
 
-        raise NotImplementedError(f"Condition '{condition}' is not implemented")
+        unimplemented_condition_error_message = (
+            f"Condition '{condition}' is not implemented"
+        )
+        raise NotImplementedError(unimplemented_condition_error_message)
 
 
 class MutuallyExclusiveCheck:

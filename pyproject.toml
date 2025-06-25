@@ -121,8 +121,6 @@ extend-ignore = [
     "ARG002", # Unused method argument
     "ARG004", # Unused static method argument: `kwargs
     "N818", # Exception name should be named with an Error suffix
-    "EM101", # Exception must not use a string literal, assign to variable first
-    "EM102", # EM102 Exception must not use an f-string literal, assign to variable first
     "UP032", # Use f-string instead of `format` call
     "UP018", # Unnecessary {literal_type} call (rewrite as a literal)
     "UP015", # Unnecessary open mode parameters
@@ -151,7 +149,6 @@ extend-ignore = [
     "TRY400", # Use logging.exception instead of logging.error
     "TRY201", # Avoid using `raise Exception` without specifying an exception class
     "TRY300", # Consider moving this statement to an `else` block
-    "PERF401", # Use a list comprehension to create a transformed list
     "RET501", # Do not explicitly `return None` in function if it is the only possible return value
     "RET503", # Missing explicit `return` at the end of function able to return non-`None` value
     "RET504", # Unnecessary assignment to `context` before `return` statement

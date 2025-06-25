@@ -53,10 +53,11 @@ class AnswerStore:
 
     @staticmethod
     def _validate(answer: Answer) -> None:
+        answer_type_error_message = (
+            f"Method only supports Answer argument type, found type: {type(answer)}"
+        )
         if not isinstance(answer, Answer):
-            raise TypeError(
-                f"Method only supports Answer argument type, found type: {type(answer)}"
-            )
+            raise TypeError(answer_type_error_message)
 
     @property
     def is_dirty(self) -> bool:
@@ -141,10 +142,11 @@ class AnswerStore:
 
         *Not efficient.*
         """
-        keys_to_delete = []
-        for answer in self:
-            if answer.list_item_id and answer.list_item_id in list_item_ids:
-                keys_to_delete.append((answer.answer_id, answer.list_item_id))
+        keys_to_delete = [
+            (answer.answer_id, answer.list_item_id)
+            for answer in self
+            if answer.list_item_id and answer.list_item_id in list_item_ids
+        ]
 
         for key in keys_to_delete:
             del self.answer_map[key]
