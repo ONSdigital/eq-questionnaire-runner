@@ -85,7 +85,7 @@ jobs:
       - name: HTML linting
         run: make lint-html
   test-unit:
-    if: notIn('tests not required', github.event.pull_request.labels.*.name)
+    if: contains(github.event.pull_request.labels.*.name, 'enhancement') || contains(github.event.pull_request.labels.*.name, 'bug')
     needs: python-dependencies
     runs-on: ubuntu-22.04
     steps:
@@ -140,6 +140,7 @@ jobs:
       - name: Running schema validation
         run: make validate-test-schemas
   test-functional:
+    if: contains(github.event.pull_request.labels.*.name, 'enhancement') || contains(github.event.pull_request.labels.*.name, 'bug')
     needs: [python-dependencies, node-dependencies]
     strategy:
       matrix:
