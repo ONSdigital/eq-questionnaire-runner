@@ -13,6 +13,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  pr-labels:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Get PR labels
+      id: pr-labels
+      env:
+        PR_LABEL_LIST: ${{ toJson(github.event.pull_request.labels.*.name) }}
+      run: |
+        printf '${{ env.PR_LABEL_LIST }}' > /tmp/label_list
   python-dependencies:
     runs-on: ubuntu-22.04
     steps:
