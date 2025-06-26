@@ -85,6 +85,7 @@ jobs:
       - name: HTML linting
         run: make lint-html
   test-unit:
+    if: notIn('tests not required', github.event.pull_request.labels.*.name)
     needs: python-dependencies
     runs-on: ubuntu-22.04
     steps:
