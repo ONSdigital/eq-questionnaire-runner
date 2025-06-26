@@ -13,14 +13,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  pr-labels:
-    runs-on: ubuntu-22.04
-    steps:
-    - name: Get PR labels
-      env:
-        PR_LABEL_LIST: ${{ toJson(github.event.pull_request.labels.*.name) }}
-      run: |
-        printf '${{ env.PR_LABEL_LIST }}' > /tmp/label_list
   python-dependencies:
     runs-on: ubuntu-22.04
     steps:
@@ -140,7 +132,7 @@ jobs:
       - name: Running schema validation
         run: make validate-test-schemas
   test-functional:
-    if: contains(github.event.pull_request.labels.*.name, 'enhancement') || contains(github.event.pull_request.labels.*.name, 'bug')
+    if: "!contains(github.event.pull_request.labels.*.name, 'tests not required')"
     needs: [python-dependencies, node-dependencies]
     strategy:
       matrix:
