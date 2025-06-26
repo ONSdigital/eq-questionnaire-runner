@@ -85,7 +85,6 @@ jobs:
       - name: HTML linting
         run: make lint-html
   test-unit:
-    if: !contains(github.event.pull_request.labels.*.name, 'tests not required')
     needs: python-dependencies
     runs-on: ubuntu-22.04
     steps:
@@ -140,7 +139,6 @@ jobs:
       - name: Running schema validation
         run: make validate-test-schemas
   test-functional:
-    if: !contains(github.event.pull_request.labels.*.name, 'tests not required')
     needs: [python-dependencies, node-dependencies]
     strategy:
       matrix:
