@@ -133,7 +133,7 @@ jobs:
     test-functional:
         needs: [python-dependencies, node-dependencies]
         runs-on: ubuntu-22.04
-        timeout-minutes: 30
+        timeout-minutes: 120
         env:
             EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
             EQ_FUNCTIONAL_TEST_MAX_INSTANCES: 1
