@@ -53,7 +53,7 @@ export const click = async (selector) => {
 };
 
 export const clickSuppData = async (selector) => {
-  await browser.pause(1000);
+  await $(selector).waitForExist({ timeout: 5000 });
   await $(selector).scrollIntoView({ block: "end", inline: "end", behavior: "smooth" });
   await $(selector).click();
 
