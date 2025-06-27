@@ -52,6 +52,15 @@ export const click = async (selector) => {
   await browser.pause(100);
 };
 
+export const clickSuppData = async (selector) => {
+  await browser.pause(1000);
+  await $(selector).scrollIntoView({ block: "end", inline: "end", behavior: "smooth" });
+  await $(selector).click();
+
+  // Allow time in case the click loads a new page.
+  await browser.pause(200);
+};
+
 export const verifyUrlContains = async (expectedUrlString) => {
   await expect(browser).toHaveUrl(expect.stringContaining(expectedUrlString));
 };
