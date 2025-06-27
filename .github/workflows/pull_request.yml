@@ -136,7 +136,7 @@ jobs:
         timeout-minutes: 30
         env:
             EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
-            EQ_FUNCTIONAL_TEST_MAX_INSTANCES: 2
+            EQ_FUNCTIONAL_TEST_MAX_INSTANCES: 1
         steps:
             - uses: actions/checkout@v4
             - uses: actions/setup-node@v4
