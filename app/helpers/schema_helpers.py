@@ -13,7 +13,7 @@ P = ParamSpec("P")
 
 
 def with_schema(
-    function: Callable[Concatenate[QuestionnaireSchema, P], T]
+    function: Callable[Concatenate[QuestionnaireSchema, P], T],
 ) -> Callable[P, T]:
     """Adds the survey schema as the first argument to the function being wrapped.
     Use on flask request handlers or methods called by flask request handlers.

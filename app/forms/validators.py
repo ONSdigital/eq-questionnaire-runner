@@ -377,7 +377,9 @@ class DateRangeCheck:
     def _is_first_relative_delta_largest(
         relativedelta1: relativedelta, relativedelta2: relativedelta
     ) -> bool:
-        epoch = datetime.min  # generic epoch for comparison purposes only
+        epoch = datetime.min.replace(
+            tzinfo=timezone.utc
+        )  # generic epoch for comparison purposes only
         date1 = epoch + relativedelta1
         date2 = epoch + relativedelta2
         return date1 > date2
