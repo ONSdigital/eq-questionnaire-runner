@@ -99,7 +99,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
     survey_metadata = fields.Nested(SurveyMetadata, required=False)
 
     @validates_schema
-    def validate_schema_options(  # pylint: disable=no-self-use, unused-argument
+    def validate_schema_options(  # pylint: disable=unused-argument
         self, data: Mapping, **kwargs: Any
     ) -> None:
         if data:
