@@ -142,7 +142,6 @@ jobs:
       - name: Running schema validation
         run: make validate-test-schemas
   test-functional:
-    if: "!contains(github.event.pull_request.labels.*.name, 'tests not required')"
     permissions:
       contents: 'read'
     needs: [python-dependencies, node-dependencies]
@@ -150,6 +149,7 @@ jobs:
       matrix:
         suite: [ timeout_modal_expired, timeout_modal_extended, timeout_modal_extended_new_window, features, summaries, general, journeys, components, list_collector]
     runs-on: ubuntu-22.04
+    if: "!contains(github.event.pull_request.labels.*.name, 'tests not required')"
     timeout-minutes: 30
     env:
       EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
