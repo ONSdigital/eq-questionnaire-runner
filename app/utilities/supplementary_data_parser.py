@@ -20,9 +20,7 @@ class ItemsSchema(Schema):
     )
 
     @validates("identifier")
-    def validate_identifier(  # pylint: disable=no-self-use
-        self, identifier: fields.Field
-    ) -> None:
+    def validate_identifier(self, identifier: fields.Field) -> None:
         if not (isinstance(identifier, str) and identifier.strip()) and not (
             isinstance(identifier, int) and identifier >= 0
         ):
