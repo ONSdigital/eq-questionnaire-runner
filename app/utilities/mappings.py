@@ -6,7 +6,7 @@ from app.utilities.types import SectionKey
 
 
 def get_flattened_mapping_values(
-    map_to_flatten: Mapping[SectionKey, Iterable[str]] | Mapping[str, Iterable[str]]
+    map_to_flatten: Mapping[SectionKey, Iterable[str]] | Mapping[str, Iterable[str]],
 ) -> OrderedSet[str]:
     return OrderedSet([x for v in map_to_flatten.values() for x in v])
 
