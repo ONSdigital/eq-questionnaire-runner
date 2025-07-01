@@ -149,12 +149,12 @@ jobs:
       matrix:
         suite: [ timeout_modal_expired, timeout_modal_extended, timeout_modal_extended_new_window, features, summaries, general, journeys, components, list_collector]
     runs-on: ubuntu-22.04
-    if: "!contains(github.event.pull_request.labels.*.name, 'tests not required')"
     timeout-minutes: 30
     env:
       EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
       # :TODO: Revisit & update when 2 instances can be used without adverse effects
       EQ_FUNCTIONAL_TEST_MAX_INSTANCES: 2
+    if: "!contains(github.event.pull_request.labels.*.name, 'tests not required')"
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4.2.0
