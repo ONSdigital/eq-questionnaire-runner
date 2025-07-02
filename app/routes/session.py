@@ -163,7 +163,7 @@ def _set_questionnaire_supplementary_data(
         or existing_sds_dataset_id == new_sds_dataset_id
     ):
         logger.info(
-            "Retrieved existing SDS Dataset ID from Questionnaire Store",
+            "retrieved existing sds dataset id from questionnaire store",
             sds_dataset_id=existing_sds_dataset_id,
         )
         # no need to fetch: either no supplementary data or it hasn't changed, just validate lists
