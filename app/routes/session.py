@@ -165,7 +165,7 @@ def _set_questionnaire_supplementary_data(
         if existing_sds_dataset_id:
             logger.info(
                 "retrieved existing sds dataset id from questionnaire store",
-                sds_dataset_id=existing_sds_dataset_id,
+                existing_sds_dataset_id=existing_sds_dataset_id,
             )
         else:
             logger.info("no sds dataset id found in questionnaire store")
