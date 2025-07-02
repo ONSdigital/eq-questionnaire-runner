@@ -162,13 +162,11 @@ def _set_questionnaire_supplementary_data(
         not (new_sds_dataset_id := metadata["sds_dataset_id"])
         or existing_sds_dataset_id == new_sds_dataset_id
     ):
-        if existing_sds_dataset_id:
-            logger.info(
-                "retrieved existing sds dataset id from questionnaire store",
-                existing_sds_dataset_id=existing_sds_dataset_id,
-            )
-        else:
-            logger.info("no sds dataset id found in questionnaire store")
+        sds_dataset_id = existing_sds_dataset_id or new_sds_dataset_id
+        logger.info(
+            "supplementary data already in questionnaire store, no need to query SDS",
+            sds_dataset_id=sds_dataset_id,
+        )
         # no need to fetch: either no supplementary data or it hasn't changed, just validate lists
         _validate_supplementary_data_lists(
             supplementary_data=questionnaire_store.data_stores.supplementary_data_store.raw_data,
