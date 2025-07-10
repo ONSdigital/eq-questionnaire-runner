@@ -1,193 +1,209 @@
 name: PR
 
 on:
-    pull_request:
-        branches:
-            - "main"
-            - "branch-v*"
-            - "bug-fix-*"
-            - "feature-*"
+  pull_request:
+    branches:
+      - "main"
+      - "branch-v*"
+      - "bug-fix-*"
+      - "feature-*"
 
 concurrency:
-    group: "${{ github.head_ref }}"
-    cancel-in-progress: true
+  group: '${{ github.head_ref }}'
+  cancel-in-progress: true
 
 jobs:
-    python-dependencies:
-        runs-on: ubuntu-22.04
-        steps:
-            - uses: actions/checkout@v4
-            - run: |
-                  echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
-            - name: Install Poetry
-              uses: snok/install-poetry@v1
-              with:
-                  version: 2.1.2
-                  virtualenvs-create: true
-            - uses: actions/setup-python@v5
-              with:
-                  python-version: ${{ env.PYTHON_VERSION }}
-                  cache: "poetry"
-            - name: Install virtual environment
-              run: |
-                  sudo apt-get install libsnappy-dev
-                  poetry install
-    node-dependencies:
-        runs-on: ubuntu-22.04
-        steps:
-            - uses: actions/checkout@v4
-            - uses: actions/setup-node@v4
-              with:
-                  node-version-file: ".nvmrc"
-            - name: Install npm deps
-              run: npm install
-    lint:
-        needs: [python-dependencies, node-dependencies]
-        runs-on: ubuntu-22.04
-        steps:
-            - uses: actions/checkout@v4
-            - run: |
-                  echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
-            - uses: actions/setup-node@v4
-              with:
-                  node-version-file: ".nvmrc"
-            - name: Write app version
-              run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
-            - name: Install Poetry
-              uses: snok/install-poetry@v1
-              with:
-                  version: 2.1.2
-                  virtualenvs-create: true
-            - uses: actions/setup-python@v5
-              with:
-                  python-version: ${{ env.PYTHON_VERSION }}
-                  cache: "poetry"
-            - name: Compile translations
-              run: make translate
-            - name: Running translation tests
-              run: poetry run python -m scripts.extract_translation_templates --test
-            - name: Python linting
-              run: make lint-python
-            - name: Install npm deps
-              run: npm install
-            - name: Functional tests spec lint
-              run: ./scripts/lint_functional_test_specs.sh
-            - name: Javascript linting
-              run: make lint-js
-            - name: HTML linting
-              run: make lint-html
-    test-unit:
-        needs: python-dependencies
-        runs-on: ubuntu-22.04
-        steps:
-            - uses: actions/checkout@v4
-            - run: |
-                  echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
-            - name: Install apt dependencies
-              run: |
-                  sudo apt-get install libsnappy-dev libgconf-2-4 jq
-                  # Install wkthtmltopdf with patched Qt
-                  sudo apt-get install -y xfonts-base xfonts-75dpi
-                  wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.bionic_amd64.deb
-                  sudo dpkg -i wkhtmltox_0.12.6-1.bionic_amd64.deb
-            - name: Write app version
-              run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
-            - name: Install Poetry
-              uses: snok/install-poetry@v1
-              with:
-                  version: 2.1.2
-                  virtualenvs-create: true
-            - uses: actions/setup-python@v5
-              with:
-                  python-version: ${{ env.PYTHON_VERSION }}
-                  cache: "poetry"
-            - name: Install dotenv plugin
-              run: poetry self add poetry-plugin-dotenv@2.9.0
-            - name: Load templates
-              run: make load-design-system-templates
-            - name: Compile translations
-              run: make translate
-            - name: Link env vars
-              run: ln -sf .development.env .env
-            - name: Running unit tests
-              run: make test-unit
-    validate-schemas:
-        runs-on: ubuntu-22.04
-        steps:
-            - uses: actions/checkout@v4
-            - run: |
-                  echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
-            - name: Run validator
-              run: ./scripts/run_validator.sh
-            - name: Install Poetry
-              uses: snok/install-poetry@v1
-              with:
-                  version: 2.1.2
-                  virtualenvs-create: true
-            - uses: actions/setup-python@v5
-              with:
-                  python-version: ${{ env.PYTHON_VERSION }}
-                  cache: "poetry"
-            - name: Running schema validation
-              run: make validate-test-schemas
-    test-functional:
-        needs: [python-dependencies, node-dependencies]
-        runs-on: ubuntu-22.04
-        timeout-minutes: 120
-        env:
-            EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
-            EQ_FUNCTIONAL_TEST_MAX_INSTANCES: 1
-        steps:
-            - uses: actions/checkout@v4
-            - uses: actions/setup-node@v4
-              with:
-                  node-version-file: ".nvmrc"
-            - run: |
-                  echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
-            - name: Install Poetry
-              uses: snok/install-poetry@v1
-              with:
-                  version: 2.1.2
-                  virtualenvs-create: true
-            - uses: actions/setup-python@v5
-              with:
-                  python-version: ${{ env.PYTHON_VERSION }}
-                  cache: "poetry"
-            - name: Install npm deps
-              run: npm install
-            - name: Docker compose
-              run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose up --build -d
-            - name: Functional tests
-              run: make test-functional
-            - name: Docker compose shutdown
-              run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
-    docker-push:
-        permissions:
-            contents: "read"
-            id-token: "write"
-        runs-on: ubuntu-22.04
-        steps:
-            - uses: actions/checkout@v4
-            - id: auth
-              name: Authenticate to Google Cloud
-              uses: google-github-actions/auth@v2
-              with:
-                  token_format: "access_token"
-                  workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
-                  service_account: ${{ secrets.SERVICE_ACCOUNT }}
-            - name: Set Tag and SHA
-              run: |
-                  CLEAN_TAG=$(echo "${{ github.event.pull_request.head.ref  }}"  | tr / -)
-                  echo "TAG=$CLEAN_TAG" >> $GITHUB_ENV
-                  echo "SHA=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
-            - name: Write app version
-              run: |
-                  echo "Writing SHA $SHA to .application_version"
-                  printf $SHA > .application-version
-            - name: Build
-              run: docker build -t ${{ secrets.GAR_LOCATION }}/${{ secrets.GAR_PROJECT_ID }}/docker-images/eq-questionnaire-runner:$TAG .
-            - name: Push to GAR
-              run: |
-                  gcloud auth configure-docker ${{ secrets.GAR_LOCATION }}
-                  echo "Pushing to GAR with tag $TAG"
-                  docker push ${{ secrets.GAR_LOCATION }}/${{ secrets.GAR_PROJECT_ID }}/docker-images/eq-questionnaire-runner:$TAG
+  python-dependencies:
+    permissions:
+      contents: 'read'
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - run: |
+          echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
+      - name: Install Poetry
+        uses: snok/install-poetry@76e04a911780d5b312d89783f7b1cd627778900a # v1.4.1
+        with:
+          version: 2.1.2
+          virtualenvs-create: true
+      - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'poetry'
+      - name: Install virtual environment
+        run: |
+          sudo apt-get install libsnappy-dev
+          poetry install
+  node-dependencies:
+    permissions:
+      contents: 'read'
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4.2.0
+        with:
+          node-version-file : ".nvmrc"
+      - name: Install npm deps
+        run: npm install
+  lint:
+    permissions:
+      contents: 'read'
+    needs: [python-dependencies, node-dependencies]
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - run: |
+          echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
+      - uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4.2.0
+        with:
+          node-version-file: ".nvmrc"
+      - name: Write app version
+        run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
+      - name: Install Poetry
+        uses: snok/install-poetry@76e04a911780d5b312d89783f7b1cd627778900a # v1.4.1
+        with:
+          version: 2.1.2
+          virtualenvs-create: true
+      - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: "poetry"
+      - name: Compile translations
+        run: make translate
+      - name: Running translation tests
+        run: poetry run python -m scripts.extract_translation_templates --test
+      - name: Python linting
+        run: make lint-python
+      - name: Install npm deps
+        run: npm install
+      - name: Functional tests spec lint
+        run: ./scripts/lint_functional_test_specs.sh
+      - name: Javascript linting
+        run: make lint-js
+      - name: HTML linting
+        run: make lint-html
+  test-unit:
+    if: "!contains(github.event.pull_request.labels.*.name, 'tests not required')"
+    permissions:
+      contents: 'read'
+    needs: python-dependencies
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - run: |
+          echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
+      - name: Install apt dependencies
+        run: |
+            sudo apt-get install libsnappy-dev libgconf-2-4 jq
+            # Install wkthtmltopdf with patched Qt
+            sudo apt-get install -y xfonts-base xfonts-75dpi
+            wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.bionic_amd64.deb
+            sudo dpkg -i wkhtmltox_0.12.6-1.bionic_amd64.deb
+      - name: Write app version
+        run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
+      - name: Install Poetry
+        uses: snok/install-poetry@76e04a911780d5b312d89783f7b1cd627778900a # v1.4.1
+        with:
+          version: 2.1.2
+          virtualenvs-create: true
+      - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: "poetry"
+      - name: Install dotenv plugin
+        run: poetry self add poetry-plugin-dotenv@2.9.0
+      - name: Load templates
+        run: make load-design-system-templates
+      - name: Compile translations
+        run: make translate
+      - name: Link env vars
+        run: ln -sf .development.env .env
+      - name: Running unit tests
+        run: make test-unit
+  validate-schemas:
+    permissions:
+      contents: 'read'
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - run: |
+          echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
+      - name: Run validator
+        run: ./scripts/run_validator.sh
+      - name: Install Poetry
+        uses: snok/install-poetry@76e04a911780d5b312d89783f7b1cd627778900a # v1.4.1
+        with:
+          version: 2.1.2
+          virtualenvs-create: true
+      - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: "poetry"
+      - name: Running schema validation
+        run: make validate-test-schemas
+  test-functional:
+    if: "!contains(github.event.pull_request.labels.*.name, 'tests not required')"
+    permissions:
+      contents: 'read'
+    needs: [python-dependencies, node-dependencies]
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    env:
+      EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
+      # :TODO: Revisit & update when 2 instances can be used without adverse effects
+      EQ_FUNCTIONAL_TEST_MAX_INSTANCES: 2
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4.2.0
+        with:
+          node-version-file: ".nvmrc"
+      - run: |
+          echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
+      - name: Install Poetry
+        uses: snok/install-poetry@76e04a911780d5b312d89783f7b1cd627778900a # v1.4.1
+        with:
+          version: 2.1.2
+          virtualenvs-create: true
+      - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: "poetry"
+      - name: Install npm deps
+        run: npm install
+      - name: Docker compose
+        run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose up --build -d
+      - name: Functional tests
+        run: make test-functional
+      - name: Docker compose shutdown
+        run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
+  docker-push:
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - id: auth
+        name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@6fc4af4b145ae7821d527454aa9bd537d1f2dc5f # v2.17
+        with:
+          token_format: 'access_token'
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.SERVICE_ACCOUNT }}
+
+      - name: Set Tag and SHA
+        run: |
+          CLEAN_TAG=$(echo "${{ github.event.pull_request.head.ref  }}"  | tr / -)
+          echo "TAG=$CLEAN_TAG" >> $GITHUB_ENV
+          echo "SHA=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
+      - name: Write app version
+        run: |
+          echo "Writing SHA $SHA to .application_version"
+          printf $SHA > .application-version
+      - name: Build
+        run: docker build -t ${{ secrets.GAR_LOCATION }}/${{ secrets.GAR_PROJECT_ID }}/docker-images/eq-questionnaire-runner:$TAG .
+      - name: Push to GAR
+        run: |
+          gcloud auth configure-docker ${{ secrets.GAR_LOCATION }}
+          echo "Pushing to GAR with tag $TAG"
+          docker push ${{ secrets.GAR_LOCATION }}/${{ secrets.GAR_PROJECT_ID }}/docker-images/eq-questionnaire-runner:$TAG
