@@ -302,43 +302,43 @@ describe("Feature: Hub and Spoke", () => {
   });
 
   describe("Given a user opens a schema with hub required sections based on a repeating section using supplementary data", () => {
-    beforeEach("Load survey", async () => {
-      await browser.openSDSQuestionnaire("test_hub_section_required_with_repeat_supplementary.json");
+    beforeEach("Load survey", () => {
+      browser.openSDSQuestionnaire("test_hub_section_required_with_repeat_supplementary.json");
     });
 
     it("When all the repeating sections are complete, Then the hub should be displayed", async () => {
-      await clickSuppData(LoadedSuccessfullyBlockPage.submit());
-      await clickSuppData(IntroductionBlockPage.submit());
+      clickSuppData(LoadedSuccessfullyBlockPage.submit());
+      clickSuppData(IntroductionBlockPage.submit());
 
       // Complete the repeating sections using supplementary data
-      await clickSuppData(ListCollectorEmployeesPage.submit());
-      await $(LengthOfEmploymentPage.day()).setValue(1);
-      await $(LengthOfEmploymentPage.month()).setValue(1);
-      await $(LengthOfEmploymentPage.year()).setValue(1930);
-      await clickSuppData(LengthOfEmploymentPage.submit());
-      await click(Section3Page.submit());
-      await $(LengthOfEmploymentPage.day()).setValue(1);
-      await $(LengthOfEmploymentPage.month()).setValue(1);
-      await $(LengthOfEmploymentPage.year()).setValue(1930);
-      await clickSuppData(LengthOfEmploymentPage.submit());
-      await clickSuppData(Section3Page.submit());
-      await verifyUrlContains(HubPage.url());
+      clickSuppData(ListCollectorEmployeesPage.submit());
+      $(LengthOfEmploymentPage.day()).setValue(1);
+      $(LengthOfEmploymentPage.month()).setValue(1);
+      $(LengthOfEmploymentPage.year()).setValue(1930);
+      clickSuppData(LengthOfEmploymentPage.submit());
+      click(Section3Page.submit());
+      $(LengthOfEmploymentPage.day()).setValue(1);
+      $(LengthOfEmploymentPage.month()).setValue(1);
+      $(LengthOfEmploymentPage.year()).setValue(1930);
+      clickSuppData(LengthOfEmploymentPage.submit());
+      clickSuppData(Section3Page.submit());
+      verifyUrlContains(HubPage.url());
     });
 
     it("When the repeating sections are incomplete. Then the hub should not be displayed", async () => {
-      await clickSuppData(LoadedSuccessfullyBlockPage.submit());
-      await clickSuppData(IntroductionBlockPage.submit());
+      clickSuppData(LoadedSuccessfullyBlockPage.submit());
+      clickSuppData(IntroductionBlockPage.submit());
 
       // Don't complete the repeating sections that use supplementary data
-      await clickSuppData(ListCollectorEmployeesPage.submit());
-      await $(LengthOfEmploymentPage.day()).setValue(1);
-      await $(LengthOfEmploymentPage.month()).setValue(1);
-      await $(LengthOfEmploymentPage.year()).setValue(1930);
-      await clickSuppData(LengthOfEmploymentPage.submit());
-      await clickSuppData(Section3Page.submit());
+      clickSuppData(ListCollectorEmployeesPage.submit());
+      $(LengthOfEmploymentPage.day()).setValue(1);
+      $(LengthOfEmploymentPage.month()).setValue(1);
+      $(LengthOfEmploymentPage.year()).setValue(1930);
+      clickSuppData(LengthOfEmploymentPage.submit());
+      clickSuppData(Section3Page.submit());
 
-      await browser.url(HubPage.url());
-      await verifyUrlContains("length-of-employment");
+      browser.url(HubPage.url());
+      verifyUrlContains("length-of-employment");
     });
   });
 
