@@ -10,7 +10,7 @@ import ProxyPage from "../../generated_pages/hub_and_spoke/proxy.page.js";
 import RelationshipsSummary from "../../generated_pages/hub_and_spoke/relationships-section-summary.page.js";
 import ListCollectorSectionSummaryPage from "../../generated_pages/hub_section_required_with_repeat/list-collector-section-summary.page.js";
 import ProxyRepeatPage from "../../generated_pages/hub_section_required_with_repeat/proxy.page.js";
-import { click, verifyUrlContains } from "../../helpers";
+import { click, clickSuppData, verifyUrlContains } from "../../helpers";
 import DateOfBirthPage from "../../generated_pages/hub_section_required_with_repeat/date-of-birth.page";
 import PrimaryPersonListCollectorPage from "../../generated_pages/hub_section_required_with_repeat/primary-person-list-collector.page";
 import PrimaryPersonListCollectorAddPage from "../../generated_pages/hub_section_required_with_repeat/primary-person-list-collector-add.page";
@@ -307,35 +307,35 @@ describe("Feature: Hub and Spoke", () => {
     });
 
     it("When all the repeating sections are complete, Then the hub should be displayed", async () => {
-      await click(LoadedSuccessfullyBlockPage.submit());
-      await click(IntroductionBlockPage.submit());
+      await clickSuppData(LoadedSuccessfullyBlockPage.submit());
+      await clickSuppData(IntroductionBlockPage.submit());
 
       // Complete the repeating sections using supplementary data
-      await click(ListCollectorEmployeesPage.submit());
+      await clickSuppData(ListCollectorEmployeesPage.submit());
       await $(LengthOfEmploymentPage.day()).setValue(1);
       await $(LengthOfEmploymentPage.month()).setValue(1);
       await $(LengthOfEmploymentPage.year()).setValue(1930);
-      await click(LengthOfEmploymentPage.submit());
+      await clickSuppData(LengthOfEmploymentPage.submit());
       await click(Section3Page.submit());
       await $(LengthOfEmploymentPage.day()).setValue(1);
       await $(LengthOfEmploymentPage.month()).setValue(1);
       await $(LengthOfEmploymentPage.year()).setValue(1930);
-      await click(LengthOfEmploymentPage.submit());
-      await click(Section3Page.submit());
+      await clickSuppData(LengthOfEmploymentPage.submit());
+      await clickSuppData(Section3Page.submit());
       await verifyUrlContains(HubPage.url());
     });
 
     it("When the repeating sections are incomplete. Then the hub should not be displayed", async () => {
-      await click(LoadedSuccessfullyBlockPage.submit());
-      await click(IntroductionBlockPage.submit());
+      await clickSuppData(LoadedSuccessfullyBlockPage.submit());
+      await clickSuppData(IntroductionBlockPage.submit());
 
       // Don't complete the repeating sections that use supplementary data
-      await click(ListCollectorEmployeesPage.submit());
+      await clickSuppData(ListCollectorEmployeesPage.submit());
       await $(LengthOfEmploymentPage.day()).setValue(1);
       await $(LengthOfEmploymentPage.month()).setValue(1);
       await $(LengthOfEmploymentPage.year()).setValue(1930);
-      await click(LengthOfEmploymentPage.submit());
-      await click(Section3Page.submit());
+      await clickSuppData(LengthOfEmploymentPage.submit());
+      await clickSuppData(Section3Page.submit());
 
       await browser.url(HubPage.url());
       await verifyUrlContains("length-of-employment");

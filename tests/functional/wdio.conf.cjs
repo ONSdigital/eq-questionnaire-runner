@@ -283,6 +283,7 @@ exports.config = {
           cirInstrumentId,
           booleanFlag,
         });
+        await this.reloadSession()
         this.url(`/session?token=${token}`);
       },
     );
