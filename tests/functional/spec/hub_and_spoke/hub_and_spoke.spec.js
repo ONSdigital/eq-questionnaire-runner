@@ -303,16 +303,10 @@ describe("Feature: Hub and Spoke", () => {
 
   describe("Given a user opens a schema with hub required sections based on a repeating section using supplementary data", () => {
     beforeEach("Load survey", async () => {
-      const responseId = getRandomString(16);
-
-      await browser.openQuestionnaire("test_hub_section_required_with_repeat_supplementary.json.json", {
-        version: "v2",
-        sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
-        responseId,
-      });
+      await browser.openSDSQuestionnaire("test_hub_section_required_with_repeat_supplementary.json");
     });
 
-    it.skip("When all the repeating sections are complete, Then the hub should be displayed", async () => {
+    it("When all the repeating sections are complete, Then the hub should be displayed", async () => {
       await click(LoadedSuccessfullyBlockPage.submit());
       await click(IntroductionBlockPage.submit());
 
@@ -331,7 +325,7 @@ describe("Feature: Hub and Spoke", () => {
       await verifyUrlContains(HubPage.url());
     });
 
-    it.skip("When the repeating sections are incomplete. Then the hub should not be displayed", async () => {
+    it("When the repeating sections are incomplete. Then the hub should not be displayed", async () => {
       await click(LoadedSuccessfullyBlockPage.submit());
       await click(IntroductionBlockPage.submit());
 

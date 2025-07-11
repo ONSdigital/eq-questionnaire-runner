@@ -1,3 +1,4 @@
+const JwtHelper = require("./jwt_helper.js");
 exports.config = {
   //
   // ====================
@@ -216,6 +217,48 @@ exports.config = {
           periodStr = "May 2016",
           ruRef = "12345678901A",
           sdsDatasetId = null,
+          region = "GB-ENG",
+          language = "en",
+          includeLogoutUrl = false,
+          cirInstrumentId = null,
+          booleanFlag = false,
+        } = {},
+      ) {
+        const token = await JwtHelper.generateToken(schema, {
+          launchVersion,
+          theme,
+          userId,
+          collectionId,
+          responseId,
+          surveyId,
+          periodId,
+          periodStr,
+          ruRef,
+          sdsDatasetId,
+          regionCode: region,
+          languageCode: language,
+          includeLogoutUrl,
+          cirInstrumentId,
+          booleanFlag,
+        });
+        this.url(`/session?token=${token}`);
+      },
+    );
+    await browser.addCommand(
+      "openSDSQuestionnaire",
+      async function (
+        schema,
+        {
+          launchVersion = "v2",
+          theme = "default",
+          userId = JwtHelper.getRandomString(10),
+          collectionId = JwtHelper.getRandomString(10),
+          responseId = JwtHelper.getRandomString(16),
+          surveyId = "123",
+          periodId = "201605",
+          periodStr = "May 2016",
+          ruRef = "12345678901A",
+          sdsDatasetId = "203b2f9d-c500-8175-98db-86ffcfdccfa3",
           region = "GB-ENG",
           language = "en",
           includeLogoutUrl = false,
