@@ -1,4 +1,3 @@
-const JwtHelper = require("./jwt_helper.js");
 exports.config = {
   //
   // ====================
@@ -283,7 +282,6 @@ exports.config = {
           cirInstrumentId,
           booleanFlag,
         });
-        await this.reloadSession()
         this.url(`/session?token=${token}`);
       },
     );
