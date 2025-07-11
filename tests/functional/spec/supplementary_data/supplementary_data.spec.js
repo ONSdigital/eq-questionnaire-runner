@@ -334,7 +334,7 @@ describe("Using supplementary data", () => {
     await expect(await $(HubPage.summaryRowState("section-8")).getText()).toBe("Completed");
   });
 
-  it.skip("Given I relaunch the survey with new supplementary data and new list items for the repeating section, When I open the Hub page, Then I see the new supplementary list items as new incomplete sections and not any old ones", async () => {
+  it("Given I relaunch the survey with new supplementary data and new list items for the repeating section, When I open the Hub page, Then I see the new supplementary list items as new incomplete sections and not any old ones", async () => {
     await browser.openQuestionnaire("test_supplementary_data.json", {
       version: "v2",
       sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
@@ -351,19 +351,19 @@ describe("Using supplementary data", () => {
     await expect(await $("body").getText()).not.toContain("Clark Kent");
   });
 
-  it.skip("Given the survey has been relaunched with new data and more items in the products list, When I am on the Hub, Then I see the products section and section with a new block due to the product list size are both in progress", async () => {
+  it("Given the survey has been relaunched with new data and more items in the products list, When I am on the Hub, Then I see the products section and section with a new block due to the product list size are both in progress", async () => {
     await expect(await $(HubPage.summaryRowState("section-6")).getText()).toBe("Partially completed");
     await expect(await $(HubPage.summaryRowState("section-8")).getText()).toBe("Partially completed");
   });
 
-  it.skip("Given I am using a supplementary dataset with a product list size that skips a question in the sales target section, When I enter the section, Then I only see an interstitial block", async () => {
+  it("Given I am using a supplementary dataset with a product list size that skips a question in the sales target section, When I enter the section, Then I only see an interstitial block", async () => {
     await $(HubPage.summaryRowLink("section-7")).click();
     await verifyUrlContains(ProductSalesInterstitialPage.pageName);
     await click(ProductSalesInterstitialPage.submit());
     await expect(await $(HubPage.summaryRowState("section-7")).getText()).toBe("Completed");
   });
 
-  it.skip("Given there is now an additional product, When I resume the Product Details Section, Then I start from the list collector content block and see the new product is incomplete", async () => {
+  it("Given there is now an additional product, When I resume the Product Details Section, Then I start from the list collector content block and see the new product is incomplete", async () => {
     await $(HubPage.summaryRowLink("section-6")).click();
     await verifyUrlContains(ListCollectorProductsPage.pageName);
     await listItemComplete(`li[data-qa="list-item-1-label"]`, true);
@@ -373,7 +373,7 @@ describe("Using supplementary data", () => {
     await verifyUrlContains(ProductRepeatingBlock1Page.pageName);
   });
 
-  it.skip("Given I complete the section and relaunch with the old data that has fewer items in the products list, When I am on the Hub, Then I see the products section and sales targets sections are now in progress", async () => {
+  it("Given I complete the section and relaunch with the old data that has fewer items in the products list, When I am on the Hub, Then I see the products section and sales targets sections are now in progress", async () => {
     await $(ProductRepeatingBlock1Page.productVolumeSales()).setValue(40);
     await $(ProductRepeatingBlock1Page.productVolumeTotal()).setValue(50);
     await click(ProductRepeatingBlock1Page.submit());
@@ -390,7 +390,7 @@ describe("Using supplementary data", () => {
     await expect(await $(HubPage.summaryRowState("section-7")).getText()).toBe("Partially completed");
   });
 
-  it.skip("Given I return to the new data resulting in a new incomplete section, When I start the section, Then I see the new supplementary data piped in accordingly", async () => {
+  it("Given I return to the new data resulting in a new incomplete section, When I start the section, Then I see the new supplementary data piped in accordingly", async () => {
     await browser.openQuestionnaire("test_supplementary_data.json", {
       version: "v2",
       sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
@@ -406,7 +406,7 @@ describe("Using supplementary data", () => {
     await click(Section4Page.submit());
   });
 
-  it.skip("Given I can view my response after submission, When I submit the survey, Then I see the values I've entered and correct rendering with supplementary data", async () => {
+  it("Given I can view my response after submission, When I submit the survey, Then I see the values I've entered and correct rendering with supplementary data", async () => {
     await click(HubPage.submit());
     await click(ListCollectorProductsPage.submit());
     await $(ProductRepeatingBlock1Page.productVolumeSales()).setValue(40);
