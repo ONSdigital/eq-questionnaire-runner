@@ -18,9 +18,8 @@ exports.config = {
   //
   specs: ["./spec/**/*.js"],
   suites: {
-    timeout_modal: ["./spec/timeout/timeout_modal_extended_new_window/*.js", "./spec/timeout/timeout_modal_expired/*.js", "./spec/timeout/timeout_modal_extended/*.js"],
-    features: ["./spec/features/**/*.js", "./spec/summaries/**/*.js", "./spec/list_collector/**/*.js", "./spec/hub_and_spoke/**/*.js", "./spec/supplementary_data/**/*.js"],
-    general: ["./spec/*.spec.js", "./spec/components/**/*.js", "./spec/journeys/**/*.js"]
+    components_and_general: ["./spec/timeout/timeout_modal_extended_new_window/*.js", "./spec/timeout/timeout_modal_expired/*.js", "./spec/timeout/timeout_modal_extended/*.js", "./spec/components/**/*.js", "./spec/*.spec.js"],
+    features_and_journeys: ["./spec/features/**/*.js", "./spec/summaries/**/*.js", "./spec/list_collector/**/*.js", "./spec/hub_and_spoke/**/*.js", "./spec/supplementary_data/**/*.js", "./spec/journeys/**/*.js"],
   },
   // Patterns to exclude.
   exclude: [
