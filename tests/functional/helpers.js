@@ -53,12 +53,11 @@ export const click = async (selector) => {
 };
 
 export const clickSuppData = (selector) => {
-  $(selector).waitForExist({ timeout: 60000 });
-  $(selector).scrollIntoView({ block: "end", inline: "end", behavior: "smooth" });
+  $(selector).scrollIntoView({ block: "end", inline: "center", behavior: "smooth" });
   $(selector).click();
 
   // Allow time in case the click loads a new page.
-  browser.pause(200);
+  browser.pause(100);
 };
 
 export const verifyUrlContains = async (expectedUrlString) => {
