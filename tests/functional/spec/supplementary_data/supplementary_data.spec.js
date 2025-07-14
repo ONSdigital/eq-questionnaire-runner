@@ -40,7 +40,11 @@ describe("Using supplementary data", () => {
   const summaryRowTitles = ".ons-summary__row-title";
 
   before("Starting the survey", async () => {
-    await browser.openSDSQuestionnaire("test_supplementary_data.json");
+    await browser.openQuestionnaire("test_supplementary_data.json", {
+      version: "v2",
+      sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
+      responseId,
+    });
   });
   it("Given I launch a survey using supplementary data, When I am outside a repeating section, Then I am able to see the list of items relating to a given supplementary data list item on the page", async () => {
     await expect(await $("#main-content #guidance-1").getText()).toContain("The surnames of the employees are: Potter, Kent.");
@@ -385,7 +389,11 @@ describe("Using supplementary data", () => {
     await click(CalculatedSummaryValueSalesPage.submit());
     await click(Section6Page.submit());
     await expect(await $(HubPage.summaryRowState("section-6")).getText()).toBe("Completed");
-    await browser.openSDSQuestionnaire("test_supplementary_data.json");
+    await browser.openQuestionnaire("test_supplementary_data.json", {
+      version: "v2",
+      sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
+      responseId,
+    });
     await expect(await $(HubPage.summaryRowState("section-6")).getText()).toBe("Partially completed");
     await expect(await $(HubPage.summaryRowState("section-7")).getText()).toBe("Partially completed");
   });
