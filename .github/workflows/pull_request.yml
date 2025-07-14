@@ -148,7 +148,7 @@ jobs:
     needs: [python-dependencies, node-dependencies]
     strategy:
       matrix:
-        suite: [general_components, feature_journeys]
+        suite: [components, features]
     runs-on: ubuntu-22.04
     timeout-minutes: 30
     env:
