@@ -255,6 +255,44 @@ jobs:
         run: make test-functional-suite SUITE=${{ matrix.suite }}
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
+  test-functional-jounreys:
+    if: "!contains(github.event.pull_request.labels.*.name, 'tests not required')"
+    permissions:
+      contents: 'read'
+    needs: [python-dependencies, node-dependencies]
+    strategy:
+      matrix:
+        suite: [ journeys ]
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    env:
+      EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
+      # :TODO: Revisit & update when 2 instances can be used without adverse effects
+      EQ_FUNCTIONAL_TEST_MAX_INSTANCES: 2
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4.2.0
+        with:
+          node-version-file: ".nvmrc"
+      - run: |
+          echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
+      - name: Install Poetry
+        uses: snok/install-poetry@76e04a911780d5b312d89783f7b1cd627778900a # v1.4.1
+        with:
+          version: 2.1.2
+          virtualenvs-create: true
+      - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: "poetry"
+      - name: Install npm deps
+        run: npm install
+      - name: Docker compose
+        run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose up --build -d
+      - name: Functional tests (features)
+        run: make test-functional-suite SUITE=${{ matrix.suite }}
+      - name: Docker compose shutdown
+        run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
   docker-push:
     permissions:
       contents: 'read'
