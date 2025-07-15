@@ -146,9 +146,6 @@ jobs:
     permissions:
       contents: 'read'
     needs: [python-dependencies, node-dependencies]
-    strategy:
-      matrix:
-        suite: [ components ]
     runs-on: ubuntu-22.04
     timeout-minutes: 30
     env:
@@ -176,7 +173,7 @@ jobs:
       - name: Docker compose
         run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose up --build -d
       - name: Functional tests (components)
-        run: make test-functional-suite SUITE=${{ matrix.suite }}
+        run: make test-functional-suite SUITE=components
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
   test-functional-features:
@@ -184,9 +181,6 @@ jobs:
     permissions:
       contents: 'read'
     needs: [python-dependencies, node-dependencies]
-    strategy:
-      matrix:
-        suite: [ features ]
     runs-on: ubuntu-22.04
     timeout-minutes: 30
     env:
@@ -214,7 +208,7 @@ jobs:
       - name: Docker compose
         run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose up --build -d
       - name: Functional tests (features)
-        run: make test-functional-suite SUITE=${{ matrix.suite }}
+        run: make test-functional-suite SUITE=features
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
   test-functional-timeout-modal:
@@ -222,9 +216,6 @@ jobs:
     permissions:
       contents: 'read'
     needs: [python-dependencies, node-dependencies]
-    strategy:
-      matrix:
-        suite: [ timeout_modal ]
     runs-on: ubuntu-22.04
     timeout-minutes: 30
     env:
@@ -251,8 +242,8 @@ jobs:
         run: npm install
       - name: Docker compose
         run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose up --build -d
-      - name: Functional tests (features)
-        run: make test-functional-suite SUITE=${{ matrix.suite }}
+      - name: Functional tests (timeout-modal)
+        run: make test-functional-suite SUITE=timeout-modal
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
   test-functional-journeys:
@@ -260,9 +251,6 @@ jobs:
     permissions:
       contents: 'read'
     needs: [python-dependencies, node-dependencies]
-    strategy:
-      matrix:
-        suite: [ journeys ]
     runs-on: ubuntu-22.04
     timeout-minutes: 30
     env:
@@ -289,8 +277,8 @@ jobs:
         run: npm install
       - name: Docker compose
         run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose up --build -d
-      - name: Functional tests (features)
-        run: make test-functional-suite SUITE=${{ matrix.suite }}
+      - name: Functional tests (journeys)
+        run: make test-functional-suite SUITE=journeys
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
   docker-push:
