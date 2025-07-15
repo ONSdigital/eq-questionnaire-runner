@@ -146,9 +146,6 @@ jobs:
     permissions:
       contents: 'read'
     needs: [python-dependencies, node-dependencies]
-    strategy:
-      matrix:
-        suite: [components, features]
     runs-on: ubuntu-22.04
     timeout-minutes: 30
     env:
@@ -176,7 +173,7 @@ jobs:
       - name: Docker compose
         run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose up --build -d
       - name: Functional tests
-        run: make test-functional-suite SUITE=${{ matrix.suite }}
+        run: make test-functional
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
   docker-push:
