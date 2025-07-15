@@ -52,7 +52,7 @@ export const click = async (selector) => {
   await browser.pause(100);
 };
 
-export const clickSuppData = (selector) => {
+export const clickSyncMode = (selector) => {
   $(selector).scrollIntoView({ block: "end", inline: "center", behavior: "smooth" });
   $(selector).click();
 
@@ -62,4 +62,8 @@ export const clickSuppData = (selector) => {
 
 export const verifyUrlContains = async (expectedUrlString) => {
   await expect(browser).toHaveUrl(expect.stringContaining(expectedUrlString));
+};
+
+export const verifyUrlContainsSyncMode = (expectedUrlString) => {
+  expect(browser).toHaveUrl(expect.stringContaining(expectedUrlString));
 };
