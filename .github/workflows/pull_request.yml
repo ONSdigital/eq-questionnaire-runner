@@ -243,7 +243,7 @@ jobs:
       - name: Docker compose
         run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose up --build -d
       - name: Functional tests (timeout-modal)
-        run: make test-functional-suite SUITE=timeout-modal
+        run: make test-functional-suite SUITE=timeout_modal
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
   test-functional-journeys:
