@@ -255,7 +255,7 @@ jobs:
         run: make test-functional-suite SUITE=${{ matrix.suite }}
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
-  test-functional-jounreys:
+  test-functional-journeys:
     if: "!contains(github.event.pull_request.labels.*.name, 'tests not required')"
     permissions:
       contents: 'read'
