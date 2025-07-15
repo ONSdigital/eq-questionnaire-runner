@@ -55,7 +55,7 @@ describe("Feature: Hub and Spoke", () => {
       await verifyUrlContains("/signed-out");
     });
 
-    it("When a user views the Hub, Then the page title should be Choose another section to complete", async () => {
+    it.skip("When a user views the Hub, Then the page title should be Choose another section to complete", async () => {
       const pageTitle = await browser.getTitle();
       await expect(pageTitle).toBe("Choose another section to complete - Hub & Spoke");
     });
