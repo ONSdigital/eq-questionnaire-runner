@@ -19,7 +19,8 @@ describe("Given I start a survey,", () => {
     await browser.deleteAllCookies();
     await browser.refresh();
     await browser.pause(1000); // Wait for the page to load after refresh
-    await expect(await $(InitialPage.acceptCookies()).isDisplayed()).toBe(false);
+    const isElementDisplayed = await $(InitialPage.acceptCookies()).isDisplayed();
+    expect(isElementDisplayed).toBe(false);
   });
   it("When I sign out and click the browser back button, Then the cookie banner should be displayed", async () => {
     await $(InitialPage.saveSignOut()).click();
