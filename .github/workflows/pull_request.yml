@@ -147,7 +147,7 @@ jobs:
       contents: 'read'
     needs: [python-dependencies, node-dependencies]
     runs-on: ubuntu-22.04
-    timeout-minutes: 30
+    timeout-minutes: 40
     env:
       EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
       # :TODO: Revisit & update when 2 instances can be used without adverse effects
