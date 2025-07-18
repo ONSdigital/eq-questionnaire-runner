@@ -18,17 +18,10 @@ exports.config = {
   //
   specs: ["./spec/**/*.js"],
   suites: {
-    timeout_modal_expired: ["./spec/timeout/timeout_modal_expired/*.js"],
-    timeout_modal_extended: ["./spec/timeout/timeout_modal_extended/*.js"],
-    timeout_modal_extended_new_window: ["./spec/timeout/timeout_modal_extended_new_window/*.js"],
-    components: ["./spec/components/**/*.js"],
-    features: ["./spec/features/**/*.js"],
-    summaries: ["./spec/summaries/**/*.js"],
-    journeys: ["./spec/journeys/**/*.js"],
-    list_collector: ["./spec/list_collector/**/*.js"],
-    general: ["./spec/*.spec.js"],
-    hub_and_spoke: ["./spec/hub_and_spoke/**/*.js"],
-    supplementary_data: ["./spec/supplementary_data/**/*.js"],
+    components: ["./spec/components/**/*.js", "./spec/*.spec.js", "./spec/summaries/**/*.js"],
+    timeout_modal: ["./spec/timeout/timeout_modal_extended_new_window/*.js", "./spec/timeout/timeout_modal_expired/*.js", "./spec/timeout/timeout_modal_extended/*.js"],
+    features: ["./spec/features/**/*.js", "./spec/list_collector/**/*.js", "./spec/hub_and_spoke/**/*.js", "./spec/supplementary_data/**/*.js"],
+    journeys: ["./spec/journeys/**/*.js"]
   },
   // Patterns to exclude.
   exclude: [
@@ -216,6 +209,48 @@ exports.config = {
           periodStr = "May 2016",
           ruRef = "12345678901A",
           sdsDatasetId = null,
+          region = "GB-ENG",
+          language = "en",
+          includeLogoutUrl = false,
+          cirInstrumentId = null,
+          booleanFlag = false,
+        } = {},
+      ) {
+        const token = await JwtHelper.generateToken(schema, {
+          launchVersion,
+          theme,
+          userId,
+          collectionId,
+          responseId,
+          surveyId,
+          periodId,
+          periodStr,
+          ruRef,
+          sdsDatasetId,
+          regionCode: region,
+          languageCode: language,
+          includeLogoutUrl,
+          cirInstrumentId,
+          booleanFlag,
+        });
+        this.url(`/session?token=${token}`);
+      },
+    );
+    await browser.addCommand(
+      "openSDSQuestionnaire",
+      async function (
+        schema,
+        {
+          launchVersion = "v2",
+          theme = "default",
+          userId = JwtHelper.getRandomString(10),
+          collectionId = JwtHelper.getRandomString(10),
+          responseId = JwtHelper.getRandomString(16),
+          surveyId = "123",
+          periodId = "201605",
+          periodStr = "May 2016",
+          ruRef = "12345678901A",
+          sdsDatasetId = "203b2f9d-c500-8175-98db-86ffcfdccfa3",
           region = "GB-ENG",
           language = "en",
           includeLogoutUrl = false,
