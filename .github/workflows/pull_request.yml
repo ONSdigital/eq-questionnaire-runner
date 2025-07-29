@@ -172,6 +172,8 @@ jobs:
         run: npm install
       - name: Docker compose
         run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose up --build -d
+      - name: Build
+        run: make build
       - name: Functional tests (components)
         run: make test-functional-suite SUITE=components
       - name: Docker compose shutdown
@@ -207,6 +209,8 @@ jobs:
         run: npm install
       - name: Docker compose
         run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose up --build -d
+      - name: Build
+        run: make build
       - name: Functional tests (features)
         run: make test-functional-suite SUITE=features
       - name: Docker compose shutdown
@@ -242,6 +246,8 @@ jobs:
         run: npm install
       - name: Docker compose
         run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose up --build -d
+      - name: Build
+        run: make build
       - name: Functional tests (timeout-modal)
         run: make test-functional-suite SUITE=timeout_modal
       - name: Docker compose shutdown
@@ -277,6 +283,8 @@ jobs:
         run: npm install
       - name: Docker compose
         run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose up --build -d
+      - name: Build
+        run: make build
       - name: Functional tests (journeys)
         run: make test-functional-suite SUITE=journeys
       - name: Docker compose shutdown
