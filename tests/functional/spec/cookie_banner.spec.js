@@ -16,6 +16,7 @@ describe("Given I start a survey,", () => {
     await expect(await $(InitialPage.acceptCookies()).isDisplayed()).toBe(true);
   });
   it.skip("When I delete all cookies from the browser and refresh the page, Then the cookie banner shouldn‘t be displayed", async () => {
+    // This test is skipped due to an issue in GitHub Actions with deleting cookies and the flakiness of waiting for acceptCookies().
     await browser.deleteAllCookies();
     await browser.refresh();
     await expect(await $(InitialPage.acceptCookies()).isDisplayed()).toBe(false);
