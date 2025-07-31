@@ -74,7 +74,6 @@ google-cloud-storage = "^3.1.0"
 jsonpointer = "^3.0"
 redis = "^5.0.8"
 flask-compress = "^1.14"
-htmlmin = "^0.1.12"
 coloredlogs = "^15.0.1"
 uwsgi = "^2.0.24"
 email-validator = "^2.1.2"
@@ -89,6 +88,7 @@ cachetools = "^5.3.0.7"
 gevent = "^24.2.1"
 babel = "==2.14.0"  # Temporarily pinned - problem for translations found in v2.15.0, see: https://github.com/ONSdigital/eq-questionnaire-runner/pull/1384
 wtforms = "^3.2.1"
+htmlmin2 = "^0.1.13"
 
 [build-system]
 requires = ["poetry-core"]
