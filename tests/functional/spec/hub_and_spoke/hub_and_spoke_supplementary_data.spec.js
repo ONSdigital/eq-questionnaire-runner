@@ -5,11 +5,18 @@ import IntroductionBlockPage from "../../generated_pages/hub_section_required_wi
 import ListCollectorEmployeesPage from "../../generated_pages/hub_section_required_with_repeat_supplementary/list-collector-employees.page.js";
 import LengthOfEmploymentPage from "../../generated_pages/hub_section_required_with_repeat_supplementary/length-of-employment.page.js";
 import Section3Page from "../../generated_pages/hub_section_required_with_repeat_supplementary/section-3-summary.page.js";
+import { getRandomString } from "../../jwt_helper";
 
 describe("Feature: Hub and Spoke", () => {
   describe("Given a user opens a schema with hub required sections based on a repeating section using supplementary data", () => {
     beforeEach("Load survey", () => {
-      browser.openSDSQuestionnaire("test_hub_section_required_with_repeat_supplementary.json");
+      const responseId = getRandomString(16);
+
+      browser.openQuestionnaire("test_hub_section_required_with_repeat_supplementary.json.json", {
+        version: "v2",
+        sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
+        responseId,
+      });
     });
 
     it("When all the repeating sections are complete, Then the hub should be displayed", () => {

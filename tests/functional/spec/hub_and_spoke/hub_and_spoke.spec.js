@@ -56,7 +56,7 @@ describe("Feature: Hub and Spoke", () => {
     });
 
     it.skip("When a user views the Hub, Then the page title should be Choose another section to complete", async () => {
-      // This test is skipped because the page title is not consistently ready in time during GitHub Actions runs, causing flakiness.
+      // To be investigated. This test is skipped because the page title is not consistently ready in time during GitHub Actions runs, causing flakiness.
       const pageTitle = await browser.getTitle();
       await expect(pageTitle).toBe("Choose another section to complete - Hub & Spoke");
     });
