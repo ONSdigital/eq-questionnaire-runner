@@ -32,11 +32,11 @@ UnitLengthType: TypeAlias = Literal["short", "long", "narrow"]
 
 
 def mark_safe(context: nodes.EvalContext, value: str) -> Markup | str:
-    return Markup(value) if context.autoescape else value
+    return Markup(value) if context.autoescape else value  # noqa: S704
 
 
 def strip_tags(value: str) -> Markup:
-    return escape(Markup(value).striptags())
+    return escape(Markup(value).striptags())  # noqa: S704
 
 
 @blueprint.app_template_filter()
@@ -465,7 +465,7 @@ class SummaryRowItemValue:
 
 
 class SummaryRowItem:
-    def __init__(  # noqa: C901, R0912 pylint: disable=too-complex, too-many-branches
+    def __init__(  # noqa: C901 pylint: disable=too-complex, too-many-branches
         self,
         question: SelectFieldBase._Option,
         answer: SelectFieldBase._Option,
