@@ -272,11 +272,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return self.serialize(self._questionnaire_json)
 
     @cached_property
-    def survey(self) -> str | None:
-        survey: str | None = self.json.get("survey")
-        return survey
-
-    @cached_property
     def form_type(self) -> str | None:
         form_type: str | None = self.json.get("form_type")
         return form_type
