@@ -66,6 +66,10 @@ jobs:
         with:
           version: 2.1.2
           virtualenvs-create: true
+      - name: Install virtual environment
+        run: |
+          sudo apt-get install libsnappy-dev
+          poetry install
       - name: Compile translations
         run: make translate
       - name: Running translation tests
