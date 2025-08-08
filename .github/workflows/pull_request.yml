@@ -33,6 +33,7 @@ jobs:
       - name: Install virtual environment
         run: |
           sudo apt-get install libsnappy-dev
+          which python
           poetry run python --version
           poetry install
   node-dependencies:
