@@ -34,7 +34,9 @@ jobs:
         run: |
           sudo apt-get install libsnappy-dev
 
-          poetry env use $(which python)
+          poetry run python --version
+
+          poetry env use $(which python3.13)
           poetry run python --version
           poetry install
   node-dependencies:
