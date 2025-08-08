@@ -33,7 +33,9 @@ jobs:
       - name: Install virtual environment
         run: |
           sudo apt-get install libsnappy-dev
+
           poetry env use $(which python)
+          poetry run python --version
           poetry install
   node-dependencies:
     permissions:
