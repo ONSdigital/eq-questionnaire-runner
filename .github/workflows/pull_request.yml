@@ -36,7 +36,7 @@ jobs:
 
           poetry env remove --all || true
 
-          poetry env use $(which python3.13)
+          poetry env use ${{ env.pythonLocation }}/bin/python
           poetry run python --version
           poetry install
   node-dependencies:
