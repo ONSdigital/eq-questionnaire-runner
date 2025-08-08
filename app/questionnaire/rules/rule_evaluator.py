@@ -81,7 +81,7 @@ class RuleEvaluator:
 
     def get_resolved_operands(
         self, operands: Sequence[ValueSourceTypes]
-    ) -> Generator[ResolvedOperand, None, None]:
+    ) -> Generator[ResolvedOperand]:
         for operand in operands:
             yield self._resolve_operand(operand)
 
