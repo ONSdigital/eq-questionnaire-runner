@@ -34,7 +34,7 @@ jobs:
         run: |
           sudo apt-get install libsnappy-dev
 
-          poetry run python --version
+          poetry env remove --all || true
 
           poetry env use $(which python3.13)
           poetry run python --version
