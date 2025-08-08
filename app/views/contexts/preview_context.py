@@ -32,7 +32,7 @@ class PreviewContext(Context):
             "sections": sections,
         }
 
-    def build_all_sections(self) -> Generator[dict, None, None]:
+    def build_all_sections(self) -> Generator[dict]:
         """NB: Does not support repeating sections"""
 
         for section in self._schema.get_sections():

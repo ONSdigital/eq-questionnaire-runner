@@ -147,7 +147,7 @@ def _create_session_data_from_metadata(metadata: Mapping[str, Any]) -> SessionDa
 @contextmanager
 def create_session_questionnaire_store(
     metadata: MutableMapping,
-) -> Generator[QuestionnaireStore, None, None]:
+) -> Generator[QuestionnaireStore]:
     """
     Context to manage creating and saving new session and questionnaire store
     :param metadata: metadata parsed from jwt token
