@@ -157,7 +157,7 @@ class SectionSummaryContext(Context):
 
     def _custom_summary_elements(
         self, section_summary: Iterable[Mapping]
-    ) -> Generator[dict[str, Any], Any, None]:
+    ) -> Generator[dict[str, Any], Any]:
         for summary_element in section_summary:
             if summary_element["type"] == "List":
                 list_collector_block = ListCollectorBlock(

@@ -23,7 +23,7 @@ class SelectFieldWithDetailAnswer(SelectField):
             **kwargs,
         )
 
-    def __iter__(self) -> Generator[SelectFieldBase._Option, None, None]:
+    def __iter__(self) -> Generator[SelectFieldBase._Option]:
         opts = {
             "widget": self.option_widget,
             "name": self.name,
@@ -39,7 +39,7 @@ class SelectFieldWithDetailAnswer(SelectField):
             opt.checked = checked
             yield opt
 
-    def iter_choices(self) -> Generator[ChoiceWidgetRenderType, None, None]:
+    def iter_choices(self) -> Generator[ChoiceWidgetRenderType]:
         for value, label, detail_answer_id in self.choices:
             yield value, label, self.coerce(value) == self.data, detail_answer_id
 

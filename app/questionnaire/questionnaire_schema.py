@@ -697,7 +697,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     @staticmethod
     def get_blocks_for_section(
         section: Mapping,
-    ) -> Generator[ImmutableDict, None, None]:
+    ) -> Generator[ImmutableDict]:
         return (block for group in section["groups"] for block in group["blocks"])
 
     @classmethod

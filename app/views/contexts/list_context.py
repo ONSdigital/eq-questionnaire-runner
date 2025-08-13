@@ -59,7 +59,7 @@ class ListContext(Context):
         remove_block_id: str | None,
         primary_person_edit_block_id: str | None,
         for_list_item_ids: Sequence[str] | None,
-    ) -> Generator[dict, None, None]:
+    ) -> Generator[dict]:
         list_item_ids = self._data_stores.list_store[for_list]
         if for_list_item_ids:
             list_item_ids = [
