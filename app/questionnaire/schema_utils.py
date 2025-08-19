@@ -5,7 +5,7 @@ def find_pointers_containing(
     input_data: Mapping | Iterable[Mapping],
     search_key: str,
     pointer: str | None = None,
-) -> Generator[str, None, None]:
+) -> Generator[str]:
     """
     Recursive function which lists pointers which contain a search key
 

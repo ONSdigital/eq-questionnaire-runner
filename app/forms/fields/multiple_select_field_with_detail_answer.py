@@ -22,7 +22,7 @@ class MultipleSelectFieldWithDetailAnswer(SelectMultipleField):
             **kwargs,
         )
 
-    def __iter__(self) -> Generator[SelectFieldBase._Option, None, None]:
+    def __iter__(self) -> Generator[SelectFieldBase._Option]:
         opts = {
             "widget": self.option_widget,
             "name": self.name,
@@ -38,7 +38,7 @@ class MultipleSelectFieldWithDetailAnswer(SelectMultipleField):
             opt.checked = checked
             yield opt
 
-    def iter_choices(self) -> Generator[ChoiceWidgetRenderType, None, None]:
+    def iter_choices(self) -> Generator[ChoiceWidgetRenderType]:
         for value, label, detail_answer_id in self.choices:
             selected = self.data is not None and self.coerce(value) in self.data
             yield value, label, selected, detail_answer_id
