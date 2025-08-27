@@ -17,6 +17,13 @@ Install [Docker](https://www.docker.com/) for your system. Make sure that you've
 brew install docker
 brew install docker-compose
 ```
+
+Authenticate to make sure Docker can pull from GAR
+```shell
+gcloud auth login
+gcloud auth application-default login
+```
+
 On MacOS install container runtimes, eg. [Colima](https://github.com/abiosoft/colima):
 ```shell
 brew install colima
