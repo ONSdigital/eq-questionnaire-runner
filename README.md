@@ -18,12 +18,6 @@ brew install docker
 brew install docker-compose
 ```
 
-Authenticate to make sure Docker can pull from GAR
-```shell
-gcloud auth login
-gcloud auth application-default login
-```
-
 On MacOS install container runtimes, eg. [Colima](https://github.com/abiosoft/colima):
 ```shell
 brew install colima
@@ -161,6 +155,12 @@ make run
 Runner requires five supporting services - a questionnaire launcher, a storage backend, a cache, the supplementary data service and the collection instrument registry.
 
 #### Run supporting services with Docker
+
+First, authenticate to make sure Docker can pull from GAR
+```shell
+gcloud auth login
+gcloud auth application-default login
+```
 
 To run the app locally, but the supporting services in Docker, make sure you have Docker and Colima installed [from this step](#run-with-docker), then run:
 
