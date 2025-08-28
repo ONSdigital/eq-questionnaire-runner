@@ -159,7 +159,6 @@ Runner requires five supporting services - a questionnaire launcher, a storage b
 First, authenticate to make sure Docker can pull from GAR
 ```shell
 gcloud auth login
-gcloud auth application-default login
 ```
 
 To run the app locally, but the supporting services in Docker, make sure you have Docker and Colima installed [from this step](#run-with-docker), then run:
