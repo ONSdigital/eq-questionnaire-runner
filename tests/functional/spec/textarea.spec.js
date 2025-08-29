@@ -3,7 +3,7 @@ import TextareaSummary from "../generated_pages/textarea/submit.page.js";
 import { click } from "../helpers";
 describe("Textarea", () => {
   const textareaSchema = "test_textarea.json";
-  const textareaLimit = `${TextareaBlock.answer()} + [data-charcount-singular]`;
+  const textareaLimit = `${TextareaBlock.answer()}-check[data-message-singular]`;
 
   beforeEach(async () => {
     await browser.openQuestionnaire(textareaSchema);
@@ -43,7 +43,7 @@ describe("Textarea", () => {
 
   it("The user is unable to add more characters when the limit is reached", async () => {
     await $(TextareaBlock.answer()).setValue("This sentence is over twenty characters long");
-    await expect(await $(textareaLimit).getText()).toContain("0");
+    await expect(await $(textareaLimit).getText()).toContain("24");
     await $(TextareaBlock.answer()).getValue();
   });
 });
