@@ -20,7 +20,7 @@ exports.config = {
   suites: {
     components: ["./spec/components/**/*.js", "./spec/*.spec.js", "./spec/summaries/**/*.js"],
     timeout_modal: ["./spec/timeout/timeout_modal_extended_new_window/*.js", "./spec/timeout/timeout_modal_expired/*.js", "./spec/timeout/timeout_modal_extended/*.js"],
-    features: ["./spec/features/**/*.js", "./spec/list_collector/**/*.js", "./spec/hub_and_spoke/**/*.js", "./spec/supplementary_data/**/*.js"],
+    features: ["./spec/features/**/*.js", "./spec/list_collector/**/*.js", "./spec/hub_and_spoke/**/*.js", "./spec/supplementary_data_interstitial/**/*.js", "./spec/supplementary_data_list_collector/**/*.js", "./spec/supplementary_data_repeating_block/**/*.js"],
     journeys: ["./spec/journeys/**/*.js"]
   },
   // Patterns to exclude.
