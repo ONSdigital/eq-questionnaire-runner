@@ -1,0 +1,772 @@
+{
+    "mime_type": "application/json/ons/eq",
+    "language": "en",
+    "schema_version": "0.0.1",
+    "data_version": "0.0.3",
+    "survey_id": "123",
+    "title": "Test Supplementary Data",
+    "theme": "default",
+    "description": "A questionnaire to demo using Supplementary data for placeholders, validation and routing in both repeating and non-repeating sections.",
+    "metadata": [
+        {
+            "name": "survey_id",
+            "type": "string"
+        },
+        {
+            "name": "user_id",
+            "type": "string"
+        },
+        {
+            "name": "period_id",
+            "type": "string"
+        },
+        {
+            "name": "ru_name",
+            "type": "string"
+        },
+        {
+            "name": "sds_dataset_id",
+            "type": "string"
+        }
+    ],
+    "supplementary_data": {
+        "lists": ["employees"]
+    },
+    "questionnaire_flow": {
+        "type": "Hub",
+        "options": {}
+    },
+    "post_submission": {
+        "view_response": true
+    },
+    "sections": [
+        {
+            "id": "section-1",
+            "title": "Employees",
+            "groups": [
+                {
+                    "id": "employee-reporting",
+                    "blocks": [
+                        {
+                            "id": "list-collector-employees",
+                            "type": "ListCollectorContent",
+                            "page_title": "Employees",
+                            "for_list": "employees",
+                            "content": {
+                                "title": "Employees",
+                                "contents": [
+                                    {
+                                        "definition": {
+                                            "title": "Company employees",
+                                            "contents": [
+                                                {
+                                                    "description": "List of previously reported employees."
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "description": "You have previously reported on the above employees. Press continue to proceed to the next section where you can add any additional employees."
+                                    }
+                                ]
+                            },
+                            "summary": {
+                                "title": "employees",
+                                "item_title": {
+                                    "text": "{employee_name}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "employee_name",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "supplementary_data",
+                                                                "identifier": "employees",
+                                                                "selectors": ["personal_details", "forename"]
+                                                            },
+                                                            {
+                                                                "source": "supplementary_data",
+                                                                "identifier": "employees",
+                                                                "selectors": ["personal_details", "surname"]
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "section-2",
+            "title": "Additional Employees",
+            "summary": {
+                "show_on_completion": true,
+                "items": [
+                    {
+                        "type": "List",
+                        "for_list": "additional-employees",
+                        "title": "employees",
+                        "add_link_text": "Add another employee",
+                        "empty_list_text": "There are no employees"
+                    }
+                ],
+                "show_non_item_answers": true
+            },
+            "groups": [
+                {
+                    "id": "additional-employee-reporting",
+                    "blocks": [
+                        {
+                            "type": "ListCollectorDrivingQuestion",
+                            "id": "any-additional-employees",
+                            "for_list": "additional-employees",
+                            "question": {
+                                "type": "General",
+                                "id": "any-additional-employee-question",
+                                "title": "Do you have any additional employees to report on?",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "This uses a different employees list, and the items from this list and the supplementary list will then be used in repeating sections"
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "type": "Radio",
+                                        "id": "any-additional-employee-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock",
+                                                    "params": {
+                                                        "block_id": "add-additional-employee",
+                                                        "list_name": "additional-employees"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "routing_rules": [
+                                {
+                                    "section": "End",
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "any-additional-employee-answer"
+                                            },
+                                            "No"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "list-collector-additional"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "list-collector-additional",
+                            "type": "ListCollector",
+                            "for_list": "additional-employees",
+                            "question": {
+                                "id": "confirmation-additional-question",
+                                "type": "General",
+                                "title": "Do you need to add any more employees?",
+                                "answers": [
+                                    {
+                                        "id": "list-collector-additional-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes",
+                                                "action": {
+                                                    "type": "RedirectToListAddBlock"
+                                                }
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "add_block": {
+                                "id": "add-additional-employee",
+                                "type": "ListAddQuestion",
+                                "cancel_text": "Don’t need to add any other employees?",
+                                "question": {
+                                    "id": "add-additional-question",
+                                    "type": "General",
+                                    "title": "What is the name of the employee?",
+                                    "answers": [
+                                        {
+                                            "id": "employee-first-name",
+                                            "label": "First name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "employee-last-name",
+                                            "label": "Last name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "edit_block": {
+                                "id": "edit-additional-employee",
+                                "type": "ListEditQuestion",
+                                "cancel_text": "Don’t need to change anything?",
+                                "question": {
+                                    "id": "edit-additional-question",
+                                    "type": "General",
+                                    "title": "What is the name of the employee?",
+                                    "answers": [
+                                        {
+                                            "id": "employee-first-name",
+                                            "label": "First name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        },
+                                        {
+                                            "id": "employee-last-name",
+                                            "label": "Last name",
+                                            "mandatory": true,
+                                            "type": "TextField"
+                                        }
+                                    ]
+                                }
+                            },
+                            "remove_block": {
+                                "id": "remove-additional-employee",
+                                "type": "ListRemoveQuestion",
+                                "cancel_text": "Don’t need to remove this employee?",
+                                "question": {
+                                    "id": "remove-additional-question",
+                                    "type": "General",
+                                    "title": "Are you sure you want to remove this employee?",
+                                    "warning": "All of the information about this employee will be deleted",
+                                    "answers": [
+                                        {
+                                            "id": "remove-confirmation",
+                                            "mandatory": true,
+                                            "type": "Radio",
+                                            "options": [
+                                                {
+                                                    "label": "Yes",
+                                                    "value": "Yes",
+                                                    "action": {
+                                                        "type": "RemoveListItemAndAnswers"
+                                                    }
+                                                },
+                                                {
+                                                    "label": "No",
+                                                    "value": "No"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "summary": {
+                                "title": "employees",
+                                "item_title": {
+                                    "text": "{employee_name}",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "employee_name",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "employee-first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "employee-last-name"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "enabled": {
+                "when": {
+                    "and": [
+                        {
+                            "==": [
+                                {
+                                    "source": "progress",
+                                    "selector": "section",
+                                    "identifier": "section-1"
+                                },
+                                "COMPLETED"
+                            ]
+                        },
+                        {
+                            "==": [
+                                {
+                                    "source": "progress",
+                                    "selector": "section",
+                                    "identifier": "section-2"
+                                },
+                                "COMPLETED"
+                            ]
+                        }
+                    ]
+                }
+            },
+            "id": "section-3",
+            "title": "Employee Details",
+            "summary": {
+                "show_on_completion": true
+            },
+            "repeat": {
+                "for_list": "employees",
+                "title": {
+                    "text": "{employee_name}",
+                    "placeholders": [
+                        {
+                            "placeholder": "employee_name",
+                            "transforms": [
+                                {
+                                    "arguments": {
+                                        "delimiter": " ",
+                                        "list_to_concatenate": [
+                                            {
+                                                "source": "supplementary_data",
+                                                "identifier": "employees",
+                                                "selectors": ["personal_details", "forename"]
+                                            },
+                                            {
+                                                "source": "supplementary_data",
+                                                "identifier": "employees",
+                                                "selectors": ["personal_details", "surname"]
+                                            }
+                                        ]
+                                    },
+                                    "transform": "concatenate_list"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "groups": [
+                {
+                    "id": "employee-detail-questions",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "length-of-employment",
+                            "question": {
+                                "id": "length-employment-question",
+                                "type": "General",
+                                "title": {
+                                    "text": "When did {employee_name} start working for {company_name}?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "company_name",
+                                            "value": {
+                                                "source": "supplementary_data",
+                                                "identifier": "company_name"
+                                            }
+                                        },
+                                        {
+                                            "placeholder": "employee_name",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "supplementary_data",
+                                                                "identifier": "employees",
+                                                                "selectors": ["personal_details", "forename"]
+                                                            },
+                                                            {
+                                                                "source": "supplementary_data",
+                                                                "identifier": "employees",
+                                                                "selectors": ["personal_details", "surname"]
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "employment-start",
+                                        "label": {
+                                            "text": "Start date at {company_name}",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "company_name",
+                                                    "value": {
+                                                        "source": "supplementary_data",
+                                                        "identifier": "company_name"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "mandatory": true,
+                                        "type": "Date",
+                                        "maximum": {
+                                            "value": "now"
+                                        },
+                                        "minimum": {
+                                            "value": {
+                                                "source": "supplementary_data",
+                                                "identifier": "incorporation_date"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "conditional-employee-block",
+                            "type": "Question",
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "employees"
+                                                }
+                                            ]
+                                        },
+                                        3
+                                    ]
+                                }
+                            },
+                            "question": {
+                                "id": "conditional-employee-question",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "This block is enabled because there are 3 employees in the supplementary dataset"
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "title": {
+                                    "text": "Has {employee_name} been promoted since starting at {company_name}?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "company_name",
+                                            "value": {
+                                                "source": "supplementary_data",
+                                                "identifier": "company_name"
+                                            }
+                                        },
+                                        {
+                                            "placeholder": "employee_name",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "supplementary_data",
+                                                                "identifier": "employees",
+                                                                "selectors": ["personal_details", "forename"]
+                                                            },
+                                                            {
+                                                                "source": "supplementary_data",
+                                                                "identifier": "employees",
+                                                                "selectors": ["personal_details", "surname"]
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "promoted-yes-no-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "enabled": {
+                "when": {
+                    "and": [
+                        {
+                            "==": [
+                                {
+                                    "source": "progress",
+                                    "selector": "section",
+                                    "identifier": "section-1"
+                                },
+                                "COMPLETED"
+                            ]
+                        },
+                        {
+                            "==": [
+                                {
+                                    "source": "progress",
+                                    "selector": "section",
+                                    "identifier": "section-2"
+                                },
+                                "COMPLETED"
+                            ]
+                        }
+                    ]
+                }
+            },
+            "id": "section-4",
+            "title": "Additional Employee Details",
+            "summary": {
+                "show_on_completion": true
+            },
+            "repeat": {
+                "for_list": "additional-employees",
+                "title": {
+                    "text": "{employee_name}",
+                    "placeholders": [
+                        {
+                            "placeholder": "employee_name",
+                            "transforms": [
+                                {
+                                    "arguments": {
+                                        "delimiter": " ",
+                                        "list_to_concatenate": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "employee-first-name"
+                                            },
+                                            {
+                                                "source": "answers",
+                                                "identifier": "employee-last-name"
+                                            }
+                                        ]
+                                    },
+                                    "transform": "concatenate_list"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "groups": [
+                {
+                    "id": "additional-employee-detail-questions",
+                    "blocks": [
+                        {
+                            "type": "Question",
+                            "id": "additional-length-of-employment",
+                            "question": {
+                                "id": "additional-length-employment-question",
+                                "type": "General",
+                                "title": {
+                                    "text": "When did {employee_name} start working for {company_name}?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "company_name",
+                                            "value": {
+                                                "source": "supplementary_data",
+                                                "identifier": "company_name"
+                                            }
+                                        },
+                                        {
+                                            "placeholder": "employee_name",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "employee-first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "employee-last-name"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "additional-employment-start",
+                                        "label": {
+                                            "text": "Start date at {company_name}",
+                                            "placeholders": [
+                                                {
+                                                    "placeholder": "company_name",
+                                                    "value": {
+                                                        "source": "supplementary_data",
+                                                        "identifier": "company_name"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "mandatory": true,
+                                        "type": "Date",
+                                        "maximum": {
+                                            "value": "now"
+                                        },
+                                        "minimum": {
+                                            "value": {
+                                                "source": "supplementary_data",
+                                                "identifier": "incorporation_date"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "conditional-additional-employee-block",
+                            "type": "Question",
+                            "skip_conditions": {
+                                "when": {
+                                    "!=": [
+                                        {
+                                            "count": [
+                                                {
+                                                    "source": "list",
+                                                    "identifier": "additional-employees"
+                                                }
+                                            ]
+                                        },
+                                        3
+                                    ]
+                                }
+                            },
+                            "question": {
+                                "id": "conditional-additional-employee-question",
+                                "guidance": {
+                                    "contents": [
+                                        {
+                                            "description": "This block is enabled because there are 3 additional employees"
+                                        }
+                                    ]
+                                },
+                                "type": "General",
+                                "title": {
+                                    "text": "Has {employee_name} been promoted since starting at {company_name}?",
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "company_name",
+                                            "value": {
+                                                "source": "supplementary_data",
+                                                "identifier": "company_name"
+                                            }
+                                        },
+                                        {
+                                            "placeholder": "employee_name",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "employee-first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "employee-last-name"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "answers": [
+                                    {
+                                        "id": "additional-promoted-yes-no-answer",
+                                        "mandatory": true,
+                                        "type": "Radio",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
