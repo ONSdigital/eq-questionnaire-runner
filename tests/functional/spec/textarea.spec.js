@@ -41,7 +41,7 @@ describe("Textarea", () => {
     await expect(await $(textareaLimit).getText()).toContain("15");
   });
 
-  it("The user is unable to add more characters when the limit is reached", async () => {
+  it("Displays the number of characters entered over the limit when the user exceeds the character limit", async () => {
     await $(TextareaBlock.answer()).setValue("This sentence is over twenty characters long");
     await expect(await $(textareaLimit).getText()).toContain("24");
     await $(TextareaBlock.answer()).getValue();
