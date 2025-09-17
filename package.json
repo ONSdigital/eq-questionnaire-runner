@@ -50,6 +50,20 @@
         "typescript": "^5.6.3",
         "uuid": "^11.0.2",
         "webdriverio": "^9.2.1"
+
+    },
+    "overrides": {
+        "wrap-ansi": "6.2.0",
+        "ansi-regex": "5.0.1",
+        "ansi-styles": "3.2.1",
+        "chalk": "2.4.2",
+        "color-convert": "1.9.3",
+        "color-name": "1.1.4",
+        "debug": "4.4.1",
+        "error-ex": "1.3.2",
+        "strip-ansi": "7.1.0",
+        "supports-color": "5.5.0",
+        "is-arrayish": "0.2.1"
     },
     "prettier": {}
 }
