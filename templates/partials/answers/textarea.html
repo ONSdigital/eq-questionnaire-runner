@@ -16,7 +16,7 @@
         "label": label,
         "value": input._value() | e,
         "charCheckLimit": {
-            "limit": answer.max_length | default(input.maxlength, true),
+            "limit": answer.max_length | default(input.maxLength, true),
             "charCountSingular": _("You have {x} character remaining"),
             "charCountPlural": _("You have {x} characters remaining")
         },

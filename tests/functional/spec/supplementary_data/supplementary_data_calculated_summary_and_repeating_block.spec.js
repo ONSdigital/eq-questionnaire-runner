@@ -19,7 +19,6 @@ describe("Using supplementary data", () => {
   const responseId = getRandomString(16);
   const summaryItems = ".ons-summary__item--text";
   const summaryValues = ".ons-summary__values";
-  const summaryRowTitles = ".ons-summary__row-title";
 
   before("Starting the survey", async () => {
     await browser.openQuestionnaire("test_supplementary_data_repeating_block_and_calculated_summary.json", {
@@ -122,12 +121,10 @@ describe("Using supplementary data", () => {
   });
 
   it("Given I have a section with repeating answers for a supplementary list, When I reach the section summary page, Then I see the supplementary data and my answers rendered correctly", async () => {
-    await expect(await $$(summaryRowTitles)[0].getText()).toBe("Sales during the previous quarter");
+    await expect(await $("#dynamic-answer-question .ons-summary__row-title").getText()).toBe("Sales during the previous quarter");
     await assertSummaryItems([
-      "Articles and equipment for sports or outdoor games",
       "Volume of sales for Articles and equipment for sports or outdoor games",
       "Total volume produced for Articles and equipment for sports or outdoor games",
-      "Kitchen Equipment",
       "Volume of sales for Kitchen Equipment",
       "Total volume produced for Kitchen Equipment",
       "Value of sales for Articles and equipment for sports or outdoor games",
@@ -222,29 +219,23 @@ describe("Using supplementary data", () => {
 
     // Product details
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[0].getText()).toBe(
-      "Articles and equipment for sports or outdoor games",
-    );
-    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[1].getText()).toBe(
       "Volume of sales for Articles and equipment for sports or outdoor games",
     );
-    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[2].getText()).toBe(
+    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[1].getText()).toBe(
       "Total volume produced for Articles and equipment for sports or outdoor games",
     );
+    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[2].getText()).toBe("Volume of sales for Kitchen Equipment");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryValues)[0].getText()).toBe("100 kg");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryValues)[1].getText()).toBe("200 kg");
-    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[3].getText()).toBe("Kitchen Equipment");
-    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[4].getText()).toBe("Volume of sales for Kitchen Equipment");
-    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[5].getText()).toBe(
+    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[3].getText()).toBe(
       "Total volume produced for Kitchen Equipment",
     );
+    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[4].getText()).toBe("Volume of sales for Groceries");
+    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[5].getText()).toBe("Total volume produced for Groceries");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryValues)[2].getText()).toBe("50 kg");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryValues)[3].getText()).toBe("300 kg");
-    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[6].getText()).toBe("Groceries");
-    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[7].getText()).toBe("Volume of sales for Groceries");
-    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[8].getText()).toBe("Total volume produced for Groceries");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryValues)[4].getText()).toBe("40 kg");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryValues)[5].getText()).toBe("50 kg");
-    await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryRowTitles)[0].getText()).toBe("Sales during the previous quarter");
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(1)).$$(summaryItems)[0].getText()).toBe(
       "Value of sales for Articles and equipment for sports or outdoor games",
     );
