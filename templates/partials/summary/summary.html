@@ -15,7 +15,7 @@
                     {% do summary_groups.append
                         (
                             {
-                                "groupTitle": group.title if group.title else None,
+                                "title": group.title if group.title else None,
                                 "id": group.id if group.id else None,
                                 "rows": map_summary_item_config(
                                     group=group,
@@ -40,7 +40,7 @@
         {% do summary_sections.append
             (
                 {
-                    "summaryTitle": section.title if summary_type == "Summary",
+                    "title": section.title if summary_type == "Summary",
                     "groups": summary_groups
                 }
             )
