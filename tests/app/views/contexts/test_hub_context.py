@@ -14,10 +14,10 @@ def router(schema, data_stores):
 
 def test_get_not_started_row_for_section(schema, data_stores):
     expected = {
-        "rowItems": [
+        "itemsList": [
             {
-                "rowTitle": "Breakfast",
-                "rowTitleAttributes": {"data-qa": "hub-row-section-1-title"},
+                "title": "Breakfast",
+                "titleAttributes": {"data-qa": "hub-row-section-1-title"},
                 "attributes": {"data-qa": "hub-row-section-1-state"},
                 "valueList": [{"text": "Not started"}],
                 "actions": [
@@ -46,10 +46,10 @@ def test_get_not_started_row_for_section(schema, data_stores):
 
 def test_get_in_progress_row_for_section(schema, data_stores):
     expected = {
-        "rowItems": [
+        "itemsList": [
             {
-                "rowTitle": "Breakfast",
-                "rowTitleAttributes": {"data-qa": "hub-row-section-1-title"},
+                "title": "Breakfast",
+                "titleAttributes": {"data-qa": "hub-row-section-1-title"},
                 "attributes": {"data-qa": "hub-row-section-1-state"},
                 "valueList": [{"text": "Partially completed"}],
                 "actions": [
@@ -78,10 +78,10 @@ def test_get_in_progress_row_for_section(schema, data_stores):
 
 def test_get_completed_row_for_section(schema, data_stores):
     expected = {
-        "rowItems": [
+        "itemsList": [
             {
-                "rowTitle": "Breakfast",
-                "rowTitleAttributes": {"data-qa": "hub-row-section-1-title"},
+                "title": "Breakfast",
+                "titleAttributes": {"data-qa": "hub-row-section-1-title"},
                 "attributes": {"data-qa": "hub-row-section-1-state"},
                 "iconType": "check",
                 "valueList": [{"text": "Completed"}],

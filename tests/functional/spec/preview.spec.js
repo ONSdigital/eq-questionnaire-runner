@@ -1,5 +1,6 @@
 import IntroductionPageHub from "../generated_pages/introduction_hub/introduction.page";
 import IntroductionPageLinear from "../generated_pages/introduction/introduction.page";
+import { verifyUrlContains } from "../helpers";
 
 describe("Introduction preview questions", () => {
   const introductionSchemaHub = "test_introduction_hub.json";
@@ -24,7 +25,7 @@ describe("Introduction preview questions", () => {
   async function testPreview(schema, page) {
     await browser.openQuestionnaire(schema);
     await $(page.previewQuestions()).click();
-    expect(await browser.getUrl()).toContain("questionnaire/preview");
+    await verifyUrlContains("questionnaire/preview");
     if (schema === "test_introduction.json") {
       expect(await $(previewSectionTitle).getText()).toBe("Main section");
     } else {
@@ -64,7 +65,7 @@ describe("Introduction preview questions", () => {
     expect(await $("h1").getText()).toBe("Are you sure you are able to report for the calendar month 5 December 2016 to 20 December 2016?");
     await browser.url("questionnaire/introduction/");
     await $(IntroductionPageLinear.previewQuestions()).click();
-    expect(await browser.getUrl()).toContain("questionnaire/preview");
+    await verifyUrlContains("questionnaire/preview");
     expect(await $(previewSectionTitle).getText()).toBe("Main section");
     expect(await $$(previewQuestion)[2].$("h3").getText()).toBe(
       "Are you sure you are able to report for the calendar month {calendar_start_date} to {calendar_end_date}?",
@@ -74,7 +75,7 @@ describe("Introduction preview questions", () => {
   it("Given I start a survey, When I view the preview page of hub flow schema, Then the twisty button should read 'Show all' and answers should be invisible", async () => {
     await browser.openQuestionnaire(introductionSchemaHub);
     await $(IntroductionPageHub.previewQuestions()).click();
-    expect(await browser.getUrl()).toContain("questionnaire/preview");
+    await verifyUrlContains("questionnaire/preview");
     expect(await $(printButton).isClickable()).toBe(true);
     expect(await $(pdfButton).isClickable()).toBe(true);
     expect(await $(showButton).getText()).toBe("Show all");

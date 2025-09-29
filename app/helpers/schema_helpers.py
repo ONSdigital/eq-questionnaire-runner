@@ -1,5 +1,5 @@
 from functools import wraps
-from typing import Callable, Concatenate, ParamSpec, TypeVar
+from typing import Callable, Concatenate
 
 from flask_login import current_user
 from werkzeug.exceptions import Unauthorized
@@ -8,12 +8,9 @@ from app.globals import get_metadata, get_session_store
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.utilities.schema import load_schema_from_metadata
 
-T = TypeVar("T")
-P = ParamSpec("P")
 
-
-def with_schema(
-    function: Callable[Concatenate[QuestionnaireSchema, P], T]
+def with_schema[**P, T](
+    function: Callable[Concatenate[QuestionnaireSchema, P], T],
 ) -> Callable[P, T]:
     """Adds the survey schema as the first argument to the function being wrapped.
     Use on flask request handlers or methods called by flask request handlers.

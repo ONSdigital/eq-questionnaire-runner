@@ -10,23 +10,21 @@ from marshmallow import (
     validates_schema,
 )
 
-from app.authentication.auth_payload_versions import SupplementaryDataSchemaVersion
 from app.utilities.metadata_parser_v2 import VALIDATORS, StripWhitespaceMixin
 
 
 class ItemsSchema(Schema):
     identifier = fields.Field(required=True)
+    ITEM_IDENTIFIER_ERROR_MESSAGE = (
+        "Item identifier must be a non-empty string or non-negative integer"
+    )
 
     @validates("identifier")
-    def validate_identifier(  # pylint: disable=no-self-use
-        self, identifier: fields.Field
-    ) -> None:
+    def validate_identifier(self, identifier: fields.Field) -> None:
         if not (isinstance(identifier, str) and identifier.strip()) and not (
             isinstance(identifier, int) and identifier >= 0
         ):
-            raise ValidationError(
-                "Item identifier must be a non-empty string or non-negative integer"
-            )
+            raise ValidationError(self.ITEM_IDENTIFIER_ERROR_MESSAGE)
 
 
 class ItemsData(Schema, StripWhitespaceMixin):
@@ -34,15 +32,11 @@ class ItemsData(Schema, StripWhitespaceMixin):
 
 
 class SupplementaryData(Schema, StripWhitespaceMixin):
-    identifier = VALIDATORS["string"](validate=validate.Length(min=1))
-    schema_version = VALIDATORS["string"](
-        validate=validate.OneOf(
-            [
-                SupplementaryDataSchemaVersion.V1.value,
-                SupplementaryDataSchemaVersion.V2.value,
-            ]
-        )
+    SDS_IDENTIFIER_ERROR_MESSAGE = (
+        "Supplementary data did not return the specified Identifier"
     )
+
+    identifier = VALIDATORS["string"](validate=validate.Length(min=1))
     items = fields.Nested(ItemsData, required=False, unknown=INCLUDE)
 
     @validates_schema()
@@ -50,12 +44,19 @@ class SupplementaryData(Schema, StripWhitespaceMixin):
         self, data: Mapping, **kwargs: Any
     ) -> None:
         if data and data["identifier"] != self.context["identifier"]:
-            raise ValidationError(
-                "Supplementary data did not return the specified Identifier"
-            )
+            raise ValidationError(self.SDS_IDENTIFIER_ERROR_MESSAGE)
 
 
 class SupplementaryDataMetadataSchema(Schema, StripWhitespaceMixin):
+
+    DATASET_ID_ERROR_MESSAGE = (
+        "Supplementary data did not return the specified Dataset ID"
+    )
+    SURVEY_ID_ERROR_MESSAGE = (
+        "Supplementary data did not return the specified Survey ID"
+    )
+    SDS_VERSION_ERROR_MESSAGE = "The Supplementary Dataset Schema Version does not match the version set in the Questionnaire Schema"
+
     dataset_id = VALIDATORS["uuid"]()
     survey_id = VALIDATORS["string"](validate=validate.Length(min=1))
     data = fields.Nested(
@@ -66,19 +67,20 @@ class SupplementaryDataMetadataSchema(Schema, StripWhitespaceMixin):
     )
 
     @validates_schema()
-    def validate_dataset_and_survey_id(  # pylint: disable=unused-argument
-        self, data: Mapping, **kwargs: Any
+    def validate_payload(  # pylint: disable=unused-argument
+        self, payload: Mapping, **kwargs: Any
     ) -> None:
-        if data:
-            if data["dataset_id"] != self.context["dataset_id"]:
-                raise ValidationError(
-                    "Supplementary data did not return the specified Dataset ID"
-                )
+        if payload:
+            if payload["dataset_id"] != self.context["dataset_id"]:
+                raise ValidationError(self.DATASET_ID_ERROR_MESSAGE)
 
-            if data["survey_id"] != self.context["survey_id"]:
-                raise ValidationError(
-                    "Supplementary data did not return the specified Survey ID"
-                )
+            if payload["survey_id"] != self.context["survey_id"]:
+                raise ValidationError(self.SURVEY_ID_ERROR_MESSAGE)
+
+            if self.context["sds_schema_version"] and (
+                payload["data"]["schema_version"] != self.context["sds_schema_version"]
+            ):
+                raise ValidationError(self.SDS_VERSION_ERROR_MESSAGE)
 
 
 def validate_supplementary_data_v1(
@@ -86,7 +88,8 @@ def validate_supplementary_data_v1(
     dataset_id: str,
     identifier: str,
     survey_id: str,
-) -> dict:
+    sds_schema_version: str | None = None,
+) -> dict[str, str | dict | int | list]:
     """Validate claims required for supplementary data"""
     supplementary_data_metadata_schema = SupplementaryDataMetadataSchema(
         unknown=INCLUDE
@@ -95,6 +98,7 @@ def validate_supplementary_data_v1(
         "dataset_id": dataset_id,
         "identifier": identifier,
         "survey_id": survey_id,
+        "sds_schema_version": sds_schema_version,
     }
     validated_supplementary_data = supplementary_data_metadata_schema.load(
         supplementary_data

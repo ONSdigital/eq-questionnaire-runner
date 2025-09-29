@@ -1,5 +1,5 @@
 from functools import cached_property, lru_cache
-from typing import Any, Type
+from typing import Any
 
 from flask import current_app
 from flask import render_template as flask_render_template
@@ -171,7 +171,7 @@ class ContextHelper:
 def survey_config_mapping(
     *, theme: SurveyType, language: str, base_url: str, schema: QuestionnaireSchema
 ) -> SurveyConfig:
-    survey_type_to_config: dict[SurveyType, Type[SurveyConfig]] = {
+    survey_type_to_config: dict[SurveyType, type[SurveyConfig]] = {
         SurveyType.DEFAULT: BusinessSurveyConfig,
         SurveyType.BUSINESS: BusinessSurveyConfig,
         SurveyType.HEALTH: SocialSurveyConfig,

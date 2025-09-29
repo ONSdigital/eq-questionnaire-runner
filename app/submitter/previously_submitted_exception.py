@@ -1,8 +1,5 @@
-from typing import Union
-
-
 class PreviouslySubmittedException(Exception):
-    def __init__(self, value: Union[str, int]) -> None:
+    def __init__(self, value: str | int) -> None:
         super().__init__()
         self.value = value
 

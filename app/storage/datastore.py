@@ -1,5 +1,3 @@
-from typing import Optional, Type
-
 from google.api_core.retry import Retry
 from google.cloud import datastore
 from google.cloud.datastore import Entity
@@ -11,13 +9,15 @@ logger = get_logger()
 
 
 class Datastore(StorageHandler):
+    UNIQUE_KEY_ERROR_MESSAGE = "Unique key checking not supported"
+
     def __init__(self, client: datastore.Client) -> None:
         super().__init__(client)
 
     @Retry()
     def put(self, model: ModelTypes, overwrite: bool = True) -> bool:
         if not overwrite:
-            raise NotImplementedError("Unique key checking not supported")
+            raise NotImplementedError(self.UNIQUE_KEY_ERROR_MESSAGE)
 
         storage_model = StorageModel(model_type=type(model))
         serialized_item = storage_model.serialize(model)
@@ -36,7 +36,7 @@ class Datastore(StorageHandler):
         return True
 
     @Retry()
-    def get(self, model_type: Type[ModelTypes], key_value: str) -> Optional[ModelTypes]:
+    def get(self, model_type: type[ModelTypes], key_value: str) -> ModelTypes | None:
         storage_model = StorageModel(model_type=model_type)
         key = self.client.key(storage_model.table_name, key_value)
 

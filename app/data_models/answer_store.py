@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from typing import Iterable, Iterator, Optional
+from typing import Iterable, Iterator
 
 from app.data_models.answer import Answer, AnswerDict
 
-AnswerKeyType = tuple[str, Optional[str]]
+AnswerKeyType = tuple[str, str | None]
 
 
 class AnswerStore:
@@ -21,7 +21,7 @@ class AnswerStore:
     }
     """
 
-    def __init__(self, answers: Optional[Iterable[AnswerDict]] = None):
+    def __init__(self, answers: Iterable[AnswerDict] | None = None):
         """Instantiate an answer_store.
 
         Args:
@@ -53,10 +53,11 @@ class AnswerStore:
 
     @staticmethod
     def _validate(answer: Answer) -> None:
+        answer_type_error_message = (
+            f"Method only supports Answer argument type, found type: {type(answer)}"
+        )
         if not isinstance(answer, Answer):
-            raise TypeError(
-                f"Method only supports Answer argument type, found type: {type(answer)}"
-            )
+            raise TypeError(answer_type_error_message)
 
     @property
     def is_dirty(self) -> bool:
@@ -81,8 +82,8 @@ class AnswerStore:
         return False
 
     def get_answer(
-        self, answer_id: str, list_item_id: Optional[str] = None
-    ) -> Optional[Answer]:
+        self, answer_id: str, list_item_id: str | None = None
+    ) -> Answer | None:
         """Get a single answer from the store
 
         Args:
@@ -95,7 +96,7 @@ class AnswerStore:
         return self.answer_map.get((answer_id, list_item_id))
 
     def get_answers_by_answer_id(
-        self, answer_ids: Iterable[str], list_item_id: Optional[str] = None
+        self, answer_ids: Iterable[str], list_item_id: str | None = None
     ) -> list[Answer]:
         """Get multiple answers from the store using the answer_id
 
@@ -121,9 +122,7 @@ class AnswerStore:
         """
         self.answer_map.clear()
 
-    def remove_answer(
-        self, answer_id: str, *, list_item_id: Optional[str] = None
-    ) -> bool:
+    def remove_answer(self, answer_id: str, *, list_item_id: str | None = None) -> bool:
         """
         Removes answer *in place* from the answer store.
         :return: True if answer removed else False
@@ -143,10 +142,11 @@ class AnswerStore:
 
         *Not efficient.*
         """
-        keys_to_delete = []
-        for answer in self:
-            if answer.list_item_id and answer.list_item_id in list_item_ids:
-                keys_to_delete.append((answer.answer_id, answer.list_item_id))
+        keys_to_delete = [
+            (answer.answer_id, answer.list_item_id)
+            for answer in self
+            if answer.list_item_id and answer.list_item_id in list_item_ids
+        ]
 
         for key in keys_to_delete:
             del self.answer_map[key]

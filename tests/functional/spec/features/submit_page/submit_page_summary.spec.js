@@ -3,7 +3,7 @@ import DessertConfirmationPage from "../../../generated_pages/submit_with_summar
 import NumbersPage from "../../../generated_pages/submit_with_summary/numbers.page.js";
 import RadioPage from "../../../generated_pages/submit_with_summary/radio.page.js";
 import SubmitPage from "../../../generated_pages/submit_with_summary/submit.page.js";
-import { click } from "../../../helpers";
+import { click, verifyUrlContains } from "../../../helpers";
 describe("Submit Page with Summary", () => {
   beforeEach("Load the questionnaire", async () => {
     await browser.openQuestionnaire("test_submit_with_summary.json");
@@ -25,7 +25,7 @@ describe("Submit Page with Summary", () => {
     await completeAllQuestions();
 
     await click(SubmitPage.submit());
-    await expect(browser).toHaveUrlContaining("thank-you");
+    await verifyUrlContains("thank-you");
   });
 
   it("Given a questionnaire with a summary has been completed when a summary page edit link is clicked then it should return to that question", async () => {
@@ -42,7 +42,7 @@ describe("Submit Page with Summary", () => {
     await $(SubmitPage.radioAnswerEdit()).click();
     await $(RadioPage.previous()).click();
 
-    await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
+    await verifyUrlContains(SubmitPage.pageName);
   });
 
   it("Given a questionnaire with a summary has been completed when a summary page edit link is clicked then it should return to that question then back to summary", async () => {
@@ -104,6 +104,6 @@ describe("Submit Page with Summary", () => {
     await $(NumbersPage.decimal()).setValue("123456.78");
     await click(NumbersPage.submit());
 
-    await expect(browser).toHaveUrlContaining(SubmitPage.pageName);
+    await verifyUrlContains(SubmitPage.pageName);
   }
 });

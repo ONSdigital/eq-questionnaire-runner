@@ -42,11 +42,12 @@ def handle_language(metadata: MetadataProxy | None = None) -> None:
 
 
 def get_languages_context(current_language: str) -> dict[str, list[dict]] | None:
-    context = []
     allowed_languages = g.get("allowed_languages")
     if allowed_languages and len(allowed_languages) > 1:
-        for language in allowed_languages:
-            context.append(_get_language_context(language, current_language))
+        context: list[dict[str, str | bool]] = [
+            _get_language_context(language, current_language)
+            for language in allowed_languages
+        ]
         return {"languages": context}
 
     if (language := cookie_session.get("language_code")) and language in LANGUAGE_TEXT:
@@ -59,7 +60,7 @@ def _get_language_context(
     language_code: str, current_language: str
 ) -> dict[str, str | bool]:
     return {
-        "ISOCode": language_code,
+        "isoCode": language_code,
         "url": _get_query_string_with_language(language_code),
         "text": LANGUAGE_TEXT[language_code],
         "current": language_code == current_language,

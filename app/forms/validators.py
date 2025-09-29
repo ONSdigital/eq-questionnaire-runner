@@ -4,7 +4,7 @@ import math
 import re
 from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
-from typing import TYPE_CHECKING, Iterable, List, Mapping, Optional, Sequence, Union
+from typing import TYPE_CHECKING, Iterable, Mapping, Sequence
 
 import flask_babel
 from babel import numbers
@@ -39,19 +39,19 @@ tld_part_regex = re.compile(
 )
 email_regex = re.compile(r"^.+@([^.@][^@\s]+)$")
 
-OptionalMessage = Optional[Mapping[str, str]]
-NumType = Union[int, Decimal]
+OptionalMessage = Mapping[str, str] | None
+NumType = int | Decimal
 PeriodType = Mapping[str, int]
 
 
 class NumberCheck:
-    def __init__(self, message: Optional[str] = None):
+    def __init__(self, message: str | None = None):
         self.message = message or error_messages["INVALID_NUMBER"]
 
     def __call__(
         self,
         form: FlaskForm,
-        field: Union[DecimalFieldWithSeparator, IntegerFieldWithSeparator],
+        field: DecimalFieldWithSeparator | IntegerFieldWithSeparator,
     ) -> None:
         try:
             # number is sanitised to guard against inputs like `,NaN_` etc
@@ -72,7 +72,7 @@ class ResponseRequired:
     an option for DataRequired or InputRequired validators in wtforms.
     """
 
-    field_flags = ("required",)
+    field_flags = {"required": True}
 
     def __init__(self, message: str, strip_whitespace: bool = True):
         self.message = message
@@ -108,12 +108,12 @@ class NumberRange:
 
     def __init__(
         self,
-        minimum: Optional[NumType] = None,
+        minimum: NumType | None = None,
         minimum_exclusive: bool = False,
-        maximum: Optional[NumType] = None,
+        maximum: NumType | None = None,
         maximum_exclusive: bool = False,
         messages: OptionalMessage = None,
-        currency: Optional[str] = None,
+        currency: str | None = None,
     ):
         self.minimum = minimum
         self.maximum = maximum
@@ -125,7 +125,7 @@ class NumberRange:
     def __call__(
         self,
         form: "QuestionnaireForm",
-        field: Union[DecimalFieldWithSeparator, IntegerFieldWithSeparator],
+        field: DecimalFieldWithSeparator | IntegerFieldWithSeparator,
     ) -> None:
         value: int | Decimal | None = field.data
 
@@ -141,7 +141,7 @@ class NumberRange:
 
     def validate_minimum(
         self, *, value: NumType, decimal_limit: int | None
-    ) -> Optional[str]:
+    ) -> str | None:
         if self.minimum is None:
             return None
 
@@ -161,7 +161,7 @@ class NumberRange:
 
     def validate_maximum(
         self, *, value: NumType, decimal_limit: int | None
-    ) -> Optional[str]:
+    ) -> str | None:
         if self.maximum is None:
             return None
 
@@ -212,7 +212,7 @@ class OptionalForm:
     Will not stop the validation chain if any one of the fields is populated.
     """
 
-    field_flags = ("optional",)
+    field_flags = {"optional": True}
 
     def __call__(self, form: Sequence["QuestionnaireForm"], field: Field) -> None:
         empty_form = True
@@ -238,9 +238,9 @@ class OptionalForm:
 
 
 class DateRequired:
-    field_flags = ("required",)
+    field_flags = {"required": True}
 
-    def __init__(self, message: Optional[str] = None):
+    def __init__(self, message: str | None = None):
         self.message = message or error_messages["MANDATORY_DATE"]
 
     def __call__(self, form: "QuestionnaireForm", field: DateField) -> None:
@@ -259,7 +259,7 @@ class DateRequired:
 
 
 class DateCheck:
-    def __init__(self, message: Optional[str] = None):
+    def __init__(self, message: str | None = None):
         self.message = message or error_messages["INVALID_DATE"]
 
     def __call__(self, form: "QuestionnaireForm", field: StringField) -> None:
@@ -285,8 +285,8 @@ class SingleDatePeriodCheck:
         self,
         messages: OptionalMessage = None,
         date_format: str = "d MMMM yyyy",
-        minimum_date: Optional[datetime] = None,
-        maximum_date: Optional[datetime] = None,
+        minimum_date: datetime | None = None,
+        maximum_date: datetime | None = None,
     ):
         self.messages = {**error_messages, **(messages or {})}
         self.minimum_date = minimum_date
@@ -326,8 +326,8 @@ class DateRangeCheck:
     def __init__(
         self,
         messages: OptionalMessage = None,
-        period_min: Optional[dict[str, int]] = None,
-        period_max: Optional[dict[str, int]] = None,
+        period_min: dict[str, int] | None = None,
+        period_max: dict[str, int] | None = None,
     ):
         self.messages = {**error_messages, **(messages or {})}
         self.period_min = period_min
@@ -377,7 +377,9 @@ class DateRangeCheck:
     def _is_first_relative_delta_largest(
         relativedelta1: relativedelta, relativedelta2: relativedelta
     ) -> bool:
-        epoch = datetime.min  # generic epoch for comparison purposes only
+        epoch = datetime.min.replace(
+            tzinfo=timezone.utc
+        )  # generic epoch for comparison purposes only
         date1 = epoch + relativedelta1
         date2 = epoch + relativedelta2
         return date1 > date2
@@ -408,16 +410,16 @@ class DateRangeCheck:
 
 
 class SumCheck:
-    def __init__(
-        self, messages: OptionalMessage = None, currency: Optional[str] = None
-    ):
+    MULTIPLE_CONDITION_ERROR_MESSAGE = "There are multiple conditions, but equals is not one of them. We only support <= and >="
+
+    def __init__(self, messages: OptionalMessage = None, currency: str | None = None):
         self.messages = {**error_messages, **(messages or {})}
         self.currency = currency
 
     def __call__(
         self,
         form: QuestionnaireForm,
-        conditions: List[str],
+        conditions: list[str],
         total: Decimal | int,
         target_total: Decimal | float | int,
         decimal_limit: int | None = None,
@@ -426,10 +428,7 @@ class SumCheck:
             try:
                 conditions.remove("equals")
             except ValueError as exc:
-                raise ValueError(
-                    "There are multiple conditions, but equals is not one of them. "
-                    "We only support <= and >="
-                ) from exc
+                raise ValueError(SumCheck.MULTIPLE_CONDITION_ERROR_MESSAGE) from exc
 
             condition = f"{conditions[0]} or equals"
         else:
@@ -457,8 +456,8 @@ class SumCheck:
     @staticmethod
     def _is_valid(
         condition: str,
-        total: Union[Decimal, float],
-        target_total: Union[Decimal, float],
+        total: Decimal | float,
+        target_total: Decimal | float,
     ) -> tuple[bool, str]:
         if condition == "equals":
             return total == target_total, "TOTAL_SUM_NOT_EQUALS"
@@ -471,7 +470,10 @@ class SumCheck:
         if condition == "less than or equals":
             return total <= target_total, "TOTAL_SUM_NOT_LESS_THAN_OR_EQUALS"
 
-        raise NotImplementedError(f"Condition '{condition}' is not implemented")
+        unimplemented_condition_error_message = (
+            f"Condition '{condition}' is not implemented"
+        )
+        raise NotImplementedError(unimplemented_condition_error_message)
 
 
 class MutuallyExclusiveCheck:
@@ -516,7 +518,7 @@ class MobileNumberCheck:
 
 
 class EmailTLDCheck:
-    def __init__(self, message: Optional[str] = None):
+    def __init__(self, message: str | None = None):
         self.message = message or error_messages["INVALID_EMAIL_FORMAT"]
 
     def __call__(self, form: "QuestionnaireForm", field: StringField) -> None:

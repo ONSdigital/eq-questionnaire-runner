@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 from functools import cached_property
-from typing import Any, Mapping, Optional
+from typing import Any, Mapping
 from uuid import uuid4
 
 from flask import current_app, redirect
@@ -43,6 +43,8 @@ class IndividualResponsePostalDeadlinePast(Exception):
 
 
 class IndividualResponseHandler:
+    RESPONSE_LIMIT_ERROR_MESSAGE = "Individual response limit has been reached"
+
     @staticmethod
     def _person_name_transforms(list_name: str) -> list[Mapping]:
         return [
@@ -230,9 +232,7 @@ class IndividualResponseHandler:
             )
             >= current_app.config["EQ_INDIVIDUAL_RESPONSE_LIMIT"]
         ):
-            raise IndividualResponseLimitReached(
-                "Individual response limit has been reached"
-            )
+            raise IndividualResponseLimitReached(self.RESPONSE_LIMIT_ERROR_MESSAGE)
 
     def _update_individual_response_count(self) -> None:
         response_metadata = self._questionnaire_store.data_stores.response_metadata
@@ -972,7 +972,7 @@ class IndividualResponseTextConfirmHandler(IndividualResponseHandler):
 
 
 class IndividualResponseFulfilmentRequest(FulfilmentRequest):
-    def __init__(self, metadata: MetadataProxy, mobile_number: Optional[str] = None):
+    def __init__(self, metadata: MetadataProxy, mobile_number: str | None = None):
         self._metadata = metadata
         self._mobile_number = mobile_number
         self._fulfilment_type = "sms" if self._mobile_number else "postal"
@@ -991,7 +991,7 @@ class IndividualResponseFulfilmentRequest(FulfilmentRequest):
             else {}
         )
 
-    def _get_fulfilment_code(self) -> Optional[str]:
+    def _get_fulfilment_code(self) -> str | None:
         fulfilment_codes = {
             "sms": {
                 GB_ENG_REGION_CODE: "UACITA1",

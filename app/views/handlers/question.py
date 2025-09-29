@@ -217,11 +217,11 @@ class Question(BlockHandler):
             return url_for(".get_questionnaire")
 
     def clear_radio_answers(self) -> None:
-        answer_ids_to_remove = []
-        for answer in self.rendered_block["question"]["answers"]:
-            if answer["type"] == "Radio":
-                answer_ids_to_remove.append(answer["id"])
-
+        answer_ids_to_remove = [
+            answer["id"]
+            for answer in self.rendered_block["question"]["answers"]
+            if answer["type"] == "Radio"
+        ]
         if answer_ids_to_remove:
             self.questionnaire_store_updater.remove_answers(
                 answer_ids_to_remove, self.current_location.list_item_id

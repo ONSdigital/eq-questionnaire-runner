@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Any, Generator, Iterable, Mapping, Union
+from typing import Any, Generator, Iterable, Mapping
 
 from werkzeug.datastructures import ImmutableDict
 
@@ -77,7 +77,7 @@ class SectionSummaryContext(Context):
         section: ImmutableDict = self._schema.get_section(self.current_location.section_id)  # type: ignore
         return section
 
-    def get_page_title(self, title_for_location: Union[Mapping, str]) -> str:
+    def get_page_title(self, title_for_location: Mapping | str) -> str:
         section_repeating_page_title = (
             self._schema.get_repeating_page_title_for_section(
                 self.current_location.section_id
@@ -146,7 +146,7 @@ class SectionSummaryContext(Context):
 
         return groups
 
-    def title_for_location(self) -> Union[str, dict]:
+    def title_for_location(self) -> str | dict:
         section_id = self.current_location.section_id
         return (
             # Type ignore: section id should exist at this point
@@ -157,7 +157,7 @@ class SectionSummaryContext(Context):
 
     def _custom_summary_elements(
         self, section_summary: Iterable[Mapping]
-    ) -> Generator[dict[str, Any], Any, None]:
+    ) -> Generator[dict[str, Any], Any]:
         for summary_element in section_summary:
             if summary_element["type"] == "List":
                 list_collector_block = ListCollectorBlock(
@@ -170,7 +170,7 @@ class SectionSummaryContext(Context):
                 )
                 yield list_collector_block.list_summary_element(summary_element)
 
-    def _get_safe_page_title(self, title: Union[Mapping, str]) -> str:
+    def _get_safe_page_title(self, title: Mapping | str) -> str:
         return (
             safe_content(self._schema.get_single_string_value(title)) if title else ""
         )

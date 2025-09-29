@@ -1,4 +1,4 @@
-export const config = {
+exports.config = {
   //
   // ====================
   // Runner Configuration
@@ -18,15 +18,10 @@ export const config = {
   //
   specs: ["./spec/**/*.js"],
   suites: {
-    timeout_modal_expired: ["./spec/timeout/timeout_modal_expired/*.js"],
-    timeout_modal_extended: ["./spec/timeout/timeout_modal_extended/*.js"],
-    timeout_modal_extended_new_window: ["./spec/timeout/timeout_modal_extended_new_window/*.js"],
-    components: ["./spec/components/**/*.js"],
-    features: ["./spec/features/**/*.js"],
-    summaries: ["./spec/summaries/**/*.js"],
-    journeys: ["./spec/journeys/**/*.js"],
-    list_collector: ["./spec/list_collector/**/*.js"],
-    general: ["./spec/*.spec.js"],
+    components: ["./spec/components/**/*.js", "./spec/*.spec.js", "./spec/summaries/**/*.js"],
+    timeout_modal: ["./spec/timeout/timeout_modal_extended_new_window/*.js", "./spec/timeout/timeout_modal_expired/*.js", "./spec/timeout/timeout_modal_extended/*.js"],
+    features: ["./spec/features/**/*.js", "./spec/list_collector/**/*.js", "./spec/hub_and_spoke/**/*.js", "./spec/supplementary_data/**/*.js"],
+    journeys: ["./spec/journeys/**/*.js"]
   },
   // Patterns to exclude.
   exclude: [

@@ -1,5 +1,3 @@
-from typing import Union
-
 from flask import url_for
 
 from app.forms.questionnaire_form import QuestionnaireForm
@@ -9,7 +7,7 @@ from app.views.contexts.question import build_question_context
 
 def build_feedback_context(
     question_schema: QuestionSchemaType, form: QuestionnaireForm
-) -> dict[str, Union[str, bool, dict]]:
+) -> dict[str, str | bool | dict]:
     block = {"question": question_schema}
     context = build_question_context(block, form)
     context["hide_sign_out_button"] = False

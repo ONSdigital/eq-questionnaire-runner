@@ -31,6 +31,9 @@ logger = get_logger()
 
 
 class SupplementaryDataRequestFailed(Exception):
+    SUPPLEMENTARY_DATA_EMPTY_ERROR_MESSAGE = "Supplementary data has no data to decrypt"
+    SUPPLEMENTARY_DATA_ERROR_MESSAGE = "Invalid supplementary data"
+
     def __str__(self) -> str:
         return "Supplementary Data request failed"
 
@@ -44,7 +47,11 @@ class InvalidSupplementaryData(Exception):
 
 
 def get_supplementary_data_v1(
-    *, dataset_id: str, identifier: str, survey_id: str
+    *,
+    dataset_id: str,
+    identifier: str,
+    survey_id: str,
+    sds_schema_version: str | None = None,
 ) -> dict:
     # Type ignore: current_app is a singleton in this application and has the key_store key in its eq attribute.
     key_store = current_app.eq["key_store"]  # type: ignore
@@ -93,6 +100,7 @@ def get_supplementary_data_v1(
             dataset_id=dataset_id,
             identifier=identifier,
             survey_id=survey_id,
+            sds_schema_version=sds_schema_version,
         )
 
     logger.error(
@@ -116,19 +124,27 @@ def decrypt_supplementary_data(
             return supplementary_data
         except InvalidTokenException as e:
             raise InvalidSupplementaryData from e
-
-    raise ValidationError("Supplementary data has no data to decrypt")
+    raise ValidationError(
+        SupplementaryDataRequestFailed.SUPPLEMENTARY_DATA_EMPTY_ERROR_MESSAGE
+    )
 
 
 def validate_supplementary_data(
-    supplementary_data: Mapping, dataset_id: str, identifier: str, survey_id: str
-) -> dict:
+    supplementary_data: Mapping,
+    dataset_id: str,
+    identifier: str,
+    survey_id: str,
+    sds_schema_version: str | None = None,
+) -> dict[str, str | dict | int | list]:
     try:
         return validate_supplementary_data_v1(
             supplementary_data=supplementary_data,
             dataset_id=dataset_id,
             identifier=identifier,
             survey_id=survey_id,
+            sds_schema_version=sds_schema_version,
         )
     except ValidationError as e:
-        raise ValidationError("Invalid supplementary data") from e
+        raise ValidationError(
+            SupplementaryDataRequestFailed.SUPPLEMENTARY_DATA_ERROR_MESSAGE
+        ) from e

@@ -1,4 +1,4 @@
-FROM python:3.11-slim-bullseye
+FROM python:3.13-slim-bookworm
 
 EXPOSE 5000
 
@@ -18,7 +18,7 @@ COPY pyproject.toml pyproject.toml
 COPY poetry.lock poetry.lock
 
 RUN groupadd -r appuser && useradd -r -g appuser -u 9000 appuser && chown -R appuser:appuser .
-RUN pip install "poetry==1.8.3" && \
+RUN pip install "poetry==2.1.2" && \
     poetry config virtualenvs.create false && \
     poetry install --only main && \
     make build

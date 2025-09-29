@@ -2,21 +2,26 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
 from decimal import Decimal
-from typing import Optional, TypedDict, Union, overload
+from typing import TypedDict, overload
 
 from markupsafe import Markup, escape
 
-DictAnswer = dict[str, Union[int, str]]
+DictAnswer = dict[str, int | str]
 ListAnswer = list[str]
 ListDictAnswer = list[DictAnswer]
-DictAnswerEscaped = dict[str, Union[int, Markup]]
+DictAnswerEscaped = dict[str, int | Markup]
 ListAnswerEscaped = list[Markup]
 ListDictAnswerEscaped = list[DictAnswerEscaped]
 
-AnswerValueTypes = Union[str, int, Decimal, DictAnswer, ListAnswer, ListDictAnswer]
-AnswerValueEscapedTypes = Union[
-    Markup, int, Decimal, DictAnswerEscaped, ListAnswerEscaped, ListDictAnswerEscaped
-]
+AnswerValueTypes = str | int | Decimal | DictAnswer | ListAnswer | ListDictAnswer
+AnswerValueEscapedTypes = (
+    Markup
+    | int
+    | Decimal
+    | DictAnswerEscaped
+    | ListAnswerEscaped
+    | ListDictAnswerEscaped
+)
 
 
 class AnswerDict(TypedDict, total=False):
@@ -29,7 +34,7 @@ class AnswerDict(TypedDict, total=False):
 class Answer:
     answer_id: str
     value: AnswerValueTypes
-    list_item_id: Optional[str] = field(default=None)
+    list_item_id: str | None = field(default=None)
 
     @classmethod
     def from_dict(cls, answer_dict: AnswerDict) -> Answer:
@@ -69,13 +74,13 @@ def escape_answer_value(value: str) -> Markup: ...  # pragma: no cover
 
 @overload
 def escape_answer_value(
-    value: Union[None, int, Decimal]
-) -> Union[None, int, Decimal]: ...  # pragma: no cover
+    value: None | int | Decimal,
+) -> None | int | Decimal: ...  # pragma: no cover
 
 
 def escape_answer_value(
-    value: Optional[AnswerValueTypes],
-) -> Optional[AnswerValueEscapedTypes]:
+    value: AnswerValueTypes | None,
+) -> AnswerValueEscapedTypes | None:
     if isinstance(value, list):
         return [escape(item) for item in value]
 

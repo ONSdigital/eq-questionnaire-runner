@@ -1,7 +1,7 @@
 import HouseholdRelationshipsBlockPage from "../../../generated_pages/hub_section_required_and_enabled/household-relationships-block.page";
 import RelationshipsCountPage from "../../../generated_pages/hub_section_required_and_enabled/relationships-count.page";
 import { SubmitPage } from "../../../base_pages/submit.page";
-import { click } from "../../../helpers";
+import { click, verifyUrlContains } from "../../../helpers";
 describe("Hub and spoke section required and enabled", () => {
   beforeEach("Load the survey", async () => {
     await browser.openQuestionnaire("test_hub_section_required_and_enabled.json");
@@ -16,6 +16,6 @@ describe("Hub and spoke section required and enabled", () => {
     await click(HouseholdRelationshipsBlockPage.submit());
     await expect(await $("body").getText()).toContain("Submit survey");
     await click(SubmitPage.submit());
-    await expect(browser).toHaveUrlContaining("thank-you");
+    await verifyUrlContains("thank-you");
   });
 });

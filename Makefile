@@ -67,10 +67,10 @@ generate-spec:
 	poetry run python -m tests.functional.generate_pages schemas/test/en/$(SCHEMA).json ./tests/functional/generated_pages/$(patsubst test_%,%,$(SCHEMA)) -r '../../base_pages' -s tests/functional/spec/$(SCHEMA).spec.js
 
 validate-test-schemas:
-	./scripts/validate_test_schemas.sh
+	poetry run python -m scripts.validate_test_schemas
 
 validate-test-schema:
-	./scripts/validate_test_schemas.sh $(SCHEMA_PATH)$(SCHEMA).json
+	poetry run python -m scripts.validate_test_schemas $(SCHEMA_PATH)$(SCHEMA).json
 
 translation-templates:
 	poetry run python -m scripts.extract_translation_templates
@@ -106,19 +106,13 @@ run-uwsgi-async: link-development-env
 	WEB_SERVER_TYPE=uwsgi-async poetry run ./run_app.sh
 
 dev-compose-up:
-	docker compose -f docker-compose-dev-mac.yml pull eq-questionnaire-launcher
-	docker compose -f docker-compose-dev-mac.yml pull sds
-	docker compose -f docker-compose-dev-mac.yml pull cir
-	docker compose -f docker-compose-dev-mac.yml up -d
-
-dev-compose-up-linux:
-	docker compose -f docker-compose-dev-linux.yml up -d
+	docker compose -f docker-compose-dev.yml pull eq-questionnaire-launcher
+	docker compose -f docker-compose-dev.yml pull sds
+	docker compose -f docker-compose-dev.yml pull cir
+	docker compose -f docker-compose-dev.yml up -d
 
 dev-compose-down:
-	docker compose -f docker-compose-dev-mac.yml down
-
-dev-compose-down-linux:
-	docker compose -f docker-compose-dev-linux.yml down
+	docker compose -f docker-compose-dev.yml down
 
 profile:
 	poetry run python profile_application.py

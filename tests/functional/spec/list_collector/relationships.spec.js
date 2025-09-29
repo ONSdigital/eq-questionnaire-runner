@@ -4,7 +4,7 @@ import ListCollectorRemovePage from "../../generated_pages/relationships/list-co
 import RelationshipsPage from "../../generated_pages/relationships/relationships.page.js";
 import RelationshipsInterstitialPage from "../../generated_pages/relationships/relationship-interstitial.page.js";
 import SectionSummaryPage from "../../generated_pages/relationships/section-summary.page.js";
-import { click } from "../../helpers";
+import { click, verifyUrlContains } from "../../helpers";
 
 describe("Relationships", () => {
   const schema = "test_relationships.json";
@@ -23,7 +23,7 @@ describe("Relationships", () => {
       await $(ListCollectorPage.no()).click();
       // eslint-disable-next-line no-undef
       await click(ListCollectorPage.submit());
-      await expect(browser).toHaveUrlContaining("/sections/section/");
+      await verifyUrlContains("/sections/section/");
     });
 
     it("When I add two household members, Then I will be asked about one relationship", async () => {
@@ -40,11 +40,11 @@ describe("Relationships", () => {
       await $(ListCollectorPage.no()).click();
       await $(ListCollectorPage.submit()).scrollIntoView();
       await click(ListCollectorPage.submit());
-      await expect(browser).toHaveUrlContaining(RelationshipsPage.pageName);
+      await verifyUrlContains(RelationshipsPage.pageName);
       await $(RelationshipsPage.husbandOrWife()).click();
       await click(RelationshipsPage.submit());
       await click(RelationshipsInterstitialPage.submit());
-      await expect(browser).toHaveUrlContaining("/sections/section/");
+      await verifyUrlContains("/sections/section/");
     });
 
     describe("When I add three household members,", () => {
@@ -62,14 +62,14 @@ describe("Relationships", () => {
         await $(RelationshipsPage.husbandOrWife()).click();
         await click(RelationshipsPage.submit());
         await click(RelationshipsInterstitialPage.submit());
-        await expect(browser).toHaveUrlContaining("/sections/section/");
+        await verifyUrlContains("/sections/section/");
       });
 
       it("And go to the first relationship, Then the previous link should return to the list collector", async () => {
         await $(ListCollectorPage.no()).click();
         await click(ListCollectorPage.submit());
         await $(RelationshipsPage.previous()).click();
-        await expect(browser).toHaveUrlContaining("/questionnaire/list-collector/");
+        await verifyUrlContains("/questionnaire/list-collector/");
       });
 
       it("And go to the first relationship, Then the 'Brother or Sister' option should have the text 'Including half brother or half sister'", async () => {
@@ -85,7 +85,7 @@ describe("Relationships", () => {
         await click(RelationshipsPage.submit());
         await $(RelationshipsPage.previous()).click();
         await click(RelationshipsInterstitialPage.submit());
-        await expect(browser).toHaveUrlContaining(RelationshipsPage.pageName);
+        await verifyUrlContains(RelationshipsPage.pageName);
         await expect(await $(RelationshipsPage.questionText()).getText()).toContain("Marcus");
       });
 
@@ -99,10 +99,10 @@ describe("Relationships", () => {
         await $(RelationshipsPage.husbandOrWife()).click();
         await click(RelationshipsPage.submit());
         await click(RelationshipsInterstitialPage.submit());
-        await expect(browser).toHaveUrlContaining("/sections/section/");
+        await verifyUrlContains("/sections/section/");
         await $(SectionSummaryPage.previous()).click();
         await $(RelationshipsInterstitialPage.previous()).click();
-        await expect(browser).toHaveUrlContaining(RelationshipsPage.pageName);
+        await verifyUrlContains(RelationshipsPage.pageName);
         await expect(await $(RelationshipsPage.questionText()).getText()).toContain("Olivia");
       });
 
@@ -116,7 +116,7 @@ describe("Relationships", () => {
         await $(RelationshipsPage.husbandOrWife()).click();
         await click(RelationshipsPage.submit());
         await click(RelationshipsInterstitialPage.submit());
-        await expect(browser).toHaveUrlContaining("/sections/section/");
+        await verifyUrlContains("/sections/section/");
         await $(SectionSummaryPage.previous()).click();
         await $(RelationshipsInterstitialPage.previous()).click();
         await expect(await $(RelationshipsPage.husbandOrWife()).isSelected()).toBe(true);
@@ -163,7 +163,7 @@ describe("Relationships", () => {
         await $(SectionSummaryPage.peopleListRemoveLink(1)).click();
         await $(ListCollectorRemovePage.yes()).click();
         await click(ListCollectorRemovePage.submit());
-        await expect(browser).toHaveUrlContaining("/sections/section/");
+        await verifyUrlContains("/sections/section/");
       });
 
       it("Then I add another household member I will be redirected to parent list collector", async () => {
@@ -171,7 +171,7 @@ describe("Relationships", () => {
         await $(ListCollectorAddPage.firstName()).setValue("Tom");
         await $(ListCollectorAddPage.lastName()).setValue("Bowden");
         await click(ListCollectorAddPage.submit());
-        await expect(browser).toHaveUrlContaining("/questionnaire/list-collector/");
+        await verifyUrlContains("/questionnaire/list-collector/");
       });
     });
 

@@ -1,4 +1,4 @@
-from typing import Generator, Union
+from typing import Generator
 
 from flask_babel import lazy_gettext
 
@@ -26,13 +26,13 @@ class PreviewContext(Context):
             placeholder_preview_mode=True,
         )
 
-    def __call__(self) -> dict[str, Union[str, list, bool]]:
+    def __call__(self) -> dict[str, str | list | bool]:
         sections = list(self.build_all_sections())
         return {
             "sections": sections,
         }
 
-    def build_all_sections(self) -> Generator[dict, None, None]:
+    def build_all_sections(self) -> Generator[dict]:
         """NB: Does not support repeating sections"""
 
         for section in self._schema.get_sections():

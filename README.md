@@ -11,7 +11,22 @@
 
 ## Run with Docker
 
-Install Docker for your system: [https://www.docker.com/](https://www.docker.com/)
+Install [Docker](https://www.docker.com/) for your system. Make sure that you've installed both docker and docker-compose packages, preferably using Homebrew:
+
+``` shell
+brew install docker
+brew install docker-compose
+```
+
+On MacOS install container runtimes, eg. [Colima](https://github.com/abiosoft/colima):
+```shell
+brew install colima
+```
+
+Make sure Colima is started every time you want to use Docker images:
+```shell
+colima start
+```
 
 To get eq-questionnaire-runner running the following command will build and run the containers
 
@@ -86,7 +101,7 @@ command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 
 eval "$(pyenv init -)"
 ```
-Python versions can be changed with the `pyenv local` or `pyenv global` commands suffixed with the desired version (e.g. 3.11.4). Different versions of Python can be installed first with the `pyenv install` command. Refer to the pyenv project Readme [here](https://github.com/pyenv/pyenv). To avoid confusion, check the current Python version at any given time using `python --version` or `python3 --version`.
+Python versions can be changed with the `pyenv local` or `pyenv global` commands suffixed with the desired version (e.g. 3.13.5). Different versions of Python can be installed first with the `pyenv install` command. Refer to the pyenv project Readme [here](https://github.com/pyenv/pyenv). To avoid confusion, check the current Python version at any given time using `python --version` or `python3 --version`.
 
 #### Python & dependencies
 
@@ -100,7 +115,7 @@ pip install --upgrade pip setuptools
 Install poetry, poetry dotenv plugin and install dependencies:
 
 ``` shell
-curl -sSL https://install.python-poetry.org | python3 - --version 1.8.3
+curl -sSL https://install.python-poetry.org | python3 - --version 2.1.2
 poetry self add poetry-plugin-dotenv
 poetry install
 ```
@@ -141,7 +156,12 @@ Runner requires five supporting services - a questionnaire launcher, a storage b
 
 #### Run supporting services with Docker
 
-To run the app locally, but the supporting services in Docker, run:
+First, authenticate to make sure Docker can pull from GAR
+```shell
+gcloud auth login
+```
+
+To run the app locally, but the supporting services in Docker, make sure you have Docker and Colima installed [from this step](#run-with-docker), then run:
 
 ``` shell
 make dev-compose-up
@@ -158,19 +178,19 @@ make dev-compose-up-linux
 ##### [Questionnaire launcher](https://github.com/ONSDigital/eq-questionnaire-launcher)
 
 ``` shell
-docker run -e SURVEY_RUNNER_SCHEMA_URL=http://docker.for.mac.host.internal:5000 -e SDS_API_BASE_URL=http://docker.for.mac.host.internal:5003 -e CIR_API_BASE_URL=http://docker.for.mac.host.internal:5004 -it -p 8000:8000 onsdigital/eq-questionnaire-launcher:latest
+docker run -e SURVEY_RUNNER_SCHEMA_URL=http://host.docker.internal:5000 -e SDS_API_BASE_URL=http://host.docker.internal:5003 -e CIR_API_BASE_URL=http://host.docker.internal:5004 -it -p 8000:8000 europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/eq-questionnaire-launcher:latest
 ```
 
 ##### [Mock Supplementary data service](https://github.com/ONSDigital/eq-runner-mock-sds)
 
 ``` shell
-docker run -it -p 5003:5003 onsdigital/eq-runner-mock-sds:latest
+docker run -it -p 5003:5003 europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/sds:latest
 ```
 
 ##### [Mock Collection Instrument Registry](https://github.com/ONSDigital/eq-runner-mock-cir)
 
 ``` shell
-docker run -it -p 5004:5004 onsdigital/eq-runner-mock-cir:latest
+docker run -it -p 5004:5004 europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/cir:latest
 ```
 
 ##### Storage backends

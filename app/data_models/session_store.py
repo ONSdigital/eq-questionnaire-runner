@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional
 
 from flask import current_app
 from jwcrypto.common import base64url_decode
@@ -17,19 +16,19 @@ logger = get_logger()
 
 class SessionStore:
     def __init__(
-        self, user_ik: str, pepper: str, eq_session_id: Optional[str] = None
+        self, user_ik: str, pepper: str, eq_session_id: str | None = None
     ) -> None:
         self.eq_session_id = eq_session_id
-        self.user_id: Optional[str] = None
+        self.user_id: str | None = None
         self.user_ik = user_ik
-        self.session_data: Optional[SessionData] = None
-        self._eq_session: Optional[EQSession] = None
+        self.session_data: SessionData | None = None
+        self._eq_session: EQSession | None = None
         self.pepper = pepper
         if eq_session_id:
             self._load()
 
     @property
-    def expiration_time(self) -> Optional[datetime]:
+    def expiration_time(self) -> datetime | None:
         """
         Checking if expires_at is available can be removed soon after deployment,
         it is only needed to cater for in-flight sessions.
@@ -97,7 +96,7 @@ class SessionStore:
         logger.debug(
             "finding eq_session_id in database", eq_session_id=self.eq_session_id
         )
-        self._eq_session: Optional[EQSession] = current_app.eq["storage"].get(EQSession, self.eq_session_id)  # type: ignore
+        self._eq_session: EQSession | None = current_app.eq["storage"].get(EQSession, self.eq_session_id)  # type: ignore
 
         if self._eq_session and self._eq_session.session_data:
             self.user_id = self._eq_session.user_id

@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Iterable, Mapping, MutableMapping, Optional
+from typing import Iterable, Mapping, MutableMapping
 
 from flask_babel import lazy_gettext
 
@@ -52,7 +52,7 @@ class SocialSurveyConfig(
 
         return links
 
-    def get_footer_legal_links(self, cookie_has_theme: bool) -> Optional[list[dict]]:
+    def get_footer_legal_links(self, cookie_has_theme: bool) -> list[dict] | None:
         if cookie_has_theme:
             return [
                 Link(lazy_gettext("Cookies"), self.cookie_settings_url).as_dict(),

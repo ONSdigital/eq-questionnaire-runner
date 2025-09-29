@@ -1,5 +1,5 @@
 from dataclasses import asdict, dataclass
-from typing import Iterable, Iterator, Optional, TypedDict, cast
+from typing import Iterable, Iterator, TypedDict, cast
 
 
 class RelationshipDict(TypedDict, total=False):
@@ -27,9 +27,7 @@ class RelationshipStore:
     Stores and updates relationships.
     """
 
-    def __init__(
-        self, relationships: Optional[Iterable[RelationshipDict]] = None
-    ) -> None:
+    def __init__(self, relationships: Iterable[RelationshipDict] | None = None) -> None:
         self._is_dirty = False
         self._relationships = self._build_map(relationships or [])
 
@@ -60,7 +58,7 @@ class RelationshipStore:
 
     def get_relationship(
         self, list_item_id: str, to_list_item_id: str
-    ) -> Optional[Relationship]:
+    ) -> Relationship | None:
         key = (list_item_id, to_list_item_id)
         return self._relationships.get(key)
 
@@ -83,16 +81,15 @@ class RelationshipStore:
         This method iterates through the entire list of relationships.
         """
 
-        keys_to_delete = []
-
-        for relationship in self:
-            if list_item_id in (
+        keys_to_delete = [
+            (relationship.list_item_id, relationship.to_list_item_id)
+            for relationship in self
+            if list_item_id
+            in (
                 relationship.to_list_item_id,
                 relationship.list_item_id,
-            ):
-                keys_to_delete.append(
-                    (relationship.list_item_id, relationship.to_list_item_id)
-                )
+            )
+        ]
 
         for key in keys_to_delete:
             del self._relationships[key]

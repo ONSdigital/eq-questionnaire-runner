@@ -1,4 +1,4 @@
-from typing import Any, Optional, Sequence
+from typing import Any, Sequence
 
 from wtforms.fields.core import UnboundField
 
@@ -17,7 +17,7 @@ class SelectHandlerBase(FieldHandler):
     def choices(self) -> Sequence[ChoiceType]:
         _choices = self._build_dynamic_choices() + self._build_static_choices()
         if not _choices:
-            raise InvalidSchemaConfigurationException("No dynamic or static choices")
+            raise InvalidSchemaConfigurationException()
         return _choices
 
     @property
@@ -56,7 +56,7 @@ class SelectHandler(SelectHandlerBase):
     MANDATORY_MESSAGE_KEY = "MANDATORY_RADIO"
 
     @staticmethod
-    def coerce_str_unless_none(value: Optional[str]) -> Optional[str]:
+    def coerce_str_unless_none(value: str | None) -> str | None:
         """
         Coerces a value using str() unless that value is None
         :param value: Any value that can be coerced using str() or None

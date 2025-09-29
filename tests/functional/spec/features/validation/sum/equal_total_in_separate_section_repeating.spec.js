@@ -13,7 +13,7 @@ import BreakdownSectionSummary from "../../../../generated_pages/validation_sum_
 
 import HubPage from "../../../../base_pages/hub.page";
 import ThankYouPage from "../../../../base_pages/thank-you.page";
-import { click } from "../../../../helpers";
+import { click, verifyUrlContains } from "../../../../helpers";
 const householderSectionId = "householders-section";
 const householdOverviewSectionId = "household-overview-section";
 const repeatingSectionId = (repeatIndex) => {
@@ -74,7 +74,7 @@ const assertRepeatingSectionOnChange = (repeatIndex, currentBreakdown1, currentB
   it("When I update my answers to equal the new total spending, Then I should be able to get to the section summary and the breakdown section should be marked as 'Completed'", async () => {
     await answerAndSubmitSpendingBreakdownQuestion(newTotal, 0, 0);
 
-    await expect(browser).toHaveUrlContaining(BreakdownSectionSummary.pageName);
+    await verifyUrlContains(BreakdownSectionSummary.pageName);
     await click(BreakdownSectionSummary.submit());
     await expect(await $(HubPage.summaryRowState(repeatingSectionId(repeatIndex))).getText()).toBe("Completed");
   });
@@ -121,7 +121,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
       await answerAndSubmitSpendingBreakdownQuestion(500, 250, 250);
       await answerAndSubmitEntertainmentBreakdownQuestion(250, 150, 100);
 
-      await expect(browser).toHaveUrlContaining(BreakdownSectionSummary.pageName);
+      await verifyUrlContains(BreakdownSectionSummary.pageName);
       await click(BreakdownSectionSummary.submit());
 
       await expect(await $(HubPage.summaryRowState(repeatingSectionId(1))).getText()).toBe("Completed");
@@ -132,7 +132,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
       await $(BreakdownDrivingPage.no()).click();
       await click(BreakdownDrivingPage.submit());
 
-      await expect(browser).toHaveUrlContaining(BreakdownSectionSummary.pageName);
+      await verifyUrlContains(BreakdownSectionSummary.pageName);
       await click(BreakdownSectionSummary.submit());
 
       await expect(await $(HubPage.summaryRowState(repeatingSectionId(2))).getText()).toBe("Completed");
@@ -195,7 +195,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Repeating
     it("When I submit the questionnaire, Then I should see the thank you page", async () => {
       await click(HubPage.submit());
 
-      await expect(browser).toHaveUrlContaining(ThankYouPage.pageName);
+      await verifyUrlContains(ThankYouPage.pageName);
     });
   });
 });

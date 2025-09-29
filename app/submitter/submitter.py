@@ -1,9 +1,8 @@
-from typing import Mapping, Optional, Union
+from typing import Mapping
 from uuid import uuid4
 
 from google.api_core.exceptions import Forbidden
 from google.cloud import storage  # type: ignore
-from google.cloud.storage.retry import DEFAULT_RETRY
 from pika import BasicProperties, BlockingConnection, URLParameters
 from pika.exceptions import AMQPError, NackError, UnroutableError
 from structlog import get_logger
@@ -19,7 +18,7 @@ class LogSubmitter:
         message: str,
         tx_id: str,
         case_id: str,
-        **kwargs: Mapping[str, Union[str, int]],
+        **kwargs: Mapping[str, str | int],
     ) -> bool:
         logger.info("sending message")
         logger.info(
@@ -53,10 +52,8 @@ class GCSSubmitter:
 
         blob.metadata = metadata
 
-        # DEFAULT_RETRY is not idempotent.
-        # However, this behaviour was deemed acceptable for our use case.
         try:
-            blob.upload_from_string(str(message).encode("utf8"), retry=DEFAULT_RETRY)
+            blob.upload_from_string(str(message).encode("utf8"))
         except Forbidden as e:
             # If an object exists then the GCS Client will attempt to delete the existing object before reuploading.
             # However, in an attempt to reduce duplicate receipts, runner does not have a delete permission.
@@ -77,8 +74,8 @@ class RabbitMQSubmitter:
         secondary_host: str,
         port: int,
         queue: str,
-        username: Optional[str] = None,
-        password: Optional[str] = None,
+        username: str | None = None,
+        password: str | None = None,
     ) -> None:
         self.queue = queue
         if username and password:
@@ -120,7 +117,7 @@ class RabbitMQSubmitter:
                 raise err
 
     @staticmethod
-    def _disconnect(connection: Optional[BlockingConnection]) -> None:
+    def _disconnect(connection: BlockingConnection | None) -> None:
         try:
             if connection:
                 logger.info("attempt to close connection", category="rabbitmq")
@@ -179,9 +176,7 @@ class GCSFeedbackSubmitter:
         blob = self.bucket.blob(str(uuid4()))
         blob.metadata = metadata
 
-        # DEFAULT_RETRY is not idempotent.
-        # However, this behaviour was deemed acceptable for our use case.
-        blob.upload_from_string(payload.encode("utf8"), retry=DEFAULT_RETRY)
+        blob.upload_from_string(payload.encode("utf8"))
 
         return True
 

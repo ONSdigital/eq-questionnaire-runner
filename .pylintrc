@@ -84,7 +84,7 @@ persistent=yes
 
 # Minimum Python version to use for version dependent checks. Will default to
 # the version used to run pylint.
-py-version=3.11
+py-version=3.13
 
 # Discover python modules and packages in the file system subtree.
 recursive=no
@@ -298,6 +298,9 @@ min-public-methods=2
 
 # Maximum cyclomatic complexity
 max-complexity=10
+
+# Maximum positional arguments
+max-positional-arguments=12
 
 [EXCEPTIONS]
 

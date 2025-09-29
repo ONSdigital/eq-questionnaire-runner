@@ -59,7 +59,12 @@ NUMERIC_ANSWER_TYPES = {
 
 
 class InvalidSchemaConfigurationException(Exception):
-    pass
+    def __init__(self, value: str = "No dynamic or static choices") -> None:
+        super().__init__()
+        self.value = value
+
+    def __str__(self) -> str:
+        return str(self.value)
 
 
 @dataclass(frozen=True)
@@ -267,11 +272,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
         return self.serialize(self._questionnaire_json)
 
     @cached_property
-    def survey(self) -> str | None:
-        survey: str | None = self.json.get("survey")
-        return survey
-
-    @cached_property
     def form_type(self) -> str | None:
         form_type: str | None = self.json.get("form_type")
         return form_type
@@ -301,7 +301,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     @classmethod
     def get_mutable_deepcopy(cls, data: Any) -> Any:
         if isinstance(data, tuple):
-            return list((cls.get_mutable_deepcopy(item) for item in data))
+            return [cls.get_mutable_deepcopy(item) for item in data]
         if isinstance(data, ImmutableDict):
             key_value_tuples = {k: cls.get_mutable_deepcopy(v) for k, v in data.items()}
             return dict(key_value_tuples)
@@ -697,7 +697,7 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     @staticmethod
     def get_blocks_for_section(
         section: Mapping,
-    ) -> Generator[ImmutableDict, None, None]:
+    ) -> Generator[ImmutableDict]:
         return (block for group in section["groups"] for block in group["blocks"])
 
     @classmethod
@@ -1105,9 +1105,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             if block.get("question"):
                 all_questions.append(block["question"])
             elif block.get("question_variants"):
-                for variant in block["question_variants"]:
-                    all_questions.append(variant["question"])
-
+                all_questions.extend(
+                    variant["question"] for variant in block["question_variants"]
+                )
             return all_questions
         return []
 
