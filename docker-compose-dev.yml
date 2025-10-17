@@ -7,7 +7,7 @@ services:
             - "8432:8432"
 
     redis:
-        image: redis:4
+        image: redis:8.2.2
         networks:
             - eq-env
         ports:
