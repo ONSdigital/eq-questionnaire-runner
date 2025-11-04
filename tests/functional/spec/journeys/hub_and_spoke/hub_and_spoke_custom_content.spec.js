@@ -10,7 +10,7 @@ describe("Feature: Hub and Spoke with custom content", () => {
     await browser.openQuestionnaire(hubAndSpokeSchema);
     await expect(await $(HubPage.heading()).getText()).toBe("Choose another section to complete");
     await expect(await $(HubPage.guidance()).isExisting()).toBe(false);
-    await expect(await $(HubPage.summaryRowLink("household-section")).getHTML({ prettify: false }) prettify: false })).toContain("Start section: Household residents");
+    await expect(await $(HubPage.summaryRowLink("household-section")).getHTML({ prettify: false })).toContain("Start section: Household residents");
     await expect(await $(HubPage.submit()).getText()).toBe("Continue");
     await expect(await $(HubPage.warning()).isExisting()).toBe(false);
   });

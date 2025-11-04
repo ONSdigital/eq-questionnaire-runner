@@ -50,7 +50,7 @@ describe("Component: Radio", () => {
 
     it("When I have submitted the page without any option, Then the question text is hidden in the error message using a span element", async () => {
       await click(RadioMandatoryOverriddenPage.submit());
-      await expect(await $(RadioMandatoryOverriddenPage.errorNumber(1)).getHTML({ prettify: false }) prettify: false })).toContain(
+      await expect(await $(RadioMandatoryOverriddenPage.errorNumber(1)).getHTML({ prettify: false })).toContain(
         'Select an answer <span class="ons-u-vh">to ‘What do you prefer for breakfast?’</span></a>',
       );
     });

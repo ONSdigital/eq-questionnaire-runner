@@ -7,7 +7,7 @@ class TestCase {
       await this.checkTimeoutModal();
       await browser.pause(65000); // We are waiting for the session to expire
       await verifyUrlContains("/session-expired");
-      await expect(await $("body").getHTML({ prettify: false }) prettify: false })).toContain(
+      await expect(await $("body").getHTML({ prettify: false })).toContain(
         "Sorry, you need to sign in again",
         "This is because you have either:",
         "been inactive for 45 minutes and your session has timed out to protect your information",

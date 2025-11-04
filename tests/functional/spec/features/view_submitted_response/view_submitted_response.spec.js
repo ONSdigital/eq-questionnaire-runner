@@ -31,7 +31,7 @@ describe("View Submitted Response", () => {
     await click(AddressBlockPage.submit());
     await click(SubmitPage.submit());
     await verifyUrlContains(ThankYouPage.pageName);
-    await expect(await $(ThankYouPage.title()).getHTML({ prettify: false }) prettify: false })).toContain("Thank you for completing the Test");
+    await expect(await $(ThankYouPage.title()).getHTML({ prettify: false })).toContain("Thank you for completing the Test");
     await $(ThankYouPage.savePrintAnswersLink()).click();
     await verifyUrlContains(ViewSubmittedResponsePage.pageName);
   });
@@ -55,7 +55,7 @@ describe("View Submitted Response", () => {
       await browser.pause(40000); // Waiting 40 seconds for the timeout to expire (45 minute timeout changed to 35 seconds by overriding VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS for the purpose of the functional test)
       await $(ViewSubmittedResponsePage.downloadButton()).click();
       await expect(await $(ViewSubmittedResponsePage.informationPanel()).isDisplayed()).toBe(true);
-      await expect(await $(ViewSubmittedResponsePage.informationPanel()).getHTML({ prettify: false }) prettify: false })).toContain(
+      await expect(await $(ViewSubmittedResponsePage.informationPanel()).getHTML({ prettify: false })).toContain(
         "For security, you can no longer view or get a copy of your answers",
       );
     });
@@ -124,7 +124,7 @@ describe("View Submitted Response Summary Page With Repeating Sections", () => {
 
     await click(HubPage.submit());
     await verifyUrlContains(ThankYouPage.pageName);
-    await expect(await $(ThankYouPage.title()).getHTML({ prettify: false }) prettify: false })).toContain("Thank you for completing the Test");
+    await expect(await $(ThankYouPage.title()).getHTML({ prettify: false })).toContain("Thank you for completing the Test");
     await $(ThankYouPage.savePrintAnswersLink()).click();
     await verifyUrlContains(ViewSubmittedResponsePage.pageName);
   });

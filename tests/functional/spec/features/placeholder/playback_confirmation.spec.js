@@ -10,7 +10,7 @@ describe("Feature: Playback Confirmation", () => {
     await $(MandatoryCheckboxPage.ham()).click();
     await click(MandatoryCheckboxPage.submit());
 
-    await expect(await $("#confirm-answers-question ul").getHTML({ prettify: false }) prettify: false })).toContain("Ham");
+    await expect(await $("#confirm-answers-question ul").getHTML({ prettify: false })).toContain("Ham");
     await expect(await $("#confirm-answers-question ul").getHTML({ prettify: false })).toContain("Cheese");
   });
 });
