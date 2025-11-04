@@ -1,6 +1,6 @@
 import YearDatePage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-year-date.page";
 import SubmitPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-year-date-section-summary.page";
-import { click, waitForQuestionnaireToLoad} from "../../../../helpers";
+import { click, waitForQuestionnaireToLoad } from "../../../../helpers";
 
 describe("Component: Mutually Exclusive Year Date With Single Checkbox Override", () => {
   beforeEach(async () => {

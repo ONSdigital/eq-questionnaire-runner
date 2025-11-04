@@ -13,7 +13,7 @@ describe("Feature: Repeating Section Summaries", () => {
     before("Open survey and add household members", async () => {
       await browser.openQuestionnaire("test_repeating_section_summaries.json");
       // Ensure the questionnaire fully loads
-      await waitForQuestionnaireToLoad();l
+      await waitForQuestionnaireToLoad();
       // Ensure we are on the Hub
       await verifyUrlContains(HubPage.url());
       // Start first section to add household members
