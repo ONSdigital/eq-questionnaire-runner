@@ -32,7 +32,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await click(HubPage.submit());
       await $(ResponsiblePartyQuestionPage.yes()).click();
       await click(ResponsiblePartyQuestionPage.submit());
-      await expect(await $(ListCollectorContentPage.heading()).getHTML()).toContain("Companies");
+      await expect(await $(ListCollectorContentPage.heading()).getHTML({ prettify: false }) prettify: false })).toContain("Companies");
       await expect(await $("#main-content > p").getText()).toBe(
         "You have previously reported the following companies. Press continue to updated registration and trading information.",
       );

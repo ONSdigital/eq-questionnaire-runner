@@ -15,10 +15,10 @@ describe("Thank You Social", () => {
       await click(SubmitPage.submit());
       await click(HubPage.submit());
       await verifyUrlContains(ThankYouPage.pageName);
-      await expect(await $(ThankYouPage.title()).getHTML()).toContain("Thank you for completing the Test Social Survey");
-      await expect(await $(ThankYouPage.guidance()).getHTML()).toContain("Your answers have been submitted");
-      await expect(await $(ThankYouPage.metadata()).getHTML()).toContain("Submitted on:");
-      await expect(await $(ThankYouPage.metadata()).getHTML()).not.toContain("Submission reference:");
+      await expect(await $(ThankYouPage.title()).getHTML({ prettify: false })).toContain("Thank you for completing the Test Social Survey");
+      await expect(await $(ThankYouPage.guidance()).getHTML({ prettify: false })).toContain("Your answers have been submitted");
+      await expect(await $(ThankYouPage.metadata()).getHTML({ prettify: false })).toContain("Submitted on:");
+      await expect(await $(ThankYouPage.metadata()).getHTML({ prettify: false })).not.toContain("Submission reference:");
     });
   });
 });
@@ -34,10 +34,10 @@ describe("Thank You Default", () => {
       await click(SubmitPage.submit());
       await click(HubPage.submit());
       await verifyUrlContains(ThankYouPage.pageName);
-      await expect(await $(ThankYouPage.title()).getHTML()).toContain("Thank you for completing the Question Title Test");
-      await expect(await $(ThankYouPage.guidance()).getHTML()).toContain("Your answers have been submitted for");
-      await expect(await $(ThankYouPage.metadata()).getHTML()).toContain("Submitted on:");
-      await expect(await $(ThankYouPage.metadata()).getHTML()).toContain("Submission reference:");
+      await expect(await $(ThankYouPage.title()).getHTML({ prettify: false })).toContain("Thank you for completing the Question Title Test");
+      await expect(await $(ThankYouPage.guidance()).getHTML({ prettify: false })).toContain("Your answers have been submitted for");
+      await expect(await $(ThankYouPage.metadata()).getHTML({ prettify: false })).toContain("Submitted on:");
+      await expect(await $(ThankYouPage.metadata()).getHTML({ prettify: false })).toContain("Submission reference:");
     });
   });
 });
@@ -54,17 +54,17 @@ describe("Thank You Default View Response Enabled", () => {
 
     it("When I navigate to the thank you page, and I have submitted less than 40 seconds ago, Then I should see the countdown timer and option to view my answers", async () => {
       await expect(await $(ThankYouPage.viewSubmittedGuidance()).isDisplayed()).toBe(false);
-      await expect(await $(ThankYouPage.title()).getHTML()).toContain("Thank you for completing the Test Thank You");
-      await expect(await $(ThankYouPage.viewAnswersTitle()).getHTML()).toContain("Get a copy of your answers");
+      await expect(await $(ThankYouPage.title()).getHTML({ prettify: false })).toContain("Thank you for completing the Test Thank You");
+      await expect(await $(ThankYouPage.viewAnswersTitle()).getHTML({ prettify: false })).toContain("Get a copy of your answers");
       await expect(await $(ThankYouPage.viewAnswersLink()).getText()).toContain("save or print your answers");
-      await expect(await $(ThankYouPage.viewSubmittedCountdown()).getHTML()).toContain("For security, your answers will only be available to view for another");
+      await expect(await $(ThankYouPage.viewSubmittedCountdown()).getHTML({ prettify: false })).toContain("For security, your answers will only be available to view for another");
     });
 
     it("When I navigate to the thank you page, and I have submitted more than 40 seconds ago, Then I shouldn't see the option to view my answers", async () => {
       await expect(await $(ThankYouPage.viewSubmittedGuidance()).isDisplayed()).toBe(false);
       await browser.pause(46000); // Waiting 40 seconds for the timeout to expire (45 minute timeout changed to 35 seconds by overriding VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS for the purpose of the functional test)
       await expect(await $(ThankYouPage.viewSubmittedGuidance()).isDisplayed()).toBe(true);
-      await expect(await $(ThankYouPage.viewSubmittedGuidance()).getHTML()).toContain("For security, you can no longer view or get a copy of your answers");
+      await expect(await $(ThankYouPage.viewSubmittedGuidance()).getHTML({ prettify: false })).toContain("For security, you can no longer view or get a copy of your answers");
     });
   });
 });

@@ -35,9 +35,9 @@ describe("Feature: Hub and Spoke", () => {
     });
 
     it("When a user utilises a screen reader, The visually hidden text read aloud should be the state and name of each section in the hub", async () => {
-      await expect(await $(HubPage.summaryRowLink("employment-section")).getHTML()).toContain("Start section: Employment");
-      await expect(await $(HubPage.summaryRowLink("accommodation-section")).getHTML()).toContain("Start section: Accommodation");
-      await expect(await $(HubPage.summaryRowLink("household-section")).getHTML()).toContain("Start section: Household residents");
+      await expect(await $(HubPage.summaryRowLink("employment-section")).getHTML({ prettify: false }) prettify: false })).toContain("Start section: Employment");
+      await expect(await $(HubPage.summaryRowLink("accommodation-section")).getHTML({ prettify: false })).toContain("Start section: Accommodation");
+      await expect(await $(HubPage.summaryRowLink("household-section")).getHTML({ prettify: false })).toContain("Start section: Household residents");
     });
 
     it("When a user views the Hub, any section with show_on_hub set to true should appear", async () => {
@@ -68,9 +68,9 @@ describe("Feature: Hub and Spoke", () => {
       await expect(await $(HubPage.summaryRowState("employment-section")).getText()).toBe("Not started");
       await expect(await $(HubPage.summaryRowState("accommodation-section")).getText()).toBe("Not started");
       await expect(await $(HubPage.summaryRowState("household-section")).getText()).toBe("Not started");
-      await expect(await $(HubPage.summaryRowLink("employment-section")).getHTML()).toContain("Start section: Employment");
-      await expect(await $(HubPage.summaryRowLink("accommodation-section")).getHTML()).toContain("Start section: Accommodation");
-      await expect(await $(HubPage.summaryRowLink("household-section")).getHTML()).toContain("Start section: Household residents");
+      await expect(await $(HubPage.summaryRowLink("employment-section")).getHTML({ prettify: false })).toContain("Start section: Employment");
+      await expect(await $(HubPage.summaryRowLink("accommodation-section")).getHTML({ prettify: false })).toContain("Start section: Accommodation");
+      await expect(await $(HubPage.summaryRowLink("household-section")).getHTML({ prettify: false })).toContain("Start section: Household residents");
     });
 
     it("When the user starts a section, Then the first question in the section should be displayed", async () => {
@@ -102,7 +102,7 @@ describe("Feature: Hub and Spoke", () => {
     it("When the user returns to the Hub, Then the section should be marked as 'Partially completed'", async () => {
       await browser.url(HubPage.url());
       await expect(await $(HubPage.summaryRowState("employment-section")).getText()).toBe("Partially completed");
-      await expect(await $(HubPage.summaryRowLink("employment-section")).getHTML()).toContain("Continue with section: Employment");
+      await expect(await $(HubPage.summaryRowLink("employment-section")).getHTML({ prettify: false })).toContain("Continue with section: Employment");
     });
 
     it("When the user returns to the Hub and restarts the same section, Then they should be redirected to the first incomplete block", async () => {
@@ -135,7 +135,7 @@ describe("Feature: Hub and Spoke", () => {
     it("When the user returns to the Hub, Then the section should be marked as 'Completed'", async () => {
       await click(EmploymentTypeBlockPage.submit());
       await expect(await $(HubPage.summaryRowState("employment-section")).getText()).toBe("Completed");
-      await expect(await $(HubPage.summaryRowLink("employment-section")).getHTML()).toContain("View answers: Employment");
+      await expect(await $(HubPage.summaryRowLink("employment-section")).getHTML({ prettify: false })).toContain("View answers: Employment");
     });
 
     it("When the user returns to the Hub and clicks the 'View answers' link on the Hub, if this no summary they are returned to the first block", async () => {
@@ -178,7 +178,7 @@ describe("Feature: Hub and Spoke", () => {
       await browser.url(HubPage.url());
       await verifyUrlPathIs(HubPage.url());
       await expect(await $(HubPage.summaryRowState("employment-section")).getText()).toBe("Partially completed");
-      await expect(await $(HubPage.summaryRowLink("employment-section")).getHTML()).toContain("Continue with section: Employment");
+      await expect(await $(HubPage.summaryRowLink("employment-section")).getHTML({ prettify: false })).toContain("Continue with section: Employment");
     });
   });
 
@@ -303,14 +303,14 @@ describe("Feature: Hub and Spoke", () => {
       await $(DoesAnyoneLiveHere.no()).click();
       await click(DoesAnyoneLiveHere.submit());
       await click(HouseholdSummary.submit());
-      await expect(await $(HubPage.summaryRowLink("household-section")).getHTML()).toContain("View answers: Household residents");
+      await expect(await $(HubPage.summaryRowLink("household-section")).getHTML({ prettify: false })).toContain("View answers: Household residents");
     });
 
     it("When there are no changes, continue returns directly to the hub", async () => {
       await $(HubPage.summaryRowLink("household-section")).click();
       await click(HouseholdSummary.submit());
       await verifyUrlPathIs(HubPage.url());
-      await expect(await $(HubPage.summaryRowLink("household-section")).getHTML()).toContain("View answers: Household residents");
+      await expect(await $(HubPage.summaryRowLink("household-section")).getHTML({ prettify: false })).toContain("View answers: Household residents");
     });
 
     it("When there are changes, which would set the section to in_progress it routes accordingly", async () => {
