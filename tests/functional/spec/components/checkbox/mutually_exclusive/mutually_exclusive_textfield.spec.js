@@ -1,11 +1,11 @@
 import TextFieldPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-textfield.page";
 import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-textfield-section-summary.page";
-import { click } from "../../../../helpers";
+import { click, waitForQuestionnaireToLoad } from "../../../../helpers";
 
 describe("Component: Mutually Exclusive Textfield With Single Checkbox Override", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_mutually_exclusive.json");
-    await browser.pause(100);
+    await waitForQuestionnaireToLoad();
     await browser.url("/questionnaire/mutually-exclusive-textfield");
   });
 

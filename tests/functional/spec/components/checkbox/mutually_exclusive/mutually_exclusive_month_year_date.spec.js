@@ -1,11 +1,11 @@
 import MonthYearDatePage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-month-year-date.page";
 import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-month-year-date-section-summary.page";
-import { click } from "../../../../helpers";
+import { click, waitForQuestionnaireToLoad } from "../../../../helpers";
 
 describe("Component: Mutually Exclusive Month Year Date With Single Checkbox Override", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_mutually_exclusive.json");
-    await browser.pause(100);
+    await waitForQuestionnaireToLoad();
     await browser.url("/questionnaire/mutually-exclusive-month-year-date");
   });
 

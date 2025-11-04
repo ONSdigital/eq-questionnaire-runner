@@ -67,3 +67,10 @@ export const verifyUrlContains = async (expectedUrlString) => {
 export const verifyUrlContainsSyncMode = (expectedUrlString) => {
   expect(browser).toHaveUrl(expect.stringContaining(expectedUrlString));
 };
+
+export async function waitForQuestionnaireToLoad(timeout = 3000) {
+  await $(".form-class").waitForExist({
+    timeout,
+    timeoutMsg: "Questionnaire form did not load in time",
+  });
+}

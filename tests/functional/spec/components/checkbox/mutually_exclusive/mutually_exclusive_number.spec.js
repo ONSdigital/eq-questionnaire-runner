@@ -1,11 +1,11 @@
 import NumberPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-number.page";
 import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-number-section-summary.page";
-import { click } from "../../../../helpers";
+import { click, waitForQuestionnaireToLoad } from "../../../../helpers";
 
 describe("Component: Mutually Exclusive Number With Single Checkbox Override", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_mutually_exclusive.json");
-    await browser.pause(100);
+    await waitForQuestionnaireToLoad();
     await browser.url("/questionnaire/mutually-exclusive-number");
   });
 

@@ -6,14 +6,14 @@ import PersonalSummaryPage from "../../../generated_pages/repeating_section_summ
 import ProxyPage from "../../../generated_pages/repeating_section_summaries/proxy.page";
 import DateOfBirthPage from "../../../generated_pages/repeating_section_summaries/date-of-birth.page";
 import HubPage from "../../../base_pages/hub.page.js";
-import { click, verifyUrlContains } from "../../../helpers";
+import { click, verifyUrlContains, waitForQuestionnaireToLoad } from "../../../helpers";
 
 describe("Feature: Repeating Section Summaries", () => {
   describe("Given the user has added some members to the household and is on the Hub", () => {
     before("Open survey and add household members", async () => {
       await browser.openQuestionnaire("test_repeating_section_summaries.json");
       // Ensure the questionnaire fully loads
-      await browser.pause(100);
+      await waitForQuestionnaireToLoad();l
       // Ensure we are on the Hub
       await verifyUrlContains(HubPage.url());
       // Start first section to add household members
