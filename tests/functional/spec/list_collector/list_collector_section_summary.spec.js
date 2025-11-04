@@ -34,14 +34,15 @@ describe("List Collector Section Summary and Summary Items", () => {
       await expect(await $(companiesListRowItem(1)).$$(".ons-summary__values")[1].getText()).toContain("123");
       await expect(await $(companiesListRowItem(1)).$$(".ons-summary__values")[2].getText()).toContain("Yes");
       const listItemId = (await listItemIds())[0];
-      await expect(await $(companiesListRowItem(1)).$$(".ons-summary__actions")[0].getHTML({ prettify: false })).toContain(
+      const row = await $(companiesListRowItem(1));
+      await expect(await row.$(`dd.ons-summary__actions#${listItemId}`).getHTML({ prettify: false })).toContain(
         `return_to=section-summary&amp;return_to_answer_id=${listItemId}#company-or-branch-name`,
       );
-      await expect(await $(companiesListRowItem(1)).$$(".ons-summary__actions")[1].getHTML({ prettify: false })).toContain(
-        `return_to_answer_id=registration-number-${listItemId}#registration-number`,
+      await expect(await row.$(`dd#registration-number-${listItemId}`).getHTML({ prettify: false })).toContain(
+        `return_to=section-summary&amp;return_to_answer_id=registration-number-${listItemId}#registration-number`,
       );
-      await expect(await $(companiesListRowItem(1)).$$(".ons-summary__actions")[2].getHTML({ prettify: false })).toContain(
-        `return_to_answer_id=authorised-insurer-radio-${listItemId}#authorised-insurer-radio`,
+      await expect(await row.$(`dd#authorised-insurer-radio-${listItemId}`).getHTML({ prettify: false })).toContain(
+        `return_to=section-summary&amp;return_to_answer_id=authorised-insurer-radio-${listItemId}#authorised-insurer-radio`,
       );
     });
     it("When I add multiple items, Then all the items should be visible on the section summary and have correct values", async () => {
