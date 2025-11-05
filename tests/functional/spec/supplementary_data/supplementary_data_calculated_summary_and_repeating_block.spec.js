@@ -38,6 +38,7 @@ describe("Using supplementary data", () => {
   });
   it("Given I have some repeating blocks with supplementary data, When I begin the section, Then I see the supplementary names rendered correctly", async () => {
     await click(HubPage.submit());
+    await waitForQuestionnaireToLoad();
     await expect(await $(ListCollectorProductsPage.listLabel(1)).getText()).toBe("Articles and equipment for sports or outdoor games");
     await expect(await $(ListCollectorProductsPage.listLabel(2)).getText()).toBe("Kitchen Equipment");
     await click(ListCollectorProductsPage.submit());
