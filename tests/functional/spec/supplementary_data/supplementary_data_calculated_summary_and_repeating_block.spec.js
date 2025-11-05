@@ -45,6 +45,7 @@ describe("Using supplementary data", () => {
   });
 
   it("Given I have repeating blocks with supplementary data, When I start the first repeating block, Then I see the supplementary data for the first list item", async () => {
+    await waitForQuestionnaireToLoad();
     await expect(await $("body").getHTML({ prettify: false })).toContain("<h2>Include</h2>");
     await expect(await $("body").getHTML({ prettify: false })).toContain("<li>for children's playgrounds</li>");
     await expect(await $("body").getHTML({ prettify: false })).toContain("<li>swimming pools and paddling pools</li>");
