@@ -119,6 +119,7 @@ describe("Using supplementary data", () => {
       sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
       responseId,
     });
+    await waitForQuestionnaireToLoad();
     await click(HubPage.submit());
     await $(ThankYouPage.savePrintAnswersLink()).click();
     await assertSummaryTitles(["Company Details"]);
