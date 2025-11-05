@@ -9,7 +9,7 @@ describe("Theme DESNZ", () => {
 
     it("When I navigate to the radio page, Then I should see DESNZ theme content", async () => {
       await verifyUrlContains(RadioPage.pageName);
-      await expect(await $("#desnz-logo-alt").getHTML({ prettify: false })).toContain("Department for Energy Security and Net Zero");
+      await expect(await $("#desnz-logo-alt").getHTML({ includeSelectorTag: false, prettify: false })).toContain("Department for Energy Security and Net Zero");
     });
   });
 });
