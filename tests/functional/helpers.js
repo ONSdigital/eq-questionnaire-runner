@@ -69,8 +69,8 @@ export const verifyUrlContainsSyncMode = (expectedUrlString) => {
 };
 
 export async function waitForPageToLoad(timeout = 3000) {
-  await $('#main-content').waitForExist({
+  await $("#main-content").waitForExist({
     timeout,
-    timeoutMsg: 'Page did not load #main-content in time',
+    timeoutMsg: "Page did not load #main-content in time",
   });
 }

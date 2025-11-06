@@ -1,6 +1,6 @@
 import IntroductionPageHub from "../generated_pages/introduction_hub/introduction.page";
 import IntroductionPageLinear from "../generated_pages/introduction/introduction.page";
-import { verifyUrlContains } from "../helpers";
+import { verifyUrlContains, waitForPageToLoad } from "../helpers";
 
 describe("Introduction preview questions", () => {
   const introductionSchemaHub = "test_introduction_hub.json";
@@ -52,6 +52,7 @@ describe("Introduction preview questions", () => {
 
   it("Given I complete some of a survey and the piped answers should be being populated, Then preview answers should still be showing placeholders", async () => {
     await browser.openQuestionnaire(introductionSchemaLinear);
+    await waitForPageToLoad();
     await $(startSurveyButton).click();
     await $(noRadio).click();
     await $(submitButton).click();
