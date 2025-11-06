@@ -5,7 +5,7 @@ import { click, waitForPageToLoad } from "../../../../helpers";
 describe("Component: Mutually Exclusive TextArea With Single Checkbox Override", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_mutually_exclusive.json");
-    await waitForPageToLoad;
+    await waitForPageToLoad();
     await browser.url("/questionnaire/mutually-exclusive-textarea");
   });
 

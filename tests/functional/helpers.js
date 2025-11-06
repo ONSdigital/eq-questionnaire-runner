@@ -69,5 +69,8 @@ export const verifyUrlContainsSyncMode = (expectedUrlString) => {
 };
 
 export async function waitForPageToLoad(timeout = 3000) {
-  await browser.waitUntil(async () => (await browser.execute(() => document.readyState)) === "complete", { timeout });
+  await $('#main-content').waitForExist({
+    timeout,
+    timeoutMsg: 'Page did not load #main-content in time',
+  });
 }
