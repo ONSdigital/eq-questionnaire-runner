@@ -68,9 +68,6 @@ export const verifyUrlContainsSyncMode = (expectedUrlString) => {
   expect(browser).toHaveUrl(expect.stringContaining(expectedUrlString));
 };
 
-export async function waitForQuestionnaireToLoad(timeout = 3000) {
-  await $(".form-class").waitForExist({
-    timeout,
-    timeoutMsg: "Questionnaire form did not load in time",
-  });
+export async function waitForPageToLoad(timeout = 3000) {
+  await browser.waitUntil(async () => (await browser.execute(() => document.readyState)) === "complete", { timeout });
 }

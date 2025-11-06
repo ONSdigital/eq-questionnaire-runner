@@ -1,4 +1,4 @@
-import { click, assertSummaryTitles, waitForQuestionnaireToLoad } from "../../helpers";
+import { click, assertSummaryTitles, waitForPageToLoad } from "../../helpers";
 import { expect } from "@wdio/globals";
 import { getRandomString } from "../../jwt_helper";
 import CalculatedSummarySalesPage from "../../generated_pages/supplementary_data_with_introduction_and_calculated_summary/calculated-summary-sales.page.js";
@@ -26,7 +26,7 @@ describe("Using supplementary data", () => {
     });
   });
   it("Given I launch a survey using supplementary data, When I am outside a repeating section, Then I am able to see the list of items relating to a given supplementary data list item on the page", async () => {
-    await waitForQuestionnaireToLoad();
+    await waitForPageToLoad();
     await expect(await $("#main-content #guidance-1").getText()).toContain("The surnames of the employees are: Potter, Kent.");
     await expect(await $$("#main-content li")[0].getText()).toBe("Articles and equipment for sports or outdoor games");
     await expect(await $$("#main-content li")[1].getText()).toBe("Kitchen Equipment");
@@ -119,7 +119,7 @@ describe("Using supplementary data", () => {
       sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
       responseId,
     });
-    await waitForQuestionnaireToLoad();
+    await waitForPageToLoad();
     await click(HubPage.submit());
     await $(ThankYouPage.savePrintAnswersLink()).click();
     await assertSummaryTitles(["Company Details"]);

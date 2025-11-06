@@ -8,7 +8,7 @@ import SportsPage from "../../../generated_pages/last_viewed_question_guidance_h
 import UnPaidWorkPage from "../../../generated_pages/last_viewed_question_guidance_hub/unpaid-work.page.js";
 import WorkInterstitialPage from "../../../generated_pages/last_viewed_question_guidance_hub/work-interstitial.page.js";
 import HubPage from "../../../base_pages/hub.page.js";
-import { click, verifyUrlContains, waitForQuestionnaireToLoad } from "../../../helpers";
+import { click, verifyUrlContains, waitForPageToLoad } from "../../../helpers";
 describe("Last viewed question guidance", () => {
   const resumableLaunchParams = {
     responseId: getRandomString(16),
@@ -28,7 +28,7 @@ describe("Last viewed question guidance", () => {
     it("When the respondent saves and resumes from a section which is not started, then last question guidance is not shown", async () => {
       await $(WorkInterstitialPage.saveSignOut()).click();
       await browser.openQuestionnaire("test_last_viewed_question_guidance_hub.json", resumableLaunchParams);
-      await waitForQuestionnaireToLoad();
+      await waitForPageToLoad();
       await verifyUrlContains(WorkInterstitialPage.url());
       await expect(await $(WorkInterstitialPage.lastViewedQuestionGuidance()).isExisting()).toBe(false);
     });

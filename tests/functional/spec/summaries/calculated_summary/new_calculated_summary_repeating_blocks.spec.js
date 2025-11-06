@@ -11,7 +11,7 @@ import CalculatedSummaryCountPage from "../../../generated_pages/new_calculated_
 import HubPage from "../../../base_pages/hub.page";
 import FamilyJourneysPage from "../../../generated_pages/new_calculated_summary_repeating_blocks/family-journeys.page";
 import BlockSkipPage from "../../../generated_pages/new_calculated_summary_repeating_blocks/block-skip.page";
-import { assertSummaryValues, repeatingAnswerChangeLink, click, verifyUrlContains, waitForQuestionnaireToLoad } from "../../../helpers";
+import { assertSummaryValues, repeatingAnswerChangeLink, click, verifyUrlContains, waitForPageToLoad } from "../../../helpers";
 import { expect } from "@wdio/globals";
 
 describe("Feature: Calculated Summary using Repeating Blocks", () => {
@@ -232,7 +232,7 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
     await click(CalculatedSummarySpendingPage.submit());
     await click(SectionOnePage.submit());
     // section 2 is now gone
-    await waitForQuestionnaireToLoad();
+    await waitForPageToLoad();
     await expect(await $$(HubPage.summaryItems()).length).toBe(1);
   });
 });
