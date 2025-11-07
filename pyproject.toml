@@ -89,6 +89,7 @@ gevent = "^24.2.1"
 babel = "==2.14.0"  # Temporarily pinned - problem for translations found in v2.15.0, see: https://github.com/ONSdigital/eq-questionnaire-runner/pull/1384
 wtforms = "^3.2.1"
 htmlmin2 = "^0.1.13"
+brotli = ">=1.2.0"
 
 [build-system]
 requires = ["poetry-core"]
