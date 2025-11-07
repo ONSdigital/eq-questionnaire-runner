@@ -177,6 +177,7 @@ jobs:
         run: |
             make test-functional-spec SPEC=supplementary_data/supplementary_data_calculated_summary_and_repeating_block.spec.js
             make test-functional-spec SPEC=supplementary_data/supplementary_data_calculated_question_and_interstitial.spec.js
+            make test-functional-spec SPEC=supplementary_data/supplementary_data_list_collector.spec.js
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
   docker-push:
