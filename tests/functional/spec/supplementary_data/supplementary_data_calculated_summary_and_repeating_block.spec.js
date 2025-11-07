@@ -37,14 +37,17 @@ describe("Using supplementary data", () => {
 
   it("Given I have repeating blocks with supplementary data, When I start the first repeating block, Then I see the supplementary data for the first list item", async () => {
     await waitForPageToLoad();
-    await expect(await $("body").getHTML()).toContain("<h2>Include</h2>");
-    await expect(await $("body").getHTML()).toContain("<li>for children's playgrounds</li>");
-    await expect(await $("body").getHTML()).toContain("<li>swimming pools and paddling pools</li>");
-    await expect(await $("body").getHTML()).toContain("<h2>Exclude</h2>");
-    await expect(await $("body").getHTML()).toContain(
-      "<li>sports holdalls, gloves, clothing of textile materials, footwear, protective eyewear, rackets, balls, skates</li>",
-    );
-    await expect(await $("body").getHTML({ prettify: false })).toContain(
+    await $("h2=Include").waitForDisplayed();
+    const bodyHtml = await $("body").getHTML({
+      includeSelectorTag: false,
+      prettify: false,
+    });
+    await expect(bodyHtml).toContain("<h2>Include</h2>");
+    await expect(bodyHtml).toContain("<li>for children's playgrounds</li>");
+    await expect(bodyHtml).toContain("<li>swimming pools and paddling pools</li>");
+    await expect(bodyHtml).toContain("<h2>Exclude</h2>");
+    await expect(bodyHtml).toContain("<li>sports holdalls, gloves, clothing of textile materials, footwear, protective eyewear, rackets, balls, skates</li>");
+    await expect(bodyHtml).toContain(
       "<li>for skiing, water sports, golf, fishing', for skiing, water sports, golf, fishing, table tennis, PE, gymnastics, athletics</li>",
     );
     await expect(await $(ProductRepeatingBlock1Page.productVolumeSalesLabel()).getText()).toBe(
