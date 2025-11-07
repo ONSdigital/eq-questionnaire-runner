@@ -1,4 +1,4 @@
-import { assertSummaryItems, assertSummaryTitles, assertSummaryValues, listItemComplete, click, verifyUrlContains, waitForPageToLoad } from "../../helpers";
+import { assertSummaryItems, assertSummaryTitles, assertSummaryValues, listItemComplete, click, verifyUrlContains } from "../../helpers";
 import { expect } from "@wdio/globals";
 import { getRandomString } from "../../jwt_helper";
 import CalculatedSummaryValueSalesPage from "../../generated_pages/supplementary_data_repeating_block_and_calculated_summary/calculated-summary-value-sales.page.js";
@@ -26,31 +26,23 @@ describe("Using supplementary data", () => {
       sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
       responseId,
     });
-    await waitForPageToLoad();
   });
   it("Given I have some repeating blocks with supplementary data, When I begin the section, Then I see the supplementary names rendered correctly", async () => {
     await click(HubPage.submit());
-    await waitForPageToLoad();
-    await $(ListCollectorProductsPage.listLabel(1)).waitForExist({ timeout: 15000 });
-    await $(ListCollectorProductsPage.listLabel(2)).waitForExist({ timeout: 15000 });
     await expect(await $(ListCollectorProductsPage.listLabel(1)).getText()).toBe("Articles and equipment for sports or outdoor games");
     await expect(await $(ListCollectorProductsPage.listLabel(2)).getText()).toBe("Kitchen Equipment");
     await click(ListCollectorProductsPage.submit());
   });
 
   it("Given I have repeating blocks with supplementary data, When I start the first repeating block, Then I see the supplementary data for the first list item", async () => {
-    await waitForPageToLoad();
-    await $("h2=Include").waitForDisplayed();
-    const bodyHtml = await $("body").getHTML({
-      includeSelectorTag: false,
-      prettify: false,
-    });
-    await expect(bodyHtml).toContain("<h2>Include</h2>");
-    await expect(bodyHtml).toContain("<li>for children's playgrounds</li>");
-    await expect(bodyHtml).toContain("<li>swimming pools and paddling pools</li>");
-    await expect(bodyHtml).toContain("<h2>Exclude</h2>");
-    await expect(bodyHtml).toContain("<li>sports holdalls, gloves, clothing of textile materials, footwear, protective eyewear, rackets, balls, skates</li>");
-    await expect(bodyHtml).toContain(
+    await expect(await $("body").getHTML()).toContain("<h2>Include</h2>");
+    await expect(await $("body").getHTML()).toContain("<li>for children's playgrounds</li>");
+    await expect(await $("body").getHTML()).toContain("<li>swimming pools and paddling pools</li>");
+    await expect(await $("body").getHTML()).toContain("<h2>Exclude</h2>");
+    await expect(await $("body").getHTML()).toContain(
+      "<li>sports holdalls, gloves, clothing of textile materials, footwear, protective eyewear, rackets, balls, skates</li>",
+    );
+    await expect(await $("body").getHTML()).toContain(
       "<li>for skiing, water sports, golf, fishing', for skiing, water sports, golf, fishing, table tennis, PE, gymnastics, athletics</li>",
     );
     await expect(await $(ProductRepeatingBlock1Page.productVolumeSalesLabel()).getText()).toBe(
@@ -195,7 +187,6 @@ describe("Using supplementary data", () => {
       sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
       responseId,
     });
-    await waitForPageToLoad();
     await expect(await $(HubPage.summaryRowState("section-1")).getText()).toBe("Partially completed");
     await expect(await $(HubPage.summaryRowState("section-2")).getText()).toBe("Partially completed");
   });
@@ -206,7 +197,6 @@ describe("Using supplementary data", () => {
       sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
       responseId,
     });
-    await waitForPageToLoad();
     await click(HubPage.submit());
     await click(ListCollectorProductsPage.submit());
     await $(ProductRepeatingBlock1Page.productVolumeSales()).setValue(40);

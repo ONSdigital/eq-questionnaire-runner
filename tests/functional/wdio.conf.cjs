@@ -52,12 +52,17 @@ exports.config = {
     {
       browserName: "chrome",
       browserVersion: "stable",
+      // If outputDir is provided WebdriverIO can capture driver session logs
+      // it is possible to configure which logTypes to include/exclude.
+      // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
+      // excludeDriverLogs: ['bugreport', 'server'],
       "goog:chromeOptions": {
         args: [
+          process.env.EQ_RUN_FUNCTIONAL_TESTS_HEADLESS ? "--headless" : "--start-maximized",
+          "--window-size=3840,2160",
           process.env.EQ_RUN_FUNCTIONAL_TESTS_HEADLESS ? "--headless=new" : "--start-maximized",
           "--window-size=1440,900",
           "--no-sandbox",
-          "--disable-dev-shm-usage",
           "--disable-gpu",
           "--disable-extensions",
         ],
