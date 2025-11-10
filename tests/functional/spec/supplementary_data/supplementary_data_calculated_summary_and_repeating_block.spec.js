@@ -24,7 +24,7 @@ describe("Using supplementary data", () => {
     await browser.openQuestionnaire("test_supplementary_data_repeating_block_and_calculated_summary.json", {
       version: "v2",
       sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
-      responseId,
+      Q8L4Z72N1J3BXR0F,
     });
     await waitForPageToLoad();
   });
