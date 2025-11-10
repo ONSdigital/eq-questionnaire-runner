@@ -194,50 +194,52 @@ exports.config = {
    * @param {Array} args arguments that command would receive
    */
   before: async function (capabilities, specs) {
-    const JwtHelper = require("./jwt_helper");
+  const JwtHelper = require("./jwt_helper");
 
-    await browser.addCommand(
-      "openQuestionnaire",
-      async function (
-        schema,
-        {
-          launchVersion = "v2",
-          theme = "default",
-          userId = JwtHelper.getRandomString(10),
-          collectionId = JwtHelper.getRandomString(10),
-          responseId = JwtHelper.getRandomString(16),
-          surveyId = "123",
-          periodId = "201605",
-          periodStr = "May 2016",
-          ruRef = "12345678901A",
-          sdsDatasetId = null,
-          region = "GB-ENG",
-          language = "en",
-          includeLogoutUrl = false,
-          cirInstrumentId = null,
-          booleanFlag = false,
-        } = {},
-      ) {
-        const token = await JwtHelper.generateToken(schema, {
-          launchVersion,
-          theme,
-          userId,
-          collectionId,
-          responseId,
-          surveyId,
-          periodId,
-          periodStr,
-          ruRef,
-          sdsDatasetId,
-          regionCode: region,
-          languageCode: language,
-          includeLogoutUrl,
-          cirInstrumentId,
-          booleanFlag,
-        });
-        this.url(`/session?token=${token}`);
-      },
-    );
+  // Define once for all tests
+  browser.addCommand(
+    "openQuestionnaire",
+    async function (
+      schema,
+      {
+        launchVersion = "v2",
+        theme = "default",
+        userId = JwtHelper.getRandomString(10),
+        collectionId = JwtHelper.getRandomString(10),
+        responseId = JwtHelper.getRandomString(16),
+        surveyId = "123",
+        periodId = "201605",
+        periodStr = "May 2016",
+        ruRef = "12345678901A",
+        sdsDatasetId = null,
+        region = "GB-ENG",
+        language = "en",
+        includeLogoutUrl = false,
+        cirInstrumentId = null,
+        booleanFlag = false,
+      } = {},
+    ) {
+      const token = await JwtHelper.generateToken(schema, {
+        launchVersion,
+        theme,
+        userId,
+        collectionId,
+        responseId,
+        surveyId,
+        periodId,
+        periodStr,
+        ruRef,
+        sdsDatasetId,
+        regionCode: region,
+        languageCode: language,
+        includeLogoutUrl,
+        cirInstrumentId,
+        booleanFlag,
+      });
+      const targetPath = `/session?token=${encodeURIComponent(token)}`;
+      return browser.url(targetPath);
+    },
+  );
   },
   // beforeCommand: function (commandName, args) {
   // },
