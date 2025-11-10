@@ -15,14 +15,15 @@ import ThankYouPage from "../../base_pages/thank-you.page";
 import ViewSubmittedResponsePage from "../../generated_pages/supplementary_data_with_introduction_and_calculated_summary/view-submitted-response.page.js";
 
 describe("Using supplementary data", () => {
-  const id = getRandomString(16);
+  let responseId;
   const summaryRowTitles = ".ons-summary__row-title";
 
   before("Starting the survey", async () => {
+    responseId = getRandomString(16);
     await browser.openQuestionnaire("test_supplementary_data_with_introduction_and_calculated_summary.json", {
       launchVersion: "v2",
       sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
-      responseId: id,
+      responseId: responseId,
     });
     await waitForPageToLoad();
   });
