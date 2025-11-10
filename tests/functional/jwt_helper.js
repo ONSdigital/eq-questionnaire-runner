@@ -2,7 +2,7 @@ import KJUR from "jsrsasign";
 import { v4 as uuidv4 } from "uuid";
 import JSONWebKey from "json-web-key";
 import jose from "node-jose";
-import { createHash, randomBytes } from "crypto";
+import crypto from "crypto";
 
 const JWK = jose.JWK;
 const JWE = jose.JWE;
@@ -50,7 +50,12 @@ const encryptionKeyString =
 const schemaRegEx = /^([a-z0-9]+)_(\w+)\.json/;
 
 export function getRandomString(length) {
-  return randomBytes(length).toString("hex").slice(0, length).toUpperCase();
+  let result = "";
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
 }
 
 export function generateToken(
@@ -128,7 +133,7 @@ export function generateToken(
 
   const webKey = JSONWebKey.fromPEM(encryptionKeyString);
 
-  const shasum = createHash("sha1");
+  const shasum = crypto.createHash("sha1");
   shasum.update(encryptionKeyString);
   const encryptionKeyKid = shasum.digest("hex");
 
