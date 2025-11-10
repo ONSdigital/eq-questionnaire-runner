@@ -2,7 +2,7 @@ import KJUR from "jsrsasign";
 import { v4 as uuidv4 } from "uuid";
 import JSONWebKey from "json-web-key";
 import jose from "node-jose";
-import crypto from "crypto";
+import { randomBytes } from "crypto";
 
 const JWK = jose.JWK;
 const JWE = jose.JWE;
@@ -50,14 +50,8 @@ const encryptionKeyString =
 const schemaRegEx = /^([a-z0-9]+)_(\w+)\.json/;
 
 export function getRandomString(length) {
-  let result = "";
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return result;
+  return randomBytes(length).toString("hex").slice(0, length).toUpperCase();
 }
-
 export function generateToken(
   schema,
   {
