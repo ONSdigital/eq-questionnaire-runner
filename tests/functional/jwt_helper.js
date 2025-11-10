@@ -2,7 +2,7 @@ import KJUR from "jsrsasign";
 import { v4 as uuidv4 } from "uuid";
 import JSONWebKey from "json-web-key";
 import jose from "node-jose";
-import { randomBytes } from "crypto";
+import { createHash, randomBytes } from "crypto";
 
 const JWK = jose.JWK;
 const JWE = jose.JWE;
@@ -11,7 +11,7 @@ const signingKeyString =
   "-----BEGIN RSA PRIVATE KEY-----\n" +
   "MIIEogIBAAKCAQEAvZzMraB96Wd1zfHS3vW3z//Nkqz+9HfwViNje2Y5L6m3K/7r\n" +
   "aA0kUsWD1f6X7/LIJfkCEctCEj9q19+cX30h0pi6IOu92MlIwdH/L6CTuzYnG4PA\n" +
-  "CKT8FZonLw0NYBqh8p4vWS8xtNHNjTWua/FFTlxdtYnEb9HbUZkg7dXAtnikozlE\n" +
+  "C KT8FZonLw0NYBqh8p4vWS8xtNHNjTWua/FFTlxdtYnEb9HbUZkg7dXAtnikozlE\n" +
   "/ZZSponq7K00h3Uh9goxQIavcK1QI8pw5V+T8V8Ue7k98W8LpbYQWm7FPOZayu1E\n" +
   "oJWUZefdOlYAdeVbDS4tjrVF+3za+VX3q73zJEfyLEM0zKrkQQ796gfYpkzDYwJv\n" +
   "kiW7fb2Yh1teNHpFR5tozzMwUxkREl/TQ4U1kwIDAQABAoIBAHXiS1pTIpT/Dr24\n" +
@@ -52,6 +52,7 @@ const schemaRegEx = /^([a-z0-9]+)_(\w+)\.json/;
 export function getRandomString(length) {
   return randomBytes(length).toString("hex").slice(0, length).toUpperCase();
 }
+
 export function generateToken(
   schema,
   {
@@ -127,7 +128,7 @@ export function generateToken(
 
   const webKey = JSONWebKey.fromPEM(encryptionKeyString);
 
-  const shasum = crypto.createHash("sha1");
+  const shasum = createHash("sha1");
   shasum.update(encryptionKeyString);
   const encryptionKeyKid = shasum.digest("hex");
 
