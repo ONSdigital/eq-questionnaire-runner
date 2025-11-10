@@ -234,7 +234,7 @@ exports.config = {
           cirInstrumentId,
           booleanFlag,
         });
-        this.url(`/session?token=${token}`);
+        await this.url(`/session?token=${token}`);
       },
     );
   },
