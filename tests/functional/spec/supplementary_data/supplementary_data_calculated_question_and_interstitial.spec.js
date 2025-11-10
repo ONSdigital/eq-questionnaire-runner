@@ -118,7 +118,7 @@ describe("Using supplementary data", () => {
     await browser.openQuestionnaire("test_supplementary_data_with_introduction_and_calculated_summary.json", {
       launchVersion: "v2",
       sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
-      responseId: id,
+      responseId: responseId,
     });
     await waitForPageToLoad();
     await click(HubPage.submit());

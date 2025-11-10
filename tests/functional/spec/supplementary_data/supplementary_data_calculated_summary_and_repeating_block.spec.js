@@ -31,7 +31,6 @@ describe("Using supplementary data", () => {
   });
   it("Given I have some repeating blocks with supplementary data, When I begin the section, Then I see the supplementary names rendered correctly", async () => {
     await click(HubPage.submit());
-    await browser.pause(1000);
     await expect(await $(ListCollectorProductsPage.listLabel(1)).getText()).toBe("Articles and equipment for sports or outdoor games");
     await expect(await $(ListCollectorProductsPage.listLabel(2)).getText()).toBe("Kitchen Equipment");
     await click(ListCollectorProductsPage.submit());
@@ -200,7 +199,7 @@ describe("Using supplementary data", () => {
     await browser.openQuestionnaire("test_supplementary_data_repeating_block_and_calculated_summary.json", {
       launchVersion: "v2",
       sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
-      responseId: id,
+      responseId: responseId,
     });
     await waitForPageToLoad();
     await click(HubPage.submit());
