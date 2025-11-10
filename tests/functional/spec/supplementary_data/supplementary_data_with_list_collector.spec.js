@@ -24,7 +24,7 @@ describe("Using supplementary data", () => {
 
   before("Starting the survey", async () => {
     await browser.openQuestionnaire("test_supplementary_data_with_list_collector.json", {
-      version: "v2",
+      launchVersion: "v2",
       sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
       responseId,
     });
@@ -117,7 +117,7 @@ describe("Using supplementary data", () => {
   });
   it("Given I relaunch the survey with new supplementary data and new list items for the repeating section, When I open the Hub page, Then I see the new supplementary list items as new incomplete sections and not any old ones", async () => {
     await browser.openQuestionnaire("test_supplementary_data_with_list_collector.json", {
-      version: "v2",
+      launchVersion: "v2",
       sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
       responseId,
     });
