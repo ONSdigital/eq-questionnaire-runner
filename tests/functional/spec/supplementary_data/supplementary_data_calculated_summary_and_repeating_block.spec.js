@@ -25,7 +25,7 @@ describe("Using supplementary data", () => {
     await browser.openQuestionnaire("test_supplementary_data_repeating_block_and_calculated_summary.json", {
       launchVersion: "v2",
       sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
-      responseId
+      responseId,
     });
     await waitForPageToLoad();
   });
@@ -149,7 +149,7 @@ describe("Using supplementary data", () => {
     await browser.openQuestionnaire("test_supplementary_data_repeating_block_and_calculated_summary.json", {
       launchVersion: "v2",
       sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
-      responseId: id,
+      responseId,
     });
     await waitForPageToLoad();
     await expect(await $(HubPage.summaryRowState("section-1")).getText()).toBe("Partially completed");
@@ -188,7 +188,7 @@ describe("Using supplementary data", () => {
     await browser.openQuestionnaire("test_supplementary_data_repeating_block_and_calculated_summary.json", {
       launchVersion: "v2",
       sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
-      responseId: id,
+      responseId,
     });
     await waitForPageToLoad();
     await expect(await $(HubPage.summaryRowState("section-1")).getText()).toBe("Partially completed");
@@ -199,7 +199,7 @@ describe("Using supplementary data", () => {
     await browser.openQuestionnaire("test_supplementary_data_repeating_block_and_calculated_summary.json", {
       launchVersion: "v2",
       sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
-      responseId: responseId,
+      responseId,
     });
     await waitForPageToLoad();
     await click(HubPage.submit());
