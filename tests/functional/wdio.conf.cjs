@@ -196,7 +196,6 @@ exports.config = {
   before: async function (capabilities, specs) {
   const JwtHelper = require("./jwt_helper");
 
-  // Define once for all tests
   browser.addCommand(
     "openQuestionnaire",
     async function (
