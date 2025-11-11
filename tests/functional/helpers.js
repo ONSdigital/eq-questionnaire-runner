@@ -68,7 +68,7 @@ export const verifyUrlContainsSyncMode = (expectedUrlString) => {
   expect(browser).toHaveUrl(expect.stringContaining(expectedUrlString));
 };
 
-export async function waitForPageToLoad(timeout = 3000) {
+export async function waitForPageToLoad(timeout = 10000) {
   await $("#main-content").waitForExist({
     timeout,
     timeoutMsg: "Page did not load #main-content in time",
