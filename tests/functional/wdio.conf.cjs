@@ -58,11 +58,13 @@ exports.config = {
       // excludeDriverLogs: ['bugreport', 'server'],
       "goog:chromeOptions": {
         args: [
-          process.env.EQ_RUN_FUNCTIONAL_TESTS_HEADLESS ? "--headless" : "--start-maximized",
+          process.env.EQ_RUN_FUNCTIONAL_TESTS_HEADLESS ? "--headless=new" : "--start-maximized",
           "--window-size=3840,2160",
           "--no-sandbox",
+          "--disable-dev-shm-usage",
           "--disable-gpu",
           "--disable-extensions",
+          "--disable-features=SameSiteByDefaultCookies,CookieSameSite"
         ],
       },
     },
@@ -233,7 +235,7 @@ exports.config = {
           cirInstrumentId,
           booleanFlag,
         });
-        await this.url(`/session?token=${token}`);
+        await this.url(`/session?token=${encodeURIComponent(token)}`);
       },
     );
   },
