@@ -73,4 +73,5 @@ export async function waitForPageToLoad(timeout = 10000) {
     timeout,
     timeoutMsg: "Page did not load #main-content in time",
   });
+  await browser.waitUntil(async () => (await browser.execute(() => document.readyState)) === "complete", { timeout });
 }
