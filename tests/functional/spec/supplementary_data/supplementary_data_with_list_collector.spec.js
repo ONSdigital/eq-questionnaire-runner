@@ -18,12 +18,11 @@ import Section3Page from "../../generated_pages/supplementary_data_with_list_col
 import Section4Page from "../../generated_pages/supplementary_data_with_list_collector/section-4-summary.page.js";
 
 describe("Using supplementary data", () => {
-  let responseId;
+  const responseId = "W4N3K6R0T1Q9Z8B2";
   const summaryItems = ".ons-summary__item--text";
   const summaryValues = ".ons-summary__values";
 
   before("Starting the survey", async () => {
-    responseId = getRandomString(16);
     await browser.openQuestionnaire("test_supplementary_data_with_list_collector.json", {
       launchVersion: "v2",
       sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",

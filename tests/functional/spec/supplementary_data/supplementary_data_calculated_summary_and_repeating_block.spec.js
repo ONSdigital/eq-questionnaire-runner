@@ -16,12 +16,11 @@ import ThankYouPage from "../../base_pages/thank-you.page";
 import ViewSubmittedResponsePage from "../../generated_pages/supplementary_data_repeating_block_and_calculated_summary/view-submitted-response.page.js";
 
 describe("Using supplementary data", () => {
-  let responseId;
+  const responseId = "9ZB2LQTX7W8G1HFR";
   const summaryItems = ".ons-summary__item--text";
   const summaryValues = ".ons-summary__values";
 
   before("Starting the survey", async () => {
-    responseId = getRandomString(16);
     await browser.openQuestionnaire("test_supplementary_data_repeating_block_and_calculated_summary.json", {
       launchVersion: "v2",
       sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
