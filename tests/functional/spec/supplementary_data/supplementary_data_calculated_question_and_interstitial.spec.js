@@ -15,7 +15,7 @@ import ThankYouPage from "../../base_pages/thank-you.page";
 import ViewSubmittedResponsePage from "../../generated_pages/supplementary_data_with_introduction_and_calculated_summary/view-submitted-response.page.js";
 
 describe("Using supplementary data", () => {
-  const responseId = "X3R2T9F8B7J1N4KQ";
+  const responseId = getRandomString(16);
   const summaryRowTitles = ".ons-summary__row-title";
 
   before("Starting the survey", async () => {

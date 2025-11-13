@@ -18,7 +18,7 @@ import Section3Page from "../../generated_pages/supplementary_data_with_list_col
 import Section4Page from "../../generated_pages/supplementary_data_with_list_collector/section-4-summary.page.js";
 
 describe("Using supplementary data", () => {
-  const responseId = "W4N3K6R0T1Q9Z8B2";
+  const responseId = getRandomString(16);
   const summaryItems = ".ons-summary__item--text";
   const summaryValues = ".ons-summary__values";
 
