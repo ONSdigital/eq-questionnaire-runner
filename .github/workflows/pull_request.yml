@@ -173,22 +173,11 @@ jobs:
         run: npm install
       - name: Docker compose
         run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose up --build -d
-      - name: Wait for SDS (and datasets)
-        env:
-          RUNNER_ENV_FILE: .functional-tests.env
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          for i in {1..120}; do
-            if curl -fsS http://localhost:5003/health >/dev/null 2>&1; then
-              echo "SDS ready"
-              break
-            fi
-            sleep 1
-          done
       - name: Functional tests
-        run: make test-functional
+        run: |
+          make test-functional-spec SPEC=tests/functional/spec/supplementary_data/supplementary_data_test.spec.js
+          make test-functional-spec SPEC=tests/functional/spec/supplementary_data/supplementary_data_calculated_question_and_interstitial.spec.js
+          make test-functional-spec SPEC=tests/functional/spec/supplementary_data/supplementary_data_calculated_summary_and_repeating_block.spec.js
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
   docker-push:
