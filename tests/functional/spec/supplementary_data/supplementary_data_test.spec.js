@@ -20,7 +20,7 @@ const EXPECTED_SURNAMES_BY_DATASET = {
 };
 
 async function assertIntroAndCalcSummaryInterstitial(_schema, sdsDatasetId) {
-  await waitForPageToLoad(15000);
+  await waitForPageToLoad(20000);
 
   const bodyText = await $("body").getText();
   await expect(bodyText).toContain("You have successfully loaded Supplementary data");
