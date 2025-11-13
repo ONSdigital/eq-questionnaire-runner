@@ -175,9 +175,9 @@ jobs:
         run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose up --build -d
       - name: Functional tests
         run: |
-          make test-functional-spec SPEC=tests/functional/spec/supplementary_data/supplementary_data_test.spec.js
-          make test-functional-spec SPEC=tests/functional/spec/supplementary_data/supplementary_data_calculated_question_and_interstitial.spec.js
-          make test-functional-spec SPEC=tests/functional/spec/supplementary_data/supplementary_data_calculated_summary_and_repeating_block.spec.js
+          make test-functional-spec SPEC=supplementary_data/supplementary_data_test.spec.js                                
+          make test-functional-spec SPEC=supplementary_data/supplementary_data_calculated_question_and_interstitial.spec.js
+          make test-functional-spec SPEC=supplementary_data/supplementary_data_calculated_summary_and_repeating_block.spec.js
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
   docker-push:
