@@ -16,6 +16,7 @@ async function assertIntroAndCalcSummaryInterstitial() {
   const bodyText = await $("body").getText();
   await expect(bodyText).toContain("You have successfully loaded Supplementary data");
   await expect(await $$('[data-qa="btn-submit"]').length).toBeGreaterThan(0);
+  await expect(await $("#main-content #guidance-1").getText()).toContain("The surnames of the employees are: Potter, Kent.")
 }
 
 async function assertRepeatingBlockHubLanding() {
