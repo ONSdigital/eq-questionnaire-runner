@@ -17,10 +17,7 @@ async function assertLaunchedQuestionPageLooksReal() {
   await expect(h1Text.trim().length).toBeGreaterThan(0);
 }
 
-const DATASETS = [
-  "203b2f9d-c500-8175-98db-86ffcfdccfa3",
-  "3bb41d29-4daa-9520-82f0-cae365f390c6",
-];
+const DATASETS = ["203b2f9d-c500-8175-98db-86ffcfdccfa3", "3bb41d29-4daa-9520-82f0-cae365f390c6"];
 
 const SCHEMAS = [
   "test_supplementary_data_with_introduction_and_calculated_summary.json",
