@@ -45,8 +45,15 @@ test:
 test-unit:
 	poetry run ./scripts/run_tests_unit.sh
 
+test-functional-main: generate-pages
+	npm run test_functional_main
+
+test-functional-sds: generate-pages
+	EQ_FUNCTIONAL_TEST_MAX_INSTANCES=1 npm run test_functional_sds
+
 test-functional: generate-pages
-	npm run test_functional
+	$(MAKE) test-functional-main
+	$(MAKE) test-functional-sds
 
 test-functional-headless: generate-pages
 	EQ_RUN_FUNCTIONAL_TESTS_HEADLESS='True' make test-functional

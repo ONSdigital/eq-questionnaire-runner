@@ -17,6 +17,8 @@
         "lint:tests": "prettier --check \"tests/functional/**/*.js\" && eslint \"tests/functional/**/*.js\"",
         "lint:test-schemas": "prettier --check \"schemas/test/*/*.json\" && eslint \"schemas/test/**/*.json\"",
         "test_functional": "./node_modules/.bin/wdio tests/functional/wdio.conf.js",
+        "test_functional_main": "FUNCTIONAL_MODE=main npm run test_functional",
+        "test_functional_sds": "FUNCTIONAL_MODE=sds npm run test_functional",
         "generate_pages": "rm -rf ./tests/functional/generated_pages && poetry run python -m tests.functional.generate_pages schemas/test/en/ ./tests/functional/generated_pages -r '../../base_pages'",
         "format": "npm run format:tests && npm run format:test-schemas",
         "format:tests": "prettier \"tests/functional/**/*.js\" --write && eslint --fix \"tests/functional/**/*.js\"",
