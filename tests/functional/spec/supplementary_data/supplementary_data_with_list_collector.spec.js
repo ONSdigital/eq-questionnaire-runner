@@ -23,6 +23,7 @@ describe("Using supplementary data", () => {
   const summaryValues = ".ons-summary__values";
 
   before("Starting the survey", async () => {
+    await browser.reloadSession();
     await browser.openQuestionnaire("test_supplementary_data_with_list_collector.json", {
       launchVersion: "v2",
       sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
