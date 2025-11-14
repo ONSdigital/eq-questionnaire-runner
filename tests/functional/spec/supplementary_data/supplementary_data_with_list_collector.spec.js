@@ -1,4 +1,4 @@
-import { click, assertSummaryTitles } from "../../helpers";
+import { click, assertSummaryTitles, waitForPageToLoad } from "../../helpers";
 import { expect } from "@wdio/globals";
 import { getRandomString } from "../../jwt_helper";
 import AddAdditionalEmployeePage from "../../generated_pages/supplementary_data_with_list_collector/list-collector-additional-add.page.js";
@@ -23,11 +23,13 @@ describe("Using supplementary data", () => {
   const summaryValues = ".ons-summary__values";
 
   before("Starting the survey", async () => {
+    await browser.reloadSession();
     await browser.openQuestionnaire("test_supplementary_data_with_list_collector.json", {
-      version: "v2",
+      launchVersion: "v2",
       sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
       responseId,
     });
+    await waitForPageToLoad();
   });
   it("Given I have a list collector content block using a supplementary list, When I start the section, I see the supplementary list items in the list", async () => {
     await click(HubPage.submit());
@@ -116,10 +118,11 @@ describe("Using supplementary data", () => {
   });
   it("Given I relaunch the survey with new supplementary data and new list items for the repeating section, When I open the Hub page, Then I see the new supplementary list items as new incomplete sections and not any old ones", async () => {
     await browser.openQuestionnaire("test_supplementary_data_with_list_collector.json", {
-      version: "v2",
+      launchVersion: "v2",
       sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
       responseId,
     });
+    await waitForPageToLoad();
     await expect(await $(HubPage.summaryItems("section-3-1")).getText()).toContain("Harry Potter");
     await expect(await $(HubPage.summaryItems("section-3-2")).getText()).toContain("Bruce Wayne");
     await expect(await $(HubPage.summaryItems("section-4-1")).getText()).toContain("Jane Doe");

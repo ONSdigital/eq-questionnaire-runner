@@ -1,4 +1,4 @@
-import { assertSummaryItems, assertSummaryTitles, assertSummaryValues, listItemComplete, click, verifyUrlContains } from "../../helpers";
+import { assertSummaryItems, assertSummaryTitles, assertSummaryValues, listItemComplete, click, verifyUrlContains, waitForPageToLoad } from "../../helpers";
 import { expect } from "@wdio/globals";
 import { getRandomString } from "../../jwt_helper";
 import CalculatedSummaryValueSalesPage from "../../generated_pages/supplementary_data_repeating_block_and_calculated_summary/calculated-summary-value-sales.page.js";
@@ -21,11 +21,13 @@ describe("Using supplementary data", () => {
   const summaryValues = ".ons-summary__values";
 
   before("Starting the survey", async () => {
+    await browser.reloadSession();
     await browser.openQuestionnaire("test_supplementary_data_repeating_block_and_calculated_summary.json", {
-      version: "v2",
+      launchVersion: "v2",
       sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
       responseId,
     });
+    await waitForPageToLoad();
   });
   it("Given I have some repeating blocks with supplementary data, When I begin the section, Then I see the supplementary names rendered correctly", async () => {
     await click(HubPage.submit());
@@ -145,10 +147,11 @@ describe("Using supplementary data", () => {
 
   it("Given the survey has been relaunched with new data and more items in the products list, When I am on the Hub, Then I see the products section and section with a new block due to the product list size are both in progress", async () => {
     await browser.openQuestionnaire("test_supplementary_data_repeating_block_and_calculated_summary.json", {
-      version: "v2",
+      launchVersion: "v2",
       sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
       responseId,
     });
+    await waitForPageToLoad();
     await expect(await $(HubPage.summaryRowState("section-1")).getText()).toBe("Partially completed");
     await expect(await $(HubPage.summaryRowState("section-3")).getText()).toBe("Partially completed");
   });
@@ -183,20 +186,22 @@ describe("Using supplementary data", () => {
     await click(Section1Page.submit());
     await expect(await $(HubPage.summaryRowState("section-1")).getText()).toBe("Completed");
     await browser.openQuestionnaire("test_supplementary_data_repeating_block_and_calculated_summary.json", {
-      version: "v2",
+      launchVersion: "v2",
       sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
       responseId,
     });
+    await waitForPageToLoad();
     await expect(await $(HubPage.summaryRowState("section-1")).getText()).toBe("Partially completed");
     await expect(await $(HubPage.summaryRowState("section-2")).getText()).toBe("Partially completed");
   });
 
   it("Given I can view my response after submission, When I submit the survey, Then I see the values I've entered and correct rendering with supplementary data", async () => {
     await browser.openQuestionnaire("test_supplementary_data_repeating_block_and_calculated_summary.json", {
-      version: "v2",
+      launchVersion: "v2",
       sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
       responseId,
     });
+    await waitForPageToLoad();
     await click(HubPage.submit());
     await click(ListCollectorProductsPage.submit());
     await $(ProductRepeatingBlock1Page.productVolumeSales()).setValue(40);
