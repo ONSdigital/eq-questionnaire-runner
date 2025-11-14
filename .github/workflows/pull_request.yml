@@ -151,7 +151,7 @@ jobs:
     env:
       EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
       # :TODO: Revisit & update when 2 instances can be used without adverse effects
-      EQ_FUNCTIONAL_TEST_MAX_INSTANCES: 2
+      EQ_FUNCTIONAL_TEST_MAX_INSTANCES: 1
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
