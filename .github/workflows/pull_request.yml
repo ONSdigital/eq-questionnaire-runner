@@ -173,11 +173,11 @@ jobs:
         run: npm install
       - name: Docker compose
         run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose up --build -d
+      - name: Functional tests (main suite)
+        run: make test-functional-main
       - name: Functional tests (supplementary data)
         run: make test-functional-sds
         continue-on-error: true
-      - name: Functional tests (main suite)
-        run: make test-functional-main
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
   docker-push:
