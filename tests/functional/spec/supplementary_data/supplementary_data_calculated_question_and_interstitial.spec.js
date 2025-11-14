@@ -20,7 +20,6 @@ describe("Using supplementary data", () => {
 
   before("Starting the survey", async () => {
     browser.pause(50000)
-    await browser.reloadSession();
     await browser.openQuestionnaire("test_supplementary_data_with_introduction_and_calculated_summary.json", {
       launchVersion: "v2",
       sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
