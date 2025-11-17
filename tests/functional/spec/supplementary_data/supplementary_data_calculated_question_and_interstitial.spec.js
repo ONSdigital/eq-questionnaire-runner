@@ -1,4 +1,4 @@
-import { click, assertSummaryTitles, waitForPageToLoad, openQuestionnaireWithRetry} from "../../helpers";
+import { click, assertSummaryTitles, waitForPageToLoad, openQuestionnaireWithRetry } from "../../helpers";
 import { expect } from "@wdio/globals";
 import { getRandomString } from "../../jwt_helper";
 import CalculatedSummarySalesPage from "../../generated_pages/supplementary_data_with_introduction_and_calculated_summary/calculated-summary-sales.page.js";

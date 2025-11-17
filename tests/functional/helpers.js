@@ -85,22 +85,12 @@ export async function openQuestionnaireWithRetry(schema, options, maxRetries = 1
     const isServiceError = bodyText.includes("Sorry, there is a problem with this service");
 
     if (!isServiceError) {
-      return; // success
+      return;
     }
 
     if (attempt === maxRetries) {
-      throw new Error(
-        `Service error page after ${maxRetries + 1} attempt(s) for schema="${schema}" with options=${JSON.stringify(
-          options
-        )}`
-      );
+      throw new Error(`Service error page after ${maxRetries + 1} attempt(s) for schema="${schema}" with options=${JSON.stringify(options)}`);
     }
-
-    // First attempt failed: reload and retry
-    // eslint-disable-next-line no-console
-    console.warn(
-      `Service error page on SDS launch attempt ${attempt + 1} for schema="${schema}". Retrying…`
-    );
     await browser.reloadSession();
   }
 }
