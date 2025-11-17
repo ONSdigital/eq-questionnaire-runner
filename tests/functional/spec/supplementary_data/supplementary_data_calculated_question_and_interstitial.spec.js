@@ -1,4 +1,4 @@
-import { click, assertSummaryTitles, waitForPageToLoad } from "../../helpers";
+import { click, assertSummaryTitles, waitForPageToLoad, openQuestionnaireWithRetry} from "../../helpers";
 import { expect } from "@wdio/globals";
 import { getRandomString } from "../../jwt_helper";
 import CalculatedSummarySalesPage from "../../generated_pages/supplementary_data_with_introduction_and_calculated_summary/calculated-summary-sales.page.js";
@@ -19,12 +19,11 @@ describe("Using supplementary data", () => {
   const summaryRowTitles = ".ons-summary__row-title";
 
   before("Starting the survey", async () => {
-    await browser.openQuestionnaire("test_supplementary_data_with_introduction_and_calculated_summary.json", {
+    await openQuestionnaireWithRetry("test_supplementary_data_with_introduction_and_calculated_summary.json", {
       launchVersion: "v2",
       sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
       responseId,
     });
-    await waitForPageToLoad(20000);
   });
   it("Given I launch a survey using supplementary data, When I am outside a repeating section, Then I am able to see the list of items relating to a given supplementary data list item on the page", async () => {
     await expect(await $("#main-content #guidance-1").getText()).toContain("The surnames of the employees are: Potter, Kent.");
