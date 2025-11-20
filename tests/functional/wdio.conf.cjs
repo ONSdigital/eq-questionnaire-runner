@@ -1,7 +1,7 @@
 const path = require("node:path");
 
 const MODE = process.env.FUNCTIONAL_MODE; // "main" or "sds"
- {
+exports.config = {
   //
   // ====================
   // Runner Configuration
