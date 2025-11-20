@@ -147,11 +147,11 @@ jobs:
       contents: 'read'
     needs: [python-dependencies, node-dependencies]
     runs-on: ubuntu-22.04
-    timeout-minutes: 45
+    timeout-minutes: 35
     env:
       EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
       # :TODO: Revisit & update when 2 instances can be used without adverse effects
-      EQ_FUNCTIONAL_TEST_MAX_INSTANCES: 3
+      EQ_FUNCTIONAL_TEST_MAX_INSTANCES: 2
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
@@ -173,10 +173,8 @@ jobs:
         run: npm install
       - name: Docker compose
         run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose up --build -d
-      - name: Functional tests (supplementary data)
-        run: make test-functional-sds
-      - name: Functional tests (main suite)
-        run: make test-functional-main
+      - name: Functional tests
+        run: make test-functional
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
   docker-push:

@@ -16,7 +16,6 @@ export const listItemComplete = async (listItemLabel, status) => {
 
 const assertSummaryFunction = (selector) => {
   return async (entities) => {
-    // check each summary value/item/title is present and that the number of them matches what is on the page
     await entities.map(async (entity, index) => {
       await expect(await $$(selector)[index].getText()).toEqual(entity);
     });
@@ -79,7 +78,7 @@ export async function waitForPageToLoad(timeout = 10000) {
 export async function openQuestionnaireWithRetry(schema, options, maxRetries = 1) {
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     await browser.openQuestionnaire(schema, options);
-    await waitForPageToLoad(15000);
+    await waitForPageToLoad();
 
     const bodyText = await $("body").getText();
     const isServiceError = bodyText.includes("Sorry, there is a problem with this service");
