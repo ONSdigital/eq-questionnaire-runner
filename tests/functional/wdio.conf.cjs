@@ -35,7 +35,7 @@ exports.config = {
   // NPM script (see https://docs.npmjs.com/cli/run-script) then the current working
   // directory is where your package.json resides, so `wdio` will be called from there.
   //
-  specs : ["./spec/**/*.js"],
+  specs,
   suites: {
     components: ["./spec/components/**/*.js", "./spec/*.spec.js", "./spec/summaries/**/*.js"],
     timeout_modal: ["./spec/timeout/timeout_modal_extended_new_window/*.js", "./spec/timeout/timeout_modal_expired/*.js", "./spec/timeout/timeout_modal_extended/*.js"],
@@ -43,7 +43,7 @@ exports.config = {
     journeys: ["./spec/journeys/**/*.js"]
   },
   // Patterns to exclude.
-  exclude:[],
+  exclude,
 
   //
   // ============
