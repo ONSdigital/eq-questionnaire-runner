@@ -78,7 +78,6 @@ export async function waitForPageToLoad(timeout = 10000) {
 export async function openQuestionnaireWithRetry(schema, options, maxRetries = 1) {
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     await browser.openQuestionnaire(schema, options);
-    await waitForPageToLoad();
 
     const bodyText = await $("body").getText();
     const isServiceError = bodyText.includes("Sorry, there is a problem with this service");

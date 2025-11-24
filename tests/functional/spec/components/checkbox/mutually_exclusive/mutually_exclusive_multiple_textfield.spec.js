@@ -1,11 +1,10 @@
 import TextFieldPage from "../../../../generated_pages/mutually_exclusive_multiple/mutually-exclusive-textfield.page";
 import SummaryPage from "../../../../generated_pages/mutually_exclusive_multiple/mutually-exclusive-textfield-section-summary.page";
-import { click, waitForPageToLoad } from "../../../../helpers";
+import { click } from "../../../../helpers";
 
 describe("Component: Mutually Exclusive Textfield With Multiple Radio Override", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_mutually_exclusive_multiple.json");
-    await waitForPageToLoad();
     await browser.url("/questionnaire/mutually-exclusive-textfield");
   });
 

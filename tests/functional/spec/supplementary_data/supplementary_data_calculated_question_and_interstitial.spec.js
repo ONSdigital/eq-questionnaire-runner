@@ -1,4 +1,4 @@
-import { click, assertSummaryTitles, waitForPageToLoad, openQuestionnaireWithRetry } from "../../helpers";
+import { click, assertSummaryTitles, openQuestionnaireWithRetry } from "../../helpers";
 import { expect } from "@wdio/globals";
 import { getRandomString } from "../../jwt_helper";
 import CalculatedSummarySalesPage from "../../generated_pages/supplementary_data_with_introduction_and_calculated_summary/calculated-summary-sales.page.js";
@@ -118,7 +118,6 @@ describe("Using supplementary data", () => {
       sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
       responseId,
     });
-    await waitForPageToLoad();
     await click(HubPage.submit());
     await $(ThankYouPage.savePrintAnswersLink()).click();
     await assertSummaryTitles(["Company Details"]);

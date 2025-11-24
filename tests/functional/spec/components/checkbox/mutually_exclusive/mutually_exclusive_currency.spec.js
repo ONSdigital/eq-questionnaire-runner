@@ -1,11 +1,10 @@
 import CurrencyPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-currency.page";
 import SummaryPage from "../../../../generated_pages/mutually_exclusive/mutually-exclusive-currency-section-summary.page";
-import { click, waitForPageToLoad } from "../../../../helpers";
+import { click } from "../../../../helpers";
 
 describe("Component: Mutually Exclusive Currency With Single Checkbox Override", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_mutually_exclusive.json");
-    await waitForPageToLoad();
     await browser.url("/questionnaire/mutually-exclusive-currency");
   });
 

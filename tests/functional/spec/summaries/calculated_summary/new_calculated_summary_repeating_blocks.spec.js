@@ -11,7 +11,7 @@ import CalculatedSummaryCountPage from "../../../generated_pages/new_calculated_
 import HubPage from "../../../base_pages/hub.page";
 import FamilyJourneysPage from "../../../generated_pages/new_calculated_summary_repeating_blocks/family-journeys.page";
 import BlockSkipPage from "../../../generated_pages/new_calculated_summary_repeating_blocks/block-skip.page";
-import { assertSummaryValues, repeatingAnswerChangeLink, click, verifyUrlContains, waitForPageToLoad } from "../../../helpers";
+import { assertSummaryValues, repeatingAnswerChangeLink, click, verifyUrlContains } from "../../../helpers";
 import { expect } from "@wdio/globals";
 
 describe("Feature: Calculated Summary using Repeating Blocks", () => {
@@ -231,8 +231,6 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
   it("Given I confirm the calculated summary and finish the section, When I return to the Hub, Then I see that section 2 is no longer available", async () => {
     await click(CalculatedSummarySpendingPage.submit());
     await click(SectionOnePage.submit());
-    // section 2 is now gone
-    await waitForPageToLoad();
     await expect(await $$(HubPage.summaryItems()).length).toBe(1);
   });
 });

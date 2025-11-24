@@ -2,7 +2,7 @@ import { getRandomString } from "../../../jwt_helper";
 import AddressConfirmationPage from "../../../generated_pages/last_viewed_question_guidance/address-confirmation.page";
 import HouseholdInterstitialPage from "../../../generated_pages/last_viewed_question_guidance/household-interstitial.page.js";
 import PrimaryPersonListCollectorPage from "../../../generated_pages/last_viewed_question_guidance/primary-person-list-collector.page.js";
-import { click, verifyUrlContains, waitForPageToLoad } from "../../../helpers";
+import { click, verifyUrlContains } from "../../../helpers";
 describe("Last viewed question guidance", () => {
   const resumableLaunchParams = {
     responseId: getRandomString(16),
@@ -22,7 +22,6 @@ describe("Last viewed question guidance", () => {
     it("When the respondent resumes on the first block of a section, then last question guidance is not shown", async () => {
       await $(HouseholdInterstitialPage.saveSignOut()).click();
       await browser.openQuestionnaire("test_last_viewed_question_guidance.json", resumableLaunchParams);
-      await waitForPageToLoad();
       await verifyUrlContains(HouseholdInterstitialPage.url());
       await expect(await $(HouseholdInterstitialPage.lastViewedQuestionGuidance()).isExisting()).toBe(false);
     });
@@ -31,7 +30,6 @@ describe("Last viewed question guidance", () => {
       await click(HouseholdInterstitialPage.submit());
       await $(AddressConfirmationPage.saveSignOut()).click();
       await browser.openQuestionnaire("test_last_viewed_question_guidance.json", resumableLaunchParams);
-      await waitForPageToLoad();
       await verifyUrlContains(AddressConfirmationPage.url());
       await expect(await $(AddressConfirmationPage.lastViewedQuestionGuidanceLink()).getAttribute("href")).toContain(HouseholdInterstitialPage.url());
       await expect(await $(AddressConfirmationPage.lastViewedQuestionGuidance()).isExisting()).toBe(true);
