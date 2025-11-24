@@ -7,13 +7,12 @@ import SectionSummaryPage from "../../generated_pages/list_collector/section-sum
 import { SubmitPage } from "../../base_pages/submit.page.js";
 import ThankYouPage from "../../base_pages/thank-you.page.js";
 import AnyoneUsuallyLiveAtPage from "../../generated_pages/list_collector_primary_person/anyone-usually-live-at.page.js";
-import { click, verifyUrlContains, waitForPageToLoad } from "../../helpers";
+import { click, verifyUrlContains } from "../../helpers";
 
 describe("Primary Person List Collector Survey", () => {
   describe("Given the user starts on the 'do you live here' question", () => {
     before("Load the survey", async () => {
       await browser.openQuestionnaire("test_list_collector_primary_person.json");
-      await waitForPageToLoad();
     });
 
     it.skip("When the user says they do not live there, and changes their answer to yes, then the user can't navigate to the list collector", async () => {
@@ -30,7 +29,6 @@ describe("Primary Person List Collector Survey", () => {
   describe("Given the user starts on the 'do you live here' question", () => {
     before("Load the survey", async () => {
       await browser.openQuestionnaire("test_list_collector_primary_person.json");
-      await waitForPageToLoad();
     });
 
     it("When the user says that they do live there, then they are shown as the primary person", async () => {
@@ -105,7 +103,6 @@ describe("Primary Person List Collector Survey", () => {
   describe("Given the user starts on the 'do you live here' question", () => {
     before("Load the survey", async () => {
       await browser.openQuestionnaire("test_list_collector_primary_person.json");
-      await waitForPageToLoad();
     });
 
     it("When the user says they do not live there, then an empty list is displayed", async () => {

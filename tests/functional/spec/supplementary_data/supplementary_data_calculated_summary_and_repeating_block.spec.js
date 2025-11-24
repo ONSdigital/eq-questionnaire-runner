@@ -1,4 +1,4 @@
-import { assertSummaryItems, assertSummaryTitles, assertSummaryValues, listItemComplete, click, verifyUrlContains, waitForPageToLoad } from "../../helpers";
+import { assertSummaryItems, assertSummaryTitles, assertSummaryValues, listItemComplete, click, verifyUrlContains } from "../../helpers";
 import { expect } from "@wdio/globals";
 import { getRandomString } from "../../jwt_helper";
 import CalculatedSummaryValueSalesPage from "../../generated_pages/supplementary_data_repeating_block_and_calculated_summary/calculated-summary-value-sales.page.js";
@@ -27,7 +27,6 @@ describe("Using supplementary data", () => {
       sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
       responseId,
     });
-    await waitForPageToLoad();
   });
   it("Given I have some repeating blocks with supplementary data, When I begin the section, Then I see the supplementary names rendered correctly", async () => {
     await click(HubPage.submit());
@@ -151,7 +150,7 @@ describe("Using supplementary data", () => {
       sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
       responseId,
     });
-    await waitForPageToLoad();
+
     await expect(await $(HubPage.summaryRowState("section-1")).getText()).toBe("Partially completed");
     await expect(await $(HubPage.summaryRowState("section-3")).getText()).toBe("Partially completed");
   });
@@ -190,7 +189,7 @@ describe("Using supplementary data", () => {
       sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
       responseId,
     });
-    await waitForPageToLoad();
+
     await expect(await $(HubPage.summaryRowState("section-1")).getText()).toBe("Partially completed");
     await expect(await $(HubPage.summaryRowState("section-2")).getText()).toBe("Partially completed");
   });
@@ -201,7 +200,7 @@ describe("Using supplementary data", () => {
       sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
       responseId,
     });
-    await waitForPageToLoad();
+
     await click(HubPage.submit());
     await click(ListCollectorProductsPage.submit());
     await $(ProductRepeatingBlock1Page.productVolumeSales()).setValue(40);

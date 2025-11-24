@@ -10,13 +10,12 @@ import HouseholderCheckboxPage from "../../generated_pages/list_collector_sectio
 import SubmitPage from "../../generated_pages/list_collector_section_summary/submit.page";
 import ThankYouPage from "../../base_pages/thank-you.page";
 import ViewSubmittedResponsePage from "../../generated_pages/list_collector_section_summary/view-submitted-response.page";
-import { click, listItemIds, verifyUrlContains, waitForPageToLoad } from "../../helpers";
+import { click, listItemIds, verifyUrlContains } from "../../helpers";
 
 describe("List Collector Section Summary and Summary Items", () => {
   describe("Given I launch the test list collector section summary items survey", () => {
     beforeEach(async () => {
       await browser.openQuestionnaire("test_list_collector_section_summary.json");
-      await waitForPageToLoad();
     });
     it("When I get to the section summary, Then the driving question should be visible.", async () => {
       await drivingQuestionYes();

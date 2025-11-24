@@ -1,11 +1,11 @@
 import DatePage from "../../../../generated_pages/mutually_exclusive_multiple/mutually-exclusive-date.page";
 import SummaryPage from "../../../../generated_pages/mutually_exclusive_multiple/mutually-exclusive-date-section-summary.page";
-import { click, waitForPageToLoad } from "../../../../helpers";
+import { click } from "../../../../helpers";
 
 describe("Component: Mutually Exclusive Day Month Year Date With Multiple Radio Override", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_mutually_exclusive_multiple.json");
-    await waitForPageToLoad();
+
     await browser.url("/questionnaire/mutually-exclusive-date");
   });
   describe("Given the user has entered a value for the non-exclusive month year date answer", () => {

@@ -68,18 +68,9 @@ export const verifyUrlContainsSyncMode = (expectedUrlString) => {
   expect(browser).toHaveUrl(expect.stringContaining(expectedUrlString));
 };
 
-export async function waitForPageToLoad(timeout = 10000) {
-  await $("#main-content").waitForExist({
-    timeout,
-    timeoutMsg: "Page did not load #main-content in time",
-  });
-  await browser.waitUntil(async () => (await browser.execute(() => document.readyState)) === "complete", { timeout });
-}
-
 export async function openQuestionnaireWithRetry(schema, options, maxRetries = 1) {
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     await browser.openQuestionnaire(schema, options);
-    await waitForPageToLoad(15000);
 
     const bodyText = await $("body").getText();
     const isServiceError = bodyText.includes("Sorry, there is a problem with this service");
