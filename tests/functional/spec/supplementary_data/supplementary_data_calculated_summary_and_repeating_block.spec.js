@@ -1,4 +1,4 @@
-import { assertSummaryItems, assertSummaryTitles, assertSummaryValues, listItemComplete, click, verifyUrlContain } from "../../helpers";
+import { assertSummaryItems, assertSummaryTitles, assertSummaryValues, listItemComplete, click, verifyUrlContains } from "../../helpers";
 import { expect } from "@wdio/globals";
 import { getRandomString } from "../../jwt_helper";
 import CalculatedSummaryValueSalesPage from "../../generated_pages/supplementary_data_repeating_block_and_calculated_summary/calculated-summary-value-sales.page.js";
@@ -198,7 +198,6 @@ describe("Using supplementary data", () => {
       sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
       responseId,
     });
-    await ToLoad();
     await click(HubPage.submit());
     await click(ListCollectorProductsPage.submit());
     await $(ProductRepeatingBlock1Page.productVolumeSales()).setValue(40);
