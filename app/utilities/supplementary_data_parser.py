@@ -10,6 +10,8 @@ from marshmallow import (
     validates_schema,
 )
 
+from marshmallow.experimental.context import Context  # type: ignore
+
 from app.utilities.metadata_parser_v2 import VALIDATORS, StripWhitespaceMixin
 
 
@@ -43,7 +45,7 @@ class SupplementaryData(Schema, StripWhitespaceMixin):
     def validate_identifier(  # pylint: disable=unused-argument
         self, data: Mapping, **kwargs: Any
     ) -> None:
-        if data and data["identifier"] != self.context["identifier"]:
+        if data and data["identifier"] != Context[self].get()["identifier"]:
             raise ValidationError(self.SDS_IDENTIFIER_ERROR_MESSAGE)
 
 
@@ -71,14 +73,14 @@ class SupplementaryDataMetadataSchema(Schema, StripWhitespaceMixin):
         self, payload: Mapping, **kwargs: Any
     ) -> None:
         if payload:
-            if payload["dataset_id"] != self.context["dataset_id"]:
+            if payload["dataset_id"] != Context[self].get()["dataset_id"]:
                 raise ValidationError(self.DATASET_ID_ERROR_MESSAGE)
 
-            if payload["survey_id"] != self.context["survey_id"]:
+            if payload["survey_id"] != Context[self].get()["survey_id"]:
                 raise ValidationError(self.SURVEY_ID_ERROR_MESSAGE)
 
-            if self.context["sds_schema_version"] and (
-                payload["data"]["schema_version"] != self.context["sds_schema_version"]
+            if Context[self].get()["sds_schema_version"] and (
+                payload["data"]["schema_version"] != Context[self].get()["sds_schema_version"]
             ):
                 raise ValidationError(self.SDS_VERSION_ERROR_MESSAGE)
 
