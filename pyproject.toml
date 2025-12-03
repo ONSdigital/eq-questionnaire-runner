@@ -84,7 +84,7 @@ simplejson = "^3.19.2"
 markupsafe = "^3.0.1"
 pdfkit = "^1.0.0"
 ordered-set = "^4.1.0"
-cachetools = "^5.3.0.7"
+cachetools = "^6.2.2.0"
 gevent = "^25.9.1"
 babel = "==2.14.0"  # Temporarily pinned - problem for translations found in v2.15.0, see: https://github.com/ONSdigital/eq-questionnaire-runner/pull/1384
 wtforms = "^3.2.1"
