@@ -85,7 +85,7 @@ markupsafe = "^3.0.1"
 pdfkit = "^1.0.0"
 ordered-set = "^4.1.0"
 cachetools = "^5.3.0.7"
-gevent = "^24.2.1"
+gevent = "^25.9.1"
 babel = "==2.14.0"  # Temporarily pinned - problem for translations found in v2.15.0, see: https://github.com/ONSdigital/eq-questionnaire-runner/pull/1384
 wtforms = "^3.2.1"
 htmlmin2 = "^0.1.13"
