@@ -34,14 +34,15 @@ describe("List Collector Section Summary and Summary Items", () => {
       await expect(await $(companiesListRowItem(1)).$$(".ons-summary__values")[1].getText()).toContain("123");
       await expect(await $(companiesListRowItem(1)).$$(".ons-summary__values")[2].getText()).toContain("Yes");
       const listItemId = (await listItemIds())[0];
-      await expect(await $(companiesListRowItem(1)).$$(".ons-summary__actions")[0].getHTML()).toContain(
+      const row = await $(companiesListRowItem(1));
+      await expect(await row.$(`dd.ons-summary__actions#${listItemId}`).getHTML({ prettify: false })).toContain(
         `return_to=section-summary&amp;return_to_answer_id=${listItemId}#company-or-branch-name`,
       );
-      await expect(await $(companiesListRowItem(1)).$$(".ons-summary__actions")[1].getHTML()).toContain(
-        `return_to_answer_id=registration-number-${listItemId}#registration-number`,
+      await expect(await row.$(`dd#registration-number-${listItemId}`).getHTML({ prettify: false })).toContain(
+        `return_to=section-summary&amp;return_to_answer_id=registration-number-${listItemId}#registration-number`,
       );
-      await expect(await $(companiesListRowItem(1)).$$(".ons-summary__actions")[2].getHTML()).toContain(
-        `return_to_answer_id=authorised-insurer-radio-${listItemId}#authorised-insurer-radio`,
+      await expect(await row.$(`dd#authorised-insurer-radio-${listItemId}`).getHTML({ prettify: false })).toContain(
+        `return_to=section-summary&amp;return_to_answer_id=authorised-insurer-radio-${listItemId}#authorised-insurer-radio`,
       );
     });
     it("When I add multiple items, Then all the items should be visible on the section summary and have correct values", async () => {
@@ -271,8 +272,8 @@ describe("List Collector Section Summary and Summary Items", () => {
       await expect(await $(companiesListRowItem(3)).$$(".ons-summary__values")[1].getText()).toContain("234");
       await expect(await $(companiesListRowItem(3)).$$(".ons-summary__actions")[0].getText()).toContain("Change");
       await expect(await $(SubmitPage.householderCheckboxAnswer()).getText()).toContain("No");
-      await expect(await $("body").getHTML()).toContain("Add another UK company or branch");
-      await expect(await $("body").getHTML()).toContain("Remove");
+      await expect(await $("body").getHTML({ prettify: false })).toContain("Add another UK company or branch");
+      await expect(await $("body").getHTML({ prettify: false })).toContain("Remove");
     });
 
     it("When I get to the view submitted response page, Then the summary should be displayed as expected without any change or remove links", async () => {
@@ -293,7 +294,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await click(HouseholderCheckboxPage.submit());
       await click(SectionSummaryTwoPage.submit());
       await click(SubmitPage.submit());
-      await expect(await $(ThankYouPage.title()).getHTML()).toContain("Thank you for completing the Test");
+      await expect(await $(ThankYouPage.title()).getHTML({ prettify: false })).toContain("Thank you for completing the Test");
       await $(ThankYouPage.savePrintAnswersLink()).click();
 
       await verifyUrlContains(ViewSubmittedResponsePage.pageName);
@@ -306,9 +307,9 @@ describe("List Collector Section Summary and Summary Items", () => {
       await expect(await $(companiesListRowItem(3)).$$(".ons-summary__values")[0].getText()).toContain("Company C");
       await expect(await $(companiesListRowItem(3)).$$(".ons-summary__values")[1].getText()).toContain("234");
       await expect(await $(companiesListRowItem(3)).$$(".ons-summary__values")[2].getText()).toContain("Yes");
-      await expect(await $("body").getHTML()).not.toContain("Change");
-      await expect(await $("body").getHTML()).not.toContain("Remove");
-      await expect(await $("body").getHTML()).not.toContain("Add another UK company or branch");
+      await expect(await $("body").getHTML({ prettify: false })).not.toContain("Change");
+      await expect(await $("body").getHTML({ prettify: false })).not.toContain("Remove");
+      await expect(await $("body").getHTML({ prettify: false })).not.toContain("Add another UK company or branch");
     });
   });
 });

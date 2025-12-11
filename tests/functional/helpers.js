@@ -67,3 +67,21 @@ export const verifyUrlContains = async (expectedUrlString) => {
 export const verifyUrlContainsSyncMode = (expectedUrlString) => {
   expect(browser).toHaveUrl(expect.stringContaining(expectedUrlString));
 };
+
+export async function openQuestionnaireWithRetry(schema, options, maxRetries = 1) {
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    await browser.openQuestionnaire(schema, options);
+
+    const bodyText = await $("body").getText();
+    const isServiceError = bodyText.includes("Sorry, there is a problem with this service");
+
+    if (!isServiceError) {
+      return;
+    }
+
+    if (attempt === maxRetries) {
+      throw new Error(`Service error page after ${maxRetries + 1} attempt(s) for schema="${schema}" with options=${JSON.stringify(options)}`);
+    }
+    await browser.reloadSession();
+  }
+}
