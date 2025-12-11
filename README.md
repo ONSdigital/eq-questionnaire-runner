@@ -1,4 +1,4 @@
-# eQ Questionnaire Runner
+## eQ Questionnaire Runner
 
 [![Build Status](https://github.com/ONSdigital/eq-questionnaire-runner/actions/workflows/main.yml/badge.svg)](https://github.com/ONSdigital/eq-questionnaire-runner/actions/workflows/main.yml)
 [![Build Status](https://github.com/ONSdigital/eq-questionnaire-runner/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/ONSdigital/eq-questionnaire-runner/actions/workflows/codeql-analysis.yml)
