@@ -8,12 +8,11 @@ class TestQuestionnaireSubmit(IntegrationTestCase):
         self.post({"test-answer": "No"})
 
     def test_submit_page_not_accessible_when_hub_enabled(self):
-
         # Given I launch a hub questionnaire
         self.launchSurveyV2(schema_name="test_hub_and_spoke")
-        for method in [self.get, self.post]:
 
-            # When I try access the submit page
+        # When I try access the submit page
+        for method in [self.get, self.post]:
             method(url=SUBMIT_URL_PATH)
 
             # Then I am shown a 404 page
@@ -65,9 +64,9 @@ class TestQuestionnaireSubmitWithoutSummary(IntegrationTestCase):
         self.launchSurveyV2(schema_name="test_submit_with_custom_submission_text")
         self.post(action="start_questionnaire")
         self.assertInBody("What is your favourite breakfast food")
-        for method in [self.get, self.post]:
 
-            # When I make a GET or POST request to the submit page
+        # When I make a GET or POST request to the submit page
+        for method in [self.get, self.post]:
             method(url=SUBMIT_URL_PATH)
 
             # Then I am redirected to the first incomplete question
@@ -101,9 +100,9 @@ class TestQuestionnaireSubmitWithSummary(IntegrationTestCase):
             schema_name="test_routing_to_questionnaire_end_single_section"
         )
         self.post({"test-answer": "Yes"})
-        for method in [self.get, self.post]:
 
-            # When I make a GET or POST request to the submit page
+        # When I make a GET or POST request to the submit page
+        for method in [self.get, self.post]:
             method(url=SUBMIT_URL_PATH)
 
             # Then I am redirected to the first incomplete question
