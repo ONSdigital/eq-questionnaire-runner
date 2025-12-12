@@ -8,16 +8,16 @@ class TestQuestionnaireSubmit(IntegrationTestCase):
         self.post({"test-answer": "No"})
 
     def test_submit_page_not_accessible_when_hub_enabled(self):
+
         # Given I launch a hub questionnaire
         self.launchSurveyV2(schema_name="test_hub_and_spoke")
-
-        # When I try access the submit page
         for method in [self.get, self.post]:
-            with self.subTest(method=method):
-                method(url=SUBMIT_URL_PATH)
 
-                # Then I am shown a 404 page
-                self.assertStatusNotFound()
+            # When I try access the submit page
+            method(url=SUBMIT_URL_PATH)
+
+            # Then I am shown a 404 page
+            self.assertStatusNotFound()
 
     def test_invalid_block_once_questionnaire_complete_raises_404(self):
         # Given I launch questionnaire
@@ -65,14 +65,13 @@ class TestQuestionnaireSubmitWithoutSummary(IntegrationTestCase):
         self.launchSurveyV2(schema_name="test_submit_with_custom_submission_text")
         self.post(action="start_questionnaire")
         self.assertInBody("What is your favourite breakfast food")
-
-        # When I make a GET or POST request to the submit page
         for method in [self.get, self.post]:
-            with self.subTest(method=method):
-                method(url=SUBMIT_URL_PATH)
 
-                # Then I am redirected to the first incomplete question
-                self.assertInUrl("/breakfast")
+            # When I make a GET or POST request to the submit page
+            method(url=SUBMIT_URL_PATH)
+
+            # Then I am redirected to the first incomplete question
+            self.assertInUrl("/breakfast")
 
     def test_is_displayed(self):
         # Given I launch a questionnaire
@@ -102,14 +101,13 @@ class TestQuestionnaireSubmitWithSummary(IntegrationTestCase):
             schema_name="test_routing_to_questionnaire_end_single_section"
         )
         self.post({"test-answer": "Yes"})
-
-        # When I make a GET or POST request to the submit page
         for method in [self.get, self.post]:
-            with self.subTest(method=method):
-                method(url=SUBMIT_URL_PATH)
 
-                # Then I am redirected to the first incomplete question
-                self.assertInUrl("/test-optional")
+            # When I make a GET or POST request to the submit page
+            method(url=SUBMIT_URL_PATH)
+
+            # Then I am redirected to the first incomplete question
+            self.assertInUrl("/test-optional")
 
     def test_is_displayed(self):
         # Given I launch a questionnaire
