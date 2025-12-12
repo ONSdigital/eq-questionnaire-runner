@@ -13,10 +13,11 @@ class TestQuestionnaireSubmit(IntegrationTestCase):
 
         # When I try access the submit page
         for method in [self.get, self.post]:
-            method(url=SUBMIT_URL_PATH)
+            with self.subTest(method=method):
+                method(url=SUBMIT_URL_PATH)
 
-            # Then I am shown a 404 page
-            self.assertStatusNotFound()
+                # Then I am shown a 404 page
+                self.assertStatusNotFound()
 
     def test_invalid_block_once_questionnaire_complete_raises_404(self):
         # Given I launch questionnaire
@@ -67,10 +68,11 @@ class TestQuestionnaireSubmitWithoutSummary(IntegrationTestCase):
 
         # When I make a GET or POST request to the submit page
         for method in [self.get, self.post]:
-            method(url=SUBMIT_URL_PATH)
+            with self.subTest(method=method):
+                method(url=SUBMIT_URL_PATH)
 
-            # Then I am redirected to the first incomplete question
-            self.assertInUrl("/breakfast")
+                # Then I am redirected to the first incomplete question
+                self.assertInUrl("/breakfast")
 
     def test_is_displayed(self):
         # Given I launch a questionnaire
@@ -103,10 +105,11 @@ class TestQuestionnaireSubmitWithSummary(IntegrationTestCase):
 
         # When I make a GET or POST request to the submit page
         for method in [self.get, self.post]:
-            method(url=SUBMIT_URL_PATH)
+            with self.subTest(method=method):
+                method(url=SUBMIT_URL_PATH)
 
-            # Then I am redirected to the first incomplete question
-            self.assertInUrl("/test-optional")
+                # Then I am redirected to the first incomplete question
+                self.assertInUrl("/test-optional")
 
     def test_is_displayed(self):
         # Given I launch a questionnaire
