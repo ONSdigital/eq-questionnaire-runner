@@ -7,17 +7,24 @@ class TestQuestionnaireSubmit(IntegrationTestCase):
         self.launchSurveyV2(schema_name=schema)
         self.post({"test-answer": "No"})
 
-    def test_submit_page_not_accessible_when_hub_enabled(self):
+    def test_submit_page_not_accessible_when_hub_enabled_get(self):
         # Given I launch a hub questionnaire
         self.launchSurveyV2(schema_name="test_hub_and_spoke")
 
         # When I make a GET or POST request to the submit page
-        for method in [self.get, self.post]:
-            with self.subTest(method=method):
-                method(url=SUBMIT_URL_PATH)
+        self.get(url=SUBMIT_URL_PATH)
 
-                # Then I am shown a 404 page
-                self.assertStatusNotFound()
+        # Then I am shown a 404 page
+        self.assertStatusNotFound()
+
+    def test_submit_page_not_accessible_when_hub_enabled_post(self):
+        # Given I launch a hub questionnaire
+        self.launchSurveyV2(schema_name="test_hub_and_spoke")
+
+        # When I make a GET or POST request to the submit page
+
+        self.post(url=SUBMIT_URL_PATH)
+        self.assertStatusNotFound()
 
     def test_invalid_block_once_questionnaire_complete_raises_404(self):
         # Given I launch questionnaire
