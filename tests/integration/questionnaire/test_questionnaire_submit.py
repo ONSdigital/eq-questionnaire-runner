@@ -11,9 +11,9 @@ class TestQuestionnaireSubmit(IntegrationTestCase):
         # Given I launch a hub questionnaire
         self.launchSurveyV2(schema_name="test_hub_and_spoke")
 
-        # When I try access the submit page
+        # When I make a GET or POST request to the submit page
         for method in [self.get, self.post]:
-            with self.subTest(method=method):
+            with self.subTest("submit", method=method):
                 method(url=SUBMIT_URL_PATH)
 
                 # Then I am shown a 404 page
@@ -68,7 +68,7 @@ class TestQuestionnaireSubmitWithoutSummary(IntegrationTestCase):
 
         # When I make a GET or POST request to the submit page
         for method in [self.get, self.post]:
-            with self.subTest(method=method):
+            with self.subTest("submit", method=method):
                 method(url=SUBMIT_URL_PATH)
 
                 # Then I am redirected to the first incomplete question
@@ -105,7 +105,7 @@ class TestQuestionnaireSubmitWithSummary(IntegrationTestCase):
 
         # When I make a GET or POST request to the submit page
         for method in [self.get, self.post]:
-            with self.subTest(method=method):
+            with self.subTest("submit", method=method):
                 method(url=SUBMIT_URL_PATH)
 
                 # Then I am redirected to the first incomplete question
