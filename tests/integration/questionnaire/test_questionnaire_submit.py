@@ -130,8 +130,8 @@ class TestQuestionnaireSubmitWithSummary(IntegrationTestCase):
         self.assertInUrl("/test-optional")
 
     def test_accessing_submit_page_redirects_to_first_incomplete_question_when_questionnaire_incomplete_post(
-            self,
-        ):
+        self,
+    ):
         # Given a partially completed questionnaire
         self.launchSurveyV2(
             schema_name="test_routing_to_questionnaire_end_single_section"
