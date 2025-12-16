@@ -1966,14 +1966,14 @@ files = [
 
 [[package]]
 name = "marshmallow"
-version = "4.1.0"
+version = "4.1.1"
 description = "A lightweight library for converting complex datatypes to and from native Python datatypes."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "marshmallow-4.1.0-py3-none-any.whl", hash = "sha256:9901660499be3b880dc92d6b5ee0b9a79e94265b7793f71021f92040c07129f1"},
-    {file = "marshmallow-4.1.0.tar.gz", hash = "sha256:daa9862f74e2f7864980d25c29b4ea72944cde48aa17537e3bd5797a4ae62d71"},
+    {file = "marshmallow-4.1.1-py3-none-any.whl", hash = "sha256:9038db4cceb849ce2b8676ccf3d8e5b5e634ac499e291397efa260aa796c385a"},
+    {file = "marshmallow-4.1.1.tar.gz", hash = "sha256:550aa14b619072f0a8d8184911b3f1021c5c32587fb27318ddf81ce0d0029c9d"},
 ]
 
 [package.extras]
@@ -3904,4 +3904,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13.5"
-content-hash = "4dc4071ae5a10933969f7bdf43c371357ff455ae6a46eb18ef73f1658ab1b359"
+content-hash = "2a6b5b26cdf98c514d141218f7b1422d35ed552edc3ac83c26526b7779bdc44f"
