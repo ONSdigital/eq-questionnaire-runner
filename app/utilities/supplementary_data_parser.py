@@ -1,3 +1,4 @@
+from contextvars import ContextVar
 from typing import Any, Mapping
 
 from marshmallow import (
@@ -10,19 +11,21 @@ from marshmallow import (
     validates_schema,
 )
 
-from marshmallow.experimental.context import Context  # type: ignore
-
 from app.utilities.metadata_parser_v2 import VALIDATORS, StripWhitespaceMixin
+
+supplementary_data_metadata_schema_context: ContextVar[dict[str, Any]] = ContextVar(
+    "supplementary_data_metadata_schema_context"
+)
 
 
 class ItemsSchema(Schema):
-    identifier = fields.Field(required=True)
+    identifier: fields.Field = fields.Field(required=True)
     ITEM_IDENTIFIER_ERROR_MESSAGE = (
         "Item identifier must be a non-empty string or non-negative integer"
     )
 
     @validates("identifier")
-    def validate_identifier(self, identifier: fields.Field) -> None:
+    def validate_identifier(self, identifier: str | int) -> None:
         if not (isinstance(identifier, str) and identifier.strip()) and not (
             isinstance(identifier, int) and identifier >= 0
         ):
@@ -45,7 +48,8 @@ class SupplementaryData(Schema, StripWhitespaceMixin):
     def validate_identifier(  # pylint: disable=unused-argument
         self, data: Mapping, **kwargs: Any
     ) -> None:
-        if data and data["identifier"] != Context[self].get()["identifier"]:
+        context = supplementary_data_metadata_schema_context.get({})
+        if data and data["identifier"] != context.get("identifier"):
             raise ValidationError(self.SDS_IDENTIFIER_ERROR_MESSAGE)
 
 
@@ -72,15 +76,16 @@ class SupplementaryDataMetadataSchema(Schema, StripWhitespaceMixin):
     def validate_payload(  # pylint: disable=unused-argument
         self, payload: Mapping, **kwargs: Any
     ) -> None:
+        context = supplementary_data_metadata_schema_context.get({})
         if payload:
-            if payload["dataset_id"] != Context[self].get()["dataset_id"]:
+            if payload["dataset_id"] != context.get("dataset_id"):
                 raise ValidationError(self.DATASET_ID_ERROR_MESSAGE)
 
-            if payload["survey_id"] != Context[self].get()["survey_id"]:
+            if payload["survey_id"] != context.get("survey_id"):
                 raise ValidationError(self.SURVEY_ID_ERROR_MESSAGE)
 
-            if Context[self].get()["sds_schema_version"] and (
-                payload["data"]["schema_version"] != Context[self].get()["sds_schema_version"]
+            if context.get("sds_schema_version") and (
+                payload["data"]["schema_version"] != context.get("sds_schema_version")
             ):
                 raise ValidationError(self.SDS_VERSION_ERROR_MESSAGE)
 
@@ -93,15 +98,18 @@ def validate_supplementary_data_v1(
     sds_schema_version: str | None = None,
 ) -> dict[str, str | dict | int | list]:
     """Validate claims required for supplementary data"""
+
+    supplementary_data_metadata_schema_context.set(
+        {
+            "dataset_id": dataset_id,
+            "identifier": identifier,
+            "survey_id": survey_id,
+            "sds_schema_version": sds_schema_version,
+        }
+    )
     supplementary_data_metadata_schema = SupplementaryDataMetadataSchema(
         unknown=INCLUDE
     )
-    supplementary_data_metadata_schema.context = {
-        "dataset_id": dataset_id,
-        "identifier": identifier,
-        "survey_id": survey_id,
-        "sds_schema_version": sds_schema_version,
-    }
     validated_supplementary_data = supplementary_data_metadata_schema.load(
         supplementary_data
     )
