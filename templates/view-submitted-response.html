@@ -46,7 +46,7 @@
         }}
         {{
             onsButton({
-                "text": _('Save answers as PDF') ,
+                "text": _('Save answers as PDF WKHTML') ,
                 "variants": ['small', 'secondary', 'timer', 'download'],
                 "url": content.pdf_url,
                 "removeDownloadAttribute": true,
@@ -60,6 +60,33 @@
                 }
             })
         }}
+      <br><br>
+        {{
+          onsButton({
+            "text": _('Save answers as PDF with weasyprint'),
+            "variants": ['small', 'secondary', 'timer', 'download'],
+            "url": content.pdf_url ~ "?pdf_type=weasy",
+            "removeDownloadAttribute": true,
+          })
+        }}
+      <br><br>
+      {{
+      onsButton({
+        "text": _('Save answers as PDF with fpdf2'),
+        "variants": ['small', 'secondary', 'timer', 'download'],
+        "url": content.pdf_url ~ "?pdf_type=fpdf2",
+        "removeDownloadAttribute": true,
+      })
+    }}
+      <br><br>
+      {{
+      onsButton({
+        "text": _('Save answers as PDF with playwright'),
+        "variants": ['small', 'secondary', 'timer', 'download'],
+        "url": content.pdf_url ~ "?pdf_type=pw",
+        "removeDownloadAttribute": true,
+      })
+    }}
         {# djlint:on #}
 
         {% block summary %}

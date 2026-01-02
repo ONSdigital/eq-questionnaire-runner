@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import time
 from typing import Mapping
 
 import flask_babel
@@ -502,12 +503,33 @@ def get_view_submitted_response_pdf(
     except ViewSubmittedResponseExpired:
         return redirect(url_for(".get_view_submitted_response"))
 
-    return send_file(
-        path_or_file=view_submitted_response_pdf.get_pdf(),
-        mimetype=view_submitted_response_pdf.mimetype,
-        as_attachment=True,
-        download_name=view_submitted_response_pdf.filename,
-    )
+    # return send_file(
+    #     path_or_file=view_submitted_response_pdf.get_pdf(),
+    #     mimetype=view_submitted_response_pdf.mimetype,
+    #     as_attachment=True,
+    #     download_name=view_submitted_response_pdf.filename,
+    # )
+
+    req_type = request.args.get("pdf_type")
+    if req_type == "weasy":
+        handler = view_submitted_response_pdf.get_pdf_weasy
+        pdf_type = "Weasyprint"
+    elif req_type == "fpdf2":
+        handler = view_submitted_response_pdf.get_pdf_fpdf2
+        pdf_type = "fpdf2"
+    elif req_type == "pw":
+        handler = view_submitted_response_pdf.get_pdf_pw
+        pdf_type = "Playwright"
+    else:
+        handler = view_submitted_response_pdf.get_pdf
+        pdf_type = "WKHTML Existing"
+
+    start = time.time()
+    response = handler()
+    end = time.time()
+    logger.info(f"{pdf_type} PDF generation took {float(end - start):2f} seconds")
+
+    return response
 
 
 @post_submission_blueprint.route("confirmation-email/send", methods=["GET", "POST"])
