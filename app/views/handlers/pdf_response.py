@@ -54,6 +54,7 @@ class PDFResponse:
     def get_print_css_weasy(self):
         with open(
             f"{PRINT_STYLE_SHEET_FILE_PATH}/print_weasy.css", encoding="utf-8"
+            # f"{PRINT_STYLE_SHEET_FILE_PATH}/print.css", encoding="utf-8"
         ) as css_file:
             css = css_file.read()
             return CSS(string=css)
