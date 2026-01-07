@@ -38,3 +38,12 @@ class ViewSubmittedResponsePDF(ViewSubmittedResponse, PDFResponse):
         :rtype: io.BytesIO
         """
         return self._get_pdf_weasy(rendered_html=self.get_rendered_html())
+
+    def get_pdf_xhtml2pdf(self) -> Response:
+        """
+        Generates a PDF document from the rendered ViewSubmittedResponse html.
+        :return: The generated PDF document as BytesIO
+        :rtype: io.BytesIO
+        """
+        return self._get_pdf_xhtml2pdf(rendered_html=self.get_rendered_html())
+

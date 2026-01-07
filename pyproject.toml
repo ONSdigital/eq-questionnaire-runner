@@ -90,6 +90,7 @@ babel = "==2.14.0"  # Temporarily pinned - problem for translations found in v2.
 wtforms = "^3.2.1"
 htmlmin2 = "^0.1.13"
 flask-weasyprint = "^1.1.0"
+xhtml2pdf = "^0.2.17"
 
 [build-system]
 requires = ["poetry-core"]

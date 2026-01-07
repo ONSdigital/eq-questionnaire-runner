@@ -508,6 +508,9 @@ def get_view_submitted_response_pdf(
     if req_type == "weasy":
         handler = view_submitted_response_pdf.get_pdf_weasy
         pdf_type = "Weasyprint"
+    elif req_type == "xhtml2pdf":
+        handler = view_submitted_response_pdf.get_pdf_xhtml2pdf
+        pdf_type = "xhtml2pdf"
     # elif req_type == "fpdf2":
     #     handler = view_submitted_response_pdf.get_pdf_fpdf2
     #     pdf_type = "fpdf2"

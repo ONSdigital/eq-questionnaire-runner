@@ -69,6 +69,15 @@
             "removeDownloadAttribute": true,
           })
         }}
+            <br><br>
+        {{
+          onsButton({
+            "text": _('Save answers as PDF with xhtml2pdf'),
+            "variants": ['small', 'secondary', 'timer', 'download'],
+            "url": content.pdf_url ~ "?pdf_type=xhtml2pdf",
+            "removeDownloadAttribute": true,
+          })
+        }}
       <br><br>
       {{
       onsButton({
