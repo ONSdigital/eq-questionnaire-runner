@@ -106,8 +106,8 @@ class PDFResponse:
     def _get_pdf_weasy(self, rendered_html: str) -> Response:
         """
         Generates a PDF document from the rendered html.
-        :return: The generated PDF document as BytesIO
-        :rtype: io.BytesIO
+        :return: The generated PDF document as flask Response
+        :rtype: Response
         """
         # This stylesheet is being removed so Weasyprint will not try resolve it and parse it.
         # This is hacky and we should look at solutions to making this configurable, so the DS is able to not output it / use a custom path.
@@ -125,16 +125,9 @@ class PDFResponse:
     def _get_pdf_xhtml2pdf(self, rendered_html: str) -> Response:
         """
         Generates a PDF document from the rendered html.
-        :return: The generated PDF document as BytesIO
-        :rtype: io.BytesIO
+        :return: The generated PDF document as flask Response
+        :rtype: Response
         """
-        # This stylesheet is being removed so Weasyprint will not try resolve it and parse it.
-        # This is hacky and we should look at solutions to making this configurable, so the DS is able to not output it / use a custom path.
-        # rendered_html_without_main_css = rendered_html.replace(
-        #     f'<link rel="stylesheet" href="{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}/72.10.8/css/main.css">',
-        #     "",
-        # )
-
         css_content = self.get_print_css_xhtml2pdf()
         html_with_css_content = f"<style>{css_content}</style>{rendered_html}"
 

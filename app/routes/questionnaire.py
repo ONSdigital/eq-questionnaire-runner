@@ -511,16 +511,9 @@ def get_view_submitted_response_pdf(
     elif req_type == "xhtml2pdf":
         handler = view_submitted_response_pdf.get_pdf_xhtml2pdf
         pdf_type = "xhtml2pdf"
-    # elif req_type == "fpdf2":
-    #     handler = view_submitted_response_pdf.get_pdf_fpdf2
-    #     pdf_type = "fpdf2"
-    # elif req_type == "pw":
-    #     handler = view_submitted_response_pdf.get_pdf_pw
-    #     pdf_type = "Playwright"
     else:
         handler = view_submitted_response_pdf.get_pdf
         pdf_type = "WKHTML Existing"
-
 
     start = time.time()
     response = handler()
