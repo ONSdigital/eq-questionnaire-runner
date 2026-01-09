@@ -11,7 +11,7 @@ services:
             - eq-env
 
     eq-questionnaire-runner:
-        image: europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/eq-questionnaire-runner:latest
+        image: eq-questionnaire-runner:latest
         build: ./
         env_file:
             - ${RUNNER_ENV_FILE}
