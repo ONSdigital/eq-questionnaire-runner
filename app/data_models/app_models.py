@@ -51,7 +51,7 @@ class Timestamp(fields.Field):
     # pylint: disable=unused-argument
     def _serialize(
         self,
-        value: datetime,
+        value: Any,
         *args: list | None,
         **kwargs: Any,
     ) -> int | None:
