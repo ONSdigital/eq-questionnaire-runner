@@ -482,6 +482,102 @@
                                 ]
                             },
                             "type": "Question"
+                        },
+                        {
+                            "type": "ConfirmationQuestion",
+                            "id": "confirm-carer-block",
+                            "question": {
+                                "answers": [
+                                    {
+                                        "id": "confirm-carer-answer",
+                                        "mandatory": true,
+                                        "options": [
+                                            {
+                                                "label": "Yes, the carer answer is correct",
+                                                "value": "Yes, the carer answer is correct"
+                                            },
+                                            {
+                                                "label": "No, I need to change the carer answer",
+                                                "value": "No, I need to change the carer answer"
+                                            }
+                                        ],
+                                        "type": "Radio"
+                                    }
+                                ],
+                                "id": "confirm-carer-question",
+                                "title": "Is the carer response correct?",
+                                "type": "General"
+                            },
+                            "routing_rules": [
+                                {
+                                    "block": "carer-block",
+                                    "when": {
+                                        "==": [
+                                            {
+                                                "source": "answers",
+                                                "identifier": "confirm-carer-answer"
+                                            },
+                                            "No, I need to change the carer answer"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "block": "student-block"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "student-block",
+                            "question": {
+                                "id": "student-question",
+                                "type": "General",
+                                "title": {
+                                    "placeholders": [
+                                        {
+                                            "placeholder": "person_name",
+                                            "transforms": [
+                                                {
+                                                    "arguments": {
+                                                        "delimiter": " ",
+                                                        "list_to_concatenate": [
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "first-name"
+                                                            },
+                                                            {
+                                                                "source": "answers",
+                                                                "identifier": "last-name"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "transform": "concatenate_list"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "text": "Is <strong>{person_name}</strong> currently a student?"
+                                },
+                                "answers": [
+                                    {
+                                        "id": "student-answer",
+                                        "label": "Student",
+                                        "mandatory": false,
+                                        "type": "Radio",
+                                        "default": "No",
+                                        "options": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "type": "Question"
                         }
                     ]
                 }
