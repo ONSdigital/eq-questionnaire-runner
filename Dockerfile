@@ -1,4 +1,4 @@
-FROM python:3.13-slim-bookworm
+FROM python:3.13-slim-trixie
 
 EXPOSE 5000
 
@@ -7,12 +7,12 @@ RUN apt update && apt install -y curl unzip libsnappy-dev build-essential jq wkh
 COPY . /runner
 WORKDIR /runner
 
-ENV WEB_SERVER_TYPE gunicorn-async
-ENV WEB_SERVER_WORKERS 3
-ENV WEB_SERVER_THREADS 10
-ENV WEB_SERVER_UWSGI_ASYNC_CORES 10
-ENV HTTP_KEEP_ALIVE 2
-ENV GUNICORN_CMD_ARGS -c gunicorn_config.py
+ENV WEB_SERVER_TYPE=gunicorn-async
+ENV WEB_SERVER_WORKERS=3
+ENV WEB_SERVER_THREADS=10
+ENV WEB_SERVER_UWSGI_ASYNC_CORES=10
+ENV HTTP_KEEP_ALIVE=2
+ENV GUNICORN_CMD_ARGS="-c gunicorn_config.py"
 
 COPY pyproject.toml pyproject.toml
 COPY poetry.lock poetry.lock
