@@ -128,7 +128,6 @@ extend-ignore = [
     "UP017", # Use `datetime.UTC` alias
     "UP033", # Use @functools.cache instead of @functools.lru_cache(maxsize=None)
     "UP037", # Remove quotes from type annotation
-    "UP038", # Use X | Y in {} call instead of (X, Y)
     "UP035", # Import from {target} instead: {names}
     "UP040", # Type alias {name} uses {type_alias_method} instead of the type keyword
     "S105", # Possible hardcoded password assigned to: "{}"
