@@ -63,10 +63,10 @@ class PDFResponse:
     @lru_cache(maxsize=None)
     def get_print_css_xhtml2pdf(self):
         with open(
-            # f"{PRINT_STYLE_SHEET_FILE_PATH}/print_weasy.css", encoding="utf-8"
-            f"{PRINT_STYLE_SHEET_FILE_PATH}/print.css", encoding="utf-8"
+            f"{PRINT_STYLE_SHEET_FILE_PATH}/print_xhtml2pdf.css", encoding="utf-8"
+            # f"{PRINT_STYLE_SHEET_FILE_PATH}/print.css", encoding="utf-8"
         ) as css_file:
-            return css_file.read()
+            return f"<style>{css_file.read()}</style>"
 
 
     @property
@@ -112,7 +112,7 @@ class PDFResponse:
         # This stylesheet is being removed so Weasyprint will not try resolve it and parse it.
         # This is hacky and we should look at solutions to making this configurable, so the DS is able to not output it / use a custom path.
         rendered_html_without_main_css = rendered_html.replace(
-            f'<link rel="stylesheet" href="{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}/72.10.8/css/main.css">',
+            f'<link rel="stylesheet" href="{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}/72.10.8/css/main.css" />',
             "",
         )
         return render_pdf(
@@ -128,13 +128,27 @@ class PDFResponse:
         :return: The generated PDF document as flask Response
         :rtype: Response
         """
-        css_content = self.get_print_css_xhtml2pdf()
-        html_with_css_content = f"<style>{css_content}</style>{rendered_html}"
+
+        # This stylesheet is being removed so xhtml2pdf will not try resolve it and parse it.
+        # This is hacky and we should look at solutions to making this configurable, so the DS is able to not output it / use a custom path.
+        rendered_html_without_main_css = rendered_html.replace(
+            f'<link rel="stylesheet" href="{current_app.config["CDN_URL"]}{current_app.config["CDN_ASSETS_PATH"]}/72.10.8/css/main.css" />',
+            "",
+        )
+
+        # css_content = self.get_print_css_xhtml2pdf()
+        # html_with_css_content = f"<style>{css_content}</style>{rendered_html}"
 
         output = io.BytesIO()
 
         # pisa.CreatePDF(io.StringIO(html_with_css_content), dest=output)
-        pisa.CreatePDF(html_with_css_content, dest=output)
+        status = pisa.CreatePDF(
+            src=self.get_print_css_xhtml2pdf() + rendered_html_without_main_css,
+            dest=output)
+
+        if status.err:
+            raise ValueError("PDF generation failed")
+
         output.seek(0)
 
         return send_file(
