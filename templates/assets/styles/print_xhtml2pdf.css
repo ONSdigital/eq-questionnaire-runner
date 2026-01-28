@@ -1,0 +1,5 @@
+/* Added below in as a hacky way to set base font size for pdf generation - this is NOT ideal at all and completely bypasses DS */
+* {
+    font-size: 12pt !important;
+    font-family: Helvetica, Arial, sans-serif !important;
+}

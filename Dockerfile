@@ -2,7 +2,13 @@ FROM python:3.13-slim-bookworm
 
 EXPOSE 5000
 
-RUN apt update && apt install -y curl unzip libsnappy-dev build-essential jq wkhtmltopdf
+RUN apt update && apt install -y \
+    curl unzip jq \
+    build-essential pkg-config \
+    libsnappy-dev libpq-dev libffi-dev \
+    wkhtmltopdf \
+    libcairo2 libpango-1.0-0 libpangocairo-1.0-0 libgdk-pixbuf2.0-0 \
+    libcairo2-dev
 
 COPY . /runner
 WORKDIR /runner
