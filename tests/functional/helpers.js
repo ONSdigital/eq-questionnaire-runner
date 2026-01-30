@@ -85,3 +85,11 @@ export async function openQuestionnaireWithRetry(schema, options, maxRetries = 1
     await browser.reloadSession();
   }
 }
+
+export async function getInnerHTML(selector) {
+  const element = await $(selector);
+  return element.getHTML({
+    includeSelectorTag: false,
+    prettify: false,
+  });
+}
