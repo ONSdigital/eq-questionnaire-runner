@@ -1,5 +1,5 @@
 import RadioPage from "../generated_pages/theme_dbt_dsit_ni/radio.page";
-import { verifyUrlContains } from "../helpers";
+import { verifyUrlContains, getInnerHTML } from "../helpers";
 
 describe("Theme DBT-DSIT-NI", () => {
   describe("Given I launch a DBT-DSIT-NI themed questionnaire", () => {

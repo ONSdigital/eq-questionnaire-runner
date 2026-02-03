@@ -1,5 +1,5 @@
 import RadioPage from "../generated_pages/theme_dbt_ni/radio.page";
-import { verifyUrlContains } from "../helpers";
+import { verifyUrlContains, getInnerHTML } from "../helpers";
 
 describe("Theme DBT-NI", () => {
   describe("Given I launch a DBT-NI themed questionnaire", () => {
@@ -9,8 +9,8 @@ describe("Theme DBT-NI", () => {
 
     it("When I navigate to the radio page, Then I should see DBT-NI theme content", async () => {
       await verifyUrlContains(RadioPage.pageName);
-      await expect(await $("#dbt-logo-alt").getHTML({ includeSelectorTag: false, prettify: false })).toContain("Department for Business and Trade");
-      await expect(await $("#finance-ni-logo-alt").getHTML({ includeSelectorTag: false, prettify: false })).toContain(
+      await expect(await getInnerHTML($("#dbt-logo-alt"))).toContain("Department for Business and Trade");
+      await expect(await getInnerHTML($("#finance-ni-logo-alt"))).toContain(
         "Northern Ireland Department of Finance logo",
       );
     });

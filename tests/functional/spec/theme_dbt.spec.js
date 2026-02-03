@@ -1,5 +1,5 @@
 import RadioPage from "../generated_pages/theme_dbt/radio.page";
-import { verifyUrlContains } from "../helpers";
+import { verifyUrlContains, getInnerHTML } from "../helpers";
 
 describe("Theme DBT", () => {
   describe("Given I launch a DBT themed questionnaire", () => {
@@ -9,7 +9,7 @@ describe("Theme DBT", () => {
 
     it("When I navigate to the radio page, Then I should see DBT theme content", async () => {
       await verifyUrlContains(RadioPage.pageName);
-      await expect(await $("#dbt-logo-alt").getHTML({ includeSelectorTag: false, prettify: false })).toContain("Department for Business and Trade");
+      await expect(await getInnerHTML($("#dbt-logo-alt"))).toContain("Department for Business and Trade");
     });
   });
 });
