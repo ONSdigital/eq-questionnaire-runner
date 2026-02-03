@@ -65,9 +65,7 @@ describe("Thank You Default View Response Enabled", () => {
       await expect(await $(ThankYouPage.viewSubmittedGuidance()).isDisplayed()).toBe(false);
       await browser.pause(46000); // Waiting 40 seconds for the timeout to expire (45 minute timeout changed to 35 seconds by overriding VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS for the purpose of the functional test)
       await expect(await $(ThankYouPage.viewSubmittedGuidance()).isDisplayed()).toBe(true);
-      await expect(await getInnerHTML($(ThankYouPage.viewSubmittedGuidance()))).toContain(
-        "For security, you can no longer view or get a copy of your answers",
-      );
+      await expect(await getInnerHTML($(ThankYouPage.viewSubmittedGuidance()))).toContain("For security, you can no longer view or get a copy of your answers");
     });
   });
 });

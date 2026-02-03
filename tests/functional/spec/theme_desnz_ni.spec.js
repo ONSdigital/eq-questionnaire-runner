@@ -1,5 +1,5 @@
 import RadioPage from "../generated_pages/theme_desnz_ni/radio.page";
-import { verifyUrlContains } from "../helpers";
+import { verifyUrlContains, getInnerHTML } from "../helpers";
 
 describe("Theme DESNZ-NI", () => {
   describe("Given I launch a DESNZ-NI themed questionnaire", () => {
@@ -9,10 +9,8 @@ describe("Theme DESNZ-NI", () => {
 
     it("When I navigate to the radio page, Then I should see DESNZ-NI theme content", async () => {
       await verifyUrlContains(RadioPage.pageName);
-      await expect(await $("#desnz-logo-alt").getHTML({ includeSelectorTag: false, prettify: false })).toContain("Department for Energy Security and Net Zero");
-      await expect(await $("#finance-ni-logo-alt").getHTML({ includeSelectorTag: false, prettify: false })).toContain(
-        "Northern Ireland Department of Finance logo",
-      );
+      await expect(await getInnerHTML($("#desnz-logo-alt"))).toContain("Department for Energy Security and Net Zero");
+      await expect(await getInnerHTML($("#finance-ni-logo-alt"))).toContain("Northern Ireland Department of Finance logo");
     });
   });
 });

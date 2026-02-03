@@ -9,11 +9,11 @@ describe("Theme DBT-DSIT-NI", () => {
 
     it("When I navigate to the radio page, Then I should see DBT-DSIT-NI theme content", async () => {
       await verifyUrlContains(RadioPage.pageName);
-      await expect(await $("#dbt-logo-alt").getHTML({ includeSelectorTag: false, prettify: false })).toContain("Department for Business and Trade logo");
-      await expect(await $("#dsit-logo-alt").getHTML({ includeSelectorTag: false, prettify: false })).toContain(
+      await expect(await getInnerHTML($("#dbt-logo-alt"))).toContain("Department for Business and Trade logo");
+      await expect(await getInnerHTML($("#dsit-logo-alt"))).toContain(
         "Department for Science, Innovation and Technology logo",
       );
-      await expect(await $("#finance-ni-logo-alt").getHTML({ includeSelectorTag: false, prettify: false })).toContain(
+      await expect(await getInnerHTML($("#finance-ni-logo-alt"))).toContain(
         "Northern Ireland Department of Finance logo",
       );
     });
