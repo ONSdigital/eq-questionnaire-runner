@@ -10,7 +10,7 @@ import firstNumberBlock from "../generated_pages/variants_question/first-number-
 import secondNumberBlock from "../generated_pages/variants_question/second-number-block.page.js";
 import currencySectionSummary from "../generated_pages/variants_question/currency-section-summary.page.js";
 import { getRandomString } from "../jwt_helper";
-import { click, verifyUrlContains, getInnerHTML } from "../helpers";
+import { click, verifyUrlContains, getRawHTMLrom "../helpers";
 describe("Save sign out / Exit", () => {
   const responseId = getRandomString(16);
 
@@ -21,7 +21,7 @@ describe("Save sign out / Exit", () => {
     await verifyUrlContains("/surveys/todo");
 
     await browser.back();
-    await expect(await getInnerHTML($("body"))).toContain("Sorry, you need to sign in again");
+    await expect(await getRawHTML("body"))).toContain("Sorry, you need to sign in again");
   });
 
   it("Given I am completing a questionnaire, when I select save and sign out, then I am redirected to the signed out page", async () => {
@@ -34,7 +34,7 @@ describe("Save sign out / Exit", () => {
     await verifyUrlContains("/signed-out");
 
     await browser.back();
-    await expect(await getInnerHTML($("body"))).toContain("Sorry, you need to sign in again");
+    await expect(await getRawHTML("body"))).toContain("Sorry, you need to sign in again");
   });
 
   it("Given I have started a questionnaire, when I return to the questionnaire, then I am returned to the page I was on and can then complete the questionnaire", async () => {
@@ -63,9 +63,9 @@ describe("Save sign out / Exit", () => {
     await browser.openQuestionnaire("test_theme_social.json", { theme: "social" });
     await $(SubmitPage.saveSignOut()).click();
     await verifyUrlContains("/signed-out");
-    await expect(await getInnerHTML($("body"))).toContain("Your progress has been saved");
-    await expect(await getInnerHTML($("body"))).toContain("To resume the survey,");
-    await expect(await getInnerHTML($("body"))).toContain("/en/start");
+    await expect(await getRawHTML($("body"))).toContain("Your progress has been saved");
+    await expect(await getRawHTML($("body"))).toContain("To resume the survey,");
+    await expect(await getRawHTML($("body"))).toContain("/en/start");
   });
 
   it("Given a I have started a business questionnaire, when I select save and sign out, then I am redirected to the signed out page and the correct access code link is shown", async () => {
@@ -73,9 +73,9 @@ describe("Save sign out / Exit", () => {
     await $(IntroductionPage.getStarted()).click();
     await $(IntroInterstitialPage.saveSignOut()).click();
     await verifyUrlContains("/signed-out");
-    await expect(await getInnerHTML($("body"))).toContain("Your progress has been saved");
-    await expect(await getInnerHTML($("body"))).toContain("To find further information or resume the survey,");
-    await expect(await getInnerHTML($("body"))).toContain("/surveys/todo");
+    await expect(await getRawHTML($("body"))).toContain("Your progress has been saved");
+    await expect(await getRawHTML($("body"))).toContain("To find further information or resume the survey,");
+    await expect(await getRawHTML($("body"))).toContain("/surveys/todo");
   });
 
   it("Given a business questionnaire, when I navigate the questionnaire, then I see the correct sign out buttons", async () => {

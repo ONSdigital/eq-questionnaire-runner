@@ -4,7 +4,7 @@ import CheckboxPage from "../generated_pages/title/single-title-block.page";
 import ThankYouPage from "../base_pages/thank-you.page";
 import DidYouKnowPage from "../generated_pages/thank_you/did-you-know.page";
 import ThankYouSubmitPage from "../generated_pages/thank_you/submit.page";
-import { click, verifyUrlContains, getInnerHTML } from "../helpers";
+import { click, verifyUrlContains, getRawHTMLrom "../helpers";
 describe("Thank You Social", () => {
   describe("Given I launch a social themed questionnaire", () => {
     beforeEach(async () => {
@@ -14,10 +14,10 @@ describe("Thank You Social", () => {
       await click(SubmitPage.submit());
       await click(HubPage.submit());
       await verifyUrlContains(ThankYouPage.pageName);
-      await expect(await getInnerHTML($(ThankYouPage.title()))).toContain("Thank you for completing the Test Social Survey");
-      await expect(await getInnerHTML($(ThankYouPage.guidance()))).toContain("Your answers have been submitted");
-      await expect(await getInnerHTML($(ThankYouPage.metadata()))).toContain("Submitted on:");
-      await expect(await getInnerHTML($(ThankYouPage.metadata()))).not.toContain("Submission reference:");
+      await expect(await getRawHTMLhankYouPage.title()))).toContain("Thank you for completing the Test Social Survey");
+      await expect(await getRawHTML(ThankYouPage.guidance()))).toContain("Your answers have been submitted");
+      await expect(await getRawHTML($(ThankYouPage.metadata()))).toContain("Submitted on:");
+      await expect(await getRawHTML($(ThankYouPage.metadata()))).not.toContain("Submission reference:");
     });
   });
 });
@@ -33,10 +33,10 @@ describe("Thank You Default", () => {
       await click(SubmitPage.submit());
       await click(HubPage.submit());
       await verifyUrlContains(ThankYouPage.pageName);
-      await expect(await getInnerHTML($(ThankYouPage.title()))).toContain("Thank you for completing the Question Title Test");
-      await expect(await getInnerHTML($(ThankYouPage.guidance()))).toContain("Your answers have been submitted for");
-      await expect(await getInnerHTML($(ThankYouPage.metadata()))).toContain("Submitted on:");
-      await expect(await getInnerHTML($(ThankYouPage.metadata()))).toContain("Submission reference:");
+      await expect(await getRawHTML($(ThankYouPage.title()))).toContain("Thank you for completing the Question Title Test");
+      await expect(await getRawHTML($(ThankYouPage.guidance()))).toContain("Your answers have been submitted for");
+      await expect(await getRawHTML($(ThankYouPage.metadata()))).toContain("Submitted on:");
+      await expect(await getRawHTML($(ThankYouPage.metadata()))).toContain("Submission reference:");
     });
   });
 });
@@ -53,10 +53,10 @@ describe("Thank You Default View Response Enabled", () => {
 
     it("When I navigate to the thank you page, and I have submitted less than 40 seconds ago, Then I should see the countdown timer and option to view my answers", async () => {
       await expect(await $(ThankYouPage.viewSubmittedGuidance()).isDisplayed()).toBe(false);
-      await expect(await getInnerHTML($(ThankYouPage.title()))).toContain("Thank you for completing the Test Thank You");
-      await expect(await getInnerHTML($(ThankYouPage.viewAnswersTitle()))).toContain("Get a copy of your answers");
+      await expect(await getRawHTML($(ThankYouPage.title()))).toContain("Thank you for completing the Test Thank You");
+      await expect(await getRawHTML($(ThankYouPage.viewAnswersTitle()))).toContain("Get a copy of your answers");
       await expect(await $(ThankYouPage.viewAnswersLink()).getText()).toContain("save or print your answers");
-      await expect(await getInnerHTML($(ThankYouPage.viewSubmittedCountdown()))).toContain(
+      await expect(await getRawHTML($(ThankYouPage.viewSubmittedCountdown()))).toContain(
         "For security, your answers will only be available to view for another",
       );
     });
@@ -65,7 +65,7 @@ describe("Thank You Default View Response Enabled", () => {
       await expect(await $(ThankYouPage.viewSubmittedGuidance()).isDisplayed()).toBe(false);
       await browser.pause(46000); // Waiting 40 seconds for the timeout to expire (45 minute timeout changed to 35 seconds by overriding VIEW_SUBMITTED_RESPONSE_EXPIRATION_IN_SECONDS for the purpose of the functional test)
       await expect(await $(ThankYouPage.viewSubmittedGuidance()).isDisplayed()).toBe(true);
-      await expect(await getInnerHTML($(ThankYouPage.viewSubmittedGuidance()))).toContain("For security, you can no longer view or get a copy of your answers");
+      await expect(await getRawHTML($(ThankYouPage.viewSubmittedGuidance()))).toContain("For security, you can no longer view or get a copy of your answers");
     });
   });
 });

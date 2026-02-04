@@ -2,7 +2,7 @@ import MandatoryCheckboxPage from "../generated_pages/checkbox/mandatory-checkbo
 import NonMandatoryCheckboxPage from "../generated_pages/checkbox/non-mandatory-checkbox.page";
 import singleCheckboxPage from "../generated_pages/checkbox/single-checkbox.page";
 import SubmitPage from "../generated_pages/checkbox/submit.page";
-import { click, verifyUrlContains, getInnerHTML } from "../helpers";
+import { click, verifyUrlContains, getRawHTML } from "../helpers";
 
 describe('Checkbox with "other" option', () => {
   beforeEach("Load the survey", async () => {
@@ -44,7 +44,7 @@ describe('Checkbox with "other" option', () => {
     // When
     await click(MandatoryCheckboxPage.submit());
     // Then
-    await expect(await getInnerHTML(MandatoryCheckboxPage.error())).toContain(
+    await expect(await getRawHTML(MandatoryCheckboxPage.error())).toContain(
       'Select at least one answer <span class="ons-u-vh">to ‘Which pizza toppings would you like?’</span></a>',
     );
   });

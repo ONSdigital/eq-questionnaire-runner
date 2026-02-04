@@ -2,7 +2,7 @@ import AddressConfirmation from "../../../generated_pages/address/address-confir
 import AddressMandatory from "../../../generated_pages/address/address-block-mandatory.page";
 import AddressOptional from "../../../generated_pages/address/address-block-optional.page";
 import SubmitPage from "../../../generated_pages/address/submit.page";
-import { click, verifyUrlContains } from "../../../helpers";
+import { click, verifyUrlContains, getRawHTML from "../../../helpers";
 
 describe("Address Answer Type", () => {
   beforeEach("Launch survey", async () => {
@@ -21,7 +21,7 @@ describe("Address Answer Type", () => {
       await click(AddressConfirmation.submit());
       await verifyUrlContains(SubmitPage.pageName);
       await expect(await $(SubmitPage.addressMandatory()).getText()).toBe("Evelyn Street\nApt 7\nBarry\nCF63 4JG");
-      await expect(await $(SubmitPage.addressMandatory()).getHTML({ prettify: false })).toContain("Evelyn Street<br>Apt 7<br>Barry<br>CF63 4JG");
+      await expect(await getRawHTML($(SubmitPage.addressMandatory()))).toContain("Evelyn Street<br>Apt 7<br>Barry<br>CF63 4JG");
     });
   });
 

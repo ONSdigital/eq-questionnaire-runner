@@ -86,7 +86,7 @@ export async function openQuestionnaireWithRetry(schema, options, maxRetries = 1
   }
 }
 
-export async function getInnerHTML(selector) {
+export async function getRawHTML(selector) {
   const element = await $(selector);
   return element.getHTML({
     includeSelectorTag: false,
