@@ -4,7 +4,7 @@ import CheckboxPage from "../generated_pages/title/single-title-block.page";
 import ThankYouPage from "../base_pages/thank-you.page";
 import DidYouKnowPage from "../generated_pages/thank_you/did-you-know.page";
 import ThankYouSubmitPage from "../generated_pages/thank_you/submit.page";
-import { click, verifyUrlContains, getRawHTMLrom "../helpers";
+import { click, verifyUrlContains, getRawHTML } from "../helpers";
 describe("Thank You Social", () => {
   describe("Given I launch a social themed questionnaire", () => {
     beforeEach(async () => {
@@ -14,8 +14,8 @@ describe("Thank You Social", () => {
       await click(SubmitPage.submit());
       await click(HubPage.submit());
       await verifyUrlContains(ThankYouPage.pageName);
-      await expect(await getRawHTMLhankYouPage.title()))).toContain("Thank you for completing the Test Social Survey");
-      await expect(await getRawHTML(ThankYouPage.guidance()))).toContain("Your answers have been submitted");
+      await expect(await getRawHTML($(ThankYouPage.title()))).toContain("Thank you for completing the Test Social Survey");
+      await expect(await getRawHTML($(ThankYouPage.guidance()))).toContain("Your answers have been submitted");
       await expect(await getRawHTML($(ThankYouPage.metadata()))).toContain("Submitted on:");
       await expect(await getRawHTML($(ThankYouPage.metadata()))).not.toContain("Submission reference:");
     });

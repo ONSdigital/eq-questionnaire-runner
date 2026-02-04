@@ -1,6 +1,6 @@
 import RadioPage from "../generated_pages/theme_dbt_ni/radio.page";
 import { expect } from "@wdio/globals";
-import { verifyUrlContains, getRawHTML from "../helpers";
+import { verifyUrlContains, getRawHTML } from "../helpers";
 
 describe("Theme UKHSA-ONS", () => {
   describe("Given I launch a UKHSA-ONS themed questionnaire", () => {

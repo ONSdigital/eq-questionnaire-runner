@@ -1,5 +1,5 @@
 import RadioPage from "../generated_pages/theme_northernireland/radio.page";
-import { verifyUrlContains, getRawHTML from "../helpers";
+import { verifyUrlContains, getRawHTML } from "../helpers";
 
 describe("Theme Northern Ireland", () => {
   describe("Given I launch a Northern Ireland themed questionnaire", () => {

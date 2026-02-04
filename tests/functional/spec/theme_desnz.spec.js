@@ -1,5 +1,5 @@
 import RadioPage from "../generated_pages/theme_desnz/radio.page";
-import { verifyUrlContains, getRawHTML from "../helpers";
+import { verifyUrlContains, getRawHTML } from "../helpers";
 
 describe("Theme DESNZ", () => {
   describe("Given I launch a DESNZ themed questionnaire", () => {

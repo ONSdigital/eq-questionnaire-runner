@@ -1,5 +1,5 @@
 import RadioPage from "../generated_pages/theme_orr/radio.page";
-import { verifyUrlContains, getRawHTML from "../helpers";
+import { verifyUrlContains, getRawHTML } from "../helpers";
 
 describe("Theme Rail and Road", () => {
   describe("Given I launch a Rail and Road themed questionnaire", () => {

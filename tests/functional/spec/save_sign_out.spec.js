@@ -10,7 +10,7 @@ import firstNumberBlock from "../generated_pages/variants_question/first-number-
 import secondNumberBlock from "../generated_pages/variants_question/second-number-block.page.js";
 import currencySectionSummary from "../generated_pages/variants_question/currency-section-summary.page.js";
 import { getRandomString } from "../jwt_helper";
-import { click, verifyUrlContains, getRawHTMLrom "../helpers";
+import { click, verifyUrlContains, getRawHTML } from "../helpers";
 describe("Save sign out / Exit", () => {
   const responseId = getRandomString(16);
 
@@ -21,7 +21,7 @@ describe("Save sign out / Exit", () => {
     await verifyUrlContains("/surveys/todo");
 
     await browser.back();
-    await expect(await getRawHTML("body"))).toContain("Sorry, you need to sign in again");
+    await expect(await getRawHTML($("body"))).toContain("Sorry, you need to sign in again");
   });
 
   it("Given I am completing a questionnaire, when I select save and sign out, then I am redirected to the signed out page", async () => {
@@ -34,7 +34,7 @@ describe("Save sign out / Exit", () => {
     await verifyUrlContains("/signed-out");
 
     await browser.back();
-    await expect(await getRawHTML("body"))).toContain("Sorry, you need to sign in again");
+    await expect(await getRawHTML($("body"))).toContain("Sorry, you need to sign in again");
   });
 
   it("Given I have started a questionnaire, when I return to the questionnaire, then I am returned to the page I was on and can then complete the questionnaire", async () => {
