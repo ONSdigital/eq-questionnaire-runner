@@ -28,6 +28,16 @@ class PDFResponse:
         ViewSubmittedResponseExpired: If the submitted response has expired.
     """
 
+    # Set weasyprint logging level to ERROR to prevent verbose logs
+    weasyprint_logger = logging.getLogger("weasyprint")
+    weasyprint_progress_logger = logging.getLogger("weasyprint.progress")
+    font_logger = logging.getLogger("fontTools")
+
+    # weasyprint_logger.setLevel(level=logging.ERROR)
+    # weasyprint_progress_logger.setLevel(level=logging.ERROR)
+    # font_logger.setLevel(level=logging.ERROR)
+
+
     # The mimetype to use for response
     mimetype = "application/pdf"
 
