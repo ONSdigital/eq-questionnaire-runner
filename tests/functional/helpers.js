@@ -86,10 +86,12 @@ export async function openQuestionnaireWithRetry(schema, options, maxRetries = 1
   }
 }
 
-export async function getRawHTML(selector) {
+export async function getRawHTML(selector, options = {}) {
+  const { includeSelectorTag = true } = options;
   const element = await $(selector);
+
   return element.getHTML({
-    includeSelectorTag: false,
     prettify: false,
+    includeSelectorTag,
   });
 }

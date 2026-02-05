@@ -9,8 +9,8 @@ describe("Theme DESNZ-NI", () => {
 
     it("When I navigate to the radio page, Then I should see DESNZ-NI theme content", async () => {
       await verifyUrlContains(RadioPage.pageName);
-      await expect(await getRawHTML($("#desnz-logo-alt"))).toContain("Department for Energy Security and Net Zero");
-      await expect(await getRawHTML($("#finance-ni-logo-alt"))).toContain("Northern Ireland Department of Finance logo");
+      await expect(await getRawHTML("#desnz-logo-alt", { includeSelectorTag: false })).toContain("Department for Energy Security and Net Zero");
+      await expect(await getRawHTML("#finance-ni-logo-alt", { includeSelectorTag: false })).toContain("Northern Ireland Department of Finance logo");
     });
   });
 });

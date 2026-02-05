@@ -9,7 +9,7 @@ describe("Theme Rail and Road", () => {
 
     it("When I navigate to the radio page, Then I should see Rail and Road theme content", async () => {
       await verifyUrlContains(RadioPage.pageName);
-      await expect(await getRawHTML($("#orr-logo-mobile-alt"))).toContain("Office of Rail and Road logo");
+      await expect(await getRawHTML("#orr-logo-mobile-alt", { includeSelectorTag: false })).toContain("Office of Rail and Road logo");
     });
   });
 });

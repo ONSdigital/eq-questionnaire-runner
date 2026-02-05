@@ -9,7 +9,7 @@ describe("Theme DBT", () => {
 
     it("When I navigate to the radio page, Then I should see DBT theme content", async () => {
       await verifyUrlContains(RadioPage.pageName);
-      await expect(await getRawHTML($("#dbt-logo-alt"))).toContain("Department for Business and Trade");
+      await expect(await getRawHTML("#dbt-logo-alt", { includeSelectorTag: false })).toContain("Department for Business and Trade");
     });
   });
 });
