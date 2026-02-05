@@ -1,5 +1,5 @@
 import MandatoryCheckboxPage from "../../../generated_pages/placeholder_playback_list/mandatory-checkbox.page";
-import { click, getRawHTML from "../../../helpers";
+import { click, getRawHTML } from "../../../helpers";
 describe("Feature: Playback Confirmation", () => {
   beforeEach("Open the schema", async () => {
     await browser.openQuestionnaire("test_placeholder_playback_list.json");
