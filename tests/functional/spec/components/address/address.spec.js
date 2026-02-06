@@ -21,7 +21,7 @@ describe("Address Answer Type", () => {
       await click(AddressConfirmation.submit());
       await verifyUrlContains(SubmitPage.pageName);
       await expect(await $(SubmitPage.addressMandatory()).getText()).toBe("Evelyn Street\nApt 7\nBarry\nCF63 4JG");
-      await expect(await getRawHTML($(SubmitPage.addressMandatory()))).toContain("Evelyn Street<br>Apt 7<br>Barry<br>CF63 4JG");
+      await expect(await getRawHTML(SubmitPage.addressMandatory())).toContain("Evelyn Street<br>Apt 7<br>Barry<br>CF63 4JG");
     });
   });
 
