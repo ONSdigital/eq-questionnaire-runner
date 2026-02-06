@@ -124,7 +124,7 @@ describe("View Submitted Response Summary Page With Repeating Sections", () => {
 
     await click(HubPage.submit());
     await verifyUrlContains(ThankYouPage.pageName);
-    await expect(await getRawHTML((ThankYouPage.title()))).toContain("Thank you for completing the Test");
+    await expect(await getRawHTML(ThankYouPage.title())).toContain("Thank you for completing the Test");
     await $(ThankYouPage.savePrintAnswersLink()).click();
     await verifyUrlContains(ViewSubmittedResponsePage.pageName);
   });

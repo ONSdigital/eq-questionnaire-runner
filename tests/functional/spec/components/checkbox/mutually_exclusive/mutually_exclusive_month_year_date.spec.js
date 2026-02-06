@@ -5,7 +5,6 @@ import { click } from "../../../../helpers";
 describe("Component: Mutually Exclusive Month Year Date With Single Checkbox Override", () => {
   beforeEach(async () => {
     await browser.openQuestionnaire("test_mutually_exclusive.json");
-
     await browser.url("/questionnaire/mutually-exclusive-month-year-date");
   });
 

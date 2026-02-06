@@ -17,7 +17,7 @@ describe("Thank You Social", () => {
       await expect(await getRawHTML(ThankYouPage.title())).toContain("Thank you for completing the Test Social Survey");
       await expect(await getRawHTML(ThankYouPage.guidance())).toContain("Your answers have been submitted");
       await expect(await getRawHTML(ThankYouPage.metadata())).toContain("Submitted on:");
-      await expect(await getRawHTML(ThankYouPage.metadata()).not.toContain("Submission reference:");
+      await expect(await getRawHTML(ThankYouPage.metadata())).not.toContain("Submission reference:");
     });
   });
 });
@@ -56,9 +56,7 @@ describe("Thank You Default View Response Enabled", () => {
       await expect(await getRawHTML(ThankYouPage.title())).toContain("Thank you for completing the Test Thank You");
       await expect(await getRawHTML(ThankYouPage.viewAnswersTitle())).toContain("Get a copy of your answers");
       await expect(await $(ThankYouPage.viewAnswersLink()).getText()).toContain("save or print your answers");
-      await expect(await getRawHTML(ThankYouPage.viewSubmittedCountdown())).toContain(
-        "For security, your answers will only be available to view for another",
-      );
+      await expect(await getRawHTML(ThankYouPage.viewSubmittedCountdown())).toContain("For security, your answers will only be available to view for another");
     });
 
     it("When I navigate to the thank you page, and I have submitted more than 40 seconds ago, Then I shouldn't see the option to view my answers", async () => {
