@@ -43,7 +43,7 @@ describe("Using supplementary data", () => {
     await expect(await getRawHTML("body")).toContain(
       "<li>sports holdalls, gloves, clothing of textile materials, footwear, protective eyewear, rackets, balls, skates</li>",
     );
-    await expect(await getRawHTML($("body"))).toContain(
+    await expect(await getRawHTML("body")).toContain(
       "<li>for skiing, water sports, golf, fishing', for skiing, water sports, golf, fishing, table tennis, PE, gymnastics, athletics</li>",
     );
     await expect(await $(ProductRepeatingBlock1Page.productVolumeSalesLabel()).getText()).toBe(
