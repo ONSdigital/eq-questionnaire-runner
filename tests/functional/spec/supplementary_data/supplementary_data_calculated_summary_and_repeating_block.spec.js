@@ -14,7 +14,6 @@ import ProductVolumeInterstitialPage from "../../generated_pages/supplementary_d
 import Section1Page from "../../generated_pages/supplementary_data_repeating_block_and_calculated_summary/section-1-summary.page.js";
 import ThankYouPage from "../../base_pages/thank-you.page";
 import ViewSubmittedResponsePage from "../../generated_pages/supplementary_data_repeating_block_and_calculated_summary/view-submitted-response.page.js";
-import { $$ } from "../../../../node_modules/webdriverio/build/commands/browser";
 
 describe("Using supplementary data", () => {
   const responseId = getRandomString(16);
