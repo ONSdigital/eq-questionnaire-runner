@@ -36,11 +36,11 @@ describe("Using supplementary data", () => {
   });
 
   it("Given I have repeating blocks with supplementary data, When I start the first repeating block, Then I see the supplementary data for the first list item", async () => {
-    await expect(await getRawHTML($("body"))).toContain("<h2>Include</h2>");
-    await expect(await getRawHTML($("body"))).toContain("<li>for children's playgrounds</li>");
-    await expect(await getRawHTML($("body"))).toContain("<li>swimming pools and paddling pools</li>");
-    await expect(await getRawHTML($("body"))).toContain("<h2>Exclude</h2>");
-    await expect(await getRawHTML($("body"))).toContain(
+    await expect(await getRawHTML("body")).toContain("<h2>Include</h2>");
+    await expect(await getRawHTML("body")).toContain("<li>for children's playgrounds</li>");
+    await expect(await getRawHTML("body")).toContain("<li>swimming pools and paddling pools</li>");
+    await expect(await getRawHTML("body")).toContain("<h2>Exclude</h2>");
+    await expect(await getRawHTML("body")).toContain(
       "<li>sports holdalls, gloves, clothing of textile materials, footwear, protective eyewear, rackets, balls, skates</li>",
     );
     await expect(await getRawHTML($("body"))).toContain(
@@ -59,9 +59,9 @@ describe("Using supplementary data", () => {
   it("Given I have repeating blocks with supplementary data, When I start the second repeating block, Then I see the supplementary data for the second list item", async () => {
     await click(ProductRepeatingBlock1Page.submit());
     await click(ListCollectorProductsPage.submit());
-    await expect(await getRawHTML($("body"))).toContain("Include");
-    await expect(await getRawHTML($("body"))).toContain("pots and pans");
-    await expect(await getRawHTML($("body"))).not.toBe("Exclude");
+    await expect(await getRawHTML("body")).toContain("Include");
+    await expect(await getRawHTML("body")).toContain("pots and pans");
+    await expect(await getRawHTML("body")).not.toContain("Exclude");
     await expect(await $(ProductRepeatingBlock1Page.productVolumeSalesLabel()).getText()).toBe("Volume of sales for Kitchen Equipment");
     await expect(await $(ProductRepeatingBlock1Page.productVolumeTotalLabel()).getText()).toBe("Total volume produced for Kitchen Equipment");
     await $(ProductRepeatingBlock1Page.productVolumeSales()).setValue(50);
