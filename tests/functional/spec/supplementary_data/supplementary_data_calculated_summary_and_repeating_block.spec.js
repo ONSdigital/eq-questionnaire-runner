@@ -1,4 +1,4 @@
-import { assertSummaryItems, assertSummaryTitles, assertSummaryValues, listItemComplete, click, verifyUrlContains } from "../../helpers";
+import { assertSummaryItems, assertSummaryTitles, assertSummaryValues, listItemComplete, click, verifyUrlContains, getRawHTML } from "../../helpers";
 import { expect } from "@wdio/globals";
 import { getRandomString } from "../../jwt_helper";
 import CalculatedSummaryValueSalesPage from "../../generated_pages/supplementary_data_repeating_block_and_calculated_summary/calculated-summary-value-sales.page.js";
@@ -14,6 +14,7 @@ import ProductVolumeInterstitialPage from "../../generated_pages/supplementary_d
 import Section1Page from "../../generated_pages/supplementary_data_repeating_block_and_calculated_summary/section-1-summary.page.js";
 import ThankYouPage from "../../base_pages/thank-you.page";
 import ViewSubmittedResponsePage from "../../generated_pages/supplementary_data_repeating_block_and_calculated_summary/view-submitted-response.page.js";
+import { $$ } from "../../../../node_modules/webdriverio/build/commands/browser";
 
 describe("Using supplementary data", () => {
   const responseId = getRandomString(16);
@@ -36,14 +37,14 @@ describe("Using supplementary data", () => {
   });
 
   it("Given I have repeating blocks with supplementary data, When I start the first repeating block, Then I see the supplementary data for the first list item", async () => {
-    await expect(await $("body").getHTML()).toContain("<h2>Include</h2>");
-    await expect(await $("body").getHTML()).toContain("<li>for children's playgrounds</li>");
-    await expect(await $("body").getHTML()).toContain("<li>swimming pools and paddling pools</li>");
-    await expect(await $("body").getHTML()).toContain("<h2>Exclude</h2>");
-    await expect(await $("body").getHTML()).toContain(
+    await expect(await getRawHTML($("body"))).toContain("<h2>Include</h2>");
+    await expect(await getRawHTML($("body"))).toContain("<li>for children's playgrounds</li>");
+    await expect(await getRawHTML($("body"))).toContain("<li>swimming pools and paddling pools</li>");
+    await expect(await getRawHTML($("body"))).toContain("<h2>Exclude</h2>");
+    await expect(await getRawHTML($("body"))).toContain(
       "<li>sports holdalls, gloves, clothing of textile materials, footwear, protective eyewear, rackets, balls, skates</li>",
     );
-    await expect(await $("body").getHTML()).toContain(
+    await expect(await getRawHTML($("body"))).toContain(
       "<li>for skiing, water sports, golf, fishing', for skiing, water sports, golf, fishing, table tennis, PE, gymnastics, athletics</li>",
     );
     await expect(await $(ProductRepeatingBlock1Page.productVolumeSalesLabel()).getText()).toBe(
@@ -59,9 +60,9 @@ describe("Using supplementary data", () => {
   it("Given I have repeating blocks with supplementary data, When I start the second repeating block, Then I see the supplementary data for the second list item", async () => {
     await click(ProductRepeatingBlock1Page.submit());
     await click(ListCollectorProductsPage.submit());
-    await expect(await $("body").getText()).toContain("Include");
-    await expect(await $("body").getText()).toContain("pots and pans");
-    await expect(await $("body").getText()).not.toBe("Exclude");
+    await expect(await getRawHTML($("body"))).toContain("Include");
+    await expect(await getRawHTML($("body"))).toContain("pots and pans");
+    await expect(await getRawHTML($("body"))).not.toBe("Exclude");
     await expect(await $(ProductRepeatingBlock1Page.productVolumeSalesLabel()).getText()).toBe("Volume of sales for Kitchen Equipment");
     await expect(await $(ProductRepeatingBlock1Page.productVolumeTotalLabel()).getText()).toBe("Total volume produced for Kitchen Equipment");
     await $(ProductRepeatingBlock1Page.productVolumeSales()).setValue(50);
