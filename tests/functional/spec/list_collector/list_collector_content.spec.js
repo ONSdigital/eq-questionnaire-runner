@@ -11,7 +11,7 @@ import ListCollectorSecondRepeatingBlockPage from "../../generated_pages/list_co
 import ListCollectorContentPage from "../../generated_pages/list_collector_content_page/list-collector-content.page";
 import ListCollectorContentSectionSummaryPage from "../../generated_pages/list_collector_content_page/section-list-collector-contents-summary.page";
 import ConfirmationCheckboxPage from "../../generated_pages/list_collector_content_page/confirmation-checkbox.page";
-import { listItemComplete, click, verifyUrlContains } from "../../helpers";
+import { listItemComplete, click, verifyUrlContains, getRawHTML } from "../../helpers";
 
 describe("List Collector Section Summary and Summary Items", () => {
   describe("Given I launch the test list collector section summary items survey", () => {
@@ -32,13 +32,13 @@ describe("List Collector Section Summary and Summary Items", () => {
       await click(HubPage.submit());
       await $(ResponsiblePartyQuestionPage.yes()).click();
       await click(ResponsiblePartyQuestionPage.submit());
-      await expect(await $(ListCollectorContentPage.heading()).getHTML({ prettify: false })).toContain("Companies");
+      await expect(await getRawHTML(ListCollectorContentPage.heading())).toContain("Companies");
       await expect(await $("#main-content > p").getText()).toBe(
         "You have previously reported the following companies. Press continue to updated registration and trading information.",
       );
       await expect(await $("#main-content > #guidance-1").getText()).toContain("Include all companies");
       await expect(await $("#main-content > #definition").getText()).toBe("Companies definition");
-      await expect(await $(ListCollectorContentPage.submit()).getText()).toBe("Continue");
+      await expect(await getRawHTML(ListCollectorContentPage.submit())).toBe("Continue");
     });
     it("When I get to list collector content block section, Then I should be able to complete repeating blocks and get to the summary.", async () => {
       await fillInListCollectorSection();
@@ -61,7 +61,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await completeRepeatingBlocks(123, 1, 1, 1990, true, true);
       await $(ListCollectorContentPage.previous()).click();
       await $(ResponsiblePartyQuestionPage.previous()).click();
-      await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).toBe("Partially completed");
+      await expect(await getRawHTML(HubPage.summaryRowState("section-list-collector-contents"))).toBe("Partially completed");
     });
     it("When I fill in both items repeating blocks, Then after going back to the hub the section should be completed.", async () => {
       await fillInListCollectorSection();
@@ -76,11 +76,11 @@ describe("List Collector Section Summary and Summary Items", () => {
       await $(ListCollectorContentSectionSummaryPage.previous()).click();
       await $(ListCollectorContentPage.previous()).click();
       await $(ResponsiblePartyQuestionPage.previous()).click();
-      await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).toBe("Completed");
+      await expect(await getRawHTML(HubPage.summaryRowState("section-list-collector-contents"))).toBe("Completed");
     });
     it("When I complete both sections then add another item, The list collector content block reverts to in progress and the new repeating blocks need completing", async () => {
       await completeBothSections();
-      await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).toBe("Completed");
+      await expect(await getRawHTML(HubPage.summaryRowState("section-list-collector-contents"))).toBe("Completed");
       await $(HubPage.summaryRowLink("section-companies")).click();
       await verifyUrlContains(CompaniesSummaryPage.pageName);
       await $(CompaniesSummaryPage.companiesListAddLink()).click();
@@ -89,7 +89,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await $(ConfirmationCheckboxPage.yes()).click();
       await click(ConfirmationCheckboxPage.submit());
       await click(CompaniesSummaryPage.submit());
-      await expect(await $(HubPage.summaryRowState("section-list-collector-contents")).getText()).toBe("Partially completed");
+      await expect(await getRawHTML(HubPage.summaryRowState("section-list-collector-contents"))).toBe("Partially completed");
       await click(HubPage.submit());
       await verifyUrlContains(ListCollectorContentPage.pageName);
       await listItemComplete(`li[data-qa="list-item-1-label"]`, true);

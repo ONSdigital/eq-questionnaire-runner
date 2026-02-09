@@ -10,7 +10,7 @@ import HouseholderCheckboxPage from "../../generated_pages/list_collector_sectio
 import SubmitPage from "../../generated_pages/list_collector_section_summary/submit.page";
 import ThankYouPage from "../../base_pages/thank-you.page";
 import ViewSubmittedResponsePage from "../../generated_pages/list_collector_section_summary/view-submitted-response.page";
-import { click, listItemIds, verifyUrlContains } from "../../helpers";
+import { click, listItemIds, verifyUrlContains, getRawHTML } from "../../helpers";
 
 describe("List Collector Section Summary and Summary Items", () => {
   describe("Given I launch the test list collector section summary items survey", () => {
@@ -30,18 +30,18 @@ describe("List Collector Section Summary and Summary Items", () => {
       await addCompany("Company A", "123", true);
       await anyMoreCompaniesNo();
       await expect(await $(SectionSummaryPage.companiesListLabel(1)).getText()).toContain("Name of UK company or branch");
-      await expect(await $(companiesListRowItem(1)).$$(".ons-summary__values")[0].getText()).toContain("Company A");
+      await expect(await getRawHTML($(companiesListRowItem(1)).$$(".ons-summary__values")[0])).toContain("Company A");
       await expect(await $(companiesListRowItem(1)).$$(".ons-summary__values")[1].getText()).toContain("123");
       await expect(await $(companiesListRowItem(1)).$$(".ons-summary__values")[2].getText()).toContain("Yes");
       const listItemId = (await listItemIds())[0];
       const row = await $(companiesListRowItem(1));
-      await expect(await row.$(`dd.ons-summary__actions#${listItemId}`).getHTML({ prettify: false })).toContain(
+      await expect(await getRawHTML(row.$(`dd.ons-summary__actions#${listItemId}`))).toContain(
         `return_to=section-summary&amp;return_to_answer_id=${listItemId}#company-or-branch-name`,
       );
-      await expect(await row.$(`dd#registration-number-${listItemId}`).getHTML({ prettify: false })).toContain(
+      await expect(await getRawHTML(row.$(`dd#registration-number-${listItemId}`))).toContain(
         `return_to=section-summary&amp;return_to_answer_id=registration-number-${listItemId}#registration-number`,
       );
-      await expect(await row.$(`dd#authorised-insurer-radio-${listItemId}`).getHTML({ prettify: false })).toContain(
+      await expect(await getRawHTML(row.$(`dd#authorised-insurer-radio-${listItemId}`))).toContain(
         `return_to=section-summary&amp;return_to_answer_id=authorised-insurer-radio-${listItemId}#authorised-insurer-radio`,
       );
     });
@@ -272,8 +272,8 @@ describe("List Collector Section Summary and Summary Items", () => {
       await expect(await $(companiesListRowItem(3)).$$(".ons-summary__values")[1].getText()).toContain("234");
       await expect(await $(companiesListRowItem(3)).$$(".ons-summary__actions")[0].getText()).toContain("Change");
       await expect(await $(SubmitPage.householderCheckboxAnswer()).getText()).toContain("No");
-      await expect(await $("body").getHTML({ prettify: false })).toContain("Add another UK company or branch");
-      await expect(await $("body").getHTML({ prettify: false })).toContain("Remove");
+      await expect(await getRawHTML("body")).toContain("Add another UK company or branch");
+      await expect(await getRawHTML("body")).toContain("Remove");
     });
 
     it("When I get to the view submitted response page, Then the summary should be displayed as expected without any change or remove links", async () => {
@@ -294,12 +294,12 @@ describe("List Collector Section Summary and Summary Items", () => {
       await click(HouseholderCheckboxPage.submit());
       await click(SectionSummaryTwoPage.submit());
       await click(SubmitPage.submit());
-      await expect(await $(ThankYouPage.title()).getHTML({ prettify: false })).toContain("Thank you for completing the Test");
+      await expect(await getRawHTML(ThankYouPage.title())).toContain("Thank you for completing the Test");
       await $(ThankYouPage.savePrintAnswersLink()).click();
 
       await verifyUrlContains(ViewSubmittedResponsePage.pageName);
-      await expect(await $(companiesListRowItem(1)).$$(".ons-summary__values")[0].getText()).toContain("Company A");
-      await expect(await $(companiesListRowItem(1)).$$(".ons-summary__values")[1].getText()).toContain("123");
+      await expect(await getRawHTML($(companiesListRowItem(1)).$$(".ons-summary__values")[0])).toContain("Company A");
+      await expect(await getRawHTML($(companiesListRowItem(1)).$$(".ons-summary__values")[1])).toContain("123");
       await expect(await $(companiesListRowItem(1)).$$(".ons-summary__values")[2].getText()).toContain("Yes");
       await expect(await $(companiesListRowItem(2)).$$(".ons-summary__values")[0].getText()).toContain("Company B");
       await expect(await $(companiesListRowItem(2)).$$(".ons-summary__values")[1].getText()).toContain("456");
@@ -307,9 +307,9 @@ describe("List Collector Section Summary and Summary Items", () => {
       await expect(await $(companiesListRowItem(3)).$$(".ons-summary__values")[0].getText()).toContain("Company C");
       await expect(await $(companiesListRowItem(3)).$$(".ons-summary__values")[1].getText()).toContain("234");
       await expect(await $(companiesListRowItem(3)).$$(".ons-summary__values")[2].getText()).toContain("Yes");
-      await expect(await $("body").getHTML({ prettify: false })).not.toContain("Change");
-      await expect(await $("body").getHTML({ prettify: false })).not.toContain("Remove");
-      await expect(await $("body").getHTML({ prettify: false })).not.toContain("Add another UK company or branch");
+      await expect(await getRawHTML("body")).not.toContain("Change");
+      await expect(await getRawHTML("body")).not.toContain("Remove");
+      await expect(await getRawHTML("body")).not.toContain("Add another UK company or branch");
     });
   });
 });
