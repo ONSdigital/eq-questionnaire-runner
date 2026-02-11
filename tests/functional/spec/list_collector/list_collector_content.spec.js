@@ -38,7 +38,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       );
       await expect(await $("#main-content > #guidance-1").getText()).toContain("Include all companies");
       await expect(await $("#main-content > #definition").getText()).toBe("Companies definition");
-      await expect(await getRawHTML(ListCollectorContentPage.submit())).toBe("Continue");
+      await expect(await $(ListCollectorContentPage.submit()).getText()).toBe("Continue");
     });
     it("When I get to list collector content block section, Then I should be able to complete repeating blocks and get to the summary.", async () => {
       await fillInListCollectorSection();
