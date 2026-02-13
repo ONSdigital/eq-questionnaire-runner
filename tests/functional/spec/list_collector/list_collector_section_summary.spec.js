@@ -34,13 +34,13 @@ describe("List Collector Section Summary and Summary Items", () => {
       await expect(await $(companiesListRowItem(1)).$$(".ons-summary__values")[1].getText()).toContain("123");
       await expect(await $(companiesListRowItem(1)).$$(".ons-summary__values")[2].getText()).toContain("Yes");
       const listItemId = (await listItemIds())[0];
-      await expect(await getRawHTML((await $(companiesListRowItem(1))).$(`dd.ons-summary__actions#${listItemId}`))).toContain(
+      await expect(await getRawHTML(companiesListRowItem(1)).$(`dd.ons-summary__actions#${listItemId}`)).toContain(
         `return_to=section-summary&amp;return_to_answer_id=${listItemId}#company-or-branch-name`,
       );
-      await expect(await getRawHTML((await $(companiesListRowItem(1))).$(`dd#registration-number-${listItemId}`))).toContain(
+      await expect(await getRawHTML(companiesListRowItem(1)).$(`dd#registration-number-${listItemId}`)).toContain(
         `return_to=section-summary&amp;return_to_answer_id=registration-number-${listItemId}#registration-number`,
       );
-      await expect(await getRawHTML((await $(companiesListRowItem(1))).$(`dd#authorised-insurer-radio-${listItemId}`))).toContain(
+      await expect(await getRawHTML(companiesListRowItem(1).$(`dd#authorised-insurer-radio-${listItemId}`))).toContain(
         `return_to=section-summary&amp;return_to_answer_id=authorised-insurer-radio-${listItemId}#authorised-insurer-radio`,
       );
     });
