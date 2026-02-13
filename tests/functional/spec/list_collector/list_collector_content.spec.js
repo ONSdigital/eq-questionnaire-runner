@@ -11,7 +11,7 @@ import ListCollectorSecondRepeatingBlockPage from "../../generated_pages/list_co
 import ListCollectorContentPage from "../../generated_pages/list_collector_content_page/list-collector-content.page";
 import ListCollectorContentSectionSummaryPage from "../../generated_pages/list_collector_content_page/section-list-collector-contents-summary.page";
 import ConfirmationCheckboxPage from "../../generated_pages/list_collector_content_page/confirmation-checkbox.page";
-import { listItemComplete, click, verifyUrlContains } from "../../helpers";
+import { listItemComplete, click, verifyUrlContains, getRawHTML } from "../../helpers";
 
 describe("List Collector Section Summary and Summary Items", () => {
   describe("Given I launch the test list collector section summary items survey", () => {
@@ -32,7 +32,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await click(HubPage.submit());
       await $(ResponsiblePartyQuestionPage.yes()).click();
       await click(ResponsiblePartyQuestionPage.submit());
-      await expect(await $(ListCollectorContentPage.heading()).getHTML()).toContain("Companies");
+      await expect(await getRawHTML(ListCollectorContentPage.heading())).toContain("Companies");
       await expect(await $("#main-content > p").getText()).toBe(
         "You have previously reported the following companies. Press continue to updated registration and trading information.",
       );
