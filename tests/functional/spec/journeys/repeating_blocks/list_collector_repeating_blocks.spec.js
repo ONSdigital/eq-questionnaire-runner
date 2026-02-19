@@ -68,10 +68,10 @@ describe("List Collector Repeating Blocks", () => {
 
       await $(AnyOtherCompaniesOrBranchesPage.no()).click();
       await click(AnyOtherCompaniesOrBranchesPage.submit());
-
       await click(AnyOtherTradingDetailsPage.submit());
       await click(SectionCompaniesPage.submit());
       await click(SubmitPage.submit());
+      await browser.pause(1000);
       await verifyUrlContains(ThankYouPage.pageName);
     });
   });
