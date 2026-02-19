@@ -45,7 +45,7 @@ export const click = async (selector) => {
   // but clicks down on the very top of the button which moves down and just below the mouse. When the mouse click is released
   // it's no longer over the button and the click silently fails. This means that when the test comes to do assertions on the following page
   // they fail, as we never navigated to that page.
-  await $(selector).scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+  await $(selector).scrollIntoView({ block: "center", inline: "center", behavior: "instant" });
   await $(selector).click();
 
   // Allow time in case the click loads a new page.
@@ -67,3 +67,31 @@ export const verifyUrlContains = async (expectedUrlString) => {
 export const verifyUrlContainsSyncMode = (expectedUrlString) => {
   expect(browser).toHaveUrl(expect.stringContaining(expectedUrlString));
 };
+
+export async function openQuestionnaireWithRetry(schema, options, maxRetries = 1) {
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    await browser.openQuestionnaire(schema, options);
+
+    const bodyText = await $("body").getText();
+    const isServiceError = bodyText.includes("Sorry, there is a problem with this service");
+
+    if (!isServiceError) {
+      return;
+    }
+
+    if (attempt === maxRetries) {
+      throw new Error(`Service error page after ${maxRetries + 1} attempt(s) for schema="${schema}" with options=${JSON.stringify(options)}`);
+    }
+    await browser.reloadSession();
+  }
+}
+
+export async function getRawHTML(selector, options = {}) {
+  const { includeSelectorTag = true } = options;
+  const element = await $(selector);
+
+  return element.getHTML({
+    prettify: false,
+    includeSelectorTag,
+  });
+}

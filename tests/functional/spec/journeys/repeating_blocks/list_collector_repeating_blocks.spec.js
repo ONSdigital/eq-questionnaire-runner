@@ -65,10 +65,8 @@ describe("List Collector Repeating Blocks", () => {
       await $(AnyOtherCompaniesOrBranchesPage.yes()).click();
       await click(AnyOtherCompaniesOrBranchesPage.submit());
       await addCompany("GOV", "456", "2", "2", "2023", false, false);
-
       await $(AnyOtherCompaniesOrBranchesPage.no()).click();
       await click(AnyOtherCompaniesOrBranchesPage.submit());
-
       await click(AnyOtherTradingDetailsPage.submit());
       await click(SectionCompaniesPage.submit());
       await click(SubmitPage.submit());
