@@ -52,7 +52,6 @@ describe("Introduction preview questions", () => {
 
   it("Given I complete some of a survey and the piped answers should be being populated, Then preview answers should still be showing placeholders", async () => {
     await browser.openQuestionnaire(introductionSchemaLinear);
-
     await $(startSurveyButton).click();
     await $(noRadio).click();
     await $(submitButton).click();
