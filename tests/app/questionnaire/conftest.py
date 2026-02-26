@@ -1165,7 +1165,6 @@ def transformer(mock_renderer, mock_schema, locale_string="en_GB"):
 
 
 @pytest.fixture
-@pytest.mark.usefixtures("app", "gb_locale")
 def placholder_transform_question_json():
     return {
         "id": "confirm-date-of-birth-proxy",
@@ -1545,7 +1544,6 @@ def grand_calculated_summary_repeating_answers_progress_store():
 
 
 @pytest.fixture
-@pytest.mark.usefixtures("app", "gb_locale")
 def placeholder_transform_question_dynamic_answers_json():
     return {
         "dynamic_answers": {
@@ -1580,7 +1578,6 @@ def placeholder_transform_question_dynamic_answers_json():
 
 
 @pytest.fixture
-@pytest.mark.usefixtures("app", "gb_locale")
 def placeholder_transform_question_repeating_block():
     return {
         "id": "repeating-block-1",
@@ -1614,7 +1611,6 @@ def placeholder_transform_question_repeating_block():
 
 
 @pytest.fixture
-@pytest.mark.usefixtures("app", "gb_locale")
 def placeholder_transform_question_dynamic_answers_pointer_json():
     return {
         "question": {
