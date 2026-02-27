@@ -1,5 +1,5 @@
 import MandatoryCheckboxPage from "../../../generated_pages/placeholder_playback_list/mandatory-checkbox.page";
-import { click } from "../../../helpers";
+import { click, getRawHTML } from "../../../helpers";
 describe("Feature: Playback Confirmation", () => {
   beforeEach("Open the schema", async () => {
     await browser.openQuestionnaire("test_placeholder_playback_list.json");
@@ -10,7 +10,7 @@ describe("Feature: Playback Confirmation", () => {
     await $(MandatoryCheckboxPage.ham()).click();
     await click(MandatoryCheckboxPage.submit());
 
-    await expect(await $("#confirm-answers-question ul").getHTML()).toContain("Ham");
-    await expect(await $("#confirm-answers-question ul").getHTML()).toContain("Cheese");
+    await expect(await getRawHTML("#confirm-answers-question ul")).toContain("Ham");
+    await expect(await getRawHTML("#confirm-answers-question ul")).toContain("Cheese");
   });
 });

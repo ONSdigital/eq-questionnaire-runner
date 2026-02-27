@@ -12,8 +12,8 @@ describe("Feature: Hub and Spoke", () => {
     beforeEach("Load survey", () => {
       const responseId = getRandomString(16);
 
-      browser.openQuestionnaire("test_hub_section_required_with_repeat_supplementary.json.json", {
-        version: "v2",
+      browser.openQuestionnaire("test_hub_section_required_with_repeat_supplementary.json", {
+        launchVersion: "v2",
         sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
         responseId,
       });

@@ -232,6 +232,7 @@ describe("Feature: Calculated Summary using Repeating Blocks", () => {
     await click(CalculatedSummarySpendingPage.submit());
     await click(SectionOnePage.submit());
     // section 2 is now gone
+
     await expect(await $$(HubPage.summaryItems()).length).toBe(1);
   });
 });

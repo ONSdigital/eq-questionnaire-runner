@@ -28,7 +28,7 @@ describe("Last viewed question guidance", () => {
     it("When the respondent saves and resumes from a section which is not started, then last question guidance is not shown", async () => {
       await $(WorkInterstitialPage.saveSignOut()).click();
       await browser.openQuestionnaire("test_last_viewed_question_guidance_hub.json", resumableLaunchParams);
-      await browser.pause(100);
+
       await verifyUrlContains(WorkInterstitialPage.url());
       await expect(await $(WorkInterstitialPage.lastViewedQuestionGuidance()).isExisting()).toBe(false);
     });
