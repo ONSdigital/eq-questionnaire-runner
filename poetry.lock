@@ -3937,8 +3937,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13.5"
-<<<<<<< update-deps-without-marshmallow
-content-hash = "6edb0b4f030e963b85bffd3ebba0fd624f483daa2193ac10e91c25ef5dc02ea5"
-=======
 content-hash = "33d5ca6722a58c805f85ebf8f4bfa9d09a5c53a9368a5ce4da69bdcf846c7ba1"
->>>>>>> main
