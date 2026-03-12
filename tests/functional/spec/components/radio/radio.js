@@ -15,7 +15,7 @@ import RadioNonMandatoryDetailAnswerOverriddenPage from "../../../generated_page
 
 import RadioNonMandatoryDetailAnswerPage from "../../../generated_pages/radio_optional_with_detail_answer_mandatory/radio-non-mandatory.page";
 import RadioNonMandatoryDetailAnswerSummary from "../../../generated_pages/radio_optional_with_detail_answer_mandatory/submit.page";
-import { click, verifyUrlContains } from "../../../helpers";
+import { click, verifyUrlContains, getRawHTML } from "../../../helpers";
 describe("Component: Radio", () => {
   describe("Given I start a Mandatory Radio survey", () => {
     before(async () => {
@@ -50,7 +50,7 @@ describe("Component: Radio", () => {
 
     it("When I have submitted the page without any option, Then the question text is hidden in the error message using a span element", async () => {
       await click(RadioMandatoryOverriddenPage.submit());
-      await expect(await $(RadioMandatoryOverriddenPage.errorNumber(1)).getHTML()).toContain(
+      await expect(await getRawHTML(RadioMandatoryOverriddenPage.errorNumber(1))).toContain(
         'Select an answer <span class="ons-u-vh">to ‘What do you prefer for breakfast?’</span></a>',
       );
     });
