@@ -1,0 +1,43 @@
+steps:
+  # Build the container image
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "-t",
+        "${_IMAGE_NAME}:$SHORT_SHA",
+        "-t",
+        "${_IMAGE_NAME}:latest",
+        ".",
+      ]
+
+  # Push the SHORT_SHA & latest image to Google Artifact Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "${_IMAGE_NAME}", "--all-tags"]
+
+  # Deploy the container to Google Cloud Run
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "Run container"
+    entrypoint: gcloud
+    args:
+      [
+        "run",
+        "deploy",
+        "${_SERVICE_NAME}",
+        "--image",
+        "${_IMAGE_NAME}:latest",
+        "--port",
+        "${_PORT}",
+        "--region",
+        "${_REGION}",
+        "--platform",
+        "managed",
+        "--allow-unauthenticated",
+        "--ingress",
+        "internal-and-cloud-load-balancing",
+        "--update-env-vars",
+        "${_ENV_VARS}",
+      ]
+
+options:
+  logging: CLOUD_LOGGING_ONLY
