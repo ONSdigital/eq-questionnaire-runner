@@ -7,17 +7,25 @@ class TestQuestionnaireSubmit(IntegrationTestCase):
         self.launchSurveyV2(schema_name=schema)
         self.post({"test-answer": "No"})
 
-    def test_submit_page_not_accessible_when_hub_enabled(self):
+    def test_submit_page_not_accessible_when_hub_enabled_get(self):
         # Given I launch a hub questionnaire
         self.launchSurveyV2(schema_name="test_hub_and_spoke")
 
-        # When I try access the submit page
-        for method in [self.get, self.post]:
-            with self.subTest(method=method):
-                method(url=SUBMIT_URL_PATH)
+        # When I make a GET request to the submit page
+        self.get(url=SUBMIT_URL_PATH)
 
-                # Then I am shown a 404 page
-                self.assertStatusNotFound()
+        # Then I am shown a 404 page
+        self.assertStatusNotFound()
+
+    def test_submit_page_not_accessible_when_hub_enabled_post(self):
+        # Given I launch a hub questionnaire
+        self.launchSurveyV2(schema_name="test_hub_and_spoke")
+
+        # When I make a POST request to the submit page
+        self.post(url=SUBMIT_URL_PATH)
+
+        # Then I am shown a 404 page
+        self.assertStatusNotFound()
 
     def test_invalid_block_once_questionnaire_complete_raises_404(self):
         # Given I launch questionnaire
@@ -58,7 +66,7 @@ class TestQuestionnaireSubmit(IntegrationTestCase):
 
 
 class TestQuestionnaireSubmitWithoutSummary(IntegrationTestCase):
-    def test_accessing_submit_page_redirects_to_first_incomplete_question_when_questionnaire_incomplete(
+    def test_accessing_submit_page_redirects_to_first_incomplete_question_when_questionnaire_incomplete_get(
         self,
     ):
         # Given a partially completed questionnaire
@@ -66,13 +74,25 @@ class TestQuestionnaireSubmitWithoutSummary(IntegrationTestCase):
         self.post(action="start_questionnaire")
         self.assertInBody("What is your favourite breakfast food")
 
-        # When I make a GET or POST request to the submit page
-        for method in [self.get, self.post]:
-            with self.subTest(method=method):
-                method(url=SUBMIT_URL_PATH)
+        # When I make a GET request to the submit page
+        self.get(url=SUBMIT_URL_PATH)
 
-                # Then I am redirected to the first incomplete question
-                self.assertInUrl("/breakfast")
+        # Then I am redirected to the first incomplete question
+        self.assertInUrl("/breakfast")
+
+    def test_accessing_submit_page_redirects_to_first_incomplete_question_when_questionnaire_incomplete_post(
+        self,
+    ):
+        # Given a partially completed questionnaire
+        self.launchSurveyV2(schema_name="test_submit_with_custom_submission_text")
+        self.post(action="start_questionnaire")
+        self.assertInBody("What is your favourite breakfast food")
+
+        # When I make a POST request to the submit page
+        self.post(url=SUBMIT_URL_PATH)
+
+        # Then I am redirected to the first incomplete question
+        self.assertInUrl("/breakfast")
 
     def test_is_displayed(self):
         # Given I launch a questionnaire
@@ -94,7 +114,7 @@ class TestQuestionnaireSubmitWithoutSummary(IntegrationTestCase):
 
 
 class TestQuestionnaireSubmitWithSummary(IntegrationTestCase):
-    def test_accessing_submit_page_redirects_to_first_incomplete_question_when_questionnaire_incomplete(
+    def test_accessing_submit_page_redirects_to_first_incomplete_question_when_questionnaire_incomplete_get(
         self,
     ):
         # Given a partially completed questionnaire
@@ -103,13 +123,26 @@ class TestQuestionnaireSubmitWithSummary(IntegrationTestCase):
         )
         self.post({"test-answer": "Yes"})
 
-        # When I make a GET or POST request to the submit page
-        for method in [self.get, self.post]:
-            with self.subTest(method=method):
-                method(url=SUBMIT_URL_PATH)
+        # When I make a GET request to the submit page
+        self.get(url=SUBMIT_URL_PATH)
 
-                # Then I am redirected to the first incomplete question
-                self.assertInUrl("/test-optional")
+        # Then I am redirected to the first incomplete question
+        self.assertInUrl("/test-optional")
+
+    def test_accessing_submit_page_redirects_to_first_incomplete_question_when_questionnaire_incomplete_post(
+        self,
+    ):
+        # Given a partially completed questionnaire
+        self.launchSurveyV2(
+            schema_name="test_routing_to_questionnaire_end_single_section"
+        )
+        self.post({"test-answer": "Yes"})
+
+        # When I make a POST request to the submit page
+        self.post(url=SUBMIT_URL_PATH)
+
+        # Then I am redirected to the first incomplete question
+        self.assertInUrl("/test-optional")
 
     def test_is_displayed(self):
         # Given I launch a questionnaire
