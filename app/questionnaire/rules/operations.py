@@ -245,7 +245,7 @@ class Operations:
         """recursively evaluate the sum of any list-like arguments"""
         return sum(
             # Cannot use Iterable or Sequence as the type check for value as this would include primitive types like str
-            self.evaluate_sum(*value) if isinstance(value, (list, tuple)) else value
+            self.evaluate_sum(*value) if isinstance(value, list | tuple) else value
             for value in args
-            if isinstance(value, (int, float, Decimal, list, tuple))
+            if isinstance(value, int | float | Decimal | list | tuple)
         )
