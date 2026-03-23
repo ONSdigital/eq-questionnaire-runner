@@ -17,13 +17,13 @@ exports.config = {
   // directory is where your package.json resides, so `wdio` will be called from there.
   //
   specs: [
-    // "./spec/checkbox.spec.js",
-    // "./spec/confirmation_email.spec.js",
-    // "./spec/hub_and_spoke/hub_and_spoke.spec.js",
+    "./spec/checkbox.spec.js",
+    "./spec/confirmation_email.spec.js",
+    "./spec/hub_and_spoke/hub_and_spoke.spec.js",
     "./spec/hub_and_spoke/hub_and_spoke_supplementary_data.spec.js",
-    // "./spec/dates.spec.js",
-    // "./spec/list_collector/list_collector.spec.js",
-    // "./spec/summaries/section_summary/section_summary.spec.js",
+    "./spec/dates.spec.js",
+    "./spec/list_collector/list_collector.spec.js",
+    "./spec/summaries/section_summary/section_summary.spec.js",
   ],
   suites: {
     // components: ["./spec/components/**/*.js", "./spec/*.spec.js", "./spec/summaries/**/*.js"],
