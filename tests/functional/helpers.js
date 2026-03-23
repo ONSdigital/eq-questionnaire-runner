@@ -46,6 +46,7 @@ export const click = async (selector) => {
   // it's no longer over the button and the click silently fails. This means that when the test comes to do assertions on the following page
   // they fail, as we never navigated to that page.
   await $(selector).scrollIntoView();
+  $(selector).waitForExist({ timeout: 5000 });
   await $(selector).click();
 
   // Allow time in case the click loads a new page.
