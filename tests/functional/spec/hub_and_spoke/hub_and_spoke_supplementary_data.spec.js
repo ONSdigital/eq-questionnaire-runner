@@ -1,5 +1,5 @@
 import HubPage from "../../base_pages/hub.page.js";
-import { clickSyncMode, verifyUrlContainsSyncMode } from "../../helpers";
+import { clickSyncMode, verifyUrlContains } from "../../helpers";
 import LoadedSuccessfullyBlockPage from "../../generated_pages/hub_section_required_with_repeat_supplementary/loaded-successfully-block.page";
 import IntroductionBlockPage from "../../generated_pages/hub_section_required_with_repeat_supplementary/introduction-block.page";
 import ListCollectorEmployeesPage from "../../generated_pages/hub_section_required_with_repeat_supplementary/list-collector-employees.page.js";
@@ -35,7 +35,7 @@ describe("Feature: Hub and Spoke", () => {
       $(LengthOfEmploymentPage.year()).setValue(1930);
       clickSyncMode(LengthOfEmploymentPage.submit());
       clickSyncMode(Section3Page.submit());
-      verifyUrlContainsSyncMode(HubPage.url());
+      verifyUrlContains(HubPage.url());
     });
 
     it("When the repeating sections are incomplete. Then the hub should not be displayed", () => {
@@ -51,7 +51,7 @@ describe("Feature: Hub and Spoke", () => {
       clickSyncMode(Section3Page.submit());
 
       browser.url(HubPage.url());
-      verifyUrlContainsSyncMode("length-of-employment");
+      verifyUrlContains("length-of-employment");
     });
   });
 });

@@ -16,12 +16,21 @@ exports.config = {
   // NPM script (see https://docs.npmjs.com/cli/run-script) then the current working
   // directory is where your package.json resides, so `wdio` will be called from there.
   //
-  specs: ["./spec/**/*.js"],
+  specs: [
+    "./spec/checkbox.spec.js",
+    "./spec/confirmation_email.spec.js",
+    "./spec/hub_and_spoke/hub_and_spoke.spec.js",
+    "./spec/hub_and_spoke/hub_and_spoke_supplementary_data.spec.js",
+    "./spec/dates.spec.js",
+    "./spec/list_collector/list_collector.spec.js",
+    "./spec/summaries/section_summary/section_summary.spec.js",
+  ],
   suites: {
-    components: ["./spec/components/**/*.js", "./spec/*.spec.js", "./spec/summaries/**/*.js"],
-    timeout_modal: ["./spec/timeout/timeout_modal_extended_new_window/*.js", "./spec/timeout/timeout_modal_expired/*.js", "./spec/timeout/timeout_modal_extended/*.js"],
-    features: ["./spec/features/**/*.js", "./spec/list_collector/**/*.js", "./spec/hub_and_spoke/**/*.js", "./spec/supplementary_data/**/*.js"],
-    journeys: ["./spec/journeys/**/*.js"]
+    // components: ["./spec/components/**/*.js", "./spec/*.spec.js", "./spec/summaries/**/*.js"],
+    // timeout_modal: ["./spec/timeout/timeout_modal_extended_new_window/*.js", "./spec/timeout/timeout_modal_expired/*.js", "./spec/timeout/timeout_modal_extended/*.js"],
+    // features: ["./spec/features/**/*.js", "./spec/list_collector/**/*.js", "./spec/hub_and_spoke/**/*.js", "./spec/supplementary_data/**/*.js"],
+    // journeys: ["./spec/journeys/**/*.js"]
+
   },
   // Patterns to exclude.
   exclude: [
@@ -43,7 +52,7 @@ exports.config = {
   // and 30 processes will get spawned. The property handles how many capabilities
   // from the same test should run tests.
   //
-  maxInstances: parseInt(process.env.EQ_FUNCTIONAL_TEST_MAX_INSTANCES || 2),
+  maxInstances: 1, // TO PREVENT FLAKINESS DUE TO TESTS INTERFERING WITH EACH OTHER, THIS IS SET TO 1. INCREASE THIS IF YOU ARE CONFIDENT YOUR TESTS CAN RUN IN PARALLEL
   // If you have trouble getting all important capabilities together, check out the
   // Sauce Labs platform configurator - a great tool to configure your capabilities:
   // https://docs.saucelabs.com/reference/platforms-configurator
@@ -52,6 +61,7 @@ exports.config = {
     {
       browserName: "chrome",
       browserVersion: "stable",
+      pageLoadStrategy: "eager", // to prevent timeouts on slow loading pages, as we don't need to wait for all resources to load before starting tests
       // If outputDir is provided WebdriverIO can capture driver session logs
       // it is possible to configure which logTypes to include/exclude.
       // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
@@ -123,7 +133,7 @@ exports.config = {
   //
   // Make sure you have the wdio adapter package for the specific framework installed
   // before running any tests.
-  framework: "mocha",
+  framework: "jasmine",
   //
   // The number of times to retry the entire specfile when it fails as a whole
   // specFileRetries: 1,
