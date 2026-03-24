@@ -26,12 +26,14 @@ describe("Feature: Hub and Spoke", () => {
       // Complete the repeating sections using supplementary data
       click(ListCollectorEmployeesPage.submit());
       verifyUrlContains(LengthOfEmploymentPage.url());
-      $(LengthOfEmploymentPage.day()).waitForExist({ timeout: 100000 });
+      $(LengthOfEmploymentPage.day()).waitForDisplayed({ timeout: 100000 });
       $(LengthOfEmploymentPage.day()).setValue(1);
       $(LengthOfEmploymentPage.month()).setValue(1);
       $(LengthOfEmploymentPage.year()).setValue(1930);
       click(LengthOfEmploymentPage.submit());
       click(Section3Page.submit());
+      verifyUrlContains(LengthOfEmploymentPage.url());
+      $(LengthOfEmploymentPage.day()).waitForDisplayed({ timeout: 100000 });
       $(LengthOfEmploymentPage.day()).setValue(1);
       $(LengthOfEmploymentPage.month()).setValue(1);
       $(LengthOfEmploymentPage.year()).setValue(1930);
@@ -47,7 +49,7 @@ describe("Feature: Hub and Spoke", () => {
       // Don't complete the repeating sections that use supplementary data
       click(ListCollectorEmployeesPage.submit());
       verifyUrlContains(LengthOfEmploymentPage.url());
-      $(LengthOfEmploymentPage.day()).waitForExist({ timeout: 100000 });
+      $(LengthOfEmploymentPage.day()).waitForDisplayed({ timeout: 100000 });
       $(LengthOfEmploymentPage.day()).setValue(1);
       $(LengthOfEmploymentPage.month()).setValue(1);
       $(LengthOfEmploymentPage.year()).setValue(1930);
