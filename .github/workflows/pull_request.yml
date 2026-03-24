@@ -152,8 +152,8 @@ jobs:
     timeout-minutes: 35
     env:
       EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
-      # :TODO: Revisit & update when 2 instances can be used without adverse effects
-      EQ_FUNCTIONAL_TEST_MAX_INSTANCES: 2
+      # :5 is optimal for running the full suite of functional tests in parallel without overloading the runner (tests start failing).
+      EQ_FUNCTIONAL_TEST_MAX_INSTANCES: 5
     strategy:
       matrix:
         suite: [ hub_and_spoke, components, supplementary_data, features, summaries]
