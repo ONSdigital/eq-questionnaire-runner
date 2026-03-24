@@ -18,11 +18,11 @@ def find_pointers_containing(
         if search_key in input_data:
             yield pointer or ""
         for k, v in input_data.items():
-            if isinstance(v, (list, tuple, dict)):
+            if isinstance(v, list | tuple | dict):
                 yield from find_pointers_containing(
                     v, search_key, pointer + "/" + k if pointer else "/" + k
                 )
-    elif isinstance(input_data, (list, tuple)):
+    elif isinstance(input_data, list | tuple):
         for index, item in enumerate(input_data):
             yield from find_pointers_containing(item, search_key, f"{pointer}/{index}")
 
