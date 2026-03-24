@@ -25,6 +25,7 @@ describe("Feature: Hub and Spoke", () => {
 
       // Complete the repeating sections using supplementary data
       click(ListCollectorEmployeesPage.submit());
+      $(LengthOfEmploymentPage.day()).waitForDisplayed({ timeout: 100000 });
       $(LengthOfEmploymentPage.day()).setValue(1);
       $(LengthOfEmploymentPage.month()).setValue(1);
       $(LengthOfEmploymentPage.year()).setValue(1930);
