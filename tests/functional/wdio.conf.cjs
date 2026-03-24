@@ -53,7 +53,7 @@ exports.config = {
     {
       browserName: "chrome",
       browserVersion: "stable",
-      pageLoadStrategy: "eager", // to prevent timeouts on slow loading pages, as we don't need to wait for all resources to load before starting tests
+      pageLoadStrategy: "normal", // waits for full page load before running tests
       // If outputDir is provided WebdriverIO can capture driver session logs
       // it is possible to configure which logTypes to include/exclude.
       // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
