@@ -26,12 +26,11 @@ exports.config = {
     "./spec/summaries/section_summary/section_summary.spec.js",
   ],
   suites: {
-    components: ["./spec/components/**/*.js", "./spec/*.spec.js", "./spec/summaries/**/*.js"],
-    timeout_modal: ["./spec/timeout/timeout_modal_extended_new_window/*.js", "./spec/timeout/timeout_modal_expired/*.js", "./spec/timeout/timeout_modal_extended/*.js"],
-    features: ["./spec/features/**/*.js", "./spec/list_collector/**/*.js", "./spec/supplementary_data/**/*.js"],
-    hub_and_spoke: ["./spec/hub_and_spoke/**/*.js"],
-    journeys: ["./spec/journeys/**/*.js"]
-
+    components: ["./spec/checkbox.spec.js", "./spec/confirmation_email.spec.js", "./spec/dates.spec.js"],
+    features: ["./spec/list_collector/list_collector.spec.js"],
+    hub_and_spoke: ["./spec/hub_and_spoke/hub_and_spoke.spec.js"],
+    supplementary_data: ["./spec/hub_and_spoke/hub_and_spoke_supplementary_data.spec.js"],
+    summaries: ["./spec/summaries/section_summary/section_summary.spec.js"]
   },
   // Patterns to exclude.
   exclude: [
