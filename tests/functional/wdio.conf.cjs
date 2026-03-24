@@ -44,7 +44,7 @@ exports.config = {
   // and 30 processes will get spawned. The property handles how many capabilities
   // from the same test should run tests.
   //
-  maxInstances: 1, // TO PREVENT FLAKINESS DUE TO TESTS INTERFERING WITH EACH OTHER, THIS IS SET TO 1. INCREASE THIS IF YOU ARE CONFIDENT YOUR TESTS CAN RUN IN PARALLEL
+  maxInstances: 5,
   // If you have trouble getting all important capabilities together, check out the
   // Sauce Labs platform configurator - a great tool to configure your capabilities:
   // https://docs.saucelabs.com/reference/platforms-configurator
