@@ -202,10 +202,10 @@ exports.config = {
    * @param {String} commandName hook command name
    * @param {Array} args arguments that command would receive
    */
-  before: async function (capabilities, specs) {
+  before: function (capabilities, specs) {
     const JwtHelper = require("./jwt_helper");
 
-    await browser.addCommand(
+    browser.addCommand(
       "openQuestionnaire",
       async function (
         schema,
