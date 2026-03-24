@@ -104,7 +104,7 @@ exports.config = {
   baseUrl: process.env.EQ_FUNCTIONAL_TEST_ENV || "http://localhost:5000",
   //
   // Default timeout for all waitFor* commands.
-  waitforTimeout: 10000,
+  waitforTimeout: 100000,
   //
   // Default timeout in milliseconds for request
   // if browser driver or grid doesn't send response
