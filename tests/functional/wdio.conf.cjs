@@ -53,7 +53,7 @@ exports.config = {
     {
       browserName: "chrome",
       browserVersion: "stable",
-      pageLoadStrategy: "normal", // waits for full page load before running tests
+      pageLoadStrategy: "eager", // waits for full page load before running tests
       // If outputDir is provided WebdriverIO can capture driver session logs
       // it is possible to configure which logTypes to include/exclude.
       // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
