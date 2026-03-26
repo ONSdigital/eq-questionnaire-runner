@@ -84,8 +84,54 @@ def validate_schema(schema_path):
         return schema_path, None
 
 
-def main():
+def process_schema(future, future_to_schema):
     # pylint: disable=broad-exception-caught
+    schema = future_to_schema[future]
+    try:
+        schema_path, result = future.result()
+        # Extract HTTP body
+        http_body = re.sub(r"HTTPSTATUS:.*", "", result)
+
+        # Convert HTTP body to JSON
+        http_body_json = json.loads(http_body)
+
+        # Get validator_version and success values
+        validator_version = http_body_json.get("validator_version")
+        success = http_body_json.get("success")
+
+        # Format JSON
+        formatted_json = json.dumps(http_body_json, indent=4)
+
+        # Extract HTTP status code
+        result_response = re.search(r"HTTPSTATUS:(\d+)", result)[1]
+
+        if "errors" not in http_body_json and all(
+            [validator_version, success, result_response == "200"]
+        ):
+            logging.info(
+                "\033[32m%s: PASSED | validator_version: %s | success: %s\033[0m",
+                schema_path,
+                validator_version,
+                success,
+            )
+            return True
+
+        logging.error(
+            "\033[31m%s: FAILED | validator_version: %s | success: %s\033[0m",
+            schema_path,
+            validator_version,
+            success,
+        )
+        logging.error("\033[31mHTTP Status @ /validate: %s\033[0m", result_response)
+        logging.error("\033[31mHTTP Status: %s\033[0m", formatted_json)
+        return False
+
+    except Exception as e:
+        logging.error("\033[31mError processing %s: %s\033[0m", schema, e)
+        return False
+
+
+def main():
     passed = 0
     failed = 0
 
@@ -97,33 +143,9 @@ def main():
             executor.submit(validate_schema, schema): schema for schema in schemas
         }
         for future in as_completed(future_to_schema):
-            schema = future_to_schema[future]
-            try:
-                schema_path, result = future.result()
-                # Extract HTTP body
-                http_body = re.sub(r"HTTPSTATUS:.*", "", result)
-
-                # Convert HTTP body to JSON
-                http_body_json = json.loads(http_body)
-
-                # Format JSON
-                formatted_json = json.dumps(http_body_json, indent=4)
-
-                # Extract HTTP status code
-                result_response = re.search(r"HTTPSTATUS:(\d+)", result)[1]
-
-                if result_response == "200" and http_body_json == {}:
-                    logging.info("\033[32m%s: PASSED\033[0m", schema_path)
-                    passed += 1
-                else:
-                    logging.error("\033[31m%s: FAILED\033[0m", schema_path)
-                    logging.error(
-                        "\033[31mHTTP Status @ /validate: %s\033[0m", result_response
-                    )
-                    logging.error("\033[31mHTTP Status: %s\033[0m", formatted_json)
-                    failed += 1
-            except Exception as e:
-                logging.error("\033[31mError processing %s: %s\033[0m", schema, e)
+            if process_schema(future, future_to_schema):
+                passed += 1
+            else:
                 failed += 1
 
     logging.info("\033[32m%s passed\033[0m - \033[31m%s failed\033[0m", passed, failed)
