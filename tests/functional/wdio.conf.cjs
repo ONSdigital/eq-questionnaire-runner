@@ -18,7 +18,7 @@ exports.config = {
   //
   specs: ["./spec/**/*.js"],
   suites: {
-    components: ["./spec/checkbox.spec.js", "./spec/confirmation_email.spec.js", "./spec/dates.spec.js"],
+    components: ["./spec/checkbox.spec.js", "./spec/confirmation_email.spec.js", "./spec/dates.spec.js", "./spec/save_sign_out.spec.js", "./spec/question_definitions.spec.js"],
     features: ["./spec/list_collector/list_collector.spec.js"],
     hub_and_spoke: ["./spec/hub_and_spoke/hub_and_spoke.spec.js"],
     supplementary_data: ["./spec/hub_and_spoke/hub_and_spoke_supplementary_data.spec.js"],
