@@ -7,26 +7,26 @@ describe("Component: Definition", () => {
     });
 
     it("When I click the title link, then the description should be visible", async () => {
-      expect(await $(DefinitionPage.definitionContent()).getText()).toBe("");
+      await expect(await $(DefinitionPage.definitionContent()).getText()).toBe("");
 
       // When
       await $(DefinitionPage.definitionTitle()).click();
 
       // Then
-      expect(await $(DefinitionPage.definitionContent()).getText()).toContain(
+      await expect(await $(DefinitionPage.definitionContent()).getText()).toContain(
         "A typical photovoltaic system employs solar panels, each comprising a number of solar cells, which generate electrical power.",
       );
     });
 
     it("When I click the title link twice, then the description should not be visible", async () => {
-      expect(await $(DefinitionPage.definitionContent()).getText()).toBe("");
+      await expect(await $(DefinitionPage.definitionContent()).getText()).toBe("");
 
       // When
       await $(DefinitionPage.definitionTitle()).click();
       await $(DefinitionPage.definitionTitle()).click();
 
       // Then
-      expect(await $(DefinitionPage.definitionContent()).getText()).toBe("");
+      await expect(await $(DefinitionPage.definitionContent()).getText()).toBe("");
     });
   });
 });
