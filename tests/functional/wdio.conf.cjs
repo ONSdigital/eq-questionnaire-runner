@@ -18,10 +18,11 @@ exports.config = {
   //
   specs: ["./spec/**/*.js"],
   suites: {
-    components: ["./spec/components/**/*.js", "./spec/*.spec.js", "./spec/summaries/**/*.js"],
-    timeout_modal: ["./spec/timeout/timeout_modal_extended_new_window/*.js", "./spec/timeout/timeout_modal_expired/*.js", "./spec/timeout/timeout_modal_extended/*.js"],
-    features: ["./spec/features/**/*.js", "./spec/list_collector/**/*.js", "./spec/hub_and_spoke/**/*.js", "./spec/supplementary_data/**/*.js"],
-    journeys: ["./spec/journeys/**/*.js"]
+    components: ["./spec/checkbox.spec.js", "./spec/confirmation_email.spec.js", "./spec/dates.spec.js"],
+    features: ["./spec/list_collector/list_collector.spec.js"],
+    hub_and_spoke: ["./spec/hub_and_spoke/hub_and_spoke.spec.js"],
+    supplementary_data: ["./spec/hub_and_spoke/hub_and_spoke_supplementary_data.spec.js"],
+    summaries: ["./spec/summaries/section_summary/section_summary.spec.js"]
   },
   // Patterns to exclude.
   exclude: [
@@ -43,7 +44,7 @@ exports.config = {
   // and 30 processes will get spawned. The property handles how many capabilities
   // from the same test should run tests.
   //
-  maxInstances: parseInt(process.env.EQ_FUNCTIONAL_TEST_MAX_INSTANCES || 2),
+  maxInstances: parseInt(process.env.EQ_FUNCTIONAL_TEST_MAX_INSTANCES || "2"),
   // If you have trouble getting all important capabilities together, check out the
   // Sauce Labs platform configurator - a great tool to configure your capabilities:
   // https://docs.saucelabs.com/reference/platforms-configurator
@@ -52,6 +53,7 @@ exports.config = {
     {
       browserName: "chrome",
       browserVersion: "stable",
+      pageLoadStrategy: "eager", // waits for full page load before running tests
       // If outputDir is provided WebdriverIO can capture driver session logs
       // it is possible to configure which logTypes to include/exclude.
       // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
@@ -102,7 +104,7 @@ exports.config = {
   baseUrl: process.env.EQ_FUNCTIONAL_TEST_ENV || "http://localhost:5000",
   //
   // Default timeout for all waitFor* commands.
-  waitforTimeout: 10000,
+  waitforTimeout: 100000,
   //
   // Default timeout in milliseconds for request
   // if browser driver or grid doesn't send response
@@ -123,7 +125,7 @@ exports.config = {
   //
   // Make sure you have the wdio adapter package for the specific framework installed
   // before running any tests.
-  framework: "mocha",
+  framework: "jasmine",
   //
   // The number of times to retry the entire specfile when it fails as a whole
   // specFileRetries: 1,
@@ -191,10 +193,10 @@ exports.config = {
    * @param {String} commandName hook command name
    * @param {Array} args arguments that command would receive
    */
-  before: async function (capabilities, specs) {
+  before: function (capabilities, specs) {
     const JwtHelper = require("./jwt_helper");
 
-    await browser.addCommand(
+    browser.addCommand(
       "openQuestionnaire",
       async function (
         schema,

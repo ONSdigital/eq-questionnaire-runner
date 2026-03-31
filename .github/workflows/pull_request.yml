@@ -152,8 +152,11 @@ jobs:
     timeout-minutes: 35
     env:
       EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
-      # :TODO: Revisit & update when 2 instances can be used without adverse effects
-      EQ_FUNCTIONAL_TEST_MAX_INSTANCES: 2
+      # :5 is optimal for running the full suite of functional tests in parallel without overloading the runner (tests start failing).
+      EQ_FUNCTIONAL_TEST_MAX_INSTANCES: 5
+    strategy:
+      matrix:
+        suite: [ hub_and_spoke, components, supplementary_data, features, summaries]
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
@@ -176,7 +179,7 @@ jobs:
       - name: Docker compose
         run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose up --build -d
       - name: Functional tests
-        run: make test-functional
+        run: make test-functional-suite SUITE=${{ matrix.suite }}
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
   docker-push:

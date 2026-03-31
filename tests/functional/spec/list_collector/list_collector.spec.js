@@ -23,11 +23,8 @@ import IntroductionPage from "../../generated_pages/list_collector_list_summary/
 
 describe("List Collector", () => {
   describe("Given a normal journey through the list collector without variants", () => {
-    before("Load the survey", async () => {
-      await browser.openQuestionnaire("test_list_collector.json");
-    });
-
     it("The user is able to add members of the household", async () => {
+      await browser.openQuestionnaire("test_list_collector.json");
       await $(ListCollectorPage.yes()).click();
       await click(ListCollectorPage.submit());
       await $(ListCollectorAddPage.firstName()).setValue("Marcus");
@@ -61,7 +58,7 @@ describe("List Collector", () => {
       await $(ListCollectorEditPage.firstName()).setValue("Mark");
       await $(ListCollectorEditPage.lastName()).setValue("Twain");
       await click(ListCollectorEditPage.submit());
-      await expect(await $(ListCollectorPage.listLabel(1)).getText()).toBe("Mark Twain");
+      expect(await $(ListCollectorPage.listLabel(1)).getText()).toBe("Mark Twain");
     });
 
     it("The questionnaire allows me to remove the first person (Mark Twain) from the summary", async () => {
@@ -71,14 +68,14 @@ describe("List Collector", () => {
     });
 
     it("The collector summary does not show Mark Twain anymore.", async () => {
-      await expect(await $(ListCollectorPage.listLabel(1)).getText()).not.toBe("Mark Twain");
-      await expect(await $(ListCollectorPage.listLabel(3)).getText()).toBe("Suzy Clemens");
+      expect(await $(ListCollectorPage.listLabel(1)).getText()).not.toBe("Mark Twain");
+      expect(await $(ListCollectorPage.listLabel(3)).getText()).toBe("Suzy Clemens");
     });
 
     it("The questionnaire allows more people to be added", async () => {
       await $(ListCollectorPage.yes()).click();
       await click(ListCollectorPage.submit());
-      await expect(await $(ListCollectorAddPage.questionText()).getText()).toBe("What is the name of the person?");
+      expect(await $(ListCollectorAddPage.questionText()).getText()).toBe("What is the name of the person?");
       await $(ListCollectorAddPage.firstName()).setValue("Clara");
       await $(ListCollectorAddPage.lastName()).setValue("Clemens");
       await click(ListCollectorAddPage.submit());
@@ -136,7 +133,7 @@ describe("List Collector", () => {
       await $(AnotherListCollectorAddPage.firstName()).setValue("Someone");
       await $(AnotherListCollectorAddPage.lastName()).setValue("Else");
       await click(AnotherListCollectorAddPage.submit());
-      await expect(await $(AnotherListCollectorPage.listLabel(6)).getText()).toBe("Someone Else");
+      expect(await $(AnotherListCollectorPage.listLabel(6)).getText()).toBe("Someone Else");
     });
 
     it("The collector allows the user to remove a person again", async () => {
@@ -197,9 +194,9 @@ describe("List Collector", () => {
     });
 
     it("The section summary should display contents of the list collector", async () => {
-      await expect(await $(PeopleListSectionSummaryPage.peopleListLabel(1)).getText()).toBe("Marcus Twin (You)");
-      await expect(await $(PeopleListSectionSummaryPage.peopleListLabel(2)).getText()).toBe("Samuel Clemens");
-      await expect(await $(PeopleListSectionSummaryPage.visitorsListLabel(1)).getText()).toBe("Olivia Clemens");
+      expect(await $(PeopleListSectionSummaryPage.peopleListLabel(1)).getText()).toBe("Marcus Twin (You)");
+      expect(await $(PeopleListSectionSummaryPage.peopleListLabel(2)).getText()).toBe("Samuel Clemens");
+      expect(await $(PeopleListSectionSummaryPage.visitorsListLabel(1)).getText()).toBe("Olivia Clemens");
     });
 
     it("When the user adds an item to the list, They should return to the section summary and it should display the updated list", async () => {
@@ -209,14 +206,14 @@ describe("List Collector", () => {
       await click(VisitorListCollectorAddPage.submit());
       await $(VisitorListCollectorPage.no()).click();
       await click(VisitorListCollectorPage.submit());
-      await expect(await $(PeopleListSectionSummaryPage.visitorsListLabel(2)).getText()).toBe("Joe Bloggs");
+      expect(await $(PeopleListSectionSummaryPage.visitorsListLabel(2)).getText()).toBe("Joe Bloggs");
     });
 
     it("When the user removes an item from the list, They should return to the section summary and it should display the updated list", async () => {
       await $(PeopleListSectionSummaryPage.peopleListRemoveLink(2)).click();
       await $(SectionSummaryListCollectorRemovePage.yes()).click();
       await click(SectionSummaryListCollectorRemovePage.submit());
-      await expect(await $(PeopleListSectionSummaryPage.visitorsListLabel(2)).isExisting()).toBe(false);
+      expect(await $(PeopleListSectionSummaryPage.visitorsListLabel(2)).isExisting()).toBe(false);
     });
 
     it("When the user updates the list, They should return to the section summary and it should display the updated list", async () => {
@@ -224,12 +221,12 @@ describe("List Collector", () => {
       await $(SectionSummaryListCollectorEditPage.firstName()).setValue("Mark");
       await $(SectionSummaryListCollectorEditPage.lastName()).setValue("Twain");
       await click(SectionSummaryListCollectorEditPage.submit());
-      await expect(await $(PeopleListSectionSummaryPage.peopleListLabel(1)).getText()).toBe("Mark Twain (You)");
+      expect(await $(PeopleListSectionSummaryPage.peopleListLabel(1)).getText()).toBe("Mark Twain (You)");
     });
 
     it("When the user removes an item from the list, They should see the individual response guidance", async () => {
       await $(PeopleListSectionSummaryPage.peopleListRemoveLink(2)).click();
-      await expect(await $(SectionSummaryListCollectorRemovePage.individualResponseGuidance()).isExisting()).toBe(true);
+      expect(await $(SectionSummaryListCollectorRemovePage.individualResponseGuidance()).isExisting()).toBe(true);
     });
 
     it("When the user reaches the submit page and navigates back, They should see the Section Summary", async () => {

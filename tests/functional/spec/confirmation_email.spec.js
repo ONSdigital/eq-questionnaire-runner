@@ -10,67 +10,64 @@ const errorPanel = '[data-ga="error"]';
 
 describe("Email confirmation", () => {
   describe("Given I launch the test email confirmation survey", () => {
-    before(async () => {
-      await browser.openQuestionnaire("test_confirmation_email.json");
-    });
-
     it("When I complete the survey and am on the thank you page, Then there is option to enter an email address", async () => {
+      await browser.openQuestionnaire("test_confirmation_email.json");
       await click(SubmitPage.submit());
       await click(SubmitPage.submit());
       await verifyUrlContains(ThankYouPage.pageName);
-      await expect(await $(ThankYouPage.email()).isExisting()).toBe(true);
+      expect(await $(ThankYouPage.email()).isExisting()).toBe(true);
     });
 
     it("When I submit the form without providing an email address, Then I get an error message", async () => {
       await click(ThankYouPage.submit());
       await verifyUrlContains(ThankYouPage.pageName);
-      await expect(await $(errorPanel).isExisting()).toBe(true);
-      await expect(await $(errorPanel).getText()).toBe("Enter an email address");
+      expect(await $(errorPanel).isExisting()).toBe(true);
+      expect(await $(errorPanel).getText()).toBe("Enter an email address");
     });
 
     it("When I submit the form without providing a correctly formatted email address, Then I get an error message", async () => {
       await $(ThankYouPage.email()).setValue("incorrect-format");
       await click(ThankYouPage.submit());
       await verifyUrlContains(ThankYouPage.pageName);
-      await expect(await $(errorPanel).isExisting()).toBe(true);
-      await expect(await $(errorPanel).getText()).toBe("Enter an email address in a valid format, for example name@example.com");
+      expect(await $(errorPanel).isExisting()).toBe(true);
+      expect(await $(errorPanel).getText()).toBe("Enter an email address in a valid format, for example name@example.com");
     });
 
     it("When I submit the form with a valid email address, Then I go to the confirm email page", async () => {
       await $(ThankYouPage.email()).setValue("name@example.com");
       await click(ThankYouPage.submit());
       await verifyUrlContains("confirmation-email/confirm");
-      await expect(await $(ConfirmEmailPage.questionTitle()).getText()).toBe("Is this email address correct?");
+      expect(await $(ConfirmEmailPage.questionTitle()).getText()).toBe("Is this email address correct?");
     });
 
     it("When I submit the confirm email page without providing an answer, Then I get an error message", async () => {
       await click(ConfirmEmailPage.submit());
       await verifyUrlContains("confirmation-email/confirm");
-      await expect(await $(ConfirmEmailPage.errorPanel()).isExisting()).toBe(true);
-      await expect(await $(ConfirmEmailPage.errorPanel()).getText()).toContain("Select an answer");
+      expect(await $(ConfirmEmailPage.errorPanel()).isExisting()).toBe(true);
+      expect(await $(ConfirmEmailPage.errorPanel()).getText()).toContain("Select an answer");
     });
 
     it("When I answer 'Yes' and submit the confirm email page, Then I go to email sent page", async () => {
       await $(ConfirmEmailPage.yes()).click();
       await click(ConfirmEmailPage.submit());
       await verifyUrlContains("confirmation-email/sent");
-      await expect(await $(ConfirmationEmailSentPage.confirmationText()).getText()).toBe("A confirmation email has been sent to name@example.com");
+      expect(await $(ConfirmationEmailSentPage.confirmationText()).getText()).toBe("A confirmation email has been sent to name@example.com");
     });
 
     it("When I go to the confirmation email page and submit without providing an email address, Then I get an error message", async () => {
       await $(ConfirmationEmailSentPage.sendAnotherEmail()).click();
       await click(ConfirmationEmailPage.submit());
       await verifyUrlContains("confirmation-email/send");
-      await expect(await $(ConfirmationEmailPage.errorPanel()).isExisting()).toBe(true);
-      await expect(await $(ConfirmationEmailPage.errorPanel()).getText()).toBe("Enter an email address");
+      expect(await $(ConfirmationEmailPage.errorPanel()).isExisting()).toBe(true);
+      expect(await $(ConfirmationEmailPage.errorPanel()).getText()).toBe("Enter an email address");
     });
 
     it("When I submit the form without providing a correctly formatted email address, Then I get an error message", async () => {
       await $(ConfirmationEmailPage.email()).setValue("incorrect-format");
       await click(ConfirmationEmailPage.submit());
       await verifyUrlContains("confirmation-email/send");
-      await expect(await $(ConfirmationEmailPage.errorPanel()).isExisting()).toBe(true);
-      await expect(await $(ConfirmationEmailPage.errorPanel()).getText()).toBe("Enter an email address in a valid format, for example name@example.com");
+      expect(await $(ConfirmationEmailPage.errorPanel()).isExisting()).toBe(true);
+      expect(await $(ConfirmationEmailPage.errorPanel()).getText()).toBe("Enter an email address in a valid format, for example name@example.com");
     });
 
     it("When I submit the form with a valid email and confirm it is correct, Then I go to the email confirmation page", async () => {
@@ -79,11 +76,11 @@ describe("Email confirmation", () => {
       await $(ConfirmEmailPage.yes()).click();
       await click(ConfirmEmailPage.submit());
       await verifyUrlContains("confirmation-email/sent");
-      await expect(await $(ConfirmationEmailSentPage.confirmationText()).getText()).toBe("A confirmation email has been sent to name@example.com");
+      expect(await $(ConfirmationEmailSentPage.confirmationText()).getText()).toBe("A confirmation email has been sent to name@example.com");
     });
   });
   describe("Given I launch the test email confirmation survey", () => {
-    before(async () => {
+    beforeEach(async () => {
       await browser.openQuestionnaire("test_confirmation_email.json");
     });
     it("When I enter an email and answer 'No' on the confirm email page, Then I go the confirmation send page with the email pre-filled", async () => {
@@ -94,14 +91,14 @@ describe("Email confirmation", () => {
       await $(ConfirmEmailPage.no()).click();
       await click(ConfirmEmailPage.submit());
       await verifyUrlContains("confirmation-email/send");
-      await expect(await $(ConfirmationEmailPage.email()).getValue()).toBe("name@example.com");
+      expect(await $(ConfirmationEmailPage.email()).getValue()).toBe("name@example.com");
     });
   });
 });
 
 describe("Email confirmation", () => {
   describe("Given I launch the test email confirmation survey", () => {
-    before(async () => {
+    beforeEach(async () => {
       await browser.openQuestionnaire("test_confirmation_email.json");
     });
     it("When I view the email confirmation page, Then I should not see the feedback call to action", async () => {
@@ -109,7 +106,7 @@ describe("Email confirmation", () => {
       await click(SubmitPage.submit());
       await $(ThankYouPage.email()).setValue("name@example.com");
       await click(ThankYouPage.submit());
-      await expect(await $(ConfirmationEmailSentPage.feedbackLink()).isExisting()).toBe(false);
+      expect(await $(ConfirmationEmailSentPage.feedbackLink()).isExisting()).toBe(false);
     });
   });
 });
