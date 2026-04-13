@@ -191,6 +191,7 @@ jobs:
         run: |
           SPECS="$(echo "$SPECS_JSON" | jq -r '.[]' | xargs)"
           echo "Specs for this shard: $SPECS"
+          echo "SPECS=$SPECS" >> $GITHUB_ENV
           make test-functional SPECS="$SPECS"
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
