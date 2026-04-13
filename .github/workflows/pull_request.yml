@@ -188,7 +188,10 @@ jobs:
       - name: Echo specs for this shard
         run: echo $SPECS
       - name: Functional tests
-        run: make test-functional SPECS="$(echo "$SPECS_JSON" | jq -r '.[]' | xargs)"
+        run: |
+          SPECS="$(echo "$SPECS_JSON" | jq -r '.[]' | xargs)"
+          echo "Specs for this shard: $SPECS"
+          make test-functional SPECS="$SPECS"
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
   docker-push:
