@@ -144,6 +144,9 @@ jobs:
       - name: Running schema validation
         run: make validate-test-schemas
   test-functional:
+    strategy:
+        matrix:
+           shard: [1, 2, 3, 4]
     if: "!contains(github.event.pull_request.labels.*.name, 'tests not required')"
     permissions:
       contents: 'read'
