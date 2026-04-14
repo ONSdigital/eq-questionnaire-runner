@@ -5,11 +5,14 @@ set -e
 TOTAL_SHARDS=$1
 SHARD_NUMBER=$2
 
-SPECS=($(ls tests/functional/spec/**/*.spec.js | sort))
-NUM_SPECS=${#SPECS[@]}
+mapfile -t SPECS < <(find tests/functional/spec -type f -name "*.spec.js" | sort)
 
+SELECTED=()
 for i in "${!SPECS[@]}"; do
   if (( i % TOTAL_SHARDS + 1 == SHARD_NUMBER )); then
-    echo "./${SPECS[$i]#tests/functional/}"
+    SELECTED+=("${SPECS[$i]}")
   fi
 done
+
+# Output as comma-separated list
+IFS=, ; echo "${SELECTED[*]}"
