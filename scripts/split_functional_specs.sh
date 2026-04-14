@@ -10,7 +10,7 @@ mapfile -t SPECS < <(find tests/functional/spec -type f -name "*.spec.js" | sort
 SELECTED=()
 for i in "${!SPECS[@]}"; do
   if (( i % TOTAL_SHARDS + 1 == SHARD_NUMBER )); then
-    SELECTED+=("${SPECS[$i]}")
+    SELECTED+=("./${SPECS[$i]#tests/functional/}")
   fi
 done
 
