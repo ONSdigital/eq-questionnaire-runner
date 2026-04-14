@@ -10,6 +10,6 @@ NUM_SPECS=${#SPECS[@]}
 
 for i in "${!SPECS[@]}"; do
   if (( i % TOTAL_SHARDS + 1 == SHARD_NUMBER )); then
-    echo "${SPECS[$i]}"
+    echo "./${SPECS[$i]#tests/functional/}"
   fi
 done
