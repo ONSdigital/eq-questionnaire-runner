@@ -148,7 +148,8 @@ jobs:
         fail-fast: false
         matrix:
            browser: [chromium]
-           shard: [1, 2, 3, 4]
+           shard: [1, 2, 3, 4, 5, 6, 7, 8]
+           shard_count: [8]
     if: "!contains(github.event.pull_request.labels.*.name, 'tests not required')"
     permissions:
       contents: 'read'
@@ -183,7 +184,7 @@ jobs:
       - name: Get specs for this shard
         id: specs
         run: |
-         SPECS=$(./scripts/split_functional_specs.sh 4 ${{ matrix.shard }})
+         SPECS=$(./scripts/split_functional_specs.sh ${{ matrix.shard_count }} ${{ matrix.shard }})
          echo "SPECS=$SPECS" >> $GITHUB_ENV
       - name: Echo specs for this shard
         run: echo $SPECS
