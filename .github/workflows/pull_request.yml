@@ -183,15 +183,12 @@ jobs:
       - name: Get specs for this shard
         id: specs
         run: |
-         SPECS=$(./scripts/split_functional_specs.sh 4 ${{ matrix.shard }} | jq -R -s -c 'split("\n")[:-1]')
-         echo "SPECS_JSON=$SPECS" >> $GITHUB_ENV
+         SPECS=$(./scripts/split_functional_specs.sh 4 ${{ matrix.shard }} | jq -R -s 'split("\n")[:-1] | @json')
+         echo "SPECS=$SPECS" >> $GITHUB_ENV
       - name: Echo specs for this shard
         run: echo $SPECS
       - name: Functional tests
         run: |
-          SPECS="$(echo "$SPECS_JSON" | jq -r '.[]' | xargs)"
-          echo "Specs for this shard: $SPECS"
-          echo "SPECS=$SPECS" >> $GITHUB_ENV
           make test-functional SPECS="$SPECS"
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
