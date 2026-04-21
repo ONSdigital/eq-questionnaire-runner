@@ -1,5 +1,5 @@
 import KJUR from "jsrsasign";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from "uuid"; // eslint-disable-line import/no-unresolved
 import JSONWebKey from "json-web-key";
 import jose from "node-jose";
 import crypto from "crypto";
