@@ -49,7 +49,7 @@ describe("Feedback", () => {
       await click(FeedbackPage.submit());
       await $(FeedbackSentPage.doneButton()).click();
       await verifyUrlContains("thank-you");
-      await expect(await $(ThankYouPage.title()).getText()).toBe("Thank you for completing the Feedback test schema");
+      await expect(await $(ThankYouPage.title()).getText()).toBe("Thank you for completing the Test Feedback");
     });
   });
 });

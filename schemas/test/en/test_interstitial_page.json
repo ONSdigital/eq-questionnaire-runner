@@ -4,7 +4,7 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "999",
-    "title": "Test Interstitial Pages",
+    "title": "Test Interstitial Page",
     "theme": "default",
     "description": "A questionnaire to demo interstitial pages.",
     "messages": {

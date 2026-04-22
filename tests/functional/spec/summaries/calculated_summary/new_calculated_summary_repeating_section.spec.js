@@ -56,7 +56,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
     });
 
     it("Given I have completed all questions, When I am on the calculated summary and there is no custom page title, Then the page title should use the calculation's title", async () => {
-      await expect(await browser.getTitle()).toBe("Grand total of previous values - A test schema to demo Calculated Summary");
+      await expect(await browser.getTitle()).toBe("Grand total of previous values - Test Calculated Summary");
     });
 
     it("Given I complete every question, When I get to the currency summary, Then I should see the correct total", async () => {
@@ -174,7 +174,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
     });
 
     it("Given the calculated summary has a custom title, When I am on the unit calculated summary, Then the page title should use the custom title", async () => {
-      await expect(await browser.getTitle()).toBe("Total Unit Values - A test schema to demo Calculated Summary");
+      await expect(await browser.getTitle()).toBe("Total Unit Values - Test New Calculated Summary");
     });
 
     it("Given I complete every question, When I get to the percentage summary, Then I should see the correct total", async () => {
@@ -194,7 +194,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
     });
 
     it("Given the calculated summary has a custom title with the list item position, When I am on the percentage calculated summary, Then the page title should use the custom title with the list item position", async () => {
-      await expect(await browser.getTitle()).toBe("Percentage Calculated Summary: Person 1 - A test schema to demo Calculated Summary");
+      await expect(await browser.getTitle()).toBe("Percentage Calculated Summary: Person 1 - Test New Calculated Summary Repeating Section");
     });
 
     it("Given I complete every question, When I get to the number summary, Then I should see the correct total", async () => {

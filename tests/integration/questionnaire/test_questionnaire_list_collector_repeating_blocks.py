@@ -187,7 +187,7 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         self.post()
         self.post()
         self.assertInBody(
-            "Thank you for completing the Test a List Collector with Repeating Blocks and Section Summary Items"
+            "Thank you for completing the Test List Collector Repeating Blocks and Section Summary"
         )
 
     def test_incomplete_repeating_blocks(self):
@@ -250,7 +250,7 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         self.post()
         self.post()
         self.assertInBody(
-            "Thank you for completing the Test a List Collector with Repeating Blocks and Section Summary Items"
+            "Thank you for completing the Test List Collector Repeating Blocks and Section Summary"
         )
 
     def test_adding_from_the_summary_page_adds_the_return_to_param_to_the_url(
@@ -307,7 +307,7 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         self.post()
         self.post()
         self.assertInBody(
-            "Thank you for completing the Test a List Collector with Repeating Blocks and Section Summary Items"
+            "Thank you for completing the Test List Collector Repeating Blocks and Section Summary"
         )
 
     def test_removing_from_the_summary_page_adds_the_return_to_param_to_the_url(
@@ -344,7 +344,7 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         self.post()
         self.post()
         self.assertInBody(
-            "Thank you for completing the Test a List Collector with Repeating Blocks and Section Summary Items"
+            "Thank you for completing the Test List Collector Repeating Blocks and Section Summary"
         )
 
     def test_edit_repeating_block_from_the_summary_page_adds_the_return_to_param_to_the_url(
@@ -378,7 +378,7 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         self.post()
         self.post()
         self.assertInBody(
-            "Thank you for completing the Test a List Collector with Repeating Blocks and Section Summary Items"
+            "Thank you for completing the Test List Collector Repeating Blocks and Section Summary"
         )
 
     def test_edit_incomplete_repeating_block_from_summary_page_routes_to_next_repeating_block(
@@ -455,7 +455,7 @@ class TestQuestionnaireListCollectorRepeatingBlocks(IntegrationTestCase):
         self.post()
         self.post()
         self.assertInBody(
-            "Thank you for completing the Test a List Collector with Repeating Blocks and Section Summary Items"
+            "Thank you for completing the Test List Collector Repeating Blocks and Section Summary"
         )
 
     def test_edit_repeating_block_from_submit_page_returns_to_submit_page(

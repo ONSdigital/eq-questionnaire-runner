@@ -164,7 +164,7 @@ describe("Language Code", () => {
 
     await click(HubPage.submit());
     await expect(await $(NamePage.questionText()).getText()).toBe("Please enter a name");
-    await expect(await $("header").getText()).toContain("Test Language Survey");
+    await expect(await $("header").getText()).toContain("Test Language");
     await $(NamePage.switchLanguage("cy")).click();
     await expect(await $(NamePage.questionText()).getText()).toBe("Rhowch enw");
     await expect(await $("header").getText()).toContain("Arolwg Iaith Prawf");
