@@ -3,8 +3,8 @@
     "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
-    "survey_id": "0",
-    "title": "Test first non empty item with repeating sections",
+    "survey_id": "999",
+    "title": "Test Placeholder First Non Empty Item with Repeating Sections",
     "theme": "default",
     "description": "Questionnaire to test first non empty item with repeating sections",
     "metadata": [

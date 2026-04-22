@@ -2,9 +2,9 @@
     "mime_type": "application/json/ons/eq",
     "language": "en",
     "schema_version": "0.0.1",
-    "survey_id": "139",
+    "survey_id": "999",
     "theme": "default",
-    "title": "Confirmation Question Test",
+    "title": "Test Confirmation Question Within Repeating Section",
     "data_version": "0.0.3",
     "description": "Confirmation Question Test",
     "navigation": {
