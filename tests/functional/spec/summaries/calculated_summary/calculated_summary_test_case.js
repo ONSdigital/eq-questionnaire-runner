@@ -186,7 +186,7 @@ class TestCase {
     });
 
     it("Given the calculated summary has a custom title, When I am on the unit calculated summary, Then the page title should use the custom title", async () => {
-      await expect(await browser.getTitle()).toBe("Total Unit Values - Test New Calculated Summary");
+      await expect(await browser.getTitle()).toBe("Total Unit Values - Test Calculated Summary");
     });
 
     it("Given I complete every question, When I get to the percentage summary, Then I should see the correct total", async () => {
