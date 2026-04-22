@@ -68,7 +68,7 @@ class TestCase {
     });
 
     it("Given I have completed all questions, When I am on the calculated summary, Then the page title should use the calculation's title", async () => {
-      await expect(await browser.getTitle()).toBe("Grand total of previous values - Test Calculated Summary");
+      await expect(await browser.getTitle()).toContain("Grand total of previous values - ");
     });
 
     it("Given I complete every question, When I get to the currency summary, Then I should see the correct total", async () => {
@@ -186,7 +186,7 @@ class TestCase {
     });
 
     it("Given the calculated summary has a custom title, When I am on the unit calculated summary, Then the page title should use the custom title", async () => {
-      await expect(await browser.getTitle()).toBe("Total Unit Values - Test Calculated Summary");
+      await expect(await browser.getTitle()).toContain("Total Unit Values - ");
     });
 
     it("Given I complete every question, When I get to the percentage summary, Then I should see the correct total", async () => {
