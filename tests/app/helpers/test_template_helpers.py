@@ -392,7 +392,7 @@ def test_header_context(app: Flask, theme, survey_title, survey_config, expected
         ),
         (SocialSurveyConfig(), False, None, None),
         (
-            SocialSurveyConfig(schema=QuestionnaireSchema({"survey_id": "001"})),
+            SocialSurveyConfig(schema=QuestionnaireSchema({"survey_id": "999"})),
             True,
             "social",
             None,
