@@ -4,7 +4,7 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "999",
-    "title": "Test validation Sum Against Total Equal or Less Than",
+    "title": "Test Validation Sum Against Total Equal or Less Than",
     "theme": "default",
     "description": "A survey that tests grouped and calculated answers against a total",
     "metadata": [
