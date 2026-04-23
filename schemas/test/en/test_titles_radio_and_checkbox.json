@@ -3,8 +3,8 @@
     "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
-    "survey_id": "0",
-    "title": "Test Survey - Checkbox and Radio titles",
+    "survey_id": "999",
+    "title": "Test Titles Radio and Checkbox",
     "theme": "default",
     "metadata": [
         {

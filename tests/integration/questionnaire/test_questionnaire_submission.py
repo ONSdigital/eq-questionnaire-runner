@@ -51,7 +51,9 @@ class TestQuestionnaireSubmission(SubmissionTestCase):
 
         # Then I should see an error page
         self.assertStatusCode(500)
-        self.assertEqualPageTitle("Sorry, there is a problem - Submit without summary")
+        self.assertEqualPageTitle(
+            "Sorry, there is a problem - Test Submit with Custom Submission Text"
+        )
 
         self.get(self.retry_url)
         self.assertInUrl(SUBMIT_URL_PATH)
@@ -122,7 +124,7 @@ class TestQuestionnaireSubmissionHub(SubmissionTestCase):
 
         # Then I should see an error page
         self.assertStatusCode(500)
-        self.assertEqualPageTitle("Sorry, there is a problem - Hub & Spoke")
+        self.assertEqualPageTitle("Sorry, there is a problem - Test Hub & Spoke")
 
         self.get(self.retry_url)
         self.assertInUrl(HUB_URL_PATH)
@@ -163,7 +165,9 @@ class TestQuestionnaireSubmissionWithSummary(SubmissionTestCase):
 
         # Then I should see an error page
         self.assertStatusCode(500)
-        self.assertEqualPageTitle("Sorry, there is a problem - Other input fields")
+        self.assertEqualPageTitle(
+            "Sorry, there is a problem - Test Submit with Summary"
+        )
 
         self.get(self.retry_url)
         self.assertInUrl(SUBMIT_URL_PATH)

@@ -3,8 +3,8 @@
     "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
-    "survey_id": "0",
-    "title": "Grand Calculated Summary cross section demo",
+    "survey_id": "999",
+    "title": "Test Grand Calculated Summary Repeating Answers",
     "theme": "default",
     "description": "A schema to showcase grand calculated summary across multiple sections featuring static, dynamic and list repeating block answers",
     "metadata": [
