@@ -4,7 +4,7 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "999",
-    "title": "Test Option Label From Value Placeholder",
+    "title": "Test Placeholder Option Label From Value",
     "theme": "default",
     "description": "A questionnaire to demo the piping of Checkbox/Radio answer options",
     "metadata": [
