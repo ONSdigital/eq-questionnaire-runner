@@ -4,7 +4,7 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "999",
-    "title": "Test Calculated Summary Dependant Questions",
+    "title": "Test Calculated Summary Dependent Questions",
     "description": "A schema to showcase Calculated Summary with dependent questions.",
     "questionnaire_flow": {
         "type": "Hub",
