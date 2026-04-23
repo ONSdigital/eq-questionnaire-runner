@@ -4,7 +4,7 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "999",
-    "title": "Test Theme ONS NHS",
+    "title": "Test Theme ONS-NHS",
     "theme": "ons-nhs",
     "description": "A questionnaire to demo the ons-nhs survey theme",
     "metadata": [
