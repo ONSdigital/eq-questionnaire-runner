@@ -4,7 +4,7 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "999",
-    "title": "Test Theme UKHSA ONS",
+    "title": "Test Theme UKHSA-ONS",
     "theme": "ukhsa-ons",
     "description": "A questionnaire to demo the UKHSA ONS survey theme",
     "metadata": [
