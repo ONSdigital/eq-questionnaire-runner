@@ -4,7 +4,7 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "999",
-    "title": "Test List Collector Primary& Collector With Driving Question",
+    "title": "Test List Collector Primary & Collector With Driving Question",
     "theme": "default",
     "description": "A questionnaire to test ListCollectorPrimaryAndCollectorWithDrivingQuestion",
     "metadata": [
