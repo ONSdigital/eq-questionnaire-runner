@@ -50,7 +50,6 @@ ruff = "^0.14.7"
 [tool.poetry.dependencies]
 # update dependabot.yaml when adding new dependencies
 python = "^3.13.5"
-colorama = "^0.4.6"
 flask = "^3.0.2"
 flask-babel = "^4.0.0"
 flask-login = "^0.6.3"
