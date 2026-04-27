@@ -6,6 +6,19 @@ describe("Feature: Section Enabled Based On Radio Answers", () => {
     await browser.openQuestionnaire("test_section_enabled_radio.json");
   });
 
+  it("When section 2 is enabled and the user changes the answers and disables section 2, Then they should be taken straight to the summary", async () => {
+    await $(sectionOne.yesEnableSection2()).click();
+    await click(sectionOne.submit());
+
+    await verifyUrlContains("section-2-block");
+    await browser.back();
+    await verifyUrlContains("section-1-block");
+
+    await $(sectionOne.noDisableSection2()).click();
+    await click(sectionOne.submit());
+    await verifyUrlContains(SubmitPage.url());
+  });
+
   it("When the user answers `Yes, enable section 2` and submits, Then section 2 should be displayed", async () => {
     await $(sectionOne.yesEnableSection2()).click();
     await click(sectionOne.submit());
@@ -19,23 +32,5 @@ describe("Feature: Section Enabled Based On Radio Answers", () => {
 
     await verifyUrlContains(SubmitPage.url());
     await expect(await $(SubmitPage.section2Question()).isExisting()).toBe(false);
-  });
-
-  describe("Given that section 2 is enabled", () => {
-    beforeEach("Enable section 2", async () => {
-      await $(sectionOne.yesEnableSection2()).click();
-      await click(sectionOne.submit());
-
-      await verifyUrlContains("section-2-block");
-    });
-
-    it("When the user changes the answers and disables section 2, Then they should be taken straight to the summary", async () => {
-      await browser.back();
-      await verifyUrlContains("section-1-block");
-
-      await $(sectionOne.noDisableSection2()).click();
-      await click(sectionOne.submit());
-      await verifyUrlContains(SubmitPage.url());
-    });
   });
 });
