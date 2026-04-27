@@ -40,7 +40,7 @@ class TestTimeout(IntegrationTestCase):
         self.assertInBody(
             "been inactive for 45 minutes and your session has timed out to protect your information"
         )
-        self.assertEqualPageTitle("Page is not available - Timeout test")
+        self.assertEqualPageTitle("Page is not available - Test Timeout")
 
     def test_submission_complete_timeout(self):
         self.launchSurveyV2(schema_name="test_timeout")
@@ -50,4 +50,4 @@ class TestTimeout(IntegrationTestCase):
         self.get(self.last_url)
         self.assertStatusUnauthorised()
         self.assertInBody("Sorry, you need to sign in again")
-        self.assertEqualPageTitle("Page is not available - Timeout test")
+        self.assertEqualPageTitle("Page is not available - Test Timeout")

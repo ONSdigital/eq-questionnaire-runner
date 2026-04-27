@@ -156,7 +156,7 @@ class TestFlushData(IntegrationTestCase):
             "submitted_at": "2023-02-07T11:42:59.575214+00:00",
             "launch_language_code": "en",
             "survey_metadata": {
-                "survey_id": "001",
+                "survey_id": "999",
                 "period_id": "201605",
                 "ru_name": "ESSENTIAL ENTERPRISE LTD.",
                 "user_id": "UNKNOWN",

@@ -3,8 +3,8 @@
     "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
-    "survey_id": "0",
-    "title": "Test last viewed question guidance",
+    "survey_id": "999",
+    "title": "Test Last Viewed Question Guidance",
     "theme": "default",
     "description": "A questionnaire to test last viewed question guidance on different block types",
     "metadata": [

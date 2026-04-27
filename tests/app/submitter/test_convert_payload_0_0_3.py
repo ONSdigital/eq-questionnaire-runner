@@ -34,7 +34,7 @@ def test_convert_answers_v2_to_payload_0_0_3():
     )
 
     questionnaire = {
-        "survey_id": "021",
+        "survey_id": "999",
         "data_version": "0.0.3",
         "sections": [
             {
