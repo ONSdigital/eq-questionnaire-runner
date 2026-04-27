@@ -92,7 +92,7 @@ def fake_response_metadata():
 
 @pytest.fixture
 def fake_questionnaire_schema():
-    questionnaire = {"survey_id": "021", "data_version": "0.0.3"}
+    questionnaire = {"survey_id": "999", "data_version": "0.0.3"}
 
     return QuestionnaireSchema(questionnaire)
 

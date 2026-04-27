@@ -3,8 +3,8 @@
     "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
-    "survey_id": "0",
-    "title": "Test a List Collector with Repeating Blocks and Section Summary Items",
+    "survey_id": "999",
+    "title": "Test List Collector Repeating Blocks Section Summary",
     "theme": "default",
     "description": "A questionnaire to test a list collector with repeating blocks and section summary items",
     "metadata": [

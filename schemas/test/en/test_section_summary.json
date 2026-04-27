@@ -4,7 +4,7 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "999",
-    "title": "Section Summary",
+    "title": "Test Section Summary",
     "description": "A questionnaire to test section summaries",
     "theme": "default",
     "navigation": {
