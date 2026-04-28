@@ -1,0 +1,935 @@
+{
+   "data_version": "0.0.3",
+   "description": "Census Communal Establishment",
+   "form_type": "C",
+   "language": "en",
+   "legal_basis": "Voluntary",
+   "metadata": [
+      {
+         "name": "user_id",
+         "type": "string"
+      },
+      {
+         "name": "period_id",
+         "type": "string"
+      },
+      {
+         "name": "display_address",
+         "type": "string"
+      }
+   ],
+   "mime_type": "application/json/ons/eq",
+   "region_code": "GB-WLS",
+   "schema_version": "0.0.1",
+   "sections": [
+      {
+         "groups": [
+            {
+               "blocks": [
+                  {
+                     "id": "nature-of-establishment",
+                     "page_title": "Type of establishment",
+                     "question": {
+                        "answers": [
+                           {
+                              "id": "nature-of-establishment-answer",
+                              "mandatory": true,
+                              "options": [
+                                 {
+                                    "description": "For example, care homes, children’s homes or hospitals",
+                                    "label": "Medical or care",
+                                    "value": "Medical or care"
+                                 },
+                                 {
+                                    "description": "Including halls of residence",
+                                    "label": "Education",
+                                    "value": "Education"
+                                 },
+                                 {
+                                    "description": "Defence establishments, including ships",
+                                    "label": "Armed forces",
+                                    "value": "Armed forces"
+                                 },
+                                 {
+                                    "description": "For example, prisons or approved premises",
+                                    "label": "Detention",
+                                    "value": "Detention"
+                                 },
+                                 {
+                                    "description": "Includes shelters for homeless people",
+                                    "label": "Travel or temporary accommodation",
+                                    "value": "Travel or temporary accommodation"
+                                 },
+                                 {
+                                    "label": "Religious establishment",
+                                    "value": "Religious establishment"
+                                 },
+                                 {
+                                    "label": "Staff or worker accommodation only",
+                                    "value": "Staff or worker accommodation only"
+                                 },
+                                 {
+                                    "label": "Other establishment",
+                                    "value": "Other establishment"
+                                 }
+                              ],
+                              "type": "Radio"
+                           }
+                        ],
+                        "id": "nature-of-establishment-question",
+                        "title": "What is the nature of this establishment?",
+                        "type": "General"
+                     },
+                     "routing_rules": [
+                        {
+                           "goto": {
+                              "block": "medical-establishment",
+                              "when": [
+                                 {
+                                    "condition": "equals",
+                                    "id": "nature-of-establishment-answer",
+                                    "value": "Medical or care"
+                                 }
+                              ]
+                           }
+                        },
+                        {
+                           "goto": {
+                              "block": "education-establishment",
+                              "when": [
+                                 {
+                                    "condition": "equals",
+                                    "id": "nature-of-establishment-answer",
+                                    "value": "Education"
+                                 }
+                              ]
+                           }
+                        },
+                        {
+                           "goto": {
+                              "block": "detention-establishment",
+                              "when": [
+                                 {
+                                    "condition": "equals",
+                                    "id": "nature-of-establishment-answer",
+                                    "value": "Detention"
+                                 }
+                              ]
+                           }
+                        },
+                        {
+                           "goto": {
+                              "block": "travel-establishment",
+                              "when": [
+                                 {
+                                    "condition": "equals",
+                                    "id": "nature-of-establishment-answer",
+                                    "value": "Travel or temporary accommodation"
+                                 }
+                              ]
+                           }
+                        },
+                        {
+                           "goto": {
+                              "block": "responsible-for-establishment"
+                           }
+                        }
+                     ],
+                     "type": "Question"
+                  },
+                  {
+                     "id": "medical-establishment",
+                     "page_title": "Type of medical or care establishment",
+                     "question": {
+                        "answers": [
+                           {
+                              "id": "medical-establishment-answer",
+                              "mandatory": false,
+                              "options": [
+                                 {
+                                    "label": "Care home without nursing",
+                                    "value": "Care home without nursing"
+                                 },
+                                 {
+                                    "label": "Care home with nursing",
+                                    "value": "Care home with nursing"
+                                 },
+                                 {
+                                    "description": "Including secure units",
+                                    "label": "Children’s home",
+                                    "value": "Children’s home"
+                                 },
+                                 {
+                                    "label": "General hospital",
+                                    "value": "General hospital"
+                                 },
+                                 {
+                                    "description": "Including secure units",
+                                    "label": "Mental health hospital or unit",
+                                    "value": "Mental health hospital or unit"
+                                 },
+                                 {
+                                    "label": "Other hospital",
+                                    "value": "Other hospital"
+                                 },
+                                 {
+                                    "label": "Other medical or care establishment",
+                                    "value": "Other medical or care establishment"
+                                 }
+                              ],
+                              "type": "Radio"
+                           }
+                        ],
+                        "id": "medical-establishment-question",
+                        "title": {
+                           "placeholders": [
+                              {
+                                 "placeholder": "household_address",
+                                 "value": {
+                                    "identifier": "display_address",
+                                    "source": "metadata"
+                                 }
+                              }
+                           ],
+                           "text": "What type of medical or care establishment is <em>{household_address}</em>?"
+                        },
+                        "type": "General"
+                     },
+                     "routing_rules": [
+                        {
+                           "goto": {
+                              "block": "responsible-for-establishment"
+                           }
+                        }
+                     ],
+                     "type": "Question"
+                  },
+                  {
+                     "id": "education-establishment",
+                     "page_title": "Type of education establishment",
+                     "question": {
+                        "answers": [
+                           {
+                              "id": "education-establishment-answer",
+                              "mandatory": false,
+                              "options": [
+                                 {
+                                    "label": "School",
+                                    "value": "School"
+                                 },
+                                 {
+                                    "description": "For example, hall of residence",
+                                    "label": "University",
+                                    "value": "University"
+                                 },
+                                 {
+                                    "label": "Other education establishment",
+                                    "value": "Other education establishment"
+                                 }
+                              ],
+                              "type": "Radio"
+                           }
+                        ],
+                        "id": "education-establishment-question",
+                        "title": {
+                           "placeholders": [
+                              {
+                                 "placeholder": "household_address",
+                                 "value": {
+                                    "identifier": "display_address",
+                                    "source": "metadata"
+                                 }
+                              }
+                           ],
+                           "text": "What type of education establishment is <em>{household_address}</em>?"
+                        },
+                        "type": "General"
+                     },
+                     "routing_rules": [
+                        {
+                           "goto": {
+                              "block": "responsible-for-establishment"
+                           }
+                        }
+                     ],
+                     "type": "Question"
+                  },
+                  {
+                     "id": "detention-establishment",
+                     "page_title": "Type of detention establishment",
+                     "question": {
+                        "answers": [
+                           {
+                              "id": "detention-establishment-answer",
+                              "mandatory": false,
+                              "options": [
+                                 {
+                                    "description": "Including young offender institutions",
+                                    "label": "Prison service establishment",
+                                    "value": "Prison service establishment"
+                                 },
+                                 {
+                                    "description": "Probation or bail hostel",
+                                    "label": "Approved premises",
+                                    "value": "Approved premises"
+                                 },
+                                 {
+                                    "label": "Detention centre",
+                                    "value": "Detention centre"
+                                 },
+                                 {
+                                    "label": "Other detention establishment",
+                                    "value": "Other detention establishment"
+                                 }
+                              ],
+                              "type": "Radio"
+                           }
+                        ],
+                        "id": "detention-establishment-question",
+                        "title": {
+                           "placeholders": [
+                              {
+                                 "placeholder": "household_address",
+                                 "value": {
+                                    "identifier": "display_address",
+                                    "source": "metadata"
+                                 }
+                              }
+                           ],
+                           "text": "What type of detention establishment is <em>{household_address}</em>?"
+                        },
+                        "type": "General"
+                     },
+                     "routing_rules": [
+                        {
+                           "goto": {
+                              "block": "responsible-for-establishment"
+                           }
+                        }
+                     ],
+                     "type": "Question"
+                  },
+                  {
+                     "id": "travel-establishment",
+                     "page_title": "Type of travel or temporary accommodation establishment",
+                     "question": {
+                        "answers": [
+                           {
+                              "id": "travel-establishment-answer",
+                              "mandatory": false,
+                              "options": [
+                                 {
+                                    "description": "Including inns and pubs",
+                                    "label": "Hotel, guest house, B&B, youth hostel",
+                                    "value": "Hotel, guest house, B&B, youth hostel"
+                                 },
+                                 {
+                                    "description": "For example, holiday park",
+                                    "label": "Holiday accommodation",
+                                    "value": "Holiday accommodation"
+                                 },
+                                 {
+                                    "label": "Hostel or temporary shelter for homeless people",
+                                    "value": "Hostel or temporary shelter for homeless people"
+                                 },
+                                 {
+                                    "label": "Other travel or temporary accommodation",
+                                    "value": "Other travel or temporary accommodation"
+                                 }
+                              ],
+                              "type": "Radio"
+                           }
+                        ],
+                        "id": "travel-establishment-question",
+                        "title": {
+                           "placeholders": [
+                              {
+                                 "placeholder": "household_address",
+                                 "value": {
+                                    "identifier": "display_address",
+                                    "source": "metadata"
+                                 }
+                              }
+                           ],
+                           "text": "What type of travel or temporary accommodation establishment is <em>{household_address}</em>?"
+                        },
+                        "type": "General"
+                     },
+                     "routing_rules": [
+                        {
+                           "goto": {
+                              "block": "responsible-for-establishment"
+                           }
+                        }
+                     ],
+                     "type": "Question"
+                  },
+                  {
+                     "id": "responsible-for-establishment",
+                     "page_title": "Manager of this establishment",
+                     "question": {
+                        "answers": [
+                           {
+                              "id": "responsible-for-establishment-answer",
+                              "mandatory": false,
+                              "options": [
+                                 {
+                                    "label": "NHS",
+                                    "value": "NHS"
+                                 },
+                                 {
+                                    "label": "Local authority",
+                                    "value": "Local authority"
+                                 },
+                                 {
+                                    "label": "Government department or agency",
+                                    "value": "Government department or agency"
+                                 },
+                                 {
+                                    "label": "Registered social landlord or housing association",
+                                    "value": "Registered social landlord or housing association"
+                                 },
+                                 {
+                                    "label": "Charity or voluntary organisation",
+                                    "value": "Charity or voluntary organisation"
+                                 },
+                                 {
+                                    "label": "Private owner or company",
+                                    "value": "Private owner or company"
+                                 },
+                                 {
+                                    "label": "Higher or further education institution",
+                                    "value": "Higher or further education institution"
+                                 },
+                                 {
+                                    "label": "Other",
+                                    "value": "Other"
+                                 }
+                              ],
+                              "type": "Radio"
+                           }
+                        ],
+                        "id": "responsible-for-establishment-question",
+                        "title": "Who is responsible for the management of this establishment?",
+                        "type": "General"
+                     },
+                     "routing_rules": [
+                        {
+                           "goto": {
+                              "block": "people-in-establishment"
+                           }
+                        }
+                     ],
+                     "type": "Question"
+                  },
+                  {
+                     "id": "people-in-establishment",
+                     "page_title": "People who live in this establishment",
+                     "question": {
+                        "answers": [
+                           {
+                              "id": "people-in-establishment-answer",
+                              "mandatory": false,
+                              "options": [
+                                 {
+                                    "label": {
+                                       "placeholders": [
+                                          {
+                                             "placeholder": "census_date",
+                                             "transforms": [
+                                                {
+                                                   "arguments": {
+                                                      "date_format": "d MMMM yyyy",
+                                                      "date_to_format": {
+                                                         "value": "2021-03-21"
+                                                      }
+                                                   },
+                                                   "transform": "format_date"
+                                                }
+                                             ]
+                                          }
+                                       ],
+                                       "text": "Anyone who has already spent, or is expected to spend, 6 months or more in this establishment, even if they are away on {census_date}"
+                                    },
+                                    "value": "Anyone who has already spent, or is expected to spend, 6 months or more in this establishment, even if they are away on {census_date}"
+                                 },
+                                 {
+                                    "label": {
+                                       "placeholders": [
+                                          {
+                                             "placeholder": "census_date",
+                                             "transforms": [
+                                                {
+                                                   "arguments": {
+                                                      "date_format": "d MMMM yyyy",
+                                                      "date_to_format": {
+                                                         "value": "2021-03-21"
+                                                      }
+                                                   },
+                                                   "transform": "format_date"
+                                                }
+                                             ]
+                                          }
+                                       ],
+                                       "text": "UK residents who are staying in this establishment on {census_date} and have no other usual UK address"
+                                    },
+                                    "value": "UK residents who are staying in this establishment on {census_date} and have no other usual UK address"
+                                 },
+                                 {
+                                    "label": "People who usually live outside the UK who have stayed, or intend to stay, in the UK for 3 months or more who do not have another UK address",
+                                    "value": "People who usually live outside the UK who have stayed, or intend to stay, in the UK for 3 months or more who do not have another UK address"
+                                 },
+                                 {
+                                    "label": "Students or schoolchildren who stay in this establishment during term time",
+                                    "value": "Students or schoolchildren who stay in this establishment during term time"
+                                 },
+                                 {
+                                    "label": "Yourself, your family, staff, and any others who live in this establishment",
+                                    "value": "Yourself, your family, staff, and any others who live in this establishment"
+                                 }
+                              ],
+                              "type": "Checkbox"
+                           },
+                           {
+                              "id": "people-in-establishment-exclusive",
+                              "mandatory": false,
+                              "options": [
+                                 {
+                                    "label": "None of these apply",
+                                    "value": "None of these apply"
+                                 }
+                              ],
+                              "type": "Checkbox"
+                           }
+                        ],
+                        "id": "people-in-establishment-question",
+                        "mandatory": false,
+                        "title": "Do any of the following currently live in this establishment?",
+                        "type": "MutuallyExclusive"
+                     },
+                     "routing_rules": [
+                        {
+                           "goto": {
+                              "block": "number-of-people-in-establishment"
+                           }
+                        }
+                     ],
+                     "type": "Question"
+                  },
+                  {
+                     "id": "number-of-people-in-establishment",
+                     "page_title": "Number of people who live in this establishment",
+                     "question_variants": [
+                        {
+                           "question": {
+                              "answers": [
+                                 {
+                                    "id": "number-of-people-in-establishment-answer",
+                                    "label": "Number of residents",
+                                    "mandatory": false,
+                                    "minimum": {
+                                       "value": 0
+                                    },
+                                    "type": "Number"
+                                 }
+                              ],
+                              "guidance": {
+                                 "contents": [
+                                    {
+                                       "description": "<em>Include</em> everyone from the groups you selected for the previous question"
+                                    },
+                                    {
+                                       "description": "<em>Do not include</em> visitors who have another UK address, or usually live outside the UK and intend to stay in the UK for 3 months or less"
+                                    }
+                                 ]
+                              },
+                              "id": "number-of-people-in-establishment-question",
+                              "title": "How many people are currently living in this establishment?",
+                              "type": "General"
+                           },
+                           "when": [
+                              {
+                                 "condition": "set",
+                                 "id": "people-in-establishment-answer"
+                              }
+                           ]
+                        },
+                        {
+                           "question": {
+                              "answers": [
+                                 {
+                                    "id": "number-of-people-in-establishment-answer",
+                                    "label": "Number of residents",
+                                    "mandatory": false,
+                                    "minimum": {
+                                       "value": 0
+                                    },
+                                    "type": "Number"
+                                 },
+                                 {
+                                    "id": "number-of-people-in-establishment-answer-exclusive",
+                                    "mandatory": false,
+                                    "options": [
+                                       {
+                                          "label": "No one is living in this establishment",
+                                          "value": "No one is living in this establishment"
+                                       }
+                                    ],
+                                    "type": "Checkbox"
+                                 }
+                              ],
+                              "guidance": {
+                                 "contents": [
+                                    {
+                                       "description": "<em>Do not include</em> visitors who have another UK address, or usually live outside the UK and intend to stay in the UK for 3 months or less"
+                                    }
+                                 ]
+                              },
+                              "id": "number-of-people-in-establishment-question",
+                              "mandatory": false,
+                              "title": "How many people are currently living in this establishment?",
+                              "type": "MutuallyExclusive"
+                           },
+                           "when": [
+                              {
+                                 "condition": "set",
+                                 "id": "people-in-establishment-exclusive"
+                              }
+                           ]
+                        },
+                        {
+                           "question": {
+                              "answers": [
+                                 {
+                                    "id": "number-of-people-in-establishment-answer",
+                                    "label": "Number of residents",
+                                    "mandatory": false,
+                                    "minimum": {
+                                       "value": 0
+                                    },
+                                    "type": "Number"
+                                 },
+                                 {
+                                    "id": "number-of-people-in-establishment-answer-exclusive",
+                                    "mandatory": false,
+                                    "options": [
+                                       {
+                                          "label": "No one is living in this establishment",
+                                          "value": "No one is living in this establishment"
+                                       }
+                                    ],
+                                    "type": "Checkbox"
+                                 }
+                              ],
+                              "guidance": {
+                                 "contents": [
+                                    {
+                                       "description": "<em>Do not include</em> visitors who have another UK address, or usually live outside the UK and intend to stay in the UK for 3 months or less"
+                                    }
+                                 ]
+                              },
+                              "id": "number-of-people-in-establishment-question",
+                              "mandatory": false,
+                              "title": "How many people are currently living in this establishment?",
+                              "type": "MutuallyExclusive"
+                           },
+                           "when": [
+                              {
+                                 "condition": "not set",
+                                 "id": "people-in-establishment-answer"
+                              }
+                           ]
+                        }
+                     ],
+                     "type": "Question"
+                  },
+                  {
+                     "id": "visitors-in-establishment",
+                     "page_title": "Visitors staying in this establishment",
+                     "question": {
+                        "answers": [
+                           {
+                              "id": "visitors-in-establishment-answer",
+                              "mandatory": false,
+                              "options": [
+                                 {
+                                    "label": "Anyone with another usual address in the UK who has spent, or expects to spend, less than 6 months in this establishment",
+                                    "value": "Anyone with another usual address in the UK who has spent, or expects to spend, less than 6 months in this establishment"
+                                 },
+                                 {
+                                    "label": "Anyone from outside the UK who intends to stay in the UK for less than 3 months",
+                                    "value": "Anyone from outside the UK who intends to stay in the UK for less than 3 months"
+                                 }
+                              ],
+                              "type": "Checkbox"
+                           },
+                           {
+                              "id": "visitors-in-establishment-exclusive",
+                              "mandatory": false,
+                              "options": [
+                                 {
+                                    "label": "None of these apply",
+                                    "value": "None of these apply"
+                                 }
+                              ],
+                              "type": "Checkbox"
+                           }
+                        ],
+                        "guidance": {
+                           "contents": [
+                              {
+                                 "description": {
+                                    "placeholders": [
+                                       {
+                                          "placeholder": "census_date",
+                                          "transforms": [
+                                             {
+                                                "arguments": {
+                                                   "date_format": "d MMMM yyyy",
+                                                   "date_to_format": {
+                                                      "value": "2021-03-21"
+                                                   }
+                                                },
+                                                "transform": "format_date"
+                                             }
+                                          ]
+                                       }
+                                    ],
+                                    "text": "<em>Include</em> shift workers, for example, care workers, hotel porters, who are staying overnight on {census_date} as visitors"
+                                 }
+                              }
+                           ]
+                        },
+                        "id": "visitors-in-establishment-question",
+                        "mandatory": false,
+                        "title": {
+                           "placeholders": [
+                              {
+                                 "placeholder": "census_date",
+                                 "transforms": [
+                                    {
+                                       "arguments": {
+                                          "date_format": "d MMMM yyyy",
+                                          "date_to_format": {
+                                             "value": "2021-03-21"
+                                          }
+                                       },
+                                       "transform": "format_date"
+                                    }
+                                 ]
+                              }
+                           ],
+                           "text": "Are any of the following visitors staying overnight in this establishment on {census_date}?"
+                        },
+                        "type": "MutuallyExclusive"
+                     },
+                     "routing_rules": [
+                        {
+                           "goto": {
+                              "block": "number-of-visitors-in-establishment"
+                           }
+                        }
+                     ],
+                     "type": "Question"
+                  },
+                  {
+                     "id": "number-of-visitors-in-establishment",
+                     "page_title": "Number of visitors staying in this establishment",
+                     "question_variants": [
+                        {
+                           "question": {
+                              "answers": [
+                                 {
+                                    "id": "number-of-visitors-in-establishment-answer",
+                                    "label": "Number of visitors",
+                                    "mandatory": false,
+                                    "minimum": {
+                                       "value": 0
+                                    },
+                                    "type": "Number"
+                                 },
+                                 {
+                                    "id": "number-of-visitors-in-establishment-answer-exclusive",
+                                    "mandatory": false,
+                                    "options": [
+                                       {
+                                          "label": "No visitors are staying overnight",
+                                          "value": "No visitors are staying overnight"
+                                       }
+                                    ],
+                                    "type": "Checkbox"
+                                 }
+                              ],
+                              "id": "number-of-visitors-in-establishment-question",
+                              "mandatory": false,
+                              "title": {
+                                 "placeholders": [
+                                    {
+                                       "placeholder": "census_date",
+                                       "transforms": [
+                                          {
+                                             "arguments": {
+                                                "date_format": "d MMMM yyyy",
+                                                "date_to_format": {
+                                                   "value": "2021-03-21"
+                                                }
+                                             },
+                                             "transform": "format_date"
+                                          }
+                                       ]
+                                    }
+                                 ],
+                                 "text": "How many visitors are staying overnight in this establishment on {census_date}?"
+                              },
+                              "type": "MutuallyExclusive"
+                           },
+                           "when": [
+                              {
+                                 "condition": "set",
+                                 "id": "visitors-in-establishment-exclusive"
+                              }
+                           ]
+                        },
+                        {
+                           "question": {
+                              "answers": [
+                                 {
+                                    "id": "number-of-visitors-in-establishment-answer",
+                                    "label": "Number of visitors",
+                                    "mandatory": false,
+                                    "minimum": {
+                                       "value": 0
+                                    },
+                                    "type": "Number"
+                                 }
+                              ],
+                              "guidance": {
+                                 "contents": [
+                                    {
+                                       "description": "<em>Include</em> everyone from the groups you selected for the previous question"
+                                    }
+                                 ]
+                              },
+                              "id": "number-of-visitors-in-establishment-question",
+                              "title": {
+                                 "placeholders": [
+                                    {
+                                       "placeholder": "census_date",
+                                       "transforms": [
+                                          {
+                                             "arguments": {
+                                                "date_format": "d MMMM yyyy",
+                                                "date_to_format": {
+                                                   "value": "2021-03-21"
+                                                }
+                                             },
+                                             "transform": "format_date"
+                                          }
+                                       ]
+                                    }
+                                 ],
+                                 "text": "How many visitors are staying overnight in this establishment on {census_date}?"
+                              },
+                              "type": "General"
+                           },
+                           "when": [
+                              {
+                                 "condition": "set",
+                                 "id": "visitors-in-establishment-answer"
+                              }
+                           ]
+                        },
+                        {
+                           "question": {
+                              "answers": [
+                                 {
+                                    "id": "number-of-visitors-in-establishment-answer",
+                                    "label": "Number of visitors",
+                                    "mandatory": false,
+                                    "minimum": {
+                                       "value": 0
+                                    },
+                                    "type": "Number"
+                                 },
+                                 {
+                                    "id": "number-of-visitors-in-establishment-answer-exclusive",
+                                    "mandatory": false,
+                                    "options": [
+                                       {
+                                          "label": "No visitors are staying overnight",
+                                          "value": "No visitors are staying overnight"
+                                       }
+                                    ],
+                                    "type": "Checkbox"
+                                 }
+                              ],
+                              "id": "number-of-visitors-in-establishment-question",
+                              "mandatory": false,
+                              "title": {
+                                 "placeholders": [
+                                    {
+                                       "placeholder": "census_date",
+                                       "transforms": [
+                                          {
+                                             "arguments": {
+                                                "date_format": "d MMMM yyyy",
+                                                "date_to_format": {
+                                                   "value": "2021-03-21"
+                                                }
+                                             },
+                                             "transform": "format_date"
+                                          }
+                                       ]
+                                    }
+                                 ],
+                                 "text": "How many visitors are staying overnight in this establishment on {census_date}?"
+                              },
+                              "type": "MutuallyExclusive"
+                           },
+                           "when": [
+                              {
+                                 "condition": "not set",
+                                 "id": "visitors-in-establishment-answer"
+                              }
+                           ]
+                        }
+                     ],
+                     "type": "Question"
+                  }
+               ],
+               "id": "establishment-details-group"
+            }
+         ],
+         "id": "communal-establishment",
+         "title": "Communal Establishment"
+      },
+      {
+         "groups": [
+            {
+               "blocks": [
+                  {
+                     "id": "summary",
+                     "type": "Summary"
+                  }
+               ],
+               "id": "submit-group",
+               "title": "Submit answers"
+            }
+         ],
+         "id": "submit-answers-section",
+         "title": "Submit answers"
+      }
+   ],
+   "submission": {
+      "button": "Submit census",
+      "confirmation_email": true,
+      "feedback": true,
+      "guidance": "By submitting this census you are confirming that, to the best of your knowledge and belief, the details provided are correct.",
+      "title": "Submit census",
+      "warning": "You must submit this census to complete it"
+   },
+   "survey": "CENSUS",
+   "survey_id": "census",
+   "theme": "census",
+   "title": "2021 Census"
+}
