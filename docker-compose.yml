@@ -19,15 +19,46 @@ services:
     eq-questionnaire-runner:
         # image: onsdigital/eq-questionnaire-runner:v3-census-python-3-11
         image: pricemonsdigital/eq-questionnaire-runner:v3-census-python-3-11
-        # build: ./
-        # cap_add:
-          # added for troubleshooting during POC
-          #- NET_RAW
-        env_file:
-          - .development.env
+#        build: ./
+#        cap_add:
+#          # added for troubleshooting during POC
+#          - NET_RAW
+#        env_file:
+#          - .development.env
         environment:
           DATASTORE_EMULATOR_HOST: "datastore:8432"
           EQ_REDIS_HOST: "redis"
+          FLASK_APP: "application.py"
+          FLASK_ENV: "development"
+          EQ_QUESTIONNAIRE_STATE_TABLE_NAME: "dev-questionnaire-state"
+          EQ_SESSION_TABLE_NAME: "dev-eq-session"
+          EQ_USED_JTI_CLAIM_TABLE_NAME: "dev-used-jti-claim"
+          EQ_ENABLE_SECURE_SESSION_COOKIE: "False"
+          EQ_ENABLE_LIVE_RELOAD: "True"
+          EQ_SUBMISSION_BACKEND: "log"
+          EQ_FEEDBACK_BACKEND: "log"
+          EQ_PUBLISHER_BACKEND: "log"
+          EQ_STORAGE_BACKEND: "datastore"
+          DATASTORE_DATASET: "local"
+          EQ_REDIS_PORT: 6379
+          EQ_NEW_RELIC_ENABLED: "False"
+          EQ_SECRETS_FILE: "dev-secrets.yml"
+          EQ_KEYS_FILE: "dev-keys.yml"
+          EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE: "2021-04-28T14:00:00+00:00"
+          AWS_DEFAULT_REGION: "eu-west-1"
+          HTTP_KEEP_ALIVE: 2
+          GUNICORN_CMD_ARGS: "-c gunicorn_config.py"
+          WEB_SERVER_WORKERS: 3
+          WEB_SERVER_THREADS: 10
+          WEB_SERVER_UWSGI_ASYNC_CORES: 10
+          CDN_URL: "https://cdn.eq.gcp.onsdigital.uk"
+          CDN_ASSETS_PATH: "/design-system"
+          ADDRESS_LOOKUP_API_URL: "https://whitelodge-ai-api.census-gcp.onsdigital.uk"
+          COOKIE_SETTINGS_URL: "#"
+          EQ_SUBMISSION_CONFIRMATION_BACKEND: "log"
+
+
+
         restart: always
         depends_on:
           - datastore
