@@ -2,45 +2,56 @@ version: '3'
 
 services:
 
-  datastore:
-    image: knarz/datastore-emulator
-    networks:
-      - eq-env
+    datastore:
+        image: localhost/gcloud-datastore-emulator:local
+        ports:
+            - "8432:8432"
+        environment:
+            - CLOUDSDK_CORE_PROJECT=local
+        networks:
+            - eq-env
+    redis:
+        image: redis:8.2.2
+        ports:
+            - "6379:6379"
+        networks:
+            - eq-env
 
-  redis:
-    image: redis:4
-    networks:
-      - eq-env
+    eq-questionnaire-runner:
+        image: onsdigital/eq-questionnaire-runner:v3-census-python-3-11
+        # build: ./
+        # cap_add:
+          # added for troubleshooting during POC
+          #- NET_RAW
+        env_file:
+          - .development.env
+        environment:
+          DATASTORE_EMULATOR_HOST: "datastore:8432"
+          EQ_REDIS_HOST: "redis"
+        restart: always
+        depends_on:
+          - datastore
+          - redis
+        networks:
+          - eq-env
+        ports:
+          - "5000:5000"
 
-  eq-questionnaire-runner:
-    image: onsdigital/eq-questionnaire-runner:v3-census-latest
-    build: ./
-    env_file:
-      - .development.env
-    environment:
-      DATASTORE_EMULATOR_HOST: datastore:8432
-      EQ_REDIS_HOST: "redis"
-    restart: always
-    depends_on:
-      - datastore
-      - redis
-    networks:
-      - eq-env
-    ports:
-      - "5000:5000"
-
-  eq-questionnaire-launcher:
-    image: onsdigital/eq-questionnaire-launcher:latest
-    environment:
-      SURVEY_RUNNER_URL: http://localhost:5000
-      SURVEY_RUNNER_SCHEMA_URL: http://eq-questionnaire-runner:5000
-    restart: always
-    depends_on:
-      - eq-questionnaire-runner
-    networks:
-      - eq-env
-    ports:
-      - "8000:8000"
+    eq-questionnaire-launcher:
+        # https://hub.docker.com/r/onsdigital/eq-questionnaire-launcher/tags?name=specify-node-pool-for-pods
+        # https://github.com/ONSdigital/eq-questionnaire-launcher/pull/24
+        # locally rebuild v3-census image from 3207cf3b5c2f0f53d965f43337b7aca1fd2886ff
+        image: onsdigital/eq-questionnaire-launcher:v3-census
+        environment:
+          SURVEY_RUNNER_URL: http://localhost:5000
+          SURVEY_RUNNER_SCHEMA_URL: http://eq-questionnaire-runner:5000
+        restart: always
+        depends_on:
+          - eq-questionnaire-runner
+        networks:
+          - eq-env
+        ports:
+          - "8000:8000"
 
 
 networks:
