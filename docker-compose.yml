@@ -1,9 +1,8 @@
-version: '3'
-
 services:
 
     datastore:
-        image: localhost/gcloud-datastore-emulator:local
+        # image: localhost/gcloud-datastore-emulator:local
+        image: pricemonsdigital/gcloud-datastore-emulator:2.3.1
         ports:
             - "8432:8432"
         environment:
@@ -18,7 +17,8 @@ services:
             - eq-env
 
     eq-questionnaire-runner:
-        image: onsdigital/eq-questionnaire-runner:v3-census-python-3-11
+        # image: onsdigital/eq-questionnaire-runner:v3-census-python-3-11
+        image: pricemonsdigital/eq-questionnaire-runner:v3-census-python-3-11
         # build: ./
         # cap_add:
           # added for troubleshooting during POC
@@ -41,7 +41,8 @@ services:
         # https://hub.docker.com/r/onsdigital/eq-questionnaire-launcher/tags?name=specify-node-pool-for-pods
         # https://github.com/ONSdigital/eq-questionnaire-launcher/pull/24
         # locally rebuild v3-census image from 3207cf3b5c2f0f53d965f43337b7aca1fd2886ff
-        image: onsdigital/eq-questionnaire-launcher:v3-census
+        # image: onsdigital/eq-questionnaire-launcher:v3-census
+        image: pricemonsdigital/eq-questionnaire-launcher:v3-census
         environment:
           SURVEY_RUNNER_URL: http://localhost:5000
           SURVEY_RUNNER_SCHEMA_URL: http://eq-questionnaire-runner:5000

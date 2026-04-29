@@ -1,4 +1,7 @@
-FROM python:3.11-slim-bookworm
+FROM --platform=$TARGETPLATFORM python:3.11-slim-bookworm
+
+ARG TARGETPLATFORM
+RUN echo "TARGETPLATFORM=${TARGETPLATFORM}"
 
 EXPOSE 5000
 
