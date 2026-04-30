@@ -57,7 +57,7 @@ describe("Feature: Calculated Summary", () => {
     it("Given I complete every question, When i get to the currency summary, Then I should see the correct total", () => {
       // Totals and titles should be shown
       expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryTitle()).getText()).to.contain(
-        "We calculate the total of currency values entered to be £20.71. Is this correct?"
+        "We calculate the total of currency values entered to be £20.71. Is this correct?",
       );
       expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryQuestion()).getText()).to.contain("Grand total of previous values");
       expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryAnswer()).getText()).to.contain("£20.71");
@@ -68,7 +68,7 @@ describe("Feature: Calculated Summary", () => {
       expect($(CurrencyTotalPlaybackPageWithFourth.secondNumberAnswerLabel()).getText()).to.contain("Second answer in currency label");
       expect($(CurrencyTotalPlaybackPageWithFourth.secondNumberAnswer()).getText()).to.contain("£4.56");
       expect($(CurrencyTotalPlaybackPageWithFourth.secondNumberAnswerAlsoInTotalLabel()).getText()).to.contain(
-        "Second answer label also in currency total (optional)"
+        "Second answer label also in currency total (optional)",
       );
       expect($(CurrencyTotalPlaybackPageWithFourth.secondNumberAnswerAlsoInTotal()).getText()).to.contain("£0.12");
       expect($(CurrencyTotalPlaybackPageWithFourth.thirdNumberAnswerLabel()).getText()).to.contain("Third answer label");
@@ -76,7 +76,7 @@ describe("Feature: Calculated Summary", () => {
       expect($(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswerLabel()).getText()).to.contain("Fourth answer label (optional)");
       expect($(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswer()).getText()).to.contain("£9.01");
       expect($(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotalLabel()).getText()).to.contain(
-        "Fourth answer label also in total (optional)"
+        "Fourth answer label also in total (optional)",
       );
       expect($(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotal()).getText()).to.contain("£2.34");
 
@@ -99,7 +99,7 @@ describe("Feature: Calculated Summary", () => {
 
       expect(browser.getUrl()).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
       expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryTitle()).getText()).to.contain(
-        "We calculate the total of currency values entered to be £40.71. Is this correct?"
+        "We calculate the total of currency values entered to be £40.71. Is this correct?",
       );
       expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryAnswer()).getText()).to.contain("£40.71");
     });
@@ -116,7 +116,7 @@ describe("Feature: Calculated Summary", () => {
 
       expect(browser.getUrl()).to.contain(CurrencyTotalPlaybackPageWithFourth.pageName);
       expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryTitle()).getText()).to.contain(
-        "We calculate the total of currency values entered to be £9.36. Is this correct?"
+        "We calculate the total of currency values entered to be £9.36. Is this correct?",
       );
       expect($(CurrencyTotalPlaybackPageWithFourth.calculatedSummaryAnswer()).getText()).to.contain("£9.36");
       expect($(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswer()).getText()).to.contain("No answer provided");
@@ -139,7 +139,7 @@ describe("Feature: Calculated Summary", () => {
       expect($$(CurrencyTotalPlaybackPageWithFourth.fourthNumberAnswer())).to.be.empty;
       expect($$(CurrencyTotalPlaybackPageWithFourth.fourthAndAHalfNumberAnswerAlsoInTotal())).to.be.empty;
       expect($(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryTitle()).getText()).to.contain(
-        "We calculate the total of currency values entered to be £9.36. Is this correct?"
+        "We calculate the total of currency values entered to be £9.36. Is this correct?",
       );
       expect($(CurrencyTotalPlaybackPageSkippedFourth.calculatedSummaryAnswer()).getText()).to.contain("£9.36");
     });
@@ -148,7 +148,7 @@ describe("Feature: Calculated Summary", () => {
       // Totals and titles should be shown
       $(CurrencyTotalPlaybackPageWithFourth.submit()).click();
       expect($(UnitTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
-        "We calculate the total of unit values entered to be 1,467 cm. Is this correct?"
+        "We calculate the total of unit values entered to be 1,467 cm. Is this correct?",
       );
       expect($(UnitTotalPlaybackPage.calculatedSummaryQuestion()).getText()).to.contain("Grand total of previous values");
       expect($(UnitTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("1,467 cm");
@@ -164,7 +164,7 @@ describe("Feature: Calculated Summary", () => {
       // Totals and titles should be shown
       $(UnitTotalPlaybackPage.submit()).click();
       expect($(UnitTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
-        "We calculate the total of percentage values entered to be 79%. Is this correct?"
+        "We calculate the total of percentage values entered to be 79%. Is this correct?",
       );
       expect($(UnitTotalPlaybackPage.calculatedSummaryQuestion()).getText()).to.contain("Grand total of previous values");
       expect($(UnitTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("79%");
@@ -180,7 +180,7 @@ describe("Feature: Calculated Summary", () => {
       // Totals and titles should be shown
       $(UnitTotalPlaybackPage.submit()).click();
       expect($(UnitTotalPlaybackPage.calculatedSummaryTitle()).getText()).to.contain(
-        "We calculate the total of number values entered to be 124.58. Is this correct?"
+        "We calculate the total of number values entered to be 124.58. Is this correct?",
       );
       expect($(UnitTotalPlaybackPage.calculatedSummaryQuestion()).getText()).to.contain("Grand total of previous values");
       expect($(UnitTotalPlaybackPage.calculatedSummaryAnswer()).getText()).to.contain("124.58");

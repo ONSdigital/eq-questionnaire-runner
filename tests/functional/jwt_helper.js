@@ -1,5 +1,5 @@
 import KJUR from "jsrsasign";
-import uuid from "uuid/v1";
+import { v4 as uuidv4 } from "uuid"; // eslint-disable-line import/no-unresolved
 import JSONWebKey from "json-web-key";
 import jose from "node-jose";
 import crypto from "crypto";
@@ -76,7 +76,7 @@ export function generateToken(
     townName = "",
     postcode = "",
     displayAddress = "",
-  }
+  },
 ) {
   const schemaParts = schemaRegEx.exec(schema);
 
@@ -89,12 +89,12 @@ export function generateToken(
 
   // Payload
   const oPayload = {
-    tx_id: uuid(),
-    jti: uuid(),
+    tx_id: uuidv4(),
+    jti: uuidv4(),
     iat: KJUR.jws.IntDate.get("now"),
     exp: KJUR.jws.IntDate.get("now") + 1800,
     user_id: userId,
-    case_id: uuid(),
+    case_id: uuidv4(),
     ru_ref: "12346789012A",
     response_id: responseId,
     questionnaire_id: questionnaireId,

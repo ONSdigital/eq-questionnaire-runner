@@ -1,4 +1,4 @@
-import checkPeopleInList from "../helpers";
+import { checkPeopleInList } from "../helpers";
 import AnyoneLiveAtListCollector from "../generated_pages/answer_action_redirect_to_list_add_block_radio/anyone-else-live-at.page";
 import AnyoneLiveAtListCollectorAddPage from "../generated_pages/answer_action_redirect_to_list_add_block_radio/anyone-else-live-at-add.page";
 import AnyoneLiveAtListCollectorRemovePage from "../generated_pages/answer_action_redirect_to_list_add_block_radio/anyone-else-live-at-remove.page";

@@ -1,4 +1,4 @@
-import checkPeopleInList from "../helpers";
+import { checkPeopleInList } from "../helpers";
 import AnotherListCollectorPage from "../generated_pages/list_collector/another-list-collector-block.page.js";
 import AnotherListCollectorAddPage from "../generated_pages/list_collector/another-list-collector-block-add.page.js";
 import AnotherListCollectorEditPage from "../generated_pages/list_collector/another-list-collector-block-edit.page.js";

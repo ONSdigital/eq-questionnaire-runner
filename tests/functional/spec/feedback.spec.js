@@ -27,7 +27,7 @@ describe("Feedback", () => {
       expect(browser.getUrl()).to.contain(FeedbackPage.pageName);
       expect($(FeedbackPage.errorPanel()).isExisting()).to.be.true;
       expect($(FeedbackPage.errorPanel()).getText()).to.contain(
-        "There are 2 problems with your feedback\nSelect what your feedback is about\nEnter your feedback"
+        "There are 2 problems with your feedback\nSelect what your feedback is about\nEnter your feedback",
       );
     });
 

@@ -132,79 +132,142 @@ Or set the `GOOGLE_CLOUD_PROJECT` environment variable to your gcp project id.
 
 ## Frontend Tests
 
-The frontend tests use NodeJS to run. You will need to have node version 12.X to run these tests. To do this, do the following commands:
-
+The frontend tests use NodeJS to run. To handle different versions of NodeJS it is recommended to install `Node Version Manager` (`nvm`). It is similar to pyenv but for Node versions.
+To install `nvm` use the command below (make sure to replace "v0.39.5" with the current latest version in [releases](https://github.com/nvm-sh/nvm/releases/):
+``` shell
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
 ```
-brew install nvm
-nvm install 12
-nvm use 12
-```
+You will need to have the correct node version installed to run the tests. To do this, use the following commands:
 
-Install yarn with:
-
-```
-npm i -g yarn
+``` shell
+nvm install
+nvm use
 ```
 
 Fetch npm dependencies:
 
+``` shell
+npm install
 ```
-yarn
+
+**IMPORTANT NOTE 30 April 2027:** For the Census Test 2027, the historical `v3-census` tag of the runner app is being upgraded to closer align with the `v14.x` version of runner. This has included;
+- node v8.16.0 to v22.15.0
+- migrate from yarn to native npm
+- WebdriverIO from v6 sync WDIO to v9 async WDIO
+
+As such, while some exemplar functional tests have also been migrated to the new WebdriverIO v9 async format, there are still some tests that are in the process of being migrated. The test suite will only be fully runnable once the migration is complete.
+
+The `migrated` suite is an explicit list in `tests/functional/wdio.conf.cjs` of the functional specs that have already been converted to async WDIO and validated. Extend that suite as more specs are migrated.
+
+```bash
+make test-functional-spec SPEC=migrated
+````
+
+```bash
+migrated: [
+           "./spec/checkbox.spec.js",
+           "./spec/census_thank_you.spec.js",
+           "./spec/confirmation_email.spec.js",
+           "./spec/list_collector_variants.spec.js",
+           "./spec/my_account_header_link.spec.js",
+           "./spec/relationships-unrelated.spec.js",
+           "./spec/skip_conditions_not_set.spec.js",
+],
+```
+individual migrated tests can be run
+```bash
+make test-functional-spec SPEC=checkbox
+make test-functional-spec SPEC=census_thank_you
+make test-functional-spec SPEC=confirmation_email
+make test-functional-spec SPEC=list_collector_variants
+make test-functional-spec SPEC=my_account_header_link
+make test-functional-spec SPEC=relationships-unrelated
+make test-functional-spec SPEC=skip_conditions_not_set
 ```
 
 Available commands:
 
-| Command                | Task                                                                                                      |
-| ---------------------- | --------------------------------------------------------------------------------------------------------- |
-| `yarn test_functional` | Runs the functional tests through Webdriver (requires app running on localhost:5000 and generated pages). |
-| `yarn generate_pages`  | Generates the functional test pages.                                                                      |
-| `yarn lint`            | Lints the JS, reporting errors/warnings.                                                                  |
-| `yarn format`          | Format the json schemas.                                                                                  |
+| Command                | Task                                                                                                                                                                     |
+|------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `make test-functional` | **WILL FAIL UNTIL ALL TESTS MIGRATED FROM SYNC TO ASYNC**<br />Runs the functional tests through Webdriver (requires app running on localhost:5000 and generated pages). |
+| `make generate-pages`  | Generates the functional test pages.                                                                                                                                     |
+| `make lint-js`         | Lints the JS, reporting errors/warnings.                                                                                                                                 |
+| `make format-js`       | Format the json schemas.                                                                                                                                                 |
 
 ---
 
 ### Development with functional tests
 
-The tests are written using [WebdriverIO](https://webdriver.io/docs), [Chai](https://www.chaijs.com/), and [Mocha](https://mochajs.org/)
+The tests are written using [WebdriverIO](https://webdriver.io/docs/gettingstarted), [Chai](https://www.chaijs.com/), and [Mocha](https://mochajs.org/)
 
 ### Functional test options
 
 The functional tests use a set of selectors that are generated from each of the test schemas. These make it quick to add new functional tests.
 
-To run the functional tests run :
+To run the functional tests first runner needs to be spin up with:
 
-`make test-functional`
+``` shell
+RUNNER_ENV_FILE=.functional-tests.env make run
+```
+
+This will set the correct environment variables for running the functional tests.
+
+Then you can run either:
+
+``` shell
+make test-functional
+```
+or
+
+``` shell
+make test-functional-headless
+```
 
 This will delete the `tests/functional/generated_pages` directory and regenerate all the files in it from the schemas.
 
-You can also individually run the `generate_pages` and `test_functional` yarn scripts:
-
-`yarn generate_pages; yarn test_functional`
-
 To generate the pages manually you can run the `generate_pages` scripts with the schema directory. Run it from the `tests/functional` directory as follows:
 
-`./generate_pages.py ../../test_schemas/en/ ./generated_pages -r "../../base_pages"`
+``` shell
+./generate_pages.py ../../schemas/test/en/ ./generated_pages -r "../../base_pages"
+```
 
-To generate a spec file with the imports included, you can use the `generate_pages.py` script on a single schema with the `-s` argument.
-
-`./generate_pages.py ../../test_schemas/en/test_multiple_piping.json ./temp_directory -r "../../base_pages" -s spec/test_multiple_piping.spec.js`
+To generate a spec file with the imports included, you can pass the schema name as an argument without the file extension, e.g. `SCHEMA=test_address`:
+``` shell
+make generate-spec SCHEMA=<schema-name>
+```
 
 If you have already built the generated pages, then the functional tests can be executed with:
 
-`yarn test_functional`
+``` shell
+make test-functional
+```
 
-This can be limited to a single spec using:
+This can be limited to a single spec where argument needed is the remainder of the path after `./tests/functional/spec/` (which is included in the command):
 
-`./node_modules/.bin/wdio tests/functional/wdio.conf.js --spec tests/functional/spec/save_sign_out.spec.js`
+``` shell
+make test-functional-spec SPEC=<spec>
+```
 
 To run a single test, add `.only` into the name of any `describe` or `it` function:
 
 `describe.only('Skip Conditions', function() {...}` or
+
 `it.only('Given this is a test', function() {...}`
+
+Test suites are configured in the `wdio.conf.cjs` file.
+An individual test suite can be run using the suite names as the argument to this command. The suites that can be used with command below are:
+* features
+* components
+* migrated (from sync WDIO to async WDIO)
+``` shell
+make test-functional-suite SUITE=<suite>
+```
 
 To run the tests against a remote deployment you will need to specify the environment variable of EQ_FUNCTIONAL_TEST_ENV eg:
 
-`EQ_FUNCTIONAL_TEST_ENV=https://staging-new-surveys.dev.eq.ons.digital/ yarn test_functional`
+``` shell
+EQ_FUNCTIONAL_TEST_ENV=https://staging-new-surveys.dev.eq.ons.digital/ npm run test_functional
+```
 
 ---
 ## Deploying

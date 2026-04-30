@@ -15,6 +15,9 @@ load-design-system-templates:
 build: load-design-system-templates
 	make translate
 
+generate-pages:
+	npm run generate_pages
+
 lint: lint-python
 	yarn lint
 
@@ -34,8 +37,23 @@ test:
 test-unit:
 	pipenv run ./scripts/run_tests_unit.sh
 
-test-functional:
-	pipenv run ./scripts/run_tests_functional.sh
+test-functional: generate-pages
+	npm run test_functional
+
+test-functional-headless: generate-pages
+	EQ_RUN_FUNCTIONAL_TESTS_HEADLESS='True' make test-functional
+
+test-functional-spec: generate-pages
+	npm run test_functional -- --spec=./tests/functional/spec/$(SPEC)
+
+test-functional-suite: generate-pages
+	npm run test_functional -- --suite=$(SUITE)
+
+lint-js:
+	npm run lint
+
+format-js:
+	npm run format
 
 validate-test-schemas:
 	pipenv run ./scripts/validate_test_schemas.sh
