@@ -77,7 +77,7 @@ google-cloud-core = "2.4.3"
 google-auth = "2.43.0"
 cryptography = "46.0.7"
 [requires]
-python_version = "3.11" # latest: python = "^3.13.5"
+python_version = "3.12" # latest: python = "^3.13.5"
 
 [pipenv]
 allow_prereleases = false

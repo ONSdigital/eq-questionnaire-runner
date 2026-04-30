@@ -17,8 +17,8 @@ services:
             - eq-env
 
     eq-questionnaire-runner:
-        # image: onsdigital/eq-questionnaire-runner:v3-census-python-3-11
-        image: pricemonsdigital/eq-questionnaire-runner:v3-census-python-3-11
+        # image: onsdigital/eq-questionnaire-runner:v3-census-python-3-12
+        image: pricemonsdigital/eq-questionnaire-runner:v3-census-python-3-12
 #        build: ./
 #        cap_add:
 #          # added for troubleshooting during POC
