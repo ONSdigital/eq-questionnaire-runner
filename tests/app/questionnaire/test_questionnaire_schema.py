@@ -46,6 +46,11 @@ def test_get_sections(single_question_schema):
     schema = QuestionnaireSchema(single_question_schema)
     assert len(schema.get_sections()) == 1
 
+def test_get_survey_and_form_type():
+    schema = QuestionnaireSchema({"survey": "census", "form_type": "H"})
+
+    assert schema.survey == "census"
+    assert schema.form_type == "H"
 
 def test_get_section(single_question_schema):
     schema = QuestionnaireSchema(single_question_schema)

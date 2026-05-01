@@ -1,4 +1,4 @@
-FROM --platform=$TARGETPLATFORM python:3.12-slim-bookworm
+FROM --platform=$TARGETPLATFORM python:3.13-slim-bookworm
 
 ARG TARGETPLATFORM
 RUN echo "TARGETPLATFORM=${TARGETPLATFORM}"

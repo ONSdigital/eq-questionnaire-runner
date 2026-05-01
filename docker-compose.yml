@@ -1,5 +1,4 @@
 services:
-
     datastore:
         # image: localhost/gcloud-datastore-emulator:local
         image: pricemonsdigital/gcloud-datastore-emulator:2.3.1
@@ -15,10 +14,9 @@ services:
             - "6379:6379"
         networks:
             - eq-env
-
     eq-questionnaire-runner:
-        # image: onsdigital/eq-questionnaire-runner:v3-census-python-3-12
-        image: pricemonsdigital/eq-questionnaire-runner:v3-census-python-3-12
+        # image: onsdigital/eq-questionnaire-runner:v3-census-python-3-13
+        image: pricemonsdigital/eq-questionnaire-runner:v3-census-python-3-13
 #        build: ./
 #        cap_add:
 #          # added for troubleshooting during POC
@@ -56,9 +54,6 @@ services:
           ADDRESS_LOOKUP_API_URL: "https://whitelodge-ai-api.census-gcp.onsdigital.uk"
           COOKIE_SETTINGS_URL: "#"
           EQ_SUBMISSION_CONFIRMATION_BACKEND: "log"
-
-
-
         restart: always
         depends_on:
           - datastore
@@ -67,7 +62,6 @@ services:
           - eq-env
         ports:
           - "5000:5000"
-
     eq-questionnaire-launcher:
         # https://hub.docker.com/r/onsdigital/eq-questionnaire-launcher/tags?name=specify-node-pool-for-pods
         # https://github.com/ONSdigital/eq-questionnaire-launcher/pull/24
@@ -84,8 +78,6 @@ services:
           - eq-env
         ports:
           - "8000:8000"
-
-
 networks:
   eq-env:
     driver: bridge
