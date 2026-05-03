@@ -160,7 +160,7 @@ As such, while some exemplar functional tests have also been migrated to the new
 The `migrated` suite is an explicit list in `tests/functional/wdio.conf.cjs` of the functional specs that have already been converted to async WDIO and validated. Extend that suite as more specs are migrated.
 
 ```bash
-make test-functional-spec SPEC=migrated
+make test-functional-suite SUITE=migrated
 ````
 
 ```bash
