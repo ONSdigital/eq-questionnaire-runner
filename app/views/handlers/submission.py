@@ -23,13 +23,6 @@ class SubmissionHandler:
 
         payload = self.get_payload()
         message = json.dumps(payload, for_json=True)
-        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-        filename = (f"{timestamp}_{payload["collection"]["schema_name"]}"
-                    f"_{self._schema.survey}_"
-                    f"{self._schema.form_type}_"
-                    f"{self._schema.region_code}.json")
-        with open(filename, "w") as text_file:
-            text_file.write(message)
         encrypted_message = encrypt(
             message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION
         )
