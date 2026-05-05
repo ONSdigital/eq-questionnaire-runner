@@ -1,4 +1,4 @@
-{% from "components/input/_macro.njk" import onsInput %}
+{% from "macros/_macro.njk" import onsInput %}
 
 {% set input = form.fields[answer['id']] %}
 {# djlint:off #}
@@ -14,7 +14,8 @@
         "value": input._value() | e,
         "name": answer.id,
         "attributes": {
-            "data-qa": "input-text"
+            "data-qa": "input-text",
+            "inputmode": "decimal",
         },
         "dontWrap": true if mutuallyExclusive else false,
         "mutuallyExclusive": mutuallyExclusive,
