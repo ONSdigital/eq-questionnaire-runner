@@ -17,14 +17,18 @@ ENV WEB_SERVER_UWSGI_ASYNC_CORES 10
 ENV HTTP_KEEP_ALIVE 2
 ENV GUNICORN_CMD_ARGS -c gunicorn_config.py
 
-COPY Pipfile Pipfile
+COPY pyproject.toml pyproject.toml
 # POC from arm64 Mac so don't use my lock file
-# COPY Pipfile.lock Pipfile.lock
+# COPY poetry.lock poetry.lock
 
 RUN groupadd -r appuser && useradd -r -g appuser -u 9000 appuser && chown -R appuser:appuser .
 # RUN pip install pipenv==2018.11.26 && pipenv install --deploy --system && \
 # let it recreate lock file while POC and don't translate
-RUN pip install pipenv==2023.12.1 && pipenv install --system
+# RUN pip install pipenv==2023.12.1 && pipenv install --system
+RUN pip install "poetry==2.1.2" && \
+    poetry config virtualenvs.create false && \
+    poetry install --only main
+
 RUN make load-schemas
 # ...the github release only exists for 32.1.3-census
 # https://github.com/ONSdigital/design-system/releases/tag/32.1.3-census
