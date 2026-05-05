@@ -23,7 +23,6 @@ class SubmissionHandler:
 
         payload = self.get_payload()
         message = json.dumps(payload, for_json=True)
-
         encrypted_message = encrypt(
             message, current_app.eq["key_store"], KEY_PURPOSE_SUBMISSION
         )

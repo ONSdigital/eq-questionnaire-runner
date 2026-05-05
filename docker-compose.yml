@@ -1,48 +1,83 @@
-version: '3'
-
 services:
-
-  datastore:
-    image: knarz/datastore-emulator
-    networks:
-      - eq-env
-
-  redis:
-    image: redis:4
-    networks:
-      - eq-env
-
-  eq-questionnaire-runner:
-    image: onsdigital/eq-questionnaire-runner:v3-census-latest
-    build: ./
-    env_file:
-      - .development.env
-    environment:
-      DATASTORE_EMULATOR_HOST: datastore:8432
-      EQ_REDIS_HOST: "redis"
-    restart: always
-    depends_on:
-      - datastore
-      - redis
-    networks:
-      - eq-env
-    ports:
-      - "5000:5000"
-
-  eq-questionnaire-launcher:
-    image: onsdigital/eq-questionnaire-launcher:latest
-    environment:
-      SURVEY_RUNNER_URL: http://localhost:5000
-      SURVEY_RUNNER_SCHEMA_URL: http://eq-questionnaire-runner:5000
-    restart: always
-    depends_on:
-      - eq-questionnaire-runner
-    networks:
-      - eq-env
-    ports:
-      - "8000:8000"
-
-
+    datastore:
+        # image: localhost/gcloud-datastore-emulator:local
+        image: pricemonsdigital/gcloud-datastore-emulator:2.3.1
+        ports:
+            - "8432:8432"
+        environment:
+            - CLOUDSDK_CORE_PROJECT=local
+        networks:
+            - eq-env
+    redis:
+        image: redis:8.2.2
+        ports:
+            - "6379:6379"
+        networks:
+            - eq-env
+    eq-questionnaire-runner:
+        # image: onsdigital/eq-questionnaire-runner:v3-census-python-3-13
+        image: pricemonsdigital/eq-questionnaire-runner:v3-census-python-3-13
+#        build: ./
+#        cap_add:
+#          # added for troubleshooting during POC
+#          - NET_RAW
+#        env_file:
+#          - .development.env
+        environment:
+          DATASTORE_EMULATOR_HOST: "datastore:8432"
+          EQ_REDIS_HOST: "redis"
+          FLASK_APP: "application.py"
+          FLASK_ENV: "development"
+          EQ_QUESTIONNAIRE_STATE_TABLE_NAME: "dev-questionnaire-state"
+          EQ_SESSION_TABLE_NAME: "dev-eq-session"
+          EQ_USED_JTI_CLAIM_TABLE_NAME: "dev-used-jti-claim"
+          EQ_ENABLE_SECURE_SESSION_COOKIE: "False"
+          EQ_ENABLE_LIVE_RELOAD: "True"
+          EQ_SUBMISSION_BACKEND: "log"
+          EQ_FEEDBACK_BACKEND: "log"
+          EQ_PUBLISHER_BACKEND: "log"
+          EQ_STORAGE_BACKEND: "datastore"
+          DATASTORE_DATASET: "local"
+          EQ_REDIS_PORT: 6379
+          EQ_NEW_RELIC_ENABLED: "False"
+          EQ_SECRETS_FILE: "dev-secrets.yml"
+          EQ_KEYS_FILE: "dev-keys.yml"
+          EQ_INDIVIDUAL_RESPONSE_POSTAL_DEADLINE: "2021-04-28T14:00:00+00:00"
+          AWS_DEFAULT_REGION: "eu-west-1"
+          HTTP_KEEP_ALIVE: 2
+          GUNICORN_CMD_ARGS: "-c gunicorn_config.py"
+          WEB_SERVER_WORKERS: 3
+          WEB_SERVER_THREADS: 10
+          WEB_SERVER_UWSGI_ASYNC_CORES: 10
+          CDN_URL: "https://cdn.eq.gcp.onsdigital.uk"
+          CDN_ASSETS_PATH: "/design-system"
+          ADDRESS_LOOKUP_API_URL: "https://whitelodge-ai-api.census-gcp.onsdigital.uk"
+          COOKIE_SETTINGS_URL: "#"
+          EQ_SUBMISSION_CONFIRMATION_BACKEND: "log"
+        restart: always
+        depends_on:
+          - datastore
+          - redis
+        networks:
+          - eq-env
+        ports:
+          - "5000:5000"
+    eq-questionnaire-launcher:
+        # https://hub.docker.com/r/onsdigital/eq-questionnaire-launcher/tags?name=specify-node-pool-for-pods
+        # https://github.com/ONSdigital/eq-questionnaire-launcher/pull/24
+        # locally rebuild v3-census image from 3207cf3b5c2f0f53d965f43337b7aca1fd2886ff
+        # image: onsdigital/eq-questionnaire-launcher:v3-census
+        image: pricemonsdigital/eq-questionnaire-launcher:v3-census
+        environment:
+          SURVEY_RUNNER_URL: http://localhost:5000
+          SURVEY_RUNNER_SCHEMA_URL: http://eq-questionnaire-runner:5000
+        restart: always
+        depends_on:
+          - eq-questionnaire-runner
+        networks:
+          - eq-env
+        ports:
+          - "8000:8000"
 networks:
   eq-env:
     driver: bridge

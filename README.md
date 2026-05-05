@@ -1,8 +1,13 @@
 # eQ Questionnaire Runner
 
-![Build Status](https://github.com/ONSdigital/eq-questionnaire-runner/workflows/Master/badge.svg)
-[![codecov](https://codecov.io/gh/ONSdigital/eq-questionnaire-runner/branch/master/graph/badge.svg)](https://codecov.io/gh/ONSdigital/eq-questionnaire-runner/branch/master)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4c39ddd3285748f8bfb6b70fd5aaf9cc)](https://www.codacy.com/manual/ONSDigital/eq-questionnaire-runner?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ONSdigital/eq-questionnaire-runner&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://github.com/ONSdigital/eq-questionnaire-runner/actions/workflows/main.yml/badge.svg)](https://github.com/ONSdigital/eq-questionnaire-runner/actions/workflows/main.yml)
+[![Build Status](https://github.com/ONSdigital/eq-questionnaire-runner/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/ONSdigital/eq-questionnaire-runner/actions/workflows/codeql-analysis.yml)
+![Coverage](https://img.shields.io/badge/Coverage-100%25-2FC050.svg)
+
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
+[![poetry-managed](https://img.shields.io/badge/poetry-managed-blue)](https://python-poetry.org/)
+[![License - MIT](https://img.shields.io/badge/licence%20-MIT-1ac403.svg)](https://github.com/ONSdigital/eq-questionnaire-runner/blob/v3-census-upgrade-python/LICENSE)
 
 
 ## Run with Docker
@@ -34,26 +39,77 @@ docker-compose build --no-cache
 
 ## Run locally
 
+### Clone the repository
+
+``` shell
+git clone git@github.com:ONSdigital/eq-questionnaire-runner.git
+```
+
 ### Pre-Requisites
 
-In order to run locally you'll need Node.js, snappy, pyenv, jq and Jsonnet installed
+In order to run locally you'll need Node.js, snappy, pyenv, jq and wkhtmltopdf installed
 
-```
-brew install snappy npm pyenv jsonnet jq
+``` shell
+brew install snappy npm pyenv jq wkhtmltopdf
 ```
 
 ### Setup
+
+#### Application version
+
+Create `.application-version` for local development
+
+This file is automatically created and populated with the git revision id during CI for anything other than development,
+but the file is absent when the repo is first cloned and is required for running the app locally. Setting the contents
+to `local` removes the implication that any particular revision is used when run locally.
+
+``` shell
+echo "local" > .application-version
+```
+#### Python version
 
 It is preferable to use the version of Python locally that matches that
 used on deployment. This project has a `.python_version` file for this
 purpose.
 
-Upgrade pip and install dependencies:
+#### Pyenv
 
+It is recommended to install the `pyenv` Python version management tool to easily switch between Python versions.
+To install `pyenv` use this command:
+```shell
+curl https://pyenv.run | bash
 ```
+After the installation it should tell you to execute a command to add `pyenv` to path. It should look something like this:
+```shell
+export PYENV_ROOT="$HOME/.pyenv"
+
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+
+eval "$(pyenv init -)"
+```
+Python versions can be changed with the `pyenv local` or `pyenv global` commands suffixed with the desired version (e.g. 3.13.5). Different versions of Python can be installed first with the `pyenv install` command. Refer to the pyenv project Readme [here](https://github.com/pyenv/pyenv). To avoid confusion, check the current Python version at any given time using `python --version` or `python3 --version`.
+
+#### Python & dependencies
+
+Inside the project directory install python version, upgrade pip:
+
+``` shell
 pyenv install
-pip install --upgrade pip setuptools pipenv
-pipenv install --dev
+pip install --upgrade pip setuptools
+```
+
+Install poetry, poetry dotenv plugin and install dependencies:
+
+``` shell
+curl -sSL https://install.python-poetry.org | python3 - --version 2.1.2
+poetry self add poetry-plugin-dotenv
+poetry install
+```
+
+We use [poetry-plugin-up](https://github.com/MousaZeidBaker/poetry-plugin-up) to update dependencies in the `pyproject.toml` file:
+
+``` shell
+poetry self add poetry-plugin-up
 ```
 
 To update the design system templates run:
@@ -62,7 +118,7 @@ To update the design system templates run:
 make load-design-system-templates
 ```
 
-Run the server inside the virtual env created by Pipenv with:
+Run the server inside the virtual env created by Poetry with:
 
 ```
 make run
@@ -132,79 +188,142 @@ Or set the `GOOGLE_CLOUD_PROJECT` environment variable to your gcp project id.
 
 ## Frontend Tests
 
-The frontend tests use NodeJS to run. You will need to have node version 12.X to run these tests. To do this, do the following commands:
-
+The frontend tests use NodeJS to run. To handle different versions of NodeJS it is recommended to install `Node Version Manager` (`nvm`). It is similar to pyenv but for Node versions.
+To install `nvm` use the command below (make sure to replace "v0.39.5" with the current latest version in [releases](https://github.com/nvm-sh/nvm/releases/):
+``` shell
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
 ```
-brew install nvm
-nvm install 12
-nvm use 12
-```
+You will need to have the correct node version installed to run the tests. To do this, use the following commands:
 
-Install yarn with:
-
-```
-npm i -g yarn
+``` shell
+nvm install
+nvm use
 ```
 
 Fetch npm dependencies:
 
+``` shell
+npm install
 ```
-yarn
+
+**IMPORTANT NOTE 30 April 2027:** For the Census Test 2027, the historical `v3-census` tag of the runner app is being upgraded to closer align with the `v14.x` version of runner. This has included;
+- node v8.16.0 to v22.15.0
+- migrate from yarn to native npm
+- WebdriverIO from v6 sync WDIO to v9 async WDIO
+
+As such, while some exemplar functional tests have also been migrated to the new WebdriverIO v9 async format, there are still some tests that are in the process of being migrated. The test suite will only be fully runnable once the migration is complete.
+
+The `migrated` suite is an explicit list in `tests/functional/wdio.conf.cjs` of the functional specs that have already been converted to async WDIO and validated. Extend that suite as more specs are migrated.
+
+```bash
+make test-functional-suite SUITE=migrated
+````
+
+```bash
+migrated: [
+           "./spec/checkbox.spec.js",
+           "./spec/census_thank_you.spec.js",
+           "./spec/confirmation_email.spec.js",
+           "./spec/list_collector_variants.spec.js",
+           "./spec/my_account_header_link.spec.js",
+           "./spec/relationships-unrelated.spec.js",
+           "./spec/skip_conditions_not_set.spec.js",
+],
+```
+individual migrated tests can be run
+```bash
+make test-functional-spec SPEC=checkbox
+make test-functional-spec SPEC=census_thank_you
+make test-functional-spec SPEC=confirmation_email
+make test-functional-spec SPEC=list_collector_variants
+make test-functional-spec SPEC=my_account_header_link
+make test-functional-spec SPEC=relationships-unrelated
+make test-functional-spec SPEC=skip_conditions_not_set
 ```
 
 Available commands:
 
-| Command                | Task                                                                                                      |
-| ---------------------- | --------------------------------------------------------------------------------------------------------- |
-| `yarn test_functional` | Runs the functional tests through Webdriver (requires app running on localhost:5000 and generated pages). |
-| `yarn generate_pages`  | Generates the functional test pages.                                                                      |
-| `yarn lint`            | Lints the JS, reporting errors/warnings.                                                                  |
-| `yarn format`          | Format the json schemas.                                                                                  |
+| Command                | Task                                                                                                                                                                     |
+|------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `make test-functional` | **WILL FAIL UNTIL ALL TESTS MIGRATED FROM SYNC TO ASYNC**<br />Runs the functional tests through Webdriver (requires app running on localhost:5000 and generated pages). |
+| `make generate-pages`  | Generates the functional test pages.                                                                                                                                     |
+| `make lint-js`         | Lints the JS, reporting errors/warnings.                                                                                                                                 |
+| `make format-js`       | Format the json schemas.                                                                                                                                                 |
 
 ---
 
 ### Development with functional tests
 
-The tests are written using [WebdriverIO](https://webdriver.io/docs), [Chai](https://www.chaijs.com/), and [Mocha](https://mochajs.org/)
+The tests are written using [WebdriverIO](https://webdriver.io/docs/gettingstarted), [Chai](https://www.chaijs.com/), and [Mocha](https://mochajs.org/)
 
 ### Functional test options
 
 The functional tests use a set of selectors that are generated from each of the test schemas. These make it quick to add new functional tests.
 
-To run the functional tests run :
+To run the functional tests first runner needs to be spin up with:
 
-`make test-functional`
+``` shell
+RUNNER_ENV_FILE=.functional-tests.env make run
+```
+
+This will set the correct environment variables for running the functional tests.
+
+Then you can run either:
+
+``` shell
+make test-functional
+```
+or
+
+``` shell
+make test-functional-headless
+```
 
 This will delete the `tests/functional/generated_pages` directory and regenerate all the files in it from the schemas.
 
-You can also individually run the `generate_pages` and `test_functional` yarn scripts:
-
-`yarn generate_pages; yarn test_functional`
-
 To generate the pages manually you can run the `generate_pages` scripts with the schema directory. Run it from the `tests/functional` directory as follows:
 
-`./generate_pages.py ../../test_schemas/en/ ./generated_pages -r "../../base_pages"`
+``` shell
+./generate_pages.py ../../schemas/test/en/ ./generated_pages -r "../../base_pages"
+```
 
-To generate a spec file with the imports included, you can use the `generate_pages.py` script on a single schema with the `-s` argument.
-
-`./generate_pages.py ../../test_schemas/en/test_multiple_piping.json ./temp_directory -r "../../base_pages" -s spec/test_multiple_piping.spec.js`
+To generate a spec file with the imports included, you can pass the schema name as an argument without the file extension, e.g. `SCHEMA=test_address`:
+``` shell
+make generate-spec SCHEMA=<schema-name>
+```
 
 If you have already built the generated pages, then the functional tests can be executed with:
 
-`yarn test_functional`
+``` shell
+make test-functional
+```
 
-This can be limited to a single spec using:
+This can be limited to a single spec where argument needed is the remainder of the path after `./tests/functional/spec/` (which is included in the command):
 
-`./node_modules/.bin/wdio tests/functional/wdio.conf.js --spec tests/functional/spec/save_sign_out.spec.js`
+``` shell
+make test-functional-spec SPEC=<spec>
+```
 
 To run a single test, add `.only` into the name of any `describe` or `it` function:
 
 `describe.only('Skip Conditions', function() {...}` or
+
 `it.only('Given this is a test', function() {...}`
+
+Test suites are configured in the `wdio.conf.cjs` file.
+An individual test suite can be run using the suite names as the argument to this command. The suites that can be used with command below are:
+* features
+* components
+* migrated (from sync WDIO to async WDIO)
+``` shell
+make test-functional-suite SUITE=<suite>
+```
 
 To run the tests against a remote deployment you will need to specify the environment variable of EQ_FUNCTIONAL_TEST_ENV eg:
 
-`EQ_FUNCTIONAL_TEST_ENV=https://staging-new-surveys.dev.eq.ons.digital/ yarn test_functional`
+``` shell
+EQ_FUNCTIONAL_TEST_ENV=https://staging-new-surveys.dev.eq.ons.digital/ npm run test_functional
+```
 
 ---
 ## Deploying
@@ -392,6 +511,29 @@ Refer to our [profiling document](doc/profiling.md).
 
 ## Updating / Installing dependencies
 
-To add a new dependency, use `pipenv install [package-name]`, which not only installs the package but Pipenv will also go to the trouble of updating the Pipfile as well.
+### Python
+To add a new dependency, use:
+``` shell
+poetry add [package-name]
+```
+This will add the required packages to your pyproject.toml and install them
 
-NB: both the Pipfile and Pipfile.lock files are required in source control to accurately pin dependencies.
+To update a dependency, use:
+```shell
+poetry update [package-name]
+```
+This will resolve the required dependencies of the project and write the exact versions into poetry.lock
+
+Using the poetry up plugin we can update dependencies and bump their versions in the pyproject.toml file
+
+To update dependencies to the latest compatible version with respect to their version constraints specified in the pyproject.toml file:
+```shell
+poetry up
+```
+
+To update dependencies to their latest compatible version:
+```shell
+poetry up --latest
+```
+
+NB: both the pyproject.toml and poetry.lock files are required in source control to accurately pin dependencies.

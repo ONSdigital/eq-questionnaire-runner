@@ -95,7 +95,7 @@ class RunnerMetadataSchema(Schema, StripWhitespaceMixin):
 
     # The following three parameters can be removed after Census
     survey = VALIDATORS["string"](
-        required=False, validate=validate.OneOf(("CENSUS", "CCS")), missing="CENSUS"
+        required=False, validate=validate.OneOf(("CENSUS", "CCS")), load_default="CENSUS" # missing="CENSUS" changed in marshmallow >4
     )  # type:ignore
     form_type = VALIDATORS["string"](
         required=False, validate=validate.OneOf(("H", "I", "C"))
