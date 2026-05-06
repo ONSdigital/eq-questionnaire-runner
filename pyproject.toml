@@ -86,12 +86,12 @@ gevent = "^25.9.1"
 babel = "==2.14.0"  # Temporarily pinned - problem for translations found in v2.15.0, see: https://github.com/ONSdigital/eq-questionnaire-runner/pull/1384
 wtforms = "^3.2.1"
 htmlmin2 = "^0.1.13"
-werkzeug = "3.1.5"
-cryptography = "46.0.7"
-jwcrypto = "1.5.6"
-jinja2 = "3.1.6"
-urllib3 = "2.6.3"
-botocore = "1.37.23"
+werkzeug = "^3.1.5"
+cryptography = "^46.0.7"
+jwcrypto = "^1.5.6"
+jinja2 = "^3.1.6"
+urllib3 = "^2.6.3"
+botocore = "^1.37.23"
 python-dateutil = ">=2.9.0"
 
 [build-system]
