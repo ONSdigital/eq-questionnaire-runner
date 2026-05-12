@@ -67,7 +67,7 @@ GOOGLE_TAG_ID="${GOOGLE_TAG_ID:=}"
 gcloud beta run deploy eq-questionnaire-runner \
     --project="${PROJECT_ID}" --region="${REGION}" --concurrency="${CONCURRENCY}" --min-instances="${MIN_INSTANCES}" --max-instances="${MAX_INSTANCES}" \
     --port=5000 --cpu="${CPU}" --memory="${MEMORY}" \
-    --image="${DOCKER_REGISTRY}/eq-questionnaire-runner:${IMAGE_TAG}" --platform=managed --allow-unauthenticated \
+    --image="${DOCKER_REGISTRY}/census31-eq-questionnaire-runner:${IMAGE_TAG}" --platform=managed --allow-unauthenticated \
     --vpc-connector="redis-vpc" \
     --service-account="cloud-run@${PROJECT_ID}.iam.gserviceaccount.com" \
     --set-secrets EQ_REDIS_HOST="redis-host:latest" \

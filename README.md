@@ -1,13 +1,13 @@
 # eQ Questionnaire Runner
 
-[![Build Status](https://github.com/ONSdigital/eq-questionnaire-runner/actions/workflows/main.yml/badge.svg)](https://github.com/ONSdigital/eq-questionnaire-runner/actions/workflows/main.yml)
-[![Build Status](https://github.com/ONSdigital/eq-questionnaire-runner/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/ONSdigital/eq-questionnaire-runner/actions/workflows/codeql-analysis.yml)
+[![Build Status](https://github.com/ONSdigital/census31-eq-questionnaire-runner/actions/workflows/main.yml/badge.svg)](https://github.com/ONSdigital/census31-eq-questionnaire-runner/actions/workflows/main.yml)
+[![Build Status](https://github.com/ONSdigital/census31-eq-questionnaire-runner/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/ONSdigital/census31-eq-questionnaire-runner/actions/workflows/codeql-analysis.yml)
 ![Coverage](https://img.shields.io/badge/Coverage-100%25-2FC050.svg)
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
 [![poetry-managed](https://img.shields.io/badge/poetry-managed-blue)](https://python-poetry.org/)
-[![License - MIT](https://img.shields.io/badge/licence%20-MIT-1ac403.svg)](https://github.com/ONSdigital/eq-questionnaire-runner/blob/main/LICENSE)
+[![License - MIT](https://img.shields.io/badge/licence%20-MIT-1ac403.svg)](https://github.com/ONSdigital/census31-eq-questionnaire-runner/blob/main/LICENSE)
 
 ## Run with Docker
 
@@ -56,7 +56,7 @@ RUNNER_ENV_FILE=.development.env docker compose build --no-cache
 ### Clone the repository
 
 ``` shell
-git clone git@github.com:ONSdigital/eq-questionnaire-runner.git
+git clone git@github.com:ONSdigital/census31-eq-questionnaire-runner.git
 ```
 
 ### Pre-Requisites
