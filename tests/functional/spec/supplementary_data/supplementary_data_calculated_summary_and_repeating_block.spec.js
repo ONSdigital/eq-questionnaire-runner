@@ -15,7 +15,7 @@ import ThankYouPage from "../../base_pages/thank-you.page";
 import ViewSubmittedResponsePage from "../../generated_pages/supplementary_data_with_introduction_and_calculated_summary/view-submitted-response.page.js";
 
 describe("Using supplementary data", () => {
-  const responseId = getRandomString(16);
+  const responseId = "AJDSLJDSJLJD8320";
   const summaryRowTitles = ".ons-summary__row-title";
 
   before("Starting the survey", async () => {
@@ -113,11 +113,10 @@ describe("Using supplementary data", () => {
     await click(Section1Page.submit());
   });
   it("Given I can view my response after submission, When I submit the survey, Then I see the values I've entered and correct rendering with supplementary data", async () => {
-    const newResponseId = getRandomString(16);
     await browser.openQuestionnaire("test_supplementary_data_with_introduction_and_calculated_summary.json", {
       version: "v2",
       sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
-      newResponseId,
+      responseId
     });
     await click(HubPage.submit());
     await $(ThankYouPage.savePrintAnswersLink()).click();
