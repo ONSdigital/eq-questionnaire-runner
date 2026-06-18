@@ -1,6 +1,6 @@
 services:
     datastore:
-        image: knarz/datastore-emulator
+        image: europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/datastore-emulator:latest
         networks:
             - eq-env
         ports:
