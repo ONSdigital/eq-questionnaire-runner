@@ -3,8 +3,8 @@
     "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
-    "survey_id": "0",
-    "title": "Question Validation Test",
+    "survey_id": "999",
+    "title": "Test Question Title in Error",
     "theme": "default",
     "description": "A questionnaire to test use of the question title in validation",
     "metadata": [

@@ -15,7 +15,7 @@ describe("Thank You Social", () => {
       await click(SubmitPage.submit());
       await click(HubPage.submit());
       await verifyUrlContains(ThankYouPage.pageName);
-      await expect(await $(ThankYouPage.title()).getHTML()).toContain("Thank you for completing the Test Social Survey");
+      await expect(await $(ThankYouPage.title()).getHTML()).toContain("Thank you for completing the Test Theme Social");
       await expect(await $(ThankYouPage.guidance()).getHTML()).toContain("Your answers have been submitted");
       await expect(await $(ThankYouPage.metadata()).getHTML()).toContain("Submitted on:");
       await expect(await $(ThankYouPage.metadata()).getHTML()).not.toContain("Submission reference:");
@@ -34,7 +34,7 @@ describe("Thank You Default", () => {
       await click(SubmitPage.submit());
       await click(HubPage.submit());
       await verifyUrlContains(ThankYouPage.pageName);
-      await expect(await $(ThankYouPage.title()).getHTML()).toContain("Thank you for completing the Question Title Test");
+      await expect(await $(ThankYouPage.title()).getHTML()).toContain("Thank you for completing the Test Title");
       await expect(await $(ThankYouPage.guidance()).getHTML()).toContain("Your answers have been submitted for");
       await expect(await $(ThankYouPage.metadata()).getHTML()).toContain("Submitted on:");
       await expect(await $(ThankYouPage.metadata()).getHTML()).toContain("Submission reference:");

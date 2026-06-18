@@ -3,8 +3,8 @@
     "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
-    "survey_id": "0",
-    "title": "Custom question summary",
+    "survey_id": "999",
+    "title": "Test Custom Question Summary",
     "theme": "default",
     "description": "A questionnaire to demo custom question summaries",
     "metadata": [

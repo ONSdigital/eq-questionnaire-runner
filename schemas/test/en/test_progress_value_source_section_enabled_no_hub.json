@@ -3,8 +3,8 @@
     "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
-    "survey_id": "001",
-    "title": "Test progress value source",
+    "survey_id": "999",
+    "title": "Test Progress Value Source Section Enabled No Hub",
     "theme": "default",
     "description": "A test survey for testing progress value source section enabled in a linear flow",
     "metadata": [

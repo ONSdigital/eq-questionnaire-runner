@@ -115,7 +115,7 @@ def test_submission_payload_structure_v2(
             "case_ref": "1000000000000001",
             "display_address": "68 Abingdon Road, Goathill",
             "user_id": "789473423",
-            "survey_id": "0",
+            "survey_id": "999",
         },
         "submission_language_code": "cy",
         "data": {"answers": [], "lists": []},

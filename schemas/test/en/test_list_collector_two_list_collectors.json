@@ -3,8 +3,8 @@
     "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
-    "survey_id": "0",
-    "title": "Test PrimaryAndTwoListCollectors",
+    "survey_id": "999",
+    "title": "Test List Collector Two List Collectors",
     "theme": "default",
     "description": "A questionnaire to test Primary Person ListCollector and two ListCollectors",
     "metadata": [

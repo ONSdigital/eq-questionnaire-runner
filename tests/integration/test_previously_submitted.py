@@ -15,7 +15,7 @@ class TestPreviouslySubmitted(IntegrationTestCase):
 
         # Then I should receive a 401 unauthorised code and be redirected to the submission complete page
         self.assertStatusUnauthorised()
-        self.assertEqualPageTitle("Submission Complete - Other input fields")
+        self.assertEqualPageTitle("Submission Complete - Test Textfield")
         self.assertInBody("This page is no longer available")
         self.assertInBody("Your survey has been submitted")
         self.assertInBody(f'<a href="{THANK_YOU_URL_PATH}">Return to previous page</a>')

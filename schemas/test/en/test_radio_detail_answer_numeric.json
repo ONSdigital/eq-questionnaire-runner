@@ -3,8 +3,8 @@
     "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
-    "survey_id": "0",
-    "title": "Numeric Radio with other",
+    "survey_id": "999",
+    "title": "Test Radio Detail Answer Numeric",
     "theme": "default",
     "messages": {
         "NUMBER_TOO_LARGE": "Number is too large",

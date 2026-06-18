@@ -3,8 +3,8 @@
     "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
-    "survey_id": "0",
-    "title": "Test schema for routing on multiple selected answers",
+    "survey_id": "999",
+    "title": "Test Routing on Multiple Select",
     "description": "Test schema for routing on multiple selected answers",
     "theme": "default",
     "metadata": [
