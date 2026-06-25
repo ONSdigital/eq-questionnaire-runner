@@ -3,10 +3,10 @@
     "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
-    "survey_id": "0",
+    "survey_id": "999",
     "form_type": "H",
     "region_code": "GB-WLS",
-    "title": "Confirmation email test schema",
+    "title": "Test Confirmation Email",
     "theme": "default",
     "description": "A questionnaire to test confirmation email",
     "metadata": [

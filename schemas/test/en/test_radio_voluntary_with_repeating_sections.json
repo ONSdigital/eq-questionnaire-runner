@@ -3,8 +3,8 @@
     "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
-    "survey_id": "0",
-    "title": "Repeating Section With Voluntary Radio",
+    "survey_id": "999",
+    "title": "Test Voluntary Radio with Repeating Sections",
     "theme": "default",
     "description": "A questionnaire to test clear voluntary radio fields functionality in repeating section",
     "metadata": [

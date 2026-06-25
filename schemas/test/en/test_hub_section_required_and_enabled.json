@@ -3,8 +3,8 @@
     "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
-    "survey_id": "0",
-    "title": "Hub & Spoke required and enabled sections",
+    "survey_id": "999",
+    "title": "Test Hub Section Required and Enabled",
     "theme": "default",
     "description": "A questionnaire to demo hub and spoke required and enabled sections",
     "metadata": [

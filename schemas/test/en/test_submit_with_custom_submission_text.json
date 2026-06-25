@@ -3,8 +3,8 @@
     "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
-    "survey_id": "0",
-    "title": "Submit without summary",
+    "survey_id": "999",
+    "title": "Test Submit with Custom Submission Text",
     "theme": "default",
     "description": "A questionnaire to demo submit without summary.",
     "navigation": {

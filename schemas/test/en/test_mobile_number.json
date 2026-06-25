@@ -3,8 +3,8 @@
     "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
-    "survey_id": "001",
-    "title": "Test mobile number",
+    "survey_id": "999",
+    "title": "Test Mobile Number",
     "theme": "default",
     "description": "A questionnaire to test a mobile number",
     "metadata": [

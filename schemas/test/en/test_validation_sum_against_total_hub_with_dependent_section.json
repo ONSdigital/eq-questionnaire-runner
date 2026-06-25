@@ -3,8 +3,8 @@
     "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
-    "survey_id": "0",
-    "title": "Calculated Question - Total In Separate Section (Hub)",
+    "survey_id": "999",
+    "title": "Test Validation Sum Against Total Hub with Dependent Section",
     "theme": "default",
     "description": "A questionnaire to test calculated question with total in a separate section using the Hub",
     "metadata": [

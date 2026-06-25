@@ -6,7 +6,9 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         # Given, When
         self.launchSurveyV2(schema_name="test_submit_with_custom_submission_text")
         # Then
-        self.assertEqualPageTitle("Introduction - Submit without summary")
+        self.assertEqualPageTitle(
+            "Introduction - Test Submit with Custom Submission Text"
+        )
 
     def test_should_have_question_in_page_title_when_loading_questionnaire(self):
         # Given
@@ -15,7 +17,7 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         self.post(action="start_questionnaire")
         # Then
         self.assertEqualPageTitle(
-            "What is your favourite breakfast food - Submit without summary"
+            "What is your favourite breakfast food - Test Submit with Custom Submission Text"
         )
 
     def test_should_have_question_in_page_title_on_submit_page(self):
@@ -25,7 +27,9 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         self.post(action="start_questionnaire")
         self.post({"breakfast-answer": ""})
         # Then
-        self.assertEqualPageTitle("Submit your questionnaire - Submit without summary")
+        self.assertEqualPageTitle(
+            "Submit your questionnaire - Test Submit with Custom Submission Text"
+        )
 
     def test_should_have_question_in_page_title_on_submit_page_with_summary(self):
         # Given
@@ -34,9 +38,7 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         self.post({"answer": ""})
         self.post({"answer-decimal": ""})
         # Then
-        self.assertEqualPageTitle(
-            "Check your answers and submit - Percentage Field Demo"
-        )
+        self.assertEqualPageTitle("Check your answers and submit - Test Percentage")
 
     def test_should_have_survey_in_page_title_on_thank_you(self):
         # Given
@@ -47,7 +49,7 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         self.post()
         # Then
         self.assertEqualPageTitle(
-            "We’ve received your answers - Submit without summary"
+            "We’ve received your answers - Test Submit with Custom Submission Text"
         )
 
     def test_session_timed_out_page_title(self):
@@ -56,7 +58,9 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         # When
         self.get("/session-expired")
         # Then
-        self.assertEqualPageTitle("Page is not available - Submit without summary")
+        self.assertEqualPageTitle(
+            "Page is not available - Test Submit with Custom Submission Text"
+        )
 
     def test_should_have_content_title_in_page_title_on_interstitial(self):
         # Given
@@ -65,14 +69,14 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         # When
         self.post({"favourite-breakfast": ""})
         # Then
-        self.assertEqualPageTitle("Breakfast interstitial - Interstitial Pages")
+        self.assertEqualPageTitle("Breakfast interstitial - Test Interstitial Page")
 
     def test_html_stripped_from_page_titles(self):
         # Given
         self.launchSurveyV2(schema_name="test_markup")
         # When
         # Then
-        self.assertEqualPageTitle("This is a title with emphasis - Markup test")
+        self.assertEqualPageTitle("This is a title with emphasis - Test Markup")
 
     def test_should_have_question_title_in_page_title_on_question(self):
         # Given
@@ -80,7 +84,7 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         # When
         # Then
         self.assertEqualPageTitle(
-            "Which pizza toppings would you like? - Other input fields"
+            "Which pizza toppings would you like? - Test Checkbox"
         )
 
     def test_should_not_use_names_in_question_page_titles(self):
@@ -92,7 +96,7 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         # When
         self.post({"first-name": "Kevin", "last-name": "Bacon"})
         # Then
-        self.assertEqualPageTitle("What is … date of birth? - Placeholder Test")
+        self.assertEqualPageTitle("What is … date of birth? - Test Placeholder Full")
 
     def test_content_page_should_use_nested_content_text_in_page_title_if_it_exists(
         self,
@@ -101,7 +105,7 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         self.launchSurveyV2(schema_name="test_interstitial_page_title")
         # When
         # Then
-        self.assertEqualPageTitle("Your RU name: … - Interstitial Page Titles")
+        self.assertEqualPageTitle("Your RU name: … - Test Interstitial Page Title")
 
     def test_should_have_error_in_page_title_when_fail_validation(self):
         # Given
@@ -110,5 +114,5 @@ class TestQuestionnairePageTitles(IntegrationTestCase):
         self.post()
         # Then
         self.assertEqualPageTitle(
-            "Error: Which pizza toppings would you like? - Other input fields"
+            "Error: Which pizza toppings would you like? - Test Checkbox"
         )
