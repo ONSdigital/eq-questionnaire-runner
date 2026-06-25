@@ -23,7 +23,7 @@ logger = get_logger()
 
 SCHEMA_DIR = "schemas"
 LANGUAGE_CODES = ("en", "cy")
-CIR_RETRIEVE_COLLECTION_INSTRUMENT_URL = "/collection-instrument/schema"
+CIR_RETRIEVE_COLLECTION_INSTRUMENT_URL = "/collection-instruments/schema"
 
 LANGUAGES_MAP = {
     "test_language": [["en", "cy"]],
