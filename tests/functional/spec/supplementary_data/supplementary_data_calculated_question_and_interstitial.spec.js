@@ -115,7 +115,7 @@ describe("Using supplementary data", () => {
   it("Given I can view my response after submission, When I submit the survey, Then I see the values I've entered and correct rendering with supplementary data", async () => {
     await browser.openQuestionnaire("test_supplementary_data_with_introduction_and_calculated_summary.json", {
       version: "v2",
-      sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
+      sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
       responseId,
     });
     await click(HubPage.submit());
