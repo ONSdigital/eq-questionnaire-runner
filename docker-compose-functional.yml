@@ -1,0 +1,51 @@
+services:
+
+    datastore:
+        image: europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/datastore-emulator:latest
+        networks:
+            - eq-env
+
+    redis:
+        image: redis:8.2.2
+        networks:
+            - eq-env
+
+    eq-questionnaire-runner:
+        image: europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/eq-questionnaire-runner:latest
+        build: ./
+        env_file:
+            - ${RUNNER_ENV_FILE}
+        environment:
+            DATASTORE_EMULATOR_HOST: datastore:8432
+            EQ_REDIS_HOST: "redis"
+            SDS_API_BASE_URL: http://sds:5003
+            CIR_API_BASE_URL: http://cir:5004
+        restart: always
+        depends_on:
+            - datastore
+            - redis
+        networks:
+            - eq-env
+        ports:
+            - "5000:5000"
+
+    sds:
+        image: europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/sds:latest
+        networks:
+            - eq-env
+        restart: always
+        ports:
+            - "5003:5003"
+
+    cir:
+        image: europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/cir:latest
+        networks:
+            - eq-env
+        restart: always
+        ports:
+            - "5004:5004"
+
+
+networks:
+    eq-env:
+        driver: bridge
