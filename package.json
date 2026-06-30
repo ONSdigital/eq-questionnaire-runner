@@ -54,6 +54,8 @@
     },
     "prettier": {},
     "overrides": {
-        "fast-xml-parser": "5.9.3"
+        "@wdio/utils@8.46.0": {
+            "edgedriver": "6.3.0"
+        }
     }
 }
