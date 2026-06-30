@@ -41,6 +41,7 @@
         "eslint-plugin-n": "16.6.2",
         "eslint-plugin-node": "11.1.0",
         "eslint-plugin-promise": "6.6.0",
+        "fast-xml-parser": "5.9.3",
         "json-web-key": "0.4.0",
         "jsrsasign": "11.1.1",
         "livereload": "0.10.3",
@@ -51,5 +52,10 @@
         "uuid": "13.0.0",
         "webdriverio": "9.27.0"
     },
-    "prettier": {}
+    "prettier": {},
+    "overrides": { 
+        "@wdio/utils@8.46.0": {
+             "edgedriver": "6.3.0" 
+        } 
+    }
 }
