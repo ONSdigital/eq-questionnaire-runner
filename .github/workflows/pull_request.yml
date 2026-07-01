@@ -174,11 +174,11 @@ jobs:
       - name: Install npm deps
         run: npm install
       - name: Docker compose
-        run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose up --build -d
+        run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose -f docker-compose-functional.yml up --build -d
       - name: Functional tests
         run: make test-functional
       - name: Docker compose shutdown
-        run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
+        run: RUNNER_ENV_FILE=.functional-tests.env docker compose -f docker-compose-functional.yml kill
   docker-push:
     permissions:
       contents: 'read'
