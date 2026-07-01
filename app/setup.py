@@ -54,6 +54,8 @@ CACHE_HEADERS = {
     "Pragma": "no-cache",
 }
 
+from werkzeug.wrappers import Request
+
 CSP_POLICY = {
     "default-src": ["'self'"],
     "font-src": ["'self'", "data:", "https://fonts.gstatic.com"],
@@ -121,6 +123,12 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
 ):
     application = Flask(__name__, template_folder="../templates")
     application.config.from_object(settings)
+    application.config["MAX_CONTENT_LENGTH"] = (
+        120_000  # 120 KB limit for request payloads
+    )
+    application.config["MAX_FORM_MEMORY_SIZE"] = (
+        120_000  # 120 KB limit for form data in memory
+    )
     if setting_overrides:
         application.config.update(setting_overrides)
     application.eq = {}
