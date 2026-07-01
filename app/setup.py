@@ -54,8 +54,6 @@ CACHE_HEADERS = {
     "Pragma": "no-cache",
 }
 
-from werkzeug.wrappers import Request
-
 CSP_POLICY = {
     "default-src": ["'self'"],
     "font-src": ["'self'", "data:", "https://fonts.gstatic.com"],
