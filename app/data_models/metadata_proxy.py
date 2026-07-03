@@ -26,7 +26,6 @@ TOP_LEVEL_METADATA_KEYS = [
     "language_code",
     "schema_name",
     "schema_url",
-    "cir_instrument_id",
     "channel",
     "region_code",
     "roles",
@@ -53,7 +52,6 @@ class MetadataProxy:
     survey_metadata: SurveyMetadata | None = None
     schema_url: str | None = None
     schema_name: str | None = None
-    cir_instrument_id: str | None = None
     language_code: str | None = None
     channel: str | None = None
     region_code: str | None = None

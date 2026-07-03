@@ -93,7 +93,6 @@ class TokenGenerator:
         *,
         schema_name=None,
         schema_url=None,
-        cir_instrument_id=None,
         payload=None,
         **extra_payload,
     ):
@@ -105,8 +104,6 @@ class TokenGenerator:
             payload_vars["schema_name"] = schema_name
         if schema_url:
             payload_vars["schema_url"] = schema_url
-        if cir_instrument_id:
-            payload_vars["cir_instrument_id"] = cir_instrument_id
 
         payload_vars["iat"] = time()
         payload_vars["exp"] = payload_vars["iat"] + float(3600)  # one hour from now
@@ -176,15 +173,6 @@ class TokenGenerator:
 
     def create_token_with_schema_url(self, schema_url, **extra_payload):
         payload_vars = self._get_payload_with_params(schema_url=schema_url, **extra_payload)
-
-        return self.generate_token(payload_vars)
-
-    def create_token_with_cir_instrument_id(self, cir_instrument_id, payload=None, **extra_payload):
-        payload_vars = self._get_payload_with_params(
-            cir_instrument_id=cir_instrument_id,
-            payload=payload or PAYLOAD_V2_BUSINESS,
-            **extra_payload,
-        )
 
         return self.generate_token(payload_vars)
 

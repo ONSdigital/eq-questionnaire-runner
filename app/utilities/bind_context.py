@@ -12,6 +12,3 @@ def bind_contextvars_schema_from_metadata(metadata: MetadataProxy) -> None:
 
     if schema_url := metadata.schema_url:
         contextvars.bind_contextvars(schema_url=schema_url)
-
-    if cir_instrument_id := metadata.cir_instrument_id:
-        contextvars.bind_contextvars(cir_instrument_id=cir_instrument_id)

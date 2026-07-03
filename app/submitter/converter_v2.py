@@ -74,8 +74,6 @@ def convert_answers_v2(
         payload["schema_name"] = metadata.schema_name
     elif metadata.schema_url:
         payload["schema_url"] = metadata.schema_url
-    elif metadata.cir_instrument_id:
-        payload["cir_instrument_id"] = metadata.cir_instrument_id
 
     if metadata.survey_metadata:
         payload["survey_metadata"].update(metadata.survey_metadata.data)

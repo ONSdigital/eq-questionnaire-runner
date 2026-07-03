@@ -152,19 +152,4 @@ def test_schema_url_in_metadata_should_be_in_payload(fake_metadata_v2_schema_url
 
     assert "schema_url" in payload
     assert "schema_name" not in payload
-    assert "cir_instrument_id" not in payload
     assert payload["schema_url"] == fake_metadata_v2_schema_url["schema_url"]
-
-
-def test_cir_instrument_id_in_metadata_should_be_in_payload(
-    fake_metadata_v2_cir_instrument_id, fake_questionnaire_schema
-):
-    questionnaire_store = get_questionnaire_store()
-    questionnaire_store.data_stores.metadata = fake_metadata_v2_cir_instrument_id
-
-    payload = convert_answers_v2(fake_questionnaire_schema, questionnaire_store, {}, SUBMITTED_AT)
-
-    assert "schema_url" not in payload
-    assert "schema_name" not in payload
-    assert "cir_instrument_id" in payload
-    assert payload["cir_instrument_id"] == fake_metadata_v2_cir_instrument_id["cir_instrument_id"]

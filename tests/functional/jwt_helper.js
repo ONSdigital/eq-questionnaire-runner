@@ -75,7 +75,6 @@ export function generateToken(
     languageCode = "en",
     includeLogoutUrl = true,
     displayAddress = "",
-    cirInstrumentId = null,
     booleanFlag = false,
   },
 ) {
@@ -83,8 +82,6 @@ export function generateToken(
   if (schema) {
     const schemaParts = schemaRegEx.exec(schema);
     schemaParams = { schema_name: `${schemaParts[1]}_${schemaParts[2]}` };
-  } else if (cirInstrumentId) {
-    schemaParams = { cir_instrument_id: cirInstrumentId };
   }
   // Header
   const oHeader = {

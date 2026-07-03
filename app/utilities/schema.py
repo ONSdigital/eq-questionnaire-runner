@@ -3,16 +3,12 @@ from functools import lru_cache
 from glob import glob
 from pathlib import Path
 from typing import Any
-from urllib.parse import urlencode
 
-from flask import current_app
 from requests import RequestException
 from structlog import get_logger
 
 from app.data_models.metadata_proxy import MetadataProxy
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE, QuestionnaireSchema
-from app.settings import CIR_OAUTH2_CLIENT_ID
-from app.utilities.credentials import fetch_and_apply_oidc_credentials
 from app.utilities.json import json_load, json_loads
 from app.utilities.request_session import get_retryable_session
 
@@ -20,7 +16,6 @@ logger = get_logger()
 
 SCHEMA_DIR = "schemas"
 LANGUAGE_CODES = ("en", "cy")
-CIR_RETRIEVE_COLLECTION_INSTRUMENT_URL = "/collection-instruments/schema"
 
 LANGUAGES_MAP = {
     "test_language": [["en", "cy"]],
@@ -108,9 +103,6 @@ def load_schema_from_metadata(metadata: MetadataProxy, *, language_code: str | N
             language_code=language_code,
         )
 
-    if cir_instrument_id := metadata.cir_instrument_id:
-        return load_schema_from_instrument_id(cir_instrument_id=cir_instrument_id, language_code=language_code)
-
     return load_schema_from_name(
         # Type ignore: Metadata is validated to have either schema_name or schema_url populated.
         # This code runs only if schema_url was not present, thus schema_name is present (not None).
@@ -122,14 +114,6 @@ def load_schema_from_metadata(metadata: MetadataProxy, *, language_code: str | N
 def load_schema_from_name(schema_name: str, language_code: str | None = DEFAULT_LANGUAGE_CODE) -> QuestionnaireSchema:
     language_code = language_code or DEFAULT_LANGUAGE_CODE
     return _load_schema_from_name(schema_name, language_code)
-
-
-def load_schema_from_instrument_id(*, cir_instrument_id: str, language_code: str | None) -> QuestionnaireSchema:
-    parameters = {"guid": cir_instrument_id}
-    cir_url = (
-        f"{current_app.config['CIR_API_BASE_URL']}{CIR_RETRIEVE_COLLECTION_INSTRUMENT_URL}?{urlencode(parameters)}"
-    )
-    return load_schema_from_url(url=cir_url, language_code=language_code, is_cir=True)
 
 
 @lru_cache(maxsize=None)
@@ -180,7 +164,7 @@ def _load_schema_file(schema_name: str, language_code: str) -> Any:
 
 
 @lru_cache(maxsize=None)
-def load_schema_from_url(url: str, *, language_code: str | None, is_cir: bool = False) -> QuestionnaireSchema:
+def load_schema_from_url(url: str, *, language_code: str | None) -> QuestionnaireSchema:
     """
     Fetches a schema from the provided url.
     The caller is responsible for including any required query parameters in the url
@@ -199,10 +183,6 @@ def load_schema_from_url(url: str, *, language_code: str | None, is_cir: bool = 
         retry_status_codes=SCHEMA_REQUEST_RETRY_STATUS_CODES,
         backoff_factor=SCHEMA_REQUEST_BACKOFF_FACTOR,
     )
-
-    if is_cir:
-        # Type ignore: CIR_OAUTH2_CLIENT_ID is an env var which must exist as it is verified in setup.py
-        fetch_and_apply_oidc_credentials(session=session, client_id=CIR_OAUTH2_CLIENT_ID)  # type: ignore
 
     try:
         req = session.get(url, timeout=SCHEMA_REQUEST_TIMEOUT)

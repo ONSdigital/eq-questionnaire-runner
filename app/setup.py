@@ -80,7 +80,6 @@ logger = get_logger()
 
 BUCKET_ID_ERROR_MESSAGE = "Setting EQ_GCS_SUBMISSION_BUCKET_ID Missing"
 SDS_CLIENT_ID_ERROR_MESSAGE = "Setting SDS_OAUTH2_CLIENT_ID Missing"
-CIR_CLIENT_ID_ERROR_MESSAGE = "Setting CIR_OAUTH2_CLIENT_ID Missing"
 TOKEN_BACKEND_ERROR_MESSAGE = "Setting OIDC_TOKEN_BACKEND Missing"
 FEEDBACK_BUCKET_ID_ERROR_MESSAGE = "Setting EQ_GCS_FEEDBACK_BUCKET_ID Missing"
 SECRET_KEY_ERROR_MESSAGE = "Application secret key does not exist"
@@ -355,9 +354,6 @@ def setup_oidc(application):
     def client_ids_exist():
         if not application.config.get("SDS_OAUTH2_CLIENT_ID"):
             raise MissingEnvironmentVariable(SDS_CLIENT_ID_ERROR_MESSAGE)
-
-        if not application.config.get("CIR_OAUTH2_CLIENT_ID"):
-            raise MissingEnvironmentVariable(CIR_CLIENT_ID_ERROR_MESSAGE)
 
     if not (oidc_token_backend := application.config.get("OIDC_TOKEN_BACKEND")):
         raise MissingEnvironmentVariable(TOKEN_BACKEND_ERROR_MESSAGE)

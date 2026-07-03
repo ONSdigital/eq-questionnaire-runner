@@ -74,14 +74,6 @@ def fake_metadata_v2_schema_url():
 
 
 @pytest.fixture
-def fake_metadata_v2_cir_instrument_id():
-    copy = RAW_METADATA_V2.copy()
-    copy["cir_instrument_id"] = "f0519981-426c-8b93-75c0-bfc40c66fe25"
-    del copy["schema_name"]
-    return MetadataProxy.from_dict(copy)
-
-
-@pytest.fixture
 def fake_response_metadata():
     response_metadata = {"started_at": "2018-07-04T14:49:33.448608+00:00"}
     return response_metadata

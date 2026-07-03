@@ -226,7 +226,6 @@ exports.config = {
           region = "GB-ENG",
           language = "en",
           includeLogoutUrl = false,
-          cirInstrumentId = null,
           booleanFlag = false,
         } = {},
       ) {
@@ -247,7 +246,6 @@ exports.config = {
             regionCode: region,
             languageCode: language,
             includeLogoutUrl,
-            cirInstrumentId,
             booleanFlag,
           });
 

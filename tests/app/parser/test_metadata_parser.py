@@ -209,36 +209,23 @@ def test_deserialisation_iso_8601_datetime_bad_datetime_raises_ValidationError()
         validate_runner_claims_v2(metadata)
 
 
-def test_empty_schema_name_and_schema_url_and_cir_instrument_id_not_valid_v2():
+def test_empty_schema_name_and_schema_url_not_valid_v2():
     metadata = get_metadata_full()
     del metadata["schema_name"]
 
     with pytest.raises(ValidationError) as exc:
         validate_runner_claims_v2(metadata)
 
-    assert "Neither schema_name, schema_url or cir_instrument_id has been set in metadata" in str(exc)
+    assert "Neither schema_name or schema_url has been set in metadata" in str(exc)
 
 
 @pytest.mark.parametrize(
     "options",
     [
-        {
-            "schema_name": "test_name",
-            "cir_instrument_id": "f0519981-426c-8b93-75c0-bfc40c66fe25",
-        },
-        {
-            "schema_url": "http://test.json",
-            "cir_instrument_id": "f0519981-426c-8b93-75c0-bfc40c66fe25",
-        },
-        {
-            "schema_name": "test_name",
-            "schema_url": "http://test.json",
-            "cir_instrument_id": "f0519981-426c-8b93-75c0-bfc40c66fe25",
-        },
         {"schema_name": "test_name", "schema_url": "http://test.json"},
     ],
 )
-def test_too_many_of_schema_name_schema_url_and_cir_instrument_id_not_valid_v2(options):
+def test_schema_name_and_schema_url_not_valid_v2(options):
     metadata = get_metadata_full()
     del metadata["schema_name"]
 
@@ -249,9 +236,9 @@ def test_too_many_of_schema_name_schema_url_and_cir_instrument_id_not_valid_v2(o
         validate_runner_claims_v2(metadata)
 
     assert (
-        f"Only one of schema_name, schema_url or cir_instrument_id should be "
-        f"specified in metadata, but {provided} were provided"
-    ) in str(exc)
+        f"Only one of schema_name or schema_url should be specified in metadata, but {provided} were provided"
+        in str(exc)
+    )
 
 
 def test_valid_v2_social_claims():
