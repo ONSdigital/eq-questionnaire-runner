@@ -173,6 +173,12 @@ Note that on Linux you will need to use:
 make dev-compose-up-linux
 ```
 
+If you also want to run the address index service (for address lookups), use:
+
+``` shell
+make aims-compose-up
+```
+
 #### Run supporting services locally
 
 ##### [Questionnaire launcher](https://github.com/ONSDigital/eq-questionnaire-launcher)

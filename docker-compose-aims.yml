@@ -1,0 +1,24 @@
+services:
+  es:
+    image: "europe-west2-docker.pkg.dev/ons-ci-aims/aims-api-demo/elasticsearch-aims-8.15.3"
+    container_name: elasticsearch
+    environment:
+      - cluster.name=docker-cluster-ai
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+  address-index-api:
+    image: "europe-west2-docker.pkg.dev/ons-ci-aims/aims-api-demo/address-index-server:1.3.20"
+    ports:
+      - "9001:9000"
+    depends_on:
+      - es
+    environment:
+      - ONS_AI_API_ES_CLUSTER_NAME=docker-cluster-ai
+      - ONS_AI_API_ES_URI=es
+      - ONS_AI_API_ES_PORT=9200
+      - ONS_AI_API_MIN_PARTIAL_SIZE=2
+      - ONS_AI_API_VALID_EPOCHS=111

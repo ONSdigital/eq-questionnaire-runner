@@ -106,6 +106,12 @@ dev-compose-up:
 dev-compose-down:
 	docker compose -f docker-compose-dev.yml down
 
+aims-compose-up:
+	docker compose -f docker-compose-aims.yml up -d
+
+aims-compose-down:
+	docker compose -f docker-compose-aims.yml down
+
 profile:
 	poetry run python profile_application.py
 
