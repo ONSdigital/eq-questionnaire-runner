@@ -3508,14 +3508,14 @@ crt = ["botocore[crt] (>=1.37.4,<2.0a0)"]
 
 [[package]]
 name = "sdc-cryptography"
-version = "1.2.1"
+version = "1.2.3"
 description = "A shared library for SDC services that use JWT with JWE"
 optional = false
 python-versions = "*"
 groups = ["main"]
 files = [
-    {file = "sdc_cryptography-1.2.1-py3-none-any.whl", hash = "sha256:2b87da178c0d9c6a8add4e2afbe81139bbb056598af0cda61b52f421fb29451f"},
-    {file = "sdc_cryptography-1.2.1.tar.gz", hash = "sha256:cea2de62e65940efb72bfd3ed677b1e685678521a52eb4c06769ffce506f5847"},
+    {file = "sdc_cryptography-1.2.3-py3-none-any.whl", hash = "sha256:79697dd612e8725a653951a1023a1ca061da132846998ab203853dd48a62c4fb"},
+    {file = "sdc_cryptography-1.2.3.tar.gz", hash = "sha256:50565f7cfedaf838eaca72482b8a8425d467b95d5f72f109b2a292cda6eea7b3"},
 ]
 
 [package.dependencies]
