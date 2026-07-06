@@ -115,7 +115,7 @@ def test_display_address_should_be_set_in_payload_metadata(fake_questionnaire_sc
 
 def test_converter_raises_runtime_error_for_unsupported_version():
     questionnaire_store = get_questionnaire_store()
-    questionnaire = {"survey_id": "021", "data_version": "-0.0.1"}
+    questionnaire = {"survey_id": "999", "data_version": "-0.0.1"}
 
     with pytest.raises(DataVersionError) as err:
         convert_answers_v2(

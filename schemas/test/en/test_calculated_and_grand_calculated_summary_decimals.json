@@ -3,8 +3,8 @@
     "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
-    "survey_id": "0",
-    "title": "A test schema to demo Calculated Summary",
+    "survey_id": "999",
+    "title": "Test Calculated and Grand Calculated Summary Decimals",
     "theme": "default",
     "description": "A schema to showcase Calculated Summary pages and usage in value source.",
     "metadata": [

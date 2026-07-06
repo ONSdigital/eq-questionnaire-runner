@@ -149,7 +149,7 @@ describe("Feature: Repeating Sections with Hub and Spoke", () => {
 
     it("When the user views the summary for a repeating section, Then the page title is shown", async () => {
       await $(HubPage.summaryRowLink("personal-details-section-2")).click();
-      await expect(await browser.getTitle()).toBe("… - Hub & Spoke");
+      await expect(await browser.getTitle()).toBe("… - Test Repeating Sections with Hub & Spoke");
     });
 
     it("When the user adds 2 visitors to the household then a section for each visitor should be display on the hub", async () => {

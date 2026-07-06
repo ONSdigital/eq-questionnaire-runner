@@ -4,7 +4,7 @@
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
     "survey_id": "999",
-    "title": "Section summary with return to answer",
+    "title": "Test Submit with Summary Return to Answer",
     "description": "A questionnaire to test scrolling to answers on summary page",
     "theme": "default",
     "navigation": {
