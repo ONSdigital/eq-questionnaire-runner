@@ -53,8 +53,7 @@ SPEC_PAGE_IMPORT = Template(
 """
 )
 
-SPEC_EXAMPLE_TEST = Template(
-    r"""
+SPEC_EXAMPLE_TEST = Template(r"""
 describe("Example Test", () => {
   beforeEach("Load the survey", () => {
     browser.openQuestionnaire(schema);
@@ -65,20 +64,15 @@ describe("Example Test", () => {
   });
 });
 
-"""
-)
+""")
 
-HEADER = Template(
-    r"""// >>> WARNING THIS PAGE WAS AUTO-GENERATED - DO NOT EDIT!!! <<<
+HEADER = Template(r"""// >>> WARNING THIS PAGE WAS AUTO-GENERATED - DO NOT EDIT!!! <<<
 import $basePage from "$relativeRequirePath/$basePageFile";
 
-"""
-)
+""")
 
-CLASS_NAME = Template(
-    r"""class ${pageName}Page extends $basePage {
-"""
-)
+CLASS_NAME = Template(r"""class ${pageName}Page extends $basePage {
+""")
 
 SECTION_SUMMARY_PAGE_URL = r"""  url() { return `/questionnaire/sections/${this.pageName}`; }
 
@@ -102,11 +96,9 @@ GUIDANCE_PANEL_GETTER = Template(
 """
 )
 
-CONTENT_ITEM_GETTER = Template(
-    r"""  ${contentName}Content() { return `#${contentId}`; }
+CONTENT_ITEM_GETTER = Template(r"""  ${contentName}Content() { return `#${contentId}`; }
 
-"""
-)
+""")
 
 QUESTION_ERROR_PANEL = Template(
     r"""  ${questionName}ErrorPanel() { return `#${questionOrAnswerId}-error`; }
@@ -114,45 +106,35 @@ QUESTION_ERROR_PANEL = Template(
 """
 )
 
-QUESTION_TITLE = Template(
-    r"""  questionTitle() {
+QUESTION_TITLE = Template(r"""  questionTitle() {
     return `#${questionId}`;
   }
 
-"""
-)
+""")
 
-ANSWER_LEGEND_GETTER = Template(
-    r"""  ${answerName}Legend() {
+ANSWER_LEGEND_GETTER = Template(r"""  ${answerName}Legend() {
     return `#${answerId} > legend`;
   }
 
-"""
-)
+""")
 
-ANSWER_LABEL_GETTER = Template(
-    r"""  ${answerName}Label() {
+ANSWER_LABEL_GETTER = Template(r"""  ${answerName}Label() {
     return `[for=${answerId}]`;
   }
 
-"""
-)
+""")
 
-DYNAMIC_ANSWER_LABEL_GETTER = Template(
-    r"""  answerLabelByIndex(answerIndex) {
+DYNAMIC_ANSWER_LABEL_GETTER = Template(r"""  answerLabelByIndex(answerIndex) {
     return `[for=${answerId}-${answerIndex}]`;
   }
 
-"""
-)
+""")
 
-ANSWER_ERROR_GETTER = Template(
-    r"""  ${answerName}ErrorItem() {
+ANSWER_ERROR_GETTER = Template(r"""  ${answerName}ErrorItem() {
     return `#${answerId}-error .ons-panel__body .ons-panel__error`;
   }
 
-"""
-)
+""")
 
 ANSWER_NUMBERED_ERROR_LIST_GETTER = r"""  errorList() { return `ol[data-qa="error-list"]`; }
 
@@ -162,29 +144,23 @@ ANSWER_SINGLE_ERROR_LINK_GETTER = r"""  singleErrorLink() { return `p[data-qa="e
 
 """
 
-ANSWER_LABEL_DESCRIPTION_GETTER = Template(
-    r"""  ${answerName}LabelDescription() {
+ANSWER_LABEL_DESCRIPTION_GETTER = Template(r"""  ${answerName}LabelDescription() {
     return `#${answerId}-label-description-hint`;
   }
 
-"""
-)
+""")
 
-ANSWER_GETTER = Template(
-    r"""  ${answerName}() {
+ANSWER_GETTER = Template(r"""  ${answerName}() {
     return `#${answerId}`;
   }
 
-"""
-)
+""")
 
-ANSWER_SUFFIX_GETTER = Template(
-    r"""  ${answerName}Suffix() {
+ANSWER_SUFFIX_GETTER = Template(r"""  ${answerName}Suffix() {
     return `#${answerId} + span`;
   }
 
-"""
-)
+""")
 
 QUESTION_LABELS_GETTER = r"""  labels() { return `.ons-label`; }
 
@@ -194,29 +170,23 @@ QUESTION_INPUTS_GETTER = r"""  inputs() { return `[data-qa="input-text"]`; }
 
 """
 
-DYNAMIC_ANSWER_GETTER = Template(
-    r"""  answerByIndex(answerIndex) {
+DYNAMIC_ANSWER_GETTER = Template(r"""  answerByIndex(answerIndex) {
     return `#${answerId}-${answerIndex}`;
   }
 
-"""
-)
+""")
 
-BLOCK_DESCRIPTION = Template(
-    r"""  ${block_name}Description() {
+BLOCK_DESCRIPTION = Template(r"""  ${block_name}Description() {
     return `div.block__description`;
   }
 
-"""
-)
+""")
 
-ANSWER_UNIT_TYPE_GETTER = Template(
-    r"""  ${answerName}Unit() {
+ANSWER_UNIT_TYPE_GETTER = Template(r"""  ${answerName}Unit() {
     return `#${answerId}-type`;
   }
 
-"""
-)
+""")
 
 SUMMARY_ANSWER_GETTER = Template(
     r"""  ${answerName}() { return `[data-qa="${answerId}"]`; }
@@ -330,20 +300,16 @@ CLEAR_SELECTION_BUTTON_GETTER = r"""  clearSelectionButton() { return `.ons-js-c
 
 """
 
-CONSTRUCTOR = Template(
-    r"""  constructor() {
+CONSTRUCTOR = Template(r"""  constructor() {
     super(`${page_id}`);
   }
 
-"""
-)
+""")
 
-FOOTER = Template(
-    r"""}
+FOOTER = Template(r"""}
 
 export default new ${pageName}Page();
-"""
-)
+""")
 
 
 def generate_pascal_case_from_id(id_str):

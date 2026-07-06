@@ -1,14 +1,14 @@
 # Translations template for PROJECT.
-# Copyright (C) 2025 ORGANIZATION
+# Copyright (C) 2026 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-10 12:58+0000\n"
+"POT-Creation-Date: 2026-01-05 11:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,39 +17,39 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.14.0\n"
 
-#: app/forms/validators.py:389 app/jinja_filters.py:111
+#: app/forms/validators.py:391 app/jinja_filters.py:111
 #, python-format
 msgid "%(num)s year"
 msgid_plural "%(num)s years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/forms/validators.py:393 app/jinja_filters.py:119
+#: app/forms/validators.py:395 app/jinja_filters.py:119
 #, python-format
 msgid "%(num)s month"
 msgid_plural "%(num)s months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/jinja_filters.py:161
+#: app/jinja_filters.py:159
 #, python-format
 msgid "%(date)s at %(time)s"
 msgstr ""
 
-#: app/jinja_filters.py:175
+#: app/jinja_filters.py:173
 #, python-format
 msgid "%(from_date)s to %(to_date)s"
 msgstr ""
 
-#: app/jinja_filters.py:441
+#: app/jinja_filters.py:439
 msgid "Change answer for {item_name}: {question_title_or_answer_label}"
 msgstr ""
 
-#: app/jinja_filters.py:445
+#: app/jinja_filters.py:443
 msgid "Change your answer for: {question_title_or_answer_label}"
 msgstr ""
 
-#: app/jinja_filters.py:765
+#: app/jinja_filters.py:764
 #: templates/partials/summary/collapsible-summary.html:27
 #: templates/partials/summary/summary.html:24
 msgid "No answer provided"
@@ -210,7 +210,7 @@ msgstr ""
 msgid "Enter the year in a valid format. For example, 2023."
 msgstr ""
 
-#: app/forms/validators.py:400
+#: app/forms/validators.py:402
 #, python-format
 msgid "%(num)s day"
 msgid_plural "%(num)s days"
@@ -427,7 +427,7 @@ msgstr ""
 #: templates/individual_response/confirmation-text-message.html:39
 #: templates/individual_response/question.html:5 templates/interstitial.html:7
 #: templates/listcollectorcontent.html:8 templates/sectionsummary.html:11
-#: templates/sectionsummary.html:51
+#: templates/sectionsummary.html:52
 msgid "Continue"
 msgstr ""
 
@@ -477,15 +477,15 @@ msgstr ""
 msgid "Your answers have been submitted."
 msgstr ""
 
-#: app/views/contexts/view_submitted_response_context.py:33
+#: app/views/contexts/view_submitted_response_context.py:32
 msgid "Answers submitted for <span>{ru_name}</span> ({trad_as})"
 msgstr ""
 
-#: app/views/contexts/view_submitted_response_context.py:37
+#: app/views/contexts/view_submitted_response_context.py:36
 msgid "Answers submitted for <span>{ru_name}</span>"
 msgstr ""
 
-#: app/views/contexts/view_submitted_response_context.py:41
+#: app/views/contexts/view_submitted_response_context.py:40
 msgid "Answers submitted."
 msgstr ""
 
@@ -561,7 +561,7 @@ msgstr ""
 msgid "Do not include confidential information, such as your contact details"
 msgstr ""
 
-#: app/views/handlers/individual_response.py:151
+#: app/views/handlers/individual_response.py:153
 msgid "Person {list_item_position}"
 msgstr ""
 
@@ -706,7 +706,7 @@ msgstr ""
 msgid "Thank you for completing the survey"
 msgstr ""
 
-#: app/views/handlers/view_submitted_response.py:52
+#: app/views/handlers/view_submitted_response.py:51
 msgid "View Submitted Response"
 msgstr ""
 

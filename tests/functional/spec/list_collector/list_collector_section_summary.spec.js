@@ -293,7 +293,7 @@ describe("List Collector Section Summary and Summary Items", () => {
       await click(HouseholderCheckboxPage.submit());
       await click(SectionSummaryTwoPage.submit());
       await click(SubmitPage.submit());
-      await expect(await $(ThankYouPage.title()).getHTML()).toContain("Thank you for completing the Test");
+      await expect(await $(ThankYouPage.title()).getHTML()).toContain("Thank you for completing the Test List Collector Section Summary");
       await $(ThankYouPage.savePrintAnswersLink()).click();
 
       await verifyUrlContains(ViewSubmittedResponsePage.pageName);

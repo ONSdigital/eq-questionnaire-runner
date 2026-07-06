@@ -1,12 +1,12 @@
 services:
 
     datastore:
-        image: knarz/datastore-emulator
+        image: europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/datastore-emulator:latest
         networks:
             - eq-env
 
     redis:
-        image: redis:4
+        image: redis:8.2.2
         networks:
             - eq-env
 

@@ -3,8 +3,8 @@
     "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
-    "survey_id": "023",
-    "title": "Date formats",
+    "survey_id": "999",
+    "title": "Test Date Validation Combined",
     "description": "A test schema for different date formats",
     "theme": "default",
     "metadata": [

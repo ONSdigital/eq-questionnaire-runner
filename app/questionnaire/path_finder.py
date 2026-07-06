@@ -253,7 +253,7 @@ class PathFinder:
             )
             if "when" in rule:
                 self._remove_block_answers_for_backward_routing_according_to_when_rule(
-                    rule["when"], answer_ids_for_current_block
+                    rule["when"], answer_ids_for_current_block, this_location
                 )
 
             self.data_stores.progress_store.remove_location_for_backwards_routing(
@@ -264,7 +264,10 @@ class PathFinder:
             )
 
     def _remove_block_answers_for_backward_routing_according_to_when_rule(
-        self, rules: Mapping, answer_ids_for_current_block: list[str]
+        self,
+        rules: Mapping,
+        answer_ids_for_current_block: list[str],
+        this_location: Location,
     ) -> None:
         operands = self.schema.get_operands(rules)
 
@@ -273,9 +276,12 @@ class PathFinder:
                 "identifier" in rule
                 and rule["identifier"] in answer_ids_for_current_block
             ):
-                self.data_stores.answer_store.remove_answer(rule["identifier"])
+                self.data_stores.answer_store.remove_answer(
+                    answer_id=rule["identifier"],
+                    list_item_id=this_location.list_item_id,
+                )
 
             if QuestionnaireSchema.has_operator(rule):
                 return self._remove_block_answers_for_backward_routing_according_to_when_rule(
-                    rule, answer_ids_for_current_block
+                    rule, answer_ids_for_current_block, this_location
                 )
