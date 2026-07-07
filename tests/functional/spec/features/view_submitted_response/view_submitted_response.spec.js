@@ -31,7 +31,7 @@ describe("View Submitted Response", () => {
     await click(AddressBlockPage.submit());
     await click(SubmitPage.submit());
     await verifyUrlContains(ThankYouPage.pageName);
-    await expect(await $(ThankYouPage.title()).getHTML()).toContain("Thank you for completing the Test");
+    await expect(await $(ThankYouPage.title()).getHTML()).toContain("Thank you for completing the Test View Submitted Response");
     await $(ThankYouPage.savePrintAnswersLink()).click();
     await verifyUrlContains(ViewSubmittedResponsePage.pageName);
   });
@@ -124,7 +124,7 @@ describe("View Submitted Response Summary Page With Repeating Sections", () => {
 
     await click(HubPage.submit());
     await verifyUrlContains(ThankYouPage.pageName);
-    await expect(await $(ThankYouPage.title()).getHTML()).toContain("Thank you for completing the Test");
+    await expect(await $(ThankYouPage.title()).getHTML()).toContain("Thank you for completing the Test View Submitted Response Repeating Sections");
     await $(ThankYouPage.savePrintAnswersLink()).click();
     await verifyUrlContains(ViewSubmittedResponsePage.pageName);
   });

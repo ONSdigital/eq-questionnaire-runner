@@ -3,8 +3,8 @@
     "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
-    "survey_id": "0",
-    "title": "Grand Calculated Summary Inside Repeating Section",
+    "survey_id": "999",
+    "title": "Test Grand Calculated Summary Inside Repeating Section",
     "theme": "default",
     "description": "A schema to showcase a grand calculated summary inside a repeating section",
     "metadata": [

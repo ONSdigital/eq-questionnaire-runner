@@ -9,7 +9,7 @@ class TestSchema(IntegrationTestCase):
         parsed_json = json_loads(response)
 
         self.assertIn("title", parsed_json)
-        self.assertEqual(parsed_json["title"], "Other input fields")
+        self.assertEqual(parsed_json["title"], "Test Textfield")
 
     def test_get_schema_json_with_invalid_request(self):
         self.get("/schemas/doesnt-exist")

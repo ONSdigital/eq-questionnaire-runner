@@ -27,9 +27,7 @@ class TestEmailConfirmation(IntegrationTestCase):
 
         # Then a BadRequest error is returned
         self.assertBadRequest()
-        self.assertEqualPageTitle(
-            "An error has occurred - Confirmation email test schema"
-        )
+        self.assertEqualPageTitle("An error has occurred - Test Confirmation Email")
 
     def test_missing_email_param_confirmation_email_sent(self):
         # Given I launch and complete the test_confirmation_email questionnaire
@@ -53,9 +51,7 @@ class TestEmailConfirmation(IntegrationTestCase):
 
         # Then a BadRequest error is returned
         self.assertBadRequest()
-        self.assertEqualPageTitle(
-            "An error has occurred - Confirmation email test schema"
-        )
+        self.assertEqualPageTitle("An error has occurred - Test Confirmation Email")
 
     def test_missing_email_param_confirm_email(self):
         # Given I launch and complete the test_confirmation_email questionnaire
@@ -103,9 +99,7 @@ class TestEmailConfirmation(IntegrationTestCase):
 
         # Then a BadRequest error is returned
         self.assertBadRequest()
-        self.assertEqualPageTitle(
-            "An error has occurred - Confirmation email test schema"
-        )
+        self.assertEqualPageTitle("An error has occurred - Test Confirmation Email")
 
     def test_thank_you_page_get_not_allowed(self):
         # Given I launch the test_confirmation_email questionnaire
@@ -145,7 +139,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertInUrl("/submitted/thank-you/")
         self.assertInBody("Get confirmation email")
         self.assertEqualPageTitle(
-            "We’ve received your answers - Confirmation email test schema"
+            "We’ve received your answers - Test Confirmation Email"
         )
 
     def test_default_themed_schema_with_confirmation_email_not_set(self):
@@ -172,7 +166,7 @@ class TestEmailConfirmation(IntegrationTestCase):
 
         # Then I get an error on the confirm email page
         self.assertEqualPageTitle(
-            "Error: Confirm your email address - Confirmation email test schema"
+            "Error: Confirm your email address - Test Confirmation Email"
         )
         self.assertInBody("There is a problem with your answer")
         self.assertInBody("Select an answer")
@@ -301,9 +295,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertInUrl("/submitted/confirmation-email/send/")
         self.assertInBody("There is a problem with this page")
         self.assertInBody("Enter an email address")
-        self.assertEqualPageTitle(
-            "Error: Confirmation email - Confirmation email test schema"
-        )
+        self.assertEqualPageTitle("Error: Confirmation email - Test Confirmation Email")
 
     def test_confirmation_email_page_incorrect_email_format(self):
         # Given I launch and complete the test_confirmation_email questionnaire and submit with a valid email from the thank you page
@@ -320,9 +312,7 @@ class TestEmailConfirmation(IntegrationTestCase):
         self.assertInBody(
             "Enter an email address in a valid format, for example name@example.com"
         )
-        self.assertEqualPageTitle(
-            "Error: Confirmation email - Confirmation email test schema"
-        )
+        self.assertEqualPageTitle("Error: Confirmation email - Test Confirmation Email")
 
     def test_confirmation_email_page(self):
         # Given I launch and complete the test_confirmation_email questionnaire and submit with a valid email from the thank you page
@@ -462,7 +452,7 @@ class TestEmailConfirmation(IntegrationTestCase):
 
         # Then an error page is shown
         self.assertEqualPageTitle(
-            "Sorry, there was a problem sending the confirmation email - Confirmation email test schema"
+            "Sorry, there was a problem sending the confirmation email - Test Confirmation Email"
         )
         self.assertInSelector(self.last_url, "p[data-qa=retry]")
 
@@ -482,9 +472,7 @@ class TestEmailConfirmation(IntegrationTestCase):
 
         # Then a BadRequest error is returned
         self.assertBadRequest()
-        self.assertEqualPageTitle(
-            "An error has occurred - Confirmation email test schema"
-        )
+        self.assertEqualPageTitle("An error has occurred - Test Confirmation Email")
 
     def test_head_request_on_email_confirmation(self):
         self._launch_and_complete_questionnaire()

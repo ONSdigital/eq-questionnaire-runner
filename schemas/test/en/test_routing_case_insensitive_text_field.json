@@ -3,8 +3,8 @@
     "language": "en",
     "schema_version": "0.0.2",
     "data_version": "0.0.3",
-    "survey_id": "0",
-    "title": "Routing is case insensitive for text fields",
+    "survey_id": "999",
+    "title": "Test Routing Case Insensitive Text Field",
     "theme": "default",
     "description": "A questionnaire to test case insensitive routing on text fields",
     "metadata": [

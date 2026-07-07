@@ -3,8 +3,8 @@
     "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
-    "survey_id": "0",
-    "title": "Calculated Summary Cross Section Dependencies",
+    "survey_id": "999",
+    "title": "Test Calculated Summary Cross Section Dependencies",
     "theme": "default",
     "description": "A questionnaire to demo resolution of calculated summary values across sections",
     "metadata": [
