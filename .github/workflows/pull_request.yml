@@ -196,6 +196,42 @@ jobs:
          SPECS: ${{ env.SPECS }}
       - name: Docker compose shutdown
         run: RUNNER_ENV_FILE=.functional-tests.env docker compose -f docker-compose-functional.yml kill
+  test-functional-supplementary-data:
+      if: "!contains(github.event.pull_request.labels.*.name, 'tests not required')"
+      permissions:
+        contents: 'read'
+      needs: [ python-dependencies, node-dependencies ]
+      runs-on: ubuntu-22.04
+      timeout-minutes: 35
+      env:
+        EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
+        # :TODO: Revisit & update when 2 instances can be used without adverse effects
+        EQ_FUNCTIONAL_TEST_MAX_INSTANCES: 2
+      steps:
+        - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+          with:
+            node-version-file: ".nvmrc"
+        - run: |
+            echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
+        - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+          with:
+            python-version: ${{ env.PYTHON_VERSION }}
+        - name: Install Poetry
+          uses: snok/install-poetry@76e04a911780d5b312d89783f7b1cd627778900a # v1.4.1
+          with:
+            version: 2.1.2
+            virtualenvs-create: true
+        - name: Install virtual environment
+          run: poetry install
+        - name: Install npm deps
+          run: npm install
+        - name: Docker compose
+          run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose -f docker-compose-functional.yml up --build -d
+        - name: Functional tests
+          run: make test-functional-spec SPEC=supplementary_data
+        - name: Docker compose shutdown
+          run: RUNNER_ENV_FILE=.functional-tests.env docker compose -f docker-compose-functional.yml kill
   docker-push:
     permissions:
       contents: 'read'
