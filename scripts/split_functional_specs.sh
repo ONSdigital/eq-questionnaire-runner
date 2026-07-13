@@ -5,7 +5,7 @@ set -e
 TOTAL_SHARDS=$1
 SHARD_NUMBER=$2
 
-mapfile -t SPECS < <(find tests/functional/spec -type f -name "*.spec.js" | sort)
+mapfile \-t SPECS < <(find tests/functional/spec \-type f \-name "\*\.spec\.js" \! \-path "tests/functional/spec/supplementary\_data/\*" | sort)
 
 SELECTED=()
 for i in "${!SPECS[@]}"; do
