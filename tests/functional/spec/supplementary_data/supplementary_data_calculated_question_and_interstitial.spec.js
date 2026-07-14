@@ -13,6 +13,7 @@ import Section1Page from "../../generated_pages/supplementary_data_with_introduc
 import TradingPage from "../../generated_pages/supplementary_data_with_introduction_and_calculated_summary/trading.page.js";
 import ThankYouPage from "../../base_pages/thank-you.page";
 import ViewSubmittedResponsePage from "../../generated_pages/supplementary_data_with_introduction_and_calculated_summary/view-submitted-response.page.js";
+import { TimeoutModalPage } from "../../base_pages/timeout-modal.page.js";
 
 describe("Using supplementary data", () => {
   const responseId = getRandomString(16);
@@ -26,6 +27,7 @@ describe("Using supplementary data", () => {
     });
   });
   it("Given I launch a survey using supplementary data, When I am outside a repeating section, Then I am able to see the list of items relating to a given supplementary data list item on the page", async () => {
+    browser.pause(10000)
     const pageTitle = await browser.getTitle();
     await expect(pageTitle).toBe("Supplementary Data - Test Supplementary Data with Introduction and Calculated Summary");
     await expect(await $("#main-content").getText()).toContain("You have successfully loaded Supplementary data");
