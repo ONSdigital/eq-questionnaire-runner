@@ -275,9 +275,7 @@ def test_list_context_items_incomplete_with_repeating_blocks(
 
 
 @pytest.mark.usefixtures("app")
-def test_list_context_items_complete_with_repeating_blocks(
-    repeating_blocks_answer_store, repeating_blocks_list_store, supplementary_data_store
-):
+def test_list_context_items_complete_with_repeating_blocks(repeating_blocks_answer_store, repeating_blocks_list_store):
     schema = load_schema_from_name("test_list_collector_repeating_blocks_section_summary")
     list_collector_block = schema.get_block("any-other-companies-or-branches")
     expected = [
@@ -324,7 +322,6 @@ def test_list_context_items_complete_with_repeating_blocks(
         DataStores(
             answer_store=repeating_blocks_answer_store,
             list_store=repeating_blocks_list_store,
-            supplementary_data_store=supplementary_data_store,
             progress_store=progress_store,
         ),
     )

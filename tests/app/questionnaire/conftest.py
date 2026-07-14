@@ -2,7 +2,7 @@
 
 import pytest
 
-from app.data_models import CompletionStatus, QuestionnaireStore, SupplementaryDataStore
+from app.data_models import CompletionStatus, QuestionnaireStore
 from app.data_models.answer_store import Answer, AnswerStore
 from app.data_models.data_stores import DataStores
 from app.data_models.list_store import ListStore
@@ -38,11 +38,6 @@ def get_metadata(extra_metadata: dict | None = None):
                 metadata["survey_metadata"]["data"][key] = value
 
     return MetadataProxy.from_dict(metadata)
-
-
-@pytest.fixture
-def supplementary_data_schema():
-    return load_schema_from_name("test_supplementary_data")
 
 
 @pytest.fixture
@@ -1263,17 +1258,10 @@ def mock_empty_progress_store(mocker):
 
 
 @pytest.fixture
-def mock_empty_supplementary_data_store(mocker):
-    supplementary_data_store = mocker.MagicMock(spec=SupplementaryDataStore)
-    return supplementary_data_store
-
-
-@pytest.fixture
 def mock_questionnaire_store(
     populated_list_store,
     mock_empty_answer_store,
     mock_empty_progress_store,
-    mock_empty_supplementary_data_store,
     mocker,
 ):
     return mocker.MagicMock(
@@ -1283,7 +1271,6 @@ def mock_questionnaire_store(
             answer_store=mock_empty_answer_store,
             list_store=populated_list_store,
             progress_store=mock_empty_progress_store,
-            supplementary_data_store=mock_empty_supplementary_data_store,
         ),
     )
 

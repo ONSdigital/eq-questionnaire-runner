@@ -122,15 +122,8 @@ def get_payload_data(
         )
 
         lists: list = data_stores.list_store.serialize()
-        for list_ in lists:
-            # for any lists that were populated by supplementary data, provide the identifier -> list_item_id mappings
-            if mapping := data_stores.supplementary_data_store.list_mappings.get(list_["name"]):
-                list_["supplementary_data_mappings"] = mapping
 
         data: dict[str, list | dict] = {"answers": answers, "lists": lists}
-
-        if data_stores.supplementary_data_store.raw_data:
-            data["supplementary_data"] = data_stores.supplementary_data_store.raw_data
 
         if answer_codes := schema.json.get("answer_codes"):
             answer_ids_to_filter = {answer.answer_id for answer in answers}

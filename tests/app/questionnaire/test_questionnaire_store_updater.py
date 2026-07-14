@@ -6,7 +6,7 @@ from mock.mock import call
 from ordered_set import OrderedSet
 from werkzeug.datastructures import MultiDict
 
-from app.data_models import CompletionStatus, QuestionnaireStore, SupplementaryDataStore
+from app.data_models import CompletionStatus, QuestionnaireStore
 from app.data_models.answer_store import AnswerDict, AnswerStore
 from app.data_models.data_stores import DataStores
 from app.data_models.list_store import ListStore
@@ -287,7 +287,6 @@ def test_remove_all_answers_with_list_item_id(
             answer_store=mock_empty_answer_store,
             list_store=mocker.MagicMock(spec=ListStore),
             progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         ),
     )
 
@@ -322,7 +321,6 @@ def test_remove_primary_person(
             answer_store=mock_empty_answer_store,
             list_store=populated_list_store,
             progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         ),
     )
 
@@ -348,7 +346,6 @@ def test_add_primary_person(
             answer_store=mock_empty_answer_store,
             list_store=populated_list_store,
             progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         ),
     )
 
@@ -363,7 +360,6 @@ def test_remove_completed_relationship_locations_for_list_name(
     mock_empty_schema,
     mock_empty_answer_store,
     mock_empty_progress_store,
-    mock_empty_supplementary_data_store,
     mock_router,
     populated_list_store,
     mocker,
@@ -379,7 +375,6 @@ def test_remove_completed_relationship_locations_for_list_name(
             answer_store=mock_empty_answer_store,
             list_store=populated_list_store,
             progress_store=mock_empty_progress_store,
-            supplementary_data_store=mock_empty_supplementary_data_store,
         ),
     )
     questionnaire_store_updater = QuestionnaireStoreUpdater(
@@ -404,7 +399,6 @@ def test_remove_completed_relationship_locations_for_list_name_no_locations(
     mock_empty_schema,
     mock_empty_answer_store,
     mock_empty_progress_store,
-    mock_empty_supplementary_data_store,
     mock_router,
     populated_list_store,
     mocker,
@@ -421,7 +415,6 @@ def test_remove_completed_relationship_locations_for_list_name_no_locations(
             answer_store=mock_empty_answer_store,
             list_store=populated_list_store,
             progress_store=mock_empty_progress_store,
-            supplementary_data_store=mock_empty_supplementary_data_store,
         ),
     )
     questionnaire_store_updater = QuestionnaireStoreUpdater(
@@ -439,7 +432,6 @@ def test_update_relationship_question_completeness_no_relationship_collectors(
     mock_empty_schema,
     mock_empty_answer_store,
     mock_empty_progress_store,
-    mock_empty_supplementary_data_store,
     mock_router,
     populated_list_store,
     mocker,
@@ -451,7 +443,6 @@ def test_update_relationship_question_completeness_no_relationship_collectors(
             answer_store=mock_empty_answer_store,
             list_store=populated_list_store,
             progress_store=mock_empty_progress_store,
-            supplementary_data_store=mock_empty_supplementary_data_store,
         ),
     )
     questionnaire_store_updater = QuestionnaireStoreUpdater(
@@ -505,7 +496,6 @@ def test_update_same_name_items(
             answer_store=mock_empty_answer_store,
             list_store=populated_list_store,
             progress_store=ProgressStore(),
-            supplementary_data_store=SupplementaryDataStore(),
         ),
     )
 
@@ -1053,12 +1043,10 @@ def get_questionnaire_store_updater(
     progress_store=None,
     router=None,
     current_question=None,
-    supplementary_data_store=None,
 ):
     answer_store = AnswerStore() if answer_store is None else answer_store
     list_store = ListStore() if list_store is None else list_store
     progress_store = ProgressStore() if progress_store is None else progress_store
-    supplementary_data_store = supplementary_data_store or SupplementaryDataStore()
 
     mock_schema = (
         MagicMock(QuestionnaireSchema({"questionnaire_flow": {"type": "Hub", "options": {}}}))
@@ -1073,7 +1061,6 @@ def get_questionnaire_store_updater(
             answer_store=answer_store,
             list_store=list_store,
             progress_store=progress_store,
-            supplementary_data_store=supplementary_data_store,
         ),
     )
     current_question = current_question or {}

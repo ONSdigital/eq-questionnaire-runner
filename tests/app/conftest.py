@@ -1,5 +1,4 @@
 # pylint: disable=redefined-outer-name
-from copy import deepcopy
 from datetime import datetime, timedelta, timezone
 from http.client import HTTPMessage
 
@@ -19,7 +18,6 @@ from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
-from app.data_models.supplementary_data_store import SupplementaryDataListMapping, SupplementaryDataStore
 from app.publisher import PubSubPublisher
 from app.questionnaire.location import Location
 from app.setup import create_app
@@ -167,11 +165,6 @@ def progress_store():
 
 
 @pytest.fixture
-def supplementary_data_store():
-    return SupplementaryDataStore()
-
-
-@pytest.fixture
 def data_stores():
     return DataStores()
 
@@ -236,199 +229,4 @@ def mocked_make_request_with_timeout(mocker, mocked_response_content):  # pylint
             read_timeout_error,
             response_not_timed_out,
         ],
-    )
-
-
-@pytest.fixture
-def supplementary_data():
-    return {
-        "schema_version": "v1",
-        "identifier": "12345678901",
-        "note": {
-            "title": "Volume of total production",
-            "example": {
-                "title": "Including",
-                "description": "Sales across all UK stores",
-            },
-        },
-        "guidance": "Some supplementary guidance about the survey",
-        "items": {
-            "products": [
-                {
-                    "identifier": 89929001,
-                    "name": "Articles and equipment for sports or outdoor games",
-                    "cn_codes": "2504 + 250610 + 2512 + 2519 + 2524",
-                    "guidance": {"title": "Include", "description": "sportswear"},
-                    "value_sales": {
-                        "answer_code": "89929001",
-                        "label": "Value of sales",
-                    },
-                },
-                {
-                    "identifier": "201630601",
-                    "name": "Other Minerals",
-                    "cn_codes": "5908 + 5910 + 591110 + 591120 + 591140",
-                    "value_sales": {
-                        "answer_code": "201630601",
-                        "label": "Value of sales",
-                    },
-                },
-            ]
-        },
-    }
-
-
-@pytest.fixture
-def supplementary_data_with_employees(supplementary_data):
-    copy = deepcopy(supplementary_data)
-    copy["items"]["employees"] = [
-        {
-            "identifier": "429001",
-            "personal_details": {
-                "forename": "Harry",
-                "surname": "Potter",
-                "address": {
-                    "postcode": "BS1 1AJ",
-                    "house_number": "12",
-                    "city": "Bristol",
-                },
-            },
-            "employment_details": {
-                "job_title": "Customer assistant",
-                "start_date": "2020-01-01",
-                "salary": {
-                    "payroll_number": "54345",
-                    "value": "25000",
-                    "currency": "GBP",
-                },
-            },
-        },
-        {
-            "identifier": "529001",
-            "personal_details": {
-                "forename": "Bruce",
-                "surname": "Wayne",
-                "address": {
-                    "postcode": "BS1 1HJ",
-                    "house_number": "15",
-                    "city": "Bristol",
-                },
-            },
-            "employment_details": {
-                "job_title": "Customer assistant",
-                "start_date": "2019-03-01",
-                "salary": {
-                    "payroll_number": "4345",
-                    "value": "27000",
-                    "currency": "GBP",
-                },
-            },
-        },
-        {
-            "identifier": "629011",
-            "personal_details": {
-                "forename": "Henry",
-                "surname": "Green",
-                "address": {
-                    "postcode": "BS1 1HR",
-                    "house_number": "11",
-                    "city": "Bristol",
-                },
-            },
-            "employment_details": {
-                "job_title": "Warehouse operative",
-                "start_date": "2022-10-01",
-                "salary": {
-                    "payroll_number": "28379",
-                    "value": "29000",
-                    "currency": "GBP",
-                },
-            },
-        },
-        {
-            "identifier": "729011",
-            "personal_details": {
-                "forename": "Fourth",
-                "surname": "Person",
-                "address": {
-                    "postcode": "BS1 1HO",
-                    "house_number": "14",
-                    "city": "Bristol",
-                },
-            },
-            "employment_details": {
-                "job_title": "Warehouse operative",
-                "start_date": "2022-11-01",
-                "salary": {
-                    "payroll_number": "22238379",
-                    "value": "29500",
-                    "currency": "GBP",
-                },
-            },
-        },
-    ]
-    return copy
-
-
-@pytest.fixture
-def supplementary_data_list_mappings():
-    return {
-        "products": [
-            SupplementaryDataListMapping(identifier=89929001, list_item_id="item-1"),
-            SupplementaryDataListMapping(identifier="201630601", list_item_id="item-2"),
-        ],
-    }
-
-
-@pytest.fixture
-def supplementary_data_list_mappings_extra_item():
-    return {
-        "products": [
-            SupplementaryDataListMapping(identifier=89929001, list_item_id="item-1"),
-            SupplementaryDataListMapping(identifier="201630601", list_item_id="item-2"),
-            SupplementaryDataListMapping(identifier="103219277", list_item_id="item-3"),
-        ],
-    }
-
-
-@pytest.fixture
-def supplementary_data_employee_list_mappings():
-    return {
-        "employees": [
-            SupplementaryDataListMapping(identifier="429001", list_item_id="employee-1"),
-            SupplementaryDataListMapping(identifier="529001", list_item_id="employee-2"),
-            SupplementaryDataListMapping(identifier="629011", list_item_id="employee-3"),
-            SupplementaryDataListMapping(identifier="729011", list_item_id="employee-4"),
-        ],
-    }
-
-
-@pytest.fixture
-def supplementary_data_store_with_data(supplementary_data, supplementary_data_list_mappings):
-    return SupplementaryDataStore(
-        supplementary_data=supplementary_data,
-        list_mappings=supplementary_data_list_mappings,
-    )
-
-
-@pytest.fixture
-def supplementary_data_store_with_data_extra_item(supplementary_data, supplementary_data_list_mappings_extra_item):
-    return SupplementaryDataStore(
-        supplementary_data=supplementary_data,
-        list_mappings=supplementary_data_list_mappings_extra_item,
-    )
-
-
-@pytest.fixture
-def supplementary_data_store_with_employees(
-    supplementary_data_with_employees,
-    supplementary_data_list_mappings,
-    supplementary_data_employee_list_mappings,
-):
-    return SupplementaryDataStore(
-        supplementary_data=supplementary_data_with_employees,
-        list_mappings={
-            **supplementary_data_list_mappings,
-            **supplementary_data_employee_list_mappings,
-        },
     )

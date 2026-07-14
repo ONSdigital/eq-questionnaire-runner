@@ -152,7 +152,7 @@ make run
 
 ### Supporting services
 
-Runner requires four supporting services - a questionnaire launcher, a storage backend, a cache and the supplementary data service.
+Runner requires three supporting services - a questionnaire launcher, a storage backend, and a cache.
 
 #### Run supporting services with Docker
 
@@ -184,13 +184,7 @@ make aims-compose-up
 ##### [Questionnaire launcher](https://github.com/ONSDigital/eq-questionnaire-launcher)
 
 ```shell
-docker run -e SURVEY_RUNNER_SCHEMA_URL=http://host.docker.internal:5000 -e SDS_API_BASE_URL=http://host.docker.internal:5003 -it -p 8000:8000 europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/eq-questionnaire-launcher:latest
-```
-
-##### [Mock Supplementary data service](https://github.com/ONSDigital/eq-runner-mock-sds)
-
-```shell
-docker run -it -p 5003:5003 europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/sds:latest
+docker run -e SURVEY_RUNNER_SCHEMA_URL=http://host.docker.internal:5000 -it -p 8000:8000 europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/eq-questionnaire-launcher:latest
 ```
 
 ##### Storage backends
@@ -461,10 +455,6 @@ The following env variables can be used
 | DATASTORE_USE_GRPC                        | False                        | Determines whether to use gRPC for Datastore. gRPC is currently only supported for threaded web servers        |
 | ACCOUNT_SERVICE_BASE_URL                  | `https://surveys.ons.gov.uk` | The base URL of the account service used to launch the survey                                                  |
 | ONS_URL                                   | `https://www.ons.gov.uk`     | The URL of the ONS website where static content is sourced, e.g. accessibility info                            |
-| SDS_API_BASE_URL                          |                              | The base URL of the SDS API used for fetching supplementary data                                               |
-| OIDC_TOKEN_BACKEND                        | gcp                          | The backend to use when fetching the Open ID Connect token                                                     |
-| OIDC_TOKEN_LEEWAY_IN_SECONDS              | 300                          | The leeway to use when validating OIDC tokens                                                                  |
-| SDS_OAUTH2_CLIENT_ID                      |                              | The OAuth2 Client ID used when setting up IAP on the SDS                                                       |
 
 The following env variables can be used when running tests
 

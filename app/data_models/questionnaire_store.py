@@ -8,7 +8,6 @@ from app.data_models.data_stores import DataStores
 from app.data_models.list_store import ListStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.data_models.progress_store import ProgressStore
-from app.data_models.supplementary_data_store import SupplementaryDataStore
 from app.questionnaire.rules.utils import parse_iso_8601_datetime
 from app.utilities.json import json_dumps, json_loads
 
@@ -59,9 +58,6 @@ class QuestionnaireStore:
         json_data = json_loads(data)
         self._stores.progress_store = ProgressStore(json_data.get("PROGRESS"))
         self.set_metadata(json_data.get("METADATA", {}))
-        self._stores.supplementary_data_store = SupplementaryDataStore.deserialize(
-            json_data.get("SUPPLEMENTARY_DATA", {})
-        )
         self._stores.answer_store = AnswerStore(json_data.get("ANSWERS"))
         self._stores.list_store = ListStore.deserialize(json_data.get("LISTS"))
         self._stores.response_metadata = json_data.get("RESPONSE_METADATA", {})
@@ -70,7 +66,6 @@ class QuestionnaireStore:
         data = {
             "METADATA": self._metadata,
             "ANSWERS": list(self._stores.answer_store),
-            "SUPPLEMENTARY_DATA": self._stores.supplementary_data_store.serialize(),
             "LISTS": self._stores.list_store.serialize(),
             "PROGRESS": self._stores.progress_store.serialize(),
             "RESPONSE_METADATA": self._stores.response_metadata,

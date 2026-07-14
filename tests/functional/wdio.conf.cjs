@@ -33,7 +33,7 @@ exports.config = {
       "./spec/timeout/timeout_modal_expired/*.js",
       "./spec/timeout/timeout_modal_extended/*.js",
     ],
-    features: ["./spec/features/**/*.js", "./spec/list_collector/**/*.js", "./spec/hub_and_spoke/**/*.js", "./spec/supplementary_data/**/*.js"],
+    features: ["./spec/features/**/*.js", "./spec/list_collector/**/*.js", "./spec/hub_and_spoke/**/*.js"],
     journeys: ["./spec/journeys/**/*.js"]
   },
   // Patterns to exclude.
@@ -222,7 +222,6 @@ exports.config = {
           periodId = "201605",
           periodStr = "May 2016",
           ruRef = "12345678901A",
-          sdsDatasetId = null,
           region = "GB-ENG",
           language = "en",
           includeLogoutUrl = false,
@@ -242,7 +241,6 @@ exports.config = {
             periodId,
             periodStr,
             ruRef,
-            sdsDatasetId,
             regionCode: region,
             languageCode: language,
             includeLogoutUrl,

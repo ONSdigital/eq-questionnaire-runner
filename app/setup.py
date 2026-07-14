@@ -26,8 +26,6 @@ from app.cloud_tasks import CloudTaskPublisher, LogCloudTaskPublisher
 from app.helpers import get_span_and_trace
 from app.jinja_filters import blueprint as filter_blueprint
 from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SUBMISSION
-from app.oidc.gcp_oidc import OIDCCredentialsServiceGCP
-from app.oidc.local_oidc import OIDCCredentialsServiceLocal
 from app.publisher import LogPublisher, PubSubPublisher
 from app.routes.dump import dump_blueprint
 from app.routes.errors import errors_blueprint
@@ -79,15 +77,12 @@ compress = Compress()
 logger = get_logger()
 
 BUCKET_ID_ERROR_MESSAGE = "Setting EQ_GCS_SUBMISSION_BUCKET_ID Missing"
-SDS_CLIENT_ID_ERROR_MESSAGE = "Setting SDS_OAUTH2_CLIENT_ID Missing"
-TOKEN_BACKEND_ERROR_MESSAGE = "Setting OIDC_TOKEN_BACKEND Missing"
 FEEDBACK_BUCKET_ID_ERROR_MESSAGE = "Setting EQ_GCS_FEEDBACK_BUCKET_ID Missing"
 SECRET_KEY_ERROR_MESSAGE = "Application secret key does not exist"
 
 STORAGE_BACKEND_ERROR_MESSAGE = "Unknown EQ_STORAGE_BACKEND"
 SUBMISSION_ERROR_MESSAGE = "Unknown EQ_SUBMISSION_BACKEND"
 SUBMIT_CONFIRMATION_ERROR_MESSAGE = "Unknown EQ_SUBMISSION_CONFIRMATION_BACKEND"
-TOKEN_BACKEND_UNKNOWN_ERROR_MESSAGE = "Unknown OIDC_TOKEN_BACKEND"
 PUBLISHER_BACKEND_ERROR_MESSAGE = "Unknown EQ_PUBLISHER_BACKEND"
 FEEDBACK_BACKEND_ERROR_MESSAGE = "Unknown EQ_FEEDBACK_BACKEND"
 
@@ -169,8 +164,6 @@ def create_app(  # noqa: C901  pylint: disable=too-complex, too-many-statements
     setup_publisher(application)
 
     setup_task_client(application)
-
-    setup_oidc(application)
 
     application.eq["id_generator"] = UserIDGenerator(
         application.config["EQ_SERVER_SIDE_STORAGE_USER_ID_ITERATIONS"],
@@ -348,25 +341,6 @@ def setup_task_client(application):
         application.eq["cloud_tasks"] = LogCloudTaskPublisher()
     else:
         raise NotImplementedError(SUBMIT_CONFIRMATION_ERROR_MESSAGE)
-
-
-def setup_oidc(application):
-    def client_ids_exist():
-        if not application.config.get("SDS_OAUTH2_CLIENT_ID"):
-            raise MissingEnvironmentVariable(SDS_CLIENT_ID_ERROR_MESSAGE)
-
-    if not (oidc_token_backend := application.config.get("OIDC_TOKEN_BACKEND")):
-        raise MissingEnvironmentVariable(TOKEN_BACKEND_ERROR_MESSAGE)
-
-    if oidc_token_backend == "gcp":
-        client_ids_exist()
-        application.eq["oidc_credentials_service"] = OIDCCredentialsServiceGCP()
-
-    elif oidc_token_backend == "local":
-        application.eq["oidc_credentials_service"] = OIDCCredentialsServiceLocal()
-
-    else:
-        raise NotImplementedError(TOKEN_BACKEND_UNKNOWN_ERROR_MESSAGE)
 
 
 def setup_publisher(application):

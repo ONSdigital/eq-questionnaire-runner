@@ -70,7 +70,6 @@ export function generateToken(
     periodId = "201605",
     periodStr = "May 2016",
     ruRef = "12345678901A",
-    sdsDatasetId = null,
     regionCode = "GB-ENG",
     languageCode = "en",
     includeLogoutUrl = true,
@@ -111,7 +110,7 @@ export function generateToken(
     region_code: regionCode,
     language_code: languageCode,
     account_service_url: "http://localhost:8000",
-    survey_metadata: getSurveyMetadata(theme, userId, displayAddress, surveyId, periodId, periodStr, ruRef, sdsDatasetId, booleanFlag),
+    survey_metadata: getSurveyMetadata(theme, userId, displayAddress, surveyId, periodId, periodStr, ruRef, booleanFlag),
     version: launchVersion,
     response_expires_at: isoDate,
   };
@@ -156,7 +155,7 @@ export function generateToken(
     });
 }
 
-function getSurveyMetadata(theme, userId, displayAddress, surveyId, periodId, periodStr, ruRef, sdsDatasetId, booleanFlag) {
+function getSurveyMetadata(theme, userId, displayAddress, surveyId, periodId, periodStr, ruRef, booleanFlag) {
   let surveyMetadata = {};
 
   if (theme === "social") {
@@ -176,7 +175,6 @@ function getSurveyMetadata(theme, userId, displayAddress, surveyId, periodId, pe
         survey_id: surveyId,
         period_id: periodId,
         period_str: periodStr,
-        sds_dataset_id: sdsDatasetId,
         ref_p_start_date: "2017-01-01",
         ref_p_end_date: "2017-02-01",
         employment_date: "2016-06-10",

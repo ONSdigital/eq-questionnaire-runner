@@ -1,6 +1,5 @@
-from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
-from typing import Any, Generator, Mapping, MutableMapping
+from typing import Any, Mapping, MutableMapping
 from uuid import uuid4
 
 from blinker import ANY
@@ -12,7 +11,6 @@ from structlog import contextvars, get_logger
 
 from app.authentication.no_token_exception import NoTokenException
 from app.authentication.user import User
-from app.data_models import QuestionnaireStore
 from app.data_models.session_data import SessionData
 from app.data_models.session_store import SessionStore
 from app.globals import create_session_store, get_metadata, get_questionnaire_store, get_session_store
@@ -127,10 +125,9 @@ def _create_session_data_from_metadata(metadata: Mapping[str, Any]) -> SessionDa
     )
 
 
-@contextmanager
 def create_session_questionnaire_store(
     metadata: MutableMapping,
-) -> Generator[QuestionnaireStore]:
+) -> None:
     """
     Context to manage creating and saving new session and questionnaire store
     :param metadata: metadata parsed from jwt token
@@ -153,7 +150,6 @@ def create_session_questionnaire_store(
     create_session_store(eq_session_id, user_id, user_ik, session_data)
 
     questionnaire_store = get_questionnaire_store(user_id, user_ik)
-    yield questionnaire_store
     questionnaire_store.set_metadata(metadata)
     questionnaire_store.save()
 

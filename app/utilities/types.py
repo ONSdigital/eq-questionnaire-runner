@@ -6,8 +6,6 @@ if TYPE_CHECKING:
     from app.questionnaire.relationship_location import RelationshipLocation  # pragma: no cover
 
 LocationType: TypeAlias = Union["Location", "RelationshipLocation"]  # noqa: UP007
-SupplementaryDataKeyType: TypeAlias = tuple[str, str | None]
-SupplementaryDataValueType: TypeAlias = dict | str | list | None
 
 DateValidatorType: TypeAlias = Union[
     "OptionalForm", "DateRequired", "DateCheck", "SingleDatePeriodCheck"
@@ -43,11 +41,6 @@ class DependentSection(NamedTuple):
     @property
     def section_key(self) -> SectionKey:
         return SectionKey(self.section_id, self.list_item_id)
-
-
-class SupplementaryDataListMapping(TypedDict):
-    identifier: str | int
-    list_item_id: str
 
 
 class Choice(NamedTuple):

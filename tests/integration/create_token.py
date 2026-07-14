@@ -36,31 +36,6 @@ PAYLOAD_V2_BUSINESS = {
     "account_service_url": ACCOUNT_SERVICE_URL,
 }
 
-PAYLOAD_V2_SUPPLEMENTARY_DATA = {
-    "version": AuthPayloadVersion.V2.value,
-    "survey_metadata": {
-        "data": {
-            "user_id": "integration-test",
-            "period_str": "April 2016",
-            "period_id": "201604",
-            "ru_ref": "12345678901A",
-            "ru_name": "Integration Testing",
-            "ref_p_start_date": "2016-04-01",
-            "ref_p_end_date": "2016-04-30",
-            "trad_as": "Integration Tests",
-            "employment_date": "1983-06-02",
-            "display_address": "68 Abingdon Road, Goathill",
-            "sds_dataset_id": "44f1b432-9421-49e5-bd26-e63e18a30b69",
-            "survey_id": "123",
-        }
-    },
-    "collection_exercise_sid": "789",
-    "response_id": "1234567890123456",
-    "language_code": "en",
-    "roles": [],
-    "account_service_url": ACCOUNT_SERVICE_URL,
-}
-
 PAYLOAD_V2_SOCIAL = {
     "version": AuthPayloadVersion.V2.value,
     "survey_metadata": {
@@ -122,19 +97,6 @@ class TokenGenerator:
     def create_token_v2(self, schema_name, theme="default", **extra_payload):
         payload_for_theme = PAYLOAD_V2_SOCIAL if theme == "social" else PAYLOAD_V2_BUSINESS
         payload = self._get_payload_with_params(schema_name=schema_name, payload=payload_for_theme, **extra_payload)
-
-        return self.generate_token(payload)
-
-    def create_supplementary_data_token(self, schema_name, **extra_payload):
-        payload = PAYLOAD_V2_SUPPLEMENTARY_DATA
-
-        # iterate over a copy so items can be deleted
-        for key, value in list(extra_payload.items()):
-            if key in {"sds_dataset_id", "ru_ref", "survey_id"}:
-                payload["survey_metadata"]["data"][key] = value
-                del extra_payload[key]
-
-        payload = self._get_payload_with_params(schema_name=schema_name, payload=payload, **extra_payload)
 
         return self.generate_token(payload)
 

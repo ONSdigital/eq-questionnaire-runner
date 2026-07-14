@@ -4,7 +4,7 @@ import pytest
 from freezegun import freeze_time
 from mock import MagicMock, Mock
 
-from app.data_models import AnswerStore, ListStore, ProgressStore, SupplementaryDataStore
+from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.answer import Answer
 from app.data_models.data_stores import DataStores
 from app.data_models.progress import CompletionStatus, ProgressDict
@@ -966,8 +966,7 @@ def test_format_date(rule, expected_result):
 
 
 @freeze_time("2021-01-01")
-@pytest.mark.parametrize("source", ("response_metadata", "supplementary_data"))
-def test_map_without_nested_date_operator(source):
+def test_map_without_nested_date_operator():
     rule = {
         Operator.MAP: [
             {Operator.FORMAT_DATE: ["self", "yyyy-MM-dd"]},
@@ -975,7 +974,7 @@ def test_map_without_nested_date_operator(source):
                 Operator.DATE_RANGE: [
                     {
                         Operator.DATE: [
-                            {"source": source, "identifier": "started_at"},
+                            {"source": "response_metadata", "identifier": "started_at"},
                             {"days": -7, "day_of_week": "MONDAY"},
                         ]
                     },
@@ -985,11 +984,9 @@ def test_map_without_nested_date_operator(source):
         ]
     }
 
-    date_map = {"started_at": datetime.now(timezone.utc).isoformat()}
     rule_evaluator = get_rule_evaluator(
         data_stores=DataStores(
-            response_metadata=date_map,
-            supplementary_data_store=SupplementaryDataStore(date_map),
+            response_metadata={"started_at": datetime.now(timezone.utc).isoformat()},
         )
     )
 
@@ -1040,42 +1037,3 @@ def test_map_with_nested_date_operator(offset, expected_result):
     )
 
     assert rule_evaluator.evaluate(rule=rule) == expected_result
-
-
-@pytest.mark.parametrize(
-    "identifier,selectors,value",
-    [
-        ("note", ["title"], "Volume of total production"),
-        ("products", ["name"], "Articles and equipment for sports or outdoor games"),
-    ],
-)
-def test_supplementary_data_source(supplementary_data_store_with_data, identifier, selectors, value):
-    """Tests rule evaluation of repeating and non-repeating supplementary data source inside a repeat"""
-    schema = get_mock_schema()
-    schema.get_list_name_for_answer_id = Mock(return_value=None)
-    answer_store = AnswerStore([{"answer_id": "same-answer", "value": value}])
-
-    rule_evaluator = get_rule_evaluator(
-        schema=schema,
-        data_stores=DataStores(
-            answer_store=answer_store,
-            supplementary_data_store=supplementary_data_store_with_data,
-        ),
-        location=Location(section_id="some-section", block_id="some-block", list_item_id="item-1"),
-    )
-
-    assert (
-        rule_evaluator.evaluate(
-            rule={
-                Operator.EQUAL: [
-                    {
-                        "source": "supplementary_data",
-                        "identifier": identifier,
-                        "selectors": selectors,
-                    },
-                    {"source": "answers", "identifier": "same-answer"},
-                ]
-            }
-        )
-        is True
-    )

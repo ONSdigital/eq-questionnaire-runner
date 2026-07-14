@@ -1,7 +1,7 @@
 import pytest
 from markupsafe import Markup
 
-from app.data_models import AnswerStore, ListStore, ProgressStore, SupplementaryDataStore
+from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.data_stores import DataStores
 from app.data_models.progress import CompletionStatus, ProgressDict
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
@@ -102,7 +102,6 @@ def test_context_for_summary():
         progress_store=progress_store,
         metadata=None,
         response_metadata={},
-        supplementary_data_store=SupplementaryDataStore(),
     )
 
     summary_context = SummaryContext(

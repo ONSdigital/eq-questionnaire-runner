@@ -254,10 +254,6 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
     def parent_id_map(self) -> Any:
         return self.serialize(self._parent_id_map)
 
-    @cached_property
-    def supplementary_lists(self) -> frozenset[str]:
-        return frozenset(self.json.get("supplementary_data", {}).get("lists", []))
-
     @classmethod
     def serialize(cls, data: Any) -> Any:
         return make_immutable(data)

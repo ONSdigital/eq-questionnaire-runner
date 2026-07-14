@@ -10,7 +10,6 @@ from app.data_models import ListStore, QuestionnaireStore
 from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore
 from app.data_models.metadata_proxy import MetadataProxy
-from app.data_models.supplementary_data_store import SupplementaryDataStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.settings import ACCOUNT_SERVICE_BASE_URL_SOCIAL
 from tests.app.parser.conftest import get_response_expires_at
@@ -56,7 +55,6 @@ def get_questionnaire_store():
     store = QuestionnaireStore(storage)
 
     store.data_stores.answer_store = AnswerStore()
-    store.supplementary_data_store = SupplementaryDataStore()
     store.data_stores.answer_store.add_or_update(user_answer)
     store.data_stores.metadata = METADATA_V2
 

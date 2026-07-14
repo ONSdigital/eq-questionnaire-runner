@@ -1,18 +1,18 @@
 from collections import defaultdict
 from itertools import combinations
-from typing import Iterable, Mapping, MutableMapping, Sequence
+from typing import Iterable, Mapping, Sequence
 
 from ordered_set import OrderedSet
 from werkzeug.datastructures import ImmutableDict
 
-from app.data_models import AnswerValueTypes, CompletionStatus, QuestionnaireStore, SupplementaryDataStore
+from app.data_models import AnswerValueTypes, CompletionStatus, QuestionnaireStore
 from app.data_models.answer_store import Answer
 from app.data_models.relationship_store import RelationshipDict, RelationshipStore
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.location import Location, SectionKey
 from app.questionnaire.questionnaire_schema import Dependent
 from app.questionnaire.router import Router
-from app.utilities.types import DependentSection, LocationType, SupplementaryDataListMapping
+from app.utilities.types import DependentSection, LocationType
 
 
 class QuestionnaireStoreUpdaterBase:
@@ -36,14 +36,6 @@ class QuestionnaireStoreUpdaterBase:
 
         self.dependent_block_id_by_section_key: Mapping[SectionKey, set[str]] = defaultdict(set)
         self.dependent_sections: set[DependentSection] = set()
-
-    @property
-    def _supplementary_data_store(self) -> SupplementaryDataStore:
-        return self._questionnaire_store.data_stores.supplementary_data_store
-
-    @_supplementary_data_store.setter
-    def _supplementary_data_store(self, store: SupplementaryDataStore) -> None:
-        self._questionnaire_store.data_stores.supplementary_data_store = store
 
     def save(self) -> None:
         if self.is_dirty():
@@ -117,11 +109,6 @@ class QuestionnaireStoreUpdaterBase:
             self._update_relationship_question_completeness(list_name)
 
         self._progress_store.remove_progress_for_list_item_id(list_item_id=list_item_id)
-
-    def remove_list_data(self, list_name: str) -> None:
-        """Delete entire list and remove any associated answers"""
-        self._answer_store.remove_all_answers_for_list_item_ids(*self._list_store[list_name].items)
-        self._list_store.delete_list(list_name)
 
     def capture_dependencies_for_list_change(self, list_name: str) -> None:
         """
@@ -405,71 +392,6 @@ class QuestionnaireStoreUpdaterBase:
     def _get_chronological_section_dependents(self) -> list:
         sections = list(self._schema.get_section_ids())
         return sorted(self.dependent_sections, key=lambda x: sections.index(x.section_id))
-
-    def set_supplementary_data(self, to_set: MutableMapping) -> None:
-        """
-        Used to set or update the supplementary data whenever the sds endpoint is called
-        (Which should be once per session, but only if the sds_dataset_id has changed)
-
-        this updates ListStore to add/update any lists for supplementary data and stores the
-        identifier -> list_item_id mappings in the supplementary data store to use in the payload at the end
-        """
-        list_mappings: dict[str, list[SupplementaryDataListMapping]] = {}
-        modified_lists: set[str] = set()
-
-        if self._supplementary_data_store.list_mappings:
-            modified_lists |= self._remove_outdated_supplementary_lists_and_answers(new_data=to_set)
-
-        for list_name, list_data in to_set.get("items", {}).items():
-            mappings, lists = self._create_supplementary_list(list_name=list_name, list_data=list_data)
-            list_mappings[list_name] = mappings
-            modified_lists |= lists
-
-        for list_name in modified_lists:
-            self.capture_dependencies_for_list_change(list_name)
-
-        self._supplementary_data_store = SupplementaryDataStore(supplementary_data=to_set, list_mappings=list_mappings)
-
-    def _create_supplementary_list(
-        self, *, list_name: str, list_data: Sequence[dict]
-    ) -> tuple[list[SupplementaryDataListMapping], set[str]]:
-        """
-        Creates or updates a list in ListStore based off supplementary data
-        returns the identifier -> list_item_id mappings used and the lists that were modified in the process
-        """
-        list_mappings: list[SupplementaryDataListMapping] = []
-        modified_lists: set[str] = set()
-        for list_item in list_data:
-            identifier = list_item["identifier"]
-            # if any pre-existing supplementary data already has a mapping for this list item
-            # then its already in the list store and doesn't require adding
-            if not (list_item_id := self._supplementary_data_store.list_lookup.get(list_name, {}).get(identifier)):
-                list_item_id = self.add_list_item(list_name)
-                modified_lists.add(list_name)
-            list_mappings.append(SupplementaryDataListMapping(identifier=identifier, list_item_id=list_item_id))
-        return list_mappings, modified_lists
-
-    def _remove_outdated_supplementary_lists_and_answers(self, new_data: MutableMapping) -> set[str]:
-        """
-        In the case that existing supplementary data is being replaced with new data: any list items in the old data
-        but not the new data are removed from the list store and related answers are deleted
-        :param new_data - the new supplementary data for comparison
-        :return: any lists that were modified by the change in supplementary data
-        """
-        modified_lists: set[str] = set()
-        for (
-            list_name,
-            mappings,
-        ) in self._supplementary_data_store.list_lookup.items():
-            if list_name in new_data.get("items", {}):
-                new_identifiers = [item["identifier"] for item in new_data["items"][list_name]]
-                for identifier, list_item_id in mappings.items():
-                    if identifier not in new_identifiers:
-                        modified_lists.add(list_name)
-                        self.remove_list_item_data(list_name, list_item_id)
-            else:
-                self.remove_list_data(list_name)
-        return modified_lists
 
 
 class QuestionnaireStoreUpdater(QuestionnaireStoreUpdaterBase):

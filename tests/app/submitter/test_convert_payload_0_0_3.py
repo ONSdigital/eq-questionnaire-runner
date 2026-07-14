@@ -4,12 +4,10 @@ from datetime import datetime, timezone
 from app.data_models.answer import Answer
 from app.data_models.answer_store import AnswerStore
 from app.data_models.list_store import ListStore
-from app.data_models.supplementary_data_store import SupplementaryDataStore
 from app.questionnaire.questionnaire_schema import QuestionnaireSchema
 from app.questionnaire.routing_path import RoutingPath
 from app.submitter.converter_v2 import get_payload_data
 from app.utilities.json import json_dumps, json_loads
-from app.utilities.make_immutable import make_immutable
 from app.utilities.schema import load_schema_from_name
 from tests.app.submitter.conftest import get_questionnaire_store
 from tests.app.submitter.schema import make_schema
@@ -1325,61 +1323,3 @@ def test_repeating_block_answers_present(repeating_blocks_answer_store, repeatin
 
     assert answers_dict == expected_answers
     assert answer_codes_dict == expected_answer_codes
-
-
-def test_payload_supplementary_data():
-    questionnaire_store = get_questionnaire_store()
-
-    full_routing_path = [
-        RoutingPath(
-            block_ids=["dynamic-answer"],
-            section_id="section",
-        )
-    ]
-
-    supplementary_data = {
-        "schema_version": "v1",
-        "identifier": "12345678901",
-        "note": {"title": "supermarket test survey", "description": "test data"},
-        "items": {
-            "supermarkets": [
-                {"identifier": "123", "name": "Tesco"},
-                {"identifier": "456", "name": "Aldi"},
-            ]
-        },
-    }
-    supermarkets_list_mappings = [
-        {"identifier": "123", "list_item_id": "tUJzGV"},
-        {"identifier": "456", "list_item_id": "vhECeh"},
-    ]
-
-    list_item_ids = ["tUJzGV", "vhECeh"]
-    questionnaire_store.data_stores.supplementary_data_store = SupplementaryDataStore(
-        supplementary_data=supplementary_data,
-        list_mappings={"supermarkets": supermarkets_list_mappings},
-    )
-    questionnaire_store.data_stores.list_store = ListStore([{"items": list_item_ids, "name": "supermarkets"}])
-    questionnaire_store.data_stores.answer_store = AnswerStore(
-        [
-            Answer("percentage-of-shopping", 12, list_item_ids[0]).to_dict(),
-            Answer("percentage-of-shopping", 21, list_item_ids[1]).to_dict(),
-        ]
-    )
-
-    schema = load_schema_from_name("test_supplementary_data")
-
-    data_payload = get_payload_data(
-        questionnaire_store.data_stores,
-        schema,
-        full_routing_path,
-    )
-
-    assert "supplementary_data" in data_payload
-    assert "lists" in data_payload
-    assert data_payload["supplementary_data"] == make_immutable(supplementary_data)
-    assert len(data_payload["lists"]) == 1
-    assert data_payload["lists"][0] == {
-        "items": list_item_ids,
-        "name": "supermarkets",
-        "supplementary_data_mappings": make_immutable(supermarkets_list_mappings),
-    }

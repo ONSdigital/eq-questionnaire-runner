@@ -13,17 +13,12 @@ from werkzeug.wrappers.response import Response
 
 from app.authentication.authenticator import create_session_questionnaire_store, decrypt_token
 from app.authentication.jti_claim_storage import JtiTokenUsed, use_jti_claim
-from app.data_models import QuestionnaireStore
 from app.data_models.metadata_proxy import MetadataProxy
 from app.globals import get_session_store, get_session_timeout_in_seconds
-from app.helpers.metadata_helpers import get_ru_ref_without_check_letter
 from app.helpers.template_helpers import DATA_LAYER_KEYS, get_survey_config, render_template
 from app.questionnaire import QuestionnaireSchema
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
-from app.questionnaire.questionnaire_store_updater import QuestionnaireStoreUpdaterBase
-from app.questionnaire.router import Router
 from app.routes.errors import _render_error_page
-from app.services.supplementary_data import get_supplementary_data_v1
 from app.utilities.metadata_parser_v2 import validate_questionnaire_claims, validate_runner_claims_v2
 from app.utilities.schema import load_schema_from_metadata
 
@@ -101,10 +96,7 @@ def login() -> Response:
 
     logger.info("decrypted token and parsed metadata")
 
-    with create_session_questionnaire_store(runner_claims) as questionnaire_store:
-        _set_questionnaire_supplementary_data(
-            questionnaire_store=questionnaire_store, metadata=metadata, schema=g.schema
-        )
+    create_session_questionnaire_store(runner_claims)
 
     cookie_session["expires_in"] = get_session_timeout_in_seconds(g.schema)
 
@@ -121,98 +113,6 @@ def login() -> Response:
     cookie_session["language_code"] = metadata.language_code or DEFAULT_LANGUAGE_CODE
 
     return redirect(url_for("questionnaire.get_questionnaire"))
-
-
-def _set_questionnaire_supplementary_data(
-    *,
-    questionnaire_store: QuestionnaireStore,
-    metadata: MetadataProxy,
-    schema: QuestionnaireSchema,
-) -> None:
-    """
-    If the survey metadata has an sds dataset id, and it either doesn't match
-    what it stored, or there is no stored supplementary data then fetch it, verify
-    any schema supplementary lists are included in the fetched data, and add it to
-    the questionnaire store
-
-    Validation of the supplementary lists must be performed every time a survey
-    launches, not just when the supplementary data is fetched as it is possible
-    that the survey has changed but the dataset hasn't so the validity could have
-    changed.
-    """
-    existing_sds_dataset_id = (
-        questionnaire_store.data_stores.metadata.survey_metadata["sds_dataset_id"]
-        if questionnaire_store.data_stores.metadata and questionnaire_store.data_stores.metadata.survey_metadata
-        else None
-    )
-
-    if not (new_sds_dataset_id := metadata["sds_dataset_id"]) or existing_sds_dataset_id == new_sds_dataset_id:
-        sds_dataset_id = existing_sds_dataset_id or new_sds_dataset_id
-        if sds_dataset_id:
-            logger.info(
-                "validating stored supplementary data",
-                sds_dataset_id=sds_dataset_id,
-            )
-            # no need to fetch: either no supplementary data or it hasn't changed, just validate lists
-            _validate_supplementary_data_lists(
-                supplementary_data=questionnaire_store.data_stores.supplementary_data_store.raw_data,
-                schema=schema,
-            )
-        return
-
-    identifier = get_ru_ref_without_check_letter(metadata["ru_ref"]) if metadata["ru_ref"] else metadata["qid"]
-
-    supplementary_data = get_supplementary_data_v1(
-        # Type ignore: survey_id and either ru_ref or qid are required for schemas that use supplementary data
-        dataset_id=new_sds_dataset_id,
-        identifier=identifier,  # type: ignore
-        survey_id=metadata["survey_id"],  # type: ignore
-        sds_schema_version=schema.json.get("sds_schema_version"),
-    )
-    logger.info(
-        "fetched supplementary data",
-        survey_id=metadata["survey_id"],
-        sds_dataset_id=new_sds_dataset_id,
-    )
-    _validate_supplementary_data_lists(supplementary_data=supplementary_data["data"], schema=schema)
-    _set_supplementary_data(
-        questionnaire_store=questionnaire_store,
-        schema=schema,
-        supplementary_data=supplementary_data["data"],
-    )
-
-
-def _set_supplementary_data(
-    *,
-    questionnaire_store: QuestionnaireStore,
-    schema: QuestionnaireSchema,
-    supplementary_data: dict,
-) -> None:
-    """
-    Adds the supplementary data to the questionnaire store which:
-    1) removes any old list items and answers
-    2) Updates block and section progress to reflect any newly unlocked questions due to supplementary data list changes
-    """
-    router = Router(schema=schema, data_stores=questionnaire_store.data_stores)
-    base_questionnaire_store_updater = QuestionnaireStoreUpdaterBase(
-        questionnaire_store=questionnaire_store, schema=schema, router=router
-    )
-    base_questionnaire_store_updater.set_supplementary_data(to_set=supplementary_data)
-    base_questionnaire_store_updater.remove_dependent_blocks_and_capture_dependent_sections()
-    base_questionnaire_store_updater.update_progress_for_dependent_sections()
-
-
-def _validate_supplementary_data_lists(*, supplementary_data: dict, schema: QuestionnaireSchema) -> None:
-    """
-    Validates that any lists the schema requires (which are those in the supplementary_data.lists property)
-    are included in the supplementary data
-    """
-    supplementary_lists = supplementary_data.get("items", {}).keys()
-    if missing := schema.supplementary_lists - supplementary_lists:
-        missing_schema_lists_error_message = (
-            f"Supplementary data does not include the following lists required for the schema: {', '.join(missing)}"
-        )
-        raise ValidationError(missing_schema_lists_error_message)
 
 
 def validate_jti(decrypted_token: dict[str, str | list | int]) -> None:

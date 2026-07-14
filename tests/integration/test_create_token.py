@@ -2,7 +2,7 @@ from unittest import mock
 
 from app.authentication.authenticator import decrypt_token
 from tests.integration.app_context_test_case import AppContextTestCase
-from tests.integration.create_token import PAYLOAD_V2_BUSINESS, PAYLOAD_V2_SOCIAL, PAYLOAD_V2_SUPPLEMENTARY_DATA
+from tests.integration.create_token import PAYLOAD_V2_BUSINESS, PAYLOAD_V2_SOCIAL
 from tests.integration.integration_test_case import IntegrationTestCase
 
 EXPECTED_TOKEN_BUSINESS = {
@@ -129,38 +129,6 @@ class TestCreateToken(IntegrationTestCase, AppContextTestCase):
                     "value": "Dummy Text",
                 },
                 "receipting_keys": ["qid"],
-            }
-
-    def test_sds_metadata_included_in_token(self):
-        token = self.token_generator.create_supplementary_data_token("test_checkbox.json")
-        with self.test_app.app_context():
-            decrypted_token = decrypt_token(token)
-            self.assertEqual(decrypted_token, PAYLOAD_V2_SUPPLEMENTARY_DATA | decrypted_token)
-
-    def test_additional_payload_added_in_token(self):
-        token = self.token_generator.create_supplementary_data_token(
-            "test_address.json",
-            flag_1=True,
-            sds_dataset_id="54f1b432-9421-49e5-bd26-e63e18a30b69",
-        )
-        with self.test_app.app_context():
-            decrypted_token = decrypt_token(token)
-            assert decrypted_token["survey_metadata"] == {
-                "data": {
-                    "display_address": "68 Abingdon Road, Goathill",
-                    "employment_date": "1983-06-02",
-                    "flag_1": True,
-                    "period_id": "201604",
-                    "period_str": "April 2016",
-                    "ref_p_end_date": "2016-04-30",
-                    "ref_p_start_date": "2016-04-01",
-                    "ru_name": "Integration Testing",
-                    "ru_ref": "12345678901A",
-                    "sds_dataset_id": "54f1b432-9421-49e5-bd26-e63e18a30b69",
-                    "survey_id": "123",
-                    "trad_as": "Integration Tests",
-                    "user_id": "integration-test",
-                }
             }
 
     def test_metadata_is_removed_from_token(self):
