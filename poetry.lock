@@ -3508,14 +3508,14 @@ crt = ["botocore[crt] (>=1.37.4,<2.0a0)"]
 
 [[package]]
 name = "sdc-cryptography"
-version = "1.2.3"
+version = "1.3.0"
 description = "A shared library for SDC services that use JWT with JWE"
 optional = false
-python-versions = "*"
+python-versions = "<4.0,>=3.10"
 groups = ["main"]
 files = [
-    {file = "sdc_cryptography-1.2.3-py3-none-any.whl", hash = "sha256:79697dd612e8725a653951a1023a1ca061da132846998ab203853dd48a62c4fb"},
-    {file = "sdc_cryptography-1.2.3.tar.gz", hash = "sha256:50565f7cfedaf838eaca72482b8a8425d467b95d5f72f109b2a292cda6eea7b3"},
+    {file = "sdc_cryptography-1.3.0-py3-none-any.whl", hash = "sha256:73c216da9ec62eb8e4dc37db0a03a0821c1ef4c16d88895177feab97110b4b35"},
+    {file = "sdc_cryptography-1.3.0.tar.gz", hash = "sha256:2b89b5414dffd4a498cb5c50351eb3f976e899f521eec990151269b4f6331dbd"},
 ]
 
 [package.dependencies]
@@ -4137,4 +4137,4 @@ testing = ["coverage[toml]", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13.5"
-content-hash = "54c6890119d8287b47e632acd1d7087065e83521f9dc25b566d33782604feae5"
+content-hash = "8cb2f92ae45fc3cb26abb562b25a64bff472d06f02b8984672a782fca6c4329b"
