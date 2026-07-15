@@ -16,10 +16,10 @@ import ViewSubmittedResponsePage from "../../generated_pages/supplementary_data_
 import { TimeoutModalPage } from "../../base_pages/timeout-modal.page.js";
 
 describe("Using supplementary data", () => {
-  const responseId = getRandomString(16);
   const summaryRowTitles = ".ons-summary__row-title";
 
   before("Starting the survey", async () => {
+    const responseId = getRandomString(16);
     await browser.openQuestionnaire("test_supplementary_data_with_introduction_and_calculated_summary.json", {
       version: "v2",
       sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
@@ -27,7 +27,6 @@ describe("Using supplementary data", () => {
     });
   });
   it("Given I launch a survey using supplementary data, When I am outside a repeating section, Then I am able to see the list of items relating to a given supplementary data list item on the page", async () => {
-    browser.pause(10000)
     const pageTitle = await browser.getTitle();
     await expect(pageTitle).toBe("Supplementary Data - Test Supplementary Data with Introduction and Calculated Summary");
     await expect(await $("#main-content").getText()).toContain("You have successfully loaded Supplementary data");
