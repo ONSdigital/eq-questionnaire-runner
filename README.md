@@ -252,8 +252,6 @@ Available commands:
 |------------------------|-----------------------------------------------------------------------------------------------------------|
 | `make test-functional` | Runs the functional tests through Webdriver (requires app running on localhost:5000 and generated pages). |
 | `make generate-pages`  | Generates the functional test pages.                                                                      |
-| `make lint-js`         | Lints the JS, reporting errors/warnings.                                                                  |
-| `make format-js`       | Format the json schemas.                                                                                  |
 
 ---
 
@@ -589,7 +587,7 @@ Now when navigating to localhost:8000 and launching a schema, this will now be u
 
 ## Code Linting/Formatting
 
-We use [Megalinter](https://megalinter.io/latest/mega-linter-runner/) to maintain our code by running various linters over the different file types we have. This is run against PRs using the `mega-linter` GitHub action but can also be run locally. To run the linter locally you can run:
+We use [Megalinter](https://megalinter.io/) to maintain our code by running various linters over the different file types we have apart from Python files (these are handled separately). This is run against PRs using the `mega-linter` GitHub action but can also be run locally. To run the linter locally you can run:
 
 ```shell
 make megalint
@@ -601,3 +599,5 @@ We also have another command which will also run Megalinter locally but this one
 ```shell
 make megalint-apply
 ```
+
+More detailed documentation on the lint process is available in [doc/linting-process.md](doc/linting-process.md).

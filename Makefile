@@ -20,14 +20,10 @@ build: load-design-system-templates load-schemas translate
 generate-pages:
 	npm run generate_pages
 
-lint: lint-python
-
 lint-python:
 	poetry run ./scripts/run_lint_python.sh
 
 lint-test-python: lint-python test-unit
-
-format: format-python
 
 format-python:
 	poetry run isort .
