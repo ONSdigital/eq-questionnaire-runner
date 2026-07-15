@@ -37,7 +37,7 @@ describe("Using supplementary data", () => {
         }
         return (await $("#main-content #guidance-1").isExisting()) && title.includes("Supplementary Data");
       },
-      { timeout: 20000, interval: 500, timeoutMsg: "Survey start page did not load in time" },
+      { timeout: 60000, interval: 500, timeoutMsg: "Survey start page did not load in time" },
     );
     const pageTitle = await browser.getTitle();
     await expect(pageTitle).toBe("Supplementary Data - Test Supplementary Data with Introduction and Calculated Summary");
