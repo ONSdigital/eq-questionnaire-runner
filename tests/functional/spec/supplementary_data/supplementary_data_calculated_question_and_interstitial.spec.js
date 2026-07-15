@@ -1,6 +1,5 @@
 import { click, assertSummaryTitles } from "../../helpers";
 import { expect } from "@wdio/globals";
-import { getRandomString } from "../../jwt_helper";
 import CalculatedSummarySalesPage from "../../generated_pages/supplementary_data_with_introduction_and_calculated_summary/calculated-summary-sales.page.js";
 import EmailBlockPage from "../../generated_pages/supplementary_data_with_introduction_and_calculated_summary/email-block.page.js";
 import HubPage from "../../base_pages/hub.page";
@@ -26,6 +25,7 @@ describe("Using supplementary data", () => {
     });
   });
   it("Given I launch a survey using supplementary data, When I am outside a repeating section, Then I am able to see the list of items relating to a given supplementary data list item on the page", async () => {
+    browser.pause(10000)
     const pageTitle = await browser.getTitle();
     await expect(pageTitle).toBe("Supplementary Data - Test Supplementary Data with Introduction and Calculated Summary");
     await expect(await $("#main-content #guidance-1").getText()).toContain("The surnames of the employees are: Potter, Kent.");

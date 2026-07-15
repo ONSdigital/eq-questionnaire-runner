@@ -1,6 +1,5 @@
 import { click, assertSummaryTitles } from "../../helpers";
 import { expect } from "@wdio/globals";
-import { getRandomString } from "../../jwt_helper";
 import AddAdditionalEmployeePage from "../../generated_pages/supplementary_data_with_list_collector/list-collector-additional-add.page.js";
 import AdditionalLengthOfEmploymentPage from "../../generated_pages/supplementary_data_with_list_collector/additional-length-of-employment.page.js";
 import AnyAdditionalEmployeesPage from "../../generated_pages/supplementary_data_with_list_collector/any-additional-employees.page.js";

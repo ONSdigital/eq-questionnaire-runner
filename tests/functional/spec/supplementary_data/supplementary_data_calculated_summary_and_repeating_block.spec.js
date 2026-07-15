@@ -1,6 +1,5 @@
 import { assertSummaryItems, assertSummaryTitles, assertSummaryValues, listItemComplete, click, verifyUrlContains } from "../../helpers";
 import { expect } from "@wdio/globals";
-import { getRandomString } from "../../jwt_helper";
 import CalculatedSummaryValueSalesPage from "../../generated_pages/supplementary_data_repeating_block_and_calculated_summary/calculated-summary-value-sales.page.js";
 import CalculatedSummaryVolumeSalesPage from "../../generated_pages/supplementary_data_repeating_block_and_calculated_summary/calculated-summary-volume-sales.page.js";
 import CalculatedSummaryVolumeTotalPage from "../../generated_pages/supplementary_data_repeating_block_and_calculated_summary/calculated-summary-volume-total.page.js";
