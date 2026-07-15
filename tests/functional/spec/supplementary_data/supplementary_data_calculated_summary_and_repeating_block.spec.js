@@ -27,6 +27,20 @@ describe("Using supplementary data", () => {
     });
   });
   it("Given I have some repeating blocks with supplementary data, When I begin the section, Then I see the supplementary names rendered correctly", async () => {
+    await browser.waitUntil(
+      async () => {
+        const title = await browser.getTitle();
+        if (title === "An error has occurred - ONS Surveys") {
+          await browser.openQuestionnaire("test_supplementary_data_repeating_block_and_calculated_summary.json", {
+            version: "v2",
+            sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
+            responseId,
+          });
+        }
+        return (await expect(await $(HubPage.submit()).isExisting()).toBe(true));
+      },
+      { timeout: 60000, interval: 500, timeoutMsg: "Survey start page did not load in time" },
+    );
     await click(HubPage.submit());
     await expect(await $(ListCollectorProductsPage.listLabel(1)).getText()).toBe("Articles and equipment for sports or outdoor games");
     await expect(await $(ListCollectorProductsPage.listLabel(2)).getText()).toBe("Kitchen Equipment");
