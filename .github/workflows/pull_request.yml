@@ -200,7 +200,7 @@ jobs:
       if: "!contains(github.event.pull_request.labels.*.name, 'tests not required')"
       permissions:
         contents: 'read'
-      needs: [ python-dependencies, node-dependencies ]
+      needs: [ python-dependencies, node-dependencies, test-functional ]
       runs-on: ubuntu-22.04
       timeout-minutes: 35
       env:
