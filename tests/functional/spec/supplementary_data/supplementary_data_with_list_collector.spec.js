@@ -29,6 +29,20 @@ describe("Using supplementary data", () => {
     });
   });
   it("Given I have a list collector content block using a supplementary list, When I start the section, I see the supplementary list items in the list", async () => {
+    await browser.waitUntil(
+      async () => {
+        const title = await browser.getTitle();
+        if (title === "An error has occurred - ONS Surveys") {
+          await browser.openQuestionnaire("test_supplementary_data_with_list_collector.json", {
+            version: "v2",
+            sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
+            responseId,
+          });
+        }
+        return await expect(await $(HubPage.submit()).isExisting()).toBe(true);
+      },
+      { timeout: 60000, interval: 500, timeoutMsg: "Survey start page did not load in time" },
+    );
     await click(HubPage.submit());
     await expect(await $(ListCollectorEmployeesPage.listLabel(1)).getText()).toBe("Harry Potter");
     await expect(await $(ListCollectorEmployeesPage.listLabel(2)).getText()).toBe("Clark Kent");

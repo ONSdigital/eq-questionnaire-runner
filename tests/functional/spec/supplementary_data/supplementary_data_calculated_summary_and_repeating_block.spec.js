@@ -37,7 +37,7 @@ describe("Using supplementary data", () => {
             responseId,
           });
         }
-        return (await expect(await $(HubPage.submit()).isExisting()).toBe(true));
+        return await expect(await $(HubPage.submit()).isExisting()).toBe(true);
       },
       { timeout: 60000, interval: 500, timeoutMsg: "Survey start page did not load in time" },
     );
