@@ -13,7 +13,6 @@ import Section1Page from "../../generated_pages/supplementary_data_with_introduc
 import TradingPage from "../../generated_pages/supplementary_data_with_introduction_and_calculated_summary/trading.page.js";
 import ThankYouPage from "../../base_pages/thank-you.page";
 import ViewSubmittedResponsePage from "../../generated_pages/supplementary_data_with_introduction_and_calculated_summary/view-submitted-response.page.js";
-import { TimeoutModalPage } from "../../base_pages/timeout-modal.page.js";
 
 describe("Using supplementary data", () => {
   const summaryRowTitles = ".ons-summary__row-title";
