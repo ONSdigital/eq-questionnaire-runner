@@ -1,5 +1,5 @@
 import KJUR from "jsrsasign";
-import { v4 as uuidv4 } from "uuid"; // eslint-disable-line import/no-unresolved
+import { v4 as uuidv4 } from "uuid";
 import JSONWebKey from "json-web-key";
 import jose from "node-jose";
 import crypto from "crypto";
@@ -156,35 +156,31 @@ export function generateToken(
 }
 
 function getSurveyMetadata(theme, userId, displayAddress, surveyId, periodId, periodStr, ruRef, booleanFlag) {
-  let surveyMetadata = {};
-
   if (theme === "social") {
-    surveyMetadata = {
+    return {
       data: {
         case_ref: "1000000000000001",
         qid: "1000000000000001",
       },
       receipting_keys: ["qid"],
     };
-  } else {
-    surveyMetadata = {
-      data: {
-        user_id: userId,
-        display_address: displayAddress,
-        ru_ref: ruRef,
-        survey_id: surveyId,
-        period_id: periodId,
-        period_str: periodStr,
-        ref_p_start_date: "2017-01-01",
-        ref_p_end_date: "2017-02-01",
-        employment_date: "2016-06-10",
-        return_by: "2017-03-01",
-        ru_name: "Apple",
-        trad_as: "Apple",
-        boolean_flag: booleanFlag,
-      },
-    };
   }
 
-  return surveyMetadata;
+  return {
+    data: {
+      user_id: userId,
+      display_address: displayAddress,
+      ru_ref: ruRef,
+      survey_id: surveyId,
+      period_id: periodId,
+      period_str: periodStr,
+      ref_p_start_date: "2017-01-01",
+      ref_p_end_date: "2017-02-01",
+      employment_date: "2016-06-10",
+      return_by: "2017-03-01",
+      ru_name: "Apple",
+      trad_as: "Apple",
+      boolean_flag: booleanFlag,
+    },
+  };
 }

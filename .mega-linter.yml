@@ -23,18 +23,16 @@ DISABLE_LINTERS:
   - HTML_HTMLHINT # HTMLHint was disabled as HTMLHint doesn't understand Jinja2 syntax so there was a lot of false positives
   - JAVASCRIPT_STANDARD # Disabled because its rules conflict with our rules set up in ESLint
 
-# JAVASCRIPT_ES_CLI_EXECUTABLE and JAVASCRIPT_ES_PRE_COMMANDS are required to run ESLint v9
-# There are compatibility issues with ESLint v10 at the moment and MegaLinter runs v10 by default
-JAVASCRIPT_ES_CLI_EXECUTABLE: # Forces MegaLinter to use the local ESLint binary (v9)
-  - node_modules/.bin/eslint
-
-JAVASCRIPT_ES_PRE_COMMANDS: # Needed because otherwise it will fail in the GitHub action because node_modules/.bin/eslint won't exist in that environment
-  - command: npm ci --include=dev
-    cwd: workspace
-
 FORMATTERS_DISABLE_ERRORS: false # Ensures code is actually fixable when using `make megalint-apply`
 SHOW_ELAPSED_TIME: true # Displays execution time for each linter
 FLAVOR_SUGGESTIONS: false # Disables suggestions to use different MegaLinter flavors
+
+# ESLint v10 flat-config workaround: install project deps before running MegaLinter via CI
+JAVASCRIPT_ES_PRE_COMMANDS:
+  - command: npm ci --include=dev
+    cwd: workspace
+    continue_if_failed: false
+JAVASCRIPT_ES_CLI_EXECUTABLE: [node_modules/.bin/eslint]
 
 ACTION_ZIZMOR_UNSECURED_ENV_VARIABLES:
   - GITHUB_TOKEN

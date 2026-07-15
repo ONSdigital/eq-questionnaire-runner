@@ -1,57 +1,44 @@
-import neostandard from "neostandard";
-import importPlugin from "eslint-plugin-import";
+import js from "@eslint/js";
+import { importX } from "eslint-plugin-import-x";
 import jsonPlugin from "eslint-plugin-json";
+import n from "eslint-plugin-n";
+import promise from "eslint-plugin-promise";
+import globals from "globals";
 
 export default [
   {
     ignores: ["node_modules/**", "htmlcov/**", "coverage/**", "dist/**", "src/index.html", "tests/functional/generated_pages/**"],
   },
-  ...neostandard({ semi: true }),
+  js.configs.recommended,
+  importX.flatConfigs.recommended,
+  n.configs["flat/recommended-module"],
+  promise.configs["flat/recommended"],
   {
     files: ["**/*.js", "**/*.cjs"],
     languageOptions: {
       ecmaVersion: 11,
       sourceType: "module",
       globals: {
-        // Project globals
+        ...globals.browser,
+        ...globals.node,
+        ...globals.mocha,
         $: "readonly",
         $$: "readonly",
         browser: "readonly",
         expect: "readonly",
-
-        // Node globals (env: node)
-        process: "readonly",
-        module: "readonly",
-        require: "readonly",
-        __dirname: "readonly",
-        __filename: "readonly",
-        exports: "readonly",
-        Buffer: "readonly",
-        global: "readonly",
-        URL: "readonly",
-
-        // Mocha globals (env: mocha)
-        describe: "readonly",
-        it: "readonly",
-        before: "readonly",
-        after: "readonly",
-        beforeEach: "readonly",
-        afterEach: "readonly",
       },
     },
     plugins: {
-      import: importPlugin,
+      "import-x": importX,
       json: jsonPlugin,
     },
     rules: {
-      ...(importPlugin.configs.recommended.rules || {}),
-
       "no-loss-of-precision": 0,
       "no-nonoctal-decimal-escape": 0,
       "no-unsafe-optional-chaining": 0,
       "no-useless-backreference": 0,
       "consistent-return": 1,
-      "@stylistic/quotes": [
+      quotes: [
         2,
         "double",
         {
@@ -59,28 +46,30 @@ export default [
           allowTemplateLiterals: true,
         },
       ],
-      "@stylistic/semi": [2, "always"],
-      "@stylistic/space-before-function-paren": 0,
-      "@stylistic/indent": [
+      semi: [2, "always"],
+      "space-before-function-paren": 0,
+      indent: [
         2,
         2,
         {
           SwitchCase: 1,
         },
       ],
-      "@stylistic/padded-blocks": [
+      "padded-blocks": [
         "error",
         {
           blocks: "never",
         },
       ],
-      "@stylistic/comma-dangle": 0,
+      "comma-dangle": 0,
       "new-cap": 2,
       "no-alert": 1,
       "no-console": 2,
       "no-dupe-class-members": 0,
       "no-unused-expressions": 0,
       "no-var": 2,
+      "n/no-extraneous-import": 0,
+      "n/no-unpublished-import": 0,
       "prefer-arrow-callback": [
         2,
         {
@@ -88,7 +77,7 @@ export default [
         },
       ],
       "require-await": "error",
-      "import/no-unresolved": [
+      "import-x/no-unresolved": [
         2,
         {
           ignore: ["generated_pages"],
@@ -104,6 +93,13 @@ export default [
     processor: "json/json",
     rules: {
       "json/sort-keys": 0,
+    },
+  },
+  {
+    files: ["tests/functional/**/*.js"],
+    rules: {
+      // Functional specs import generated pages that are not present in MegaLinter CI runs.
+      "n/no-missing-import": 0,
     },
   },
 ];

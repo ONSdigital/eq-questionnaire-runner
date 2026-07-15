@@ -2,7 +2,7 @@ import { TimeoutModalPage } from "../../base_pages/timeout-modal.page.js";
 import { click, verifyUrlContains } from "../../helpers";
 
 class TestCase {
-  testCaseExpired(page) {
+  testCaseExpired() {
     it("When the timeout modal is displayed, and I do not extend my session, Then I will be redirected to the session expired page", async () => {
       await this.checkTimeoutModal();
       await browser.pause(65000); // We are waiting for the session to expire
