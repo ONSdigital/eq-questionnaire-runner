@@ -25,7 +25,20 @@ describe("Using supplementary data", () => {
     });
   });
   it("Given I launch a survey using supplementary data, When I am outside a repeating section, Then I am able to see the list of items relating to a given supplementary data list item on the page", async () => {
-    browser.pause(10000)
+    await browser.waitUntil(
+      async () => {
+        const title = await browser.getTitle();
+        if (title === "An error has occurred - ONS Surveys") {
+          await browser.openQuestionnaire("test_supplementary_data_with_introduction_and_calculated_summary.json", {
+            version: "v2",
+            sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
+            responseId,
+          });
+        }
+        return (await $("#main-content #guidance-1").isExisting()) && title.includes("Supplementary Data");
+      },
+      { timeout: 20000, interval: 500, timeoutMsg: "Survey start page did not load in time" },
+    );
     const pageTitle = await browser.getTitle();
     await expect(pageTitle).toBe("Supplementary Data - Test Supplementary Data with Introduction and Calculated Summary");
     await expect(await $("#main-content #guidance-1").getText()).toContain("The surnames of the employees are: Potter, Kent.");
