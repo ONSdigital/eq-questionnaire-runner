@@ -54,6 +54,7 @@ describe("Using supplementary data", () => {
   });
 
   it("Given I progress through the interstitial block, When I begin the introduction block, Then I see the supplementary data piped in", async () => {
+    await $(LoadedSuccessfullyBlockPage.submit()).waitForExist({ timeout: 60000 });
     await click(LoadedSuccessfullyBlockPage.submit());
     await $(IntroductionBlockPage.acceptCookies()).click();
     await expect(await $(IntroductionBlockPage.businessDetailsContent()).getText()).toContain("You are completing this survey for Tesco");
