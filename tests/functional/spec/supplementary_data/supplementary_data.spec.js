@@ -336,10 +336,8 @@ describe("Using supplementary data", () => {
     });
     await expect(await $$(summaryRowTitles)[0].getText()).toBe("Articles and equipment for sports or outdoor games");
     await assertSummaryItems([
-      "Articles and equipment for sports or outdoor games",
       "Volume of sales for Articles and equipment for sports or outdoor games",
       "Total volume produced for Articles and equipment for sports or outdoor games",
-      "Kitchen Equipment",
       "Volume of sales for Kitchen Equipment",
       "Total volume produced for Kitchen Equipment",
       "Value of sales for Articles and equipment for sports or outdoor games",
