@@ -40,20 +40,11 @@ describe("Using supplementary data", () => {
   const summaryRowTitles = ".ons-summary__row-title";
 
   before("Starting the survey", async () => {
-    await browser.waitUntil(
-      async () => {
-        const title = await browser.getTitle();
-        if (title === "An error has occurred - ONS Surveys") {
-          await browser.openQuestionnaire("test_supplementary_data.json", {
-            version: "v2",
-            sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
-            responseId,
-          });
-        }
-        return (await title.includes("Supplementary Data"));
-      },
-      { timeout: 60000, interval: 500, timeoutMsg: "Survey start page did not load in time" },
-    );
+    await browser.openQuestionnaire("test_supplementary_data.json", {
+      version: "v2",
+      sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
+      responseId,
+    });
   });
   it("Given I launch a survey using supplementary data, When I am outside a repeating section, Then I am able to see the list of items relating to a given supplementary data list item on the page", async () => {
     await expect(await $("#main-content #guidance-1").getText()).toContain("The surnames of the employees are: Potter, Kent.");
@@ -348,20 +339,11 @@ describe("Using supplementary data", () => {
   });
 
   it("Given I relaunch the survey with new supplementary data and new list items for the repeating section, When I open the Hub page, Then I see the new supplementary list items as new incomplete sections and not any old ones", async () => {
-    await browser.waitUntil(
-      async () => {
-        const title = await browser.getTitle();
-        if (title === "An error has occurred - ONS Surveys") {
-          await browser.openQuestionnaire("test_supplementary_data.json", {
-            version: "v2",
-            sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c63",
-            responseId,
-          });
-        }
-        return (await title.includes("Supplementary Data"));
-      },
-      { timeout: 60000, interval: 500, timeoutMsg: "Survey start page did not load in time" },
-    );
+    await browser.openQuestionnaire("test_supplementary_data.json", {
+      version: "v2",
+      sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
+      responseId,
+    });
     await expect(await $(HubPage.summaryItems("section-4-1")).getText()).toContain("Harry Potter");
     await expect(await $(HubPage.summaryItems("section-4-2")).getText()).toContain("Bruce Wayne");
     await expect(await $(HubPage.summaryItems("section-5-1")).getText()).toContain("Jane Doe");
@@ -407,39 +389,21 @@ describe("Using supplementary data", () => {
     await click(CalculatedSummaryValueSalesPage.submit());
     await click(Section6Page.submit());
     await expect(await $(HubPage.summaryRowState("section-6")).getText()).toBe("Completed");
-    await browser.waitUntil(
-      async () => {
-        const title = await browser.getTitle();
-        if (title === "An error has occurred - ONS Surveys") {
-          await browser.openQuestionnaire("test_supplementary_data.json", {
-            version: "v2",
-            sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
-            responseId,
-          });
-        }
-        return (await title.includes("Supplementary Data"));
-      },
-      { timeout: 60000, interval: 500, timeoutMsg: "Survey start page did not load in time" },
-    );
+    await browser.openQuestionnaire("test_supplementary_data.json", {
+      version: "v2",
+      sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
+      responseId,
+    });
     await expect(await $(HubPage.summaryRowState("section-6")).getText()).toBe("Partially completed");
     await expect(await $(HubPage.summaryRowState("section-7")).getText()).toBe("Partially completed");
   });
 
   it("Given I return to the new data resulting in a new incomplete section, When I start the section, Then I see the new supplementary data piped in accordingly", async () => {
-    await browser.waitUntil(
-      async () => {
-        const title = await browser.getTitle();
-        if (title === "An error has occurred - ONS Surveys") {
-          await browser.openQuestionnaire("test_supplementary_data.json", {
-            version: "v2",
-            sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
-            responseId,
-          });
-        }
-        return (await title.includes("Supplementary Data"));
-      },
-      { timeout: 60000, interval: 500, timeoutMsg: "Survey start page did not load in time" },
-    );
+    await browser.openQuestionnaire("test_supplementary_data.json", {
+      version: "v2",
+      sdsDatasetId: "3bb41d29-4daa-9520-82f0-cae365f390c6",
+      responseId,
+    });
     await click(HubPage.submit());
     await $(LengthOfEmploymentPage.day()).setValue(10);
     await $(LengthOfEmploymentPage.month()).setValue(10);
