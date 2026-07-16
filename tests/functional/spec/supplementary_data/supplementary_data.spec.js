@@ -42,6 +42,11 @@ describe("Using supplementary data", () => {
   before("Starting the survey", async () => {
     await browser.waitUntil(
       async () => {
+        await browser.openQuestionnaire("test_supplementary_data.json", {
+          version: "v2",
+          sdsDatasetId: "203b2f9d-c500-8175-98db-86ffcfdccfa3",
+          responseId,
+        });
         const title = await browser.getTitle();
         if (title === "An error has occurred - ONS Surveys") {
           await browser.openQuestionnaire("test_supplementary_data.json", {
@@ -56,7 +61,6 @@ describe("Using supplementary data", () => {
     );
   });
   it("Given I launch a survey using supplementary data, When I am outside a repeating section, Then I am able to see the list of items relating to a given supplementary data list item on the page", async () => {
-    await $("#main-content #guidance-1").waitForExist({ timeout: 60000 });
     await expect(await $("#main-content #guidance-1").getText()).toContain("The surnames of the employees are: Potter, Kent.");
     await expect(await $$("#main-content li")[0].getText()).toBe("Articles and equipment for sports or outdoor games");
     await expect(await $$("#main-content li")[1].getText()).toBe("Kitchen Equipment");
