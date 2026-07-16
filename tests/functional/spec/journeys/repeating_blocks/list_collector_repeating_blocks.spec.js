@@ -72,11 +72,11 @@ describe("List Collector Repeating Blocks", () => {
       await click(AnyOtherTradingDetailsPage.submit());
       await click(SectionCompaniesPage.submit());
       await click(SubmitPage.submit());
-
       await browser.waitUntil(async () => (await browser.getUrl()).includes(ThankYouPage.pageName), {
         timeout: 60000,
         timeoutMsg: `Expected URL to contain ${ThankYouPage.pageName}`,
       });
+      await verifyUrlContains(ThankYouPage.pageName);
     });
   });
 
