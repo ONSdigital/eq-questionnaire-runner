@@ -505,12 +505,9 @@ describe("Using supplementary data", () => {
 
     // Product details
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[0].getText()).toBe(
-      "Articles and equipment for sports or outdoor games",
-    );
-    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[1].getText()).toBe(
       "Volume of sales for Articles and equipment for sports or outdoor games",
     );
-    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[2].getText()).toBe(
+    await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryItems)[1].getText()).toBe(
       "Total volume produced for Articles and equipment for sports or outdoor games",
     );
     await expect(await $(ViewSubmittedResponsePage.productReportingContent(0)).$$(summaryValues)[0].getText()).toBe("100 kg");
