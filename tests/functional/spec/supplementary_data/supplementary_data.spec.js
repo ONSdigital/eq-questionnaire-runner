@@ -334,7 +334,7 @@ describe("Using supplementary data", () => {
       interval: 500,
       timeoutMsg: "Summary row titles did not load in time",
     });
-    await expect(await $$(summaryRowTitles)[0].getText()).toBe("Sales during the previous quarter");
+    await expect(await $$(summaryRowTitles)[0].getText()).toBe("Articles and equipment for sports or outdoor games");
     await assertSummaryItems([
       "Articles and equipment for sports or outdoor games",
       "Volume of sales for Articles and equipment for sports or outdoor games",
