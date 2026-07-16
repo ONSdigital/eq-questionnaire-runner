@@ -57,7 +57,7 @@ describe("Using supplementary data", () => {
         }
         return (await $("#main-content #guidance-1").isExisting()) && title.includes("Supplementary Data");
       },
-      { timeout: 60000, interval: 500, timeoutMsg: "Survey start page did not load in time" },
+      { timeout: 60000, timeoutMsg: "Survey start page did not load in time" },
     );
   });
   it("Given I launch a survey using supplementary data, When I am outside a repeating section, Then I am able to see the list of items relating to a given supplementary data list item on the page", async () => {
@@ -331,7 +331,6 @@ describe("Using supplementary data", () => {
   it("Given I have a section with repeating answers for a supplementary list, When I reach the section summary page, Then I see the supplementary data and my answers rendered correctly", async () => {
     await browser.waitUntil(async () => (await $$(summaryRowTitles)).length > 0, {
       timeout: 60000,
-      interval: 500,
       timeoutMsg: "Summary row titles did not load in time",
     });
     await expect(await $$(summaryRowTitles)[0].getText()).toBe("Articles and equipment for sports or outdoor games");
