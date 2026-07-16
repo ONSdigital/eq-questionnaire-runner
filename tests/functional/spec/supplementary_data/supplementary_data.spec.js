@@ -329,6 +329,11 @@ describe("Using supplementary data", () => {
   });
 
   it("Given I have a section with repeating answers for a supplementary list, When I reach the section summary page, Then I see the supplementary data and my answers rendered correctly", async () => {
+    await browser.waitUntil(async () => (await $$(summaryRowTitles)).length > 0, {
+      timeout: 60000,
+      interval: 500,
+      timeoutMsg: "Summary row titles did not load in time",
+    });
     await expect(await $$(summaryRowTitles)[0].getText()).toBe("Sales during the previous quarter");
     await assertSummaryItems([
       "Articles and equipment for sports or outdoor games",
