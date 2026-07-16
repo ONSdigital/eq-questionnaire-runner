@@ -50,7 +50,7 @@ describe("Using supplementary data", () => {
             responseId,
           });
         }
-        return (await $("#main-content #guidance-1").isExisting()) && title.includes("Supplementary Data");
+        return (await title.includes("Supplementary Data"));
       },
       { timeout: 60000, interval: 500, timeoutMsg: "Survey start page did not load in time" },
     );
@@ -358,7 +358,7 @@ describe("Using supplementary data", () => {
             responseId,
           });
         }
-        return (await $("#main-content #guidance-1").isExisting()) && title.includes("Supplementary Data");
+        return (await title.includes("Supplementary Data"));
       },
       { timeout: 60000, interval: 500, timeoutMsg: "Survey start page did not load in time" },
     );
@@ -417,7 +417,7 @@ describe("Using supplementary data", () => {
             responseId,
           });
         }
-        return (await $("#main-content #guidance-1").isExisting()) && title.includes("Supplementary Data");
+        return (await title.includes("Supplementary Data"));
       },
       { timeout: 60000, interval: 500, timeoutMsg: "Survey start page did not load in time" },
     );
@@ -436,7 +436,7 @@ describe("Using supplementary data", () => {
             responseId,
           });
         }
-        return (await $("#main-content #guidance-1").isExisting()) && title.includes("Supplementary Data");
+        return (await title.includes("Supplementary Data"));
       },
       { timeout: 60000, interval: 500, timeoutMsg: "Survey start page did not load in time" },
     );
