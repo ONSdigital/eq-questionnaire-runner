@@ -16,6 +16,13 @@ Install [Docker](https://www.docker.com/) for your system. Make sure that you've
 ``` shell
 brew install docker
 brew install docker-compose
+brew install docker-buildx
+```
+
+brew installs buildx as a standalone binary so it also needs symlinking before Docker picks it up:
+```shell
+mkdir -p ~/.docker/cli-plugins
+ln -sfn "$(brew --prefix docker-buildx)/bin/docker-buildx" ~/.docker/cli-plugins/docker-buildx
 ```
 
 On MacOS install container runtimes, eg. [Colima](https://github.com/abiosoft/colima):
@@ -64,8 +71,20 @@ git clone git@github.com:ONSdigital/eq-questionnaire-runner.git
 In order to run locally you'll need Node.js, snappy, pyenv, jq and wkhtmltopdf installed
 
 ``` shell
-brew install snappy npm pyenv jq wkhtmltopdf
+brew install snappy npm pyenv jq
 ```
+
+wkhtmltopdf It is no longer installable via Homebrew: the cask was disabled on 2024-12-16 and later removed
+Install it from the project's own packaging releases, choosing the macOS package for your architecture
+
+Example for Apple Silicon:
+``` shell
+curl -fsSLO https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-2/wkhtmltox-0.12.6-2.macos-cocoa.pkg
+sudo installer -pkg wkhtmltox-0.12.6-2.macos-cocoa.pkg -target /
+wkhtmltopdf --version
+```
+
+wkhtmltopdf --version should report with patched Qt
 
 ### Setup
 
