@@ -59,9 +59,7 @@ def get_supplementary_data_v1(
         raise MissingSupplementaryDataKey
 
     base_url = current_app.config["SDS_API_BASE_URL"]
-    constructed_supplementary_data_url = (
-        f"{base_url}/datasets/{quote(dataset_id, safe='')}/unit-data/{quote(identifier, safe='')}"
-    )
+    constructed_supplementary_data_url = f"{base_url}/datasets/{quote(dataset_id, safe='')}/unit-data/{quote(identifier, safe='')}"
 
     session = get_retryable_session(
         max_retries=SUPPLEMENTARY_DATA_REQUEST_MAX_RETRIES,
