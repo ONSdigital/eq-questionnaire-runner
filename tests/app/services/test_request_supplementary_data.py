@@ -30,8 +30,8 @@ def unit_data_url(
     dataset_id: str = TEST_DATASET_ID,
     identifier: str = TEST_IDENTIFIER,
 ) -> str:
-    base_url = TEST_SDS_URL.rstrip("/")
-    return f"{base_url}/datasets/{dataset_id}/unit-data/{quote(identifier, safe='')}"
+    base_url = TEST_SDS_URL
+    return f"{base_url}/datasets/{quote(dataset_id, safe='')}/unit-data/{quote(identifier, safe='')}"
 
 
 @responses.activate

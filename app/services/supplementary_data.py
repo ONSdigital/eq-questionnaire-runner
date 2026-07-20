@@ -58,9 +58,9 @@ def get_supplementary_data_v1(
     if not key_store.get_key(purpose=KEY_PURPOSE_SDS, key_type="private"):
         raise MissingSupplementaryDataKey
 
-    base_url = current_app.config["SDS_API_BASE_URL"].rstrip("/")
+    base_url = current_app.config["SDS_API_BASE_URL"]
     constructed_supplementary_data_url = (
-        f"{base_url}/datasets/{dataset_id}/unit-data/{quote(identifier, safe='')}"
+        f"{base_url}/datasets/{quote(dataset_id, safe='')}/unit-data/{quote(identifier, safe='')}"
     )
 
     session = get_retryable_session(
