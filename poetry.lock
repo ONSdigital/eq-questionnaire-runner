@@ -1545,14 +1545,14 @@ libcst = ["libcst (>=0.3.10)"]
 
 [[package]]
 name = "google-cloud-storage"
-version = "3.12.1"
+version = "3.13.0"
 description = "Google Cloud Storage API client library"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "google_cloud_storage-3.12.1-py3-none-any.whl", hash = "sha256:9297ae0c2ce3f5400b1f2bb3a3e6d2cd256614366e03cd30600871df8e903afb"},
-    {file = "google_cloud_storage-3.12.1.tar.gz", hash = "sha256:1d81491c7663bc26c5056d00b834356f2253b910ef467f9cf9928a87fca1e04b"},
+    {file = "google_cloud_storage-3.13.0-py3-none-any.whl", hash = "sha256:648af3ef8a6acc674e1359d3c920c67eb89a7a5ab66b336bd3ac43fed6b5ab84"},
+    {file = "google_cloud_storage-3.13.0.tar.gz", hash = "sha256:d11d8706ea1520fba0f21043bcb7897caf7015d76ce1ad9a4f60237e4d7a9f6c"},
 ]
 
 [package.dependencies]
