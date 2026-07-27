@@ -1,6 +1,6 @@
 import json
 from typing import Mapping, MutableMapping
-from urllib.parse import urlencode
+from urllib.parse import quote
 
 from flask import current_app
 from marshmallow import ValidationError
@@ -58,14 +58,8 @@ def get_supplementary_data_v1(
     if not key_store.get_key(purpose=KEY_PURPOSE_SDS, key_type="private"):
         raise MissingSupplementaryDataKey
 
-    supplementary_data_url = f"{current_app.config['SDS_API_BASE_URL']}/v1/unit_data"
-
-    parameters = {"dataset_id": dataset_id, "identifier": identifier}
-
-    encoded_parameters = urlencode(parameters)
-    constructed_supplementary_data_url = (
-        f"{supplementary_data_url}?{encoded_parameters}"
-    )
+    base_url = current_app.config["SDS_API_BASE_URL"]
+    constructed_supplementary_data_url = f"{base_url}/datasets/{quote(dataset_id, safe='')}/unit-data/{quote(identifier, safe='')}"
 
     session = get_retryable_session(
         max_retries=SUPPLEMENTARY_DATA_REQUEST_MAX_RETRIES,
