@@ -227,7 +227,6 @@ def test_context_for_section_list_summary(people_answer_store):
     assert context == expected
 
 
-# pylint: disable=line-too-long
 @pytest.mark.parametrize(
     "test_schema, answer_store_fixture, item_label, answer_1_label, answer_2_label",
     [
@@ -312,25 +311,31 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
                                         "list_items": [
                                             {
                                                 "edit_link": (
-                                                    "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary"
-                                                    "&return_to_answer_id=PlwgoG"
+                                                    "/questionnaire/companies/PlwgoG/edit-company/"
+                                                    "?return_to=section-summary&return_to_answer_id=PlwgoG"
                                                 ),
                                                 "item_title": "company a",
                                                 "list_item_id": "PlwgoG",
                                                 "primary_person": False,
-                                                "remove_link": "/questionnaire/companies/PlwgoG/remove-company/?return_to=section-summary",
+                                                "remove_link": (
+                                                    "/questionnaire/companies/PlwgoG/remove-company/"
+                                                    "?return_to=section-summary"
+                                                ),
                                                 "is_complete": False,
                                                 "repeating_blocks": False,
                                             },
                                             {
                                                 "edit_link": (
-                                                    "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary"
-                                                    "&return_to_answer_id=UHPLbX"
+                                                    "/questionnaire/companies/UHPLbX/edit-company/"
+                                                    "?return_to=section-summary&return_to_answer_id=UHPLbX"
                                                 ),
                                                 "item_title": "company b",
                                                 "list_item_id": "UHPLbX",
                                                 "primary_person": False,
-                                                "remove_link": "/questionnaire/companies/UHPLbX/remove-company/?return_to=section-summary",
+                                                "remove_link": (
+                                                    "/questionnaire/companies/UHPLbX/remove-company/"
+                                                    "?return_to=section-summary"
+                                                ),
                                                 "is_complete": False,
                                                 "repeating_blocks": False,
                                             },
@@ -349,8 +354,9 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
                                                             "id": "registration-number-PlwgoG",
                                                             "label": answer_1_label,
                                                             "link": (
-                                                                "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary"
-                                                                "&return_to_answer_id=registration-number-PlwgoG#registration-number"
+                                                                "/questionnaire/companies/PlwgoG/edit-company/"
+                                                                "?return_to=section-summary&return_to_answer_id="
+                                                                "registration-number-PlwgoG#registration-number"
                                                             ),
                                                             "type": "number",
                                                             "unit": None,
@@ -363,8 +369,10 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
                                                             "id": "authorised-insurer-radio-PlwgoG",
                                                             "label": answer_2_label,
                                                             "link": (
-                                                                "/questionnaire/companies/PlwgoG/edit-company/?return_to=section-summary"
-                                                                "&return_to_answer_id=authorised-insurer-radio-PlwgoG#authorised-insurer-radio"
+                                                                "/questionnaire/companies/PlwgoG/edit-company/"
+                                                                "?return_to=section-summary&return_to_answer_id="
+                                                                "authorised-insurer-radio-PlwgoG"
+                                                                "#authorised-insurer-radio"
                                                             ),
                                                             "type": "radio",
                                                             "unit": None,
@@ -395,8 +403,9 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
                                                             "id": "registration-number-UHPLbX",
                                                             "label": answer_1_label,
                                                             "link": (
-                                                                "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary"
-                                                                "&return_to_answer_id=registration-number-UHPLbX#registration-number"
+                                                                "/questionnaire/companies/UHPLbX/edit-company/"
+                                                                "?return_to=section-summary&return_to_answer_id="
+                                                                "registration-number-UHPLbX#registration-number"
                                                             ),
                                                             "type": "number",
                                                             "unit": None,
@@ -409,8 +418,10 @@ def test_context_for_section_summary_with_list_summary_and_first_variant(
                                                             "id": "authorised-insurer-radio-UHPLbX",
                                                             "label": answer_2_label,
                                                             "link": (
-                                                                "/questionnaire/companies/UHPLbX/edit-company/?return_to=section-summary"
-                                                                "&return_to_answer_id=authorised-insurer-radio-UHPLbX#authorised-insurer-radio"
+                                                                "/questionnaire/companies/UHPLbX/edit-company/"
+                                                                "?return_to=section-summary&return_to_answer_id="
+                                                                "authorised-insurer-radio-UHPLbX"
+                                                                "#authorised-insurer-radio"
                                                             ),
                                                             "type": "radio",
                                                             "unit": None,
@@ -552,11 +563,16 @@ def test_context_for_driving_question_summary():
                         "editable": True,
                         "list_items": [
                             {
-                                "edit_link": "/questionnaire/people/PlwgoG/edit-person/?return_to=section-summary&return_to_answer_id=PlwgoG",
+                                "edit_link": (
+                                    "/questionnaire/people/PlwgoG/edit-person/"
+                                    "?return_to=section-summary&return_to_answer_id=PlwgoG"
+                                ),
                                 "item_title": "Toni Morrison",
                                 "list_item_id": "PlwgoG",
                                 "primary_person": False,
-                                "remove_link": "/questionnaire/people/PlwgoG/remove-person/?return_to=section-summary",
+                                "remove_link": (
+                                    "/questionnaire/people/PlwgoG/remove-person/?return_to=section-summary"
+                                ),
                                 "is_complete": False,
                                 "repeating_blocks": False,
                             }

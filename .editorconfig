@@ -32,16 +32,13 @@ trim_trailing_whitespace = true
 # Possible values - true, false
 insert_final_newline = true
 
-[*.{json}]
-insert_final_newline = false
-
-[*.{py}]
+[*.py]
 max_line_length = 120
 
 [*.{md,po,json,html,js,yaml,yml}]
 max_line_length = off
 
-[tests/{integration/routes/test_session.py,app/services/conftest.py}]
+[tests/{integration/routes/test_session.py,app/services/conftest.py,functional/generate_pages.py}]
 max_line_length = off
 
 [*.{js,cjs,jsonnet,yml,yaml,md}]

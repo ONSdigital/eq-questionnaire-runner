@@ -177,12 +177,13 @@ class FeedbackMetadata:
         return vars(self)
 
 
-# pylint: disable=line-too-long
 class FeedbackPayloadV2:
     """
     Create the feedback payload object for down stream processing in the following format:
-    v0.0.1: https://github.com/ONSdigital/ons-schema-definitions/blob/main/examples/eq_runner_to_downstream/payload_v2/business/feedback_0_0_1.json
-    v0.0.3: https://github.com/ONSdigital/ons-schema-definitions/blob/main/examples/eq_runner_to_downstream/payload_v2/business/feedback_0_0_3.json
+    v0.0.1: https://github.com/ONSdigital/ons-schema-definitions/blob/main/examples/
+    eq_runner_to_downstream/payload_v2/business/feedback_0_0_1.json
+    v0.0.3: https://github.com/ONSdigital/ons-schema-definitions/blob/main/examples/
+    eq_runner_to_downstream/payload_v2/business/feedback_0_0_3.json
     ```
     :param metadata: Questionnaire metadata
     :param response_metadata: Response metadata

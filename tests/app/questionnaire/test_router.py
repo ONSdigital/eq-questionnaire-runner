@@ -1584,7 +1584,6 @@ class TestRouterPreviousLocation(RouterTestCase):
 
         assert expected_previous_url == previous_location_url
 
-    # pylint: disable=line-too-long
     @pytest.mark.parametrize(
         "return_to, current_block, return_to_block_id, expected_url",
         [
@@ -1592,19 +1591,28 @@ class TestRouterPreviousLocation(RouterTestCase):
                 "grand-calculated-summary",
                 "distance-calculated-summary-1",
                 "invalid-block",
-                "/questionnaire/second-number-block/?return_to=grand-calculated-summary&return_to_block_id=invalid-block#distance-calculated-summary-1",
+                (
+                    "/questionnaire/second-number-block/?return_to=grand-calculated-summary"
+                    "&return_to_block_id=invalid-block#distance-calculated-summary-1"
+                ),
             ),
             (
                 "calculated-summary,invalid",
                 "second-number-block",
                 "invalid-1,invalid-2",
-                "/questionnaire/first-number-block/?return_to=calculated-summary,invalid&return_to_block_id=invalid-1,invalid-2#distance-calculated-summary-1",
+                (
+                    "/questionnaire/first-number-block/?return_to=calculated-summary,invalid"
+                    "&return_to_block_id=invalid-1,invalid-2#distance-calculated-summary-1"
+                ),
             ),
             (
                 "invalid",
                 "distance-calculated-summary-1",
                 "first-number-block",
-                "/questionnaire/second-number-block/?return_to=invalid&return_to_block_id=first-number-block#distance-calculated-summary-1",
+                (
+                    "/questionnaire/second-number-block/?return_to=invalid"
+                    "&return_to_block_id=first-number-block#distance-calculated-summary-1"
+                ),
             ),
         ],
     )

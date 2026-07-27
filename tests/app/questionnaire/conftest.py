@@ -522,7 +522,6 @@ def list_collector_variant_schema():
     }
 
 
-# pylint: disable=line-too-long
 @pytest.fixture
 def sections_dependent_on_list_schema():
     return {
@@ -1319,7 +1318,10 @@ def questionnaire_schema():
 
 @pytest.fixture
 def questionnaire_store_get_relationship_collectors_by_list_name_patch(mocker):
-    patch_method = "app.questionnaire.questionnaire_store_updater.QuestionnaireStoreUpdater._get_relationship_collectors_by_list_name"
+    patch_method = (
+        "app.questionnaire.questionnaire_store_updater."
+        "QuestionnaireStoreUpdater._get_relationship_collectors_by_list_name"
+    )
     patched = mocker.patch(patch_method)
     patched.return_value = None
 
