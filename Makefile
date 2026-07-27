@@ -9,7 +9,7 @@ clean:
 	rm -rf templates/layout
 
 load-schemas:
-	./scripts/load_release.sh onsdigital/eq-questionnaire-schemas $(SCHEMAS_VERSION)
+	./scripts/load_release.sh onsdigital/census31-eq-questionnaire-schemas $(SCHEMAS_VERSION)
 
 load-design-system-templates:
 	./scripts/load_release.sh onsdigital/design-system $(DESIGN_SYSTEM_VERSION)
