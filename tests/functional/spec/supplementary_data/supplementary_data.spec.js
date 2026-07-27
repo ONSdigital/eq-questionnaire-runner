@@ -268,7 +268,7 @@ describe("Using supplementary data", () => {
     await click(ListCollectorProductsPage.submit());
     await expect(await $("body").getText()).toContain("Include");
     await expect(await $("body").getText()).toContain("pots and pans");
-    await expect(await $("body").getText()).not.toBe("Exclude");
+    await expect(await $("body").getText()).not.toContain("Exclude");
     await expect(await $(ProductRepeatingBlock1Page.productVolumeSalesLabel()).getText()).toBe("Volume of sales for Kitchen Equipment");
     await expect(await $(ProductRepeatingBlock1Page.productVolumeTotalLabel()).getText()).toBe("Total volume produced for Kitchen Equipment");
     await $(ProductRepeatingBlock1Page.productVolumeSales()).setValue(50);
