@@ -27,7 +27,7 @@ TIME_TO_FREEZE = datetime(2020, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
 EQ_SESSION_TIMEOUT_SECONDS = 45 * 60
 BUSINESS_URL = ACCOUNT_SERVICE_BASE_URL
 SOCIAL_URL = ACCOUNT_SERVICE_BASE_URL_SOCIAL
-TEST_SDS_URL = "http://localhost:5003/v1/unit_data"
+TEST_SDS_URL = "http://localhost:5003"
 
 mock_supplementary_data_payload_missing_data = {
     "dataset_id": "44f1b432-9421-49e5-bd26-e63e18a30b69",
