@@ -150,7 +150,6 @@ jobs:
            browser: [chromium]
            shard: [1, 2, 3, 4, 5, 6]
            shard_count: [6]
-    if: "!contains(github.event.pull_request.labels.*.name, 'tests not required')"
     permissions:
       contents: 'read'
     needs: [python-dependencies, node-dependencies]
