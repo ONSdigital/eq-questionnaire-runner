@@ -96,6 +96,18 @@ def custom_format_unit(
         locale=locale,
     )
 
+    # When a locale has no data for the requested length, Babel falls back to the raw
+    # unit identifier (e.g. "100 duration-hour"). Detect this and retry with "short".
+    if length != "short" and measurement_unit in formatted_unit:
+        formatted_unit = units.format_unit(
+            value=value,
+            measurement_unit=measurement_unit,
+            length="short",
+            # Type ignore: babel function has incorrect type hinting, NumberPattern is valid here
+            format=number_format,  # type: ignore
+            locale=locale,
+        )
+
     return formatted_unit
 
 
