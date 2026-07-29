@@ -3,103 +3,102 @@ import { importX } from "eslint-plugin-import-x";
 import jsonPlugin from "eslint-plugin-json";
 import n from "eslint-plugin-n";
 import promise from "eslint-plugin-promise";
-import globals from "globals";
+import tsPlugin from "@typescript-eslint/eslint-plugin";
+import tsParser from "@typescript-eslint/parser";
+import playwright from "eslint-plugin-playwright";
 
 export default [
   {
-    ignores: ["node_modules/**", "htmlcov/**", "coverage/**", "dist/**", "src/index.html", "tests/functional/generated_pages/**"],
+    ignores: [
+      "node_modules/**",
+      "htmlcov/**",
+      "coverage/**",
+      "dist/**",
+      "src/index.html",
+      "tests/functional/generated_pages/**"
+    ]
+  },
+  {
+    settings: {
+      "import-x/resolver": {
+        node: {
+          extensions: [".js", ".cjs", ".mjs", ".ts", ".tsx", ".d.ts", ".json"]
+        },
+        typescript: {
+          alwaysTryTypes: true
+        }
+      }
+    }
   },
   js.configs.recommended,
   importX.flatConfigs.recommended,
   n.configs["flat/recommended-module"],
   promise.configs["flat/recommended"],
   {
-    files: ["**/*.js", "**/*.cjs"],
+    files: ["eslint.config.js"],
+    rules: {
+      "n/no-unpublished-import": 0
+    }
+  },
+  {
+    files: ["**/*.ts"],
     languageOptions: {
-      ecmaVersion: 11,
+      parser: tsParser,
+      ecmaVersion: "latest",
       sourceType: "module",
-      globals: {
-        ...globals.browser,
-        ...globals.node,
-        ...globals.mocha,
-        $: "readonly",
-        $$: "readonly",
-        browser: "readonly",
-        expect: "readonly",
+      parserOptions: {
+        project: "./tsconfig.eslint.json"
       },
+      globals: {
+        process: "readonly"
+      }
     },
     plugins: {
-      "import-x": importX,
-      json: jsonPlugin,
+      "@typescript-eslint": tsPlugin,
+      playwright
     },
     rules: {
-      "no-loss-of-precision": 0,
-      "no-nonoctal-decimal-escape": 0,
-      "no-unsafe-optional-chaining": 0,
-      "no-useless-backreference": 0,
-      "consistent-return": 1,
+      ...(tsPlugin.configs.recommended.rules || {}),
       quotes: [
         2,
-        "double",
+        "single",
         {
           avoidEscape: true,
-          allowTemplateLiterals: true,
-        },
+          allowTemplateLiterals: true
+        }
       ],
-      semi: [2, "always"],
-      "space-before-function-paren": 0,
-      indent: [
-        2,
-        2,
-        {
-          SwitchCase: 1,
-        },
-      ],
-      "padded-blocks": [
-        "error",
-        {
-          blocks: "never",
-        },
-      ],
-      "comma-dangle": 0,
-      "new-cap": 2,
-      "no-alert": 1,
-      "no-console": 2,
-      "no-dupe-class-members": 0,
-      "no-unused-expressions": 0,
-      "no-var": 2,
-      "n/no-extraneous-import": 0,
+      semi: [2, "never"],
+      "comma-dangle": [2, "never"],
+      "space-before-function-paren": [2, "always"],
+      "@typescript-eslint/no-unused-vars": 2,
+      "@typescript-eslint/no-explicit-any": 0,
+      "@typescript-eslint/no-useless-constructor": 2,
+      "@typescript-eslint/explicit-function-return-type": 2,
+      "@typescript-eslint/strict-boolean-expressions": 2,
+      "@typescript-eslint/prefer-nullish-coalescing": 2,
+      "@typescript-eslint/consistent-type-definitions": [2, "interface"],
+      "@typescript-eslint/method-signature-style": [2, "property"],
+      "@typescript-eslint/return-await": [2, "always"],
+      "prefer-regex-literals": 2,
+      "n/no-missing-import": 0,
       "n/no-unpublished-import": 0,
-      "prefer-arrow-callback": [
-        2,
-        {
-          allowNamedFunctions: false,
-        },
-      ],
-      "require-await": "error",
       "import-x/no-unresolved": [
         2,
         {
-          ignore: ["generated_pages"],
-        },
+          ignore: ["generated_pages"]
+        }
       ],
-    },
+      "playwright/consistent-spacing-between-blocks": 2
+    }
   },
   {
     files: ["**/*.json"],
     plugins: {
-      json: jsonPlugin,
+      json: jsonPlugin
     },
     processor: "json/json",
     rules: {
-      "json/sort-keys": 0,
-    },
-  },
-  {
-    files: ["tests/functional/**/*.js"],
-    rules: {
-      // Functional specs import generated pages that are not present in MegaLinter CI runs.
-      "n/no-missing-import": 0,
-    },
-  },
+      "json/sort-keys": 0
+    }
+  }
 ];

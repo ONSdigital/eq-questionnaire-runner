@@ -35,13 +35,13 @@ insert_final_newline = true
 [*.py]
 max_line_length = 120
 
-[*.{md,po,json,html,js,yaml,yml}]
+[*.{md,po,json,html,js,ts,yaml,yml}]
 max_line_length = off
 
 [tests/{integration/routes/test_session.py,app/services/conftest.py,functional/generate_pages.py}]
 max_line_length = off
 
-[*.{js,cjs,jsonnet,yml,yaml,md}]
+[*.{js,ts,cjs,jsonnet,yml,yaml,md}]
 indent_size = 2
 
 [Makefile]

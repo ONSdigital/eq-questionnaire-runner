@@ -18,7 +18,8 @@ load-design-system-templates:
 build: load-design-system-templates load-schemas translate
 
 generate-pages:
-	npm run generate_pages
+	rm -rf ./tests/functional/generated_pages
+	poetry run python -m tests.functional.generate_pages schemas/test/en/ ./tests/functional/generated_pages -r "../../base_pages"
 
 lint-python:
 	poetry run ./scripts/run_lint_python.sh
@@ -35,24 +36,20 @@ test:
 test-unit:
 	poetry run ./scripts/run_tests_unit.sh
 
+format-functional:
+	npm run format:tests
+
+lint-functional:
+	npm run lint:tests
+
 test-functional: generate-pages
-	npm run test_functional
+	npx playwright test --headed
 
 test-functional-headless: generate-pages
-	EQ_RUN_FUNCTIONAL_TESTS_HEADLESS='True' make test-functional
+	npx playwright test
 
-test-functional-spec: generate-pages
-	npm run test_functional -- --spec=./tests/functional/spec/$(SPEC)
-
-test-functional-suite: generate-pages
-	npm run test_functional -- --suite=$(SUITE)
-
-generate-spec:
-	poetry run python -m tests.functional.generate_pages \
-		schemas/test/en/$(SCHEMA).json \
-		./tests/functional/generated_pages/$(patsubst test_%,%,$(SCHEMA)) \
-		-r '../../base_pages' \
-		-s tests/functional/spec/$(SCHEMA).spec.js
+test-functional-spec:
+	npx playwright test --headed --workers 1 $(SPEC)
 
 validate-test-schemas:
 	poetry run python -m scripts.validate_test_schemas

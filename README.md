@@ -229,108 +229,64 @@ the script.
 ## Frontend Tests
 
 The frontend tests use NodeJS to run. To handle different versions of NodeJS it is recommended to install `Node Version Manager` (`nvm`). It is similar to pyenv but for Node versions.
-To install `nvm` use the command below (make sure to replace "v0.39.5" with the current latest version in [releases](https://github.com/nvm-sh/nvm/releases/)):
+To install `nvm` use the command below (make sure to replace "v0.40.6" with the current latest version in [releases](https://github.com/nvm-sh/nvm/releases/)):
+
 ```shell
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.6/install.sh | bash
 ```
-You will need to have the correct node version installed to run the tests. To do this, use the following commands:
+
+You will need to have the correct node version installed to run the tests:
 
 ```shell
 nvm install
 nvm use
 ```
 
-Fetch npm dependencies:
+Install npm dependencies and playwright browsers:
 
 ```shell
 npm install
+npx playwright install --with-deps
 ```
 
-Available commands:
-
-| Command                | Task                                                                                                      |
-|------------------------|-----------------------------------------------------------------------------------------------------------|
-| `make test-functional` | Runs the functional tests through Webdriver (requires app running on localhost:5000 and generated pages). |
-| `make generate-pages`  | Generates the functional test pages.                                                                      |
-
----
-
-### Development with functional tests
-
-The tests are written using [WebdriverIO](https://webdriver.io/docs/gettingstarted), [Chai](https://www.chaijs.com/), and [Mocha](https://mochajs.org/)
-
-### Functional test options
-
-The functional tests use a set of selectors that are generated from each of the test schemas. These make it quick to add new functional tests.
-
-To run the functional tests first runner needs to be spin up with:
+Runner needs to be run with the functional test environment variables:
 
 ```shell
 RUNNER_ENV_FILE=.functional-tests.env make run
 ```
 
-This will set the correct environment variables for running the functional tests.
+The functional tests use page models generated for each of the test schemas, generate them with:
 
-Then you can run either:
+```shell
+make generate-pages
+```
+
+Then you can run either run the tests with:
 
 ```shell
 make test-functional
 ```
-or
+or headless with:
 
 ```shell
 make test-functional-headless
 ```
 
-This will delete the `tests/functional/generated_pages` directory and regenerate all the files in it from the schemas.
+Both commands delete the `tests/functional/generated_pages` directory and regenerates all page models from the schemas.
 
-To generate the pages manually you can run the `generate_pages` scripts with the schema directory. Run it from the `tests/functional` directory as follows:
-
-```shell
-./generate_pages.py ../../schemas/test/en/ ./generated_pages -r "../../base_pages"
-```
-
-To generate a spec file with the imports included, you can pass the schema name as an argument without the file extension, e.g. `SCHEMA=test_address`:
-```shell
-make generate-spec SCHEMA=<schema-name>
-```
-
-If you have already built the generated pages, then the functional tests can be executed with:
+Run a specific spec with (you only need the spec filename, not the path):
 
 ```shell
-make test-functional
+make test-functional-spec SPEC=<spec filename>
 ```
 
-This can be limited to a single spec where argument needed is the remainder of the path after `./tests/functional/spec/` (which is included in the command):
+Run against a remote environment with:
 
 ```shell
-make test-functional-spec SPEC=<spec>
+EQ_FUNCTIONAL_TEST_ENV=https://staging-new-surveys.dev.eq.ons.digital/ make test-functional
 ```
 
-To run a single test, add `.only` into the name of any `describe` or `it` function:
-
-`describe.only('Skip Conditions', function() {...}` or
-
-`it.only('Given this is a test', function() {...}`
-
-Test suites are configured in the `wdio.conf.cjs` file.
-An individual test suite can be run using the suite names as the argument to this command. The suites that can be used with command below are:
-* timeout_modal_expired
-* timeout_modal_extended
-* timeout_modal_extended_new_window
-* features
-* general
-* components
-
-```shell
-make test-functional-suite SUITE=<suite>
-```
-
-To run the tests against a remote deployment you will need to specify the environment variable of EQ_FUNCTIONAL_TEST_ENV eg:
-
-```shell
-EQ_FUNCTIONAL_TEST_ENV=https://staging-new-surveys.dev.eq.ons.digital/ npm run test_functional
-```
+More detailed information on running and debugging can be found in [functional-tests.md](doc/functional-tests.md)
 
 ---
 

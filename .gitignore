@@ -61,6 +61,7 @@ venv
 node_modules/
 /static/
 tests/results
+test-results/
 tests/coverage
 tests/a11y
 
@@ -112,10 +113,9 @@ templates/assets/styles/print.css
 # Ignore CTAGS
 tags
 
-# Ignore wdio/chromedriver logs
-tests/functional/logs/
-
 # Ignore Pylance custom type stub folder
 typing/
 
 megalinter-reports/
+
+playwright-report/

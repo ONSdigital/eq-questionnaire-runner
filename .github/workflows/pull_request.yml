@@ -11,45 +11,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  python-dependencies:
-    permissions:
-      contents: "read"
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-        with:
-          persist-credentials: false
-      - run: |
-          echo "PYTHON_VERSION=$(cat .python-version)" >> "$GITHUB_ENV"
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-      - name: Install Poetry
-        uses: snok/install-poetry@a783c322200f0519c7926aa6faa857c4e23e9263 # v1.4.2
-        with:
-          version: 2.1.2
-          virtualenvs-create: true
-      - name: Install virtual environment
-        run: |
-          sudo apt-get install libsnappy-dev
-          poetry install
-  node-dependencies:
-    permissions:
-      contents: "read"
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-        with:
-          persist-credentials: false
-      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
-        with:
-          node-version-file: ".nvmrc"
-      - name: Install npm deps
-        run: npm install
   lint:
     permissions:
       contents: "read"
-    needs: [python-dependencies, node-dependencies]
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
@@ -57,9 +21,6 @@ jobs:
           persist-credentials: false
       - run: |
           echo "PYTHON_VERSION=$(cat .python-version)" >> "$GITHUB_ENV"
-      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
-        with:
-          node-version-file: ".nvmrc"
       - name: Write app version
         run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
@@ -78,15 +39,12 @@ jobs:
         run: poetry run python -m scripts.extract_translation_templates --test
       - name: Python linting
         run: make lint-python
-      - name: Install npm deps
-        run: npm install
-      - name: Functional tests spec lint
-        run: ./scripts/lint_functional_test_specs.sh
+
   test-unit:
     if: "!contains(github.event.pull_request.labels.*.name, 'skip-tests-unit')"
     permissions:
       contents: "read"
-    needs: python-dependencies
+    needs: [lint]
     runs-on: ubuntu-22.04
     env:
       CI: True
@@ -147,22 +105,28 @@ jobs:
           virtualenvs-create: true
       - name: Running schema validation
         run: make validate-test-schemas
+
   test-functional:
     if: "!contains(github.event.pull_request.labels.*.name, 'skip-tests-acceptance')"
     permissions:
       contents: "read"
-    needs: [python-dependencies, node-dependencies]
+    needs: [lint]
     runs-on: ubuntu-22.04
     timeout-minutes: 35
     strategy:
       fail-fast: false
       matrix:
-        suite: ["components", "timeout_modal", "features", "journeys"]
-    env:
-      EQ_RUN_FUNCTIONAL_TESTS_HEADLESS: True
-      EQ_OPEN_QUESTIONNAIRE_ATTEMPTS: 2
-      # :TODO: Revisit & update when 2 instances can be used without adverse effects
-      EQ_FUNCTIONAL_TEST_MAX_INSTANCES: 2
+        # Keep worker count low in CI because project matrix already parallelizes at job level
+        include:
+          - project: "components"
+            max_instances: 1
+          # but increase for timeout tests as most of the time is waiting
+          - project: "timeout_modal"
+            max_instances: 4
+          - project: "features"
+            max_instances: 1
+          - project: "journeys"
+            max_instances: 1
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
@@ -183,47 +147,59 @@ jobs:
       - name: Install virtual environment
         run: poetry install
       - name: Install npm deps
-        run: npm install
+        run: npm ci
+      - name: Install Playwright browser deps
+        run: npx playwright install --with-deps chromium
+      - name: Generate Playwright pages
+        run: make generate-pages
       - name: Docker compose
         run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose up --build -d
-      - name: Functional tests
-        run: make test-functional-suite SUITE=${{ matrix.suite }}
+      - name: Playwright functional tests
+        run: npx playwright test --reporter list,html --workers ${{ matrix.max_instances }} --project=${{ matrix.project }}
       - name: Docker compose shutdown
+        if: always()
         run: RUNNER_ENV_FILE=.functional-tests.env docker compose kill
-      #  docker-push:
-      #    permissions:
-      #      contents: 'read'
-      #      id-token: 'write'
-      #    runs-on: ubuntu-22.04
-      #    steps:
-      #      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-      #      - id: auth
-      #        name: Authenticate to Google Cloud
-      #        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
-      #        with:
-      #          token_format: 'access_token'
-      #          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
-      #          service_account: ${{ secrets.SERVICE_ACCOUNT }}
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report-${{ matrix.project }}
+          path: playwright-report/
+          retention-days: 10
 
-      - name: Set Tag and SHA
-        env:
-          PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
-          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-        run: |
-          CLEAN_TAG=$(echo "$PR_HEAD_REF" | tr / -)
-          echo "TAG=$CLEAN_TAG" >> "$GITHUB_ENV"
-          echo "SHA=$PR_HEAD_SHA" >> "$GITHUB_ENV"
-      - name: Write app version
-        run: |
-          echo "Writing SHA $SHA to .application_version"
-          printf "%s" "$SHA" > .application-version
-  #      - name: Build
-  #        run: docker build -t ${{ secrets.GAR_LOCATION }}/${{ secrets.GAR_PROJECT_ID }}/docker-images/census31-eq-questionnaire-runner:$TAG .
-  #      - name: Push to GAR
-  #        run: |
-  #          gcloud auth configure-docker ${{ secrets.GAR_LOCATION }}
-  #          echo "Pushing to GAR with tag $TAG"
-  #          docker push ${{ secrets.GAR_LOCATION }}/${{ secrets.GAR_PROJECT_ID }}/docker-images/census31-eq-questionnaire-runner:$TAG
+  # docker-push:
+  #   permissions:
+  #     contents: 'read'
+  #     id-token: 'write'
+  #   runs-on: ubuntu-22.04
+  #   steps:
+  #     - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+  #     - id: auth
+  #       name: Authenticate to Google Cloud
+  #       uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
+  #       with:
+  #         token_format: 'access_token'
+  #         workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+  #         service_account: ${{ secrets.SERVICE_ACCOUNT }}
+  #     - name: Set Tag and SHA
+  #       env:
+  #         PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+  #         PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+  #       run: |
+  #         CLEAN_TAG=$(echo "$PR_HEAD_REF" | tr / -)
+  #         echo "TAG=$CLEAN_TAG" >> "$GITHUB_ENV"
+  #         echo "SHA=$PR_HEAD_SHA" >> "$GITHUB_ENV"
+  #     - name: Write app version
+  #       run: |
+  #         echo "Writing SHA $SHA to .application_version"
+  #         printf "%s" "$SHA" > .application-version
+  #     - name: Build
+  #       run: docker build -t ${{ secrets.GAR_LOCATION }}/${{ secrets.GAR_PROJECT_ID }}/docker-images/census31-eq-questionnaire-runner:$TAG .
+  #     - name: Push to GAR
+  #       run: |
+  #         gcloud auth configure-docker ${{ secrets.GAR_LOCATION }}
+  #         echo "Pushing to GAR with tag $TAG"
+  #         docker push ${{ secrets.GAR_LOCATION }}/${{ secrets.GAR_PROJECT_ID }}/docker-images/census31-eq-questionnaire-runner:$TAG
+
   required-gate:
     permissions:
       contents: "read"

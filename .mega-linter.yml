@@ -15,24 +15,27 @@ ENABLE:
   - EDITORCONFIG
   - HTML
   - JAVASCRIPT
+  - TYPESCRIPT
   - JSON
   - MARKDOWN
   - YAML
 
 DISABLE_LINTERS:
-  - HTML_HTMLHINT # HTMLHint was disabled as HTMLHint doesn't understand Jinja2 syntax so there was a lot of false positives
-  - JAVASCRIPT_STANDARD # Disabled because its rules conflict with our rules set up in ESLint
+  - HTML_HTMLHINT # HTMLHint doesn't understand Jinja2 syntax
+  - JAVASCRIPT_STANDARD # we just use eslint to lint the eslint config file
 
-FORMATTERS_DISABLE_ERRORS: false # Ensures code is actually fixable when using `make megalint-apply`
-SHOW_ELAPSED_TIME: true # Displays execution time for each linter
-FLAVOR_SUGGESTIONS: false # Disables suggestions to use different MegaLinter flavors
-
-# ESLint v10 flat-config workaround: install project deps before running MegaLinter via CI
-JAVASCRIPT_ES_PRE_COMMANDS:
+# ESLint v10 flat-config workaround and ESLint plugin installs: install project deps before running MegaLinter via CI
+PRE_COMMANDS:
   - command: npm ci --include=dev
     cwd: workspace
     continue_if_failed: false
 JAVASCRIPT_ES_CLI_EXECUTABLE: [node_modules/.bin/eslint]
+TYPESCRIPT_ES_CLI_EXECUTABLE: [node_modules/.bin/eslint]
+TYPESCRIPT_STANDARD_CLI_EXECUTABLE: [node_modules/.bin/ts-standard]
+
+FORMATTERS_DISABLE_ERRORS: false # Ensures code is actually fixable when using `make megalint-apply`
+SHOW_ELAPSED_TIME: true # Displays execution time for each linter
+FLAVOR_SUGGESTIONS: false # Disables suggestions to use different MegaLinter flavors
 
 ACTION_ZIZMOR_UNSECURED_ENV_VARIABLES:
   - GITHUB_TOKEN
