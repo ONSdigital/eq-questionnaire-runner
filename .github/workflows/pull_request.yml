@@ -23,7 +23,7 @@ jobs:
           echo "PYTHON_VERSION=$(cat .python-version)" >> "$GITHUB_ENV"
       - name: Write app version
         run: printf "${{ github.event.pull_request.head.sha }}" > .application-version
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install Poetry
@@ -54,7 +54,7 @@ jobs:
           persist-credentials: false
       - run: |
           echo "PYTHON_VERSION=$(cat .python-version)" >> "$GITHUB_ENV"
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install Poetry
@@ -95,7 +95,7 @@ jobs:
           echo "PYTHON_VERSION=$(cat .python-version)" >> "$GITHUB_ENV"
       - name: Run validator
         run: ./scripts/run_validator.sh
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install Poetry
@@ -136,7 +136,7 @@ jobs:
           node-version-file: ".nvmrc"
       - run: |
           echo "PYTHON_VERSION=$(cat .python-version)" >> "$GITHUB_ENV"
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install Poetry
