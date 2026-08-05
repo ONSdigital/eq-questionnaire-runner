@@ -29,7 +29,7 @@
         "@babel/preset-env": "7.29.2",
         "@babel/register": "7.28.6",
         "@babel/runtime": "7.29.2",
-        "@wdio/cli": "9.26.1",
+        "@wdio/cli": "9.27.0",
         "@wdio/local-runner": "8.46.0",
         "@wdio/jasmine-framework": "9.26.1",
         "@wdio/spec-reporter": "9.26.1",
@@ -41,15 +41,21 @@
         "eslint-plugin-n": "16.6.2",
         "eslint-plugin-node": "11.1.0",
         "eslint-plugin-promise": "6.6.0",
+        "fast-xml-parser": "5.10.1",
         "json-web-key": "0.4.0",
         "jsrsasign": "11.1.1",
         "livereload": "0.10.3",
         "node-forge": "1.4.0",
         "node-jose": "2.2.0",
         "prettier": "3.8.1",
-        "typescript": "5.9.3",
-        "uuid": "13.0.0",
-        "webdriverio": "9.26.1"
+        "typescript": "6.0.2",
+        "uuid": "14.0.1",
+        "webdriverio": "9.27.0"
     },
-    "prettier": {}
+    "prettier": {},
+    "overrides": { 
+        "@wdio/utils@8.46.0": {
+             "edgedriver": "6.3.0" 
+        } 
+    }
 }

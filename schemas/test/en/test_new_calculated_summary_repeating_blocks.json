@@ -3,8 +3,8 @@
     "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
-    "survey_id": "0",
-    "title": "Calculated Summary of answers from Repeating blocks",
+    "survey_id": "999",
+    "title": "Test New Calculated Summary Repeating Blocks",
     "theme": "default",
     "description": "A demo of a calculated summary which uses a answers from the repeating blocks in a list collector.",
     "metadata": [

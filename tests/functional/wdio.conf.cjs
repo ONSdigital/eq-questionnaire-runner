@@ -16,7 +16,7 @@ exports.config = {
   // NPM script (see https://docs.npmjs.com/cli/run-script) then the current working
   // directory is where your package.json resides, so `wdio` will be called from there.
   //
-  specs: ["./spec/**/*.js"],
+  specs: process.env.SPECS ? process.env.SPECS.split(",") : ["./spec/**/*.js"],
   suites: {
     components: ["./spec/checkbox.spec.js", "./spec/confirmation_email.spec.js", "./spec/dates.spec.js"],
     features: ["./spec/list_collector/list_collector.spec.js"],

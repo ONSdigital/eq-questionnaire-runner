@@ -2,9 +2,9 @@
     "mime_type": "application/json/ons/eq",
     "language": "en",
     "schema_version": "0.0.1",
-    "survey_id": "139",
+    "survey_id": "999",
     "theme": "default",
-    "title": "Progress Value Source Repeating Sections Test",
+    "title": "Test Progress Section Value Source Repeating Sections",
     "data_version": "0.0.3",
     "description": "Progress Value Source Repeating Sections Test",
     "navigation": {

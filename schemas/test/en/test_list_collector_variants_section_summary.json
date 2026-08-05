@@ -3,8 +3,8 @@
     "language": "en",
     "schema_version": "0.0.1",
     "data_version": "0.0.3",
-    "survey_id": "0",
-    "title": "Test List Collector Variants Section Summary Items",
+    "survey_id": "999",
+    "title": "Test List Collector Variants Section Summary",
     "theme": "default",
     "description": "A questionnaire to test list collector section summary items for variants",
     "metadata": [
