@@ -48,7 +48,7 @@ ignore=CVS
 # ignore-list. The regex matches against paths and can be in Posix or Windows
 # format. Because '\' represents the directory delimiter on Windows systems, it
 # can't be used as an escape character.
-ignore-paths=node_modules
+ignore-paths=node_modules,^\.venv/.*$
 
 # Files or directories matching the regular expression patterns are skipped.
 # The regex matches against base names, not paths. The default value ignores
@@ -77,7 +77,7 @@ limit-inference-results=100
 
 # List of plugins (as comma separated values of python module names) to load,
 # usually to register additional checkers.
-load-plugins=pylint.extensions.mccabe,pylint.extensions.no_self_use,pylint_absolute_imports
+load-plugins=pylint.extensions.mccabe,pylint.extensions.no_self_use
 
 # Pickle collected data for later comparisons.
 persistent=yes
@@ -88,10 +88,6 @@ py-version=3.13
 
 # Discover python modules and packages in the file system subtree.
 recursive=no
-
-# When enabled, pylint would attempt to guess common misconfiguration and emit
-# user-friendly hints instead of false-positive error messages.
-suggestion-mode=yes
 
 # Allow loading of arbitrary C extensions. Extensions are imported into the
 # active Python interpreter and may run arbitrary code.
