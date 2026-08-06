@@ -25,6 +25,7 @@ describe("Feature: Hub and Spoke", () => {
 
       // Complete the repeating sections using supplementary data
       click(ListCollectorEmployeesPage.submit());
+      browser.waitUntil(async () => await $(LengthOfEmploymentPage.day()).isDisplayed(), { timeout: 50000, timeoutMsg: "Day input not found" });
       $(LengthOfEmploymentPage.day()).setValue(1);
       $(LengthOfEmploymentPage.month()).setValue(1);
       $(LengthOfEmploymentPage.year()).setValue(1930);
