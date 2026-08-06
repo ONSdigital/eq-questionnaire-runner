@@ -457,7 +457,7 @@ describe("Using supplementary data", () => {
       "Jane Doe",
       "John Smith",
       "Product details",
-      "Production Targets",
+      "Production targets",
     ]);
 
     // Company details
