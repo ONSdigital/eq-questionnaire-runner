@@ -18,7 +18,7 @@ import RadioNonMandatoryDetailAnswerSummary from "../../../generated_pages/radio
 import { click, verifyUrlContains } from "../../../helpers";
 describe("Component: Radio", () => {
   describe("Given I start a Mandatory Radio survey", () => {
-    before(async () => {
+    beforeAll(async () => {
       await browser.openQuestionnaire("test_radio_mandatory.json");
     });
 
@@ -31,7 +31,7 @@ describe("Component: Radio", () => {
   });
 
   describe("Given I start a Mandatory Radio survey", () => {
-    before(async () => {
+    beforeAll(async () => {
       await browser.openQuestionnaire("test_radio_mandatory.json");
     });
 
@@ -44,7 +44,7 @@ describe("Component: Radio", () => {
   });
 
   describe("Given I start a Mandatory Radio survey  ", () => {
-    before(async () => {
+    beforeAll(async () => {
       await browser.openQuestionnaire("test_radio_mandatory.json");
     });
 
@@ -57,7 +57,7 @@ describe("Component: Radio", () => {
   });
 
   describe("Given I start a Mandatory Radio DetailAnswer survey", () => {
-    before(async () => {
+    beforeAll(async () => {
       await browser.openQuestionnaire("test_radio_mandatory_with_detail_answer_mandatory.json");
     });
 
@@ -71,7 +71,7 @@ describe("Component: Radio", () => {
   });
 
   describe("Given I start a Mandatory Radio DetailAnswer Overridden Error survey ", () => {
-    before(async () => {
+    beforeAll(async () => {
       await browser.openQuestionnaire("test_radio_mandatory_with_detail_answer_mandatory_with_overridden_error.json");
     });
 
@@ -83,7 +83,7 @@ describe("Component: Radio", () => {
   });
 
   describe("Given I start a Mandatory Radio DetailAnswer survey ", () => {
-    before(async () => {
+    beforeAll(async () => {
       await browser.openQuestionnaire("test_radio_mandatory_with_detail_answer_optional.json");
     });
 
@@ -95,7 +95,7 @@ describe("Component: Radio", () => {
   });
 
   describe("Given I start a Mandatory Radio DetailAnswer Overridden error survey  ", () => {
-    before(async () => {
+    beforeAll(async () => {
       await browser.openQuestionnaire("test_radio_mandatory_with_overridden_error.json");
     });
 
@@ -106,7 +106,7 @@ describe("Component: Radio", () => {
   });
 
   describe("Given I start a Optional survey", () => {
-    before(async () => {
+    beforeAll(async () => {
       await browser.openQuestionnaire("test_radio_optional.json");
     });
 
@@ -118,7 +118,7 @@ describe("Component: Radio", () => {
   });
 
   describe("Given I start a Optional DetailAnswer Overridden error survey", () => {
-    before(async () => {
+    beforeAll(async () => {
       await browser.openQuestionnaire("test_radio_optional_with_detail_answer_mandatory_with_overridden_error.json");
     });
 
@@ -130,7 +130,7 @@ describe("Component: Radio", () => {
   });
 
   describe("Given I Start a Optional Mandatory DetailAnswer survey", () => {
-    before(async () => {
+    beforeAll(async () => {
       await browser.openQuestionnaire("test_radio_optional_with_detail_answer_mandatory.json");
     });
 

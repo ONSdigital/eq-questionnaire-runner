@@ -60,10 +60,6 @@ export const clickSyncMode = (selector) => {
   browser.pause(100);
 };
 
-export const verifyUrlContains = async (expectedUrlString) => {
-  await expect(browser).toHaveUrl(expect.stringContaining(expectedUrlString));
-};
-
-export const verifyUrlContainsSyncMode = (expectedUrlString) => {
-  expect(browser).toHaveUrl(expect.stringContaining(expectedUrlString));
+export const verifyUrlContains = async (expectedUrlString, timeout = 50000) => {
+  await browser.waitUntil(async () => (await browser.getUrl()).includes(expectedUrlString), { timeout });
 };

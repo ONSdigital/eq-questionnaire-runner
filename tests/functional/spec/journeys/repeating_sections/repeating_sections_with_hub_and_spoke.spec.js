@@ -19,7 +19,7 @@ import VisitorsListCollectorRemovePage from "../../../generated_pages/repeating_
 import { click, verifyUrlContains } from "../../../helpers";
 describe("Feature: Repeating Sections with Hub and Spoke", () => {
   describe("Given the user has added some members to the household and is on the Hub", () => {
-    before("Open survey and add household members", async () => {
+    beforeAll("Open survey and add household members", async () => {
       await browser.openQuestionnaire("test_repeating_sections_with_hub_and_spoke.json");
       // Accept cookies, this is done due to headless window size where cookie banner
       // is pushing the submit button outside window

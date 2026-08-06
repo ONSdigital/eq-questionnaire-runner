@@ -5,7 +5,7 @@ import { click, verifyUrlContains } from "../../../helpers";
 describe("Feature: Routing on a Number", () => {
   describe("Equals", () => {
     describe("Given I start number routing equals survey", () => {
-      before(async () => {
+      beforeAll(async () => {
         await browser.openQuestionnaire("test_routing_number_equals.json");
       });
 
@@ -26,7 +26,7 @@ describe("Feature: Routing on a Number", () => {
 
   describe("Not Equals", () => {
     describe("Given I start number routing not equals survey", () => {
-      before(async () => {
+      beforeAll(async () => {
         await browser.openQuestionnaire("test_routing_number_not_equals.json");
       });
 
@@ -47,7 +47,7 @@ describe("Feature: Routing on a Number", () => {
 
   describe("Greater Than", () => {
     describe("Given I start number routing greater than survey", () => {
-      before(async () => {
+      beforeAll(async () => {
         await browser.openQuestionnaire("test_routing_number_greater_than.json");
       });
 
@@ -75,7 +75,7 @@ describe("Feature: Routing on a Number", () => {
 
   describe("Less Than", () => {
     describe("Given I start number routing less than survey", () => {
-      before(async () => {
+      beforeAll(async () => {
         await browser.openQuestionnaire("test_routing_number_less_than.json");
       });
 
@@ -103,7 +103,7 @@ describe("Feature: Routing on a Number", () => {
 
   describe("Greater Than or Equal", () => {
     describe("Given I have number routing with a greater than or equal", () => {
-      before(async () => {
+      beforeAll(async () => {
         await browser.openQuestionnaire("test_routing_number_greater_than_or_equal.json");
       });
 
@@ -131,7 +131,7 @@ describe("Feature: Routing on a Number", () => {
 
   describe("Less Than or Equal", () => {
     describe("Given I have number routing with a less than or equal", () => {
-      before(async () => {
+      beforeAll(async () => {
         await browser.openQuestionnaire("test_routing_number_less_than_or_equal.json");
       });
 

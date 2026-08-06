@@ -6,7 +6,7 @@ import AnyoneUsuallyLiveAt from "../../../generated_pages/answer_action_redirect
 
 describe("Answer Action: Redirect To List Add Question (Radio)", () => {
   describe('Given the user is on a question with a "RedirectToListAddBlock" action enabled', () => {
-    before("Launch survey", async () => {
+    beforeAll("Launch survey", async () => {
       await browser.openQuestionnaire("test_answer_action_redirect_to_list_add_block_radio.json");
     });
 

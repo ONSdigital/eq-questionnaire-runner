@@ -2,7 +2,7 @@ import DateRangePage from "../../../../generated_pages/date_validation_yyyy_comb
 import SubmitPage from "../../../../generated_pages/date_validation_yyyy_combined/submit.page";
 import { click } from "../../../../helpers";
 describe("Feature: Combined question level and single validation for MM-YYYY dates", () => {
-  before(async () => {
+  beforeAll(async () => {
     await browser.openQuestionnaire("test_date_validation_yyyy_combined.json");
   });
 

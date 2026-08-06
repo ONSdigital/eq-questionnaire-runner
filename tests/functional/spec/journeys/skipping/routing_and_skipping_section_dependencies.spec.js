@@ -154,7 +154,7 @@ describe("Routing and skipping section dependencies", () => {
   });
 
   describe("Given the routing and skipping section dependencies questionnaire and I answered 'No' to skipping the section question and 'Yes' to enable the section question", () => {
-    before("Load the survey", async () => {
+    beforeAll("Load the survey", async () => {
       await browser.openQuestionnaire("test_routing_and_skipping_section_dependencies.json");
     });
     it("When I change my answer to skipping the section question to 'No', Then the household summary will not be visible on the hub", async () => {
@@ -166,7 +166,7 @@ describe("Routing and skipping section dependencies", () => {
   });
 
   describe("Given the routing and skipping section dependencies questionnaire and I answered 'Yes' to skipping the age question but 'No' to are you sure in skip question confirmation section", () => {
-    before("Load the survey", async () => {
+    beforeAll("Load the survey", async () => {
       await browser.openQuestionnaire("test_routing_and_skipping_section_dependencies.json");
     });
 
@@ -194,7 +194,7 @@ describe("Routing and skipping section dependencies", () => {
   });
 
   describe("Given the routing and skipping section dependencies questionnaire and I answered 'Yes' to skipping the age question and complete the Primary Person section", () => {
-    before("Load the survey", async () => {
+    beforeAll("Load the survey", async () => {
       await browser.openQuestionnaire("test_routing_and_skipping_section_dependencies.json");
     });
 
@@ -220,7 +220,7 @@ describe("Routing and skipping section dependencies", () => {
   });
 
   describe("Given the routing and skipping section dependencies questionnaire and I answered 'Yes' to skipping the age question and add 2 household members but complete only one", () => {
-    before("Load the survey", async () => {
+    beforeAll("Load the survey", async () => {
       await browser.openQuestionnaire("test_routing_and_skipping_section_dependencies.json");
     });
 

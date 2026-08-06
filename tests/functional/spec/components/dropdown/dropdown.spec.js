@@ -59,7 +59,7 @@ describe("Component: Dropdown", () => {
   });
 
   describe("Given I start a Mandatory With Overridden Error Dropdown survey", () => {
-    before(async () => {
+    beforeAll(async () => {
       await browser.openQuestionnaire("test_dropdown_mandatory_with_overridden_error.json");
     });
 

@@ -13,13 +13,12 @@ import SupermarketTransportPage from "../../../generated_pages/new_calculated_su
 import SupermarketTransportCostPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/supermarket-transport-cost.page";
 import CalculatedSummaryPipingPage from "../../../generated_pages/new_calculated_summary_repeating_and_static_answers/calculated-summary-piping.page";
 import { assertSummaryValues, click, verifyUrlContains } from "../../../helpers";
-import { expect } from "@wdio/globals";
 
 describe("Calculated summary with repeating answers", () => {
   const summaryActions = 'dd[class="ons-summary__actions"]';
   const dynamicAnswerChangeLink = (answerIndex) => $$(summaryActions)[answerIndex].$("a");
 
-  before("Completing the list collector and dynamic answer", async () => {
+  beforeAll("Completing the list collector and dynamic answer", async () => {
     await browser.openQuestionnaire("test_new_calculated_summary_repeating_and_static_answers.json");
     await $(HubPage.acceptCookies()).click();
     await $(AnySupermarketPage.yes()).click();

@@ -28,11 +28,10 @@ import SectionSummarySectionTwo from "../../../generated_pages/calculated_summar
 import DependencyQuestionSectionTwo from "../../../generated_pages/calculated_summary_cross_section_dependencies/mutually-exclusive-checkbox.page";
 import MinMaxSectionTwo from "../../../generated_pages/calculated_summary_cross_section_dependencies/set-min-max-block.page";
 import { assertSummaryValues, click, verifyUrlContains } from "../../../helpers";
-import { expect } from "@wdio/globals";
 
 class TestCase {
   testCase(schema) {
-    before("Get to Calculated Summary", async () => {
+    beforeAll("Get to Calculated Summary", async () => {
       await browser.openQuestionnaire(schema);
 
       await $(FirstNumberBlockPage.firstNumber()).setValue(1.23);
@@ -98,10 +97,10 @@ class TestCase {
       await expect(await $(CurrencyTotalPlaybackPage.fourthAndAHalfNumberAnswerAlsoInTotal()).getText()).toBe("£2.34");
 
       // Answers not included in calculation should not be shown
-      await expect(await $$(UnitTotalPlaybackPage.secondNumberAnswerUnitTotal())).toHaveLength(0);
-      await expect(await $$(UnitTotalPlaybackPage.thirdAndAHalfNumberAnswerUnitTotal())).toHaveLength(0);
-      await expect(await $$(NumberTotalPlaybackPage.fifthNumberAnswer())).toHaveLength(0);
-      await expect(await $$(NumberTotalPlaybackPage.sixthNumberAnswer())).toHaveLength(0);
+      await expect(await $$(UnitTotalPlaybackPage.secondNumberAnswerUnitTotal())).toHaveSize(0);
+      await expect(await $$(UnitTotalPlaybackPage.thirdAndAHalfNumberAnswerUnitTotal())).toHaveSize(0);
+      await expect(await $$(NumberTotalPlaybackPage.fifthNumberAnswer())).toHaveSize(0);
+      await expect(await $$(NumberTotalPlaybackPage.sixthNumberAnswer())).toHaveSize(0);
     });
 
     it("Given I reach the calculated summary page, Then the Change link url should contain return_to, return_to_answer_id and return_to_block_id query params", async () => {
@@ -161,8 +160,8 @@ class TestCase {
       await click(SixthNumberBlockPage.submit());
 
       await verifyUrlContains(CurrencyTotalPlaybackPage.pageName);
-      await expect(await $$(CurrencyTotalPlaybackPage.fourthNumberAnswer())).toHaveLength(0);
-      await expect(await $$(CurrencyTotalPlaybackPage.fourthAndAHalfNumberAnswerAlsoInTotal())).toHaveLength(0);
+      await expect(await $$(CurrencyTotalPlaybackPage.fourthNumberAnswer())).toHaveSize(0);
+      await expect(await $$(CurrencyTotalPlaybackPage.fourthAndAHalfNumberAnswerAlsoInTotal())).toHaveSize(0);
       await expect(await $(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).toBe(
         "We calculate the total of currency values entered to be £9.36. Is this correct?",
       );
@@ -361,7 +360,7 @@ class TestCase {
   }
 
   testCrossSectionDependencies(schema) {
-    before("Get to the question containing calculated summary values with cross section dependencies", async () => {
+    beforeAll("Get to the question containing calculated summary values with cross section dependencies", async () => {
       await browser.openQuestionnaire(schema);
       await click(HubPage.submit());
       await $(SkipFirstNumberBlockPageSectionOne.no()).click();
@@ -416,7 +415,7 @@ class TestCase {
   }
 
   testNegative(schema, firstAnswerValue, secondAnswerValue, thirdAnswerValue, fourthAnswerValue, expectedTotalValue, expectedAnswerValues) {
-    before("Get to Calculated Summary", async () => {
+    beforeAll("Get to Calculated Summary", async () => {
       await browser.openQuestionnaire(schema);
 
       await $(FirstNumberBlockPage.firstNumber()).setValue(firstAnswerValue);

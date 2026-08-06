@@ -3,7 +3,7 @@ import { verifyUrlContains } from "../helpers";
 
 describe("Theme DESNZ", () => {
   describe("Given I launch a DESNZ themed questionnaire", () => {
-    before(async () => {
+    beforeAll(async () => {
       await browser.openQuestionnaire("test_theme_desnz.json");
     });
 

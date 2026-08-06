@@ -8,7 +8,7 @@ import { click, verifyUrlContains } from "../helpers";
 
 describe("Feedback", () => {
   describe("Given I launch and complete the test feedback survey", () => {
-    before(async () => {
+    beforeAll(async () => {
       await browser.openQuestionnaire("test_feedback.json");
       await click(SchemaFeedbackPage.submit());
       await click(SubmitPage.submit());

@@ -9,17 +9,17 @@ import { click, verifyUrlContains } from "../../helpers";
 
 describe("List collector with variants primary person", () => {
   describe("Given that person lives in house", () => {
-    before("Load the survey", async () => {
+    beforeAll("Load the survey", async () => {
       await browser.openQuestionnaire("test_list_collector_variants_primary_person.json");
-      it("When the user is asked questions about whether they like variant, Then they are routed to section asking if they live in the house", async () => {
-        await $(VariantBlockPage.yes()).click();
-        await click(VariantBlockPage.submit());
-        await expect(await $(PrimaryPersonListCollectorPage.legend()).getText()).toBe("Do you live here? (variant)");
-      });
+    });
+    it("When the user is asked questions about whether they like variant, Then they are routed to section asking if they live in the house", async () => {
+      await $(VariantBlockPage.yes()).click();
+      await click(VariantBlockPage.submit());
+      await expect(await $(PrimaryPersonListCollectorPage.legend()).getText()).toBe("Do you live here? (variant)");
     });
   });
   describe("Given the user starts on the 'Do you like variant' question", () => {
-    before("Load the survey", async () => {
+    beforeAll("Load the survey", async () => {
       await browser.openQuestionnaire("test_list_collector_variants_primary_person.json");
     });
     it("When the user says that they do live there, Then they are shown as the primary person", async () => {
@@ -102,7 +102,7 @@ describe("List collector with variants primary person", () => {
 });
 
 describe("Given the user starts on the 'Do you like variant' question", () => {
-  before("Load the survey", async () => {
+  beforeAll("Load the survey", async () => {
     await browser.openQuestionnaire("test_list_collector_variants_primary_person.json");
   });
   it("When the user answers 'No' for variant question, Then they are routed to section asking if they live in the house", async () => {

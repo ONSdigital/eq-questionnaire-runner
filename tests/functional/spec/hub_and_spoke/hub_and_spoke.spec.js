@@ -55,7 +55,7 @@ describe("Feature: Hub and Spoke", () => {
       await verifyUrlContains("/signed-out");
     });
 
-    it.skip("When a user views the Hub, Then the page title should be Choose another section to complete", async () => {
+    xit("When a user views the Hub, Then the page title should be Choose another section to complete", async () => {
       // To be investigated. This test is skipped because the page title is not consistently ready in time during GitHub Actions runs, causing flakiness.
       const pageTitle = await browser.getTitle();
       await expect(pageTitle).toBe("Choose another section to complete - Test Hub & Spoke");
@@ -86,7 +86,7 @@ describe("Feature: Hub and Spoke", () => {
   });
 
   describe("Given a user has started a section", () => {
-    before("Start section", async () => {
+    beforeAll("Start section", async () => {
       await browser.openQuestionnaire(hubAndSpokeSchema);
       await $(HubPage.summaryRowLink("employment-section")).click();
       await $(EmploymentStatusBlockPage.exclusiveNoneOfTheseApply()).click();

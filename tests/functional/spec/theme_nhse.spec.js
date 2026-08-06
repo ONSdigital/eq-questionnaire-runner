@@ -1,10 +1,9 @@
 import RadioPage from "../generated_pages/theme_ons_nhs/radio.page";
-import { expect } from "@wdio/globals";
 import { verifyUrlContains } from "../helpers";
 
 describe("Theme NHSE", () => {
   describe("Given I launch a NHSE themed questionnaire", () => {
-    before(async () => {
+    beforeAll(async () => {
       await browser.openQuestionnaire("test_theme_ons_nhs.json");
     });
 

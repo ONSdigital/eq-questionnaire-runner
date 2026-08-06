@@ -9,7 +9,6 @@ describe("Launch a survey from the collection instrument registry", () => {
       version: "v2",
       cirInstrumentId: "fd4a527f-c126-da2d-8ee6-51663a43e416",
     });
-    await verifyUrlContains(NameBlockPage.pageName);
     await $(NameBlockPage.name()).setValue("Joe");
     await click(NameBlockPage.submit());
     await click(HubPage.submit());

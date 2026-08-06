@@ -31,7 +31,6 @@ import AnyUtilityBillsPage from "../../../generated_pages/grand_calculated_summa
 import Section4SummaryPage from "../../../generated_pages/grand_calculated_summary_repeating_answers/section-4-summary.page";
 import Section5SummaryPage from "../../../generated_pages/grand_calculated_summary_repeating_answers/section-5-summary.page";
 import { assertSummaryItems, assertSummaryValues, repeatingAnswerChangeLink, click, verifyUrlContains } from "../../../helpers";
-import { expect } from "@wdio/globals";
 import InternetBreakdownBlockPage from "../../../generated_pages/grand_calculated_summary_repeating_answers/internet-breakdown-block.page";
 import Section6SummaryPage from "../../../generated_pages/grand_calculated_summary_repeating_answers/section-6-summary.page";
 import PersonalExpenditureBlockPage from "../../../generated_pages/grand_calculated_summary_repeating_answers/personal-expenditure-block.page";
@@ -41,7 +40,7 @@ describe("Feature: Grand Calculated Summary", () => {
   const summaryRowTitles = ".ons-summary__row-title";
 
   describe("Given I have a Grand Calculated Summary across multiple sections", () => {
-    before("Reaching the grand calculated summary section", async () => {
+    beforeAll("Reaching the grand calculated summary section", async () => {
       await browser.openQuestionnaire("test_grand_calculated_summary_repeating_answers.json");
       await click(HubPage.submit());
 

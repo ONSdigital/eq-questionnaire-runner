@@ -34,11 +34,10 @@ import SectionSummarySectionTwo from "../../../generated_pages/new_calculated_su
 import DependencyQuestionSectionTwo from "../../../generated_pages/new_calculated_summary_cross_section_dependencies_repeating/mutually-exclusive-checkbox.page";
 import MinMaxSectionTwo from "../../../generated_pages/new_calculated_summary_cross_section_dependencies_repeating/set-min-max-block.page";
 import { click, verifyUrlContains } from "../../../helpers";
-import { expect } from "@wdio/globals";
 
 describe("Feature: Calculated Summary Repeating Section", () => {
   describe("Given I have a Calculated Summary in a Repeating Section", () => {
-    before("Get to Calculated Summary", async () => {
+    beforeAll("Get to Calculated Summary", async () => {
       await browser.openQuestionnaire("test_new_calculated_summary_repeating_section.json");
       await click(HubPage.submit());
       await $(PrimaryPersonListCollectorPage.yes()).click();
@@ -86,10 +85,10 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await expect(await $(CurrencyTotalPlaybackPage.fourthAndAHalfNumberAnswerAlsoInTotal()).getText()).toBe("£2.34");
 
       // Answers not included in calculation should not be shown
-      await expect(await $$(UnitTotalPlaybackPage.secondNumberAnswerUnitTotal())).toHaveLength(0);
-      await expect(await $$(UnitTotalPlaybackPage.thirdAndAHalfNumberAnswerUnitTotal())).toHaveLength(0);
-      await expect(await $$(NumberTotalPlaybackPage.fifthNumberAnswer())).toHaveLength(0);
-      await expect(await $$(NumberTotalPlaybackPage.sixthNumberAnswer())).toHaveLength(0);
+      await expect(await $$(UnitTotalPlaybackPage.secondNumberAnswerUnitTotal())).toHaveSize(0);
+      await expect(await $$(UnitTotalPlaybackPage.thirdAndAHalfNumberAnswerUnitTotal())).toHaveSize(0);
+      await expect(await $$(NumberTotalPlaybackPage.fifthNumberAnswer())).toHaveSize(0);
+      await expect(await $$(NumberTotalPlaybackPage.sixthNumberAnswer())).toHaveSize(0);
     });
 
     it("Given I reach the calculated summary page, Then the Change link url should contain return_to, return_to_answer_id and return_to_block_id query params", async () => {
@@ -149,8 +148,8 @@ describe("Feature: Calculated Summary Repeating Section", () => {
       await click(SixthNumberBlockPage.submit());
 
       await verifyUrlContains(CurrencyTotalPlaybackPage.pageName);
-      await expect(await $$(CurrencyTotalPlaybackPage.fourthNumberAnswer())).toHaveLength(0);
-      await expect(await $$(CurrencyTotalPlaybackPage.fourthAndAHalfNumberAnswerAlsoInTotal())).toHaveLength(0);
+      await expect(await $$(CurrencyTotalPlaybackPage.fourthNumberAnswer())).toHaveSize(0);
+      await expect(await $$(CurrencyTotalPlaybackPage.fourthAndAHalfNumberAnswerAlsoInTotal())).toHaveSize(0);
       await expect(await $(CurrencyTotalPlaybackPage.calculatedSummaryTitle()).getText()).toBe(
         "We calculate the total of currency values entered to be £9.36. Is this correct?",
       );
@@ -320,7 +319,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
   });
 
   describe("Given I have a Calculated Summary in a Repeating Section", () => {
-    before("Get to Final Summary", async () => {
+    beforeAll("Get to Final Summary", async () => {
       await browser.openQuestionnaire("test_new_calculated_summary_repeating_section.json");
       await click(HubPage.submit());
       await $(PrimaryPersonListCollectorPage.no()).click();
@@ -381,7 +380,7 @@ describe("Feature: Calculated Summary Repeating Section", () => {
   });
 
   describe("Given I have a Calculated Summary in a Repeating Section with a Dependency based on a calculated summary in another section", () => {
-    before("Get to the Dependent question page", async () => {
+    beforeAll("Get to the Dependent question page", async () => {
       await browser.openQuestionnaire("test_new_calculated_summary_cross_section_dependencies_repeating.json");
       await click(HubPage.submit());
       await $(PrimaryPersonListCollectorPage.yes()).click();

@@ -6,6 +6,7 @@ describe("Introduction preview questions", () => {
   const introductionSchemaHub = "test_introduction_hub.json";
   const introductionSchemaLinear = "test_introduction.json";
   const showButton = 'button[data-ga-label="Hide all"]';
+  const hideButton = 'button[data-ga-label="Show all"]';
   const previewSummaryContent = "#summary-accordion-1-content";
   const previewSectionTitle = ".ons-summary__group-title";
   const previewQuestion = ".ons-summary__item";
@@ -80,10 +81,12 @@ describe("Introduction preview questions", () => {
     expect(await $(pdfButton).isClickable()).toBe(true);
     expect(await $(showButton).getText()).toBe("Show all");
     expect(await $(previewSummaryContent).isClickable()).toBe(false);
-    it("and if the twisty button is clicked, Then the twisty button should read 'Hide all' and the answers should be visible", async () => {
-      await $(showButton).click();
-      expect(await $(showButton).getText()).toBe("Hide all");
-      expect(await $(previewSummaryContent).isClickable()).toBe(true);
-    });
+  });
+  it("Given the twisty button is clicked, Then the twisty button should read 'Hide all' and the answers should be visible", async () => {
+    await browser.openQuestionnaire(introductionSchemaHub);
+    await $(IntroductionPageHub.previewQuestions()).click();
+    await $(showButton).click();
+    expect(await $(hideButton).getText()).toBe("Hide all");
+    expect(await $(previewSummaryContent).isClickable()).toBe(true);
   });
 });

@@ -33,7 +33,7 @@ const openQuestionnaireAndSetUp = async (schema) => {
 testCases.forEach((testCase) => {
   describe(`Feature: Dynamically generated answer options driven by a function (${testCase.schemaName})`, () => {
     describe("Selecting/Deselecting", () => {
-      before("Open questionnaire", async () => {
+      beforeAll("Open questionnaire", async () => {
         await openQuestionnaireAndSetUp(testCase.schemaName);
       });
 
@@ -166,7 +166,7 @@ testCases.forEach((testCase) => {
 
 describe(`Feature: Dynamically generated answer options driven by a function with static options`, () => {
   describe("Given a dynamic answer options questionnaire with static options", () => {
-    before("Open questionnaire", async () => {
+    beforeAll("Open questionnaire", async () => {
       await openQuestionnaireAndSetUp("test_dynamic_answer_options_function_driven_with_static_options.json");
     });
 

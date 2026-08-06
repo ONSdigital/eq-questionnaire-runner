@@ -3,7 +3,7 @@ import RadioVoluntaryFalsePage from "../../../generated_pages/radio_voluntary/ra
 import { click } from "../../../helpers";
 describe("Component: Radio", () => {
   describe("Given I start a Voluntary Radio survey", () => {
-    before(async () => {
+    beforeAll(async () => {
       await browser.openQuestionnaire("test_radio_voluntary.json");
     });
 

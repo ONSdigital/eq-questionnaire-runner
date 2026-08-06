@@ -10,7 +10,7 @@ const errorPanel = '[data-ga="error"]';
 
 describe("Email confirmation", () => {
   describe("Given I launch the test email confirmation survey", () => {
-    before(async () => {
+    beforeAll(async () => {
       await browser.openQuestionnaire("test_confirmation_email.json");
     });
 
@@ -83,7 +83,7 @@ describe("Email confirmation", () => {
     });
   });
   describe("Given I launch the test email confirmation survey", () => {
-    before(async () => {
+    beforeAll(async () => {
       await browser.openQuestionnaire("test_confirmation_email.json");
     });
     it("When I enter an email and answer 'No' on the confirm email page, Then I go the confirmation send page with the email pre-filled", async () => {
@@ -101,7 +101,7 @@ describe("Email confirmation", () => {
 
 describe("Email confirmation", () => {
   describe("Given I launch the test email confirmation survey", () => {
-    before(async () => {
+    beforeAll(async () => {
       await browser.openQuestionnaire("test_confirmation_email.json");
     });
     it("When I view the email confirmation page, Then I should not see the feedback call to action", async () => {

@@ -10,7 +10,7 @@ import { click, verifyUrlContains } from "../../../helpers";
 
 describe("Feature: Repeating Section Summaries", () => {
   describe("Given the user has added some members to the household and is on the Hub", () => {
-    before("Open survey and add household members", async () => {
+    beforeAll("Open survey and add household members", async () => {
       await browser.openQuestionnaire("test_repeating_section_summaries.json");
       // Ensure the questionnaire fully loads
       await browser.pause(100);
@@ -39,7 +39,7 @@ describe("Feature: Repeating Section Summaries", () => {
     });
 
     describe("When the user finishes a repeating section", () => {
-      before("Enter information for a repeating section", async () => {
+      beforeAll("Enter information for a repeating section", async () => {
         await $(HubPage.summaryRowLink("personal-details-section-1")).click();
         await $(ProxyPage.yes()).click();
         await click(ProxyPage.submit());

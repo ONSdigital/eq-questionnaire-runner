@@ -3,7 +3,7 @@ import { verifyUrlContains } from "../helpers";
 
 describe("Theme Northern Ireland", () => {
   describe("Given I launch a Northern Ireland themed questionnaire", () => {
-    before(async () => {
+    beforeAll(async () => {
       await browser.openQuestionnaire("test_theme_northernireland.json");
     });
 

@@ -37,7 +37,7 @@ const answerAndSubmitTotalEmployeesQuestion = async (total) => {
 
 describe("Feature: Validation - Sum of grouped answers to equal total (Total in separate section)", () => {
   describe("Given I start a grouped answer validation with dependent sections and complete the total turnover and total employees questions", () => {
-    before(async () => {
+    beforeAll(async () => {
       await browser.openQuestionnaire("test_validation_sum_against_total_hub_with_dependent_section.json");
       await answerAndSubmitTotalTurnoverQuestion(1000);
       await answerAndSubmitTotalEmployeesQuestion(10);
@@ -69,7 +69,7 @@ describe("Feature: Validation - Sum of grouped answers to equal total (Total in 
   });
 
   describe("Given I start a grouped answer validation with dependent sections and complete the overview and breakdown sections", () => {
-    before(async () => {
+    beforeAll(async () => {
       await browser.openQuestionnaire("test_validation_sum_against_total_hub_with_dependent_section.json");
 
       // Complete overview section

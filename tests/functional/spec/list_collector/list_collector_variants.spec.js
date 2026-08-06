@@ -9,7 +9,7 @@ import ThankYouPage from "../../base_pages/thank-you.page.js";
 
 describe("List Collector With Variants", () => {
   describe("Given that a person lives in house", () => {
-    before("Load the survey", async () => {
+    beforeAll("Load the survey", async () => {
       await browser.openQuestionnaire("test_list_collector_variants.json");
     });
 
@@ -55,7 +55,7 @@ describe("List Collector With Variants", () => {
   });
 
   describe("Given a person does not live in house", () => {
-    before("Load the survey", async () => {
+    beforeAll("Load the survey", async () => {
       await browser.openQuestionnaire("test_list_collector_variants.json");
     });
 

@@ -8,7 +8,7 @@ import hubPage from "../../../base_pages/hub.page.js";
 import { click, verifyUrlContains } from "../../../helpers";
 
 describe("Feature: Show section summary on completion", () => {
-  before("Launch survey", async () => {
+  beforeAll("Launch survey", async () => {
     await browser.openQuestionnaire("test_show_section_summary_on_completion.json");
   });
 
@@ -30,7 +30,7 @@ describe("Feature: Show section summary on completion", () => {
   });
 
   describe("Given I am completing a section with the summary turned on for the forward journey", () => {
-    before("Get to hub", async () => {
+    beforeAll("Get to hub", async () => {
       await browser.url(hubPage.url());
     });
 
@@ -44,7 +44,7 @@ describe("Feature: Show section summary on completion", () => {
   });
 
   describe("Given I have completed a section with the summary turned on for the forward journey", () => {
-    before("Get to hub", async () => {
+    beforeAll("Get to hub", async () => {
       await browser.url(hubPage.url());
     });
 

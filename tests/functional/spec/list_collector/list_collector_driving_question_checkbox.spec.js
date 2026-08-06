@@ -15,7 +15,7 @@ const beforeSetup = async () => {
 };
 
 describe("List Collector Driving Checkbox Question", () => {
-  before("Load the survey", beforeSetup);
+  beforeAll("Load the survey", beforeSetup);
 
   describe("Given a happy journey through the list collectors", () => {
     it("All of the household members and visitors are shown in the summary", async () => {
@@ -71,7 +71,7 @@ describe("List Collector Driving Checkbox Question", () => {
 });
 
 describe("Given the user says no one else lives in the house", () => {
-  before("Load the survey", beforeSetup);
+  beforeAll("Load the survey", beforeSetup);
 
   it("The user is asked if they need to add anyone that is temporarily away", async () => {
     await $(PrimaryPersonListCollectorPage.yesIUsuallyLiveHere()).click();
@@ -89,7 +89,7 @@ describe("Given the user says no one else lives in the house", () => {
 });
 
 describe("Given a person does not live in the house", () => {
-  before("Load the survey", beforeSetup);
+  beforeAll("Load the survey", beforeSetup);
   it("The user is asked whether they live there", async () => {
     await $(PrimaryPersonListCollectorPage.noIDonTUsuallyLiveHere()).click();
     await click(PrimaryPersonListCollectorPage.submit());

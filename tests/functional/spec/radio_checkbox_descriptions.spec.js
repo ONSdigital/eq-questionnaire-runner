@@ -4,7 +4,7 @@ import { click } from "../helpers";
 
 describe("Checkbox and Radio item descriptions", () => {
   describe("Given the user is presented with radio or checkbox options", () => {
-    before("Launch survey", async () => {
+    beforeAll("Launch survey", async () => {
       await browser.openQuestionnaire("test_radio_checkbox_descriptions.json");
     });
 

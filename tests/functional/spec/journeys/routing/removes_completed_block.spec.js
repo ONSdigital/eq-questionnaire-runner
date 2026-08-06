@@ -4,11 +4,13 @@ import SubmitPage from "../../../generated_pages/confirmation_question/submit.pa
 import { click, verifyUrlContains } from "../../../helpers";
 describe("Feature: Routing incompletes block if routing backwards", () => {
   describe("Given I have a confirmation Question", () => {
-    before("Get to summary", async () => {
+    beforeAll("Load the survey", async () => {
       await browser.openQuestionnaire("test_confirmation_question.json");
+    });
+    it("When I route to submit, I get to the summary", async () => {
       await $(NumberOfEmployeesTotalBlockPage.numberOfEmployeesTotal()).setValue(0);
       await click(NumberOfEmployeesTotalBlockPage.submit());
-      await $(ConfirmZeroEmployeesBlockPage.yes()).click();
+      await $(ConfirmZeroEmployeesBlockPage.yesThisIsCorrect()).click();
       await click(ConfirmZeroEmployeesBlockPage.submit());
       await verifyUrlContains(SubmitPage.pageName);
     });

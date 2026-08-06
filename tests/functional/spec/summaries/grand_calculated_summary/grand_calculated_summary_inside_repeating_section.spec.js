@@ -1,5 +1,4 @@
 import { assertSummaryValues, click, listItemIds, verifyUrlContains } from "../../../helpers";
-import { expect } from "@wdio/globals";
 import AddVehiclePage from "../../../generated_pages/grand_calculated_summary_inside_repeating_section/list-collector-add.page.js";
 import AnyCostPage from "../../../generated_pages/grand_calculated_summary_inside_repeating_section/any-cost.page.js";
 import AnyVehiclePage from "../../../generated_pages/grand_calculated_summary_inside_repeating_section/any-vehicle.page.js";
@@ -29,7 +28,7 @@ describe("Grand Calculated Summary inside a repeating section", () => {
   const summaryActions = 'dd[class="ons-summary__actions"]';
   const dynamicAnswerChangeLink = (answerIndex) => $$(summaryActions)[answerIndex].$("a");
 
-  before("Load the survey", async () => {
+  beforeAll("Load the survey", async () => {
     await browser.openQuestionnaire("test_grand_calculated_summary_inside_repeating_section.json");
   });
 

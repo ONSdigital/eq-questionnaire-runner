@@ -10,7 +10,7 @@ import HubPage from "../base_pages/hub.page.js";
 import { click, verifyUrlContains } from "../helpers";
 
 describe("First Non Empty Item Transform", () => {
-  before("Launch survey", async () => {
+  beforeAll("Launch survey", async () => {
     await browser.openQuestionnaire("test_placeholder_first_non_empty_item.json");
   });
 
@@ -36,7 +36,7 @@ describe("First Non Empty Item Transform", () => {
 });
 
 describe("First Non Empty Item Transform Cross Section", () => {
-  before("Launch survey", async () => {
+  beforeAll("Launch survey", async () => {
     await browser.openQuestionnaire("test_placeholder_first_non_empty_item_cross_section_dependencies.json");
     await click(HubPage.submit());
   });
@@ -68,7 +68,7 @@ describe("First Non Empty Item Transform Cross Section", () => {
 });
 
 describe("First Non Empty Item Transform Repeating Sections", () => {
-  before("Launch survey", async () => {
+  beforeAll("Launch survey", async () => {
     await browser.openQuestionnaire("test_placeholder_first_non_empty_item_repeating_sections.json");
     await click(HubPage.submit());
   });

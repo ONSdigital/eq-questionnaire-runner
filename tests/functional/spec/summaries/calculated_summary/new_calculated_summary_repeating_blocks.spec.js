@@ -12,10 +12,9 @@ import HubPage from "../../../base_pages/hub.page";
 import FamilyJourneysPage from "../../../generated_pages/new_calculated_summary_repeating_blocks/family-journeys.page";
 import BlockSkipPage from "../../../generated_pages/new_calculated_summary_repeating_blocks/block-skip.page";
 import { assertSummaryValues, repeatingAnswerChangeLink, click, verifyUrlContains } from "../../../helpers";
-import { expect } from "@wdio/globals";
 
 describe("Feature: Calculated Summary using Repeating Blocks", () => {
-  before("Reaching the first calculated summary", async () => {
+  beforeAll("Reaching the first calculated summary", async () => {
     await browser.openQuestionnaire("test_new_calculated_summary_repeating_blocks.json");
     await $(BlockCarPage.car()).setValue(100);
     await click(BlockCarPage.submit());

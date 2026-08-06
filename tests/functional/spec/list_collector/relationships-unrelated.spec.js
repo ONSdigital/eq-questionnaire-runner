@@ -9,12 +9,12 @@ describe("Unrelated Relationships", () => {
   const schema = "test_relationships_unrelated.json";
 
   describe("Given I am completing the test_relationships_unrelated survey,", () => {
-    before("load the survey", async () => {
+    beforeAll("load the survey", async () => {
       await browser.openQuestionnaire(schema);
     });
 
     describe("And I add six people", () => {
-      before("add people", async () => {
+      beforeAll("add people", async () => {
         await addPerson("Andrew", "Austin");
         await addPerson("Betty", "Burns");
         await addPerson("Carla", "Clark");

@@ -9,7 +9,7 @@ import currencySectionSummary from "../generated_pages/variants_question/currenc
 import { click, verifyUrlContains } from "../helpers";
 
 describe("Number validation", () => {
-  before(async () => {
+  beforeAll(async () => {
     await browser.openQuestionnaire("test_numbers.json");
   });
 

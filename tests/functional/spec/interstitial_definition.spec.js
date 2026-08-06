@@ -2,7 +2,7 @@ import InterstitialDefinitionPage from "../generated_pages/interstitial_definiti
 
 describe("Component: Interstitial Definition", () => {
   describe("Given I launch the interstitial definition questionnaire", () => {
-    before(async () => {
+    beforeAll(async () => {
       await browser.openQuestionnaire("test_interstitial_definition.json");
     });
 

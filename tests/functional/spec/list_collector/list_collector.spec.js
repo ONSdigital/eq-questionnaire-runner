@@ -23,7 +23,7 @@ import IntroductionPage from "../../generated_pages/list_collector_list_summary/
 
 describe("List Collector", () => {
   describe("Given a normal journey through the list collector without variants", () => {
-    before("Load the survey", async () => {
+    beforeAll("Load the survey", async () => {
       await browser.openQuestionnaire("test_list_collector.json");
     });
 

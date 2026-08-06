@@ -5,7 +5,7 @@ import InitialInterstitialPage from "../generated_pages/interviewer_note/initial
 import { click } from "../helpers";
 
 describe("Given I start a survey", () => {
-  before(async () => {
+  beforeAll(async () => {
     await browser.openQuestionnaire("test_interviewer_note.json");
   });
 

@@ -16,7 +16,7 @@ describe("Last viewed question guidance", () => {
   };
 
   describe("Given the hub has a required section, which has not been completed", () => {
-    before("Open survey", async () => {
+    beforeAll("Open survey", async () => {
       await browser.openQuestionnaire("test_last_viewed_question_guidance_hub.json", resumableLaunchParams);
     });
 
@@ -43,7 +43,7 @@ describe("Last viewed question guidance", () => {
   });
 
   describe("Given the respondent has completed the required section and is on the hub", () => {
-    before("Open survey and complete first section", async () => {
+    beforeAll("Open survey and complete first section", async () => {
       await browser.openQuestionnaire("test_last_viewed_question_guidance_hub.json");
       await click(WorkInterstitialPage.submit());
       await $(PaidWorkPage.yes()).click();

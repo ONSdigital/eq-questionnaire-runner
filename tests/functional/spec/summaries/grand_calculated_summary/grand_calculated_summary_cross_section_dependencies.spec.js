@@ -12,11 +12,10 @@ import FirstNumberBlockPartAPage from "../../../generated_pages/grand_calculated
 import FourthNumberBlockPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/fourth-number-block.page";
 import tvChoiceBlockPage from "../../../generated_pages/grand_calculated_summary_cross_section_dependencies/tv-choice-block.page";
 import { click, verifyUrlContains } from "../../../helpers";
-import { expect } from "@wdio/globals";
 
 describe("Feature: Grand Calculated Summary", () => {
   describe("Given I have a Grand Calculated Summary", () => {
-    before("Getting to the second calculated summary", async () => {
+    beforeAll("Getting to the second calculated summary", async () => {
       await browser.openQuestionnaire("test_grand_calculated_summary_cross_section_dependencies.json");
       await click(HubPage.submit());
       await $(SkipFirstBlockPage.no()).click();

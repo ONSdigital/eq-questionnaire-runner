@@ -1,5 +1,4 @@
 import { assertSummaryItems, assertSummaryTitles, assertSummaryValues, listItemComplete, click, verifyUrlContains } from "../../helpers";
-import { expect } from "@wdio/globals";
 import { getRandomString } from "../../jwt_helper";
 import AddAdditionalEmployeePage from "../../generated_pages/supplementary_data/list-collector-additional-add.page.js";
 import AdditionalLengthOfEmploymentPage from "../../generated_pages/supplementary_data/additional-length-of-employment.page.js";
@@ -39,7 +38,7 @@ describe("Using supplementary data", () => {
   const summaryValues = ".ons-summary__values";
   const summaryRowTitles = ".ons-summary__row-title";
 
-  before("Starting the survey", async () => {
+  beforeAll("Starting the survey", async () => {
     await browser.waitUntil(
       async () => {
         await browser.openQuestionnaire("test_supplementary_data.json", {

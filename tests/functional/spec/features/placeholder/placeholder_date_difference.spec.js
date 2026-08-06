@@ -8,7 +8,7 @@ import AgeBlockMonthYearRangePage from "../../../generated_pages/placeholder_dif
 import AgeTestMonthYearRangePage from "../../../generated_pages/placeholder_difference_in_years_month_year_range/age-test.page";
 import { click } from "../../../helpers";
 describe("Difference check (years)", () => {
-  before("Load the survey", async () => {
+  beforeAll("Load the survey", async () => {
     await browser.openQuestionnaire("test_placeholder_difference_in_years.json");
   });
 
@@ -22,7 +22,7 @@ describe("Difference check (years)", () => {
 });
 
 describe("Difference check (months and years)", () => {
-  before("Load the survey", async () => {
+  beforeAll("Load the survey", async () => {
     await browser.openQuestionnaire("test_placeholder_difference_in_years_month_year.json");
   });
 
@@ -39,7 +39,7 @@ describe("Difference check (months and years)", () => {
 });
 
 describe("Difference check (months and years range)", () => {
-  before("Load the survey", async () => {
+  beforeAll("Load the survey", async () => {
     await browser.openQuestionnaire("test_placeholder_difference_in_years_month_year_range.json");
   });
 
@@ -56,7 +56,7 @@ describe("Difference check (months and years range)", () => {
 });
 
 describe("Difference check (years range)", () => {
-  before("Load the survey", async () => {
+  beforeAll("Load the survey", async () => {
     await browser.openQuestionnaire("test_placeholder_difference_in_years_range.json");
   });
 

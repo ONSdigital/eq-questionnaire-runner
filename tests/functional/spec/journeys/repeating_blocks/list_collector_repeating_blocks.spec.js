@@ -12,7 +12,6 @@ import SubmitPage from "../../../generated_pages/list_collector_repeating_blocks
 import { repeatingAnswerChangeLink, checkItemsInList, summaryItemComplete, click, verifyUrlContains } from "../../../helpers";
 import HubPage from "../../../base_pages/hub.page";
 import ResponsiblePartyHubPage from "../../../generated_pages/list_collector_repeating_blocks_with_hub/responsible-party-business.page";
-import { expect } from "@wdio/globals";
 import ThankYouPage from "../../../base_pages/thank-you.page";
 
 const summaryValues = 'dd[class="ons-summary__values"]';
@@ -54,7 +53,7 @@ async function addCompany(
 
 describe("List Collector Repeating Blocks", () => {
   describe("Given a normal journey through the list collector with repeating blocks", () => {
-    before("Load the survey", async () => {
+    beforeAll("Load the survey", async () => {
       await browser.openQuestionnaire("test_list_collector_repeating_blocks_section_summary.json");
       // These tests sometimes fail when a button is on the screen, but right on the very edge, accept cookies to increase screen space
       await $(ResponsiblePartyPage.acceptCookies()).click();
@@ -81,7 +80,7 @@ describe("List Collector Repeating Blocks", () => {
   });
 
   describe("Given a journey through the list collector with repeating blocks where items need to be updated", () => {
-    before("Load the survey", async () => {
+    beforeAll("Load the survey", async () => {
       await browser.openQuestionnaire("test_list_collector_repeating_blocks_section_summary.json");
     });
     it("When the user adds items to the list and completes the repeating blocks, Then the completed items are displayed on the list collector page.", async () => {
@@ -130,7 +129,7 @@ describe("List Collector Repeating Blocks", () => {
   });
 
   describe("Given a journey that test routes through the list collector with repeating blocks.", () => {
-    before("Load the survey", async () => {
+    beforeAll("Load the survey", async () => {
       await browser.openQuestionnaire("test_list_collector_repeating_blocks_section_summary.json");
     });
     it("When the user only completes some of the repeating blocks and leaves others incomplete, Then on the list collector page only completed items should display the completed checkmark icon.", async () => {
@@ -249,7 +248,7 @@ describe("List Collector Repeating Blocks", () => {
   });
 
   describe("Given a journey through the list collector with repeating blocks", () => {
-    before("Load the survey", async () => {
+    beforeAll("Load the survey", async () => {
       await browser.openQuestionnaire("test_list_collector_repeating_blocks_section_summary.json");
     });
     it("When the user adds and completes items, Then they are able to see the items on the section summary page.", async () => {
@@ -280,7 +279,7 @@ describe("List Collector Repeating Blocks", () => {
   });
 
   describe("Given the user is completing a list collector with repeating blocks in a mandatory section of a hub based questionnaire.", () => {
-    before("Load the survey", async () => {
+    beforeAll("Load the survey", async () => {
       await browser.openQuestionnaire("test_list_collector_repeating_blocks_with_hub.json");
     });
     it("When the user adds complete and incomplete items and returns to the hub, Then the user should be taken to first incomplete repeating block when pressing Continue.", async () => {

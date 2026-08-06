@@ -3,7 +3,7 @@ import SubmitPage from "../../../../generated_pages/date_validation_combined/sub
 import { click } from "../../../../helpers";
 
 describe("Feature: Combined question level and single validation for dates", () => {
-  before(async () => {
+  beforeAll(async () => {
     await browser.openQuestionnaire("test_date_validation_combined.json");
   });
 

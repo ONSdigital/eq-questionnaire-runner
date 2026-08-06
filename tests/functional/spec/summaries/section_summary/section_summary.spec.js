@@ -139,7 +139,7 @@ describe("Section Summary", () => {
     });
   });
   describe("Given I start the Test Section Summary questionnaire", () => {
-    before(async () => {
+    beforeAll(async () => {
       await browser.openQuestionnaire("test_section_summary.json");
     });
     it("When there is no title set in the sections summary, the section title is used for the section summary title", async () => {

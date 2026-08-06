@@ -12,7 +12,7 @@ describe("Feature: Custom Page Titles", () => {
   const schema = "test_custom_page_titles.json";
 
   describe("Given I am completing the test_custom_page_titles survey,", () => {
-    before("load the survey", async () => {
+    beforeAll("load the survey", async () => {
       await browser.openQuestionnaire(schema);
     });
 

@@ -1,10 +1,9 @@
 import RadioPage from "../generated_pages/theme_dbt_ni/radio.page";
-import { expect } from "@wdio/globals";
 import { verifyUrlContains } from "../helpers";
 
 describe("Theme UKHSA-ONS", () => {
   describe("Given I launch a UKHSA-ONS themed questionnaire", () => {
-    before(async () => {
+    beforeAll(async () => {
       await browser.openQuestionnaire("test_theme_ukhsa_ons.json");
     });
 

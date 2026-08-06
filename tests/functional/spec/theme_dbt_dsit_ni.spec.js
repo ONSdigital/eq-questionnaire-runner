@@ -3,7 +3,7 @@ import { verifyUrlContains } from "../helpers";
 
 describe("Theme DBT-DSIT-NI", () => {
   describe("Given I launch a DBT-DSIT-NI themed questionnaire", () => {
-    before(async () => {
+    beforeAll(async () => {
       await browser.openQuestionnaire("test_theme_dbt_dsit_ni.json");
     });
 

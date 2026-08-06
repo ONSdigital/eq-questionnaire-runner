@@ -6,7 +6,7 @@ import { click } from "../../../helpers";
 
 describe("Timeout Modal Post Submission Expired", () => {
   describe("Given I am completing the survey and get to post submission page,", () => {
-    before(async () => {
+    beforeAll(async () => {
       await browser.openQuestionnaire("test_timeout_modal.json");
       await click(TimeoutInterstitialPage.submit());
       await click(TimeoutSubmitPage.submit());

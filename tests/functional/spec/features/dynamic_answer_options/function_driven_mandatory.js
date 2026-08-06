@@ -6,7 +6,7 @@ import DynamicMutuallyExclusivePage from "../../../generated_pages/dynamic_answe
 import { click } from "../../../helpers";
 describe(`Feature: Dynamically generated mandatory answer options driven by a function with static options`, () => {
   describe("Given a mandatory dynamic answer options questionnaire with static options", () => {
-    before("Open questionnaire", async () => {
+    beforeAll("Open questionnaire", async () => {
       await browser.openQuestionnaire("test_dynamic_answer_options_function_driven_with_static_options_mandatory.json");
       // Set reference date
       await $(ReferenceDatePage.day()).setValue("1");

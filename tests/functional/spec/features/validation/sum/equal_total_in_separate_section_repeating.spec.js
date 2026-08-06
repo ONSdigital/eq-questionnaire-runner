@@ -82,7 +82,7 @@ const assertRepeatingSectionOnChange = (repeatIndex, currentBreakdown1, currentB
 
 describe("Feature: Validation - Sum of grouped answers to equal total (Repeating section) (Total in separate section)", () => {
   describe("Given I start a repeating grouped answer validation with dependent sections and add 2 householders and complete the household overview section", () => {
-    before(async () => {
+    beforeAll(async () => {
       await browser.openQuestionnaire("test_validation_sum_against_total_repeating_with_dependent_section.json");
 
       // Add 2 householders

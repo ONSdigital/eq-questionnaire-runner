@@ -9,11 +9,10 @@ import CalculatedSummary4Page from "../../../generated_pages/grand_calculated_su
 import GrandCalculatedSummaryShoppingPage from "../../../generated_pages/grand_calculated_summary_overlapping_answers/grand-calculated-summary-shopping.page";
 import Section1SummaryPage from "../../../generated_pages/grand_calculated_summary_overlapping_answers/section-1-summary.page";
 import { click, verifyUrlContains } from "../../../helpers";
-import { expect } from "@wdio/globals";
 
 describe("Feature: Grand Calculated Summary", () => {
   describe("Given I have a Grand Calculated Summary with overlapping answers", () => {
-    before("completing the survey", async () => {
+    beforeAll("completing the survey", async () => {
       await browser.openQuestionnaire("test_grand_calculated_summary_overlapping_answers.json");
       await click(IntroductionBlockPage.submit());
 

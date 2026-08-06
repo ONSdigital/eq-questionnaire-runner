@@ -5,7 +5,7 @@ import { click, verifyUrlContains } from "../../helpers";
 
 describe("Feature: Confirmation Question", () => {
   describe("Given I have a completed the confirmation question", () => {
-    before("Get to summary", async () => {
+    beforeAll("Get to summary", async () => {
       await browser.openQuestionnaire("test_confirmation_question.json");
     });
 
@@ -16,7 +16,7 @@ describe("Feature: Confirmation Question", () => {
       await click(ConfirmZeroEmployeesBlockPage.submit());
       await verifyUrlContains(SubmitPage.pageName);
       await expect(await $(SubmitPage.numberOfEmployeesTotal()).getText()).toBe("0");
-      await expect(await $$(SubmitPage.confirmZeroEmployeesAnswer())).toHaveLength(0);
+      await expect(await $$(SubmitPage.confirmZeroEmployeesAnswer())).toHaveSize(0);
     });
   });
   describe("Given a confirmation Question", () => {

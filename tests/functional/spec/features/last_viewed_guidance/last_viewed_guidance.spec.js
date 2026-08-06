@@ -10,7 +10,7 @@ describe("Last viewed question guidance", () => {
   };
 
   describe("Given the last viewed question guidance questionnaire", () => {
-    before("Open survey", async () => {
+    beforeAll("Open survey", async () => {
       await browser.openQuestionnaire("test_last_viewed_question_guidance.json", resumableLaunchParams);
     });
 
