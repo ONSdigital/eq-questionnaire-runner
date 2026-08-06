@@ -46,9 +46,7 @@ class RelationshipCollector(RelationshipQuestion):
         return {}
 
     def _is_last_relationship(self) -> bool:
-        if self.relationship_router.get_next_location(self._current_location):  # type: ignore
-            return False
-        return True
+        return not self.relationship_router.get_next_location(self._current_location)  # type: ignore
 
     def _resolve_custom_page_title_vars(self) -> MutableMapping:
         page_title_vars = super()._resolve_custom_page_title_vars()

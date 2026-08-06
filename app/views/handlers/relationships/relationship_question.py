@@ -82,9 +82,7 @@ class RelationshipQuestion(Question):
         can_access_relationship_location = self.relationship_router.can_access_location(
             self._current_location  # type: ignore
         )
-        if not can_access_parent_location or not can_access_relationship_location:
-            return False
-        return True
+        return can_access_parent_location and can_access_relationship_location
 
     def get_first_location_url(self) -> str:
         return self.relationship_router.get_first_location().url()

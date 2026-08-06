@@ -207,9 +207,8 @@ def get_survey_config(
 def render_template(template: str, **kwargs: Any) -> str:
     session_expires_at = None
     language = get_locale().language
-    if session_store := get_session_store():
-        if session_expiry := session_store.expiration_time:
-            session_expires_at = session_expiry.isoformat()
+    if (session_store := get_session_store()) and (session_expiry := session_store.expiration_time):
+        session_expires_at = session_expiry.isoformat()
 
     survey_config = get_survey_config()
 

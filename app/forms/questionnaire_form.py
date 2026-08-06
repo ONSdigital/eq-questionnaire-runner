@@ -45,7 +45,7 @@ class QuestionnaireForm(FlaskForm):
         schema: QuestionnaireSchema,
         question_schema: QuestionSchemaType,
         data_stores: DataStores,
-        location: None | Location | RelationshipLocation,
+        location: Location | RelationshipLocation | None,
         **kwargs: MultiDict | Mapping | None,
     ):
         self.schema = schema
@@ -106,34 +106,28 @@ class QuestionnaireForm(FlaskForm):
 
         messages = question.get("validation", {}).get("messages")
 
-        if not (
-            self.answers_all_valid([period_from_id, period_to_id])
-            and self._validate_date_range_question(
-                question["id"],
-                period_from_id,
-                period_to_id,
-                messages,
-                question.get("period_limits"),
-            )
-        ):
-            return False
-
-        return True
+        return self.answers_all_valid([period_from_id, period_to_id]) and self._validate_date_range_question(
+            question["id"], period_from_id, period_to_id, messages, question.get("period_limits")
+        )
 
     def validate_calculated_question(self, question: QuestionSchemaType) -> bool:
         for calculation in question["calculations"]:
-            if result := self._get_target_total_and_currency(calculation, question):
-                if self.answers_all_valid(calculation["answers_to_calculate"]) and self._validate_calculated_question(
+            result = self._get_target_total_and_currency(calculation, question)
+            if (
+                result
+                and self.answers_all_valid(calculation["answers_to_calculate"])
+                and self._validate_calculated_question(
                     calculation=calculation,
                     question=question,
                     target_total=result["target_total"],
                     currency=result["currency"],
                     decimal_places=result["decimal_places"],
-                ):
-                    # Remove any previous question errors if it passes this OR before returning True
-                    if question["id"] in self.question_errors:
-                        self.question_errors.pop(question["id"])
-                    return True
+                )
+            ):
+                # Remove any previous question errors if it passes this OR before returning True
+                if question["id"] in self.question_errors:
+                    self.question_errors.pop(question["id"])
+                return True
 
         return False
 

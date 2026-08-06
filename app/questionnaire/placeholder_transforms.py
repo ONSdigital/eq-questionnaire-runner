@@ -45,7 +45,7 @@ class PlaceholderTransforms:
 
     def format_currency(
         self,
-        number: int | Decimal | float,
+        number: Decimal | float,
         unresolved_arguments: Mapping,
         currency: str = "GBP",
     ) -> str:
@@ -146,7 +146,7 @@ class PlaceholderTransforms:
 
         return string_to_format
 
-    def format_number(self, number: int | Decimal | float) -> str:
+    def format_number(self, number: Decimal | float) -> str:
         return custom_format_decimal(number, self.locale)
 
     @staticmethod

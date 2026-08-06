@@ -18,9 +18,7 @@ class ListEditQuestion(ListAction):
                 self._current_location.list_name  # type: ignore
             ].items
         )
-        if not super().is_location_valid() or list_item_doesnt_exist:
-            return False
-        return True
+        return super().is_location_valid() and not list_item_doesnt_exist
 
     def get_next_location_url(self) -> str:
         """

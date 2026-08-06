@@ -18,9 +18,7 @@ class ListRemoveQuestion(ListAction):
             ].primary_person
             == self._current_location.list_item_id
         )
-        if not super().is_location_valid() or list_item_doesnt_exist or is_primary:
-            return False
-        return True
+        return super().is_location_valid() and not list_item_doesnt_exist and not is_primary
 
     def handle_post(self) -> None:
         answer_action = self._get_answer_action()

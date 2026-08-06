@@ -23,7 +23,7 @@ if TYPE_CHECKING:
     from app.questionnaire.placeholder_renderer import PlaceholderRenderer  # pragma: no cover
 
 
-TransformedValueTypes: TypeAlias = None | str | int | Decimal | bool
+TransformedValueTypes: TypeAlias = str | int | Decimal | bool | None
 
 
 class PlaceholderParser:

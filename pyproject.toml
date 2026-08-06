@@ -34,7 +34,7 @@ pytest-flask = "^1.3.0"
 pytest = "^9.0.2"
 pytest-sugar = "^1.0.0"
 responses = "^0.26.0"
-types-simplejson = "^3.19.0.20240310"
+types-simplejson = "^4.1.0.20260724"
 types-requests = "^2.31.0.20240406"
 types-redis = "^4.6.0.20240819"
 types-PyYAML = "^6.0.12.20240808"
@@ -46,7 +46,7 @@ playwright = "^1.42.0"
 black = "^26.3.1"
 djlint = "^1.34.2"
 click = "^8.4.1" # forcing version compatible with djlint
-ruff = "^0.15.13"
+ruff = "^0.16.0"
 
 
 [tool.poetry.dependencies]

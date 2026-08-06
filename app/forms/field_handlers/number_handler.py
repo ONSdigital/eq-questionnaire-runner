@@ -66,7 +66,7 @@ class NumberHandler(FieldHandler):
     ) -> list[NumberCheck | NumberRange | DecimalPlaces]:
         answer_errors = dict(self.error_messages)
 
-        for error_key in self.validation_messages.keys():
+        for error_key in self.validation_messages:
             answer_errors[error_key] = self.get_validation_message(error_key)
 
         return [

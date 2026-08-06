@@ -187,9 +187,7 @@ class HubContext(Context):
 
         for_list = self._schema.json["individual_response"]["for_list"]
 
-        if not self._data_stores.list_store[for_list].non_primary_people:
-            return False
-        return True
+        return len(self._data_stores.list_store[for_list].non_primary_people) > 0
 
     @cached_property
     def _individual_response_url(self) -> str | None:

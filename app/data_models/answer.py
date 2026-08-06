@@ -67,8 +67,8 @@ def escape_answer_value(value: str) -> Markup: ...  # pragma: no cover
 
 @overload
 def escape_answer_value(
-    value: None | int | Decimal,
-) -> None | int | Decimal: ...  # pragma: no cover
+    value: int | Decimal | None,
+) -> int | Decimal | None: ...  # pragma: no cover
 
 
 def escape_answer_value(

@@ -309,9 +309,8 @@ class DateRangeCheck:
         from_date = parse_datetime(from_field.data)
         to_date = parse_datetime(to_field.data)
 
-        if from_date and to_date:
-            if from_date >= to_date:
-                raise validators.ValidationError(self.messages["INVALID_DATE_RANGE"])
+        if from_date and to_date and from_date >= to_date:
+            raise validators.ValidationError(self.messages["INVALID_DATE_RANGE"])
 
         answered_range_relative = relativedelta(to_date, from_date)
 
@@ -373,7 +372,7 @@ class SumCheck:
         form: QuestionnaireForm,
         conditions: list[str],
         total: Decimal | int,
-        target_total: Decimal | float | int,
+        target_total: Decimal | float,
         decimal_limit: int | None = None,
     ) -> None:
         if len(conditions) > 1:

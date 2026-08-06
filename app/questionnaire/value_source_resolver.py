@@ -14,7 +14,7 @@ from app.questionnaire.location import InvalidLocationException, SectionKey
 from app.questionnaire.rules import rule_evaluator  # pylint: disable=cyclic-import
 from app.utilities.types import LocationType
 
-ValueSourceTypes: TypeAlias = None | str | int | Decimal | list | dict
+ValueSourceTypes: TypeAlias = str | int | Decimal | list | dict | None
 ValueSourceEscapedTypes: TypeAlias = Markup | list[Markup]
 IntOrDecimal: TypeAlias = int | Decimal
 ResolvedAnswerList: TypeAlias = list[AnswerValueTypes | AnswerValueEscapedTypes | None]

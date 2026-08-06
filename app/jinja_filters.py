@@ -33,7 +33,7 @@ def strip_tags(value: str) -> Markup:
 
 
 @blueprint.app_template_filter()
-def format_number(value: int | Decimal | float) -> str:
+def format_number(value: Decimal | float) -> str:
     locale = flask_babel.get_locale()
 
     formatted_number: str = custom_format_decimal(value, locale)
@@ -52,13 +52,13 @@ def get_currency_symbol(currency: str = "GBP") -> str:
 
 
 @blueprint.app_template_filter()
-def format_percentage(value: int | float | Decimal) -> str:
+def format_percentage(value: str | float | Decimal) -> str:
     return f"{value}%"
 
 
 def format_unit(
     unit: str,
-    value: int | float | Decimal,
+    value: float | Decimal,
     length: UnitLengthType = "short",
 ) -> str:
     formatted_unit: str = custom_format_unit(
@@ -178,8 +178,7 @@ def setAttribute(dictionary: dict[str, str], key: str, value: str) -> dict[str, 
 
 @blueprint.app_template_filter()
 def setAttributes(dictionary: dict[str, str], attributes: dict[str, str]) -> dict[str, str]:
-    for key in attributes:
-        dictionary[key] = attributes[key]
+    dictionary.update(attributes)
     return dictionary
 
 

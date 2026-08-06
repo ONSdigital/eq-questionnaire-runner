@@ -11,9 +11,7 @@ class ListAddQuestion(ListAction):
         super().__init__(*args)
 
     def is_location_valid(self) -> bool:
-        if not super().is_location_valid() or self._current_location.list_item_id:
-            return False
-        return True
+        return super().is_location_valid() and not self._current_location.list_item_id
 
     def get_next_location_url(self) -> str:
         if self._list_item_id and (repeating_blocks := self.parent_block.get("repeating_blocks")):

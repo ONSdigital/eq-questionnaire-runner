@@ -41,14 +41,19 @@ class ListCollectorBlock(ListCollectorBaseBlock):
             item_anchor = self._schema.get_item_anchor(section_id, list_model.name)
             item_label = self._schema.get_item_label(section_id, list_model.name)
 
-        if len(list_model) == 1 and list_model.primary_person:
-            if primary_list_collectors := self._schema.get_list_collectors_for_list_for_sections(
-                sections=[self._section["id"]],
-                for_list=summary["for_list"],
-                primary=True,
-            ):
-                for primary_person_block in primary_list_collectors:
-                    primary_person_edit_block_id = edit_block_id = primary_person_block["add_or_edit_block"]["id"]
+        if (
+            len(list_model) == 1
+            and list_model.primary_person
+            and (
+                primary_list_collectors := self._schema.get_list_collectors_for_list_for_sections(
+                    sections=[self._section["id"]],
+                    for_list=summary["for_list"],
+                    primary=True,
+                )
+            )
+        ):
+            for primary_person_block in primary_list_collectors:
+                primary_person_edit_block_id = edit_block_id = primary_person_block["add_or_edit_block"]["id"]
 
         list_summary_context = self.list_context(
             list_collector_block["summary"],

@@ -74,5 +74,5 @@ from app.setup import (  # NOQA isort:skip # pylint: disable=wrong-import-positi
 application = create_app()
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
+    port = int(os.environ.get("PORT", "5000"))
     application.run(port=port, threaded=True)
