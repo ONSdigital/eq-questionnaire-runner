@@ -1,5 +1,5 @@
 import HubPage from "../../base_pages/hub.page.js";
-import { clickSyncMode, verifyUrlContains } from "../../helpers";
+import { click, verifyUrlContains } from "../../helpers";
 import LoadedSuccessfullyBlockPage from "../../generated_pages/hub_section_required_with_repeat_supplementary/loaded-successfully-block.page";
 import IntroductionBlockPage from "../../generated_pages/hub_section_required_with_repeat_supplementary/introduction-block.page";
 import ListCollectorEmployeesPage from "../../generated_pages/hub_section_required_with_repeat_supplementary/list-collector-employees.page.js";
@@ -20,35 +20,35 @@ describe("Feature: Hub and Spoke", () => {
     });
 
     it("When all the repeating sections are complete, Then the hub should be displayed", () => {
-      clickSyncMode(LoadedSuccessfullyBlockPage.submit());
-      clickSyncMode(IntroductionBlockPage.submit());
+      click(LoadedSuccessfullyBlockPage.submit());
+      click(IntroductionBlockPage.submit());
 
       // Complete the repeating sections using supplementary data
-      clickSyncMode(ListCollectorEmployeesPage.submit());
+      click(ListCollectorEmployeesPage.submit());
       $(LengthOfEmploymentPage.day()).setValue(1);
       $(LengthOfEmploymentPage.month()).setValue(1);
       $(LengthOfEmploymentPage.year()).setValue(1930);
-      clickSyncMode(LengthOfEmploymentPage.submit());
-      clickSyncMode(Section3Page.submit());
+      click(LengthOfEmploymentPage.submit());
+      click(Section3Page.submit());
       $(LengthOfEmploymentPage.day()).setValue(1);
       $(LengthOfEmploymentPage.month()).setValue(1);
       $(LengthOfEmploymentPage.year()).setValue(1930);
-      clickSyncMode(LengthOfEmploymentPage.submit());
-      clickSyncMode(Section3Page.submit());
+      click(LengthOfEmploymentPage.submit());
+      click(Section3Page.submit());
       verifyUrlContains(HubPage.url());
     });
 
     it("When the repeating sections are incomplete. Then the hub should not be displayed", () => {
-      clickSyncMode(LoadedSuccessfullyBlockPage.submit());
-      clickSyncMode(IntroductionBlockPage.submit());
+      click(LoadedSuccessfullyBlockPage.submit());
+      click(IntroductionBlockPage.submit());
 
       // Don't complete the repeating sections that use supplementary data
-      clickSyncMode(ListCollectorEmployeesPage.submit());
+      click(ListCollectorEmployeesPage.submit());
       $(LengthOfEmploymentPage.day()).setValue(1);
       $(LengthOfEmploymentPage.month()).setValue(1);
       $(LengthOfEmploymentPage.year()).setValue(1930);
-      clickSyncMode(LengthOfEmploymentPage.submit());
-      clickSyncMode(Section3Page.submit());
+      click(LengthOfEmploymentPage.submit());
+      click(Section3Page.submit());
 
       browser.url(HubPage.url());
       verifyUrlContains("length-of-employment");
