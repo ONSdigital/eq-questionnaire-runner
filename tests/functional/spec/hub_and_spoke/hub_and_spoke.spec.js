@@ -86,14 +86,11 @@ describe("Feature: Hub and Spoke", () => {
   });
 
   describe("Given a user has started a section", () => {
-    before("Start section", async () => {
+    it("When the user returns to the Hub, Then the Hub should be in a continue state", async () => {
       await browser.openQuestionnaire(hubAndSpokeSchema);
       await $(HubPage.summaryRowLink("employment-section")).click();
       await $(EmploymentStatusBlockPage.exclusiveNoneOfTheseApply()).click();
       await click(EmploymentStatusBlockPage.submit());
-    });
-
-    it("When the user returns to the Hub, Then the Hub should be in a continue state", async () => {
       await browser.url(HubPage.url());
       await expect(await $(HubPage.submit()).getText()).toBe("Continue");
       await expect(await $(HubPage.heading()).getText()).toBe("Choose another section to complete");

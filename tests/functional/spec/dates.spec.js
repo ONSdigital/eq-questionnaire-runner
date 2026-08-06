@@ -12,7 +12,7 @@ describe("Date checks", () => {
   });
 
   it("Given an answer label is provided for a date question then the label should be displayed ", async () => {
-    await expect(await $(DateRangePage.legend()).getText()).toBe("Period from");
+    expect(await $(DateRangePage.legend()).getText()).toBe("Period from");
   });
 
   it("Given an answer label is not provided for a date question then the question title should be used within the legend ", async () => {
@@ -26,7 +26,7 @@ describe("Date checks", () => {
 
     await click(DateRangePage.submit());
 
-    await expect(await $(DateMonthYearPage.legend()).getText()).toBe("Date with month and year");
+    expect(await $(DateMonthYearPage.legend()).getText()).toBe("Date with month and year");
   });
 
   it("Given the test_dates survey is selected when dates are entered then the summary screen shows the dates entered formatted", async () => {
@@ -61,11 +61,11 @@ describe("Date checks", () => {
     await verifyUrlContains(SubmitPage.pageName);
 
     // Then the summary screen shows the dates entered formatted
-    await expect(await $(SubmitPage.dateRangeFromAnswer()).getText()).toBe("1 January 1901 to 3 May 2017");
-    await expect(await $(SubmitPage.monthYearAnswer()).getText()).toBe("April 2018");
-    await expect(await $(SubmitPage.singleDateAnswer()).getText()).toBe("4 January 1999");
-    await expect(await $(SubmitPage.nonMandatoryDateAnswer()).getText()).toBe("No answer provided");
-    await expect(await $(SubmitPage.yearDateAnswer()).getText()).toBe("2005");
+    expect(await $(SubmitPage.dateRangeFromAnswer()).getText()).toBe("1 January 1901 to 3 May 2017");
+    expect(await $(SubmitPage.monthYearAnswer()).getText()).toBe("April 2018");
+    expect(await $(SubmitPage.singleDateAnswer()).getText()).toBe("4 January 1999");
+    expect(await $(SubmitPage.nonMandatoryDateAnswer()).getText()).toBe("No answer provided");
+    expect(await $(SubmitPage.yearDateAnswer()).getText()).toBe("2005");
   });
 
   it("Given the test_dates survey is selected when the from date is greater than the to date then an error message is shown", async () => {
@@ -81,12 +81,12 @@ describe("Date checks", () => {
     await click(DateRangePage.submit());
 
     // Then an error message is shown and the question panel is highlighted
-    await expect(await $(DateRangePage.errorNumber(1)).getText()).toBe("Enter a 'period to' date later than the 'period from' date");
-    await expect(await $(DateRangePage.dateRangeQuestionErrorPanel()).isExisting()).toBe(true);
+    expect(await $(DateRangePage.errorNumber(1)).getText()).toBe("Enter a 'period to' date later than the 'period from' date");
+    expect(await $(DateRangePage.dateRangeQuestionErrorPanel()).isExisting()).toBe(true);
 
     // Then clicking error should focus on first input field
     await $(DateRangePage.errorNumber(1)).click();
-    await expect(await $(DateRangePage.dateRangeFromday()).isFocused()).toBe(true);
+    expect(await $(DateRangePage.dateRangeFromday()).isFocused()).toBe(true);
   });
 
   it("Given the test_dates survey is selected when the from date and the to date are the same then an error message is shown", async () => {
@@ -102,8 +102,8 @@ describe("Date checks", () => {
     await click(DateRangePage.submit());
 
     // Then an error message is shown and the question panel is highlighted
-    await expect(await $(DateRangePage.errorNumber(1)).getText()).toBe("Enter a 'period to' date later than the 'period from' date");
-    await expect(await $(DateRangePage.dateRangeQuestionErrorPanel()).isExisting()).toBe(true);
+    expect(await $(DateRangePage.errorNumber(1)).getText()).toBe("Enter a 'period to' date later than the 'period from' date");
+    expect(await $(DateRangePage.dateRangeQuestionErrorPanel()).isExisting()).toBe(true);
   });
 
   it("Given the test_dates survey is selected when an invalid date is entered in a date range then an error message is shown", async () => {
@@ -119,7 +119,7 @@ describe("Date checks", () => {
     await click(DateRangePage.submit());
 
     // Then an error message is shown
-    await expect(await $(DateRangePage.errorNumber(1)).getText()).toBe("Enter a valid date");
+    expect(await $(DateRangePage.errorNumber(1)).getText()).toBe("Enter a valid date");
   });
 
   it("Given the test_dates survey is selected when the year (month year type) is left empty then an error message is shown", async () => {
@@ -138,7 +138,7 @@ describe("Date checks", () => {
     await click(DateMonthYearPage.submit());
 
     // Then an error message is shown
-    await expect(await $(DateMonthYearPage.errorNumber(1)).getText()).toBe("Enter a valid date");
+    expect(await $(DateMonthYearPage.errorNumber(1)).getText()).toBe("Enter a valid date");
   });
 
   it("Given the test_dates survey is selected, " + "When an error message is shown and it is corrected, " + "Then the next question is displayed", async () => {
@@ -155,7 +155,7 @@ describe("Date checks", () => {
     await $(DateMonthYearPage.Year()).setValue("");
     await click(DateMonthYearPage.submit());
 
-    await expect(await $(DateMonthYearPage.error()).getText()).toBe("Enter a valid date");
+    expect(await $(DateMonthYearPage.error()).getText()).toBe("Enter a valid date");
 
     // Then when it is corrected, it goes to the next question
     await $(DateMonthYearPage.Year()).setValue(2018);
@@ -188,7 +188,7 @@ describe("Date checks", () => {
     await click(DateNonMandatoryPage.submit());
 
     // Then an error message is shown
-    await expect(await $(DateNonMandatoryPage.errorNumber(1)).getText()).toBe("Enter a valid date");
+    expect(await $(DateNonMandatoryPage.errorNumber(1)).getText()).toBe("Enter a valid date");
   });
 
   it("Given the test_dates survey is selected, when a user clicks the day label then the day subfield should gain the focus", async () => {
@@ -208,6 +208,6 @@ describe("Date checks", () => {
     await $(DateSinglePage.dayLabel()).click();
 
     // Then the day subfield should gain the focus
-    await expect(await $(DateSinglePage.day()).isFocused()).toBe(true);
+    expect(await $(DateSinglePage.day()).isFocused()).toBe(true);
   });
 });
