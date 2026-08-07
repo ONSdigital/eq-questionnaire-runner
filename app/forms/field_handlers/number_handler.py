@@ -53,7 +53,7 @@ class NumberHandler(FieldHandler):
 
     @cached_property
     def max_decimals(self) -> int:
-        return self.answer_schema.get("decimal_places", 0)
+        return int(self.answer_schema.get("decimal_places", 0))
 
     @property
     def _field_type(
