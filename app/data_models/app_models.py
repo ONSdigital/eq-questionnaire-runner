@@ -1,3 +1,4 @@
+from collections.abc import Mapping
 from datetime import datetime, timezone
 from typing import Any
 
@@ -51,8 +52,9 @@ class Timestamp(fields.Field):
     # pylint: disable=unused-argument
     def _serialize(
         self,
-        value: datetime,
-        *args: list | None,
+        value: Any,
+        attr: str | None = None,
+        obj: Any = None,
         **kwargs: Any,
     ) -> int | None:
         if value:
@@ -62,8 +64,9 @@ class Timestamp(fields.Field):
     # pylint: disable=unused-argument
     def _deserialize(
         self,
-        value: float,
-        *args: list | None,
+        value: Any,
+        attr: str | None = None,
+        data: Mapping[str, Any] | None = None,
         **kwargs: Any,
     ) -> datetime | None:
         if value:
