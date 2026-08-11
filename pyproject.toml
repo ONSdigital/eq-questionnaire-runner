@@ -101,7 +101,6 @@ include = ["*.py"]
 line-length = 160
 indent-width = 4
 cache-dir = "~/.cache/ruff"
-exclude = ["tests/*", "scripts/*"]
 
 
 [tool.ruff.lint]
@@ -204,3 +203,6 @@ max-complexity = 10
 max-returns = 6
 max-branches = 12
 max-statements = 50
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["S101"] # flags `assert` because it is stripped under `python -O`; tests never run optimised
