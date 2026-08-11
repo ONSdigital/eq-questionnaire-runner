@@ -7,7 +7,7 @@ from unittest.mock import Mock
 import fakeredis
 from bs4 import BeautifulSoup
 from itsdangerous import base64_decode
-from mock import patch
+from unittest.mock import patch
 from sdc.crypto.key_store import KeyStore
 
 from app.keys import KEY_PURPOSE_AUTHENTICATION, KEY_PURPOSE_SDS, KEY_PURPOSE_SUBMISSION

@@ -1,7 +1,7 @@
 # pylint: disable=too-many-lines
 
 import pytest
-from mock import MagicMock, Mock
+from unittest.mock import MagicMock, Mock
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.answer import Answer, AnswerDict
