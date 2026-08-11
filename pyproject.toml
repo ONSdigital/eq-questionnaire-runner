@@ -205,4 +205,6 @@ max-branches = 12
 max-statements = 50
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**/*.py" = ["S101"] # flags `assert` because it is stripped under `python -O`; tests never run optimised
+"tests/**/*.py" = ["S101"] # flags `assert` because it is stripped under `python -O`
+"scripts/**/*.py" = ["LOG015", "S603", "S607"] # standalone CLI scripts, no app logger to use
+"tests/app/questionnaire/rules/*.py" = ["DTZ001", "DTZ007"] # fixed reference dates for weekday arithmetic, timezone is irrelevant

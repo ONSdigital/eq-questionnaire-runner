@@ -378,8 +378,7 @@ def process_options(answer_id, options, page_spec, base_prefix):
             page_spec.write(ANSWER_GETTER.substitute(option_context))
 
 
-# pylint: disable=too-complex, too-many-branches
-def process_answer(answer, page_spec, long_names, page_name):
+def process_answer(answer, page_spec, long_names, page_name): # noqa: C901, PLR0912
     answer_name = generate_pascal_case_from_id(answer["id"])
     answer_name = answer_name.replace(page_name, "")
 
@@ -564,8 +563,7 @@ def process_content(context, page_spec):
     page_spec.write(CONTENT_ITEM_GETTER.safe_substitute(context))
 
 
-# pylint: disable=too-many-locals
-def write_summary_spec(
+def write_summary_spec( # noqa: C901
     page_spec,
     section,
     collapsible,
@@ -788,8 +786,7 @@ def build_and_get_base_page_context(
     return context
 
 
-# pylint: disable=too-many-branches,too-many-statements,too-many-locals,too-complex
-def process_block(
+def process_block( # noqa: C901, PLR0912, PLR0915
     block, dir_out, schema_data, spec_file, relative_require="..", page_filename=None
 ):
     logger.debug("Processing Block: %s", block["id"])
