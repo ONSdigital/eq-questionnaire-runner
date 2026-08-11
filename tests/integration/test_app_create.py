@@ -6,7 +6,7 @@ from uuid import UUID
 
 from flask import Flask, request
 from flask_babel import Babel
-from mock import patch
+from unittest.mock import patch
 
 from app.cloud_tasks import CloudTaskPublisher
 from app.oidc.gcp_oidc import OIDCCredentialsServiceGCP

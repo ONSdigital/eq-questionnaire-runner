@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 
 import pytest
 from dateutil.relativedelta import relativedelta
-from mock import patch
+from unittest.mock import patch
 from wtforms import Form
 
 from app.data_models.answer import Answer

@@ -2,7 +2,7 @@ import time
 import uuid
 
 from httmock import HTTMock, urlmatch
-from mock import patch
+from unittest.mock import patch
 
 from app.utilities.schema import (
     CIR_RETRIEVE_COLLECTION_INSTRUMENT_URL,

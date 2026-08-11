@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 
 import pytest
 from freezegun import freeze_time
-from mock import MagicMock, Mock
+from unittest.mock import MagicMock, Mock
 
 from app.data_models import (
     AnswerStore,
