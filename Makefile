@@ -18,7 +18,8 @@ load-design-system-templates:
 build: load-design-system-templates load-schemas translate
 
 generate-pages:
-	npm run generate_pages
+	rm -rf ./tests/functional/generated_pages
+	poetry run python -m tests.functional.generate_pages schemas/test/en/ ./tests/functional/generated_pages -r "../../base_pages"
 
 lint: lint-python lint-js lint-html
 
@@ -46,16 +47,13 @@ test-unit:
 	poetry run ./scripts/run_tests_unit.sh
 
 test-functional: generate-pages
-	npm run test_functional
+	npx playwright test --headed
 
 test-functional-headless: generate-pages
-	EQ_RUN_FUNCTIONAL_TESTS_HEADLESS='True' make test-functional
+	npx playwright test
 
 test-functional-spec: generate-pages
-	npm run test_functional -- --spec=./tests/functional/spec/$(SPEC)
-
-test-functional-suite: generate-pages
-	npm run test_functional -- --suite=$(SUITE)
+	npx playwright test --headed --workers 1 $(SPEC)
 
 lint-js:
 	npm run lint

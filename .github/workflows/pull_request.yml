@@ -190,7 +190,7 @@ jobs:
         env:
          SPECS: ${{ env.SPECS }}
       - name: Run functional tests
-        run: make test-functional
+        run: npx playwright test --reporter list,html
         env:
          SPECS: ${{ env.SPECS }}
       - name: Docker compose shutdown
