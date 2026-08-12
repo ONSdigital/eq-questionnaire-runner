@@ -24,6 +24,7 @@
         "@playwright/test": "^1.61.1",
         "@typescript-eslint/eslint-plugin": "8.65.0",
         "@typescript-eslint/parser": "8.65.0",
+        "@typescript/native": "npm:typescript@^7.0.2",
         "eslint": "8.57.1",
         "eslint-cli": "1.1.1",
         "eslint-config-standard": "17.1.0",
@@ -40,7 +41,6 @@
         "node-jose": "2.2.0",
         "prettier": "3.8.1",
         "ts-standard": "12.0.2",
-        "@typescript/native": "npm:typescript@^7.0.2",
         "typescript": "npm:@typescript/typescript6@^6.0.2",
         "uuid": "14.0.1"
     },
@@ -49,5 +49,8 @@
     },
     "ts-standard": {
         "project": "tsconfig.eslint.json"
+    },
+    "dependencies": {
+        "eslint-plugin-import-x": "^4.17.1"
     }
 }
