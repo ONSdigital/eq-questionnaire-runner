@@ -126,7 +126,7 @@ def test_view_submitted_response_expired(
 def test_build_view_submitted_response_no_submitted_at(app: Flask):
     with app.app_context():
         questionnaire_store = fake_questionnaire_store({}, None)
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             build_view_submitted_response_context(
                 "en", SCHEMA, questionnaire_store, SurveyType.DEFAULT
             )

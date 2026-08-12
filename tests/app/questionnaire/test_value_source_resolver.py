@@ -59,7 +59,7 @@ def get_calculation_block(
 def get_value_source_resolver(
     schema: QuestionnaireSchema = None,
     data_stores: DataStores = None,
-    location: Location | RelationshipLocation = Location(
+    location: Location | RelationshipLocation = Location(  # noqa: B008
         section_id="test-section", block_id="test-block"
     ),
     list_item_id: str | None = None,

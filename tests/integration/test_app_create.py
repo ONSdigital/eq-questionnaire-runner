@@ -339,7 +339,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
     def test_invalid_storage(self):
         self._setting_overrides["EQ_STORAGE_BACKEND"] = "invalid"
 
-        with self.assertRaises(Exception):
+        with self.assertRaises(Exception):  # noqa: B017
             create_app(self._setting_overrides)
 
     def test_eq_feedback_backend_not_set(self):

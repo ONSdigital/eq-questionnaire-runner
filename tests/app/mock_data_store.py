@@ -11,7 +11,7 @@ class MockDatastore:
 
     # pylint: disable=no-self-use
     def transaction(self):
-        return contextlib.suppress()
+        return contextlib.suppress()  # noqa: B022
 
     def put(self, entity):
         self.storage[entity.key] = entity
