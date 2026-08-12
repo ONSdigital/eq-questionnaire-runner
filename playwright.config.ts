@@ -7,7 +7,7 @@ const specList = process.env.SPECS
   : undefined;
 
 export default defineConfig({
-  testDir: './tests/functional/spec',
+  testDir: './tests/functional/',
   testMatch: specList, // if undefined, Playwright uses normal discovery
   timeout: ci ? 30000 : 20000,
   fullyParallel: true,
