@@ -386,7 +386,6 @@ The following env variables can be used
 | EQ_MINIMIZE_ASSETS                        | True                         | Should JS and CSS be minimized                                                                                 |
 | MAX_CONTENT_LENGTH                        | 65536                        | Max request payload size in bytes                                                                              |
 | EQ_APPLICATION_VERSION_PATH               | .application-version         | The location of a file containing the application version number                                               |
-| EQ_ENABLE_LIVE_RELOAD                     | False                        | Enable livereload of browser when scripts, styles or templates are updated                                     |
 | EQ_SECRETS_FILE                           | secrets.yml                  | The location of the secrets file                                                                               |
 | EQ_KEYS_FILE                              | keys.yml                     | The location of the keys file                                                                                  |
 | EQ_SUBMISSION_BACKEND                     |                              | Which submission backend to use (gcs, log)                                                                     |

@@ -5,13 +5,11 @@ from tests.integration.integration_test_case import IntegrationTestCase
 
 class TestApplicationVariables(IntegrationTestCase):
     def setUp(self):
-        settings.EQ_ENABLE_LIVE_RELOAD = True
         settings.EQ_GOOGLE_TAG_ID = "TestId"
         super().setUp()
 
     def tearDown(self):
         super().tearDown()
-        settings.EQ_ENABLE_LIVE_RELOAD = False
         settings.EQ_GOOGLE_TAG_ID = None
 
     def test_google_analytics_code_and_credentials_are_present(self):
@@ -36,8 +34,3 @@ class TestApplicationVariables(IntegrationTestCase):
         self.assertStatusOK()
         # form_type is empty so should not be present
         self.assertInHead(f'"survey_id": "999", "title": "Test Textfield", "tx_id": "{actual["METADATA"]["tx_id"]}"')
-
-    def test_livereload_script_rendered(self):
-        self.launchSurveyV2(schema_name="test_textfield")
-        self.assertStatusOK()
-        self.assertTrue("__bs_script__" in self.getResponseData())

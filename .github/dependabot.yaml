@@ -31,7 +31,6 @@ updates:
           - "eslint*"
           - "json*"
           - "jsrsasign*"
-          - "livereload*"
           - "node-forge*"
           - "prettier*"
           - "typescript*"

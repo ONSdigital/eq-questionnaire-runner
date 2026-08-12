@@ -82,9 +82,6 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
             self.assertTrue(kwargs["span"] == "0123456789012345678901")
             self.assertTrue(kwargs["trace"] == "0123456789")
 
-    def test_enforces_secure_headers(self):
-        self._setting_overrides["EQ_ENABLE_LIVE_RELOAD"] = False
-
         with create_app(self._setting_overrides).test_client() as client:
             headers = client.get(
                 "/",
@@ -105,7 +102,6 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
         cdn_url = "https://cdn.test.domain"
         address_lookup_api_url = "https://ai.test.domain"
         self._setting_overrides = {
-            "EQ_ENABLE_LIVE_RELOAD": False,
             "CDN_URL": cdn_url,
             "ADDRESS_LOOKUP_API_URL": address_lookup_api_url,
         }

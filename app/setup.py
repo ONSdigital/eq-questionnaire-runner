@@ -262,10 +262,6 @@ def setup_secure_headers(application):
     if api_url := application.config["ADDRESS_LOOKUP_API_URL"]:
         csp_policy["connect-src"] += [api_url]
 
-    if application.config["EQ_ENABLE_LIVE_RELOAD"]:
-        # browsersync is configured to bind on port 5075
-        csp_policy["connect-src"] += ["ws://localhost:35729"]
-
     application.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 
     Talisman(
