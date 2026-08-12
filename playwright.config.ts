@@ -1,8 +1,21 @@
-import { defineConfig } from 'playwright/test'
+import { defineConfig } from "playwright/test";
 
 const ci = String(process.env.CI).toLowerCase() === 'true'
 
-const specList = process.env.SPECS
+function parseSpecsEnv (
+  raw: string
+): Array<string> {
+
+  // Support comma, whitespace, or newline separated pattern lists.
+    return raw
+      .split(/[,\n]/)
+      .flatMap((chunk) => chunk.trim().split(/\s+/))
+      .map((s) => s.trim())
+      .filter(Boolean)
+}
+
+// @ts-ignore
+const specList = parseSpecsEnv(process.env.SPECS)
 
 export default defineConfig({
   testDir: './tests/functional/',
