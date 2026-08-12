@@ -25,7 +25,7 @@ if (( SHARD < 1 || SHARD > SHARD_COUNT )); then
   exit 1
 fi
 
-mapfile -t SPECS < <(find tests/functional/spec -type f -name "*.spec.js" | sort)
+mapfile -t SPECS < <(find tests/functional/spec -type f -name "*.spec.ts" | sort)
 
 SELECTED=()
 for i in "${!SPECS[@]}"; do
