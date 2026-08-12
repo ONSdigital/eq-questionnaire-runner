@@ -46,7 +46,7 @@ def get_rule_evaluator(
     language="en",
     schema: QuestionnaireSchema = None,
     data_stores: DataStores = None,
-    location: Location | RelationshipLocation = Location(
+    location: Location | RelationshipLocation = Location(  # noqa: B008
         section_id="test-section", block_id="test-block"
     ),
     routing_path_block_ids: list | None = None,
