@@ -1,4 +1,4 @@
-import { defineConfig } from "playwright/test";
+import { defineConfig } from '@playwright/test'
 
 const ci = String(process.env.CI).toLowerCase() === 'true'
 
@@ -14,8 +14,10 @@ function parseSpecsEnv (
       .filter(Boolean)
 }
 
-// @ts-ignore
-const specList = parseSpecsEnv(process.env.SPECS)
+// @ts-expected-error
+const specList = process.env.SPECS
+  ? parseSpecsEnv(process.env.SPECS)
+  : undefined
 
 export default defineConfig({
   testDir: './tests/functional/',

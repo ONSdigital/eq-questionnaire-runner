@@ -1,7 +1,7 @@
-import { test as base, expect, type Page } from "@playwright/test";
-import * as JwtHelper from "../jwt_helper";
+import { test as base, expect, type Page } from '@playwright/test'
+import * as JwtHelper from '../jwt_helper'
 
-const sessionRedirectTimeoutMs = parseInt(process.env.EQ_SESSION_REDIRECT_TIMEOUT_MS ?? "15000", 10);
+const sessionRedirectTimeoutMs = parseInt(process.env.EQ_SESSION_REDIRECT_TIMEOUT_MS ?? '15000', 10)
 
 interface OpenQuestionnaireOptions {
     launchVersion?: string;
@@ -27,28 +27,28 @@ interface Fixtures {
     openQuestionnaire: OpenQuestionnaire;
 }
 
-function createOpenQuestionnaire(page: Page): OpenQuestionnaire {
-    return async (schema, options) => await gotoSession(page, schema, options);
+function createOpenQuestionnaire (page: Page): OpenQuestionnaire {
+    return async (schema, options) => await gotoSession(page, schema, options)
 }
 
-async function gotoSession(page: Page, schema: string | null, options: OpenQuestionnaireOptions = {}): Promise<void> {
+async function gotoSession (page: Page, schema: string | null, options: OpenQuestionnaireOptions = {}): Promise<void> {
     const {
-        launchVersion = "v2",
-        theme = "default",
+        launchVersion = 'v2',
+        theme = 'default',
         userId = JwtHelper.getRandomString(10),
         collectionId = JwtHelper.getRandomString(10),
         responseId = JwtHelper.getRandomString(16),
-        surveyId = "123",
-        periodId = "201605",
-        periodStr = "May 2016",
-        ruRef = "12345678901A",
+        surveyId = '123',
+        periodId = '201605',
+        periodStr = 'May 2016',
+        ruRef = '12345678901A',
         sdsDatasetId = null,
-        region = "GB-ENG",
-        language = "en",
+        region = 'GB-ENG',
+        language = 'en',
         includeLogoutUrl = false,
         booleanFlag = false,
-        cirInstrumentId = null,
-    } = options;
+        cirInstrumentId = null
+    } = options
 
     const token = await JwtHelper.generateToken(schema, {
         launchVersion,
@@ -65,21 +65,21 @@ async function gotoSession(page: Page, schema: string | null, options: OpenQuest
         languageCode: language,
         includeLogoutUrl,
         booleanFlag,
-        cirInstrumentId,
-    });
+        cirInstrumentId
+    })
 
-    await page.goto(`/session?token=${token}`);
-    await page.waitForURL((url: URL): boolean => !url.toString().includes("/session?token="), { timeout: sessionRedirectTimeoutMs });
+    await page.goto(`/session?token=${token}`)
+    await page.waitForURL((url: URL): boolean => !url.toString().includes('/session?token='), { timeout: sessionRedirectTimeoutMs })
 }
 
 export const test = base.extend<Fixtures>({
     openQuestionnaire: async ({ page }, use) => {
-        const openQuestionnaire: OpenQuestionnaire = createOpenQuestionnaire(page);
-        await use(openQuestionnaire);
-    },
-});
+        const openQuestionnaire: OpenQuestionnaire = createOpenQuestionnaire(page)
+        await use(openQuestionnaire)
+    }
+})
 
-export { expect };
-export { createOpenQuestionnaire };
-export type { Page, Locator, BrowserContext } from "@playwright/test";
-export type { OpenQuestionnaireOptions, OpenQuestionnaire };
+export { expect }
+export { createOpenQuestionnaire }
+export type { Page, Locator, BrowserContext } from '@playwright/test'
+export type { OpenQuestionnaireOptions, OpenQuestionnaire }

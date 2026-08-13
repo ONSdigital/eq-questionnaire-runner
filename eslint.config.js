@@ -1,5 +1,4 @@
 import js from "@eslint/js";
-import { importX } from "eslint-plugin-import-x";
 import jsonPlugin from "eslint-plugin-json";
 import n from "eslint-plugin-n";
 import promise from "eslint-plugin-promise";
@@ -31,7 +30,6 @@ export default [
     }
   },
   js.configs.recommended,
-  importX.flatConfigs.recommended,
   n.configs["flat/recommended-module"],
   promise.configs["flat/recommended"],
   {
@@ -82,12 +80,6 @@ export default [
       "prefer-regex-literals": 2,
       "n/no-missing-import": 0,
       "n/no-unpublished-import": 0,
-      "import-x/no-unresolved": [
-        2,
-        {
-          ignore: ["generated_pages"]
-        }
-      ],
       "playwright/consistent-spacing-between-blocks": 2
     }
   },

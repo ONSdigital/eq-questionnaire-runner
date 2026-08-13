@@ -203,7 +203,7 @@ SUMMARY_TITLE_GETTER = Template(
 )
 
 SUMMARY_GROUP_GETTER = Template(
-    r"""  ${group_id_camel}Content(groupNumber: number): ReturnType<Page["locator"]> { return this.locator(`#${group_id_without_number}-` + groupNumber); }
+    r"""  ${group_id_camel}Content(groupNumber: number | string): ReturnType<Page["locator"]> { return this.locator(`#${group_id_without_number}-` + groupNumber); }
 
 """
 )

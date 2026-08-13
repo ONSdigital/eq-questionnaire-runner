@@ -49,8 +49,5 @@
     },
     "ts-standard": {
         "project": "tsconfig.eslint.json"
-    },
-    "dependencies": {
-        "eslint-plugin-import-x": "^4.17.1"
     }
 }
