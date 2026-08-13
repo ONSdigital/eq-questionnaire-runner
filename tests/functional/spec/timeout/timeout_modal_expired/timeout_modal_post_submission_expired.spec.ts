@@ -4,13 +4,13 @@ import { test } from '../../../fixtures/test'
 import { TimeoutModalTestCase } from '../timeout_modal'
 
 test.describe('Timeout Modal Post Submission Expired', () => {
-    test.beforeEach(async ({ page, openQuestionnaire }) => {
-        const timeoutInterstitialPage = new TimeoutInterstitialPage(page)
-        const timeoutSubmitPage = new TimeoutSubmitPage(page)
-        await openQuestionnaire('test_timeout_modal.json')
-        await timeoutInterstitialPage.submit().click()
-        await timeoutSubmitPage.submit().click()
-    })
+  test.beforeEach(async ({ page, openQuestionnaire }) => {
+    const timeoutInterstitialPage = new TimeoutInterstitialPage(page)
+    const timeoutSubmitPage = new TimeoutSubmitPage(page)
+    await openQuestionnaire('test_timeout_modal.json')
+    await timeoutInterstitialPage.submit().click()
+    await timeoutSubmitPage.submit().click()
+  })
 
-    TimeoutModalTestCase.testCaseExpired('thank-you')
+  TimeoutModalTestCase.testCaseExpired('thank-you')
 })

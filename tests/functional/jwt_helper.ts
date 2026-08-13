@@ -50,225 +50,225 @@ const encryptionKeyString =
 const schemaRegEx = /^([a-z0-9]+)_(\w+)\.json/
 
 interface SurveyMetadata {
-    data: Record<string, unknown>;
-    receipting_keys?: string[];
+  data: Record<string, unknown>
+  receipting_keys?: string[]
 }
 
 interface KjurApi {
-    jws: {
-        IntDate: {
-            get: (value: string) => number;
-        };
-        JWS: {
-            sign: (alg: string, header: string, payload: string, privateKey: unknown) => string;
-        };
-    };
-    KEYUTIL: {
-        getKey: (key: string, passphrase?: string) => unknown;
-    };
+  jws: {
+    IntDate: {
+      get: (value: string) => number
+    }
+    JWS: {
+      sign: (alg: string, header: string, payload: string, privateKey: unknown) => string
+    }
+  }
+  KEYUTIL: {
+    getKey: (key: string, passphrase?: string) => unknown
+  }
 }
 
 interface JsonWebKeyApi {
-    fromPEM: (pem: string) => {
-        toJSON: () => Record<string, unknown>;
-    };
+  fromPEM: (pem: string) => {
+    toJSON: () => Record<string, unknown>
+  }
 }
 
 interface JoseJwkApi {
-    asKey: (jwk: Record<string, unknown>) => Promise<unknown>;
+  asKey: (jwk: Record<string, unknown>) => Promise<unknown>
 }
 
 interface JoseJweApi {
-    createEncrypt: (
-        cfg: { contentAlg: string },
-        recipient: JweRecipientInput,
-    ) => {
-        update: (input: string) => {
-            final: () => Promise<JweGeneralSerialization>;
-        };
-    };
+  createEncrypt: (
+    cfg: { contentAlg: string },
+    recipient: JweRecipientInput,
+  ) => {
+    update: (input: string) => {
+      final: () => Promise<JweGeneralSerialization>
+    }
+  }
 }
 
 interface JweRecipientInput {
-    key: unknown;
-    header: {
-        alg: string;
-        kid: string;
-    };
+  key: unknown
+  header: {
+    alg: string
+    kid: string
+  }
 }
 
 interface JweGeneralSerialization {
-    protected: string;
-    recipients: Array<{
-        encrypted_key: string;
-    }>;
-    iv: string;
-    ciphertext: string;
-    tag: string;
+  protected: string
+  recipients: Array<{
+    encrypted_key: string
+  }>
+  iv: string
+  ciphertext: string
+  tag: string
 }
 
 export interface GenerateTokenOptions {
-    launchVersion?: string;
-    theme?: string;
-    userId?: string;
-    collectionId?: string;
-    responseId?: string;
-    surveyId?: string;
-    periodId?: string;
-    periodStr?: string;
-    ruRef?: string;
-    sdsDatasetId?: string | null;
-    regionCode?: string;
-    languageCode?: string;
-    includeLogoutUrl?: boolean;
-    displayAddress?: string;
-    booleanFlag?: boolean;
-    cirInstrumentId?: string | null;
+  launchVersion?: string
+  theme?: string
+  userId?: string
+  collectionId?: string
+  responseId?: string
+  surveyId?: string
+  periodId?: string
+  periodStr?: string
+  ruRef?: string
+  sdsDatasetId?: string | null
+  regionCode?: string
+  languageCode?: string
+  includeLogoutUrl?: boolean
+  displayAddress?: string
+  booleanFlag?: boolean
+  cirInstrumentId?: string | null
 }
 
 export function getRandomString (length: number): string {
-    let result = ''
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-    for (let i = 0; i < length; i += 1) {
-        result += characters.charAt(Math.floor(Math.random() * characters.length))
-    }
-    return result
+  let result = ''
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+  for (let i = 0; i < length; i += 1) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length))
+  }
+  return result
 }
 
 export async function generateToken (
-    schema: string | null,
-    {
-        launchVersion,
-        theme,
-        userId,
-        collectionId,
-        responseId,
-        surveyId = '123',
-        periodId = '201605',
-        periodStr = 'May 2016',
-        ruRef = '12345678901A',
-        sdsDatasetId = null,
-        regionCode = 'GB-ENG',
-        languageCode = 'en',
-        includeLogoutUrl = true,
-        displayAddress = '',
-        booleanFlag = false,
-        cirInstrumentId = null
-    }: GenerateTokenOptions
+  schema: string | null,
+  {
+    launchVersion,
+    theme,
+    userId,
+    collectionId,
+    responseId,
+    surveyId = '123',
+    periodId = '201605',
+    periodStr = 'May 2016',
+    ruRef = '12345678901A',
+    sdsDatasetId = null,
+    regionCode = 'GB-ENG',
+    languageCode = 'en',
+    includeLogoutUrl = true,
+    displayAddress = '',
+    booleanFlag = false,
+    cirInstrumentId = null
+  }: GenerateTokenOptions
 ): Promise<string> {
-    let schemaParams: Record<string, string> = {}
-    if (schema !== null && schema !== '') {
+  let schemaParams: Record<string, string> = {}
+  if (schema !== null && schema !== '') {
     const schemaParts = schemaRegEx.exec(schema)
     if (schemaParts !== null) {
-        schemaParams = { schema_name: `${schemaParts[1]}_${schemaParts[2]}` }
+      schemaParams = { schema_name: `${schemaParts[1]}_${schemaParts[2]}` }
     }
-} else if (cirInstrumentId !== null && cirInstrumentId !== '') {
+  } else if (cirInstrumentId !== null && cirInstrumentId !== '') {
     schemaParams = { cir_instrument_id: cirInstrumentId }
-}
+  }
 
-    const oHeader = {
-        alg: 'RS256',
-        typ: 'JWT',
-        kid: '709eb42cfee5570058ce0711f730bfbb7d4c8ade'
+  const oHeader = {
+    alg: 'RS256',
+    typ: 'JWT',
+    kid: '709eb42cfee5570058ce0711f730bfbb7d4c8ade'
+  }
+
+  const txId = uuidv4()
+  const jti = uuidv4()
+  const kjur = KJUR as unknown as KjurApi
+  const iat = kjur.jws.IntDate.get('now')
+  const exp = kjur.jws.IntDate.get('now') + 1800
+  const caseId = uuidv4()
+  const currentDate = new Date()
+  currentDate.setUTCDate(currentDate.getUTCDate() + 1)
+  const isoDate = currentDate.toISOString()
+
+  const oPayload: Record<string, unknown> = {
+    tx_id: txId,
+    jti,
+    iat,
+    exp,
+    case_id: caseId,
+    response_id: responseId,
+    ...schemaParams,
+    collection_exercise_sid: collectionId,
+    region_code: regionCode,
+    language_code: languageCode,
+    account_service_url: 'http://localhost:8000',
+    survey_metadata: getSurveyMetadata(theme, userId, displayAddress, surveyId, periodId, periodStr, ruRef, sdsDatasetId, booleanFlag),
+    version: launchVersion,
+    response_expires_at: isoDate
+  }
+
+  if (includeLogoutUrl) {
+    oPayload.account_service_log_out_url = 'http://localhost:8000'
+  }
+
+  const sHeader = JSON.stringify(oHeader)
+  const sPayload = JSON.stringify(oPayload)
+  const prvKey = kjur.KEYUTIL.getKey(signingKeyString, 'digitaleq')
+  const sJWT = kjur.jws.JWS.sign('RS256', sHeader, sPayload, prvKey)
+
+  const jsonWebKey = JSONWebKey as unknown as JsonWebKeyApi
+  const webKey = jsonWebKey.fromPEM(encryptionKeyString)
+  const shasum = crypto.createHash('sha1')
+  shasum.update(encryptionKeyString)
+  const encryptionKeyKid = shasum.digest('hex')
+
+  const jwkApi = JWK as unknown as JoseJwkApi
+  const jwk = await jwkApi.asKey(webKey.toJSON())
+  const cfg = {
+    contentAlg: 'A256GCM'
+  }
+  const recipient: JweRecipientInput = {
+    key: jwk,
+    header: {
+      alg: 'RSA-OAEP',
+      kid: encryptionKeyKid
     }
+  }
 
-    const txId = uuidv4()
-    const jti = uuidv4()
-    const kjur = KJUR as unknown as KjurApi
-    const iat = kjur.jws.IntDate.get('now')
-    const exp = kjur.jws.IntDate.get('now') + 1800
-    const caseId = uuidv4()
-    const currentDate = new Date()
-    currentDate.setUTCDate(currentDate.getUTCDate() + 1)
-    const isoDate = currentDate.toISOString()
-
-    const oPayload: Record<string, unknown> = {
-        tx_id: txId,
-        jti,
-        iat,
-        exp,
-        case_id: caseId,
-        response_id: responseId,
-        ...schemaParams,
-        collection_exercise_sid: collectionId,
-        region_code: regionCode,
-        language_code: languageCode,
-        account_service_url: 'http://localhost:8000',
-        survey_metadata: getSurveyMetadata(theme, userId, displayAddress, surveyId, periodId, periodStr, ruRef, sdsDatasetId, booleanFlag),
-        version: launchVersion,
-        response_expires_at: isoDate
-    }
-
-    if (includeLogoutUrl) {
-        oPayload.account_service_log_out_url = 'http://localhost:8000'
-    }
-
-    const sHeader = JSON.stringify(oHeader)
-    const sPayload = JSON.stringify(oPayload)
-    const prvKey = kjur.KEYUTIL.getKey(signingKeyString, 'digitaleq')
-    const sJWT = kjur.jws.JWS.sign('RS256', sHeader, sPayload, prvKey)
-
-    const jsonWebKey = JSONWebKey as unknown as JsonWebKeyApi
-    const webKey = jsonWebKey.fromPEM(encryptionKeyString)
-    const shasum = crypto.createHash('sha1')
-    shasum.update(encryptionKeyString)
-    const encryptionKeyKid = shasum.digest('hex')
-
-    const jwkApi = JWK as unknown as JoseJwkApi
-    const jwk = await jwkApi.asKey(webKey.toJSON())
-    const cfg = {
-        contentAlg: 'A256GCM'
-    }
-    const recipient: JweRecipientInput = {
-        key: jwk,
-        header: {
-            alg: 'RSA-OAEP',
-            kid: encryptionKeyKid
-        }
-    }
-
-    const jweApi = JWE as unknown as JoseJweApi
-    const result = await jweApi.createEncrypt(cfg, recipient).update(sJWT).final()
-    return `${result.protected}.${result.recipients[0].encrypted_key}.${result.iv}.${result.ciphertext}.${result.tag}`
+  const jweApi = JWE as unknown as JoseJweApi
+  const result = await jweApi.createEncrypt(cfg, recipient).update(sJWT).final()
+  return `${result.protected}.${result.recipients[0].encrypted_key}.${result.iv}.${result.ciphertext}.${result.tag}`
 }
 
 function getSurveyMetadata (
-    theme: string | undefined,
-    userId: string | undefined,
-    displayAddress: string,
-    surveyId: string,
-    periodId: string,
-    periodStr: string,
-    ruRef: string,
-    sdsDatasetId: string | null,
-    booleanFlag: boolean
+  theme: string | undefined,
+  userId: string | undefined,
+  displayAddress: string,
+  surveyId: string,
+  periodId: string,
+  periodStr: string,
+  ruRef: string,
+  sdsDatasetId: string | null,
+  booleanFlag: boolean
 ): SurveyMetadata {
-    if (theme === 'social') {
-        return {
-            data: {
-                case_ref: '1000000000000001',
-                qid: '1000000000000001'
-            },
-            receipting_keys: ['qid']
-        }
-    }
-
+  if (theme === 'social') {
     return {
-        data: {
-            user_id: userId,
-            display_address: displayAddress,
-            ru_ref: ruRef,
-            survey_id: surveyId,
-            period_id: periodId,
-            period_str: periodStr,
-            sds_dataset_id: sdsDatasetId,
-            ref_p_start_date: '2017-01-01',
-            ref_p_end_date: '2017-02-01',
-            employment_date: '2016-06-10',
-            return_by: '2017-03-01',
-            ru_name: 'Apple',
-            trad_as: 'Apple',
-            boolean_flag: booleanFlag
-        }
+      data: {
+        case_ref: '1000000000000001',
+        qid: '1000000000000001'
+      },
+      receipting_keys: ['qid']
     }
+  }
+
+  return {
+    data: {
+      user_id: userId,
+      display_address: displayAddress,
+      ru_ref: ruRef,
+      survey_id: surveyId,
+      period_id: periodId,
+      period_str: periodStr,
+      sds_dataset_id: sdsDatasetId,
+      ref_p_start_date: '2017-01-01',
+      ref_p_end_date: '2017-02-01',
+      employment_date: '2016-06-10',
+      return_by: '2017-03-01',
+      ru_name: 'Apple',
+      trad_as: 'Apple',
+      boolean_flag: booleanFlag
+    }
+  }
 }

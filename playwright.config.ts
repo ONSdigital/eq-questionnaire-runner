@@ -4,14 +4,13 @@ const ci = String(process.env.CI).toLowerCase() === 'true'
 
 function parseSpecsEnv (
   raw: string
-): Array<string> {
-
+): string[] {
   // Support comma, whitespace, or newline separated pattern lists.
-    return raw
-      .split(/[,\n]/)
-      .flatMap((chunk) => chunk.trim().split(/\s+/))
-      .map((s) => s.trim())
-      .filter(Boolean)
+  return raw
+    .split(/[,\n]/)
+    .flatMap((chunk) => chunk.trim().split(/\s+/))
+    .map((s) => s.trim())
+    .filter(Boolean)
 }
 
 // @ts-expected-error
