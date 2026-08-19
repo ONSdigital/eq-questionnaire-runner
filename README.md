@@ -434,9 +434,9 @@ The following env variables can be used
 | EQ_GOOGLE_TAG_ID                          |                              | The Google Tag Manger ID - Specifies the GTM account                                                           |
 | EQ_ENABLE_HTML_MINIFY                     | True                         | Enable minification of html                                                                                    |
 | EQ_ENABLE_SECURE_SESSION_COOKIE           | True                         | Set secure session cookies                                                                                     |
-| EQ_MAX_HTTP_POST_CONTENT_LENGTH           | 65536                        | The maximum http post content length that the system wil accept                                                |
+| EQ_MAX_HTTP_POST_CONTENT_LENGTH           | 122_880                      | The maximum http post content length that the system wil accept                                                |
 | EQ_MINIMIZE_ASSETS                        | True                         | Should JS and CSS be minimized                                                                                 |
-| MAX_CONTENT_LENGTH                        | 65536                        | max request payload size in bytes                                                                              |
+| MAX_CONTENT_LENGTH                        | 122_880                      | max request payload size in bytes                                                                              |
 | EQ_APPLICATION_VERSION_PATH               | .application-version         | the location of a file containing the application version number                                               |
 | EQ_ENABLE_LIVE_RELOAD                     | False                        | Enable livereload of browser when scripts, styles or templates are updated                                     |
 | EQ_SECRETS_FILE                           | secrets.yml                  | The location of the secrets file                                                                               |
