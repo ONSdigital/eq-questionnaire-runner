@@ -49,7 +49,7 @@
         "node-jose": "2.2.0",
         "prettier": "3.8.1",
         "typescript": "6.0.2",
-        "uuid": "14.0.1",
+        "uuid": "14.0.2",
         "webdriverio": "9.27.0"
     },
     "prettier": {},
