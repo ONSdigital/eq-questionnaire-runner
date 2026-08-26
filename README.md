@@ -16,13 +16,6 @@ Install [Docker](https://www.docker.com/) for your system. Make sure that you've
 ``` shell
 brew install docker
 brew install docker-compose
-brew install docker-buildx
-```
-
-brew installs buildx as a standalone binary so it also needs symlinking before Docker picks it up:
-```shell
-mkdir -p ~/.docker/cli-plugins
-ln -sfn "$(brew --prefix docker-buildx)/bin/docker-buildx" ~/.docker/cli-plugins/docker-buildx
 ```
 
 On MacOS install container runtimes, eg. [Colima](https://github.com/abiosoft/colima):
@@ -39,6 +32,13 @@ To get eq-questionnaire-runner running the following command will build and run 
 
 ``` shell
 RUNNER_ENV_FILE=.development.env docker compose up -d
+```
+
+You can also build for a specific platform using Docker’s extended build tool - buildx
+
+Example for Apple Silicon:
+``` shell
+docker buildx build --platform linux/arm64 -t eq-questionnaire-runner .
 ```
 
 To launch a survey, navigate to [http://localhost:8000/](http://localhost:8000/)
