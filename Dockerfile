@@ -10,23 +10,22 @@ ARG WKHTMLTOX_SHA256_ARM64=b6606157b27c13e044d0abbe670301f88de4e1782afca4f9c06a5
 ARG TARGETARCH
 
 RUN apt-get update && \
-apt-get install -y --no-install-recommends \
-curl unzip libsnappy-dev build-essential jq \
-xfonts-base xfonts-75dpi fontconfig \
-libjpeg62-turbo libxrender1 libxext6 && \
-case "${TARGETARCH}" in \
-amd64) WK_SHA256="${WKHTMLTOX_SHA256_AMD64}" ;; \
-arm64) WK_SHA256="${WKHTMLTOX_SHA256_ARM64}" ;; \
-esac && \
-curl -fsSL -o /tmp/wkhtmltox.deb \
-"https://github.com/wkhtmltopdf/packaging/releases/download/${WKHTMLTOX_VERSION}/wkhtmltox_${WKHTMLTOX_VERSION}.${WKHTMLTOX_DISTRO}_${TARGETARCH}.deb" && \
-echo "EXPECTED=[${WK_SHA256}]" && \
-echo "ACTUAL=[$(sha256sum /tmp/wkhtmltox.deb | cut -d' ' -f1)]" && \
-test "$(sha256sum /tmp/wkhtmltox.deb | cut -d' ' -f1)" = "${WK_SHA256}" && \
-apt-get install -y --no-install-recommends /tmp/wkhtmltox.deb && \
-rm -f /tmp/wkhtmltox.deb && \
-rm -rf /var/lib/apt/lists/* && \
-wkhtmltopdf --version | grep -qi "with patched qt"
+    apt-get install -y --no-install-recommends \
+    curl unzip libsnappy-dev build-essential jq \
+    xfonts-base xfonts-75dpi fontconfig \
+    libjpeg62-turbo libxrender1 libxext6 && \
+    case "${TARGETARCH}" in \
+    amd64) WK_SHA256="${WKHTMLTOX_SHA256_AMD64}" ;; \
+    arm64) WK_SHA256="${WKHTMLTOX_SHA256_ARM64}" ;; \
+    *) echo "Unsupported TARGETARCH: ${TARGETARCH}" >&2 && exit 1 ;; \
+    esac && \
+    curl -fsSL -o /tmp/wkhtmltox.deb \
+    "https://github.com/wkhtmltopdf/packaging/releases/download/${WKHTMLTOX_VERSION}/wkhtmltox_${WKHTMLTOX_VERSION}.${WKHTMLTOX_DISTRO}_${TARGETARCH}.deb" && \
+    echo "${WK_SHA256}  /tmp/wkhtmltox.deb" | sha256sum -c - && \
+    apt-get install -y --no-install-recommends /tmp/wkhtmltox.deb && \
+    rm -f /tmp/wkhtmltox.deb && \
+    rm -rf /var/lib/apt/lists/* && \
+    wkhtmltopdf --version | grep -qi "with patched qt"
 
 COPY . /runner
 WORKDIR /runner
