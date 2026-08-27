@@ -40,6 +40,11 @@ Example for Apple Silicon:
 ``` shell
 docker buildx build --platform linux/arm64 -t eq-questionnaire-runner .
 ```
+Or build for multiple platforms:
+
+```
+docker buildx build --platform linux/amd64,linux/arm64 -t eq-questionnaire-runner .
+```
 
 To launch a survey, navigate to [http://localhost:8000/](http://localhost:8000/)
 
