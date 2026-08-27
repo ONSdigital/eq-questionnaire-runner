@@ -34,6 +34,11 @@ To get eq-questionnaire-runner running the following command will build and run 
 ``` shell
 RUNNER_ENV_FILE=.development.env podman compose up -d
 ```
+Or build for multiple platforms:
+
+```
+docker buildx build --platform linux/amd64,linux/arm64 -t eq-questionnaire-runner .
+```
 
 To launch a survey, navigate to [http://localhost:8000/](http://localhost:8000/)
 
