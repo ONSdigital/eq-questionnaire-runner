@@ -39,26 +39,6 @@ parser.add_argument(
     'Defaults to ".."',
 )
 
-SPEC_PAGE_HEADER = "import helpers from '../helpers';\n\n"
-
-SPEC_PAGE_IMPORT = Template(
-    r"""import ${pageName}Page from '../generated_pages/${pageDir}/${pageFile}';
-"""
-)
-
-SPEC_EXAMPLE_TEST = Template(r"""
-describe("Example Test", () => {
-    beforeEach("Load the survey", () => {
-        browser.openQuestionnaire(schema);
-    });
-
-    it("Given..., When..., Then...", () => {
-
-    });
-});
-
-""")
-
 HEADER = Template(r"""// >>> WARNING THIS PAGE WAS AUTO-GENERATED - DO NOT EDIT!!! <<<
 import $basePage from "$relativeRequirePath/$basePageFile";
 import type { Page } from "@playwright/test";
@@ -487,7 +467,7 @@ def process_calculated_summary(answers, page_spec):
         page_spec.write(CALCULATED_SUMMARY_LABEL_GETTER.substitute(answer_context))
 
 
-def process_final_summary(schema_data, require_path, dir_out, spec_file, collapsible):
+def process_final_summary(schema_data, require_path, dir_out, collapsible):
     page_filename = f"submit{page_file_suffix()}"
     base_page_file = "submit.page"
     page_path = os.path.join(dir_out, page_filename)
@@ -516,11 +496,8 @@ def process_final_summary(schema_data, require_path, dir_out, spec_file, collaps
 
         page_spec.write(FOOTER.substitute(block_context))
 
-        if spec_file:
-            append_spec_page_import(block_context, spec_file)
 
-
-def process_view_submitted_response(schema_data, require_path, dir_out, spec_file):
+def process_view_submitted_response(schema_data, require_path, dir_out):
     page_filename = f"view-submitted-response{page_file_suffix()}"
     page_path = os.path.join(dir_out, page_filename)
 
@@ -546,9 +523,6 @@ def process_view_submitted_response(schema_data, require_path, dir_out, spec_fil
             )
 
         page_spec.write(FOOTER.substitute(block_context))
-
-        if spec_file:
-            append_spec_page_import(block_context, spec_file)
 
 
 def process_definition(context, page_spec):
@@ -800,7 +774,7 @@ def build_and_get_base_page_context(
 
 # pylint: disable=too-many-branches,too-many-statements,too-many-locals,too-complex
 def process_block(
-    block, dir_out, schema_data, spec_file, relative_require="..", page_filename=None
+    block, dir_out, schema_data, relative_require="..", page_filename=None
 ):
     logger.debug("Processing Block: %s", block["id"])
 
@@ -813,7 +787,6 @@ def process_block(
                 repeating_block,
                 dir_out,
                 schema_data,
-                spec_file,
                 relative_require,
                 page_filename=f'{repeating_block["id"]}-repeating-block{page_file_suffix()}',
             )
@@ -825,7 +798,6 @@ def process_block(
                 block[f"{list_operation}_block"],
                 dir_out,
                 schema_data,
-                spec_file,
                 relative_require,
                 page_filename=f'{block["id"]}-{list_operation}{page_file_suffix()}',
             )
@@ -835,7 +807,6 @@ def process_block(
             block["add_or_edit_block"],
             dir_out,
             schema_data,
-            spec_file,
             relative_require,
             page_filename=f'{block["id"]}-add{page_file_suffix()}',
         )
@@ -845,7 +816,6 @@ def process_block(
             block["unrelated_block"],
             dir_out,
             schema_data,
-            spec_file,
             relative_require,
             page_filename=f'{block["unrelated_block"]["id"]}{page_file_suffix()}',
         )
@@ -975,9 +945,6 @@ def process_block(
 
         page_spec.write(FOOTER.substitute(block_context))
 
-        if spec_file:
-            append_spec_page_import(block_context, spec_file)
-
 
 def _has_definitions_in_block_contents(block_contents):
     return any("definition" in element for element in block_contents)
@@ -1001,7 +968,7 @@ def _get_dictionaries_with_key(
                     yield from _get_dictionaries_with_key(key, element)
 
 
-def process_schema(in_schema, out_dir, spec_file, require_path=".."):
+def process_schema(in_schema, out_dir, require_path=".."):
     try:
         with open(in_schema, encoding="utf-8") as schema:
             data = json_loads(schema.read())
@@ -1014,22 +981,20 @@ def process_schema(in_schema, out_dir, spec_file, require_path=".."):
     except IndexError:
         os.mkdir(out_dir)
 
-    process_questionnaire_flow(data, require_path, out_dir, spec_file)
+    process_questionnaire_flow(data, require_path, out_dir)
 
     if data.get("post_submission", {}).get("view_response"):
-        process_view_submitted_response(data, require_path, out_dir, spec_file)
+        process_view_submitted_response(data, require_path, out_dir)
 
     for section in data["sections"]:
         if "summary" in section:
-            process_section_summary(
-                section["id"], out_dir, section, spec_file, require_path
-            )
+            process_section_summary(section["id"], out_dir, section, require_path)
         for group in section["groups"]:
             for block in group["blocks"]:
-                process_block(block, out_dir, data, spec_file, require_path)
+                process_block(block, out_dir, data, require_path)
 
 
-def process_questionnaire_flow(schema_data, require_path, dir_out, spec_file):
+def process_questionnaire_flow(schema_data, require_path, dir_out):
     questionnaire_flow = schema_data["questionnaire_flow"]
     options = questionnaire_flow.get("options", {})
 
@@ -1042,13 +1007,12 @@ def process_questionnaire_flow(schema_data, require_path, dir_out, spec_file):
             schema_data,
             require_path,
             dir_out,
-            spec_file,
             collapsible,
         )
 
 
 def process_section_summary(
-    section_id, dir_out, section, spec_file, relative_require="..", page_filename=None
+    section_id, dir_out, section, relative_require="..", page_filename=None
 ):
     logger.debug("Processing section summary: %s", section_id)
 
@@ -1090,14 +1054,6 @@ def process_section_summary(
         )
         page_spec.write(FOOTER.substitute(section_context))
 
-        if spec_file:
-            append_spec_page_import(section_context, spec_file)
-
-
-def append_spec_page_import(context, spec_file):
-    with open(spec_file, "a", encoding="utf-8") as required_template_spec:
-        required_template_spec.write(SPEC_PAGE_IMPORT.substitute(context))
-
 
 if __name__ == "__main__":
     args = parser.parse_args()
@@ -1116,4 +1072,4 @@ if __name__ == "__main__":
                 )
                 if not os.path.exists(output_dir):
                     os.makedirs(output_dir)
-                process_schema(file, output_dir, None, args.require_path)
+                process_schema(file, output_dir, args.require_path)
