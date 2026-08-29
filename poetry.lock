@@ -1924,19 +1924,19 @@ referencing = ">=0.31.0"
 
 [[package]]
 name = "jwcrypto"
-version = "1.5.6"
+version = "1.5.8"
 description = "Implementation of JOSE Web standards"
 optional = false
-python-versions = ">= 3.8"
+python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "jwcrypto-1.5.6-py3-none-any.whl", hash = "sha256:150d2b0ebbdb8f40b77f543fb44ffd2baeff48788be71f67f03566692fd55789"},
-    {file = "jwcrypto-1.5.6.tar.gz", hash = "sha256:771a87762a0c081ae6166958a954f80848820b2ab066937dc8b8379d65b1b039"},
+    {file = "jwcrypto-1.5.8-py3-none-any.whl", hash = "sha256:85aeb475f808d56bbc2f2ed1f6f73e6a317c4011a4321505f02f0aed695a3742"},
+    {file = "jwcrypto-1.5.8.tar.gz", hash = "sha256:c3d7114b6f6e65b52f6b7da817eb8cb8423e1da31e1ef13508447c81ecbdcc34"},
 ]
 
 [package.dependencies]
-cryptography = ">=3.4"
-typing-extensions = ">=4.5.0"
+cryptography = ">=39.0.0"
+typing_extensions = ">=4.5.0"
 
 [[package]]
 name = "markupsafe"
