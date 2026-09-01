@@ -19,7 +19,9 @@ Make sure the Podman machine started every time you want to use container images
 podman machine start
 ```
 
-The Makefile invokes `docker compose`. Podman is API-compativle, so provide a `docker` command that points at it:
+Podman is API-compatible with Docker, so provide a `docker` command that points at it. This is
+still needed for the plain `docker run` commands used later in this README (e.g. running
+launcher, SDS, CIR images):
 
 ```shell
 mkdir -p ~/.local/bin
@@ -27,24 +29,20 @@ ln -s "$(which podman)" ~/.local/bin/docker
 hash -r
 ```
 
-`~/.local/bin` must be on your `PATH`. Verify both the command and compose support:
+`~/.local/bin` must be on your `PATH`. Verify:
 
 ```shell
 docker --version
-docker compose version
 ```
 
-If compose is unavailable, install a provider:
+The Makefile and the commands below use the standalone `docker-compose` binary (not the
+`docker compose` plugin), so install `podman-compose` to provide it:
 
 ``` shell
 conda install -c conda-forge podman-compose
 ```
 
-NOTE - approach not yet settled. The symlink above is the documented default because it applies to every Make recipe, including those that call `docker build`.
-An alternative under discussing on changing the Makefile to call `docker-compose` instead of `docker compose`.
-This avoids per-machine setup but only covers the compose recipes, `docker build` targets would still need the symlink.
-
-If change is adopted, confirm the standalone binary is present:
+Confirm the binary is present:
 
 ``` shell
 which docker-compose
@@ -54,7 +52,7 @@ docker-compose version
 To get eq-questionnaire-runner running the following command will build and run the containers
 
 ``` shell
-RUNNER_ENV_FILE=.development.env docker compose up -d
+RUNNER_ENV_FILE=.development.env docker-compose up -d
 ```
 
 To launch a survey, navigate to [http://localhost:8000/](http://localhost:8000/)
@@ -65,13 +63,13 @@ However, any new dependencies that are added would require a re-build.
 To rebuild the eq-questionnaire-runner container, the following command can be used.
 
 ``` shell
-RUNNER_ENV_FILE=.development.env docker compose build
+RUNNER_ENV_FILE=.development.env docker-compose build
 ```
 
 If you need to rebuild the container from scratch to re-load any dependencies then you can run the following
 
 ``` shell
-RUNNER_ENV_FILE=.development.env docker compose build --no-cache
+RUNNER_ENV_FILE=.development.env docker-compose build --no-cache
 ```
 
 ## Run locally
@@ -144,7 +142,7 @@ echo "local" > .application-version
 #### Python version
 
 It is preferable to use the version of Python locally that matches that used on deployment.
-This project has a `.python_version` file for this purpose.
+This project has a `.python-version` file for this purpose.
 Both are read manually and declared in the conda environment file below, conda does not read them automatically.
 
 ``` shell
@@ -154,22 +152,27 @@ cat .nvmrc
 
 #### Conda environment
 
-Create `environment.yml` in the project root, using the versions from the files above:
+Python and Node.js versions are pinned in the committed `environment.yml`, matching
+`.python-version` and `.nvmrc` as closely as conda-forge availability allows:
 
 ``` shell
 name: eq-runner
 channels:
   - conda-forge
 dependencies:
-  - python=X.XX.X
-  - nodejs=XX.XX.X
-  - poetry=X.X.X
+  - python=3.13.5
+  - nodejs=22.13.0   # closest available patch to .nvmrc's v22.15.0
+  - poetry=2.1.2
   - snappy
   - jq
   - pip
 ```
 
-Note that conda-forge does not publish every Node patch release. Match the major version and take the closest available patch,
+> Note: conda-forge does not publish every Node patch release (it jumps from `22.13.0` to
+> `22.17.0`). Where the exact `.nvmrc` version is unavailable, pin the closest available patch
+> below it and note the substitution in `environment.yml`.
+
+If `.python-version` or `.nvmrc` change, update `environment.yml` to match.
 
 Create and activate the environment:
 
@@ -178,7 +181,7 @@ conda env create -f environment.yml
 conda activate eq-runner
 ```
 
-Version can be changed by editing `environmetn.yml` and running `conda env update -f environment.yml --prune`
+Version can be changed by editing `environment.yml` and running `conda env update -f environment.yml --prune`
 
 #### Poetry
 
@@ -187,7 +190,7 @@ Set this on the environment so that no configuration file is left in the reposit
 
 ``` shell
 conda env config vars set POETRY_VIRTUALENVS_CREATE=false
-conda deactive && conda activate eq-runner
+conda deactivate && conda activate eq-runner
 ```
 Confirm it took effect, this must print `false`:
 
@@ -218,8 +221,6 @@ With the environment active, install the Python dependencies:
 ``` shell
 poetry install
 ```
-
-Confirm it took effect, this must print `false`:
 
 Install the JavaScript dependencies:
 
