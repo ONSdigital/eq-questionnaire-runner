@@ -295,12 +295,7 @@ This will delete the `tests/functional/generated_pages` directory and regenerate
 To generate the pages manually you can run the `generate_pages` scripts with the schema directory. Run it from the `tests/functional` directory as follows:
 
 ``` shell
-./generate_pages.py ../../schemas/test/en/ ./generated_pages -r "../../base_pages"
-```
-
-To generate a spec file with the imports included, you can pass the schema name as an argument without the file extension, e.g. `SCHEMA=test_address`:
-``` shell
-make generate-spec SCHEMA=<schema-name>
+poetry run python -m tests.functional.generate_pages schemas/test/en/ ./tests/functional/generated_pages -r "../../base_pages"
 ```
 
 If you have already built the generated pages, then the functional tests can be executed with:
@@ -315,24 +310,15 @@ This can be limited to a single spec where argument needed is the remainder of t
 make test-functional-spec SPEC=<spec>
 ```
 
-To run a single test, add `.only` into the name of any `describe` or `it` function:
+To run a single test, add `.only` into the name of any `test` or `describe` function:
 
-`describe.only('Skip Conditions', function() {...}` or
+Only this single test:
+`test.only('Skip conditions', async ({ page }) => {...})`
 
-`it.only('Given this is a test', function() {...}`
+Only tests in this describe block:
+`test.describe.only('Question description', () => {...})`
 
-Test suites are configured in the `wdio.conf.js` file.
-An individual test suite can be run using the suite names as the argument to this command. The suites that can be used with command below are:
-* timeout_modal_expired
-* timeout_modal_extended
-* timeout_modal_extended_new_window
-* features
-* general
-* components
-
-``` shell
-make test-functional-suite SUITE=<suite>
-```
+In `playwright.config.ts` on line 29 we forbid `.only` in CI, so if you have `.only` in your tests, and you run the tests in CI, the tests will fail.
 
 To run the tests against a remote deployment you will need to specify the environment variable of EQ_FUNCTIONAL_TEST_ENV eg:
 
