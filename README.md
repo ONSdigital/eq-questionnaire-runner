@@ -234,7 +234,7 @@ the script.
 
 ## Frontend Tests
 
-The frontend tests use NodeJS to run. To handle different versions of NodeJS it is recommended to install `Node Version Manager` (`nvm`). It is similar to pyenv but for Node versions.
+The frontend tests are written using [Playwright](https://playwright.dev/), which requires NodeJS to run. To handle different versions of NodeJS it is recommended to install `Node Version Manager` (`nvm`). It is similar to pyenv but for Node versions.
 To install `nvm` use the command below (make sure to replace "v0.39.5" with the current latest version in [releases](https://github.com/nvm-sh/nvm/releases/):
 ``` shell
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
@@ -246,85 +246,51 @@ nvm install
 nvm use
 ```
 
-Fetch npm dependencies:
+Install npm dependencies and playwright browsers:
 
 ``` shell
 npm install
+npx playwright install --with-deps
 ```
 
-Available commands:
+Runner needs to be run with the functional test environment variables:
 
-| Command                | Task                                                                                                      |
-|------------------------| --------------------------------------------------------------------------------------------------------- |
-| `make test-functional` | Runs the functional tests through Webdriver (requires app running on localhost:5000 and generated pages). |
-| `make generate-pages`  | Generates the functional test pages.                                                                      |
-| `make lint-js`         | Lints the JS, reporting errors/warnings.                                                                  |
-| `make format-js`       | Format the json schemas.                                                                                  |
-
----
-
-### Development with functional tests
-
-The tests are written using [WebdriverIO](https://webdriver.io/docs/gettingstarted), [Chai](https://www.chaijs.com/), and [Mocha](https://mochajs.org/)
-
-### Functional test options
-
-The functional tests use a set of selectors that are generated from each of the test schemas. These make it quick to add new functional tests.
-
-To run the functional tests first runner needs to be spin up with:
-
-``` shell
+```shell
 RUNNER_ENV_FILE=.functional-tests.env make run
 ```
 
-This will set the correct environment variables for running the functional tests.
+The functional tests use page models generated for each of the test schemas, generate them with:
 
-Then you can run either:
+```shell
+make generate-pages
+```
 
-``` shell
+Then you can run either run the tests with:
+
+```shell
 make test-functional
 ```
-or
+or headless with:
 
-``` shell
+```shell
 make test-functional-headless
 ```
 
-This will delete the `tests/functional/generated_pages` directory and regenerate all the files in it from the schemas.
+Both commands delete the `tests/functional/generated_pages` directory and regenerates all page models from the schemas.
 
-To generate the pages manually you can run the `generate_pages` scripts with the schema directory. Run it from the `tests/functional` directory as follows:
+Run a specific spec with (you only need the spec filename, not the path):
 
-``` shell
-poetry run python -m tests.functional.generate_pages schemas/test/en/ ./tests/functional/generated_pages -r "../../base_pages"
+```shell
+make test-functional-spec SPEC=<spec filename>
 ```
 
-If you have already built the generated pages, then the functional tests can be executed with:
+Run against a remote environment with:
 
-``` shell
-make test-functional
+```shell
+EQ_FUNCTIONAL_TEST_ENV=https://staging-new-surveys.dev.eq.ons.digital/ make test-functional
 ```
 
-This can be limited to a single spec where argument needed is the remainder of the path after `./tests/functional/spec/` (which is included in the command):
-
-``` shell
-make test-functional-spec SPEC=<spec>
-```
-
-To run a single test, add `.only` into the name of any `test` or `describe` function:
-
-Only this single test:
-`test.only('Skip conditions', async ({ page }) => {...})`
-
-Only tests in this describe block:
-`test.describe.only('Question description', () => {...})`
-
-In `playwright.config.ts` on line 29 we forbid `.only` in CI, so if you have `.only` in your tests, and you run the tests in CI, the tests will fail.
-
-To run the tests against a remote deployment you will need to specify the environment variable of EQ_FUNCTIONAL_TEST_ENV eg:
-
-``` shell
-EQ_FUNCTIONAL_TEST_ENV=https://staging-new-surveys.dev.eq.ons.digital/ npm run test_functional
-```
+More detailed information on running and debugging can be found in [functional-tests.md](doc/functional-tests.md)
 
 ---
 
