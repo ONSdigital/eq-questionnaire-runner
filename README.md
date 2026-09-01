@@ -284,6 +284,16 @@ Run a specific spec with (you only need the spec filename, not the path):
 make test-functional-spec SPEC=<spec filename>
 ```
 
+To run a single test, add `.only` into the name of any `test` or `describe` function:
+
+Only this single test:
+`test.only('Skip conditions', async ({ page }) => {...})`
+
+Only tests in this describe block:
+`test.describe.only('Question description', () => {...})`
+
+In `playwright.config.ts` on line 29 we forbid `.only` in CI, so if you have `.only` in your tests, and you run the tests in CI, the tests will fail.
+
 Run against a remote environment with:
 
 ```shell
