@@ -19,9 +19,7 @@ Make sure the Podman machine started every time you want to use container images
 podman machine start
 ```
 
-Podman is API-compatible with Docker, so provide a `docker` command that points at it. This is
-still needed for the plain `docker run` commands used later in this README (e.g. running
-launcher, SDS, CIR images):
+Podman is API-compatible with Docker, so provide a `docker` command that points at it. This is still needed for the plain `docker run` commands used later in this README (e.g. running launcher, SDS, CIR images):
 
 ```shell
 mkdir -p ~/.local/bin
@@ -155,22 +153,8 @@ cat .nvmrc
 Python and Node.js versions are pinned in the committed `environment.yml`, matching
 `.python-version` and `.nvmrc` as closely as conda-forge availability allows:
 
-``` shell
-name: eq-runner
-channels:
-  - conda-forge
-dependencies:
-  - python=3.13.5
-  - nodejs=22.13.0   # closest available patch to .nvmrc's v22.15.0
-  - poetry=2.1.2
-  - snappy
-  - jq
-  - pip
-```
 
-> Note: conda-forge does not publish every Node patch release (it jumps from `22.13.0` to
-> `22.17.0`). Where the exact `.nvmrc` version is unavailable, pin the closest available patch
-> below it and note the substitution in `environment.yml`.
+> Note: conda-forge does not publish every Node patch release. Where the exact `.nvmrc` version is unavailable, pin the closest available patch below it and note the substitution in `environment.yml`.
 
 If `.python-version` or `.nvmrc` change, update `environment.yml` to match.
 
