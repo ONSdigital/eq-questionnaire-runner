@@ -11,27 +11,46 @@
 
 ## Run with Docker
 
-Install [Docker](https://www.docker.com/) for your system. Make sure that you've installed both docker and docker-compose packages, preferably using Homebrew:
+Install Podman for your system as the container runtime.
+
+Make sure the Podman machine started every time you want to use container images:
 
 ``` shell
-brew install docker
-brew install docker-compose
+podman machine start
 ```
 
-On MacOS install container runtimes, eg. [Colima](https://github.com/abiosoft/colima):
+Podman is API-compatible with Docker, so provide a `docker` command that points at it. This is still needed for the plain `docker run` commands used later in this README (e.g. running launcher, SDS, CIR images):
+
 ```shell
-brew install colima
+mkdir -p ~/.local/bin
+ln -s "$(which podman)" ~/.local/bin/docker
+hash -r
 ```
 
-Make sure Colima is started every time you want to use Docker images:
+`~/.local/bin` must be on your `PATH`. Verify:
+
 ```shell
-colima start
+docker --version
+```
+
+The Makefile and the commands below use the standalone `docker-compose` binary (not the
+`docker compose` plugin), so install `podman-compose` to provide it:
+
+``` shell
+conda install -c conda-forge podman-compose
+```
+
+Confirm the binary is present:
+
+``` shell
+which docker-compose
+docker-compose version
 ```
 
 To get eq-questionnaire-runner running the following command will build and run the containers
 
 ``` shell
-RUNNER_ENV_FILE=.development.env docker compose up -d
+RUNNER_ENV_FILE=.development.env docker-compose up -d
 ```
 
 To launch a survey, navigate to [http://localhost:8000/](http://localhost:8000/)
@@ -42,13 +61,13 @@ However, any new dependencies that are added would require a re-build.
 To rebuild the eq-questionnaire-runner container, the following command can be used.
 
 ``` shell
-RUNNER_ENV_FILE=.development.env docker compose build
+RUNNER_ENV_FILE=.development.env docker-compose build
 ```
 
 If you need to rebuild the container from scratch to re-load any dependencies then you can run the following
 
 ``` shell
-RUNNER_ENV_FILE=.development.env docker compose build --no-cache
+RUNNER_ENV_FILE=.development.env docker-compose build --no-cache
 ```
 
 ## Run locally
@@ -61,11 +80,49 @@ git clone git@github.com:ONSdigital/eq-questionnaire-runner.git
 
 ### Pre-Requisites
 
-In order to run locally you'll need Node.js, snappy, pyenv, jq and wkhtmltopdf installed
+The following must be installed and working before you start:
+- Miniconda: Python, node and system package management (install from Self Service)
+- Podman: Container runtime for supporting services (machine created and running)
+- wkhtmltopdf: PDF generation (installed separately, see below)
+- gcloud: Pulling images from Google Artifact Registry
+
+Python, Node.js, Poetry, snappy and jq are all provided by the conda environment created in setup
+Verify each is available
 
 ``` shell
-brew install snappy npm pyenv jq wkhtmltopdf
+conda --version
+podman --version
+gcloud --version
+make --version
 ```
+
+If `conda` reports `command not found` after installing from Self Service, the installer did not write the conda block into `~/.zshrc`/
+Confirm the install is present and wire it in:
+
+``` shell
+ls -d /opt/miniconda3
+/opt/miniconda3/bin/conda init zsh
+```
+
+Open a new terminal tab and re-check `conda --version`
+
+Make sure that the Podman machine is running:
+
+``` shell
+podman machine list
+podman machine start
+```
+
+`wkhtmltopdf` is nor reliably available on conda-forge for macOS ARM, so it is installed outside the conda environment.
+Download the macOS `.pkg` from the wkhtmltopdf downloads page and run the installer.
+Note that wkhtmltopdf is an archived project and no longer receives updates.
+Check if it is correctly installed:
+
+``` shell
+which wkhtmltopdf
+```
+
+This should return a path (typically `/usr/local/bin/wkhtmltopdf)
 
 ### Setup
 
@@ -82,48 +139,77 @@ echo "local" > .application-version
 ```
 #### Python version
 
-It is preferable to use the version of Python locally that matches that
-used on deployment. This project has a `.python_version` file for this
-purpose.
-
-#### Pyenv
-
-It is recommended to install the `pyenv` Python version management tool to easily switch between Python versions.
-To install `pyenv` use this command:
-```shell
-curl https://pyenv.run | bash
-```
-After the installation it should tell you to execute a command to add `pyenv` to path. It should look something like this:
-```shell
-export PYENV_ROOT="$HOME/.pyenv"
-
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-
-eval "$(pyenv init -)"
-```
-Python versions can be changed with the `pyenv local` or `pyenv global` commands suffixed with the desired version (e.g. 3.13.5). Different versions of Python can be installed first with the `pyenv install` command. Refer to the pyenv project Readme [here](https://github.com/pyenv/pyenv). To avoid confusion, check the current Python version at any given time using `python --version` or `python3 --version`.
-
-#### Python & dependencies
-
-Inside the project directory install python version, upgrade pip:
+It is preferable to use the version of Python locally that matches that used on deployment.
+This project has a `.python-version` file for this purpose.
+Both are read manually and declared in the conda environment file below, conda does not read them automatically.
 
 ``` shell
-pyenv install
-pip install --upgrade pip setuptools
+cat .python-version
+cat .nvmrc
 ```
 
-Install poetry, poetry dotenv plugin and install dependencies:
+#### Conda environment
+
+Python and Node.js versions are pinned in the committed `environment.yml`, matching
+`.python-version` and `.nvmrc` as closely as conda-forge availability allows:
+
+
+> Note: conda-forge does not publish every Node patch release. Where the exact `.nvmrc` version is unavailable, pin the closest available patch below it and note the substitution in `environment.yml`.
+
+If `.python-version` or `.nvmrc` change, update `environment.yml` to match.
+
+Create and activate the environment:
 
 ``` shell
-curl -sSL https://install.python-poetry.org | python3 - --version 2.1.2
-poetry self add poetry-plugin-dotenv
+conda env create -f environment.yml
+conda activate eq-runner
+```
+
+Version can be changed by editing `environment.yml` and running `conda env update -f environment.yml --prune`
+
+#### Poetry
+
+Poetry must install into the conda environment rather than creating its own virtualenv.
+Set this on the environment so that no configuration file is left in the repository:
+
+``` shell
+conda env config vars set POETRY_VIRTUALENVS_CREATE=false
+conda deactivate && conda activate eq-runner
+```
+Confirm it took effect, this must print `false`:
+
+``` shell
+echo $POETRY_VIRTUALENVS_CREATE
+```
+
+#### Build flags for python-snappy
+
+`python-snappy` compiles against `libsnappy`, which is provided by the conda environment.
+Add an activation hook so the compiler can find it:
+
+``` shell
+mkdir -p "$CONDA_PREFIX/etc/conda/activate.d"
+cat > "$CONDA_PREFIX/etc/conda/activate.d/build-flags.sh" <<'EOF'
+export CPPFLAGS="-I${CONDA_PREFIX}/include ${CPPFLAGS}"
+export LDFLAGS="-L${CONDA_PREFIX}/lib ${LDFLAGS}"
+EOF
+conda deactivate && conda activate eq-runner
+```
+
+These flags now apply automatically whenever the environment is active.
+
+#### Dependencies
+
+With the environment active, install the Python dependencies:
+
+``` shell
 poetry install
 ```
 
-We use [poetry-plugin-up](https://github.com/MousaZeidBaker/poetry-plugin-up) to update dependencies in the `pyproject.toml` file:
+Install the JavaScript dependencies:
 
 ``` shell
-poetry self add poetry-plugin-up
+npm ci
 ```
 
 #### Design system templates

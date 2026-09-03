@@ -1,0 +1,10 @@
+name: eq-runner
+channels:
+  - conda-forge
+dependencies:
+  - python=3.13.5
+  - nodejs=22.13.0   # closest available patch to .nvmrc's v22.15.0
+  - poetry=2.1.2
+  - snappy
+  - jq
+  - pip
