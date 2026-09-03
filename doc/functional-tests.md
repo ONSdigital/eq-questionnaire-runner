@@ -5,11 +5,6 @@
 - The tests are written using the [Playwright](https://playwright.dev/) framework
 - Playwright config: `playwright.config.ts`
 - Playwright spec root: `tests/functional/spec`
-- Configured Playwright projects:
-  - `components`
-  - `timeout_modal`
-  - `features`
-  - `journeys`
 
 ## Advanced Running
 
@@ -33,21 +28,6 @@ Use the Playwright UI for interactive test selection and debugging:
 npx playwright test --ui
 ```
 
-Run a single configured project:
-
-```shell
-npx playwright test --project=components
-npx playwright test --project=features
-npx playwright test --project=journeys
-npx playwright test --project=timeout_modal
-```
-
-Run all projects except timeout_modal:
-
-```shell
-npx playwright test --project=components --project=features --project=journeys
-```
-
 Run all specs in a folder:
 
 ```shell
@@ -66,7 +46,7 @@ Or omit the path and just use the spec filename:
 npx playwright test preview.spec.ts
 ```
 
-Or use a subset of a spec name and it will run all spec filenames containing that text (regardless of project/folder):
+Or use a subset of a spec name, and it will run all spec filenames containing that text (regardless of folder):
 
 ```shell
 npx playwright test checkbox
