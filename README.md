@@ -34,6 +34,18 @@ To get eq-questionnaire-runner running the following command will build and run 
 RUNNER_ENV_FILE=.development.env docker compose up -d
 ```
 
+You can also build for a specific platform using Docker’s extended build tool - buildx
+
+Example for Apple Silicon:
+``` shell
+docker buildx build --platform linux/arm64 -t eq-questionnaire-runner .
+```
+Or build for multiple platforms:
+
+```
+docker buildx build --platform linux/amd64,linux/arm64 -t eq-questionnaire-runner .
+```
+
 To launch a survey, navigate to [http://localhost:8000/](http://localhost:8000/)
 
 When the containers are running you are able to access the application as normal, and code changes will be reflected in the running application.
@@ -64,8 +76,20 @@ git clone git@github.com:ONSdigital/eq-questionnaire-runner.git
 In order to run locally you'll need Node.js, snappy, pyenv, jq and wkhtmltopdf installed
 
 ``` shell
-brew install snappy npm pyenv jq wkhtmltopdf
+brew install snappy npm pyenv jq
 ```
+
+wkhtmltopdf It is no longer installable via Homebrew: the cask was disabled on 2024-12-16 and later removed
+Install it from the project's own packaging releases, choosing the macOS package for your architecture
+
+Example for Apple Silicon:
+``` shell
+curl -fsSLO https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-2/wkhtmltox-0.12.6-2.macos-cocoa.pkg
+sudo installer -pkg wkhtmltox-0.12.6-2.macos-cocoa.pkg -target /
+wkhtmltopdf --version
+```
+
+wkhtmltopdf --version should report with patched Qt
 
 ### Setup
 
