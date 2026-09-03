@@ -3,7 +3,7 @@ from http.client import HTTPMessage
 
 import pytest
 import responses
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 from requests import RequestException
 from urllib3.connectionpool import HTTPConnectionPool
 from urllib3.response import HTTPResponse

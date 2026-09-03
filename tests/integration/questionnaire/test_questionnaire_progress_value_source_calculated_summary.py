@@ -42,8 +42,7 @@ class TestQuestionnaireProgressValueSource(IntegrationTestCase):
     def go_to_hub(self):
         self.get("/questionnaire/")
 
-    # pylint: disable=locally-disabled, too-many-statements
-    def test_happy_path(self):
+    def test_happy_path(self):  # noqa: PLR0915
         self.launchSurveyV2(schema_name="test_progress_value_source_calculated_summary")
 
         self.assertInBody("Choose another section to complete")
@@ -144,8 +143,7 @@ class TestQuestionnaireProgressValueSource(IntegrationTestCase):
         # 12. James Bond section should be marked as complete
         self.assert_section_status(4, "Completed", ["James Bond"])
 
-    # pylint: disable=locally-disabled, too-many-statements
-    def test_calculated_summary_first_incomplete_then_complete(self):
+    def test_calculated_summary_first_incomplete_then_complete(self):  # noqa: PLR0915
         self.launchSurveyV2(schema_name="test_progress_value_source_calculated_summary")
 
         # 1. Start completing the first section

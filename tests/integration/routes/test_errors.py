@@ -1,4 +1,4 @@
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 
 from app.questionnaire.questionnaire_schema import DEFAULT_LANGUAGE_CODE
 from app.settings import (

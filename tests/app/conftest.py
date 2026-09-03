@@ -5,7 +5,7 @@ from http.client import HTTPMessage
 
 import fakeredis
 import pytest
-from mock import MagicMock
+from unittest.mock import MagicMock
 from mock.mock import Mock
 from requests.adapters import ConnectTimeoutError, ReadTimeoutError
 from urllib3.connectionpool import HTTPConnectionPool

@@ -13,7 +13,7 @@ def not_raises(exception):
     try:
         yield
     except exception as validation_error:
-        raise pytest.fail(f"{validation_error} RAISED")
+        raise pytest.fail(f"{validation_error} RAISED")  # noqa: EM102, B904
 
 
 SUPPLEMENTARY_DATA_PAYLOAD = {
