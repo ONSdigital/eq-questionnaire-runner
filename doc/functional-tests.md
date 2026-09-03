@@ -1,4 +1,6 @@
-**# Functional Tests
+> Note: This doc is based on the original work by `@ajmaddaford`.
+
+# Functional Tests
 
 ## Quick Reference
 
