@@ -25,12 +25,12 @@ if (( SHARD < 1 || SHARD > SHARD_COUNT )); then
   exit 1
 fi
 
-mapfile -t SPECS < <(find tests/functional/spec -type f -name "*.spec.js" | sort)
+mapfile -t SPECS < <(find tests/functional/spec -type f -name "*.spec.ts" | sort)
 
 SELECTED=()
 for i in "${!SPECS[@]}"; do
   if (( i % SHARD_COUNT + 1 == SHARD )); then
-    SELECTED+=("./${SPECS[$i]#tests/functional/}")
+    SELECTED+=("tests/functional/${SPECS[$i]#tests/functional/}")
   fi
 done
 

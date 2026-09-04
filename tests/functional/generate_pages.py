@@ -32,284 +32,263 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    "-s",
-    "--spec_file",
-    help="The file where the template spec should be written."
-    "This flag has no effect when using a schema directory",
-)
-
-parser.add_argument(
     "-r",
     "--require_path",
     default="../../base_pages",
-    help="The relative path from a page file to the directory containing the base/parent page classes. "
+    help="The relative path from a page file to the directory containing the base/parent page classes."
     'Defaults to ".."',
 )
 
-SPEC_PAGE_HEADER = "import helpers from '../helpers';\n\n"
-
-SPEC_PAGE_IMPORT = Template(
-    r"""import ${pageName}Page from '../generated_pages/${pageDir}/${pageFile}';
-"""
-)
-
-SPEC_EXAMPLE_TEST = Template(r"""
-describe("Example Test", () => {
-  beforeEach("Load the survey", () => {
-    browser.openQuestionnaire(schema);
-  });
-
-  it("Given..., When..., Then...", () => {
-
-  });
-});
-
-""")
-
 HEADER = Template(r"""// >>> WARNING THIS PAGE WAS AUTO-GENERATED - DO NOT EDIT!!! <<<
 import $basePage from "$relativeRequirePath/$basePageFile";
+import type { Page } from "@playwright/test";
 
 """)
 
 CLASS_NAME = Template(r"""class ${pageName}Page extends $basePage {
 """)
 
-SECTION_SUMMARY_PAGE_URL = r"""  url() { return `/questionnaire/sections/${this.pageName}`; }
+SECTION_SUMMARY_PAGE_URL = r"""  url(): string { return `/questionnaire/sections/${this.pageName}`; }
 
 """
 
 DEFINITION_TITLE_GETTER = Template(
-    r"""  definitionTitle() { return `[data-qa='${definitionId}-title']`; }
+    r"""  definitionTitle(): ReturnType<Page["locator"]> { return this.locator(`[data-qa='${definitionId}-title']`); }
 
 """
 )
 
 DEFINITION_CONTENT_GETTER = Template(
-    r"""  definitionContent() { return `[data-qa='${definitionId}-content']`; }
+    r"""  definitionContent(): ReturnType<Page["locator"]> { return this.locator(`[data-qa='${definitionId}-content']`); }
 
 """
 )
 
 GUIDANCE_PANEL_GETTER = Template(
-    r"""  guidancePanel(guidanceIndex) { return `[data-qa='${guidanceId}-${guidanceIndex}']`; }
+    r"""  guidancePanel(guidanceIndex: number): ReturnType<Page["locator"]> { return this.locator(`[data-qa='${guidanceId}-${guidanceIndex}']`); }
 
 """
 )
 
-CONTENT_ITEM_GETTER = Template(r"""  ${contentName}Content() { return `#${contentId}`; }
+CONTENT_ITEM_GETTER = Template(
+    r"""  ${contentName}Content(): ReturnType<Page["locator"]> { return this.locator(`#${contentId}`); }
 
-""")
+"""
+)
 
 QUESTION_ERROR_PANEL = Template(
-    r"""  ${questionName}ErrorPanel() { return `#${questionOrAnswerId}-error`; }
+    r"""  ${questionName}ErrorPanel(): ReturnType<Page["locator"]> { return this.locator(`#${questionOrAnswerId}-error`); }
 
 """
 )
 
-QUESTION_TITLE = Template(r"""  questionTitle() {
-    return `#${questionId}`;
-  }
+QUESTION_TITLE = Template(
+    r"""  questionTitle(): ReturnType<Page["locator"]> { return this.locator(`#${questionId}`); }
 
-""")
+"""
+)
 
-ANSWER_LEGEND_GETTER = Template(r"""  ${answerName}Legend() {
-    return `#${answerId} > legend`;
-  }
+ANSWER_LEGEND_GETTER = Template(
+    r"""  ${answerName}Legend(): ReturnType<Page["locator"]> { return this.locator(`#${answerId} > legend`); }
 
-""")
+"""
+)
 
-ANSWER_LABEL_GETTER = Template(r"""  ${answerName}Label() {
-    return `[for=${answerId}]`;
-  }
+ANSWER_LABEL_GETTER = Template(
+    r"""  ${answerName}Label(): ReturnType<Page["locator"]> { return this.locator(`[for=${answerId}]`); }
 
-""")
+"""
+)
 
-DYNAMIC_ANSWER_LABEL_GETTER = Template(r"""  answerLabelByIndex(answerIndex) {
-    return `[for=${answerId}-${answerIndex}]`;
-  }
+DYNAMIC_ANSWER_LABEL_GETTER = Template(
+    r"""  answerLabelByIndex(answerIndex: number): ReturnType<Page["locator"]> { return this.locator(`[for=${answerId}-${answerIndex}]`); }
 
-""")
+"""
+)
 
-ANSWER_ERROR_GETTER = Template(r"""  ${answerName}ErrorItem() {
-    return `#${answerId}-error .ons-panel__body .ons-panel__error`;
-  }
+ANSWER_ERROR_GETTER = Template(
+    r"""  ${answerName}ErrorItem(): ReturnType<Page["locator"]> { return this.locator(`#${answerId}-error .ons-panel__body .ons-panel__error`); }
 
-""")
+"""
+)
 
-ANSWER_NUMBERED_ERROR_LIST_GETTER = r"""  errorList() { return `ol[data-qa="error-list"]`; }
+ANSWER_NUMBERED_ERROR_LIST_GETTER = r"""  errorList(): ReturnType<Page["locator"]> { return this.locator(`ol[data-qa="error-list"]`); }
 
 """
 
-ANSWER_SINGLE_ERROR_LINK_GETTER = r"""  singleErrorLink() { return `p[data-qa="error-link-1"]`; }
+ANSWER_SINGLE_ERROR_LINK_GETTER = r"""  singleErrorLink(): ReturnType<Page["locator"]> { return this.locator(`p[data-qa="error-link-1"]`); }
 
 """
 
-ANSWER_LABEL_DESCRIPTION_GETTER = Template(r"""  ${answerName}LabelDescription() {
-    return `#${answerId}-label-description-hint`;
-  }
+ANSWER_LABEL_DESCRIPTION_GETTER = Template(
+    r"""  ${answerName}LabelDescription(): ReturnType<Page["locator"]> { return this.locator(`#${answerId}-label-description-hint`); }
 
-""")
+"""
+)
 
-ANSWER_GETTER = Template(r"""  ${answerName}() {
-    return `#${answerId}`;
-  }
+ANSWER_GETTER = Template(
+    r"""  ${answerName}(): ReturnType<Page["locator"]> { return this.locator(`#${answerId}`); }
 
-""")
+"""
+)
 
-ANSWER_SUFFIX_GETTER = Template(r"""  ${answerName}Suffix() {
-    return `#${answerId} + span`;
-  }
+ANSWER_SUFFIX_GETTER = Template(
+    r"""  ${answerName}Suffix(): ReturnType<Page["locator"]> { return this.locator(`#${answerId} + span`); }
 
-""")
+"""
+)
 
-QUESTION_LABELS_GETTER = r"""  labels() { return `.ons-label`; }
+QUESTION_LABELS_GETTER = r"""  labels(): ReturnType<Page["locator"]> { return this.locator(`.ons-label`); }
 
 """
 
-QUESTION_INPUTS_GETTER = r"""  inputs() { return `[data-qa="input-text"]`; }
+QUESTION_INPUTS_GETTER = r"""  inputs(): ReturnType<Page["locator"]> { return this.locator(`[data-qa="input-text"]`); }
 
 """
 
-DYNAMIC_ANSWER_GETTER = Template(r"""  answerByIndex(answerIndex) {
-    return `#${answerId}-${answerIndex}`;
-  }
+DYNAMIC_ANSWER_GETTER = Template(
+    r"""  answerByIndex(answerIndex: number): ReturnType<Page["locator"]> { return this.locator(`#${answerId}-${answerIndex}`); }
 
-""")
+"""
+)
 
-BLOCK_DESCRIPTION = Template(r"""  ${block_name}Description() {
-    return `div.block__description`;
-  }
+BLOCK_DESCRIPTION = Template(
+    r"""  ${block_name}Description(): ReturnType<Page["locator"]> { return this.locator(`div.block__description`); }
 
-""")
+"""
+)
 
-ANSWER_UNIT_TYPE_GETTER = Template(r"""  ${answerName}Unit() {
-    return `#${answerId}-type`;
-  }
+ANSWER_UNIT_TYPE_GETTER = Template(
+    r"""  ${answerName}Unit(): ReturnType<Page["locator"]> { return this.locator(`#${answerId}-type`); }
 
-""")
+"""
+)
 
 SUMMARY_ANSWER_GETTER = Template(
-    r"""  ${answerName}() { return `[data-qa="${answerId}"]`; }
+    r"""  ${answerName}(): ReturnType<Page["locator"]> { return this.locator(`[data-qa="${answerId}"]`); }
 
 """
 )
 
 SUMMARY_ANSWER_EDIT_GETTER = Template(
-    r"""  ${answerName}Edit() { return `[data-qa="${answerId}-edit"]`; }
+    r"""  ${answerName}Edit(): ReturnType<Page["locator"]> { return this.locator(`[data-qa="${answerId}-edit"]`); }
 
 """
 )
 
 SUMMARY_TITLE_GETTER = Template(
-    r"""  ${group_id_camel}Title() { return `#${group_id} .ons-summary__group-title`; }
+    r"""  ${group_id_camel}Title(): ReturnType<Page["locator"]> { return this.locator(`#${group_id} .ons-summary__group-title`); }
 
 """
 )
 
 SUMMARY_GROUP_GETTER = Template(
-    r"""  ${group_id_camel}Content(groupNumber) { return `#${group_id_without_number}-` + groupNumber; }
+    r"""  ${group_id_camel}Content(groupNumber: number | string): ReturnType<Page["locator"]> { return this.locator(`#${group_id_without_number}-` + groupNumber); }
 
 """
 )
 
 SUMMARY_QUESTION_GETTER = Template(
-    r"""  ${questionName}() { return `[data-qa=${questionId}]`; }
+    r"""  ${questionName}(): ReturnType<Page["locator"]> { return this.locator(`[data-qa=${questionId}]`); }
 
 """
 )
 
-COLLAPSIBLE_SUMMARY_GETTER = r"""  collapsibleSummary() { return `#summary-accordion`; }
+COLLAPSIBLE_SUMMARY_GETTER = r"""  collapsibleSummary(): ReturnType<Page["locator"]> { return this.locator(`#summary-accordion`); }
 
 """
 
 CALCULATED_SUMMARY_LABEL_GETTER = Template(
-    r"""  ${answerName}Label() { return `[data-qa=${answerId}-label]`; }
+    r"""  ${answerName}Label(): ReturnType<Page["locator"]> { return this.locator(`[data-qa=${answerId}-label]`); }
 
 """
 )
 
-LIST_SUMMARY_LABEL_GETTER = r"""  listLabel(instance) { return `[data-qa='list-item-${instance}-label']`; }
+LIST_SUMMARY_LABEL_GETTER = r"""  listLabel(instance: number): ReturnType<Page["locator"]> { return this.locator(`[data-qa='list-item-${instance}-label']`); }
 
 """
 
-LIST_SUMMARY_EDIT_LINK_GETTER = r"""  listEditLink(instance) { return `[data-qa='list-item-change-${instance}-link']`; }
+LIST_SUMMARY_EDIT_LINK_GETTER = r"""  listEditLink(instance: number): ReturnType<Page["locator"]> { return this.locator(`[data-qa='list-item-change-${instance}-link']`); }
 
 """
 
-LIST_SUMMARY_REMOVE_LINK_GETTER = r"""  listRemoveLink(instance) { return `[data-qa='list-item-remove-${instance}-link']`; }
+LIST_SUMMARY_REMOVE_LINK_GETTER = r"""  listRemoveLink(instance: number): ReturnType<Page["locator"]> { return this.locator(`[data-qa='list-item-remove-${instance}-link']`); }
 
 """
 
-LIST_SUMMARY_LIST_GETTER = r"""  listSummary() { return `.ons-list__item`; }
+LIST_SUMMARY_LIST_GETTER = r"""  listSummary(): ReturnType<Page["locator"]> { return this.locator(`.ons-list__item`); }
 
 """
-
 LIST_SECTION_SUMMARY_LABEL_GETTER = Template(
-    r"""  ${list_name}ListLabel(listItemInstance) { return `div[data-qa="${list_name}-list-summary"] dt[data-qa="list-item-` + listItemInstance + `-label"]`; }
+    r"""  ${list_name}ListLabel(listItemInstance: number): ReturnType<Page["locator"]> { return this.locator(`div[data-qa="${list_name}-list-summary"] dt[data-qa="list-item-` + listItemInstance + `-label"]`); }
 
 """
 )
 
 LIST_SECTION_SUMMARY_ADD_LINK_GETTER = Template(
-    r"""  ${list_name}ListAddLink() { return `div[data-qa="${list_name}-list-summary"] a[data-qa="add-item-link"]`; }
+    r"""  ${list_name}ListAddLink(): ReturnType<Page["locator"]> { return this.locator(`div[data-qa="${list_name}-list-summary"] a[data-qa="add-item-link"]`); }
 
 """
 )
 
-# pylint: disable=line-too-long
 LIST_SECTION_SUMMARY_EDIT_LINK_GETTER = Template(
-    r"""  ${list_name}ListEditLink(listItemInstance) { return `div[data-qa="${list_name}-list-summary"] a[data-qa="list-item-change-` + listItemInstance + `-link"]`; }
+    r"""  ${list_name}ListEditLink(listItemInstance: number): ReturnType<Page["locator"]> { return this.locator(`div[data-qa="${list_name}-list-summary"] a[data-qa="list-item-change-` + listItemInstance + `-link"]`); }
 
 """
 )
-# pylint: disable=line-too-long
+
 LIST_SECTION_SUMMARY_REMOVE_LINK_GETTER = Template(
-    r"""  ${list_name}ListRemoveLink(listItemInstance) { return `div[data-qa="${list_name}-list-summary"] a[data-qa="list-item-remove-` + listItemInstance + `-link"]`; }
+    r"""  ${list_name}ListRemoveLink(listItemInstance: number): ReturnType<Page["locator"]> { return this.locator(`div[data-qa="${list_name}-list-summary"] a[data-qa="list-item-remove-` + listItemInstance + `-link"]`); }
 
 """
 )
 
 NON_ITEM_ANSWERS_LIST_SECTION_SUMMARY_LABEL_GETTER = Template(
-    r"""  ${list_name}ListLabel(listItemInstance) { return `dt[data-qa="list-item-` + listItemInstance + `-label"]`; }
+    r"""  ${list_name}ListLabel(listItemInstance: number): ReturnType<Page["locator"]> { return this.locator(`dt[data-qa="list-item-` + listItemInstance + `-label"]`); }
 
 """
 )
 
 NON_ITEM_ANSWERS_LIST_SECTION_SUMMARY_ADD_LINK_GETTER = Template(
-    r"""  ${list_name}ListAddLink() { return `a[data-qa="add-item-link"]`; }
+    r"""  ${list_name}ListAddLink(): ReturnType<Page["locator"]> { return this.locator(`a[data-qa="add-item-link"]`); }
 
 """
 )
-
+# pylint: disable=line-too-long
 NON_ITEM_ANSWERS_LIST_SECTION_SUMMARY_EDIT_LINK_GETTER = Template(
-    r"""  ${list_name}ListEditLink(listItemInstance) { return `a[data-qa="list-item-change-` + listItemInstance + `-link"]`; }
+    r"""  ${list_name}ListEditLink(listItemInstance: number): ReturnType<Page["locator"]> { return this.locator(`a[data-qa="list-item-change-` + listItemInstance + `-link"]`); }
 
 """
 )
+# pylint: disable=line-too-long
 NON_ITEM_ANSWERS_LIST_SECTION_SUMMARY_REMOVE_LINK_GETTER = Template(
-    r"""  ${list_name}ListRemoveLink(listItemInstance) { return `a[data-qa="list-item-remove-` + listItemInstance + `-link"]`; }
+    r"""  ${list_name}ListRemoveLink(listItemInstance: number): ReturnType<Page["locator"]> { return this.locator(`a[data-qa="list-item-remove-` + listItemInstance + `-link"]`); }
 
 """
 )
 
-RELATIONSHIP_PLAYBACK_GETTER = r"""  playback() { return `[class*="relationships__playback"]`; }
+RELATIONSHIP_PLAYBACK_GETTER = r"""  playback(): ReturnType<Page["locator"]> { return this.locator(`[class*="relationships__playback"]`); }
 
 """
 
-CLEAR_SELECTION_BUTTON_GETTER = r"""  clearSelectionButton() { return `.ons-js-clear-btn`; }
+CLEAR_SELECTION_BUTTON_GETTER = r"""  clearSelectionButton(): ReturnType<Page["locator"]> { return this.locator(`.ons-js-clear-btn`); }
 
 """
 
-CONSTRUCTOR = Template(r"""  constructor() {
-    super(`${page_id}`);
-  }
+CONSTRUCTOR = Template(r"""  constructor(page: Page) {
+        super(page, `${page_id}`);
+    }
 
 """)
 
 FOOTER = Template(r"""}
 
-export default new ${pageName}Page();
+export default ${pageName}Page;
 """)
+
+
+def page_file_suffix():
+    return ".page.ts"
 
 
 def generate_pascal_case_from_id(id_str):
@@ -488,8 +467,9 @@ def process_calculated_summary(answers, page_spec):
         page_spec.write(CALCULATED_SUMMARY_LABEL_GETTER.substitute(answer_context))
 
 
-def process_final_summary(schema_data, require_path, dir_out, spec_file, collapsible):
-    page_filename = "submit.page.js"
+def process_final_summary(schema_data, require_path, dir_out, collapsible):
+    page_filename = f"submit{page_file_suffix()}"
+    base_page_file = "submit.page"
     page_path = os.path.join(dir_out, page_filename)
 
     logger.info("creating %s...", page_path)
@@ -499,7 +479,7 @@ def process_final_summary(schema_data, require_path, dir_out, spec_file, collaps
             page_dir=dir_out.split("/")[-1],
             page_spec=page_spec,
             base_page="SubmitBasePage",
-            base_page_file=page_filename,
+            base_page_file=base_page_file,
             page_name="Submit",
             page_filename=page_filename,
             page_id="submit",
@@ -516,12 +496,9 @@ def process_final_summary(schema_data, require_path, dir_out, spec_file, collaps
 
         page_spec.write(FOOTER.substitute(block_context))
 
-        if spec_file:
-            append_spec_page_import(block_context, spec_file)
 
-
-def process_view_submitted_response(schema_data, require_path, dir_out, spec_file):
-    page_filename = "view-submitted-response.page.js"
+def process_view_submitted_response(schema_data, require_path, dir_out):
+    page_filename = f"view-submitted-response{page_file_suffix()}"
     page_path = os.path.join(dir_out, page_filename)
 
     logger.info("creating %s...", page_path)
@@ -546,9 +523,6 @@ def process_view_submitted_response(schema_data, require_path, dir_out, spec_fil
             )
 
         page_spec.write(FOOTER.substitute(block_context))
-
-        if spec_file:
-            append_spec_page_import(block_context, spec_file)
 
 
 def process_definition(context, page_spec):
@@ -668,41 +642,48 @@ def long_names_required(question, num_questions):
 
 
 def _write_date_answer(answer_id, prefix):
+    day_name = camel_case(prefix + "Day")
+    month_name = camel_case(prefix + "Month")
+    year_name = camel_case(prefix + "Year")
+
     return (
         ANSWER_GETTER.substitute(
-            {"answerName": prefix + "day", "answerId": answer_id + "-day"}
+            {"answerName": day_name, "answerId": answer_id + "-day"}
         )
         + ANSWER_GETTER.substitute(
-            {"answerName": prefix + "month", "answerId": answer_id + "-month"}
+            {"answerName": month_name, "answerId": answer_id + "-month"}
         )
         + ANSWER_GETTER.substitute(
-            {"answerName": prefix + "year", "answerId": answer_id + "-year"}
+            {"answerName": year_name, "answerId": answer_id + "-year"}
         )
         + ANSWER_LABEL_GETTER.substitute(
-            {"answerName": prefix + "day", "answerId": answer_id + "-day"}
+            {"answerName": day_name, "answerId": answer_id + "-day"}
         )
         + ANSWER_LABEL_GETTER.substitute(
-            {"answerName": prefix + "month", "answerId": answer_id + "-month"}
+            {"answerName": month_name, "answerId": answer_id + "-month"}
         )
         + ANSWER_LABEL_GETTER.substitute(
-            {"answerName": prefix + "year", "answerId": answer_id + "-year"}
+            {"answerName": year_name, "answerId": answer_id + "-year"}
         )
     )
 
 
 def _write_month_year_date_answer(answer_id, prefix):
+    month_name = camel_case(prefix + "Month")
+    year_name = camel_case(prefix + "Year")
+
     return (
         ANSWER_GETTER.substitute(
-            {"answerName": prefix + "Month", "answerId": answer_id + "-month"}
+            {"answerName": month_name, "answerId": answer_id + "-month"}
         )
         + ANSWER_GETTER.substitute(
-            {"answerName": prefix + "Year", "answerId": answer_id + "-year"}
+            {"answerName": year_name, "answerId": answer_id + "-year"}
         )
         + ANSWER_LABEL_GETTER.substitute(
-            {"answerName": prefix + "Month", "answerId": answer_id + "-month"}
+            {"answerName": month_name, "answerId": answer_id + "-month"}
         )
         + ANSWER_LABEL_GETTER.substitute(
-            {"answerName": prefix + "Year", "answerId": answer_id + "-year"}
+            {"answerName": year_name, "answerId": answer_id + "-year"}
         )
     )
 
@@ -710,10 +691,11 @@ def _write_month_year_date_answer(answer_id, prefix):
 def _write_duration_answer(answer_id, units, prefix):
     resp = []
     for unit in units:
+        answer_name = camel_case(f"{prefix}{unit.title()}")
         resp.append(
             ANSWER_GETTER.substitute(
                 {
-                    "answerName": f"{prefix}{unit.title()}",
+                    "answerName": answer_name,
                     "answerId": f"{answer_id}-{unit}",
                 }
             )
@@ -725,10 +707,11 @@ def _write_duration_answer(answer_id, units, prefix):
 def _write_duration_suffix(answer_id, units, prefix):
     resp = []
     for unit in units:
+        answer_name = camel_case(f"{prefix}{unit.title()}")
         resp.append(
             ANSWER_SUFFIX_GETTER.substitute(
                 {
-                    "answerName": f"{prefix}{unit.title()}",
+                    "answerName": answer_name,
                     "answerId": f"{answer_id}-{unit}",
                 }
             )
@@ -740,10 +723,11 @@ def _write_duration_suffix(answer_id, units, prefix):
 def _write_address_answer(answer_id, prefix):
     resp = []
     for address_field in ["line1", "line2", "town", "postcode"]:
+        answer_name = camel_case(f"{prefix}{address_field.title()}")
         resp.append(
             ANSWER_GETTER.substitute(
                 {
-                    "answerName": f"{prefix}{address_field.title()}",
+                    "answerName": answer_name,
                     "answerId": f"{answer_id}-{address_field}",
                 }
             )
@@ -790,12 +774,12 @@ def build_and_get_base_page_context(
 
 # pylint: disable=too-many-branches,too-many-statements,too-many-locals,too-complex
 def process_block(
-    block, dir_out, schema_data, spec_file, relative_require="..", page_filename=None
+    block, dir_out, schema_data, relative_require="..", page_filename=None
 ):
     logger.debug("Processing Block: %s", block["id"])
 
     if not page_filename:
-        page_filename = block["id"] + ".page.js"
+        page_filename = block["id"] + page_file_suffix()
 
     if block["type"] in {"ListCollector", "ListCollectorContent"}:
         for repeating_block in block.get("repeating_blocks", []):
@@ -803,9 +787,8 @@ def process_block(
                 repeating_block,
                 dir_out,
                 schema_data,
-                spec_file,
                 relative_require,
-                page_filename=f'{repeating_block["id"]}-repeating-block.page.js',
+                page_filename=f'{repeating_block["id"]}-repeating-block{page_file_suffix()}',
             )
 
     if block["type"] == "ListCollector":
@@ -815,9 +798,8 @@ def process_block(
                 block[f"{list_operation}_block"],
                 dir_out,
                 schema_data,
-                spec_file,
                 relative_require,
-                page_filename=f'{block["id"]}-{list_operation}.page.js',
+                page_filename=f'{block["id"]}-{list_operation}{page_file_suffix()}',
             )
 
     if block["type"] == "PrimaryPersonListCollector":
@@ -825,9 +807,8 @@ def process_block(
             block["add_or_edit_block"],
             dir_out,
             schema_data,
-            spec_file,
             relative_require,
-            page_filename=f'{block["id"]}-add.page.js',
+            page_filename=f'{block["id"]}-add{page_file_suffix()}',
         )
 
     if block["type"] == "RelationshipCollector" and "unrelated_block" in block:
@@ -835,9 +816,8 @@ def process_block(
             block["unrelated_block"],
             dir_out,
             schema_data,
-            spec_file,
             relative_require,
-            page_filename=f'{block["unrelated_block"]["id"]}.page.js',
+            page_filename=f'{block["unrelated_block"]["id"]}{page_file_suffix()}',
         )
 
     page_path = os.path.join(dir_out, page_filename)
@@ -921,7 +901,8 @@ def process_block(
                 if value["source"] == "calculated_summary"
             ]
 
-            # each calculated summary in a grand calculated summary is constructed such that it will have a single "answer" linking back to it
+            # each calculated summary in a grand calculated summary is constructed such that
+            # it will have a single "answer" linking back to it
             # so the processing for calculated summaries can be directly reused.
             process_calculated_summary(calculated_summary_ids, page_spec)
 
@@ -964,9 +945,6 @@ def process_block(
 
         page_spec.write(FOOTER.substitute(block_context))
 
-        if spec_file:
-            append_spec_page_import(block_context, spec_file)
-
 
 def _has_definitions_in_block_contents(block_contents):
     return any("definition" in element for element in block_contents)
@@ -990,7 +968,7 @@ def _get_dictionaries_with_key(
                     yield from _get_dictionaries_with_key(key, element)
 
 
-def process_schema(in_schema, out_dir, spec_file, require_path=".."):
+def process_schema(in_schema, out_dir, require_path=".."):
     try:
         with open(in_schema, encoding="utf-8") as schema:
             data = json_loads(schema.read())
@@ -1003,22 +981,20 @@ def process_schema(in_schema, out_dir, spec_file, require_path=".."):
     except IndexError:
         os.mkdir(out_dir)
 
-    process_questionnaire_flow(data, require_path, out_dir, spec_file)
+    process_questionnaire_flow(data, require_path, out_dir)
 
     if data.get("post_submission", {}).get("view_response"):
-        process_view_submitted_response(data, require_path, out_dir, spec_file)
+        process_view_submitted_response(data, require_path, out_dir)
 
     for section in data["sections"]:
         if "summary" in section:
-            process_section_summary(
-                section["id"], out_dir, section, spec_file, require_path
-            )
+            process_section_summary(section["id"], out_dir, section, require_path)
         for group in section["groups"]:
             for block in group["blocks"]:
-                process_block(block, out_dir, data, spec_file, require_path)
+                process_block(block, out_dir, data, require_path)
 
 
-def process_questionnaire_flow(schema_data, require_path, dir_out, spec_file):
+def process_questionnaire_flow(schema_data, require_path, dir_out):
     questionnaire_flow = schema_data["questionnaire_flow"]
     options = questionnaire_flow.get("options", {})
 
@@ -1031,18 +1007,17 @@ def process_questionnaire_flow(schema_data, require_path, dir_out, spec_file):
             schema_data,
             require_path,
             dir_out,
-            spec_file,
             collapsible,
         )
 
 
 def process_section_summary(
-    section_id, dir_out, section, spec_file, relative_require="..", page_filename=None
+    section_id, dir_out, section, relative_require="..", page_filename=None
 ):
     logger.debug("Processing section summary: %s", section_id)
 
     if not page_filename:
-        page_filename = f"{section_id}-summary.page.js"
+        page_filename = f"{section_id}-summary{page_file_suffix()}"
 
     page_path = os.path.join(dir_out, page_filename)
 
@@ -1052,7 +1027,7 @@ def process_section_summary(
         section_context = {
             "pageName": generate_pascal_case_from_id(section_id),
             "basePage": "SubmitBasePage",
-            "basePageFile": "submit.page.js",
+            "basePageFile": "submit.page",
             "pageDir": dir_out.split("/")[-1],
             "pageFile": page_filename,
             "page_id": section_id,
@@ -1079,51 +1054,22 @@ def process_section_summary(
         )
         page_spec.write(FOOTER.substitute(section_context))
 
-        if spec_file:
-            append_spec_page_import(section_context, spec_file)
-
-
-def append_spec_page_import(context, spec_file):
-    with open(spec_file, "a", encoding="utf-8") as required_template_spec:
-        required_template_spec.write(SPEC_PAGE_IMPORT.substitute(context))
-
 
 if __name__ == "__main__":
     args = parser.parse_args()
 
-    template_spec_file = args.spec_file
-
     os.makedirs(args.OUT_DIRECTORY, exist_ok=True)
 
-    if template_spec_file:
-        os.makedirs(os.path.dirname(template_spec_file), exist_ok=True)
-        with open(template_spec_file, "w", encoding="utf-8") as template_spec:
-            template_spec.write(SPEC_PAGE_HEADER)
-            template_spec.close()
-
-            process_schema(
-                args.SCHEMA, args.OUT_DIRECTORY, template_spec_file, args.require_path
-            )
-
-            with open(template_spec_file, "a", encoding="utf-8") as template_spec:
-                schema_name = {"schema": os.path.basename(args.SCHEMA)}
-                template_spec.write(SPEC_EXAMPLE_TEST.substitute(schema_name))
-    else:
-        if os.path.isdir(args.SCHEMA):
-            for root, dirs, files in os.walk(args.SCHEMA):
-                for file in [os.path.join(root, file) for file in files]:
-                    filename = os.path.basename(file)
-                    logger.info("File %s", filename)
-                    if filename[0] == ".":
-                        continue
-                    output_dir = os.path.join(
-                        args.OUT_DIRECTORY, filename.split(".")[0].replace("test_", "")
-                    )
-                    if not os.path.exists(output_dir):
-                        os.makedirs(output_dir)
-                    process_schema(file, output_dir, None, args.require_path)
-
-        else:
-            process_schema(
-                args.SCHEMA, args.OUT_DIRECTORY, template_spec_file, args.require_path
-            )
+    if os.path.isdir(args.SCHEMA):
+        for root, dirs, files in os.walk(args.SCHEMA):
+            for file in [os.path.join(root, file) for file in files]:
+                filename = os.path.basename(file)
+                logger.info("File %s", filename)
+                if filename[0] == ".":
+                    continue
+                output_dir = os.path.join(
+                    args.OUT_DIRECTORY, filename.split(".")[0].replace("test_", "")
+                )
+                if not os.path.exists(output_dir):
+                    os.makedirs(output_dir)
+                process_schema(file, output_dir, args.require_path)

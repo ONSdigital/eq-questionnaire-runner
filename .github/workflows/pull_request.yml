@@ -177,7 +177,11 @@ jobs:
       - name: Install virtual environment
         run: poetry install
       - name: Install npm deps
-        run: npm install
+        run: npm ci
+      - name: Install Playwright browser deps
+        run: npx playwright install --with-deps chromium
+      - name: Generate Playwright pages
+        run: make generate-pages
       - name: Docker compose
         run: docker compose --version && RUNNER_ENV_FILE=.functional-tests.env docker compose -f docker-compose-functional.yml up --build -d
       - name: Get specs for this shard
@@ -190,7 +194,7 @@ jobs:
         env:
          SPECS: ${{ env.SPECS }}
       - name: Run functional tests
-        run: make test-functional
+        run: npx playwright test --reporter list
         env:
          SPECS: ${{ env.SPECS }}
       - name: Docker compose shutdown
