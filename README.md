@@ -81,30 +81,46 @@ git clone git@github.com:ONSdigital/eq-questionnaire-runner.git
 ### Pre-Requisites
 
 The following must be installed and working before you start:
-- Miniconda: Python, node and system package management (install from Self Service)
+- Miniconda: Python, node and system package management (install from source, see bellow)
 - Podman: Container runtime for supporting services (machine created and running)
 - wkhtmltopdf: PDF generation (installed separately, see below)
 - gcloud: Pulling images from Google Artifact Registry
 
-Python, Node.js, Poetry, snappy and jq are all provided by the conda environment created in setup
-Verify each is available
+Example conda installation:
+``` shell
+curl -L -o /tmp/miniconda.sh \
+https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh
 
+bash /tmp/miniconda.sh -b -p $HOME/miniconda3
+
+$HOME/miniconda3/bin/conda init zsh
+
+```
+
+Verify
 ``` shell
 conda --version
+```
+
+If `conda` reports `command not found`, the installer did not write the conda block into `~/.zshrc`
+Confirm the install is present and wire it in:
+
+``` shell
+ls -d $HOME/miniconda3
+$HOME/miniconda3/bin/conda init zsh
+```
+
+Open a new terminal tab and re-check `conda --version`
+
+Python, Node.js, Poetry, snappy and jq are all provided by the conda environment created in `environment.yml`
+
+Verify if the remaining prerequisites are available:
+
+``` shell
 podman --version
 gcloud --version
 make --version
 ```
-
-If `conda` reports `command not found` after installing from Self Service, the installer did not write the conda block into `~/.zshrc`/
-Confirm the install is present and wire it in:
-
-``` shell
-ls -d /opt/miniconda3
-/opt/miniconda3/bin/conda init zsh
-```
-
-Open a new terminal tab and re-check `conda --version`
 
 Make sure that the Podman machine is running:
 
@@ -113,9 +129,19 @@ podman machine list
 podman machine start
 ```
 
-`wkhtmltopdf` is nor reliably available on conda-forge for macOS ARM, so it is installed outside the conda environment.
+`wkhtmltopdf` is not reliably available on conda-forge for macOS ARM, so it is installed outside the conda environment.
 Download the macOS `.pkg` from the wkhtmltopdf downloads page and run the installer.
 Note that wkhtmltopdf is an archived project and no longer receives updates.
+
+Or install it from command line. Example:
+
+``` shell
+curl -L -o /tmp/wkhtmltox-0.12.6.pkg \
+  https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox-0.12.6-1.macos-cocoa.pkg
+
+sudo installer -pkg /tmp/wkhtmltox-0.12.6.pkg -target /
+```
+
 Check if it is correctly installed:
 
 ``` shell
@@ -167,6 +193,10 @@ conda activate eq-runner
 
 Version can be changed by editing `environment.yml` and running `conda env update -f environment.yml --prune`
 
+If `conda env create` fails with `NoWritablePkgsDirError` or a permission error
+on the notices cache, run **Repair ownership of user conda directory** in Self
+Service, then retry.
+
 #### Poetry
 
 Poetry must install into the conda environment rather than creating its own virtualenv.
@@ -211,6 +241,14 @@ Install the JavaScript dependencies:
 ``` shell
 npm ci
 ```
+
+When updating dependencies, use `poetry update`, only where appropriate:
+
+- Patching a transitive dependency that Dependabot cannot bump directly
+- A periodic refresh of the whole tree, followed by a full test run
+- Regenerating the lock after changing a version constraint in `pyproject.toml`
+
+Prefer `poetry update <package>` to update specific package and its dependencies
 
 #### Design system templates
 
