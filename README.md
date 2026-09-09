@@ -9,9 +9,9 @@
 [![poetry-managed](https://img.shields.io/badge/poetry-managed-blue)](https://python-poetry.org/)
 [![License - MIT](https://img.shields.io/badge/licence%20-MIT-1ac403.svg)](https://github.com/ONSdigital/eq-questionnaire-runner/blob/main/LICENSE)
 
-## Run with Docker
+## Run with Podman
 
-Install Podman for your system as the container runtime.
+Install Podman from Self Service as the container runtime.
 
 Make sure the Podman machine started every time you want to use container images:
 
@@ -19,38 +19,20 @@ Make sure the Podman machine started every time you want to use container images
 podman machine start
 ```
 
-Podman is API-compatible with Docker, so provide a `docker` command that points at it. This is still needed for the plain `docker run` commands used later in this README (e.g. running launcher, SDS, CIR images):
+The Makefile detects the container runtime automatically (Podman on arm64, Docker on amd64).
 
-```shell
-mkdir -p ~/.local/bin
-ln -s "$(which podman)" ~/.local/bin/docker
-hash -r
-```
-
-`~/.local/bin` must be on your `PATH`. Verify:
-
-```shell
-docker --version
-```
-
-The Makefile and the commands below use the standalone `docker-compose` binary (not the
-`docker compose` plugin), so install `podman-compose` to provide it:
+For convenience when typing container commands, add an alies to your shell profile:
 
 ``` shell
-conda install -c conda-forge podman-compose
+alias docker='podman'
 ```
 
-Confirm the binary is present:
-
-``` shell
-which docker-compose
-docker-compose version
-```
+This will only affect interactive shells. Make targets use the Makefile's runtime detection instead.
 
 To get eq-questionnaire-runner running the following command will build and run the containers
 
 ``` shell
-RUNNER_ENV_FILE=.development.env docker-compose up -d
+RUNNER_ENV_FILE=.development.env podman compose up -d
 ```
 
 To launch a survey, navigate to [http://localhost:8000/](http://localhost:8000/)
@@ -61,13 +43,13 @@ However, any new dependencies that are added would require a re-build.
 To rebuild the eq-questionnaire-runner container, the following command can be used.
 
 ``` shell
-RUNNER_ENV_FILE=.development.env docker-compose build
+RUNNER_ENV_FILE=.development.env podman compose build
 ```
 
 If you need to rebuild the container from scratch to re-load any dependencies then you can run the following
 
 ``` shell
-RUNNER_ENV_FILE=.development.env docker-compose build --no-cache
+RUNNER_ENV_FILE=.development.env podman compose build --no-cache
 ```
 
 ## Run locally
@@ -197,21 +179,6 @@ If `conda env create` fails with `NoWritablePkgsDirError` or a permission error
 on the notices cache, run **Repair ownership of user conda directory** in Self
 Service, then retry.
 
-#### Poetry
-
-Poetry must install into the conda environment rather than creating its own virtualenv.
-Set this on the environment so that no configuration file is left in the repository:
-
-``` shell
-conda env config vars set POETRY_VIRTUALENVS_CREATE=false
-conda deactivate && conda activate eq-runner
-```
-Confirm it took effect, this must print `false`:
-
-``` shell
-echo $POETRY_VIRTUALENVS_CREATE
-```
-
 #### Build flags for python-snappy
 
 `python-snappy` compiles against `libsnappy`, which is provided by the conda environment.
@@ -285,7 +252,7 @@ First, authenticate to make sure Docker can pull from GAR
 gcloud auth login
 ```
 
-To run the app locally, but the supporting services in Docker, make sure you have Docker and Colima installed [from this step](#run-with-docker), then run:
+To run the app locally, but the supporting services in containers, make sure you have Podman installed and machine is running [from this step](#run-with-docker), then run:
 
 ``` shell
 make dev-compose-up
@@ -301,28 +268,36 @@ make dev-compose-up-linux
 
 ##### [Questionnaire launcher](https://github.com/ONSDigital/eq-questionnaire-launcher)
 
+Note: the eq-questionnaire-launcher image published to Artifact Registry is amd64-only
+and segfaults under emulation on Apple Silicon. Use the compose setup above,
+which runs it successfully.
+
 ``` shell
-docker run -e SURVEY_RUNNER_SCHEMA_URL=http://host.docker.internal:5000 -e SDS_API_BASE_URL=http://host.docker.internal:5003 -e CIR_API_BASE_URL=http://host.docker.internal:5004 -it -p 8000:8000 europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/eq-questionnaire-launcher:latest
+podman run -e SURVEY_RUNNER_SCHEMA_URL=http://host.docker.internal:5000 -e SDS_API_BASE_URL=http://host.docker.internal:5003 -e CIR_API_BASE_URL=http://host.docker.internal:5004 -it -p 8000:8000 europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/eq-questionnaire-launcher:latest
 ```
 
 ##### [Mock Supplementary data service](https://github.com/ONSDigital/eq-runner-mock-sds)
 
 ``` shell
-docker run -it -p 5003:5003 europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/sds:latest
+podman run -it -p 5003:5003 europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/sds:latest
 ```
 
 ##### [Mock Collection Instrument Registry](https://github.com/ONSDigital/eq-runner-mock-cir)
 
 ``` shell
-docker run -it -p 5004:5004 europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/cir:latest
+podman run -it -p 5004:5004 europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/cir:latest
 ```
 
 ##### Storage backends
 
+Note: the DynamoDB and Datastore emulator images referenced below are hosted
+in third-party registries and may no longer be accessible. The compose setup
+above uses maintained images and is the recommended path.
+
 [DynamoDB](https://github.com/ONSDigital/eq-docker-dynamodb)
 
 ``` shell
-docker run -it -p 6060:8000 onsdigital/eq-docker-dynamodb:latest
+podman run -it -p 6060:8000 onsdigital/eq-docker-dynamodb:latest
 ```
 
 or
@@ -330,13 +305,13 @@ or
 [Google Datastore](https://hub.docker.com/r/knarz/datastore-emulator/)
 
 ``` shell
-docker run -it -p 8432:8432 knarz/datastore-emulator:latest
+podman run -it -p 8432:8432 knarz/datastore-emulator:latest
 ```
 
 ##### Cache
 
 ``` shell
-docker run -it -p 6379:6379 redis:4
+podman run -it -p 6379:6379 redis:4
 ```
 
 #### Using Google Cloud Platform for supporting services
