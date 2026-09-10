@@ -1,6 +1,6 @@
 # pylint: disable=redefined-outer-name
 import pytest
-from mock import MagicMock, Mock
+from unittest.mock import MagicMock, Mock
 
 from app.data_models import AnswerStore, ListStore, ProgressStore, QuestionnaireStore
 from app.data_models.progress import CompletionStatus, ProgressDict

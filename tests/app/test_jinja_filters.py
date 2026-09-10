@@ -7,7 +7,7 @@ from decimal import Decimal
 import pytest
 import simplejson as json
 from flask import g
-from mock import Mock
+from unittest.mock import Mock
 
 from app.jinja_filters import (
     OtherConfig,
@@ -41,15 +41,15 @@ TEST_FORMAT_CURRENCY_PARAMS = (
         # currency precision value. If the number of decimal places entered by the user is greater than the currency
         # precision value then we will display the number of decimal places as entered by the user
         # The Jordanian Dinar is used as an example in this test case as the currency precision is set to .000
-        (Decimal("2"), "GBP", "en_GB", None, "£2"),
-        (Decimal("2"), "JOD", "en_GB", None, "JOD2"),
+        (Decimal(2), "GBP", "en_GB", None, "£2"),
+        (Decimal(2), "JOD", "en_GB", None, "JOD2"),
         (Decimal("2.1"), "GBP", "en_GB", None, "£2.10"),
         (Decimal("2.1"), "JOD", "en_GB", None, "JOD2.100"),
-        (Decimal("2"), "GBP", "en_GB", 1, "£2"),
-        (Decimal("2"), "GBP", "en_GB", 2, "£2.00"),
-        (Decimal("2"), "GBP", "en_GB", 0, "£2"),
-        (Decimal("2"), "GBP", "en_GB", 2, "£2.00"),
-        (Decimal("2"), "GBP", "en_GB", 6, "£2.00"),
+        (Decimal(2), "GBP", "en_GB", 1, "£2"),
+        (Decimal(2), "GBP", "en_GB", 2, "£2.00"),
+        (Decimal(2), "GBP", "en_GB", 0, "£2"),
+        (Decimal(2), "GBP", "en_GB", 2, "£2.00"),
+        (Decimal(2), "GBP", "en_GB", 6, "£2.00"),
         (Decimal("2.1"), "GBP", "en_GB", 0, "£2.10"),
         (Decimal("2.12"), "GBP", "en_GB", None, "£2.12"),
         (Decimal("2.12"), "JOD", "en_GB", None, "JOD2.120"),
@@ -58,9 +58,9 @@ TEST_FORMAT_CURRENCY_PARAMS = (
         (Decimal("2.123"), "JOD", "en_GB", None, "JOD2.123"),
         (Decimal("123.1234"), "GBP", "en_GB", 0, "£123.1234"),
         (Decimal("3000.44545"), "GBP", "en_GB", None, "£3,000.44545"),
-        (Decimal("3000"), "GBP", "en_GB", 0, "£3,000"),
-        (Decimal("3000"), "JPY", "en_GB", 0, "JP¥3,000"),
-        (Decimal("3000"), "JPY", "ja_JP", 0, "¥3,000"),
+        (Decimal(3000), "GBP", "en_GB", 0, "£3,000"),
+        (Decimal(3000), "JPY", "en_GB", 0, "JP¥3,000"),
+        (Decimal(3000), "JPY", "ja_JP", 0, "¥3,000"),
         (123, "GBP", "en_GB", 1, "£123"),
         (Decimal("2.1"), "GBP", "en_GB", 1, "£2.1"),
         (Decimal("123.4"), "HUF", "hu_HU", 1, "123,4 Ft"),
@@ -784,7 +784,7 @@ def test_map_list_collector_config_with_related_answers_and_answer_title():
                     ],
                     "attributes": {"data-qa": "authorised-insurer-radio"},
                     "id": "authorised-insurer-radio",
-                    "title": "Is this UK company or branch an authorised " "insurer?",
+                    "title": "Is this UK company or branch an authorised insurer?",
                     "titleAttributes": {"data-qa": "authorised-insurer-radio-label"},
                     "valueList": [{"text": "Yes"}],
                 },
@@ -1075,7 +1075,7 @@ def test_summary_item_config_with_list_collector():
                     ],
                     "attributes": {"data-qa": "authorised-insurer-radio"},
                     "id": "authorised-insurer-radio",
-                    "title": "Is this UK company or branch an authorised " "insurer?",
+                    "title": "Is this UK company or branch an authorised insurer?",
                     "titleAttributes": {"data-qa": "authorised-insurer-radio-label"},
                     "valueList": [{"text": "Yes"}],
                 },

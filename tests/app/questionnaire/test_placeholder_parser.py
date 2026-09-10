@@ -1,7 +1,7 @@
 from decimal import Decimal
 
 import pytest
-from mock import Mock
+from unittest.mock import Mock
 
 from app.data_models import ProgressStore
 from app.data_models.answer_store import AnswerStore

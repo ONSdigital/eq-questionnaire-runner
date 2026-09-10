@@ -7,7 +7,7 @@ class TestQuestionnaireLanguage(IntegrationTestCase):
     def test_load_cy_survey(self):
         # When: load a cy survey
         self.launchSurveyV2(schema_name="test_language", language_code="cy")
-        # Then: welsh
+        # Then: welsh # noqa: ERA001
         self.post()
         self.assertInBody("Rhowch enw")
 

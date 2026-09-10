@@ -27,7 +27,7 @@ class DropdownHandler(SelectHandlerBase):
         ]
 
     def _get_placeholder_text(self) -> str:
-        return self.answer_schema.get("placeholder", self.DEFAULT_PLACEHOLDER)
+        return str(self.answer_schema.get("placeholder", self.DEFAULT_PLACEHOLDER))
 
     def get_field(self) -> UnboundField | SelectField:
         return SelectField(

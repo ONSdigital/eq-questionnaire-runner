@@ -6,7 +6,7 @@ from uuid import UUID
 
 from flask import Flask, request
 from flask_babel import Babel
-from mock import patch
+from unittest.mock import patch
 
 from app.cloud_tasks import CloudTaskPublisher
 from app.oidc.gcp_oidc import OIDCCredentialsServiceGCP
@@ -339,7 +339,7 @@ class TestCreateApp(unittest.TestCase):  # pylint: disable=too-many-public-metho
     def test_invalid_storage(self):
         self._setting_overrides["EQ_STORAGE_BACKEND"] = "invalid"
 
-        with self.assertRaises(Exception):
+        with self.assertRaises(Exception):  # noqa: B017
             create_app(self._setting_overrides)
 
     def test_eq_feedback_backend_not_set(self):

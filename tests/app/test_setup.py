@@ -1,5 +1,5 @@
 import pytest
-from mock import MagicMock
+from unittest.mock import MagicMock
 
 from app.helpers import get_span_and_trace
 from app.setup import setup_secure_cookies

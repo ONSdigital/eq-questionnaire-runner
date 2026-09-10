@@ -154,8 +154,7 @@ def test_first_raises_index_error_when_list_is_empty():
     new_list = ListModel("people", [])
 
     with pytest.raises(IndexError) as error:
-        new_list.first  # pylint: disable=pointless-statement
-
+        new_list.first  # noqa: B018
     assert "unable to access first item in list, list 'people' is empty" in str(
         error.value
     )

@@ -29,12 +29,9 @@ class TestQuestionnaireQuestionVariants(IntegrationTestCase):
 
         # Now change an answer which has variants depending on it
         self.get(url=self.proxy_url)
-        print(self.getHtmlSoup())
-        print("\n\n\n\n\n\n")
         self.assertInBody("No, I am answering on their behalf")
 
         self.post({"proxy-answer": "Yes, I am"}, url=self.proxy_url)
-        print(self.getHtmlSoup())
 
         self.assertInBody("What is your age")
 

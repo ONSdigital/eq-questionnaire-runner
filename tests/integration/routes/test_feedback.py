@@ -91,7 +91,7 @@ class TestFeedback(IntegrationTestCase):
         # feedback the maximum number of times
         self._launch_and_complete_questionnaire()
 
-        for _ in range(0, EQ_FEEDBACK_LIMIT):
+        for _ in range(EQ_FEEDBACK_LIMIT):
             self.get(self.SEND_FEEDBACK_URL)
             self.post(
                 {
@@ -113,7 +113,7 @@ class TestFeedback(IntegrationTestCase):
         # feedback the maximum number of times
         self._launch_and_complete_questionnaire()
 
-        for _ in range(0, EQ_FEEDBACK_LIMIT):
+        for _ in range(EQ_FEEDBACK_LIMIT):
             self.get(self.SEND_FEEDBACK_URL)
             self.post(
                 {

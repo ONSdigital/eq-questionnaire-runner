@@ -2,7 +2,7 @@ import uuid
 
 import pytest
 from google.cloud.storage import Blob
-from mock import MagicMock
+from unittest.mock import MagicMock
 from requests import Response
 
 from app.authentication.auth_payload_versions import AuthPayloadVersion
