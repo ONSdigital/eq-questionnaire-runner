@@ -1,6 +1,6 @@
 from abc import ABC
 from functools import cached_property
-from typing import Any, Mapping
+from typing import Any, Mapping, cast
 
 from wtforms import Field, validators
 from wtforms.validators import Optional as OptionalValidator
@@ -49,7 +49,7 @@ class FieldHandler(ABC):
 
     @cached_property
     def guidance(self) -> str:
-        return self.answer_schema.get("guidance", "")
+        return cast(str, self.answer_schema.get("guidance", ""))
 
     def get_validation_message(self, message_key: str) -> str:
         return (

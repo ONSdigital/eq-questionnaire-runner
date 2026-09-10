@@ -1,4 +1,4 @@
-from typing import Any, Sequence
+from typing import Any, Sequence, cast
 
 from wtforms.fields.core import UnboundField
 
@@ -22,7 +22,7 @@ class SelectHandlerBase(FieldHandler):
 
     @property
     def dynamic_options_schema(self) -> dict[str, Any]:
-        return self.answer_schema.get("dynamic_options", {})
+        return cast(dict[str, Any], (self.answer_schema.get("dynamic_options", {})))
 
     def _build_dynamic_choices(self) -> list[ChoiceWithDetailAnswer]:
         if not self.dynamic_options_schema:

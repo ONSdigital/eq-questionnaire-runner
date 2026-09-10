@@ -77,6 +77,17 @@ def format_unit(
         locale=flask_babel.get_locale(),
     )
 
+    # Some locales (e.g. cy) have no long-form plural patterns in CLDR for
+    # certain units, in which case Babel returns the raw unit key. Fall back
+    # to the short form, which carries the correct translation.
+    if formatted_unit.endswith(unit):
+        formatted_unit = custom_format_unit(
+            value=value,
+            measurement_unit=unit,
+            length="short",
+            locale=flask_babel.get_locale(),
+        )
+
     return formatted_unit
 
 
@@ -465,7 +476,7 @@ class SummaryRowItemValue:
 
 
 class SummaryRowItem:
-    def __init__(  # noqa: C901 pylint: disable=too-complex, too-many-branches
+    def __init__(  # noqa: C901, PLR0912
         self,
         question: SelectFieldBase._Option,
         answer: SelectFieldBase._Option,
