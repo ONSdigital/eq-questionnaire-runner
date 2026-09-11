@@ -45,6 +45,7 @@ docs/_build
 env
 env*
 venv
+!environment.yml
 
 # intellij
 .idea/

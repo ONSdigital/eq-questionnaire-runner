@@ -9,29 +9,30 @@
 [![poetry-managed](https://img.shields.io/badge/poetry-managed-blue)](https://python-poetry.org/)
 [![License - MIT](https://img.shields.io/badge/licence%20-MIT-1ac403.svg)](https://github.com/ONSdigital/eq-questionnaire-runner/blob/main/LICENSE)
 
-## Run with Docker
+## Run with Podman
 
-Install [Docker](https://www.docker.com/) for your system. Make sure that you've installed both docker and docker-compose packages, preferably using Homebrew:
+Install Podman from Self Service as the container runtime.
+
+Make sure the Podman machine started every time you want to use container images:
 
 ``` shell
-brew install docker
-brew install docker-compose
+podman machine start
 ```
 
-On MacOS install container runtimes, eg. [Colima](https://github.com/abiosoft/colima):
-```shell
-brew install colima
+The Makefile detects the container runtime automatically (Podman on arm64, Docker on amd64).
+
+For convenience when typing container commands, add an alies to your shell profile:
+
+``` shell
+alias docker='podman'
 ```
 
-Make sure Colima is started every time you want to use Docker images:
-```shell
-colima start
-```
+This will only affect interactive shells. Make targets use the Makefile's runtime detection instead.
 
 To get eq-questionnaire-runner running the following command will build and run the containers
 
 ``` shell
-RUNNER_ENV_FILE=.development.env docker compose up -d
+RUNNER_ENV_FILE=.development.env podman compose up -d
 ```
 
 To launch a survey, navigate to [http://localhost:8000/](http://localhost:8000/)
@@ -42,13 +43,13 @@ However, any new dependencies that are added would require a re-build.
 To rebuild the eq-questionnaire-runner container, the following command can be used.
 
 ``` shell
-RUNNER_ENV_FILE=.development.env docker compose build
+RUNNER_ENV_FILE=.development.env podman compose build
 ```
 
 If you need to rebuild the container from scratch to re-load any dependencies then you can run the following
 
 ``` shell
-RUNNER_ENV_FILE=.development.env docker compose build --no-cache
+RUNNER_ENV_FILE=.development.env podman compose build --no-cache
 ```
 
 ## Run locally
@@ -61,11 +62,75 @@ git clone git@github.com:ONSdigital/eq-questionnaire-runner.git
 
 ### Pre-Requisites
 
-In order to run locally you'll need Node.js, snappy, pyenv, jq and wkhtmltopdf installed
+The following must be installed and working before you start:
+- Miniconda: Python, node and system package management (install from source, see bellow)
+- Podman: Container runtime for supporting services (machine created and running)
+- wkhtmltopdf: PDF generation (installed separately, see below)
+- gcloud: Pulling images from Google Artifact Registry
+
+Example conda installation:
+``` shell
+curl -L -o /tmp/miniconda.sh \
+https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh
+
+bash /tmp/miniconda.sh -b -p $HOME/miniconda3
+
+$HOME/miniconda3/bin/conda init zsh
+
+```
+
+Verify
+``` shell
+conda --version
+```
+
+If `conda` reports `command not found`, the installer did not write the conda block into `~/.zshrc`
+Confirm the install is present and wire it in:
 
 ``` shell
-brew install snappy npm pyenv jq wkhtmltopdf
+ls -d $HOME/miniconda3
+$HOME/miniconda3/bin/conda init zsh
 ```
+
+Open a new terminal tab and re-check `conda --version`
+
+Python, Node.js, Poetry, snappy and jq are all provided by the conda environment created in `environment.yml`
+
+Verify if the remaining prerequisites are available:
+
+``` shell
+podman --version
+gcloud --version
+make --version
+```
+
+Make sure that the Podman machine is running:
+
+``` shell
+podman machine list
+podman machine start
+```
+
+`wkhtmltopdf` is not reliably available on conda-forge for macOS ARM, so it is installed outside the conda environment.
+Download the macOS `.pkg` from the wkhtmltopdf downloads page and run the installer.
+Note that wkhtmltopdf is an archived project and no longer receives updates.
+
+Or install it from command line. Example:
+
+``` shell
+curl -L -o /tmp/wkhtmltox-0.12.6.pkg \
+  https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox-0.12.6-1.macos-cocoa.pkg
+
+sudo installer -pkg /tmp/wkhtmltox-0.12.6.pkg -target /
+```
+
+Check if it is correctly installed:
+
+``` shell
+which wkhtmltopdf
+```
+
+This should return a path (typically `/usr/local/bin/wkhtmltopdf)
 
 ### Setup
 
@@ -82,49 +147,75 @@ echo "local" > .application-version
 ```
 #### Python version
 
-It is preferable to use the version of Python locally that matches that
-used on deployment. This project has a `.python_version` file for this
-purpose.
-
-#### Pyenv
-
-It is recommended to install the `pyenv` Python version management tool to easily switch between Python versions.
-To install `pyenv` use this command:
-```shell
-curl https://pyenv.run | bash
-```
-After the installation it should tell you to execute a command to add `pyenv` to path. It should look something like this:
-```shell
-export PYENV_ROOT="$HOME/.pyenv"
-
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-
-eval "$(pyenv init -)"
-```
-Python versions can be changed with the `pyenv local` or `pyenv global` commands suffixed with the desired version (e.g. 3.13.5). Different versions of Python can be installed first with the `pyenv install` command. Refer to the pyenv project Readme [here](https://github.com/pyenv/pyenv). To avoid confusion, check the current Python version at any given time using `python --version` or `python3 --version`.
-
-#### Python & dependencies
-
-Inside the project directory install python version, upgrade pip:
+It is preferable to use the version of Python locally that matches that used on deployment.
+This project has a `.python-version` file for this purpose.
+Both are read manually and declared in the conda environment file below, conda does not read them automatically.
 
 ``` shell
-pyenv install
-pip install --upgrade pip setuptools
+cat .python-version
+cat .nvmrc
 ```
 
-Install poetry, poetry dotenv plugin and install dependencies:
+#### Conda environment
+
+Python and Node.js versions are pinned in the committed `environment.yml`, matching
+`.python-version` and `.nvmrc` as closely as conda-forge availability allows:
+
+
+> Note: conda-forge does not publish every Node patch release. Where the exact `.nvmrc` version is unavailable, pin the closest available patch below it and note the substitution in `environment.yml`.
+
+If `.python-version` or `.nvmrc` change, update `environment.yml` to match.
+
+Create and activate the environment:
 
 ``` shell
-curl -sSL https://install.python-poetry.org | python3 - --version 2.1.2
-poetry self add poetry-plugin-dotenv
+conda env create -f environment.yml
+conda activate eq-runner
+```
+
+Version can be changed by editing `environment.yml` and running `conda env update -f environment.yml --prune`
+
+If `conda env create` fails with `NoWritablePkgsDirError` or a permission error
+on the notices cache, run **Repair ownership of user conda directory** in Self
+Service, then retry.
+
+#### Build flags for python-snappy
+
+`python-snappy` compiles against `libsnappy`, which is provided by the conda environment.
+Add an activation hook so the compiler can find it:
+
+``` shell
+mkdir -p "$CONDA_PREFIX/etc/conda/activate.d"
+cat > "$CONDA_PREFIX/etc/conda/activate.d/build-flags.sh" <<'EOF'
+export CPPFLAGS="-I${CONDA_PREFIX}/include ${CPPFLAGS}"
+export LDFLAGS="-L${CONDA_PREFIX}/lib ${LDFLAGS}"
+EOF
+conda deactivate && conda activate eq-runner
+```
+
+These flags now apply automatically whenever the environment is active.
+
+#### Dependencies
+
+With the environment active, install the Python dependencies:
+
+``` shell
 poetry install
 ```
 
-We use [poetry-plugin-up](https://github.com/MousaZeidBaker/poetry-plugin-up) to update dependencies in the `pyproject.toml` file:
+Install the JavaScript dependencies:
 
 ``` shell
-poetry self add poetry-plugin-up
+npm ci
 ```
+
+When updating dependencies, use `poetry update`, only where appropriate:
+
+- Patching a transitive dependency that Dependabot cannot bump directly
+- A periodic refresh of the whole tree, followed by a full test run
+- Regenerating the lock after changing a version constraint in `pyproject.toml`
+
+Prefer `poetry update <package>` to update specific package and its dependencies
 
 #### Design system templates
 
@@ -161,7 +252,7 @@ First, authenticate to make sure Docker can pull from GAR
 gcloud auth login
 ```
 
-To run the app locally, but the supporting services in Docker, make sure you have Docker and Colima installed [from this step](#run-with-docker), then run:
+To run the app locally, but the supporting services in containers, make sure you have Podman installed and machine is running [from this step](#run-with-docker), then run:
 
 ``` shell
 make dev-compose-up
@@ -177,28 +268,36 @@ make dev-compose-up-linux
 
 ##### [Questionnaire launcher](https://github.com/ONSDigital/eq-questionnaire-launcher)
 
+Note: the eq-questionnaire-launcher image published to Artifact Registry is amd64-only
+and segfaults under emulation on Apple Silicon. Use the compose setup above,
+which runs it successfully.
+
 ``` shell
-docker run -e SURVEY_RUNNER_SCHEMA_URL=http://host.docker.internal:5000 -e SDS_API_BASE_URL=http://host.docker.internal:5003 -e CIR_API_BASE_URL=http://host.docker.internal:5004 -it -p 8000:8000 europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/eq-questionnaire-launcher:latest
+podman run -e SURVEY_RUNNER_SCHEMA_URL=http://host.docker.internal:5000 -e SDS_API_BASE_URL=http://host.docker.internal:5003 -e CIR_API_BASE_URL=http://host.docker.internal:5004 -it -p 8000:8000 europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/eq-questionnaire-launcher:latest
 ```
 
 ##### [Mock Supplementary data service](https://github.com/ONSDigital/eq-runner-mock-sds)
 
 ``` shell
-docker run -it -p 5003:5003 europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/sds:latest
+podman run -it -p 5003:5003 europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/sds:latest
 ```
 
 ##### [Mock Collection Instrument Registry](https://github.com/ONSDigital/eq-runner-mock-cir)
 
 ``` shell
-docker run -it -p 5004:5004 europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/cir:latest
+podman run -it -p 5004:5004 europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/cir:latest
 ```
 
 ##### Storage backends
 
+Note: the DynamoDB and Datastore emulator images referenced below are hosted
+in third-party registries and may no longer be accessible. The compose setup
+above uses maintained images and is the recommended path.
+
 [DynamoDB](https://github.com/ONSDigital/eq-docker-dynamodb)
 
 ``` shell
-docker run -it -p 6060:8000 onsdigital/eq-docker-dynamodb:latest
+podman run -it -p 6060:8000 onsdigital/eq-docker-dynamodb:latest
 ```
 
 or
@@ -206,13 +305,13 @@ or
 [Google Datastore](https://hub.docker.com/r/knarz/datastore-emulator/)
 
 ``` shell
-docker run -it -p 8432:8432 knarz/datastore-emulator:latest
+podman run -it -p 8432:8432 knarz/datastore-emulator:latest
 ```
 
 ##### Cache
 
 ``` shell
-docker run -it -p 6379:6379 redis:4
+podman run -it -p 6379:6379 redis:4
 ```
 
 #### Using Google Cloud Platform for supporting services

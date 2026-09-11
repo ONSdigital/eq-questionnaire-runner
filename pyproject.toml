@@ -93,6 +93,7 @@ jinja2 = "^3.1.6"
 urllib3 = "^2.6.3"
 botocore = "^1.37.23"
 python-dateutil = "^2.9.0"
+python-dotenv = "^1.2.3"
 
 [build-system]
 requires = ["poetry-core"]
