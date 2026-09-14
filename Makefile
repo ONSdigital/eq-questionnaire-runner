@@ -106,10 +106,11 @@ run-uwsgi-async: link-development-env
 	WEB_SERVER_TYPE=uwsgi-async poetry run ./run_app.sh
 
 dev-compose-up:
-	docker compose -f docker-compose-dev.yml pull eq-questionnaire-launcher
-	docker compose -f docker-compose-dev.yml pull sds
-	docker compose -f docker-compose-dev.yml pull cir
-	docker compose -f docker-compose-dev.yml up -d
+	docker-compose -f docker-compose-dev.yml pull eq-questionnaire-launcher
+	docker-compose -f docker-compose-dev.yml pull sds
+	docker-compose -f docker-compose-dev.yml pull cir
+	docker-compose -f docker-compose-dev.yml pull datastore
+	docker-compose -f docker-compose-dev.yml up -d
 
 dev-compose-down:
 	docker compose -f docker-compose-dev.yml down
