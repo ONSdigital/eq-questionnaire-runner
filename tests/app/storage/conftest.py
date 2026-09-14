@@ -42,7 +42,7 @@ def dynamodb():
 @pytest.fixture
 def mock_client(mocker):
     client = mocker.Mock()
-    client.transaction.return_value = contextlib.suppress()
+    client.transaction.return_value = contextlib.suppress()  # noqa: B022
     return client
 
 

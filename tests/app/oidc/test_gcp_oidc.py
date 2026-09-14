@@ -7,7 +7,7 @@ from cachetools.func import ttl_cache
 from freezegun import freeze_time
 from google.auth.exceptions import RefreshError, TransportError
 from google.auth.transport.requests import Request
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 
 from app.oidc.gcp_oidc import TTL, OIDCCredentialsServiceGCP
 

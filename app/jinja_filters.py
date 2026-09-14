@@ -465,7 +465,7 @@ class SummaryRowItemValue:
 
 
 class SummaryRowItem:
-    def __init__(  # noqa: C901 pylint: disable=too-complex, too-many-branches
+    def __init__(  # noqa: C901, PLR0912
         self,
         question: SelectFieldBase._Option,
         answer: SelectFieldBase._Option,

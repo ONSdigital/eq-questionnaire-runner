@@ -219,7 +219,7 @@ def test_gcs_submitter_adds_additional_keys_to_metadata_when_set(patch_gcs_clien
 
     # When
     gcs_submitter.send_message(
-        message={"test_data"}, tx_id="123", case_id="456", **{"qid": "1"}
+        message={"test_data"}, tx_id="123", case_id="456", qid="1"
     )
 
     # Then
