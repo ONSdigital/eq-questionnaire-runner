@@ -43,9 +43,7 @@ docs/_build
 
 # Virtualenvs
 env
-env*
 venv
-!environment.yml
 
 # intellij
 .idea/

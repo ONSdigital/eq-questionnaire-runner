@@ -164,7 +164,7 @@ Python and Node.js versions are pinned in the committed `environment.yml`, match
 
 > Note: conda-forge does not publish every Node patch release. Where the exact `.nvmrc` version is unavailable, pin the closest available patch below it and note the substitution in `environment.yml`.
 
-If `.python-version` or `.nvmrc` change, update `environment.yml` to match.
+If `.python-version` or `.nvmrc` change, or if you want to use another version of Python or Node, update `environment.yml` to match.
 
 Create and activate the environment:
 
