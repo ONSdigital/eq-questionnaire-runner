@@ -1,3 +1,6 @@
+# Set the container runtime based on architecture, default to docker for amd64 and podman for arm64
+DOCKER ?= $(shell if [ "$$(uname -m)" = "arm64" ]; then echo podman; else echo docker; fi)
+
 SCHEMAS_VERSION=`cat .schemas-version`
 DESIGN_SYSTEM_VERSION=`cat .design-system-version`
 RUNNER_ENV_FILE?=.development.env
@@ -106,13 +109,13 @@ run-uwsgi-async: link-development-env
 	WEB_SERVER_TYPE=uwsgi-async poetry run ./run_app.sh
 
 dev-compose-up:
-	docker compose -f docker-compose-dev.yml pull eq-questionnaire-launcher
-	docker compose -f docker-compose-dev.yml pull sds
-	docker compose -f docker-compose-dev.yml pull cir
-	docker compose -f docker-compose-dev.yml up -d
+	$(DOCKER) compose -f docker-compose-dev.yml pull eq-questionnaire-launcher
+	$(DOCKER) compose -f docker-compose-dev.yml pull sds
+	$(DOCKER) compose -f docker-compose-dev.yml pull cir
+	$(DOCKER) compose -f docker-compose-dev.yml up -d
 
 dev-compose-down:
-	docker compose -f docker-compose-dev.yml down
+	$(DOCKER) compose -f docker-compose-dev.yml down
 
 profile:
 	poetry run python profile_application.py
