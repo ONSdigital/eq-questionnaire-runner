@@ -35,18 +35,6 @@ To get eq-questionnaire-runner running the following command will build and run 
 RUNNER_ENV_FILE=.development.env podman compose up -d
 ```
 
-You can also build for a specific platform using Docker’s extended build tool - buildx
-
-Example for Apple Silicon:
-``` shell
-podman buildx build --platform linux/arm64 -t eq-questionnaire-runner .
-```
-Or build for multiple platforms:
-
-```
-podman buildx build --platform linux/amd64,linux/arm64 -t eq-questionnaire-runner .
-```
-
 To launch a survey, navigate to [http://localhost:8000/](http://localhost:8000/)
 
 When the containers are running you are able to access the application as normal, and code changes will be reflected in the running application.
@@ -130,12 +118,19 @@ Note that wkhtmltopdf is an archived project and no longer receives updates.
 Or install it from command line. Example:
 
 ``` shell
-curl -fsSLO https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-2/wkhtmltox-0.12.6-2.macos-cocoa.pkg
-sudo installer -pkg wkhtmltox-0.12.6-2.macos-cocoa.pkg -target /
-wkhtmltopdf --version
+curl -L -o /tmp/wkhtmltox-0.12.6.pkg \
+  https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox-0.12.6-1.macos-cocoa.pkg
+
+sudo installer -pkg /tmp/wkhtmltox-0.12.6.pkg -target /
 ```
 
-wkhtmltopdf --version should report with patched Qt
+Check if it is correctly installed:
+
+``` shell
+which wkhtmltopdf
+```
+
+This should return a path (typically `/usr/local/bin/wkhtmltopdf)
 
 ### Setup
 
