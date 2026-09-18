@@ -14,4 +14,7 @@ export default class CalculatedSummaryBasePage extends BasePage {
     return this.locator('[data-qa=calculated-summary-answer]')
   }
 
+  summaryItems (): Locator {
+    return this.locator('dl.ons-summary__items')
+  }
 }
