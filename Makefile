@@ -107,6 +107,7 @@ dev-compose-up:
 	$(DOCKER) compose -f docker-compose-dev.yml pull eq-questionnaire-launcher
 	$(DOCKER) compose -f docker-compose-dev.yml pull sds
 	$(DOCKER) compose -f docker-compose-dev.yml pull cir
+	$(DOCKER) compose -f docker-compose-dev.yml pull datastore
 	$(DOCKER) compose -f docker-compose-dev.yml up -d
 
 dev-compose-down:
