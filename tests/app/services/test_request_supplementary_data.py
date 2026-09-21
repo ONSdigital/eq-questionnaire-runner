@@ -1,3 +1,5 @@
+from urllib.parse import quote
+
 import pytest
 import responses
 from flask import Flask, current_app
@@ -18,7 +20,18 @@ from app.services.supplementary_data import (
 from tests.app.utilities.test_schema import get_mocked_make_request
 
 TEST_SDS_URL = "http://test.domain"
+TEST_DATASET_ID = "44f1b432-9421-49e5-bd26-e63e18a30b69"
+TEST_IDENTIFIER = "12345678901"
+TEST_SURVEY_ID = "123"
 EXPECTED_SDS_DECRYPTION_VALIDATION_ERROR = "Supplementary data has no data to decrypt"
+
+
+def unit_data_url(
+    dataset_id: str = TEST_DATASET_ID,
+    identifier: str = TEST_IDENTIFIER,
+) -> str:
+    base_url = TEST_SDS_URL
+    return f"{base_url}/datasets/{quote(dataset_id, safe='')}/unit-data/{quote(identifier, safe='')}"
 
 
 @responses.activate
@@ -32,14 +45,14 @@ def test_get_supplementary_data_v1_200(
 
         responses.add(
             responses.GET,
-            f"{TEST_SDS_URL}/v1/unit_data",
+            unit_data_url(),
             json=encrypted_mock_supplementary_data_payload,
             status=200,
         )
         loaded_supplementary_data = get_supplementary_data_v1(
-            dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
-            identifier="12345678901",
-            survey_id="123",
+            dataset_id=TEST_DATASET_ID,
+            identifier=TEST_IDENTIFIER,
+            survey_id=TEST_SURVEY_ID,
         )
 
     assert loaded_supplementary_data == decrypted_mock_supplementary_data_payload
@@ -58,16 +71,16 @@ def test_get_supplementary_data_v1_non_200(
 
         responses.add(
             responses.GET,
-            f"{TEST_SDS_URL}/v1/unit_data",
+            unit_data_url(),
             json=encrypted_mock_supplementary_data_payload,
             status=status_code,
         )
 
         with pytest.raises(SupplementaryDataRequestFailed) as exc:
             get_supplementary_data_v1(
-                dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
-                identifier="12345678901",
-                survey_id="123",
+                dataset_id=TEST_DATASET_ID,
+                identifier=TEST_IDENTIFIER,
+                survey_id=TEST_SURVEY_ID,
             )
 
     assert str(exc.value) == "Supplementary Data request failed"
@@ -78,12 +91,12 @@ def test_get_supplementary_data_v1_request_failed(app: Flask):
     with app.app_context():
         current_app.config["SDS_API_BASE_URL"] = TEST_SDS_URL
 
-        responses.add(responses.GET, TEST_SDS_URL, body=RequestException())
+        responses.add(responses.GET, unit_data_url(), body=RequestException())
         with pytest.raises(SupplementaryDataRequestFailed) as exc:
             get_supplementary_data_v1(
-                dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
-                identifier="12345678901",
-                survey_id="123",
+                dataset_id=TEST_DATASET_ID,
+                identifier=TEST_IDENTIFIER,
+                survey_id=TEST_SURVEY_ID,
             )
 
     assert str(exc.value) == "Supplementary Data request failed"
@@ -104,9 +117,9 @@ def test_get_supplementary_data_v1_retries_timeout_error(
 
         try:
             supplementary_data = get_supplementary_data_v1(
-                dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
-                identifier="12345678901",
-                survey_id="123",
+                dataset_id=TEST_DATASET_ID,
+                identifier=TEST_IDENTIFIER,
+                survey_id=TEST_SURVEY_ID,
             )
         except SupplementaryDataRequestFailed:
             return pytest.fail("Supplementary data request unexpectedly failed")
@@ -136,9 +149,9 @@ def test_get_supplementary_data_v1_retries_transient_error(
 
         try:
             supplementary_data = get_supplementary_data_v1(
-                dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
-                identifier="12345678901",
-                survey_id="123",
+                dataset_id=TEST_DATASET_ID,
+                identifier=TEST_IDENTIFIER,
+                survey_id=TEST_SURVEY_ID,
             )
         except SupplementaryDataRequestFailed:
             return pytest.fail("Supplementary data request unexpectedly failed")
@@ -162,9 +175,9 @@ def test_get_supplementary_data_v1_max_retries(app: Flask, mocker):
 
         with pytest.raises(SupplementaryDataRequestFailed) as exc:
             get_supplementary_data_v1(
-                dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
-                identifier="12345678901",
-                survey_id="123",
+                dataset_id=TEST_DATASET_ID,
+                identifier=TEST_IDENTIFIER,
+                survey_id=TEST_SURVEY_ID,
             )
 
     assert str(exc.value) == "Supplementary Data request failed"
@@ -218,9 +231,9 @@ def test_get_supplementary_data_v1_raises_missing_supplementary_data_key_error_w
 
         with pytest.raises(MissingSupplementaryDataKey):
             get_supplementary_data_v1(
-                dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
-                identifier="12345678901",
-                survey_id="123",
+                dataset_id=TEST_DATASET_ID,
+                identifier=TEST_IDENTIFIER,
+                survey_id=TEST_SURVEY_ID,
             )
 
 
@@ -239,15 +252,15 @@ def test_get_supplementary_data_v1_with_gcp_authentication(
 
         responses.add(
             responses.GET,
-            f"{TEST_SDS_URL}/v1/unit_data",
+            unit_data_url(),
             json=encrypted_mock_supplementary_data_payload,
             status=200,
         )
 
         get_supplementary_data_v1(
-            dataset_id="44f1b432-9421-49e5-bd26-e63e18a30b69",
-            identifier="12345678901",
-            survey_id="123",
+            dataset_id=TEST_DATASET_ID,
+            identifier=TEST_IDENTIFIER,
+            survey_id=TEST_SURVEY_ID,
         )
         mock_oidc_service.get_credentials.assert_called_once_with(
             iap_client_id=current_app.config["SDS_OAUTH2_CLIENT_ID"]

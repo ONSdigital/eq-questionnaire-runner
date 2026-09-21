@@ -1,3 +1,6 @@
+# Set the container runtime based on architecture, default to docker for amd64 and podman for arm64
+DOCKER ?= $(shell if [ "$$(uname -m)" = "arm64" ]; then echo podman; else echo docker; fi)
+
 SCHEMAS_VERSION=`cat .schemas-version`
 DESIGN_SYSTEM_VERSION=`cat .design-system-version`
 RUNNER_ENV_FILE?=.development.env
@@ -18,7 +21,8 @@ load-design-system-templates:
 build: load-design-system-templates load-schemas translate
 
 generate-pages:
-	npm run generate_pages
+	rm -rf ./tests/functional/generated_pages
+	poetry run python -m tests.functional.generate_pages schemas/test/en/ ./tests/functional/generated_pages -r "../../base_pages"
 
 lint: lint-python lint-js lint-html
 
@@ -46,25 +50,19 @@ test-unit:
 	poetry run ./scripts/run_tests_unit.sh
 
 test-functional: generate-pages
-	npm run test_functional
+	npx playwright test --headed
 
 test-functional-headless: generate-pages
-	EQ_RUN_FUNCTIONAL_TESTS_HEADLESS='True' make test-functional
+	npx playwright test
 
 test-functional-spec: generate-pages
-	npm run test_functional -- --spec=./tests/functional/spec/$(SPEC)
-
-test-functional-suite: generate-pages
-	npm run test_functional -- --suite=$(SUITE)
+	npx playwright test --headed --workers 1 $(SPEC)
 
 lint-js:
 	npm run lint
 
 format-js:
 	npm run format
-
-generate-spec:
-	poetry run python -m tests.functional.generate_pages schemas/test/en/$(SCHEMA).json ./tests/functional/generated_pages/$(patsubst test_%,%,$(SCHEMA)) -r '../../base_pages' -s tests/functional/spec/$(SCHEMA).spec.js
 
 validate-test-schemas:
 	poetry run python -m scripts.validate_test_schemas
@@ -106,13 +104,14 @@ run-uwsgi-async: link-development-env
 	WEB_SERVER_TYPE=uwsgi-async poetry run ./run_app.sh
 
 dev-compose-up:
-	docker compose -f docker-compose-dev.yml pull eq-questionnaire-launcher
-	docker compose -f docker-compose-dev.yml pull sds
-	docker compose -f docker-compose-dev.yml pull cir
-	docker compose -f docker-compose-dev.yml up -d
+	$(DOCKER) compose -f docker-compose-dev.yml pull eq-questionnaire-launcher
+	$(DOCKER) compose -f docker-compose-dev.yml pull sds
+	$(DOCKER) compose -f docker-compose-dev.yml pull cir
+	$(DOCKER) compose -f docker-compose-dev.yml pull datastore
+	$(DOCKER) compose -f docker-compose-dev.yml up -d
 
 dev-compose-down:
-	docker compose -f docker-compose-dev.yml down
+	$(DOCKER) compose -f docker-compose-dev.yml down
 
 profile:
 	poetry run python profile_application.py

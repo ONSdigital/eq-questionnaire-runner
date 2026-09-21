@@ -55,7 +55,7 @@ CDN_URL = os.getenv("CDN_URL", "https://cdn.eq.gcp.onsdigital.uk")
 CDN_ASSETS_PATH = os.getenv("CDN_ASSETS_PATH", "/design-system")
 EQ_MINIMIZE_ASSETS = parse_mode(os.getenv("EQ_MINIMIZE_ASSETS", "True"))
 # max request payload size in bytes
-MAX_CONTENT_LENGTH = int(os.getenv("EQ_MAX_HTTP_POST_CONTENT_LENGTH", "65536"))
+MAX_CONTENT_LENGTH = int(os.getenv("EQ_MAX_HTTP_POST_CONTENT_LENGTH", "122_880"))
 
 EQ_ENABLE_LIVE_RELOAD = parse_mode(os.getenv("EQ_ENABLE_LIVE_RELOAD", "False"))
 
