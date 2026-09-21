@@ -1,6 +1,8 @@
 services:
     datastore:
-        image: europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/datastore-emulator:latest
+        image: europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/eq-datastore-emulator-image:v1.6.0
+        environment:
+            CLOUDSDK_CORE_PROJECT: local
         networks:
             - eq-env
         ports:
