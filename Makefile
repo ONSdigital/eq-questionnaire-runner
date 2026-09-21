@@ -21,7 +21,8 @@ load-design-system-templates:
 build: load-design-system-templates load-schemas translate
 
 generate-pages:
-	npm run generate_pages
+	rm -rf ./tests/functional/generated_pages
+	poetry run python -m tests.functional.generate_pages schemas/test/en/ ./tests/functional/generated_pages -r "../../base_pages"
 
 lint: lint-python lint-js lint-html
 
@@ -49,25 +50,19 @@ test-unit:
 	poetry run ./scripts/run_tests_unit.sh
 
 test-functional: generate-pages
-	npm run test_functional
+	npx playwright test --headed
 
 test-functional-headless: generate-pages
-	EQ_RUN_FUNCTIONAL_TESTS_HEADLESS='True' make test-functional
+	npx playwright test
 
 test-functional-spec: generate-pages
-	npm run test_functional -- --spec=./tests/functional/spec/$(SPEC)
-
-test-functional-suite: generate-pages
-	npm run test_functional -- --suite=$(SUITE)
+	npx playwright test --headed --workers 1 $(SPEC)
 
 lint-js:
 	npm run lint
 
 format-js:
 	npm run format
-
-generate-spec:
-	poetry run python -m tests.functional.generate_pages schemas/test/en/$(SCHEMA).json ./tests/functional/generated_pages/$(patsubst test_%,%,$(SCHEMA)) -r '../../base_pages' -s tests/functional/spec/$(SCHEMA).spec.js
 
 validate-test-schemas:
 	poetry run python -m scripts.validate_test_schemas
@@ -112,6 +107,7 @@ dev-compose-up:
 	$(DOCKER) compose -f docker-compose-dev.yml pull eq-questionnaire-launcher
 	$(DOCKER) compose -f docker-compose-dev.yml pull sds
 	$(DOCKER) compose -f docker-compose-dev.yml pull cir
+	$(DOCKER) compose -f docker-compose-dev.yml pull datastore
 	$(DOCKER) compose -f docker-compose-dev.yml up -d
 
 dev-compose-down:
