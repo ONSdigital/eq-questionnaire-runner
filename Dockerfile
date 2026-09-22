@@ -1,35 +1,51 @@
-FROM python:3.13-slim-bookworm
+# Stage 1: wkhtmltopdf from Debian 12 (bookworm).
+
+# Debian 13 no longer packages wkhtmltopdf, and upstream's patched-Qt build
+# can't render the Design System CSS. This copies Debian 12's apt build,
+# the Qt plugins it needs, and their libraries. glibc and the C++ runtime
+# are skipped so Debian 13's versions are used.
+
+FROM python:3.13-slim-bookworm AS wkhtmltopdf
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends wkhtmltopdf && \
+    mkdir -p /opt/wkhtmltopdf/lib /opt/wkhtmltopdf/plugins && \
+    cp /usr/bin/wkhtmltopdf /opt/wkhtmltopdf/ && \
+    mkdir -p /opt/wkhtmltopdf/plugins/platforms && \
+    cp /usr/lib/*-linux-gnu/qt5/plugins/platforms/libqoffscreen.so /opt/wkhtmltopdf/plugins/platforms/ && \
+    cp -r /usr/lib/*-linux-gnu/qt5/plugins/imageformats /opt/wkhtmltopdf/plugins/ && \
+    { ldd /usr/bin/wkhtmltopdf; find /opt/wkhtmltopdf/plugins -name '*.so' -exec ldd {} \; ; } \
+      | awk '/=> \// {print $3}' | sort -u \
+      | grep -vE '/(libc|libm|libpthread|libdl|librt|libresolv|libstdc\+\+|libgcc_s)\.so|ld-linux' \
+      | xargs -I{} cp -L {} /opt/wkhtmltopdf/lib/
+
+# Stage 2: Runner on Debian 13 (trixie).
+FROM python:3.13-slim-trixie
 
 EXPOSE 5000
 
-# wkhtmltopdf is installed from the upstream packaging release rather than apt
-ARG WKHTMLTOX_VERSION=0.12.6.1-3
-ARG WKHTMLTOX_DISTRO=bookworm
-ARG WKHTMLTOX_SHA256_AMD64=98ba0d157b50d36f23bd0dedf4c0aa28c7b0c50fcdcdc54aa5b6bbba81a3941d
-ARG WKHTMLTOX_SHA256_ARM64=b6606157b27c13e044d0abbe670301f88de4e1782afca4f9c06a5817f3e03a9c
-ARG TARGETARCH
-
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    curl unzip libsnappy-dev build-essential jq \
-    xfonts-base xfonts-75dpi fontconfig \
-    libjpeg62-turbo libxrender1 libxext6 && \
-    case "${TARGETARCH}" in \
-    amd64) WK_SHA256="${WKHTMLTOX_SHA256_AMD64}" ;; \
-    arm64) WK_SHA256="${WKHTMLTOX_SHA256_ARM64}" ;; \
-    *) echo "Unsupported TARGETARCH: ${TARGETARCH}" >&2 && exit 1 ;; \
-    esac && \
-    curl -fsSL -o /tmp/wkhtmltox.deb \
-    "https://github.com/wkhtmltopdf/packaging/releases/download/${WKHTMLTOX_VERSION}/wkhtmltox_${WKHTMLTOX_VERSION}.${WKHTMLTOX_DISTRO}_${TARGETARCH}.deb" && \
-    echo "${WK_SHA256}  /tmp/wkhtmltox.deb" | sha256sum -c - && \
-    apt-get install -y --no-install-recommends /tmp/wkhtmltox.deb && \
-    rm -f /tmp/wkhtmltox.deb && \
-    rm -rf /var/lib/apt/lists/* && \
-    wkhtmltopdf --version | grep -qi "with patched qt"
+        curl unzip libsnappy-dev build-essential jq \
+        fontconfig fonts-dejavu-core xfonts-base xfonts-75dpi && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY --from=wkhtmltopdf /opt/wkhtmltopdf /opt/wkhtmltopdf
+
+# Wrapper so only wkhtmltopdf uses the copied Debian 12 libraries.
+# The build fails if any library is missing.
+RUN printf '%s\n' \
+        '#!/bin/sh' \
+        'export LD_LIBRARY_PATH=/opt/wkhtmltopdf/lib' \
+        'export QT_PLUGIN_PATH=/opt/wkhtmltopdf/plugins' \
+        'export QT_QPA_PLATFORM=offscreen' \
+        'exec /opt/wkhtmltopdf/wkhtmltopdf "$@"' \
+    > /usr/local/bin/wkhtmltopdf && \
+    chmod +x /usr/local/bin/wkhtmltopdf && \
+    ! LD_LIBRARY_PATH=/opt/wkhtmltopdf/lib ldd /opt/wkhtmltopdf/wkhtmltopdf | grep "not found" && \
+    wkhtmltopdf --version
 
 COPY . /runner
 WORKDIR /runner
-
 ENV WEB_SERVER_TYPE gunicorn-async
 ENV WEB_SERVER_WORKERS 3
 ENV WEB_SERVER_THREADS 10
