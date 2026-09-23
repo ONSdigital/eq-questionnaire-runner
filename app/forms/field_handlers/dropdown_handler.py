@@ -1,4 +1,4 @@
-from typing import Sequence, cast
+from typing import Sequence
 
 from flask_babel import lazy_gettext
 from wtforms import SelectField
@@ -27,9 +27,7 @@ class DropdownHandler(SelectHandlerBase):
         ]
 
     def _get_placeholder_text(self) -> str:
-        return cast(
-            str, self.answer_schema.get("placeholder", self.DEFAULT_PLACEHOLDER)
-        )
+        return self.answer_schema.get("placeholder", self.DEFAULT_PLACEHOLDER)  # type: ignore[no-any-return]
 
     def get_field(self) -> UnboundField | SelectField:
         return SelectField(
