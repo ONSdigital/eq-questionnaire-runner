@@ -24,6 +24,8 @@ from tests.app.questionnaire.test_value_source_resolver import get_list_items
 current_date = datetime.now(timezone.utc).date()
 current_date_as_yyyy_mm_dd = current_date.strftime("%Y-%m-%d")
 
+DEFAULT_LOCATION = Location(section_id="test-section", block_id="test-block")
+
 
 def get_mock_schema():
     schema = MagicMock(
@@ -46,9 +48,7 @@ def get_rule_evaluator(
     language="en",
     schema: QuestionnaireSchema = None,
     data_stores: DataStores = None,
-    location: Location | RelationshipLocation = Location(  # noqa: B008
-        section_id="test-section", block_id="test-block"
-    ),
+    location: Location | RelationshipLocation = DEFAULT_LOCATION,
     routing_path_block_ids: list | None = None,
 ):
     if not schema:

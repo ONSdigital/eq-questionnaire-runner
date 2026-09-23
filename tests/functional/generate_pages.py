@@ -1108,7 +1108,7 @@ if __name__ == "__main__":
                 template_spec.write(SPEC_EXAMPLE_TEST.substitute(schema_name))
     else:
         if os.path.isdir(args.SCHEMA):
-            for root, _dirs, files in os.walk(args.SCHEMA):
+            for root, _, files in os.walk(args.SCHEMA):
                 for file in [os.path.join(root, file) for file in files]:
                     filename = os.path.basename(file)
                     logger.info("File %s", filename)

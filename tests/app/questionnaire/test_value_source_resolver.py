@@ -15,6 +15,8 @@ from app.questionnaire.value_source_resolver import ValueSourceResolver
 from tests.app.data_model.test_answer import ESCAPED_CONTENT, HTML_CONTENT
 from tests.app.questionnaire.conftest import get_metadata
 
+DEFAULT_LOCATION = Location(section_id="test-section", block_id="test-block")
+
 
 def get_list_items(num: int):
     return [f"item-{i}" for i in range(1, num + 1)]
@@ -59,9 +61,7 @@ def get_calculation_block(
 def get_value_source_resolver(
     schema: QuestionnaireSchema = None,
     data_stores: DataStores = None,
-    location: Location | RelationshipLocation = Location(  # noqa: B008
-        section_id="test-section", block_id="test-block"
-    ),
+    location: Location | RelationshipLocation | None = DEFAULT_LOCATION,
     list_item_id: str | None = None,
     routing_path_block_ids: list | None = None,
     use_default_answer=False,
