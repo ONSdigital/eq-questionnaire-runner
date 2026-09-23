@@ -13,7 +13,8 @@ def not_raises(exception):
     try:
         yield
     except exception as validation_error:
-        raise pytest.fail(f"{validation_error} RAISED")
+        msg = f"{validation_error} RAISED"
+        raise pytest.fail(msg) from validation_error
 
 
 SUPPLEMENTARY_DATA_PAYLOAD = {

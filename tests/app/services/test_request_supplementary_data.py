@@ -4,7 +4,7 @@ import pytest
 import responses
 from flask import Flask, current_app
 from marshmallow import ValidationError
-from mock import Mock
+from unittest.mock import Mock
 from requests import RequestException
 from sdc.crypto.key_store import KeyStore
 
