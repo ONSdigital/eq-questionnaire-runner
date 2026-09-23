@@ -4,14 +4,12 @@ from google.cloud.datastore import Key
 
 
 class MockDatastore:
-    # pylint: disable=unused-argument
     def __init__(self, **kwargs):
         self.storage = {}
         self.delete_call_count = 0
 
-    # pylint: disable=no-self-use
     def transaction(self):
-        return contextlib.suppress()  # noqa: B022
+        return contextlib.nullcontext()
 
     def put(self, entity):
         self.storage[entity.key] = entity
@@ -23,6 +21,5 @@ class MockDatastore:
         self.delete_call_count += 1
         del self.storage[key]
 
-    # pylint: disable=no-self-use
     def key(self, *path_args, **kwargs):
         return Key(*path_args, project="local", **kwargs)
