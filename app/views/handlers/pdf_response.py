@@ -2,8 +2,7 @@ import io
 import re
 from datetime import datetime, timezone
 
-import pdfkit
-from flask import current_app
+import requests
 
 from app.data_models import QuestionnaireStore
 from app.questionnaire import QuestionnaireSchema
@@ -61,15 +60,16 @@ class PDFResponse:
 
     def _get_pdf(self, rendered_html: str) -> io.BytesIO:
         """
-        Generates a PDF document from the rendered html.
-        :return: The generated PDF document as BytesIO
-        :rtype: io.BytesIO
-        """
-        content_as_bytes = pdfkit.from_string(
-            input=rendered_html,
-            output_path=None,
-            css=f'{current_app.config["PRINT_STYLE_SHEET_FILE_PATH"]}/print.css',
-            options=self.wkhtmltopdf_options,
-        )
+        Generate a PDF document from rendered HTML and return it as a BytesIO stream.
 
-        return io.BytesIO(content_as_bytes)
+        :param rendered_html: The HTML content to convert into a PDF document.
+        :return: The generated PDF document as a BytesIO object.
+        """
+
+        response = requests.post(
+            "https://html-to-pdf-1015016681736.europe-west2.run.app",
+            json={"html": rendered_html},
+        )
+        response.raise_for_status()
+
+        return io.BytesIO(response.content)
