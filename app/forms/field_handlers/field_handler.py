@@ -49,7 +49,7 @@ class FieldHandler(ABC):
 
     @cached_property
     def guidance(self) -> str:
-        return self.answer_schema.get("guidance", "")  # type: ignore[no-any-return]
+        return self.answer_schema.get("guidance", "")
 
     def get_validation_message(self, message_key: str) -> str:
         return (
