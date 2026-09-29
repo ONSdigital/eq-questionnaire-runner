@@ -1,7 +1,7 @@
 from collections import defaultdict
 
 import pytest
-from mock import MagicMock, Mock
+from unittest.mock import MagicMock, Mock
 from mock.mock import call
 from ordered_set import OrderedSet
 from werkzeug.datastructures import MultiDict
