@@ -1402,7 +1402,9 @@ class QuestionnaireSchema:  # pylint: disable=too-many-public-methods
             section_id = self.get_section_id_for_block_id(block["id"])
             self._placeholder_transform_section_dependencies_by_block[section_id][  # type: ignore
                 block["id"]
-            ].update(dependent_sections)
+            ].update(
+                dependent_sections
+            )
 
     def _populate_placeholder_transform_section_dependencies(self) -> None:
         for block in self.get_blocks():
