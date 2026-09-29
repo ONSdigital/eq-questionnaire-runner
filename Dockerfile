@@ -5,7 +5,7 @@
 # the Qt plugins it needs, and their libraries. glibc and the C++ runtime
 # are skipped so Debian 13's versions are used.
 
-FROM python:3.13-slim-bookworm AS wkhtmltopdf
+FROM python:3.14-slim-bookworm AS wkhtmltopdf
 RUN apt-get update && \
     apt-get install -y --no-install-recommends wkhtmltopdf && \
     mkdir -p /opt/wkhtmltopdf/lib /opt/wkhtmltopdf/plugins && \
@@ -19,7 +19,7 @@ RUN apt-get update && \
       | xargs -I{} cp -L {} /opt/wkhtmltopdf/lib/
 
 # Stage 2: Runner on Debian 13 (trixie).
-FROM python:3.13-slim-trixie
+FROM python:3.14-slim-trixie
 
 EXPOSE 5000
 
@@ -57,7 +57,7 @@ COPY pyproject.toml pyproject.toml
 COPY poetry.lock poetry.lock
 
 RUN groupadd -r appuser && useradd -r -g appuser -u 9000 appuser && chown -R appuser:appuser .
-RUN pip install "poetry==2.1.2" && \
+RUN pip install "poetry==2.4.2" && \
     poetry config virtualenvs.create false && \
     poetry install --only main && \
     make build
