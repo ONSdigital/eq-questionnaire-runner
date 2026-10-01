@@ -1,6 +1,7 @@
 import io
 import re
 from datetime import datetime, timezone
+from app.settings import PDF_API_URL
 
 import requests
 
@@ -67,7 +68,7 @@ class PDFResponse:
         """
 
         response = requests.post(
-            "https://html-to-pdf-1015016681736.europe-west2.run.app",
+            PDF_API_URL,
             json={"html": rendered_html},
         )
         response.raise_for_status()
