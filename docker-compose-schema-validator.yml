@@ -4,7 +4,7 @@ services:
     networks:
       - eq-schema
     ports:
-      - 5002:5002
+      - 5005:5005
 
   py-validator:
     image: europe-west2-docker.pkg.dev/ons-eq-ci/docker-images/eq-questionnaire-validator:${TAG}
