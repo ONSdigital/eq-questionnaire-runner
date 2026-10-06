@@ -111,26 +111,35 @@ podman machine list
 podman machine start
 ```
 
-`wkhtmltopdf` is not reliably available on conda-forge for macOS ARM, so it is installed outside the conda environment.
-Download the macOS `.pkg` from the wkhtmltopdf downloads page and run the installer.
-Note that wkhtmltopdf is an archived project and no longer receives updates.
+### wkhtmltopdf
 
-Or install it from command line. Example:
+Runner uses `pdfkit`, which calls `wkhtmltopdf`, to generate the download PDF.
 
-``` shell
-curl -L -o /tmp/wkhtmltox-0.12.6.pkg \
-  https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox-0.12.6-1.macos-cocoa.pkg
+#### In Docker
 
-sudo installer -pkg /tmp/wkhtmltox-0.12.6.pkg -target /
+The Runner image runs on Debian 13, which no longer packages `wkhtmltopdf`.
+The Dockerfile installs it from Debian 12's apt in a separate build stage and
+copies the binary and the libraries it needs into the runtime image. This is a
+temporary workaround until `wkhtmltopdf` is replaced.
+
+#### Locally on macOS
+
+`wkhtmltopdf` is not reliably available on conda-forge for macOS ARM, so it is
+installed outside the conda environment. Download the macOS `.pkg` from the
+wkhtmltopdf downloads page and run the installer, or from the command line:
+
+```shell
+curl -fsSLO https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-2/wkhtmltox-0.12.6-2.macos-cocoa.pkg
+sudo installer -pkg wkhtmltox-0.12.6-2.macos-cocoa.pkg -target /
+wkhtmltopdf --version
 ```
 
-Check if it is correctly installed:
+Note that `wkhtmltopdf` is an archived project and no longer receives updates.
 
-``` shell
-which wkhtmltopdf
-```
-
-This should return a path (typically `/usr/local/bin/wkhtmltopdf)
+The macOS package is upstream's patched-Qt build, which uses an older WebKit
+engine that doesn't support CSS variables. The Design System relies on them,
+so PDFs generated locally on macOS won't be styled correctly. To check PDF
+styling, run Runner from its Docker image instead.
 
 ### Setup
 

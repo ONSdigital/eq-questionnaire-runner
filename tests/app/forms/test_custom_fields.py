@@ -67,7 +67,7 @@ def test_integer_field_inputs(mock_form, number_input, result):
 @pytest.mark.parametrize(
     "number_input, result",
     [
-        ("1_1,0", Decimal("110")),
+        ("1_1,0", Decimal(110)),
         ("1.10", Decimal("1.1")),
         ("_1.1_0", Decimal("1.1")),
         ("_1.1_0,0", Decimal("1.1")),

@@ -15,12 +15,12 @@ def test_validate_required_secrets_fails_on_missing():
 
 
 def test_validate_required_secrets_passes():
-    secrets = {"secrets": {secret: "abc" for secret in REQUIRED_SECRETS}}
+    secrets = {"secrets": dict.fromkeys(REQUIRED_SECRETS, "abc")}
     assert validate_required_secrets(secrets) is None
 
 
 def test_validate_required_secrets_fails_on_conditional_secret():
-    secrets = {"secrets": {secret: "abc" for secret in REQUIRED_SECRETS}}
+    secrets = {"secrets": dict.fromkeys(REQUIRED_SECRETS, "abc")}
 
     with pytest.raises(Exception) as exception:
         validate_required_secrets(
