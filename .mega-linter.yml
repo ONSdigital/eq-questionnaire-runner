@@ -32,6 +32,8 @@ DISABLE_LINTERS:
   - REPOSITORY_TRUFFLEHOG # git history scanning not required; current code covered by secretlint
   - REPOSITORY_SYFT # SBOM generation covered by trivy
   - REPOSITORY_TRIVY_SBOM # redundant alongside trivy filesystem scan
+  - REPOSITORY_OSV_SCANNER # Gives little value alongside dependabot CTE-339. Possibly to be reintroduced closer to release
+  - REPOSITORY_TRIVY # Gives little value alongside dependabot CTE-339. Possibly to be reintroduced closer to release
 
 # ESLint v10 flat-config workaround and ESLint plugin installs: install project deps before running MegaLinter via CI
 PRE_COMMANDS:
