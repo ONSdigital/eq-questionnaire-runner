@@ -1,7 +1,7 @@
 # pylint: disable=too-many-lines
 
 import pytest
-from mock import MagicMock, Mock
+from unittest.mock import MagicMock, Mock
 
 from app.data_models import AnswerStore, ListStore, ProgressStore
 from app.data_models.answer import Answer, AnswerDict
@@ -14,6 +14,8 @@ from app.questionnaire.relationship_location import RelationshipLocation
 from app.questionnaire.value_source_resolver import ValueSourceResolver
 from tests.app.data_model.test_answer import ESCAPED_CONTENT, HTML_CONTENT
 from tests.app.questionnaire.conftest import get_metadata
+
+DEFAULT_LOCATION = Location(section_id="test-section", block_id="test-block")
 
 
 def get_list_items(num: int):
@@ -59,9 +61,7 @@ def get_calculation_block(
 def get_value_source_resolver(
     schema: QuestionnaireSchema = None,
     data_stores: DataStores = None,
-    location: Location | RelationshipLocation = Location(
-        section_id="test-section", block_id="test-block"
-    ),
+    location: Location | RelationshipLocation | None = DEFAULT_LOCATION,
     list_item_id: str | None = None,
     routing_path_block_ids: list | None = None,
     use_default_answer=False,

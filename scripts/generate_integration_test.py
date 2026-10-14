@@ -1,4 +1,4 @@
-from typing import IO, Dict
+from typing import IO
 from urllib.parse import parse_qs, urlparse
 
 from playwright.sync_api import Playwright, Request, sync_playwright
@@ -17,13 +17,13 @@ class Test{class_name}(IntegrationTestCase):
         self.launchSurveyV2(schema_name="{schema_name}")
 """
 
-survey_journey: Dict[str, str | bool | None] = {
+survey_journey: dict[str, str | bool | None] = {
     "previous_request_method": None,
     "in_progress": False,
     "schema_name": None,
 }
 
-output: Dict[str, str] = {"file_name": ""}
+output: dict[str, str] = {"file_name": ""}
 
 
 def process_runner_request(request: Request) -> None:

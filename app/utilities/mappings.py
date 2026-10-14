@@ -11,7 +11,7 @@ def get_flattened_mapping_values(
     return OrderedSet([x for v in map_to_flatten.values() for x in v])
 
 
-def get_mappings_with_key(  # noqa: C901 pylint: disable=too-complex
+def get_mappings_with_key(  # noqa: C901
     key: str, *, data: Mapping | Sequence, ignore_keys: list[str] | None = None
 ) -> Generator[Mapping]:
     ignore_keys = ignore_keys or []

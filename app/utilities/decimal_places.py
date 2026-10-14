@@ -96,6 +96,18 @@ def custom_format_unit(
         format=number_format,  # type: ignore
         locale=locale,
     )
+    # Some locales (e.g. cy) have no long-form plural patterns in CLDR for
+    # certain units, in which case Babel returns the raw unit key. Fall back
+    # to the short form, which carries the correct translation.
+    if length != "short" and measurement_unit in formatted_unit:
+        formatted_unit = units.format_unit(
+            value=value,
+            measurement_unit=measurement_unit,
+            length="short",
+            # Type ignore: babel function has incorrect type hinting, NumberPattern is valid here
+            format=number_format,  # type: ignore
+            locale=locale,
+        )
 
     return formatted_unit
 
