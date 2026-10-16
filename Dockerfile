@@ -60,7 +60,8 @@ RUN groupadd -r appuser && useradd -r -g appuser -u 9000 appuser && chown -R app
 RUN pip install "poetry==2.4.2" && \
     poetry config virtualenvs.create false && \
     poetry install --only main && \
-    make build
+    make build && \
+    rm -rf /root/.cache
 
 USER appuser
 
