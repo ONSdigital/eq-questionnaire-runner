@@ -28,4 +28,14 @@ mkdir -p ./templates
 cp -R "${TEMP_DIR}/package/components" ./templates/
 cp -R "${TEMP_DIR}/package/layout" ./templates/
 
+TEMPLATE_FILE="./templates/layout/_template.njk"
+if [ -f "${TEMPLATE_FILE}" ]; then
+	TMP_TEMPLATE=$(mktemp)
+	{
+		echo "{% set release_version = '${RELEASE}' %}"
+		grep -vE "^\{% set release_version = '.*' %\}$" "${TEMPLATE_FILE}"
+	} > "${TMP_TEMPLATE}"
+	mv "${TMP_TEMPLATE}" "${TEMPLATE_FILE}"
+fi
+
 rm -rf "${TEMP_DIR}"
