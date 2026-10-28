@@ -33,6 +33,11 @@ mkdir -p ./templates
 cp -R "${TEMP_DIR}/package/components" ./templates/
 cp -R "${TEMP_DIR}/package/layout" ./templates/
 
+if [ ! -d "./templates/components" ] || [ ! -d "./templates/layout" ] || [ ! -f "./templates/layout/_template.njk" ]; then
+	echo "Post-copy check failed: expected templates/components and templates/layout/_template.njk"
+	exit 1
+fi
+
 # Set release_version required by the design-system template so asset URLs resolve correctly and match the previous templates.zip output.
 # Remove any existing release_version line first to keep this step idempotent.
 TEMPLATE_FILE="./templates/layout/_template.njk"
@@ -43,6 +48,11 @@ if [ -f "${TEMPLATE_FILE}" ]; then
 		grep -vE "^\{% set release_version = '.*' %\}$" "${TEMPLATE_FILE}"
 	} > "${TMP_TEMPLATE}"
 	mv "${TMP_TEMPLATE}" "${TEMPLATE_FILE}"
+fi
+
+if [ ! -d "./templates/components" ] || [ ! -d "./templates/layout" ] || [ ! -f "./templates/layout/_template.njk" ]; then
+	echo "Post-copy check failed: expected templates/components and templates/layout/_template.njk"
+	exit 1
 fi
 
 rm -rf "${TEMP_DIR}"
