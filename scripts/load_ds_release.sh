@@ -7,7 +7,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "${DIR}"/.. || exit
 
 if [ "$#" -ne 1 ]; then
-	echo "Usage: load_release_npm.sh {RELASE}"
+	echo "Usage: load_ds_release.sh {RELEASE}"
 	exit 1
 fi
 
