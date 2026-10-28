@@ -6,16 +6,14 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 cd "${DIR}"/.. || exit
 
-if [ "$#" -ne 3 ]; then
-	echo "Usage: load_release_npm.sh {OWNER} {PACKAGE_NAME} {TAG_E}"
+if [ "$#" -ne 1 ]; then
+	echo "Usage: load_release_npm.sh {RELASE}"
 	exit 1
 fi
 
-OWNER="$1"
-PACKAGE="$2"
-TAG="$3"
+RELEASE="$1"
 
-DOWNLOAD_URL="https://registry.npmjs.org/@${OWNER}/${PACKAGE}/-/${PACKAGE}-${TAG}.tgz"
+DOWNLOAD_URL="https://registry.npmjs.org/@ons/design-system/-/design-system-${RELEASE}.tgz"
 TEMP_DIR=$(mktemp -d)
 
 echo "Fetching ${DOWNLOAD_URL}"
