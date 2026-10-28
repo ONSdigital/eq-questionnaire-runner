@@ -61,6 +61,8 @@ RUN pip install "poetry==2.4.2" && \
     poetry config virtualenvs.create false && \
     poetry install --only main && \
     make build && \
+    test -d templates/components && \
+    test -f templates/layout/_template.njk && \
     rm -rf /root/.cache
 
 USER appuser
