@@ -23,9 +23,11 @@ curl -fL --url "${DOWNLOAD_URL}" --output "${TEMP_DIR}/design-system.tgz"
 # Extract tarball (npm packages are rooted under "package/")
 tar -xzf "${TEMP_DIR}/design-system.tgz" -C "${TEMP_DIR}"
 
-# Copy over template folders
+# Copy template folders
 cp -R "${TEMP_DIR}/package/components" ./templates/
 cp -R "${TEMP_DIR}/package/layout" ./templates/
+
+# Copy print.css to use with pdf generation
 mkdir -p "./${PRINT_CSS_DIR}"
 cp "${TEMP_DIR}/package/css/print.css" "./${PRINT_CSS_DIR}/print.css"
 
