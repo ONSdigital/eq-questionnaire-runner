@@ -541,6 +541,7 @@ The following env variables can be used
 | OIDC_TOKEN_LEEWAY_IN_SECONDS              | 300                          | The leeway to use when validating OIDC tokens                                                                  |
 | SDS_OAUTH2_CLIENT_ID                      |                              | The OAuth2 Client ID used when setting up IAP on the SDS                                                       |
 | CIR_OAUTH2_CLIENT_ID                      |                              | The OAuth2 Client ID used when setting up IAP on the CIR                                                       |
+| PDF_API_URL                               |                              | The URL of the PDF API used for generating PDFs                                                                |
 
 The following env variables can be used when running tests
 
